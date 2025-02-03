@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "419893562273",
+    "project_id": "eco-syste",
+    "storage_bucket": "eco-syste.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:419893562273:android:5d15901a1b38730eb659e0",
+        "android_client_info": {
+          "package_name": "com.innova_product.eco_system"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGJENcuI49pouAXO4hCpKcTZlHwih3EDk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

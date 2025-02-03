@@ -1,0 +1,172 @@
+plugins {
+    id "com.android.application"
+    id "dev.flutter.flutter-gradle-plugin"
+    id "org.jetbrains.kotlin.android"
+    id "com.google.gms.google-services"
+    id "com.google.firebase.crashlytics"
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
+
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+android {
+//    afterEvaluate {
+//        if(System.getenv("IS_CI_BUILD") == "true"){
+//            // if you are creating bundle for release build then task name below will be bundleRelease
+//            // if apk, then it will be assembleRelease
+//            // if any flavor then, for staging flavor it will be bundleStagingRelease and assembleStagingRelease respectively
+//            def bundleTask = project.tasks.findByName('assembleRelease')
+//
+//            // Create a custom task to run after bundleRelease or assembleRelease
+//            task copyBuildTask(dependsOn: bundleTask) {
+//                // Configure your custom task here
+//                doLast {
+//                    // Code to run after bundleRelease or asssembleRelease for appcenter
+//                    println "Copying builds..."
+//
+//                    // if any flavor then path will change accordingly, for staging it will be -
+//                    // def apkPath = file('../../build/app/outputs/flutter-apk/app-staging-release.apk')
+//                    def apkPath = file('../../build/app/outputs/flutter-apk/app-release.apk')
+//                    if(apkPath.exists()) {
+//                        def apkDir = file('build/outputs/apk/')
+//                        apkDir.mkdirs()
+//                        copy {
+//                            from apkPath.parent
+//                            into apkDir
+//                            include apkPath.name
+//                        }
+//                        println "Apk file moved to: ${apkDir}/${apkPath.name}"
+//                    }
+//
+//                    // if any flavor then path will change accordingly, for staging it will be -
+//                    // def bundlePath = file('../../build/app/outputs/bundle/stagingRelease/app-staging-release.aab')
+//                    def bundlePath = file('../../build/app/outputs/bundle/release/app-release.aab')
+//                    if(bundlePath.exists()) {
+//                        def bundleDir = file('build/outputs/bundle/')
+//                        bundleDir.mkdirs()
+//                        copy {
+//                            from bundlePath.parent
+//                            into bundlePath
+//                            include bundlePath.name
+//                        }
+//                        println "AAB file moved to: ${bundleDir}/${bundlePath.name}"
+//                    }
+//
+//                    // if any flavor then path will change accordingly, for staging it will be -
+//                    //def mappingPath = file('../../build/app/outputs/mapping/stagingRelease/mapping.txt')
+//                    def mappingPath = file('../../build/app/outputs/mapping/release/mapping.txt')
+//                    if(mappingPath.exists()) {
+//                        def mappingDir = file('build/outputs/mapping/')
+//                        mappingDir.mkdirs()
+//                        copy {
+//                            from mappingPath.parent
+//                            into mappingDir
+//                            include mappingPath.name
+//                        }
+//                        println "Mapping file moved to: ${mappingDir}/${mappingPath.name}"
+//                    }
+//                }
+//            }
+//
+//            if(bundleTask != null) {
+//                bundleTask.finalizedBy(copyBuildTask)
+//            }
+//        }
+//    }
+
+    namespace = "com.innova_product.eco_system"
+    testNamespace = "com.innova_product.eco_system.test"
+    compileSdk = 34
+    ndkVersion = "27.0.12077973"
+
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    defaultConfig {
+        applicationId = "com.innova_product.eco_system"
+        minSdk = 23
+        targetSdk = flutter.targetSdkVersion
+        versionCode = flutterVersionCode.toInteger()
+        versionName =  flutterVersionName
+        multiDexEnabled = true
+    }
+
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.release
+        }
+    }
+}
+
+flutter {
+    source '../..'
+}
+
+dependencies {
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
+    implementation 'androidx.window:window:1.0.0'
+    implementation 'androidx.window:window-java:1.0.0'
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation("androidx.multidex:multidex:2.0.1")
+    implementation 'com.google.firebase:firebase-auth'
+    // Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:33.1.1"))
+    implementation("com.google.firebase:firebase-crashlytics")
+    implementation("com.google.firebase:firebase-analytics")
+    implementation 'com.google.firebase:firebase-messaging:23.1.2'
+
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.18.1'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.18.1'
+    implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:2.18.1'
+
+    def appCenterSdkVersion = '4.4.5'
+    implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
+    implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
+}
