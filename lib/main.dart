@@ -79,7 +79,7 @@ class _MyAppState extends State<MyApp> {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-            title: "eco_system",
+            title: "Eco System",
             theme: ThemeData(
               pageTransitionsTheme: const PageTransitionsTheme(
                 builders: {
