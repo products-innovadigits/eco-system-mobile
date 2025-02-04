@@ -6,7 +6,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.16.0 <3.0.0"
+  sdk: '>=2.19.3 <3.0.0'
 
 dependencies:
   flutter:
@@ -40,7 +40,8 @@ dependencies:
   permission_handler: ^11.3.1
   share_plus:
   flutter_image_compress: ^2.4.0
-
+  google_maps_flutter: ^2.10.0
+  geolocator: ^13.0.2
 
 
 

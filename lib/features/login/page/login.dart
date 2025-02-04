@@ -15,7 +15,7 @@ import 'package:eco_system/helpers/translation/all_translation.dart';
 import '../bloc/login_bloc.dart';
 
 class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+  const Login({super.key});
 
   @override
   State<Login> createState() => _LoginState();
@@ -138,10 +138,12 @@ class _LoginState extends State<Login> {
                                           obscureText: !showPassword,
                                           maxLines: 1,
                                           validate: (v) {
-                                            if (PasswordValidator.passwordValidator(v) != null) {
-                                              LoginBloc.instance.password.addError(PasswordValidator
+                                            if (PasswordValidator
+                                                    .passwordValidator(v) !=
+                                                null) {
+                                              LoginBloc.instance.password
+                                                  .addError(PasswordValidator
                                                       .passwordValidator(v)!);
-
                                             }
                                           },
                                           customError: snapshot.hasError,
@@ -166,15 +168,17 @@ class _LoginState extends State<Login> {
                                           btnWidth: MediaQueryHelper.width,
                                           text: allTranslations.text("login"),
                                           onTap: () {
-                                            print("${_globalKey.currentState!.validate()}  ${snapshot.data}");
+                                            print(
+                                                "${_globalKey.currentState!.validate()}  ${snapshot.data}");
                                             if (snapshot.hasData) {
-                                              if( snapshot.data!)
+                                              if (snapshot.data!)
                                                 LoginBloc.instance.add(Click());
                                             } else {
                                               return;
                                             }
                                           },
-                                          loading: state is Loading ? true : false,
+                                          loading:
+                                              state is Loading ? true : false,
                                           txtColor: Colors.white,
                                         ),
                                       );
