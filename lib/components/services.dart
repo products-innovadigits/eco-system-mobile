@@ -1,44 +1,40 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
+import 'package:eco_system/utility/utility.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:eco_system/navigation/custom_navigation.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void shareTheApp() async {
   try {
-    String _msg;
-    StringBuffer _sb = new StringBuffer();
-    _sb.write("لتنزيل التطبيق اضغط على الرابط\n");
-    _sb.write("https://www.foraplus.com/");
-    _msg = _sb.toString();
+    // String _msg;
+    // StringBuffer _sb = new StringBuffer();
+    // _sb.write("لتنزيل التطبيق اضغط على الرابط\n");
+    // _sb.write("https://www.foraplus.com/");
+    // _msg = _sb.toString();
 
-    final ByteData bytes = await rootBundle.load('assets/logo.png');
+    // final ByteData bytes = await rootBundle.load('assets/splash.png');
     // await Share.file(
     //     'esys image', 'esys.png', bytes.buffer.asuint8List(), 'image/jpeg',
     //     text: _msg);
   } catch (e) {
-    print('error: $e');
+    cprint('error: $e');
   }
 }
 
 void shareTheAppIOS() async {
   try {
-    String _msg;
-    StringBuffer _sb = new StringBuffer();
-    _sb.write("لتنزيل التطبيق اضغط على الرابط\n");
-    _sb.write("https://www.foraplus.com/");
-    _msg = _sb.toString();
-    final ByteData bytes = await rootBundle.load('assets/logo.png');
+    // String _msg;
+    // StringBuffer _sb = new StringBuffer();
+    // _sb.write("لتنزيل التطبيق اضغط على الرابط\n");
+    // _sb.write("https://www.foraplus.com/");
+    // _msg = _sb.toString();
+    // final ByteData bytes = await rootBundle.load('assets/splash.png');
     // await Share.file(
     //     'esys image', 'esys.png', bytes.buffer.asuint8List(), 'image/jpeg',
     //     text: _msg);
   } catch (e) {
-    print('error: $e');
+    cprint('error: $e');
   }
 }
 
@@ -84,7 +80,7 @@ void openUserWhatsapp(String phone) async {
 }
 
 void goToMap(double lat, double long) async {
-  print("_______________get your fucken location__________________");
+  cprint("_______________get your fucken location__________________");
 
   final url = 'https://www.google.com/maps/search/?api=1&query=$lat,$long';
   launchURL(url: url);
@@ -100,15 +96,15 @@ Future<bool> saveFile(String url, String fileName) async {
       for (int x = 1; x < paths.length; x++) {
         String folder = paths[x];
         if (folder != "Android") {
-          newPath += "/" + folder;
+          newPath += "/$folder";
         } else {
           break;
         }
       }
-      newPath = newPath + "/PDF_Download";
+      newPath = "$newPath/PDF_Download";
       directory = Directory(newPath);
 
-      File saveFile = File(directory.path + "/$fileName.pdf");
+      File saveFile = File("${directory.path}/$fileName.pdf");
       if (!await directory.exists()) {
         await directory.create(recursive: true);
       }
@@ -119,13 +115,17 @@ Future<bool> saveFile(String url, String fileName) async {
         );
       }
 
-      print(saveFile.path);
+      cprint(saveFile.path);
 
-      Share.share(saveFile.path);
+      // Share.shareFiles(
+      //   [saveFile.path],
+      //   subject: 'Share PDF',
+      //   text: 'Hello, check your share files!',
+      // );
     }
     return true;
   } catch (e) {
-    print(e);
+    cprint(e);
     return false;
   }
 }

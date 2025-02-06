@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:eco_system/widgets/images.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:eco_system/helpers/styles.dart';
 
-Widget customImageIcon(
-    {String? folderPath,
-    @required String? imageName,
-    String? imagePath,
-    width,
-    height,
-    color}) {
+Widget customImageIcon({
+  String? folderPath,
+  required String? imageName,
+  String? imagePath,
+  width,
+  height,
+  color,
+}) {
   return Image.asset(
     'assets/${folderPath ?? "images"}/$imageName.${imagePath ?? "png"}',
     color: color,
@@ -20,7 +22,7 @@ Widget customImageIcon(
 Widget customCircleSvgIcon(
     {String? folderPath,
     String? title,
-    @required String? imageName,
+    required String? imageName,
     String? imagePath,
     Function? onTap,
     color,
@@ -51,21 +53,28 @@ Widget customCircleSvgIcon(
               Text(
                 title ?? "",
                 style: const TextStyle(
-                    color: Styles.PRIMARY_COLOR, fontWeight: FontWeight.w600 , fontSize: 10),
+                    color: Styles.PRIMARY_COLOR,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 10),
                 overflow: TextOverflow.ellipsis,
               )
             ],
           ),
         ),
-
       ],
     ),
   );
 }
 
-Widget customImageIconSVG({@required String? imageName,Color? color}) {
-  return SvgPicture.asset(
-    'assets/svgs/$imageName.svg',
+Widget customImageIconSVG({
+  required String? imageName,
+  Color? color,
+  double? height,width
+}) {
+  return Images(
+    image: 'assets/svgs/$imageName.svg',
     color: color,
+    height: height,
+    width: width,
   );
 }

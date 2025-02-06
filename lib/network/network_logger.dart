@@ -16,7 +16,8 @@ class NetworkLogger {
       if (options.data.runtimeType == FormData) {
         for (var i = 0; i < (options.data as FormData).fields.length; i++) {
           (options.data as FormData).fields[i];
-          body += '${(options.data as FormData).fields[i].key}: ${(options.data as FormData).fields[i].value} | ';
+          body +=
+              '${(options.data as FormData).fields[i].key}: ${(options.data as FormData).fields[i].value} | ';
         }
       } else if (options.data.runtimeType is Map) {
         (options.data as Map).forEach((key, value) => body += "$key: $value |");
@@ -24,29 +25,38 @@ class NetworkLogger {
         body = "${options.data}";
       }
       // For Print queryParameters
-      options.queryParameters.forEach((key, value) => queryParameters += "$key: $value |");
-      cprint("┌------------------------------------------------------------------------------");
+      options.queryParameters
+          .forEach((key, value) => queryParameters += "$key: $value |");
+      cprint(
+          "┌------------------------------------------------------------------------------");
       cprint('''| Request: ${options.method} ${options.uri}''');
-      cprint("├------------------------------------------------------------------------------");
+      cprint(
+          "├------------------------------------------------------------------------------");
       cprint('''| Headers: $headers''');
-      cprint("├------------------------------------------------------------------------------");
+      cprint(
+          "├------------------------------------------------------------------------------");
       cprint('''| Body: $body''');
-      cprint("├------------------------------------------------------------------------------");
+      cprint(
+          "├------------------------------------------------------------------------------");
       cprint('''| QueryParameters: $queryParameters''');
-      cprint("├------------------------------------------------------------------------------");
+      cprint(
+          "├------------------------------------------------------------------------------");
       handler.next(options);
     },
     onResponse: (Response response, handler) async {
       JsonEncoder encoder = const JsonEncoder.withIndent('        ');
       String prettyprint = encoder.convert(response.data);
       cprint("| Status code: ${response.statusCode}");
-      cprint("├------------------------------------------------------------------------------");
+      cprint(
+          "├------------------------------------------------------------------------------");
       cprint("| Response: $prettyprint");
-      cprint("└------------------------------------------------------------------------------");
-      cprint("================================================================================");
+      cprint(
+          "└------------------------------------------------------------------------------");
+      cprint(
+          "================================================================================");
       handler.next(response);
     },
-    onError: (DioError error, handler) async {
+    onError: (DioException error, handler) async {
       handler.next(error); //continue
     },
   );

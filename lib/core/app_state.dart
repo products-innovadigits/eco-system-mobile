@@ -1,107 +1,63 @@
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-import 'package:eco_system/main_pages/models/status_model.dart';
 import 'package:eco_system/network/mapper.dart';
 
-abstract class AppState {}
+abstract class AppState {
+  Map<String, dynamic> toJson();
+}
 
-class Start extends AppState {}
+class Start extends AppState {
+  Start();
+  @override
+  Map<String, dynamic> toJson() => {"state": "Start"};
+}
 
 class Done extends AppState {
   Mapper? model;
   List<Widget>? cards;
-  List<dynamic>? list;
+  List<Mapper>? list;
   bool? reload;
   bool? loading;
+  dynamic data;
 
-  Done({this.model, this.cards, this.list, this.reload = true , this.loading = false});
+  Done(
+      {this.model,
+        this.data,
+        this.cards,
+        this.list,
+        this.reload = true,
+        this.loading = false});
+
+  @override
+  Map<String, dynamic> toJson() => {
+    "state": "Done",
+    "model": jsonEncode(model?.toJson()),
+    "list": jsonEncode(list?.map((e) => e.toJson()).toList()),
+    "data": data is List<dynamic>
+        ? jsonEncode(data?.map((e) => e.toJson()).toList())
+        : jsonEncode(model?.toJson()),
+    "cards": jsonEncode(cards),
+    "reload": jsonEncode(reload),
+    "loading": jsonEncode(loading),
+  };
 }
 
-
-class FollowResponseDone extends AppState {
-  Mapper? model;
-
-  FollowResponseDone({this.model});
+class Error extends AppState {
+  @override
+  Map<String, dynamic> toJson() => {"state": "Error"};
 }
 
-class UserInfoDoneState extends AppState {
-  final Mapper? model;
-  final List<Widget>? requestsCard;
-  final List<Widget>? shortCutsCard;
-
-  UserInfoDoneState({this.requestsCard, this.shortCutsCard, this.model});
+class Loading extends AppState {
+  int? progress;
+  int? total;
+  Loading({this.progress, this.total});
+  @override
+  Map<String, dynamic> toJson() => {"state": "Loading"};
 }
-
-class GroupsDoneState extends AppState {
-  List<Widget>? cards;
-  List<Widget>? otherCards;
-
-  GroupsDoneState({this.cards, this.otherCards});
-}
-
-class GroupInfoDoneState extends AppState {
-  List<Widget>? cards;
-
-  GroupInfoDoneState({this.cards});
-}
-
-class FindUserDoneState extends AppState {
-  List<Widget>? cards;
-
-  FindUserDoneState({this.cards});
-}
-
-class FindUserPageDoneState extends AppState {
-  List<Widget>? followingListCards;
-  List<Widget>? recentSearchCards;
-
-  FindUserPageDoneState({this.recentSearchCards, this.followingListCards});
-}
-
-class SettingDoneState extends AppState {
-  List<Widget>? cards;
-
-  SettingDoneState({this.cards});
-}
-
-class MoreRequestsDoneState extends AppState {
-  List<Widget>? cards;
-
-  MoreRequestsDoneState({this.cards});
-}
-
-class NotificationDoneState extends AppState {
-  List<Widget>? cards;
-
-  NotificationDoneState({this.cards});
-}
-
-class SingleUserRequestDoneState extends AppState {
-  List<Widget>? myRequests;
-  List<Widget>? otherRequests;
-  List<StatusModel>? status;
-
-  SingleUserRequestDoneState(
-      {this.myRequests, this.otherRequests, this.status});
-}
-
-class RequestsDoneState extends AppState {
-  List<Widget>? requests;
-
-  RequestsDoneState({this.requests});
-}
-
-class ApprovalsDoneState extends AppState {
-  List<Widget>? approvals;
-
-  ApprovalsDoneState({this.approvals});
-}
-
-class Error extends AppState {}
-
-class Loading extends AppState {}
 
 class Empty extends AppState {
   final bool? initial;
-
   Empty({this.initial});
+  @override
+  Map<String, dynamic> toJson() => {"state": "Empty"};
 }

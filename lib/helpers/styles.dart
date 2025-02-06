@@ -1,12 +1,10 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:eco_system/helpers/translation/all_translation.dart';
-import 'package:eco_system/main_blocs/main_app_bloc.dart';
+
+import '../bloc/main_app_bloc.dart';
 
 abstract class Styles {
   static const Color RED_CHART_COLOR = Color(0xffE24F4F);
-  static const Color PRIMARY_COLOR = Color(0xff6F51F8);
+  static const Color PRIMARY_COLOR = Color(0xff2b6c9f);
   static const Color ACCENT_PRIMARY_COLOR = Color(0xffF7F1FC);
   static const Color ACCENT_COLOR = Color(0xFF70EEC8);
   static const Color FIELD_BORDER = Color(0xFFF9F9FA);
@@ -16,8 +14,9 @@ abstract class Styles {
   static const Color IN_ACTIVE = Color(0xFFDB5353);
   static const Color PENDING = Color(0xFFA6840A);
   static const Color SCAFFOLD_BG = Color(0xFFE5E5E5);
-  static const Color HEADER = Color(0xFF0E043C);
-  static const Color SUB_HEADER = Color(0xFF616161);
+  static const Color HEADER = Color(0xFF000000);
+
+  static const Color TITLE = Color(0xFF08150D);
   static const Color PLACE_HOLDER = Color(0xFF7F8B93);
   static const Color FILL_COLOR = Color(0xFFFAFAFA);
   static const Color CARD_BORDER = Color(0xFFE4E9FC);
@@ -26,6 +25,7 @@ abstract class Styles {
   static const Color CHECK_IN = Color(0xFF01A9AC);
   static const Color QUICK_ACTIONS = Color(0xFFEFF2FD);
   static const Color TEAMS_GRADIENT = Color(0xFF374A90);
+  static const Color DETAILS = Color(0xFF8F8F8F);
   static const Color HINT = Color(0xFFA7A7A7);
   static const Color WHITE_COLOR = Color(0xFFFFFFFF);
   static const Color LIGHT_BLUE = Color(0xff70EEC8);
@@ -46,7 +46,7 @@ abstract class Styles {
   static const Color REMOVE_COLOR = Color(0xffFDEEEE);
   static const Color BORDER_COLOR = Color(0xffF2F2F2);
   static const Color ALERT_COLOR = Color(0xffDBAB02);
-  static const Color DARK_RED = Color(0xff982929); 
+  static const Color DARK_RED = Color(0xff982929);
   static const Color DARK_GREEN = Color(0xff279473);
   static const Color CIRCLE_BACKGROUND = Color(0xff4D7272);
   static const Color CIRCLE_BACKGROUND2 = Color(0xff8CB3B3);
@@ -63,40 +63,49 @@ abstract class Styles {
   static const VERTICAL_PADDING =
       const EdgeInsets.symmetric(horizontal: 16, vertical: 20);
   static const TextStyle UN_SELECTED_TAB =
-  TextStyle(color: Styles.HINT , fontSize: 13 , fontWeight: FontWeight.w600);
-  static const TextStyle SELECTED_TAB =
-  TextStyle(color: Styles.PRIMARY_COLOR , fontSize: 13 , fontWeight: FontWeight.w800);
-  static TextStyle HEADER_STYLE({size}) =>
-      TextStyle(color: Styles.HEADER , fontSize: size ?? 14 , fontWeight: FontWeight.w700 , fontFamily: mainAppBloc.lang.valueOrNull);
-  static const TextStyle MINI_HEADER_STYLE =
-      TextStyle(color: Styles.HEADER , fontSize: 12 , fontWeight: FontWeight.w600 , fontFamily: 'text');
-  static const TextStyle SUB_HEADER_STYLE =
-      TextStyle(color: Styles.SUB_HEADER , fontSize: 12 , fontWeight: FontWeight.w600);
-  static TextStyle PLACE_HOLDER_STYLE({fontFamily , fontWeight , size}) =>
-      TextStyle(color: Styles.PLACE_HOLDER , fontSize: size ??  12 ,
-          fontWeight: fontWeight ?? FontWeight.w800 ,fontFamily: fontFamily ?? mainAppBloc.lang.valueOrNull);
+      TextStyle(color: Styles.HINT, fontSize: 13, fontWeight: FontWeight.w600);
+  static const TextStyle SELECTED_TAB = TextStyle(
+      color: Styles.PRIMARY_COLOR, fontSize: 13, fontWeight: FontWeight.w800);
+  static TextStyle HEADER_STYLE({size}) => TextStyle(
+      color: Styles.HEADER,
+      fontSize: size ?? 14,
+      fontWeight: FontWeight.w700,
+      fontFamily: mainAppBloc.lang.valueOrNull);
+  static const TextStyle MINI_HEADER_STYLE = TextStyle(
+      color: Styles.HEADER,
+      fontSize: 12,
+      fontWeight: FontWeight.w600,
+      fontFamily: 'text');
+  static const TextStyle SUB_HEADER_STYLE = TextStyle(
+      color: Styles.TITLE, fontSize: 12, fontWeight: FontWeight.w600);
+  static TextStyle PLACE_HOLDER_STYLE({fontFamily, fontWeight, size}) =>
+      TextStyle(
+          color: Styles.PLACE_HOLDER,
+          fontSize: size ?? 12,
+          fontWeight: fontWeight ?? FontWeight.w800,
+          fontFamily: fontFamily ?? mainAppBloc.lang.valueOrNull);
   static const TextStyle CONTENT_STYLE = TextStyle(
-      fontSize: 16,
-      fontWeight: FontWeight.normal,
-      color: Colors.grey);
+      fontSize: 16, fontWeight: FontWeight.normal, color: Colors.grey);
 
   static const String FONT_EN = 'en';
   static const String FONT_AR = 'ar';
   static BorderRadius borderRadius = BorderRadius.circular(10.0);
 
-  static final Widget logo = Image.asset(
-    'assets/images/login/login_logo.png',
-    height: 190.0,
-    width: 250.0,
-    fit: BoxFit.contain,
-  );
+  static Widget logo({Color? color, double? height, double? width}) =>
+      Image.asset(
+        'assets/logo.png',
+        height: height??190.0,
+        width: width??250.0,
+        color: color,
+        fit: BoxFit.contain,
+      );
   static final Widget splash = Image.asset(
-    'assets/splash.png',
+    'assets/images/splash.png',
     height: 158.0,
     width: 180.0,
   );
   static const Widget divider = Padding(
-    padding: EdgeInsets.symmetric(horizontal: 24 ),
-    child: Divider(color: Styles.FILL_COLOR,thickness: 1.0),
+    padding: EdgeInsets.symmetric(horizontal: 24),
+    child: Divider(color: Styles.FILL_COLOR, thickness: 1.0),
   );
 }

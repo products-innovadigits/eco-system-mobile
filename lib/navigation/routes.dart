@@ -1,15 +1,20 @@
+// ignore_for_file: constant_identifier_names
+
 class Routes {
   static const APP = "APP";
   static const SPLASH = "SPLASH";
   static const BOARDING = "BOARDING";
+  static const INTRO = "INTRO";
   static const LOGIN = "LOGIN";
+  static const OTP = "OTP";
+  static const SIGNUP = "SIGNUP";
   static const MAIN_PAGE = "MAIN_PAGE";
   static const HOME_PAGE = "HOME_PAGE";
   static const PROFILE = "PROFILE";
   static const DASHBOARD = "DASHBOARD";
-  static const PROPERTIES_DETAILED= "PROPERTIES_DETAILED";
+  static const PROPERTIES_DETAILED = "PROPERTIES_DETAILED";
   static const UNIT_DETAILS = "UNIT_DETAILS";
-  static const ADD_PAYMENT= "ADD_PAYMENT";
+  static const ADD_PAYMENT = "ADD_PAYMENT";
   static const VACATING_NOTE = "VACATING_NOTE";
   static const EDIT_PASSWORD = "EDIT_PASSWORD";
   static const ALL_PAYMENTS = "ALL_PAYMENTS";

@@ -1,4 +1,3 @@
-
 abstract class AppEvent {
   Object? arguments;
 
@@ -8,17 +7,20 @@ abstract class AppEvent {
 class Click extends AppEvent {
   Click({Object? arguments}) : super(arguments);
 }
+class Remember extends AppEvent {
+  Remember({Object? arguments}) : super(arguments);
+}
 
 class GetTenants extends AppEvent {
   GetTenants({Object? arguments}) : super(arguments);
 }
 
-class GetTenantTypes extends AppEvent{
+class GetTenantTypes extends AppEvent {
   GetTenantTypes({Object? arguments}) : super(arguments);
 }
 
-class Filter extends AppEvent{
-  Filter(Object? arguments) : super(arguments);
+class Filter extends AppEvent {
+  Filter(super.arguments);
 }
 
 class Restart extends AppEvent {
@@ -32,9 +34,11 @@ class Clear extends AppEvent {
 class Update extends AppEvent {
   Update({Object? arguments}) : super(arguments);
 }
+
 class Join extends AppEvent {
   Join({Object? arguments}) : super(arguments);
 }
+
 class Leave extends AppEvent {
   Leave({Object? arguments}) : super(arguments);
 }
@@ -47,10 +51,10 @@ class DelegationUsers extends AppEvent {
   DelegationUsers({Object? arguments}) : super(arguments);
 }
 
-
 class FollowResponse extends AppEvent {
   FollowResponse({Object? arguments}) : super(arguments);
 }
+
 class GroupFollowRequest extends AppEvent {
   GroupFollowRequest({Object? arguments}) : super(arguments);
 }
@@ -95,7 +99,7 @@ class GetDashboard extends AppEvent {
   GetDashboard({Object? arguments}) : super(arguments);
 }
 
-class GetInvoices extends AppEvent{
+class GetInvoices extends AppEvent {
   GetInvoices({Object? arguments}) : super(arguments);
 }
 
@@ -103,27 +107,30 @@ class GetProperties extends AppEvent {
   GetProperties({Object? arguments}) : super(arguments);
 }
 
-class GetUnitDetails extends AppEvent{
+class GetUnitDetails extends AppEvent {
   GetUnitDetails({Object? arguments}) : super(arguments);
 }
 
-class GetAllPayments extends AppEvent{
+class GetAllPayments extends AppEvent {
   GetAllPayments({Object? arguments}) : super(arguments);
 }
 
-class ChangePayment extends AppEvent{
+class ChangePayment extends AppEvent {
   ChangePayment({Object? arguments}) : super(arguments);
 }
 
-class Approve extends AppEvent{
+class Approve extends AppEvent {
   Approve({Object? arguments}) : super(arguments);
 }
-class Cancel extends AppEvent{
+
+class Cancel extends AppEvent {
   Cancel({Object? arguments}) : super(arguments);
 }
-class Receipt extends AppEvent{
+
+class Receipt extends AppEvent {
   Receipt({Object? arguments}) : super(arguments);
 }
+
 class GetProfile extends AppEvent {
   GetProfile({Object? arguments}) : super(arguments);
 }

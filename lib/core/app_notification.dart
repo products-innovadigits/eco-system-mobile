@@ -14,6 +14,6 @@ class AppNotification {
       this.borderColor = Colors.transparent,
       this.isFloating = false,
       radius}) {
-    this.radius = radius ?? this.isFloating ? 15 : 0;
+    this.radius = radius ?? isFloating ? 15 : 0;
   }
 }

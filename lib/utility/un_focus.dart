@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Unfocus extends StatefulWidget {
-  const Unfocus({Key? key, required this.child}) : super(key: key);
+  const Unfocus({
+    super.key,
+    required this.child,
+  });
 
   final Widget child;
 

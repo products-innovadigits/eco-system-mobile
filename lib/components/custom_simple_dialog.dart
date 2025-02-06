@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:eco_system/navigation/custom_navigation.dart';
 
 class CustomSimpleDialog {
-
-  static parentSimpleDialog({@required List<Widget>? customListWidget}){
+  static parentSimpleDialog({
+    required List<Widget>? customListWidget,
+  }) {
     return showGeneralDialog(
         barrierColor: Colors.black.withOpacity(0.5),
         transitionBuilder: (context, a1, a2, widget) {
@@ -14,8 +15,8 @@ class CustomSimpleDialog {
                 child: SimpleDialog(
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      )),
+                    Radius.circular(10),
+                  )),
                   elevation: 3,
                   contentPadding: const EdgeInsets.all(5),
                   children: customListWidget!,

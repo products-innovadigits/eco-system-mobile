@@ -10,7 +10,10 @@ extension StringEx on String {
     return this;
   }
 
-  bool get isPhone => RegExp(r'^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$').hasMatch(this) && (length > 8 || length <= 10);
+  bool get isPhone =>
+      RegExp(r'^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$')
+          .hasMatch(this) &&
+      (length > 8 || length <= 10);
 
   bool isNumeric() {
     for (int i = 0; i < length; i++) {
@@ -21,13 +24,16 @@ extension StringEx on String {
     return false;
   }
 
-  bool get isEmail => RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$').hasMatch(this);
+  bool get isEmail => RegExp(
+          r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+      .hasMatch(this);
 
   bool get isArabic => RegExp("/[\u0600-\u06FF\u0750-\u077F]/").hasMatch(this);
 
   bool get isEnglish => RegExp('[a-zA-Z]').hasMatch(this);
 
-  TextDirection get textDirection => RegExp('[a-zA-Z]').hasMatch(this) ? TextDirection.ltr : TextDirection.rtl;
+  TextDirection get textDirection =>
+      RegExp('[a-zA-Z]').hasMatch(this) ? TextDirection.ltr : TextDirection.rtl;
 
   Color get toColor {
     String colorStr = this;
@@ -44,7 +50,8 @@ extension StringEx on String {
       } else if (hexDigit >= 97 && hexDigit <= 102) {
         val += (hexDigit - 87) * (1 << (4 * (len - 1 - i)));
       } else {
-        throw const FormatException("An error occurred when converting a color");
+        throw const FormatException(
+            "An error occurred when converting a color");
       }
     }
     return Color(val);
@@ -59,13 +66,11 @@ extension NumEx on int {
 }
 
 extension WidgetEx on Widget {
-  Widget ripple(Function? onPressed, {BorderRadiusGeometry borderRadius = const BorderRadius.all(Radius.circular(5))}) => InkWell(
-        child: this,
-        onTap: () {
-          onPressed!();
-        },
-      );
-  Widget paddingAll(double value) => Padding(padding: EdgeInsets.all(value), child: this);
+  Widget ripple(Function()? onPressed) =>
+      InkWell(onTap: onPressed, child: this);
+
+  Widget paddingAll(double value) =>
+      Padding(padding: EdgeInsets.all(value), child: this);
 
   Widget paddingOnly({
     double left = 0.0,
@@ -95,7 +100,10 @@ extension WidgetEx on Widget {
         child: this,
       );
 
-  Widget boarder(double value) => ClipRRect(borderRadius: BorderRadius.circular(value), child: this);
+  Widget boarder(double value) => ClipRRect(
+        borderRadius: BorderRadius.circular(value),
+        child: this,
+      );
 
   Widget get onCenter => Center(child: this);
 }
@@ -112,15 +120,18 @@ extension ContextEX on BuildContext {
 
 extension DateTimeExtension on DateTime {
   DateTime next(int day) {
-    return this.add(Duration(days: (day - this.weekday) % DateTime.daysPerWeek));
+    return add(Duration(days: (day - weekday) % DateTime.daysPerWeek));
   }
 
-  bool isSameDate(DateTime other) => year == other.year && month == other.month && day == other.day;
+  bool isSameDate(DateTime other) =>
+      year == other.year && month == other.month && day == other.day;
 
   String get dayName => intl.DateFormat('EEEE').format(this);
 
   String format(String fromat, {String? cutomlocale}) {
-    String locale = Localizations.localeOf(CustomNavigator.navigatorState.currentContext!).languageCode;
+    String locale =
+        Localizations.localeOf(CustomNavigator.navigatorState.currentContext!)
+            .languageCode;
     try {
       return intl.DateFormat(fromat, cutomlocale ?? locale).format(this);
     } catch (e) {
@@ -128,3 +139,16 @@ extension DateTimeExtension on DateTime {
     }
   }
 }
+
+extension ScreenScale on num {
+  double get w =>
+      MediaQuery.of(CustomNavigator.navigatorState.currentContext!).size.width *
+      (toDouble() / 375);
+  double get h =>
+      MediaQuery.of(CustomNavigator.navigatorState.currentContext!)
+          .size
+          .height *
+      (toDouble() / 812);
+}
+
+

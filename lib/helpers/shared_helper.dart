@@ -1,16 +1,17 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:eco_system/features/login/model/user_model.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
 import 'package:eco_system/navigation/custom_navigation.dart';
 import 'package:eco_system/navigation/routes.dart';
 import 'package:eco_system/core/enums.dart';
 
+import '../features/auth/login/model/user_model.dart';
+
 class CachingKey extends Enum<String> {
   const CachingKey(String val) : super(val);
   static const CachingKey USER = CachingKey('USER');
+  static const CachingKey REMEMBER_ME = CachingKey('USER');
   static const CachingKey TOKEN = CachingKey('REAL_TOKEN');
   static const CachingKey DEVICE_TOKEN = CachingKey('DEVICE_TOKEN');
   static const CachingKey IS_LOGIN = CachingKey('IS_LOGIN');
@@ -47,6 +48,21 @@ class SharedHelper {
     box!.delete(key.value);
   }
 
+  Future<void> saveUser(UserModel model,
+      {bool remember = false, String? password}) async {
+    writeData(CachingKey.TOKEN, model.accessToken);
+    writeData(CachingKey.SKIP, true);
+    writeData(CachingKey.IS_LOGIN, true);
+    writeData(CachingKey.USER, json.encode(model.toJson()));
+    writeData(
+        CachingKey.REMEMBER_ME,
+        jsonEncode({
+          'email': remember ? model.email : '',
+          'password': remember ? password : '',
+          'type': 'mobile'
+        }));
+  }
+
   Future<UserModel> getUser() async {
     UserModel _user;
     _user = UserModel().fromJson(jsonDecode(box!.get(CachingKey.USER.value)!))
@@ -67,6 +83,14 @@ class SharedHelper {
     SharedHelper.sharedHelper!.writeData(CachingKey.SKIP, true);
     allTranslations.setNewLanguage(currentLang, true);
     allTranslations.setPreferredLanguage(currentLang);
+  }
+
+  Future<Map<String, dynamic>> remember() async {
+    return jsonDecode(box!.get(CachingKey.REMEMBER_ME.value) ?? '{}');
+  }
+
+  Future<Map<String, dynamic>> forgetCredentials() async {
+    return removeData(CachingKey.REMEMBER_ME);
   }
 
   Future<void> writeData(CachingKey key, value) async {
