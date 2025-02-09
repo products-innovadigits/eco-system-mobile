@@ -10,6 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/app_event.dart';
 import '../../../../helpers/styles.dart';
 import '../../../../helpers/text_styles.dart';
+import '../../../../navigation/custom_navigation.dart';
+import '../../../../navigation/routes.dart';
 import '../bloc/login_bloc.dart';
 import '../widgets/reember_me.dart';
 import '../widgets/welcome_widget.dart';
@@ -104,13 +106,15 @@ class Login extends StatelessWidget {
                         text: allTranslations.text("login"),
                         loading: state is Loading,
                         onPressed: () {
-                          if (context
-                              .read<LoginBloc>()
-                              .globalKey
-                              .currentState!
-                              .validate()) {
-                            context.read<LoginBloc>().add(Click());
-                          }
+                          CustomNavigator.push(Routes.MAIN_PAGE,
+                              clean: true, arguments: 0);
+                          // if (context
+                          //     .read<LoginBloc>()
+                          //     .globalKey
+                          //     .currentState!
+                          //     .validate()) {
+                          //   context.read<LoginBloc>().add(Click());
+                          // }
                         },
                       ),
                       SizedBox(height: 12.h),

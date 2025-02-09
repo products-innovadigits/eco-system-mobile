@@ -1,3 +1,4 @@
+import 'package:eco_system/helpers/translation/all_translation.dart';
 import 'package:flutter/material.dart';
 import 'package:eco_system/utility/extintions.dart';
 import 'package:eco_system/widgets/images.dart';
@@ -28,9 +29,9 @@ class _NavAppState extends State<NavApp> {
       type: BottomNavigationBarType.fixed,
       currentIndex: widget.index,
       selectedLabelStyle: TextStyle(
-        color: context.theme.primaryColor,
-        fontSize: 11,
-      ),
+          color: context.theme.primaryColor,
+          fontSize: 13,
+          fontWeight: FontWeight.w600),
       unselectedLabelStyle: TextStyle(
         color: context.theme.primaryColorDark,
         fontSize: 11,
@@ -40,31 +41,31 @@ class _NavAppState extends State<NavApp> {
       items: [
         BottomNavigationBarItem(
           icon: Images(
-            image: 'assets/svgs/cube.svg',
+            image: 'assets/svgs/home.svg',
             color: _selectedColor(0),
           ),
-          label: "الرئيسية",
+          label: allTranslations.text("home"),
         ),
         BottomNavigationBarItem(
           icon: Images(
-            image: 'assets/svgs/invoices.svg',
+            image: 'assets/svgs/reports.svg',
             color: _selectedColor(1),
           ),
-          label: "المشاريع",
+          label: allTranslations.text("reports"),
         ),
         BottomNavigationBarItem(
           icon: Images(
-            image: 'assets/svgs/buildings.svg',
+            image: 'assets/svgs/notification.svg',
             color: _selectedColor(2),
           ),
-          label: "المفضلة",
+          label: allTranslations.text("notifications"),
         ),
         BottomNavigationBarItem(
           icon: Images(
-            image: 'assets/svgs/profile-circle.svg',
+            image: 'assets/svgs/more.svg',
             color: _selectedColor(3),
           ),
-          label: "الحساب",
+          label: allTranslations.text("menu"),
         ),
       ],
     );

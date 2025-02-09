@@ -25,10 +25,11 @@ Widget customCircleSvgIcon(
     required String? imageName,
     String? imagePath,
     Function? onTap,
-    color,
+    Color color = Styles.PRIMARY_COLOR,
+    Color backgroundColor = Styles.WHITE_COLOR,
     width,
     height,
-    radius}) {
+    double radius = 25}) {
   return InkWell(
     onTap: () {
       onTap!();
@@ -37,10 +38,13 @@ Widget customCircleSvgIcon(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         CircleAvatar(
-          backgroundColor: color ?? Styles.PRIMARY_COLOR.withOpacity(0.1),
-          radius: radius ?? 24,
+          backgroundColor: backgroundColor,
+          radius: radius,
           child: SvgPicture.asset(
-            'assets/svgs/$folderPath/$imageName.svg',
+            width: radius * 1.4,
+            height: radius * 1.4,
+            color: color,
+            'assets/svgs/$imageName.svg',
           ),
         ),
         Visibility(
@@ -66,11 +70,8 @@ Widget customCircleSvgIcon(
   );
 }
 
-Widget customImageIconSVG({
-  required String? imageName,
-  Color? color,
-  double? height,width
-}) {
+Widget customImageIconSVG(
+    {required String? imageName, Color? color, double? height, width}) {
   return Images(
     image: 'assets/svgs/$imageName.svg',
     color: color,
