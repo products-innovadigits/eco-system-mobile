@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:eco_system/navigation/custom_navigation.dart';
 import 'package:eco_system/navigation/routes.dart';
-import 'package:eco_system/utility/extintions.dart';
+import 'package:eco_system/utility/extensions.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class IntroView extends StatefulWidget {

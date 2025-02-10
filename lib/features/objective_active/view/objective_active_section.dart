@@ -1,29 +1,40 @@
 import 'package:eco_system/components/shimmer/custom_shimmer.dart';
 import 'package:eco_system/core/app_state.dart';
-import 'package:eco_system/features/goal_progress/bloc/goal_progress_bloc.dart';
-import 'package:eco_system/features/goal_progress/model/goal_progress_model.dart';
 import 'package:eco_system/helpers/text_styles.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
-import 'package:eco_system/utility/extintions.dart';
+import 'package:eco_system/navigation/custom_navigation.dart';
+import 'package:eco_system/navigation/routes.dart';
+import 'package:eco_system/utility/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/app_event.dart';
 import '../../../helpers/styles.dart';
 import '../../../widgets/section_title.dart';
-import '../../goal_progress/widgets/goal_progress_chart.dart';
+import '../bloc/objective_active_categorized_bloc.dart';
+import '../bloc/objective_active_percentage_bloc.dart';
+import '../model/objective_active_model.dart';
+import '../widgets/objective_active_chart.dart';
 
-class ProgressGoalSection extends StatelessWidget {
-  const ProgressGoalSection({super.key});
+class ObjectiveActiveSection extends StatelessWidget {
+  const ObjectiveActiveSection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GoalProgressBloc()..add(Click()),
-      child: BlocBuilder<GoalProgressBloc, AppState>(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => ObjectiveActiveCategorizedBloc()..add(Click()),
+        ),
+        BlocProvider(
+          create: (context) => ObjectActivePercentageBloc()..add(Click()),
+        ),
+      ],
+      child: BlocBuilder<ObjectiveActiveCategorizedBloc, AppState>(
         builder: (context, state) {
           if (state is Done) {
-            GoalProgressModel model = state.model as GoalProgressModel;
+            List<ObjectiveActiveModel> objectives =
+                state.list as List<ObjectiveActiveModel>;
             return Container(
               width: context.w,
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
@@ -35,45 +46,42 @@ class ProgressGoalSection extends StatelessWidget {
               child: Column(
                 children: [
                   SectionTitle(
-                    title: allTranslations.text("goal_progress_rate"),
+                    title: allTranslations.text("objective_active_rate"),
                     withView: true,
+                    onViewTap: () => CustomNavigator.push(Routes.OBJECTIVES),
                   ),
-                  GoalProgressChart(),
+                  ObjectiveActiveChart(objectives: objectives),
                   SizedBox(height: 12.h),
                   Wrap(
                     alignment: WrapAlignment.start,
                     direction: Axis.horizontal,
-                    runSpacing: 12.w,
-                    spacing: 8.h,
+                    runSpacing: 8.w,
+                    spacing: 24.h,
                     children: List.generate(
-                        3,
+                        objectives.length,
                         (i) => Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Icon(
                                   Icons.circle,
-                                  color: Styles.PRIMARY_COLOR,
-                                  size: 12,
+                                  color: Styles.objectivesColors[i],
+                                  size: 16,
                                 ),
                                 SizedBox(width: 4.w),
                                 Flexible(
                                   child: RichText(
                                     textAlign: TextAlign.center,
                                     text: TextSpan(
-                                      text: allTranslations.text(i == 0
-                                          ? "in_progress"
-                                          : i == 1
-                                              ? "done"
-                                              : "pending"),
+                                      text: objectives[i].categoryName,
                                       style: AppTextStyles.w400.copyWith(
-                                          fontSize: 12, color: Styles.HEADER),
+                                          fontSize: 14, color: Styles.HEADER),
                                       children: [
-                                        TextSpan(
-                                          text: " ${78}",
-                                          style: AppTextStyles.w400.copyWith(
-                                              fontSize: 12,
-                                              color: Styles.DETAILS),
-                                        )
+                                        // TextSpan(
+                                        //   text: " ${78}",
+                                        //   style: AppTextStyles.w400.copyWith(
+                                        //       fontSize: 12,
+                                        //       color: Styles.DETAILS),
+                                        // )
                                       ],
                                     ),
                                   ),

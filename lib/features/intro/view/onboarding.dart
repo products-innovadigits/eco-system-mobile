@@ -4,7 +4,7 @@ import 'package:eco_system/components/custom_btn.dart';
 import 'package:eco_system/helpers/styles.dart';
 import 'package:eco_system/navigation/custom_navigation.dart';
 import 'package:eco_system/navigation/routes.dart';
-import 'package:eco_system/utility/extintions.dart';
+import 'package:eco_system/utility/extensions.dart';
 
 class OnBoarding extends StatefulWidget {
   const OnBoarding({super.key});

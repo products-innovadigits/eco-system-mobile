@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:eco_system/utility/extintions.dart';
+import 'package:eco_system/utility/extensions.dart';
 import 'package:eco_system/components/animated_widget.dart';
 import 'package:eco_system/components/custom_btn.dart';
 import 'package:eco_system/widgets/pin_code.dart';

@@ -46,8 +46,8 @@
   "menu": " Menu",
   "morning": "Good Morning",
   "evening": "Good Evening",
-  "goal_progress_rate": "Goal progress rate",
-  "goal_progress": "Goal progress",
+  "objective_active_rate": "Objective Active rate",
+  "objective_active": "Objective Active",
   "view_more": "View More",
   "group": "Teams",
   "notification": "Notification",
@@ -281,6 +281,9 @@
   "changes":"Changes",
   "details":"Details",
   "waiting" : "Please wait for preparation",
-  "fill_alert" : " 'Please fill all required fields'",
-  "lease_num": "Lease Num"
+  "strategic_performance_system": "Strategic Performance System",
+  "all_objectives": "All Objectives",
+  "something_went_wrong": "Something went wrong!",
+  "oops": "Oops!",
+  "there_is_no_data": "There's no data"
 }

@@ -76,8 +76,8 @@ abstract class Styles {
       fontSize: 12,
       fontWeight: FontWeight.w600,
       fontFamily: 'text');
-  static const TextStyle SUB_HEADER_STYLE = TextStyle(
-      color: Styles.TITLE, fontSize: 12, fontWeight: FontWeight.w600);
+  static const TextStyle SUB_HEADER_STYLE =
+      TextStyle(color: Styles.TITLE, fontSize: 12, fontWeight: FontWeight.w600);
   static TextStyle PLACE_HOLDER_STYLE({fontFamily, fontWeight, size}) =>
       TextStyle(
           color: Styles.PLACE_HOLDER,
@@ -94,8 +94,8 @@ abstract class Styles {
   static Widget logo({Color? color, double? height, double? width}) =>
       Image.asset(
         'assets/logo.png',
-        height: height??190.0,
-        width: width??250.0,
+        height: height ?? 190.0,
+        width: width ?? 250.0,
         color: color,
         fit: BoxFit.contain,
       );
@@ -108,4 +108,10 @@ abstract class Styles {
     padding: EdgeInsets.symmetric(horizontal: 24),
     child: Divider(color: Styles.FILL_COLOR, thickness: 1.0),
   );
+
+  static const List<Color> objectivesColors = [
+    Colors.green,
+    PRIMARY_COLOR,
+    Colors.pink,
+  ];
 }

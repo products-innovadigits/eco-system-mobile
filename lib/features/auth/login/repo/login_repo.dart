@@ -8,8 +8,8 @@ abstract class LoginRepo {
   }) async {
     return await Network().request(
       ApiNames.login,
-      query: {
-        "email": username,
+      body: {
+        "login": username,
         "password": password,
       },
       method: ServerMethods.POST,

@@ -41,8 +41,8 @@
   "mr/": "أ /",
   "morning": "صباح الخير",
   "evening": "مساء الخير",
-  "goal_progress_rate": "نسبة تقدم الاهداف",
-  "goal_progress": "تقدم الاهداف",
+  "objective_active_rate": "نسبة تقدم الاهداف",
+  "objective_active": "تقدم الاهداف",
   "view_more": "عرض المزيد",
   "other_requests": "الطلبات الاخرى",
   "group": "الفرق",
@@ -282,6 +282,11 @@
   "birth_date":"تاريخ الميلاد",
   "Payment Settings":"إعدادات الدفع",
   "waiting" : "برجاء انتظار التحضير",
-  "fill_alert": "الرجاء ملء كافة الحقول المطلوبة "
+  "fill_alert": "الرجاء ملء كافة الحقول المطلوبة ",
+  "strategic_performance_system": "نظام الاداء الاستراتيجي",
+  "all_objectives": "جميع الاهداف",
+  "something_went_wrong": "حدث خطأ ما!",
+  "there_is_no_data": "لا يوجد بيانات",
+  "oops": "عفوًا!"
 
 }

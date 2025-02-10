@@ -1,3 +1,4 @@
+import 'package:eco_system/features/objectives/view/objectives_view.dart';
 import 'package:flutter/material.dart';
 import 'package:eco_system/features/auth/otp/view/otp_view.dart';
 import 'package:eco_system/features/intro/view/intro_view.dart';
@@ -42,6 +43,8 @@ abstract class CustomNavigator {
               index:
                   settings.arguments != null ? settings.arguments as int : 0),
         );
+      case Routes.OBJECTIVES:
+        return pageRouteBuilder(const ObjectivesView());
 
       default:
         return MaterialPageRoute(builder: (_) => const MyApp());

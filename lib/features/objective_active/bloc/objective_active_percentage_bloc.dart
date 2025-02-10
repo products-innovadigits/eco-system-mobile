@@ -1,15 +1,14 @@
 import 'package:dio/dio.dart';
-import 'package:eco_system/features/goal_progress/model/goal_progress_model.dart';
-import 'package:eco_system/features/goal_progress/repo/goal_progress_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/app_core.dart';
 import '../../../core/app_event.dart';
 import '../../../core/app_state.dart';
 import '../../../helpers/translation/all_translation.dart';
+import '../repo/objective_active_repo.dart';
 
-class GoalProgressBloc extends Bloc<AppEvent, AppState> {
-  GoalProgressBloc() : super(Start()) {
+class ObjectActivePercentageBloc extends Bloc<AppEvent, AppState> {
+  ObjectActivePercentageBloc() : super(Start()) {
     on<Click>(onClick);
   }
 
@@ -17,11 +16,13 @@ class GoalProgressBloc extends Bloc<AppEvent, AppState> {
     try {
       emit(Loading());
 
-      Response res = await GoalProgressRepo.getGoalProgress();
+      Response res = await ObjectiveActiveRepo.getObjectActivePercentage();
 
-      if (res.statusCode == 200 && res.data != null) {
-        GoalProgressModel model = GoalProgressModel.fromJson(res.data['data']);
-        emit(Done(model: model));
+      if (res.statusCode == 200 &&
+          res.data != null &&
+          res.data["data"] != null &&
+          res.data["data"]["totalPercentage"] != null) {
+        emit(Done(data: res.data["data"]["totalPercentage"]));
       } else {
         AppCore.errorMessage(allTranslations.text('something_went_wrong'));
         emit(Error());

@@ -2,7 +2,7 @@ import 'package:eco_system/bloc/user_bloc.dart';
 import 'package:eco_system/core/app_state.dart';
 import 'package:eco_system/helpers/text_styles.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
-import 'package:eco_system/utility/extintions.dart';
+import 'package:eco_system/utility/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

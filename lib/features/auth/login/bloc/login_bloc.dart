@@ -25,7 +25,7 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
   Function(bool?) get updateRememberMe => rememberMe.sink.add;
   Stream<bool?> get rememberMeStream => rememberMe.stream.asBroadcastStream();
 
-  final GlobalKey<FormState> globalKey = GlobalKey<FormState>();
+  final  globalKey = GlobalKey<FormState>();
 
   TextEditingController mailTEC = TextEditingController();
   TextEditingController passwordTEC = TextEditingController();

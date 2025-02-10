@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:eco_system/core/app_state.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
-import 'package:eco_system/utility/extintions.dart';
+import 'package:eco_system/utility/extensions.dart';
 import 'package:eco_system/components/animated_widget.dart';
 import 'package:eco_system/components/custom_btn.dart';
 import 'package:eco_system/components/custom_text_field.dart';
@@ -10,10 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/app_event.dart';
 import '../../../../helpers/styles.dart';
 import '../../../../helpers/text_styles.dart';
-import '../../../../navigation/custom_navigation.dart';
-import '../../../../navigation/routes.dart';
 import '../bloc/login_bloc.dart';
-import '../widgets/reember_me.dart';
+import '../widgets/remember_me.dart';
 import '../widgets/welcome_widget.dart';
 
 class Login extends StatelessWidget {
@@ -47,9 +45,10 @@ class Login extends StatelessWidget {
                             const WelcomeWidget(),
                             SizedBox(height: 32.h),
                             CustomTextField(
-                              hint: allTranslations.text("enter_email"),
-                              label: allTranslations.text("email"),
-                              type: TextInputType.emailAddress,
+                              hint: allTranslations.text("enter_username"),
+                              label: allTranslations.text("username"),
+                              type: TextInputType.text,
+                              // validation: NameValidator.nameValidator,
                               controller: context.read<LoginBloc>().mailTEC,
                             ),
                             SizedBox(height: 16.h),
@@ -57,6 +56,7 @@ class Login extends StatelessWidget {
                               hint: allTranslations.text("enter_password"),
                               label: allTranslations.text("password"),
                               type: TextInputType.visiblePassword,
+                              // validation: PasswordValidator.passwordValidator,
                               isPassword: true,
                               controller: context.read<LoginBloc>().passwordTEC,
                             ),
@@ -106,15 +106,13 @@ class Login extends StatelessWidget {
                         text: allTranslations.text("login"),
                         loading: state is Loading,
                         onPressed: () {
-                          CustomNavigator.push(Routes.MAIN_PAGE,
-                              clean: true, arguments: 0);
-                          // if (context
-                          //     .read<LoginBloc>()
-                          //     .globalKey
-                          //     .currentState!
-                          //     .validate()) {
-                          //   context.read<LoginBloc>().add(Click());
-                          // }
+                          if (context
+                              .read<LoginBloc>()
+                              .globalKey
+                              .currentState!
+                              .validate()) {
+                            context.read<LoginBloc>().add(Click());
+                          }
                         },
                       ),
                       SizedBox(height: 12.h),
