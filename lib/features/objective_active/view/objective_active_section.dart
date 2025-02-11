@@ -50,6 +50,7 @@ class ObjectiveActiveSection extends StatelessWidget {
                     withView: true,
                     onViewTap: () => CustomNavigator.push(Routes.OBJECTIVES),
                   ),
+                  Divider(color: Styles.BORDER_COLOR),
                   ObjectiveActiveChart(objectives: objectives),
                   SizedBox(height: 12.h),
                   Wrap(

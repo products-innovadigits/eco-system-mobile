@@ -37,7 +37,7 @@
   "please_enter_valid_location": " الرجاء إدخال موقع صالح",
   "please_enter_valid_email": " يرجى إدخال البريد الإلكتروني الصحيح",
   "please_enter_valid_org": " المؤسسة الحالية غير صالحة ، يرجى مراجعة مسؤول النظام الخاص بك",
-  "home_welcome_message": "اتمني لك يوم مليئ بالانجازات",
+  "home_welcome_message": "كل خطوة اليوم تقربك من النجاح!",
   "mr/": "أ /",
   "morning": "صباح الخير",
   "evening": "مساء الخير",
@@ -287,6 +287,10 @@
   "all_objectives": "جميع الاهداف",
   "something_went_wrong": "حدث خطأ ما!",
   "there_is_no_data": "لا يوجد بيانات",
-  "oops": "عفوًا!"
+  "oops": "عفوًا!",
+  "deliver_date": "معاد التسليم",
+  "time_left": "باقي من الزمن",
+  "progress": "التقدم",
+  "description": "الوصف"
 
 }

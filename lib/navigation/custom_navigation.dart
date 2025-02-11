@@ -6,6 +6,7 @@ import 'package:eco_system/features/auth/login/view/login.dart';
 import 'package:eco_system/features/splash/splash.dart';
 import 'package:eco_system/features/main_page.dart';
 import '../features/intro/view/onboarding.dart';
+import '../features/objective_details/view/objective_details_view.dart';
 import '../main.dart';
 import 'routes.dart';
 
@@ -45,6 +46,10 @@ abstract class CustomNavigator {
         );
       case Routes.OBJECTIVES:
         return pageRouteBuilder(const ObjectivesView());
+
+      case Routes.OBJECTIVE_DETAILS:
+        return pageRouteBuilder(
+            ObjectiveDetailsView(id: settings.arguments as int));
 
       default:
         return MaterialPageRoute(builder: (_) => const MyApp());

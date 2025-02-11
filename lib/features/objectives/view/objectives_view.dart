@@ -1,4 +1,3 @@
-import 'package:eco_system/features/objectives/widgets/objective_card.dart';
 import 'package:eco_system/helpers/text_styles.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
 import 'package:eco_system/model/search_engine.dart';
@@ -15,7 +14,6 @@ import '../../../core/app_state.dart';
 import '../../../helpers/styles.dart';
 import '../../../widgets/custom_app_bar.dart';
 import '../bloc/objectives_bloc.dart';
-import '../model/objectives_model.dart';
 
 class ObjectivesView extends StatelessWidget {
   const ObjectivesView({super.key});
@@ -88,11 +86,7 @@ class ObjectivesView extends StatelessWidget {
                     ],
                   );
                 } else {
-                  return ListAnimator(
-                    customPadding: EdgeInsets.symmetric(horizontal: 16.w),
-                    data: List.generate(10,
-                        (index) => ObjectiveCard(objective: ObjectiveModel())),
-                  );
+                  return SizedBox();
                 }
               },
             ))

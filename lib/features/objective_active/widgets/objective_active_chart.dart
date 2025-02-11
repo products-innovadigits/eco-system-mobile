@@ -67,7 +67,7 @@ class _ObjectiveActiveChartState extends State<ObjectiveActiveChart> {
                             .copyWith(fontSize: 12, color: Styles.HEADER),
                         children: [
                           TextSpan(
-                            text: "\n ${state.data ?? 0}%",
+                            text: "\n${state.data ?? 0}",
                             style: AppTextStyles.w700.copyWith(
                                 fontSize: 14, color: Styles.PRIMARY_COLOR),
                           )
@@ -110,6 +110,7 @@ class _ObjectiveActiveChartState extends State<ObjectiveActiveChart> {
           fontWeight: FontWeight.bold,
           color: Colors.black,
           shadows: shadows,
+
         ),
       );
     });

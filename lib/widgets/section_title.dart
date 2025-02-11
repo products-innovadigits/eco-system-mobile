@@ -29,7 +29,7 @@ class SectionTitle extends StatelessWidget {
           Expanded(
               child: Text(
             title,
-            style: AppTextStyles.w700.copyWith(fontSize: 18),
+            style: AppTextStyles.w800.copyWith(fontSize: 18),
           )),
           if (withView)
             InkWell(

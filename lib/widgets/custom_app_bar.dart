@@ -11,10 +11,13 @@ import 'package:eco_system/navigation/custom_navigation.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
   final Widget? action;
+
+  final bool withBottomBorder;
   const CustomAppBar({
     super.key,
     required this.title,
     this.action,
+    this.withBottomBorder = true,
   });
 
   @override
@@ -23,7 +26,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
       decoration: BoxDecoration(
           color: Styles.WHITE_COLOR,
-          border: Border(bottom: BorderSide(color: Styles.BORDER_COLOR))),
+          border: Border(
+              bottom: BorderSide(
+                  color: withBottomBorder
+                      ? Styles.BORDER_COLOR
+                      : Colors.transparent))),
       child: SafeArea(
         bottom: false,
         child: Row(

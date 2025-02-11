@@ -38,7 +38,7 @@
   "please_enter_valid_org": "Please enter valid organization",
   "rent_deposit_amount":"Rent Deposit Amount",
   "For this lease, do not bill the first period.":"For this lease, do not bill the first period",
-  "home_welcome_message": "I wish you a day full of achievements",
+  "home_welcome_message": "Every step today brings you closer to success!",
   "mr/": "Mr/",
   "home": "Home",
   "reports": "Reports",
@@ -98,7 +98,7 @@
   "end_date": "End Date",
   "date_from":"Date From",
   "date_to":"Date To",
-  
+
   "Upload File":"رفع ملف",
   "date_validation" : "Enter valid start and end date",
   "submit": "Submit",
@@ -285,5 +285,8 @@
   "all_objectives": "All Objectives",
   "something_went_wrong": "Something went wrong!",
   "oops": "Oops!",
-  "there_is_no_data": "There's no data"
+  "there_is_no_data": "There's no data",
+  "deliver_date": "Deliver Date",
+  "progress": "Progress",
+  "description": "Description"
 }

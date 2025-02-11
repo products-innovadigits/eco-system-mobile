@@ -44,7 +44,7 @@ abstract class Styles {
   static const Color SELECTED_BACKGROUND = Color(0xffCBC0FD);
   static const Color SUBTITLE = Color(0xff737373);
   static const Color REMOVE_COLOR = Color(0xffFDEEEE);
-  static const Color BORDER_COLOR = Color(0xffF2F2F2);
+  static const Color BORDER_COLOR = Color(0xffEFEFF5);
   static const Color ALERT_COLOR = Color(0xffDBAB02);
   static const Color DARK_RED = Color(0xff982929);
   static const Color DARK_GREEN = Color(0xff279473);
@@ -106,11 +106,11 @@ abstract class Styles {
   );
   static const Widget divider = Padding(
     padding: EdgeInsets.symmetric(horizontal: 24),
-    child: Divider(color: Styles.FILL_COLOR, thickness: 1.0),
+    child: Divider(color: Styles.HINT, thickness: 1.0),
   );
 
   static const List<Color> objectivesColors = [
-    Colors.green,
+    Colors.teal,
     PRIMARY_COLOR,
     Colors.pink,
   ];

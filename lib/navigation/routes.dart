@@ -13,5 +13,6 @@ class Routes {
   static const EDIT_PASSWORD = "EDIT_PASSWORD";
 
   static const OBJECTIVES = "OBJECTIVES";
+  static const OBJECTIVE_DETAILS = "OBJECTIVE_DETAILS";
   static const PDF = "PDF";
 }
