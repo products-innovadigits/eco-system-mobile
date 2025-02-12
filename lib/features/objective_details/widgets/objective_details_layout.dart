@@ -8,9 +8,10 @@ import '../../../helpers/styles.dart';
 
 class ObjectiveDetailsLayout extends StatefulWidget {
   const ObjectiveDetailsLayout(
-      {super.key, required this.child, required this.title});
+      {super.key, required this.child, required this.title, this.subTitle});
   final Widget child;
   final String title;
+  final String? subTitle;
 
   @override
   State<ObjectiveDetailsLayout> createState() => _ObjectiveDetailsLayoutState();
@@ -22,7 +23,7 @@ class _ObjectiveDetailsLayoutState extends State<ObjectiveDetailsLayout> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 16.h),
+      margin: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
       padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
       decoration: BoxDecoration(
           color: Styles.WHITE_COLOR,
@@ -35,12 +36,20 @@ class _ObjectiveDetailsLayoutState extends State<ObjectiveDetailsLayout> {
             onTap: () => setState(() => isExpanded = !isExpanded),
             child: Row(
               children: [
-                Expanded(
-                  child: Text(
-                    widget.title,
-                    style: AppTextStyles.w600
-                        .copyWith(fontSize: 14, color: Styles.HEADER),
-                  ),
+                Flexible(
+                  child: RichText(
+                      text: TextSpan(
+                          text: widget.title,
+                          style: AppTextStyles.w600
+                              .copyWith(fontSize: 14, color: Styles.HEADER),
+                          children: [
+                        if (widget.subTitle != null)
+                          TextSpan(
+                            text: "  ${widget.subTitle}",
+                            style: AppTextStyles.w400.copyWith(
+                                fontSize: 12, color: Styles.PRIMARY_COLOR),
+                          )
+                      ])),
                 ),
                 SizedBox(height: 12.h),
                 AnimatedRotation(

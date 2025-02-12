@@ -46,8 +46,8 @@
   "menu": " Menu",
   "morning": "Good Morning",
   "evening": "Good Evening",
-  "objective_active_rate": "Objective Active rate",
-  "objective_active": "Objective Active",
+  "objective_percentage_rate": "Objective Percentage Rate",
+  "objective_percentage": "Objective Percentage",
   "view_more": "View More",
   "group": "Teams",
   "notification": "Notification",
@@ -288,5 +288,10 @@
   "there_is_no_data": "There's no data",
   "deliver_date": "Deliver Date",
   "progress": "Progress",
-  "description": "Description"
+  "general_progress": "General Progress",
+  "description": "Description",
+  "indicators": "Indicators",
+  "scale": "Scale",
+  "initiatives": "Initiatives",
+  "criteria": "Criteria"
 }

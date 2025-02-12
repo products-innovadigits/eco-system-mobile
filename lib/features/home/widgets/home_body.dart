@@ -1,6 +1,6 @@
 import 'package:eco_system/utility/extensions.dart';
 import 'package:flutter/material.dart';
-import '../../objective_active/view/objective_active_section.dart';
+import '../../objective_percentage/view/objective_percentage_section.dart';
 
 class HomeBody extends StatelessWidget {
   const HomeBody({super.key});
@@ -11,7 +11,7 @@ class HomeBody extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(height: context.h * 0.15),
-          ObjectiveActiveSection(),
+          ObjectivePercentageSection(),
         ],
       ),
     );

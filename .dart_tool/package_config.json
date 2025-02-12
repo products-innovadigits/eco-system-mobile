@@ -878,6 +878,18 @@
       "languageVersion": "3.1"
     },
     {
+      "name": "syncfusion_flutter_charts",
+      "rootUri": "file:///Users/macbook/.pub-cache/hosted/pub.dev/syncfusion_flutter_charts-28.2.5+1",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "syncfusion_flutter_core",
+      "rootUri": "file:///Users/macbook/.pub-cache/hosted/pub.dev/syncfusion_flutter_core-28.2.5",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
       "name": "synchronized",
       "rootUri": "file:///Users/macbook/.pub-cache/hosted/pub.dev/synchronized-3.3.0+3",
       "packageUri": "lib/",
@@ -1034,7 +1046,7 @@
       "languageVersion": "2.19"
     }
   ],
-  "generated": "2025-02-10T09:46:10.569952Z",
+  "generated": "2025-02-12T10:56:26.215650Z",
   "generator": "pub",
   "generatorVersion": "3.6.1",
   "flutterRoot": "file:///Users/macbook/Flutter/flutter",

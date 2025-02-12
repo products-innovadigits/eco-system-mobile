@@ -49,6 +49,7 @@ dependencies:
   flutter_native_splash: ^2.4.4
   flutter_animate: ^4.5.2
   fl_chart: ^0.70.2
+  syncfusion_flutter_charts: ^28.2.5+1
 
 
 

@@ -11,30 +11,30 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/app_event.dart';
 import '../../../helpers/styles.dart';
 import '../../../widgets/section_title.dart';
-import '../bloc/objective_active_categorized_bloc.dart';
-import '../bloc/objective_active_percentage_bloc.dart';
-import '../model/objective_active_model.dart';
-import '../widgets/objective_active_chart.dart';
+import '../bloc/objective_categorized_bloc.dart';
+import '../bloc/objective_percentage_bloc.dart';
+import '../model/objective_percentage_model.dart';
+import '../widgets/objective_percentage_chart.dart';
 
-class ObjectiveActiveSection extends StatelessWidget {
-  const ObjectiveActiveSection({super.key});
+class ObjectivePercentageSection extends StatelessWidget {
+  const ObjectivePercentageSection({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => ObjectiveActiveCategorizedBloc()..add(Click()),
+          create: (context) => ObjectiveCategorizedBloc()..add(Click()),
         ),
         BlocProvider(
-          create: (context) => ObjectActivePercentageBloc()..add(Click()),
+          create: (context) => ObjectivePercentageBloc()..add(Click()),
         ),
       ],
-      child: BlocBuilder<ObjectiveActiveCategorizedBloc, AppState>(
+      child: BlocBuilder<ObjectiveCategorizedBloc, AppState>(
         builder: (context, state) {
           if (state is Done) {
-            List<ObjectiveActiveModel> objectives =
-                state.list as List<ObjectiveActiveModel>;
+            List<ObjectivePercentageModel> objectives =
+                state.list as List<ObjectivePercentageModel>;
             return Container(
               width: context.w,
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
@@ -46,12 +46,12 @@ class ObjectiveActiveSection extends StatelessWidget {
               child: Column(
                 children: [
                   SectionTitle(
-                    title: allTranslations.text("objective_active_rate"),
+                    title: allTranslations.text("objective_percentage_rate"),
                     withView: true,
                     onViewTap: () => CustomNavigator.push(Routes.OBJECTIVES),
                   ),
                   Divider(color: Styles.BORDER_COLOR),
-                  ObjectiveActiveChart(objectives: objectives),
+                  ObjectivePercentageChart(objectives: objectives),
                   SizedBox(height: 12.h),
                   Wrap(
                     alignment: WrapAlignment.start,

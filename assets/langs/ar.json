@@ -41,8 +41,8 @@
   "mr/": "أ /",
   "morning": "صباح الخير",
   "evening": "مساء الخير",
-  "objective_active_rate": "نسبة تقدم الاهداف",
-  "objective_active": "تقدم الاهداف",
+  "objective_percentage_rate": "نسبة تقدم الاهداف",
+  "objective_percentage": "تقدم الاهداف",
   "view_more": "عرض المزيد",
   "other_requests": "الطلبات الاخرى",
   "group": "الفرق",
@@ -291,6 +291,10 @@
   "deliver_date": "معاد التسليم",
   "time_left": "باقي من الزمن",
   "progress": "التقدم",
-  "description": "الوصف"
-
+  "general_progress": "التقدم العام",
+  "description": "الوصف",
+  "indicators": "المؤاشرات",
+  "scale": "مقياس",
+  "initiatives": "المبادرات",
+  "criteria": "معايير"
 }

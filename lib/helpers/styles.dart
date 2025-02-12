@@ -16,7 +16,7 @@ abstract class Styles {
   static const Color SCAFFOLD_BG = Color(0xFFE5E5E5);
   static const Color HEADER = Color(0xFF000000);
 
-  static const Color TITLE = Color(0xFF08150D);
+  static const Color TITLE = Color(0xFF08131C);
   static const Color PLACE_HOLDER = Color(0xFF7F8B93);
   static const Color FILL_COLOR = Color(0xFFFAFAFA);
   static const Color CARD_BORDER = Color(0xFFE4E9FC);

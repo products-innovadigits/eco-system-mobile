@@ -1,5 +1,4 @@
 import 'package:eco_system/components/shimmer/custom_shimmer.dart';
-import 'package:eco_system/features/objective_active/bloc/objective_active_percentage_bloc.dart';
 import 'package:eco_system/helpers/text_styles.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
 import 'package:eco_system/utility/extensions.dart';
@@ -9,17 +8,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/app_state.dart';
 import '../../../helpers/styles.dart';
-import '../model/objective_active_model.dart';
+import '../bloc/objective_percentage_bloc.dart';
+import '../model/objective_percentage_model.dart';
 
-class ObjectiveActiveChart extends StatefulWidget {
-  const ObjectiveActiveChart({super.key, required this.objectives});
-  final List<ObjectiveActiveModel> objectives;
+class ObjectivePercentageChart extends StatefulWidget {
+  const ObjectivePercentageChart({super.key, required this.objectives});
+  final List<ObjectivePercentageModel> objectives;
 
   @override
-  State<ObjectiveActiveChart> createState() => _ObjectiveActiveChartState();
+  State<ObjectivePercentageChart> createState() =>
+      _ObjectivePercentageChartState();
 }
 
-class _ObjectiveActiveChartState extends State<ObjectiveActiveChart> {
+class _ObjectivePercentageChartState extends State<ObjectivePercentageChart> {
   int touchedIndex = -1;
 
   @override
@@ -53,7 +54,7 @@ class _ObjectiveActiveChartState extends State<ObjectiveActiveChart> {
               sections: showingSections(),
             ),
           ),
-          BlocBuilder<ObjectActivePercentageBloc, AppState>(
+          BlocBuilder<ObjectivePercentageBloc, AppState>(
             builder: (context, state) {
               if (state is Done) {
                 return SizedBox(
@@ -62,7 +63,7 @@ class _ObjectiveActiveChartState extends State<ObjectiveActiveChart> {
                     child: RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(
-                        text: allTranslations.text("objective_active"),
+                        text: allTranslations.text("objective_percentage"),
                         style: AppTextStyles.w600
                             .copyWith(fontSize: 12, color: Styles.HEADER),
                         children: [
@@ -110,7 +111,6 @@ class _ObjectiveActiveChartState extends State<ObjectiveActiveChart> {
           fontWeight: FontWeight.bold,
           color: Colors.black,
           shadows: shadows,
-
         ),
       );
     });

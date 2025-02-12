@@ -1,14 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../core/app_core.dart';
 import '../../../core/app_event.dart';
 import '../../../core/app_state.dart';
 import '../../../helpers/translation/all_translation.dart';
-import '../repo/objective_active_repo.dart';
+import '../model/objective_chart_annual_model.dart';
+import '../repo/objective_details_repo.dart';
 
-class ObjectActivePercentageBloc extends Bloc<AppEvent, AppState> {
-  ObjectActivePercentageBloc() : super(Start()) {
+class ObjectiveChartAnnualBloc extends Bloc<AppEvent, AppState> {
+  ObjectiveChartAnnualBloc() : super(Start()) {
     on<Click>(onClick);
   }
 
@@ -16,13 +16,13 @@ class ObjectActivePercentageBloc extends Bloc<AppEvent, AppState> {
     try {
       emit(Loading());
 
-      Response res = await ObjectiveActiveRepo.getObjectActivePercentage();
-
-      if (res.statusCode == 200 &&
-          res.data != null &&
-          res.data["data"] != null &&
-          res.data["data"]["totalPercentage"] != null) {
-        emit(Done(data: res.data["data"]["totalPercentage"]));
+      Response res = await ObjectiveDetailsRepo.getObjectiveChartData(
+          id:event.arguments as int,filterType: "annual");
+      if (res.statusCode == 200 && res.data != null) {
+        List<ObjectiveChartAnnualModel> data =
+            List<ObjectiveChartAnnualModel>.from(res.data["data"]
+                .map((e) => ObjectiveChartAnnualModel.fromJson(e)));
+        emit(Done(list: data));
       } else {
         AppCore.errorMessage(allTranslations.text('something_went_wrong'));
         emit(Error());

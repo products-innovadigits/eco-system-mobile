@@ -2,7 +2,7 @@ import '../../../config/api_names.dart';
 import '../../../network/network_layer.dart';
 
 abstract class ObjectiveActiveRepo {
-  static Future<dynamic> getObjectActivePercentage() async {
+  static Future<dynamic> getObjectivePercentage() async {
     return await Network()
         .request(ApiNames.objectActivePercentage, method: ServerMethods.GET);
   }

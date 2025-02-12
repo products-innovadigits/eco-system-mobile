@@ -1,12 +1,12 @@
 import '../../../network/mapper.dart';
 
-class ObjectiveActiveModel extends SingleMapper {
+class ObjectivePercentageModel extends SingleMapper {
   String? categoryName;
   double? value;
 
-  ObjectiveActiveModel({this.categoryName, this.value});
+  ObjectivePercentageModel({this.categoryName, this.value});
 
-  ObjectiveActiveModel.fromJson(Map<String, dynamic> json) {
+  ObjectivePercentageModel.fromJson(Map<String, dynamic> json) {
     categoryName = json['categoryName'];
     value = json['value'];
   }
@@ -20,6 +20,6 @@ class ObjectiveActiveModel extends SingleMapper {
 
   @override
   Mapper fromJson(Map<String, dynamic> json) {
-    return ObjectiveActiveModel.fromJson(json);
+    return ObjectivePercentageModel.fromJson(json);
   }
 }
