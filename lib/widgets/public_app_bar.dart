@@ -99,7 +99,7 @@ class _PublicAppbarState extends State<PublicAppbar> {
                                     child: Text(
                                       allTranslations.text("cancel"),
                                       style: const TextStyle(
-                                        color: Styles.ACCENT_COLOR,
+                                        color: Styles.ACCENT_PRIMARY_COLOR,
                                         fontWeight: FontWeight.w700,
                                         fontSize: 12,
                                       ),

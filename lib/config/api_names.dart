@@ -6,7 +6,7 @@ abstract class ApiNames {
 
   static const objectives = "ObjectActive";
   static objectiveDetails(id) => "ObjectActive/$id";
-  static objectiveIndicators(id) => "ObjectActive/indicators/$id";
-  static objectiveInitiatives(id) => "ObjectActive/initiatives/$id";
-  static objectiveChartData(id) => "ObjectActive/chart/$id";
+  static const objectiveKPIS = "KPIS/GetKpiByObjectActive";
+  static const objectiveInitiatives = "Initiatives/ByObjectActive";
+  static objectiveChartData(id,time) => "ObjectActive/$id/Chart/$time";
 }

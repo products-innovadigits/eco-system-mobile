@@ -2,8 +2,8 @@ import 'package:eco_system/features/objective_details/bloc/objective_Initiatives
 import 'package:eco_system/features/objective_details/bloc/objective_chart_annual_bloc.dart';
 import 'package:eco_system/features/objective_details/bloc/objective_chart_month_bloc.dart';
 import 'package:eco_system/features/objective_details/bloc/objective_details_bloc.dart';
-import 'package:eco_system/features/objective_details/bloc/objective_indicators_bloc.dart';
-import 'package:eco_system/features/objective_details/widgets/objective_indicators.dart';
+import 'package:eco_system/features/objective_details/bloc/objective_kpis_bloc.dart';
+import 'package:eco_system/features/objective_details/widgets/objective_kpis.dart';
 import 'package:eco_system/utility/extensions.dart';
 import 'package:eco_system/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +32,7 @@ class ObjectiveDetailsView extends StatelessWidget {
             ),
             BlocProvider(
               create: (context) =>
-                  ObjectiveIndicatorsBloc()..add(Click(arguments: id)),
+                  ObjectiveKPISBloc()..add(Click(arguments: id)),
             ),
             BlocProvider(
               create: (context) =>
@@ -58,7 +58,7 @@ class ObjectiveDetailsView extends StatelessWidget {
                   ObjectiveDetailsBody(),
 
                   ///Objective indicators
-                  ObjectiveIndicators(),
+                  ObjectiveKPIS(),
 
                   ///Objective indicators
                   ObjectiveInitiatives(),

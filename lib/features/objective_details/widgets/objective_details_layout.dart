@@ -36,7 +36,7 @@ class _ObjectiveDetailsLayoutState extends State<ObjectiveDetailsLayout> {
             onTap: () => setState(() => isExpanded = !isExpanded),
             child: Row(
               children: [
-                Flexible(
+                Expanded(
                   child: RichText(
                       text: TextSpan(
                           text: widget.title,
@@ -61,17 +61,21 @@ class _ObjectiveDetailsLayoutState extends State<ObjectiveDetailsLayout> {
               ],
             ),
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 12.h),
-            child: Divider(color: Styles.BORDER_COLOR),
-          ),
           AnimatedCrossFade(
             crossFadeState: isExpanded
                 ? CrossFadeState.showSecond
                 : CrossFadeState.showFirst,
             duration: const Duration(milliseconds: 400),
             firstChild: SizedBox(height: 0, width: MediaQueryHelper.width),
-            secondChild: widget.child,
+            secondChild: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 12.h),
+                  child: Divider(color: Styles.BORDER_COLOR),
+                ),
+                widget.child
+              ],
+            ),
           ),
         ],
       ),

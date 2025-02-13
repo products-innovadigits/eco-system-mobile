@@ -1,4 +1,4 @@
-import 'package:eco_system/features/objective_details/bloc/objective_indicators_bloc.dart';
+import 'package:eco_system/features/objective_details/bloc/objective_kpis_bloc.dart';
 import 'package:eco_system/features/objective_details/model/objective_indicator_model.dart';
 import 'package:eco_system/helpers/text_styles.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
@@ -10,16 +10,15 @@ import '../../../core/app_state.dart';
 import '../../../helpers/styles.dart';
 import 'objective_details_layout.dart';
 
-class ObjectiveIndicators extends StatelessWidget {
-  const ObjectiveIndicators({super.key});
+class ObjectiveKPIS extends StatelessWidget {
+  const ObjectiveKPIS({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ObjectiveIndicatorsBloc, AppState>(
+    return BlocBuilder<ObjectiveKPISBloc, AppState>(
       builder: (context, state) {
         if (state is Done) {
-          List<ObjectiveIndicatorModel> list =
-              state.list as List<ObjectiveIndicatorModel>;
+          List<ObjectiveKPIModel> list = state.list as List<ObjectiveKPIModel>;
           return ObjectiveDetailsLayout(
             title: allTranslations.text("indicators"),
             subTitle: "${list.length} ${allTranslations.text("scale")}",
@@ -33,7 +32,7 @@ class ObjectiveIndicators extends StatelessWidget {
                             Expanded(
                               flex: 3,
                               child: Text(
-                                list[i].categoryName ?? "",
+                                list[i].kpiTitle ?? "",
                                 style: AppTextStyles.w400.copyWith(
                                   fontSize: 12,
                                   color: Styles.TITLE,
@@ -66,9 +65,12 @@ class ObjectiveIndicators extends StatelessWidget {
           );
         }
         if (state is Loading) {
-          return CustomShimmerContainer(
-            height: 130.h,
-            width: context.w,
+          return Padding(
+            padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
+            child: CustomShimmerContainer(
+              height: 130.h,
+              width: context.w,
+            ),
           );
         } else {
           return const SizedBox();

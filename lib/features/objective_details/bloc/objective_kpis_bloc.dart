@@ -8,8 +8,8 @@ import '../../../core/app_state.dart';
 import '../../../helpers/translation/all_translation.dart';
 import '../repo/objective_details_repo.dart';
 
-class ObjectiveIndicatorsBloc extends Bloc<AppEvent, AppState> {
-  ObjectiveIndicatorsBloc() : super(Start()) {
+class ObjectiveKPISBloc extends Bloc<AppEvent, AppState> {
+  ObjectiveKPISBloc() : super(Start()) {
     on<Click>(onClick);
   }
 
@@ -17,12 +17,16 @@ class ObjectiveIndicatorsBloc extends Bloc<AppEvent, AppState> {
     try {
       emit(Loading());
 
-      Response res = await ObjectiveDetailsRepo.getObjectiveIndicators(
-          event.arguments as int);
+      Response res =
+          await ObjectiveDetailsRepo.getObjectiveKPIS(event.arguments as int);
       if (res.statusCode == 200 && res.data != null) {
-        List<ObjectiveIndicatorModel> data = List<ObjectiveIndicatorModel>.from(
-            res.data["data"].map((e) => ObjectiveIndicatorModel.fromJson(e)));
-        emit(Done(list: data));
+        if (res.data["data"] != null && res.data["data"].isNotEmpty) {
+          List<ObjectiveKPIModel> list = List<ObjectiveKPIModel>.from(
+              res.data["data"].map((e) => ObjectiveKPIModel.fromJson(e)));
+          emit(Done(list: list));
+        } else {
+          emit(Empty());
+        }
       } else {
         AppCore.errorMessage(allTranslations.text('something_went_wrong'));
         emit(Error());

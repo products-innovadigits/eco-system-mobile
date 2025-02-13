@@ -5,8 +5,7 @@ import '../bloc/main_app_bloc.dart';
 abstract class Styles {
   static const Color RED_CHART_COLOR = Color(0xffE24F4F);
   static const Color PRIMARY_COLOR = Color(0xff2b6c9f);
-  static const Color ACCENT_PRIMARY_COLOR = Color(0xffF7F1FC);
-  static const Color ACCENT_COLOR = Color(0xFF70EEC8);
+  static const Color ACCENT_PRIMARY_COLOR = Color(0xff615E83);
   static const Color FIELD_BORDER = Color(0xFFF9F9FA);
   static const Color SUB_TEXT = Color(0xFF6A7887);
   static const Color BG_IMAGE_COLOR = Color(0xFF032D5F);

@@ -33,7 +33,7 @@ class ObjectiveInitiatives extends StatelessWidget {
                             Expanded(
                               flex: 3,
                               child: Text(
-                                list[i].categoryName ?? "",
+                                list[i].initiativeTitle ?? "",
                                 style: AppTextStyles.w400.copyWith(
                                   fontSize: 12,
                                   color: Styles.TITLE,
@@ -66,9 +66,12 @@ class ObjectiveInitiatives extends StatelessWidget {
           );
         }
         if (state is Loading) {
-          return CustomShimmerContainer(
-            height: 130.h,
-            width: context.w,
+          return Padding(
+            padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
+            child: CustomShimmerContainer(
+              height: 130.h,
+              width: context.w,
+            ),
           );
         } else {
           return const SizedBox();
