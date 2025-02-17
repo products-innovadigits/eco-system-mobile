@@ -1,7 +1,9 @@
 import 'package:eco_system/helpers/text_styles.dart';
+import 'package:eco_system/utility/extensions.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/app_core.dart';
 import '../../../../helpers/styles.dart';
 import '../../model/objective_chart_model.dart';
 
@@ -19,78 +21,110 @@ class _ObjectiveBarChartState extends State<ObjectiveBarChart> {
   @override
   void initState() {
     super.initState();
-    interval = 10;
+    interval = 20;
   }
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1,
-      child: BarChart(
-        BarChartData(
-          titlesData: FlTitlesData(
-            show: true,
-            rightTitles: AxisTitles(
-              sideTitles: SideTitles(showTitles: false),
-            ),
-            topTitles: AxisTitles(
-              sideTitles: SideTitles(showTitles: false),
-            ),
-            bottomTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: true,
-                getTitlesWidget: (value, meta) => bottomTitles(value, meta,
-                    widget.data.map((e) => "${e.month ?? ""}").toList()),
-                reservedSize: 40,
-                // interval: interval,
+    return SizedBox(
+      width: context.w,
+      height: context.h * 0.45,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.only(top: 12.h),
+        child: AspectRatio(
+          aspectRatio: 1.8,
+          child: BarChart(
+            BarChartData(
+              maxY: 100,
+              barTouchData: BarTouchData(
+                handleBuiltInTouches: true,
+                touchTooltipData: BarTouchTooltipData(
+                  getTooltipColor: (touchedSpot) =>
+                      Styles.PRIMARY_COLOR.withOpacity(0.1),
+                ),
               ),
-            ),
-            leftTitles: AxisTitles(
-              sideTitles: SideTitles(
-                maxIncluded: false,
-                minIncluded: false,
-                showTitles: true,
-                // reservedSize: 0,
-                reservedSize: 40,
-                getTitlesWidget: leftTitles,
-                interval: interval,
+              titlesData: FlTitlesData(
+                show: true,
+                leftTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    maxIncluded: true,
+                    minIncluded: false,
+                    showTitles: true,
+                    // showTitles: mainAppBloc.lang.valueOrNull == "en",
+                    // reservedSize: 0,
+                    reservedSize: 50,
+                    getTitlesWidget: leftTitles,
+                    interval: interval,
+                  ),
+                ),
+                rightTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    maxIncluded: true,
+                    minIncluded: false,
+                    showTitles: false,
+                    // showTitles: mainAppBloc.lang.valueOrNull == "ar",
+                    // reservedSize: 0,
+                    reservedSize: 50,
+                    getTitlesWidget: leftTitles,
+                    interval: interval,
+                  ),
+                ),
+                topTitles: AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+                bottomTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    getTitlesWidget: (value, meta) => bottomTitles(
+                        value,
+                        meta,
+                        widget.data
+                            .map((e) =>
+                                "${AppCore.getMonthName(e.month ?? 13)}\n${e.year == 0 ? 2025 : e.year ?? 0}")
+                            .toList()),
+                    reservedSize: 60,
+                    // interval: interval,
+                  ),
+                ),
               ),
+              borderData: FlBorderData(
+                border: const Border(
+                  top: BorderSide.none,
+                  right: BorderSide.none,
+                  left: BorderSide(width: 1, color: Colors.transparent),
+                  bottom: BorderSide(width: 1, color: Styles.LIGHT_GREY_BORDER),
+                ),
+              ),
+              gridData: FlGridData(
+                  horizontalInterval: 10,
+                  show: true,
+                  drawVerticalLine: false,
+                  drawHorizontalLine: true),
+              barGroups: List.generate(
+                widget.data.length,
+                (index) => BarChartGroupData(
+                  x: index,
+                  barRods: [
+                    BarChartRodData(
+                        fromY: 0,
+                        toY: widget.data[index].objectValue ?? 0,
+                        width: 30,
+                        color: (widget.data[index].objectValue ?? 0) >=
+                                (widget.data
+                                        .map((e) => e.objectValue ?? 0)
+                                        .toList())
+                                    .reduce((a, b) => a > b ? a : b)
+                            ? Styles.PRIMARY_COLOR
+                            : Styles.ACCENT_PRIMARY_COLOR,
+                        borderRadius: const BorderRadius.only(
+                            topRight: Radius.circular(10),
+                            topLeft: Radius.circular(10))),
+                  ],
+                ),
+              ).toList(),
             ),
           ),
-          borderData: FlBorderData(
-            border: const Border(
-              top: BorderSide.none,
-              right: BorderSide.none,
-              left: BorderSide(width: 1, color: Colors.transparent),
-              bottom: BorderSide(width: 1, color: Styles.LIGHT_GREY_BORDER),
-            ),
-          ),
-          gridData: FlGridData(
-              horizontalInterval: 5,
-              show: true,
-              drawVerticalLine: false,
-              drawHorizontalLine: true),
-          barGroups: List.generate(
-            widget.data.length,
-            (index) => BarChartGroupData(
-              x: index,
-              barRods: [
-                BarChartRodData(
-                    toY: widget.data[index].objectValue ?? 0,
-                    width: 30,
-                    color: (widget.data[index].objectValue ?? 0) >=
-                            (widget.data
-                                    .map((e) => e.objectValue ?? 0)
-                                    .toList())
-                                .reduce((a, b) => a > b ? a : b)
-                        ? Styles.PRIMARY_COLOR
-                        : Styles.ACCENT_PRIMARY_COLOR,
-                    borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(10),
-                        topLeft: Radius.circular(10))),
-              ],
-            ),
-          ).toList(),
         ),
       ),
     );
@@ -101,6 +135,7 @@ Widget bottomTitles(
     double value, TitleMeta meta, List<String> bottomTilesData) {
   final Widget text = Text(
     bottomTilesData[value.toInt()],
+    textAlign: TextAlign.center,
     style: AppTextStyles.w400.copyWith(
       color: Styles.ACCENT_PRIMARY_COLOR,
       fontSize: 12,

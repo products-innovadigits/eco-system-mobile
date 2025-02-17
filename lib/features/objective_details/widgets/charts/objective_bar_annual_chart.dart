@@ -1,12 +1,14 @@
 import 'package:eco_system/features/objective_details/bloc/objective_chart_annual_bloc.dart';
+import 'package:eco_system/helpers/text_styles.dart';
+import 'package:eco_system/helpers/translation/all_translation.dart';
 import 'package:eco_system/utility/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../components/shimmer/custom_shimmer.dart';
 import '../../../../core/app_state.dart';
-import '../../bloc/objective_chart_month_bloc.dart';
+import '../../../../helpers/styles.dart';
 import '../../model/objective_chart_model.dart';
-import 'objective_bar_chart.dart';
+import 'objective_line_chart.dart';
 
 class ObjectiveBarAnnualChart extends StatelessWidget {
   const ObjectiveBarAnnualChart({super.key});
@@ -18,7 +20,55 @@ class ObjectiveBarAnnualChart extends StatelessWidget {
         if (state is Done) {
           List<ObjectiveChartModel> list =
               state.list as List<ObjectiveChartModel>;
-          return ObjectiveBarChart(data: list);
+          return Column(
+            children: [
+              ObjectiveLineChart(data: list),
+              Wrap(
+                alignment: WrapAlignment.start,
+                direction: Axis.horizontal,
+                runSpacing: 8.w,
+                spacing: 24.h,
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.circle,
+                        color: Styles.PRIMARY_COLOR,
+                        size: 16,
+                      ),
+                      SizedBox(width: 4.w),
+                      Flexible(
+                        child: Text(
+                          allTranslations.text("kpis"),
+                          style: AppTextStyles.w400
+                              .copyWith(fontSize: 14, color: Styles.HEADER),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.circle,
+                        color: Styles.SECONDARY_COLOR,
+                        size: 16,
+                      ),
+                      SizedBox(width: 4.w),
+                      Flexible(
+                        child: Text(
+                          allTranslations.text("initiatives"),
+                          style: AppTextStyles.w400
+                              .copyWith(fontSize: 14, color: Styles.HEADER),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              )
+            ],
+          );
         }
         if (state is Loading) {
           return Padding(
@@ -28,7 +78,6 @@ class ObjectiveBarAnnualChart extends StatelessWidget {
               width: context.w,
             ),
           );
-
         } else {
           return const SizedBox();
         }

@@ -93,7 +93,7 @@ class ObjectiveCardContent extends StatelessWidget {
             ),
             SizedBox(width: 6.w),
             Text(
-              "${objective.weight ?? ""}%",
+              "${objective.weight?.toStringAsFixed(2) ?? ""}%",
               style: AppTextStyles.w700
                   .copyWith(fontSize: 14, color: Styles.HEADER),
             ),

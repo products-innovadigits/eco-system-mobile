@@ -290,8 +290,10 @@
   "progress": "Progress",
   "general_progress": "General Progress",
   "description": "Description",
-  "indicators": "Indicators",
+  "kpis": "KPIS",
   "scale": "Scale",
   "initiatives": "Initiatives",
-  "criteria": "Criteria"
+  "criteria": "Criteria",
+  "Month": "Month",
+  "Year": "Year"
 }

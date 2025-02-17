@@ -20,7 +20,7 @@ class ObjectiveKPIS extends StatelessWidget {
         if (state is Done) {
           List<ObjectiveKPIModel> list = state.list as List<ObjectiveKPIModel>;
           return ObjectiveDetailsLayout(
-            title: allTranslations.text("indicators"),
+            title: allTranslations.text("kpis"),
             subTitle: "${list.length} ${allTranslations.text("scale")}",
             child: Column(
               children: List.generate(

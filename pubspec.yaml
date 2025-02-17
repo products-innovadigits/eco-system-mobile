@@ -80,17 +80,35 @@ flutter:
 
 
   fonts:
+
     - family: en
       fonts:
-        - asset: assets/fonts/Raleway-Regular.ttf
-        - asset: assets/fonts/Raleway-Bold.ttf
-    - family: text
-      fonts:
-        - asset: assets/fonts/Poppins-Regular.ttf
-    - family: italic
-      fonts:
-        - asset: assets/fonts/Raleway-Italic.ttf
+        - asset: assets/fonts/en/Roboto-Thin.ttf
+          weight: 300
+        - asset: assets/fonts/en/Roboto-Regular.ttf
+          weight: 500
+        - asset: assets/fonts/en/Roboto-Medium.ttf
+          weight: 600
+        - asset: assets/fonts/en/Roboto-Light.ttf
+          weight: 600
+        - asset: assets/fonts/en/Roboto-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/en/Roboto-Black.ttf
+          weight: 800
+
+
+
     - family: ar
       fonts:
-        - asset: assets/fonts/Tajawal-Regular.ttf
-
+        - asset: assets/fonts/ar/helve_regular.ttf
+          weight: 300
+        - asset: assets/fonts/ar/helve_regular.ttf
+          weight: 400
+        - asset: assets/fonts/ar/helve_medium.ttf
+          weight: 500
+        - asset: assets/fonts/ar/helve_medium.ttf
+          weight: 600
+        - asset: assets/fonts/ar/helve_bold.ttf
+          weight: 700
+        - asset: assets/fonts/ar/helve_bold.ttf
+          weight: 800

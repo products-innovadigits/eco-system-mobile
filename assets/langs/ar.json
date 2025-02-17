@@ -290,11 +290,13 @@
   "oops": "عفوًا!",
   "deliver_date": "معاد التسليم",
   "time_left": "باقي من الزمن",
-  "progress": "التقدم",
+  "progress": "تقدم",
   "general_progress": "التقدم العام",
   "description": "الوصف",
-  "indicators": "المؤاشرات",
+  "kpis": "المؤاشرات",
   "scale": "مقياس",
   "initiatives": "المبادرات",
-  "criteria": "معايير"
+  "criteria": "معايير",
+  "Month": "شهريا",
+  "Year": "سنويا"
 }

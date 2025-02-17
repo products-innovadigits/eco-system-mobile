@@ -55,7 +55,7 @@ class _ObjectiveDetailsChartState extends State<ObjectiveDetailsChart> {
                           : Styles.PRIMARY_COLOR.withOpacity(0.1),
                     ),
                     child: Text(
-                      ChartTime.values[i].name,
+                      allTranslations.text(ChartTime.values[i].name),
                       style: AppTextStyles.w600.copyWith(
                         fontSize: 14,
                         height: 1.5,
