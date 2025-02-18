@@ -3,18 +3,18 @@ import 'package:eco_system/utility/extensions.dart';
 import 'package:flutter/material.dart';
 import '../../../helpers/styles.dart';
 import '../../../navigation/routes.dart';
-import '../../objective_details/model/objective_details_model.dart';
-import 'objective_card_content.dart';
+import '../../project_details/model/project_details_model.dart';
+import 'project_card_content.dart';
 
-class ObjectiveCard extends StatelessWidget {
-  const ObjectiveCard({super.key, required this.objective});
-  final ObjectiveDetailsModel objective;
+class ProjectCard extends StatelessWidget {
+  const ProjectCard({super.key, required this.project});
+  final ProjectDetailsModel project;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => CustomNavigator.push(Routes.OBJECTIVE_DETAILS,
-          arguments: objective.id),
+          arguments: project.id),
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       hoverColor: Colors.transparent,
@@ -26,7 +26,7 @@ class ObjectiveCard extends StatelessWidget {
             color: Styles.WHITE_COLOR,
             border: Border.all(color: Styles.LIGHT_GREY_BORDER),
             borderRadius: BorderRadius.circular(12.w)),
-        child: ObjectiveCardContent(objective: objective),
+        child: ProjectCardContent(project: project),
       ),
     );
   }

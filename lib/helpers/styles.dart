@@ -110,9 +110,8 @@ abstract class Styles {
   );
 
   static const List<Color> objectivesColors = [
-    Colors.teal,
+    Color(0xFF16A567),
     PRIMARY_COLOR,
-    Colors.pink,
+    SECONDARY_COLOR,
   ];
-
 }

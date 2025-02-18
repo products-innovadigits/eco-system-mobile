@@ -48,7 +48,7 @@ class ObjectivePercentageSection extends StatelessWidget {
                   SectionTitle(
                     title: allTranslations.text("objective_percentage_rate"),
                     withView: true,
-                    onViewTap: () => CustomNavigator.push(Routes.OBJECTIVES),
+                    onViewTap: () => CustomNavigator.push(Routes.PROJECTS),
                   ),
                   Divider(color: Styles.BORDER_COLOR),
                   ObjectivePercentageChart(objectives: objectives),

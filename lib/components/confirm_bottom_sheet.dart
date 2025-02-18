@@ -1,71 +1,122 @@
+import 'package:eco_system/helpers/translation/all_translation.dart';
+import 'package:eco_system/utility/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:eco_system/components/custom_btn.dart';
-import 'package:eco_system/helpers/media_query_helper.dart';
 import 'package:eco_system/helpers/styles.dart';
 import 'package:eco_system/navigation/custom_navigation.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
+import '../helpers/text_styles.dart';
 
 abstract class CustomBottomSheet {
-  static show({
-    Function? onConfirm,
-    required String label,
-    required Widget list,
-    double? height,
-    BuildContext? context,
-  }) {
-    showModalBottomSheet(
-      context: context ?? CustomNavigator.navigatorState.currentContext!,
+  static show(
+      {Function()? onConfirm,
+      String? label,
+      String? buttonText,
+      required Widget widget,
+      double? height,
+      Widget? child,
+      bool? isLoading,
+      bool withPadding = true,
+      Function()? onCancel,
+      Function()? onClose}) {
+    return showMaterialModalBottomSheet(
+      enableDrag: true,
+      clipBehavior: Clip.antiAlias,
       backgroundColor: Colors.transparent,
+      context: CustomNavigator.navigatorState.currentContext!,
+      expand: false,
+      useRootNavigator: true,
+      isDismissible: true,
       builder: (_) {
-        return Material(
-          type: MaterialType.transparency,
-          child: Opacity(
-            opacity: 1.0,
-            child: Container(
-              height: height ?? 240,
-              width: MediaQueryHelper.width,
-              decoration: const BoxDecoration(
-                color: Styles.WHITE_COLOR,
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(30),
-                  topLeft: Radius.circular(30),
-                ),
+        return Padding(
+          padding: MediaQuery.of(CustomNavigator.navigatorState.currentContext!)
+              .viewInsets,
+          child: Container(
+            height: height ?? 500.h,
+            width: CustomNavigator.navigatorState.currentContext!.w,
+            decoration: BoxDecoration(
+              color: Styles.WHITE_COLOR,
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(30.w),
+                topLeft: Radius.circular(30.w),
               ),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 20.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          const SizedBox(height: 24),
-                          const SizedBox(height: 16),
-                          Text(
-                            label,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  width: 60.w,
+                  height: 4.h,
+                  margin: EdgeInsets.only(
+                    left: 18.w,
+                    right: 18.w,
+                    top: 8.h,
+                    bottom: 18.h,
+                  ),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: Styles.HINT,
+                      borderRadius: BorderRadius.circular(100)),
+                ),
+                if (label != null)
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 18.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          label,
+                          style: AppTextStyles.w500.copyWith(
+                            fontSize: 18,
                           ),
-                          const SizedBox(height: 16),
-                          Expanded(child: list),
-                        ],
-                      ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            CustomNavigator.pop();
+                            onCancel?.call();
+                          },
+                          child: const Icon(
+                            Icons.clear,
+                            size: 24,
+                            color: Styles.DETAILS,
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                  Visibility(
-                    visible: onConfirm != null,
-                    child: CustomBtn(
-                      text: 'Submit',
-                      onPressed: () {},
+                if (label != null)
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 8.h, horizontal: 18.w),
+                    child: const Divider(
+                      color: Styles.BORDER_COLOR,
                     ),
-                  )
-                ],
-              ),
+                  ),
+                Expanded(child: widget),
+                Visibility(
+                  visible: child != null || onConfirm != null,
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                    child: child ??
+                        CustomBtn(
+                          text: allTranslations.text(buttonText
+                              ?? "confirm"),
+                          loading: isLoading ?? false,
+                          onPressed: onConfirm,
+                        ),
+                  ),
+                ),
+                SizedBox(
+                    height: MediaQuery.of(
+                            CustomNavigator.navigatorState.currentContext!)
+                        .viewInsets
+                        .bottom),
+              ],
             ),
           ),
         );
       },
-    );
+    ).then((value) => onClose?.call());
   }
 }

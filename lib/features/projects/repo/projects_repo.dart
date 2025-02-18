@@ -3,22 +3,21 @@ import 'package:eco_system/model/search_engine.dart';
 import '../../../config/api_names.dart';
 import '../../../model/custom_field_model.dart';
 import '../../../network/network_layer.dart';
-import '../model/objectives_model.dart';
+import '../model/projects_model.dart';
 
-abstract class ObjectivesRepo {
-  static Future<ObjectivesModel> getObjectives(SearchEngine data) async {
-
+abstract class ProjectsRepo {
+  static Future<ProjectsModel> getProjects(SearchEngine data) async {
     return await Network().request(
       ApiNames.objectives,
       query: data.query,
       method: ServerMethods.GET,
-      model: ObjectivesModel(),
+      model: ProjectsModel(),
     );
   }
 
-  static Future<CustomFieldsModel> getStrategicAxis() async {
+  static Future<CustomFieldsModel> getProjectPriorityLevel() async {
     return await Network().request(
-      ApiNames.strategicAxis,
+      ApiNames.projectPriorityLevels,
       model: CustomFieldsModel(),
       method: ServerMethods.GET,
     );

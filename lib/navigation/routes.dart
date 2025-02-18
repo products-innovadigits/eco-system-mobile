@@ -14,5 +14,6 @@ class Routes {
 
   static const OBJECTIVES = "OBJECTIVES";
   static const OBJECTIVE_DETAILS = "OBJECTIVE_DETAILS";
-  static const PDF = "PDF";
-}
+  static const PROJECTS = "PROJECTS";
+  static const PROJECT_DETAILS = "PROJECT_DETAILS";
+  static const PDF = "PDF";}

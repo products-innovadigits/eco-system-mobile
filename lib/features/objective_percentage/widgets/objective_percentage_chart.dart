@@ -93,7 +93,7 @@ class _ObjectivePercentageChartState extends State<ObjectivePercentageChart> {
   List<PieChartSectionData> showingSections() {
     return List.generate(widget.objectives.length, (i) {
       final isTouched = i == touchedIndex;
-      final fontSize = isTouched ? 25.w : 16.w;
+      final double fontSize = isTouched ? 25 : 16;
       final radius = isTouched ? 70.w : 50.w;
       const shadows = [
         Shadow(color: Colors.grey, blurRadius: 5, offset: Offset(1, 1))
@@ -106,10 +106,9 @@ class _ObjectivePercentageChartState extends State<ObjectivePercentageChart> {
         borderSide: BorderSide(
           color: Styles.LIGHT_GREY_BORDER,
         ),
-        titleStyle: TextStyle(
+        titleStyle: AppTextStyles.w600.copyWith(
           fontSize: fontSize,
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
+          color: Styles.HEADER,
           shadows: shadows,
         ),
       );

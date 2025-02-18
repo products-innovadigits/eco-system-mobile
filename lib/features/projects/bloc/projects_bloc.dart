@@ -8,12 +8,12 @@ import '../../../core/app_state.dart';
 import '../../../helpers/translation/all_translation.dart';
 import '../../../model/custom_field_model.dart';
 import '../../../model/search_engine.dart';
-import '../model/objectives_model.dart';
-import '../repo/objectives_repo.dart';
-import '../widgets/objective_card.dart';
+import '../model/projects_model.dart';
+import '../repo/projects_repo.dart';
+import '../widgets/project_card.dart';
 
-class ObjectivesBloc extends Bloc<AppEvent, AppState> {
-  ObjectivesBloc() : super(Start()) {
+class ProjectsBloc extends Bloc<AppEvent, AppState> {
+  ProjectsBloc() : super(Start()) {
     scrollController = ScrollController();
     searchTEC = TextEditingController();
     customScroll(scrollController);
@@ -64,16 +64,16 @@ class ObjectivesBloc extends Bloc<AppEvent, AppState> {
 
       _engine.query = {
         "searchKeyword": searchTEC?.text.trim(),
-        "strategicAxisId": filter.valueOrNull?.id,
+        "periortyLevelId": filter.valueOrNull?.id,
         "pageIndex": _engine.currentPage + 1,
         "pageSize": _engine.limit,
       };
 
-      ObjectivesModel res = await ObjectivesRepo.getObjectives(_engine);
+      ProjectsModel res = await ProjectsRepo.getProjects(_engine);
 
       if (res.data!.isNotEmpty) {
         for (var objective in res.data ?? []) {
-          _cards.add(ObjectiveCard(objective: objective));
+          _cards.add(ProjectCard(project: objective));
         }
         _engine.currentPage += 1;
         _engine.maxPages += 1;

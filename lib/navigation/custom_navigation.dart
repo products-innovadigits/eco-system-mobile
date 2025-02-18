@@ -1,4 +1,5 @@
 import 'package:eco_system/features/objectives/view/objectives_view.dart';
+import 'package:eco_system/features/projects/view/projects_view.dart';
 import 'package:flutter/material.dart';
 import 'package:eco_system/features/auth/otp/view/otp_view.dart';
 import 'package:eco_system/features/intro/view/intro_view.dart';
@@ -7,6 +8,7 @@ import 'package:eco_system/features/splash/splash.dart';
 import 'package:eco_system/features/main_page.dart';
 import '../features/intro/view/onboarding.dart';
 import '../features/objective_details/view/objective_details_view.dart';
+import '../features/project_details/view/project_details_view.dart';
 import '../main.dart';
 import 'routes.dart';
 
@@ -50,6 +52,13 @@ abstract class CustomNavigator {
       case Routes.OBJECTIVE_DETAILS:
         return pageRouteBuilder(
             ObjectiveDetailsView(id: settings.arguments as int));
+
+      case Routes.PROJECTS:
+        return pageRouteBuilder(const ProjectsView());
+
+      case Routes.PROJECT_DETAILS:
+        return pageRouteBuilder(
+            ProjectDetailsView(id: settings.arguments as int));
 
       default:
         return MaterialPageRoute(builder: (_) => const MyApp());

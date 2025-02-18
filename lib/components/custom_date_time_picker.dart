@@ -68,7 +68,7 @@ class SelectDate extends StatelessWidget {
                       CustomNavigator.pop();
                     }
                   },
-                  list: CupertinoDatePicker(
+                  widget: CupertinoDatePicker(
                     mode: CupertinoDatePickerMode.date,
                     onDateTimeChanged: (value) {
                       date = value;
@@ -184,7 +184,7 @@ class _CustomSelectDateState extends State<CustomSelectDate> {
                   CustomNavigator.pop();
                 }
               },
-              list: CupertinoDatePicker(
+              widget: CupertinoDatePicker(
                 mode: CupertinoDatePickerMode.date,
                 onDateTimeChanged: (value) {
                   date = value;
@@ -295,7 +295,7 @@ class _DashboardSelectDateState extends State<DashboardSelectDate> {
                 CustomNavigator.pop();
               }
             },
-            list: CupertinoDatePicker(
+            widget: CupertinoDatePicker(
               mode: CupertinoDatePickerMode.date,
               onDateTimeChanged: (value) {
                 date = value;

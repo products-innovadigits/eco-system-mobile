@@ -1,19 +1,19 @@
 import '../../../model/meta.dart';
 import '../../../network/mapper.dart';
-import '../../objective_details/model/objective_details_model.dart';
+import '../../project_details/model/project_details_model.dart';
 
-class ObjectivesModel extends SingleMapper {
-  List<ObjectiveDetailsModel>? data;
+class ProjectsModel extends SingleMapper {
+  List<ProjectDetailsModel>? data;
   int? statusCode;
   String? message;
   Meta? meta;
-  ObjectivesModel({this.data, this.statusCode, this.meta, this.message});
+  ProjectsModel({this.data, this.statusCode, this.meta, this.message});
 
-  ObjectivesModel.fromJson(Map<String, dynamic> json) {
+  ProjectsModel.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null && json['data']["items"] != null) {
       data = [];
       json['data']["items"].forEach((v) {
-        data!.add(ObjectiveDetailsModel.fromJson(v));
+        data!.add(ProjectDetailsModel.fromJson(v));
       });
     }
     statusCode = json['status_code'];
@@ -38,7 +38,6 @@ class ObjectivesModel extends SingleMapper {
 
   @override
   Mapper fromJson(Map<String, dynamic> json) {
-    return ObjectivesModel.fromJson(json);
+    return ProjectsModel.fromJson(json);
   }
 }
-

@@ -4,6 +4,7 @@ class Meta {
   int? countPage;
   int? limit;
 
+
   Meta({this.currPage, this.countPage, this.limit});
 
   Meta.fromJson(Map<String, dynamic> json) {
@@ -11,6 +12,7 @@ class Meta {
     count = json['count'];
     countPage = json['pages_count'];
     limit = json['limit'];
+
   }
 
   Map<String, dynamic> toJson() {

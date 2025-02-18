@@ -1,4 +1,3 @@
-import 'package:eco_system/features/objectives/widgets/strategic_axis_filter.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
 import 'package:eco_system/model/search_engine.dart';
 import 'package:eco_system/utility/extensions.dart';
@@ -12,40 +11,28 @@ import '../../../components/shimmer/custom_shimmer.dart';
 import '../../../core/app_event.dart';
 import '../../../core/app_state.dart';
 import '../../../widgets/custom_app_bar.dart';
-import '../bloc/objectives_bloc.dart';
-import '../widgets/objectives_search_bar.dart';
+import '../bloc/projects_bloc.dart';
+import '../widgets/project_search_bar.dart';
 
-class ObjectivesView extends StatelessWidget {
-  const ObjectivesView({super.key});
+class ProjectsView extends StatelessWidget {
+  const ProjectsView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: allTranslations.text("strategic_performance_system"),
+        title: allTranslations.text("projects"),
       ),
       body: SafeArea(
           child: BlocProvider(
         create: (context) =>
-            ObjectivesBloc()..add(Click(arguments: SearchEngine())),
-        child: BlocBuilder<ObjectivesBloc, AppState>(
+            ProjectsBloc()..add(Click(arguments: SearchEngine())),
+        child: BlocBuilder<ProjectsBloc, AppState>(
           builder: (context, state) {
             return Column(
               children: [
-                ObjectivesSearchBar(),
-                // Padding(
-                //   padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                //   child: Row(
-                //     children: [
-                //       Text(
-                //         allTranslations.text("all_objectives"),
-                //         style: AppTextStyles.w600
-                //             .copyWith(fontSize: 16, color: Styles.HEADER),
-                //       ),
-                //     ],
-                //   ),
-                // ),
-                Expanded(child: BlocBuilder<ObjectivesBloc, AppState>(
+                ProjectsSearchBar(),
+                Expanded(child: BlocBuilder<ProjectsBloc, AppState>(
                   builder: (context, state) {
                     if (state is Loading) {
                       return ListAnimator(
@@ -68,9 +55,8 @@ class ObjectivesView extends StatelessWidget {
                             child: ListAnimator(
                               customPadding:
                                   EdgeInsets.symmetric(horizontal: 16.w),
-                              controller: context
-                                  .read<ObjectivesBloc>()
-                                  .scrollController,
+                              controller:
+                                  context.read<ProjectsBloc>().scrollController,
                               data: state.cards,
                             ),
                           ),

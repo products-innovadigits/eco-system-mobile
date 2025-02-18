@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:eco_system/bloc/main_app_bloc.dart';
 import '../config/app_config.dart';
 import '../helpers/shared_helper.dart';
-import '../utility/utility.dart';
+import 'error/api_error_handler.dart';
 import 'mapper.dart';
 import 'network_logger.dart';
 
@@ -60,42 +60,13 @@ class Network {
       } else {
         return Mapper(model, response.data);
       }
-    } on SocketException catch (e) {
-      cprint(
-        "SocketException: ${e.address}",
-        errorIn: AppConfig.baseUrl + endpoint,
-        label: "SocketException",
-      );
-      cprint(
-          "└------------------------------------------------------------------------------");
-      cprint(
-          "================================================================================");
-      rethrow;
     } on DioException catch (e) {
-      cprint(
-        "| Error: ${e.error}: ${e.response?.toString()}",
-        errorIn: AppConfig.baseUrl + endpoint,
-        label: "DioError",
-      );
-      cprint(
-          "└------------------------------------------------------------------------------");
-      cprint(
-          "================================================================================");
-      if (model == null) {
-        return e.response;
-      } else {
-        return Mapper(model, e.response?.data);
-      }
-    } catch (error) {
-      cprint(
-        "Unhandled Exception: $error",
-        errorIn: AppConfig.baseUrl + endpoint,
-        label: "Unhandled Exception",
-      );
-      cprint(
-          "└------------------------------------------------------------------------------");
-      cprint(
-          "================================================================================");
+      return ApiErrorHandler.getMessage(e);
+    } on SocketException catch (e) {
+      throw SocketException(e.toString());
+    } on FormatException catch (_) {
+      throw const FormatException("Unable to process the data");
+    } catch (e) {
       rethrow;
     }
   }

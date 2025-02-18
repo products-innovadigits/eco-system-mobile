@@ -160,6 +160,7 @@
   "find_specific_user": "Find a Specific User",
   "search_for":"Search for a user by username",
   "frequent_searches": "Frequent searches",
+  "search_hint": "Search",
   "clear_all": "Clear All",
   "following_list":"Following List",
   "edit_list" : "Edit List",
@@ -295,5 +296,15 @@
   "initiatives": "Initiatives",
   "criteria": "Criteria",
   "Month": "Month",
-  "Year": "Year"
+  "Year": "Year",
+  "loading": "Loading..",
+  "select_strategic_axis": "Select Strategic Axis",
+  "there_is_no_strategic_axis": "There's no Strategic Axis",
+  "confirm": "Confirm",
+  "your_session_has_been_expired": "Oops! Your Session has been expired.\nPlease, Login Again!",
+  "projects_percentage_rate": "Projects Percentage Rate",
+  "projects_percentage": "Projects Percentage",
+  "projects": "Projects",
+  "select_priority_level": "Select Priority Level",
+  "there_is_priority_levels": "There's no Priority Levels"
 }

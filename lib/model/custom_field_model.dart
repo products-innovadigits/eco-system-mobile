@@ -43,7 +43,7 @@ class CustomFieldsModel extends SingleMapper {
   }
 }
 
-class CustomFieldModel {
+class CustomFieldModel extends SingleMapper{
   int? id;
   String? name;
   String? description;
@@ -77,4 +77,9 @@ class CustomFieldModel {
         "code": code,
         "is_select": isSelect,
       };
+
+  @override
+  Mapper fromJson(Map<String, dynamic> json) {
+    return CustomFieldModel.fromJson(json);
+  }
 }

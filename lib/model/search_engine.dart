@@ -1,6 +1,8 @@
 class SearchEngine {
-  String? query;
+  dynamic query;
   String? id;
+  int limit;
+  int totalCount;
   int currentPage;
   int maxPages;
 
@@ -8,6 +10,8 @@ class SearchEngine {
   SearchEngine({
     this.id,
     this.query,
+    this.totalCount = 0,
+    this.limit = 10,
     this.maxPages = 1,
     this.isLoading = true,
     this.currentPage = 0,
