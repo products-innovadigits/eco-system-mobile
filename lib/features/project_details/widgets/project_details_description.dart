@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import '../../../helpers/styles.dart';
 import '../../../widgets/images.dart';
 
-class ObjectiveDetailsDescription extends StatelessWidget {
-  const ObjectiveDetailsDescription(
+class ProjectDetailsDescription extends StatelessWidget {
+  const ProjectDetailsDescription(
       {super.key, this.description, this.startDate, required this.endDate});
   final String? description;
   final DateTime? startDate, endDate;

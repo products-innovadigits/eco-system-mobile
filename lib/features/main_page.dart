@@ -27,13 +27,13 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
       case 0:
         return HomeView();
       case 1:
-        return Container();
+        return SizedBox();
       case 2:
-        return Container();
+        return SizedBox();
       case 3:
-        return const OnBoarding();
+        return SizedBox();
       default:
-        return Container();
+        return SizedBox();
     }
   }
 

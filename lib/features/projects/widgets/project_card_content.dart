@@ -30,45 +30,62 @@ class ProjectCardContent extends StatelessWidget {
                 height: 24.w,
               ),
             ),
-            SizedBox(width: 12.w),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    project.name ?? "",
-                    style: AppTextStyles.w700
-                        .copyWith(fontSize: 16, color: Styles.HEADER),
-                  ),
-                  SizedBox(height: 4.h),
-                  RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      text: allTranslations.text("time_left") +
-                          " ${(project.endDate?.difference(DateTime.now()).inDays ?? 0) > 0 ? (project.endDate?.difference(DateTime.now()).inDays ?? 0) : 0}" +
-                          allTranslations.text("days"),
-                      style: AppTextStyles.w400
-                          .copyWith(fontSize: 12, color: Styles.DARK_RED),
-                      children: [
-                        TextSpan(
-                          text: " | ",
-                          style: AppTextStyles.w400
-                              .copyWith(fontSize: 14, color: Styles.DETAILS),
-                        ),
-                        TextSpan(
-                          text: allTranslations.text("deliver_date") +
-                              ": " +
-                              (project.endDate ?? DateTime.now())
-                                  .format("d/M/yyyy"),
-                          style: AppTextStyles.w400
-                              .copyWith(fontSize: 14, color: Styles.DETAILS),
-                        )
-                      ],
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      project.title ?? "",
+                      style: AppTextStyles.w700
+                          .copyWith(fontSize: 16, color: Styles.HEADER),
                     ),
-                  ),
-                ],
+                    SizedBox(height: 4.h),
+                    RichText(
+                      textAlign: TextAlign.start,
+                      text: TextSpan(
+                        text: allTranslations.text("time_left") +
+                            " ${(project.endDate?.difference(DateTime.now()).inDays ?? 0) > 0 ? (project.endDate?.difference(DateTime.now()).inDays ?? 0) : 0}" +
+                            allTranslations.text("days"),
+                        style: AppTextStyles.w400
+                            .copyWith(fontSize: 12, color: Styles.DARK_RED),
+                        children: [
+                          TextSpan(
+                            text: " | ",
+                            style: AppTextStyles.w400
+                                .copyWith(fontSize: 14, color: Styles.DETAILS),
+                          ),
+                          TextSpan(
+                            text: allTranslations.text("deliver_date") +
+                                ": " +
+                                (project.endDate ?? DateTime.now())
+                                    .format("d/M/yyyy"),
+                            style: AppTextStyles.w400
+                                .copyWith(fontSize: 14, color: Styles.DETAILS),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            )
+            ),
+            if(project.status != null)
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
+              decoration: BoxDecoration(
+                color:
+                    Styles.statusColors(project.status ?? "").withOpacity(0.1),
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: Text(
+                project.status ?? "",
+                style: AppTextStyles.w500.copyWith(
+                    fontSize: 12,
+                    color: Styles.statusColors(project.status ?? "")),
+              ),
+            ),
           ],
         ),
         Padding(
@@ -76,7 +93,7 @@ class ProjectCardContent extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(100),
             child: LinearProgressIndicator(
-              value: (0) / 100,
+              value: (project.weight ?? 0) / 100,
               color: Styles.PRIMARY_COLOR,
               backgroundColor: Styles.HINT,
             ),
@@ -93,7 +110,7 @@ class ProjectCardContent extends StatelessWidget {
             ),
             SizedBox(width: 6.w),
             Text(
-              "${"0"}%",
+              "${project.weight ?? 0}%",
               style: AppTextStyles.w700
                   .copyWith(fontSize: 14, color: Styles.HEADER),
             ),

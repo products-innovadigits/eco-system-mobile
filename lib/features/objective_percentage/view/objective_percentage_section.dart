@@ -65,7 +65,8 @@ class ObjectivePercentageSection extends StatelessWidget {
                               children: [
                                 Icon(
                                   Icons.circle,
-                                  color: Styles.objectivesColors[i],
+                                  color: Styles.statusColors(
+                                      objectives[i].categoryName ?? ""),
                                   size: 16,
                                 ),
                                 SizedBox(width: 4.w),

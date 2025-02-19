@@ -4,7 +4,7 @@ import '../../../helpers/styles.dart';
 import '../../../helpers/text_styles.dart';
 import '../../../helpers/translation/all_translation.dart';
 import '../model/objective_chart_model.dart';
-import 'charts/objective_bar_annual_chart.dart';
+import 'charts/objective_line_annual_chart.dart';
 import 'charts/objective_bar_monthly_chart.dart';
 
 class ObjectiveDetailsChart extends StatefulWidget {
@@ -75,7 +75,7 @@ class _ObjectiveDetailsChartState extends State<ObjectiveDetailsChart> {
           ),
           currentTime == ChartTime.Month
               ? ObjectiveBarMonthlyChart()
-              : ObjectiveBarAnnualChart(),
+              : ObjectiveLineAnnualChart(),
         ],
       ),
     );

@@ -306,5 +306,9 @@
   "projects_percentage": "Projects Percentage",
   "projects": "Projects",
   "select_priority_level": "Select Priority Level",
-  "there_is_priority_levels": "There's no Priority Levels"
+  "there_is_priority_levels": "There's no Priority Levels",
+  "completed": "Completed",
+  "advanced": "Advanced",
+  "late": "Late",
+  "project_progress_rate_in_each_category": "Project progress rate in each category"
 }

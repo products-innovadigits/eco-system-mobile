@@ -1,6 +1,8 @@
-class ProjectDetailsModel {
+import 'package:eco_system/network/mapper.dart';
+
+class ProjectDetailsModel extends SingleMapper {
   int? id;
-  String? name;
+  String? title;
   String? description;
   DateTime? startDate;
   DateTime? endDate;
@@ -8,6 +10,7 @@ class ProjectDetailsModel {
   ProjectLifeCycleModel? projectLifeCycle;
   int? projectCategoryId;
   int? budget;
+  double? weight;
   List<String>? teamIds;
   SectionDepartmentModel? sectionDepartment;
   int? implementorDepartmentId;
@@ -27,10 +30,11 @@ class ProjectDetailsModel {
 
   ProjectDetailsModel(
       {this.id,
-      this.name,
+      this.title,
       this.description,
       this.startDate,
       this.endDate,
+      this.weight,
       this.lifeCycleId,
       this.projectLifeCycle,
       this.projectCategoryId,
@@ -54,7 +58,7 @@ class ProjectDetailsModel {
 
   ProjectDetailsModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    name = json['name'];
+    title = json['title']??json['name'];
     description = json['description'];
     startDate =
         json['startDate'] != null ? DateTime.parse(json['startDate']) : null;
@@ -64,6 +68,7 @@ class ProjectDetailsModel {
         ? new ProjectLifeCycleModel.fromJson(json['projectLifeCycle'])
         : null;
     projectCategoryId = json['projectCategoryId'];
+    weight = json['weight'];
     budget = json['budget'];
     teamIds = json['teamIds'] != null ? json['teamIds'].cast<String>() : null;
     sectionDepartment = json['sectionDepartment'] != null
@@ -87,7 +92,7 @@ class ProjectDetailsModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['name'] = this.name;
+    data['name'] = this.title;
     data['description'] = this.description;
     data['startDate'] = this.startDate;
     data['endDate'] = this.endDate;
@@ -96,6 +101,7 @@ class ProjectDetailsModel {
       data['projectLifeCycle'] = this.projectLifeCycle!.toJson();
     }
     data['projectCategoryId'] = this.projectCategoryId;
+    data['weight'] = this.weight;
     data['budget'] = this.budget;
     data['teamIds'] = this.teamIds;
     data['sectionDepartment'] = this.sectionDepartment?.toJson();
@@ -113,6 +119,11 @@ class ProjectDetailsModel {
     data['updatedAt'] = this.updatedAt;
     return data;
   }
+
+  @override
+  Mapper fromJson(Map<String, dynamic> json) {
+    return ProjectDetailsModel.fromJson(json);
+  }
 }
 
 class ProjectLifeCycleModel {
@@ -126,7 +137,7 @@ class ProjectLifeCycleModel {
 
   ProjectLifeCycleModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    title = json['title'];
+    title = json['title']??json['name'];
     description = json['description'];
     if (json['projectStages'] != null) {
       projectStages = <ProjectStagesModel>[];
@@ -154,7 +165,7 @@ class ProjectStagesModel {
   String? title;
   String? description;
   int? lifeCycleId;
-  int? progress;
+  double? progress;
   List<ProjectProcessModel>? projectProcesses;
 
   ProjectStagesModel(
@@ -167,10 +178,10 @@ class ProjectStagesModel {
 
   ProjectStagesModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    title = json['title'];
+    title = json['title']??json['name'];
     description = json['description'];
     lifeCycleId = json['lifeCycleId'];
-    progress = json['progress'];
+    progress = double.tryParse(json['progress']?.toString()??"0");
     if (json['projectProcesses'] != null) {
       projectProcesses = <ProjectProcessModel>[];
       json['projectProcesses'].forEach((v) {
@@ -203,9 +214,9 @@ class ProjectProcessModel {
   int? workflowId;
   Null? workflow;
   int? viewOrder;
-  int? progress;
-  Null? isRunningWorkflow;
-  Null? isCompletedWorkflow;
+  double? progress;
+  bool? isRunningWorkflow;
+  bool? isCompletedWorkflow;
   String? runningWorkflowTime;
   String? completedWorkflowTime;
 
@@ -226,14 +237,14 @@ class ProjectProcessModel {
 
   ProjectProcessModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    title = json['title'];
+    title = json['title']??json['name'];
     description = json['description'];
     stageId = json['stageId'];
     departmentId = json['departmentId'];
     workflowId = json['workflowId'];
     workflow = json['workflow'];
     viewOrder = json['viewOrder'];
-    progress = json['progress'];
+    progress = double.tryParse(json['progress']?.toString()??"0");
     isRunningWorkflow = json['isRunningWorkflow'];
     isCompletedWorkflow = json['isCompletedWorkflow'];
     runningWorkflowTime = json['runningWorkflowTime'];

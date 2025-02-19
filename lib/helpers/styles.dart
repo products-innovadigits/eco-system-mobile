@@ -109,9 +109,28 @@ abstract class Styles {
     child: Divider(color: Styles.HINT, thickness: 1.0),
   );
 
-  static const List<Color> objectivesColors = [
-    Color(0xFF16A567),
+  static Color statusColors(String value) {
+    switch (value) {
+      case "مكتمل":
+        return Color(0xFF16A567);
+      case "متقدم":
+        return PRIMARY_COLOR;
+      case "متأخر":
+        return SECONDARY_COLOR;
+      default:
+        return PRIMARY_COLOR;
+    }
+  }
+
+  static const List<Color> projectCategoryColors = [
+    RED_CHART_COLOR,
     PRIMARY_COLOR,
     SECONDARY_COLOR,
+    ACTIVE,
+    ACCENT_PRIMARY_COLOR,
+    IN_ACTIVE,
+    FEED_COLOR2,
+    ORANGE2,
+    ORANGE3,
   ];
 }

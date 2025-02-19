@@ -309,5 +309,9 @@
   "projects_percentage": "تقدم المشاريع",
   "projects": "المشاريع",
   "select_priority_level": "اختر مستوى الأولوية",
-  "there_is_priority_levels": "لا توجد مستويات أولوية"
+  "there_is_priority_levels": "لا توجد مستويات أولوية",
+  "completed": "مكتمل",
+  "advanced": "متقدم",
+  "late": "متأخر",
+  "project_progress_rate_in_each_category": "نسبة تقدم المشاريع في كل تصنيف"
 }

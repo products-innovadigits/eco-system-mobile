@@ -99,7 +99,7 @@ class _ObjectivePercentageChartState extends State<ObjectivePercentageChart> {
         Shadow(color: Colors.grey, blurRadius: 5, offset: Offset(1, 1))
       ];
       return PieChartSectionData(
-        color: Styles.objectivesColors[i],
+        color: Styles.statusColors(widget.objectives[i].categoryName ?? ""),
         title: '${widget.objectives[i].value?.toStringAsFixed(2)}%',
         value: widget.objectives[i].value,
         radius: radius,

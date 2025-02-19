@@ -10,8 +10,8 @@ import '../../../../helpers/styles.dart';
 import '../../model/objective_chart_model.dart';
 import 'objective_line_chart.dart';
 
-class ObjectiveBarAnnualChart extends StatelessWidget {
-  const ObjectiveBarAnnualChart({super.key});
+class ObjectiveLineAnnualChart extends StatelessWidget {
+  const ObjectiveLineAnnualChart({super.key});
 
   @override
   Widget build(BuildContext context) {
