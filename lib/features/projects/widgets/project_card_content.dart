@@ -22,7 +22,7 @@ class ProjectCardContent extends StatelessWidget {
               padding: EdgeInsets.all(8.w),
               decoration: BoxDecoration(
                   color: Styles.WHITE_COLOR,
-                  shape: BoxShape.circle,
+                  borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: Styles.LIGHT_GREY_BORDER)),
               child: Images(
                 image: "assets/svgs/moneys.svg",
@@ -71,21 +71,21 @@ class ProjectCardContent extends StatelessWidget {
                 ),
               ),
             ),
-            if(project.status != null)
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
-              decoration: BoxDecoration(
-                color:
-                    Styles.statusColors(project.status ?? "").withOpacity(0.1),
-                borderRadius: BorderRadius.circular(100),
+            if (project.status != null)
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
+                decoration: BoxDecoration(
+                  color: Styles.statusColors(project.status ?? "")
+                      .withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: Text(
+                  project.status ?? "",
+                  style: AppTextStyles.w500.copyWith(
+                      fontSize: 12,
+                      color: Styles.statusColors(project.status ?? "")),
+                ),
               ),
-              child: Text(
-                project.status ?? "",
-                style: AppTextStyles.w500.copyWith(
-                    fontSize: 12,
-                    color: Styles.statusColors(project.status ?? "")),
-              ),
-            ),
           ],
         ),
         Padding(
@@ -93,7 +93,7 @@ class ProjectCardContent extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(100),
             child: LinearProgressIndicator(
-              value: (project.weight ?? 0) / 100,
+              value: getProgressBar() / 100,
               color: Styles.PRIMARY_COLOR,
               backgroundColor: Styles.HINT,
             ),
@@ -110,7 +110,7 @@ class ProjectCardContent extends StatelessWidget {
             ),
             SizedBox(width: 6.w),
             Text(
-              "${project.weight ?? 0}%",
+              "${getProgressBar().toStringAsFixed(2)}%",
               style: AppTextStyles.w700
                   .copyWith(fontSize: 14, color: Styles.HEADER),
             ),
@@ -118,5 +118,15 @@ class ProjectCardContent extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  double getProgressBar() {
+    return ((project.startDate ?? DateTime.now())
+                .difference(DateTime.now())
+                .inDays /
+            (project.startDate ?? DateTime.now())
+                .difference(project.endDate ?? DateTime.now())
+                .inDays) *
+        100;
   }
 }

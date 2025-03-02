@@ -15,10 +15,17 @@ import '../widgets/objective_details_body.dart';
 import '../widgets/objective_details_chart.dart';
 import '../widgets/objective_initiatives.dart';
 
-class ObjectiveDetailsView extends StatelessWidget {
+class ObjectiveDetailsView extends StatefulWidget {
   const ObjectiveDetailsView({super.key, required this.id});
   final int id;
 
+  @override
+  State<ObjectiveDetailsView> createState() => _ObjectiveDetailsViewState();
+}
+
+class _ObjectiveDetailsViewState extends State<ObjectiveDetailsView> {
+
+  final ScrollController scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,23 +35,23 @@ class ObjectiveDetailsView extends StatelessWidget {
           providers: [
             BlocProvider(
               create: (context) =>
-                  ObjectiveDetailsBloc()..add(Click(arguments: id)),
+                  ObjectiveDetailsBloc()..add(Click(arguments: widget.id)),
             ),
             BlocProvider(
               create: (context) =>
-                  ObjectiveKPISBloc()..add(Click(arguments: id)),
+                  ObjectiveKPISBloc()..add(Click(arguments: widget.id)),
             ),
             BlocProvider(
               create: (context) =>
-                  ObjectiveInitiativesBloc()..add(Click(arguments: id)),
+                  ObjectiveInitiativesBloc()..add(Click(arguments: widget.id)),
             ),
             BlocProvider(
               create: (context) =>
-                  ObjectiveChartMonthBloc()..add(Click(arguments: id)),
+                  ObjectiveChartMonthBloc()..add(Click(arguments: widget.id)),
             ),
             BlocProvider(
               create: (context) =>
-                  ObjectiveChartAnnualBloc()..add(Click(arguments: id)),
+                  ObjectiveChartAnnualBloc()..add(Click(arguments: widget.id)),
             ),
           ],
           child: Column(
@@ -53,6 +60,7 @@ class ObjectiveDetailsView extends StatelessWidget {
               SizedBox(height: 16.h),
               Expanded(
                   child: ListAnimator(
+                    controller: scrollController,
                 data: [
                   ///Objective Details
                   ObjectiveDetailsBody(),
@@ -64,7 +72,7 @@ class ObjectiveDetailsView extends StatelessWidget {
                   ObjectiveInitiatives(),
 
                   ///Objective Chart
-                  ObjectiveDetailsChart(),
+                  ObjectiveDetailsChart(scrollController: scrollController),
                 ],
               ))
             ],

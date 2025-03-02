@@ -8,7 +8,8 @@ import 'charts/objective_line_annual_chart.dart';
 import 'charts/objective_bar_monthly_chart.dart';
 
 class ObjectiveDetailsChart extends StatefulWidget {
-  const ObjectiveDetailsChart({super.key});
+  const ObjectiveDetailsChart({super.key, required this.scrollController});
+  final ScrollController scrollController;
 
   @override
   State<ObjectiveDetailsChart> createState() => _ObjectiveDetailsChartState();
@@ -16,6 +17,16 @@ class ObjectiveDetailsChart extends StatefulWidget {
 
 class _ObjectiveDetailsChartState extends State<ObjectiveDetailsChart> {
   ChartTime currentTime = ChartTime.Month;
+
+  scrollToBottom() {
+    Future.delayed(Duration(microseconds: 500), () {
+      widget.scrollController.animateTo(
+        widget.scrollController.position.maxScrollExtent,
+        duration: Duration(milliseconds: 500),
+        curve: Curves.easeOut,
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +53,10 @@ class _ObjectiveDetailsChartState extends State<ObjectiveDetailsChart> {
                   children: List.generate(
                 ChartTime.values.length,
                 (i) => InkWell(
-                  onTap: () =>
-                      setState(() => currentTime = ChartTime.values[i]),
+                  onTap: () => setState(() {
+                    currentTime = ChartTime.values[i];
+                    scrollToBottom();
+                  }),
                   child: Container(
                     padding:
                         EdgeInsets.symmetric(horizontal: 24.w, vertical: 4.h),

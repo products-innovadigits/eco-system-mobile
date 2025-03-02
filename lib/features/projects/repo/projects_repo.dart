@@ -8,7 +8,7 @@ import '../model/projects_model.dart';
 abstract class ProjectsRepo {
   static Future<ProjectsModel> getProjects(SearchEngine data) async {
     return await Network().request(
-      ApiNames.objectives,
+      ApiNames.projects,
       query: data.query,
       method: ServerMethods.GET,
       model: ProjectsModel(),

@@ -13,8 +13,8 @@ class ProjectCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => CustomNavigator.push(Routes.PROJECT_DETAILS,
-          arguments: project.id),
+      // onTap: () => CustomNavigator.push(Routes.PROJECT_DETAILS,
+      //     arguments: project.id),
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       hoverColor: Colors.transparent,

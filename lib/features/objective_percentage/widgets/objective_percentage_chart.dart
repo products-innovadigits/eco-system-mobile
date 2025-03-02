@@ -22,96 +22,130 @@ class ObjectivePercentageChart extends StatefulWidget {
 
 class _ObjectivePercentageChartState extends State<ObjectivePercentageChart> {
   int touchedIndex = -1;
-
+  bool isEmpty = true;
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1.4,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          PieChart(
-            PieChartData(
-              pieTouchData: PieTouchData(
-                touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                  setState(() {
-                    if (!event.isInterestedForInteractions ||
-                        pieTouchResponse == null ||
-                        pieTouchResponse.touchedSection == null) {
-                      touchedIndex = -1;
-                      return;
-                    }
-                    touchedIndex =
-                        pieTouchResponse.touchedSection!.touchedSectionIndex;
-                  });
+    return BlocBuilder<ObjectivePercentageBloc, AppState>(
+      builder: (context, state) {
+        if (state is Done) {
+          isEmpty =
+              double.parse((state.data as String).replaceAll('%', '')) <= 0;
+        }
+        return AspectRatio(
+          aspectRatio: 1.4,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              PieChart(
+                PieChartData(
+                  pieTouchData: PieTouchData(
+                    touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                      setState(() {
+                        if (!event.isInterestedForInteractions ||
+                            pieTouchResponse == null ||
+                            pieTouchResponse.touchedSection == null) {
+                          touchedIndex = -1;
+                          return;
+                        }
+                        touchedIndex = pieTouchResponse
+                            .touchedSection!.touchedSectionIndex;
+                      });
+                    },
+                  ),
+                  borderData: FlBorderData(
+                      show: false,
+                      border: Border.all(color: Styles.LIGHT_GREY_BORDER)),
+                  sectionsSpace: 5.w,
+                  centerSpaceRadius: 50.w,
+                  sections: isEmpty || showingSections().length <= 0
+                      ? emptyState()
+                      : showingSections(),
+                ),
+              ),
+              BlocBuilder<ObjectivePercentageBloc, AppState>(
+                builder: (context, state) {
+                  if (state is Done) {
+                    return SizedBox(
+                      width: 80.w,
+                      child: FittedBox(
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            text: allTranslations.text("objective_percentage"),
+                            style: AppTextStyles.w600
+                                .copyWith(fontSize: 12, color: Styles.HEADER),
+                            children: [
+                              TextSpan(
+                                text: "\n${state.data ?? 0}",
+                                style: AppTextStyles.w700.copyWith(
+                                    fontSize: 14,
+                                    color: isEmpty
+                                        ? Styles.DETAILS
+                                        : Styles.PRIMARY_COLOR),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                  if (state is Loading) {
+                    return CustomShimmerContainer(width: 80.w, height: 16.h);
+                  } else {
+                    return SizedBox();
+                  }
                 },
               ),
-              borderData: FlBorderData(
-                  show: true,
-                  border: Border.all(color: Styles.LIGHT_GREY_BORDER)),
-              sectionsSpace: 5.w,
-              centerSpaceRadius: 50.w,
-              sections: showingSections(),
-            ),
+            ],
           ),
-          BlocBuilder<ObjectivePercentageBloc, AppState>(
-            builder: (context, state) {
-              if (state is Done) {
-                return SizedBox(
-                  width: 80.w,
-                  child: FittedBox(
-                    child: RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(
-                        text: allTranslations.text("objective_percentage"),
-                        style: AppTextStyles.w600
-                            .copyWith(fontSize: 12, color: Styles.HEADER),
-                        children: [
-                          TextSpan(
-                            text: "\n${state.data ?? 0}",
-                            style: AppTextStyles.w700.copyWith(
-                                fontSize: 14, color: Styles.PRIMARY_COLOR),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              }
-              if (state is Loading) {
-                return CustomShimmerContainer(width: 80.w, height: 16.h);
-              } else {
-                return SizedBox();
-              }
-            },
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
   List<PieChartSectionData> showingSections() {
     return List.generate(widget.objectives.length, (i) {
       final isTouched = i == touchedIndex;
-      final double fontSize = isTouched ? 25 : 16;
-      final radius = isTouched ? 70.w : 50.w;
-      const shadows = [
-        Shadow(color: Colors.grey, blurRadius: 5, offset: Offset(1, 1))
-      ];
+      final radius = isTouched ? 60.w : 50.w;
       return PieChartSectionData(
         color: Styles.statusColors(widget.objectives[i].categoryName ?? ""),
-        title: '${widget.objectives[i].value?.toStringAsFixed(2)}%',
-        value: widget.objectives[i].value,
+        // title: '${widget.objectives[i].value?.toStringAsFixed(2)}%',
+        title: "",
+        value: widget.objectives[i].value ?? 0,
         radius: radius,
         borderSide: BorderSide(
           color: Styles.LIGHT_GREY_BORDER,
         ),
-        titleStyle: AppTextStyles.w600.copyWith(
-          fontSize: fontSize,
-          color: Styles.HEADER,
-          shadows: shadows,
+        badgeWidget: Container(
+          padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 10.h),
+          decoration: BoxDecoration(
+              border: Border.all(color: Styles.LIGHT_GREY_BORDER),
+              color: Styles.WHITE_COLOR,
+              shape: BoxShape.circle),
+          child: Text(
+            '${widget.objectives[i].value?.toStringAsFixed(0)}%',
+            style: AppTextStyles.w600.copyWith(
+              fontSize: 12,
+              color: Styles.HEADER,
+            ),
+          ),
         ),
+        badgePositionPercentageOffset: 1.15,
       );
     });
+  }
+
+  emptyState() {
+    return [
+      PieChartSectionData(
+        color: Color(0xFFE7EAEC),
+        title: "",
+        value: 100,
+        radius: 50,
+        borderSide: BorderSide(
+          color: Color(0xFFE7EAEC),
+        ),
+      )
+    ];
   }
 }

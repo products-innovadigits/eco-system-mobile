@@ -7,6 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/app_event.dart';
 import '../../../helpers/styles.dart';
+import '../../../navigation/custom_navigation.dart';
+import '../../../navigation/routes.dart';
 import '../../../widgets/section_title.dart';
 import '../bloc/project_categories_progress_bloc.dart';
 import '../model/project_category_progress_model.dart';
@@ -41,8 +43,8 @@ class ProjectCategoryProgressSection extends StatelessWidget {
                   SectionTitle(
                     title: allTranslations
                         .text("project_progress_rate_in_each_category"),
-                    withView: false,
-                    // onViewTap: () => CustomNavigator.push(Routes.PROJECTS),
+                    withView: true,
+                    onViewTap: () => CustomNavigator.push(Routes.PROJECTS),
                   ),
                   Divider(color: Styles.BORDER_COLOR),
                   ProjectCategoryHBarChart(data: projectCategoriesProgress),

@@ -22,7 +22,7 @@ class ObjectiveCardContent extends StatelessWidget {
               padding: EdgeInsets.all(8.w),
               decoration: BoxDecoration(
                   color: Styles.WHITE_COLOR,
-                  shape: BoxShape.circle,
+                  borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: Styles.LIGHT_GREY_BORDER)),
               child: Images(
                 image: "assets/svgs/moneys.svg",
