@@ -1,13 +1,13 @@
 import '../../../network/mapper.dart';
 
-class ProjectCategoryProgressModel extends SingleMapper {
+class ProjectProgressModel extends SingleMapper {
   int? id;
   String? name;
   double? progress;
 
-  ProjectCategoryProgressModel({this.id, this.name, this.progress});
+  ProjectProgressModel({this.id, this.name, this.progress});
 
-  ProjectCategoryProgressModel.fromJson(Map<String, dynamic> json) {
+  ProjectProgressModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     progress = json['progress'];
@@ -23,6 +23,6 @@ class ProjectCategoryProgressModel extends SingleMapper {
 
   @override
   Mapper fromJson(Map<String, dynamic> json) {
-    return ProjectCategoryProgressModel.fromJson(json);
+    return ProjectProgressModel.fromJson(json);
   }
 }

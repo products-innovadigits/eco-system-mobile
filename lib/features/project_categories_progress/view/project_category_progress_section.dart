@@ -11,7 +11,7 @@ import '../../../navigation/custom_navigation.dart';
 import '../../../navigation/routes.dart';
 import '../../../widgets/section_title.dart';
 import '../bloc/project_categories_progress_bloc.dart';
-import '../model/project_category_progress_model.dart';
+import '../model/project_progress_model.dart';
 import '../widgets/project_category_h_bar_chart.dart';
 
 class ProjectCategoryProgressSection extends StatelessWidget {
@@ -28,8 +28,8 @@ class ProjectCategoryProgressSection extends StatelessWidget {
       child: BlocBuilder<ProjectCategoriesProgressBloc, AppState>(
         builder: (context, state) {
           if (state is Done) {
-            List<ProjectCategoryProgressModel> projectCategoriesProgress =
-                state.list as List<ProjectCategoryProgressModel>;
+            List<ProjectProgressModel> projectCategoriesProgress =
+                state.list as List<ProjectProgressModel>;
             return Container(
               width: context.w,
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
@@ -43,7 +43,7 @@ class ProjectCategoryProgressSection extends StatelessWidget {
                   SectionTitle(
                     title: allTranslations
                         .text("project_progress_rate_in_each_category"),
-                    withView: true,
+                    withView: false,
                     onViewTap: () => CustomNavigator.push(Routes.PROJECTS),
                   ),
                   Divider(color: Styles.BORDER_COLOR),

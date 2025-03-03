@@ -1,4 +1,4 @@
-import 'package:eco_system/features/project_categories_progress/model/project_category_progress_model.dart';
+import 'package:eco_system/features/project_categories_progress/model/project_progress_model.dart';
 import 'package:eco_system/helpers/text_styles.dart';
 import 'package:eco_system/utility/extensions.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -7,7 +7,7 @@ import '../../../../helpers/styles.dart';
 
 class ProjectCategoryHBarChart extends StatefulWidget {
   const ProjectCategoryHBarChart({super.key, required this.data});
-  final List<ProjectCategoryProgressModel> data;
+  final List<ProjectProgressModel> data;
 
   @override
   State<ProjectCategoryHBarChart> createState() =>

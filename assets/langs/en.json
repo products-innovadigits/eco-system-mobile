@@ -283,6 +283,7 @@
   "details":"Details",
   "waiting" : "Please wait for preparation",
   "strategic_performance_system": "Strategic Performance System",
+  "objectives": "Objectives",
   "all_objectives": "All Objectives",
   "something_went_wrong": "Something went wrong!",
   "oops": "Oops!",
@@ -310,5 +311,6 @@
   "completed": "Completed",
   "advanced": "Advanced",
   "late": "Late",
+  "project_progress_rate": "Project progress rate",
   "project_progress_rate_in_each_category": "Project progress rate in each category"
 }

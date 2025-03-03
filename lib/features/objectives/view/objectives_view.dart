@@ -22,7 +22,7 @@ class ObjectivesView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: allTranslations.text("strategic_performance_system"),
+        title: allTranslations.text("objectives"),
       ),
       body: SafeArea(
           child: BlocProvider(

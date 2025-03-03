@@ -12,6 +12,7 @@ abstract class ApiNames {
   static objectiveChartData(id,time) => "ObjectActive/$id/Chart/$time";
 
 
+  static const ProjectProgress = "ObjectActive/Categorized";
   static const ProjectCategoriesProgress = "ProjectCategory/CategoriesProgress";
   static const projects = "Project";
   static const projectPriorityLevels = "Project/PeriortyLevels";

@@ -284,6 +284,7 @@
   "waiting" : "برجاء انتظار التحضير",
   "fill_alert": "الرجاء ملء كافة الحقول المطلوبة ",
   "strategic_performance_system": "نظام الاداء الاستراتيجي",
+  "objectives": "الاهداف",
   "all_objectives": "جميع الاهداف",
   "something_went_wrong": "حدث خطأ ما!",
   "there_is_no_data": "لا يوجد بيانات",
@@ -313,5 +314,6 @@
   "completed": "مكتمل",
   "advanced": "متقدم",
   "late": "متأخر",
+  "project_progress_rate": "نسبة تقدم المشاريع",
   "project_progress_rate_in_each_category": "نسبة تقدم المشاريع في كل تصنيف"
 }
