@@ -22,6 +22,8 @@ class ObjectiveLineChart extends StatelessWidget {
           aspectRatio: 1.8,
           child: LineChart(
             LineChartData(
+              minY: 0,
+              maxY: 100,
               lineTouchData: LineTouchData(
                 handleBuiltInTouches: true,
                 touchTooltipData: LineTouchTooltipData(
@@ -67,7 +69,6 @@ class ObjectiveLineChart extends StatelessWidget {
                           FlSpot(i.toDouble(), data[i].initiativesValue ?? 0)),
                 ),
               ],
-              maxY: 100,
             ),
             duration: const Duration(milliseconds: 250),
           ),

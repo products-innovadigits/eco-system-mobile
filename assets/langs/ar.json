@@ -200,6 +200,7 @@
   "welcome_login_title": "مرحبا بك,",
   "welcome_login_subtitle": "أتمنى لك يوما مثمرا",
   "login_helper_text": "يرجى ملء البيانات أدناه",
+  "you_logged_in_successfully":"تم تسجيل دخلك بنجاح",
   "period": "فترة",
   "billing": "الفاتورة",
   "billed_point": "فاتوره",
@@ -314,6 +315,17 @@
   "completed": "مكتمل",
   "advanced": "متقدم",
   "late": "متأخر",
+  "total_projects": "اجمالي المشاريع",
   "project_progress_rate": "نسبة تقدم المشاريع",
-  "project_progress_rate_in_each_category": "نسبة تقدم المشاريع في كل تصنيف"
+  "project_progress_rate_in_each_category": "نسبة تقدم المشاريع في كل تصنيف",
+  "the_owning_entity": "الجهة المالكة",
+  "project_life_cycle": "دورة حياة المشروع",
+  "project_category": "تصنيف المشروع",
+  "project_manager": "مدير المشروع",
+  "project_team": "فريق المشروع",
+  "risk_level": "مستوي الخطورة",
+  "budget": "ميزانية",
+  "outputs_number": "عدد المخرجات",
+  "entity_name": "اسم الجهة",
+  "progress_at_each_stage_of_the_project": "تقدم كل مرحلة في المشروع"
 }

@@ -8,6 +8,7 @@ import 'package:eco_system/components/custom_text_field.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/app_event.dart';
+import '../../../../core/vaildator.dart';
 import '../../../../helpers/styles.dart';
 import '../../../../helpers/text_styles.dart';
 import '../../../../navigation/custom_navigation.dart';
@@ -50,7 +51,7 @@ class Login extends StatelessWidget {
                               hint: allTranslations.text("enter_username"),
                               label: allTranslations.text("username"),
                               type: TextInputType.text,
-                              // validation: NameValidator.nameValidator,
+                              validation: NameValidator.nameValidator,
                               controller: context.read<LoginBloc>().mailTEC,
                             ),
                             SizedBox(height: 16.h),
@@ -58,7 +59,7 @@ class Login extends StatelessWidget {
                               hint: allTranslations.text("enter_password"),
                               label: allTranslations.text("password"),
                               type: TextInputType.visiblePassword,
-                              // validation: PasswordValidator.passwordValidator,
+                              validation: PasswordValidator.passwordValidator,
                               isPassword: true,
                               controller: context.read<LoginBloc>().passwordTEC,
                             ),
@@ -70,19 +71,19 @@ class Login extends StatelessWidget {
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  StreamBuilder<bool?>(
-                                    stream: context
-                                        .read<LoginBloc>()
-                                        .rememberMeStream,
-                                    builder: (_, snapshot) {
-                                      return RememberMe(
-                                        check: snapshot.data ?? false,
-                                        onChange: (v) => context
-                                            .read<LoginBloc>()
-                                            .updateRememberMe(v),
-                                      );
-                                    },
-                                  ),
+                                  // StreamBuilder<bool?>(
+                                  //   stream: context
+                                  //       .read<LoginBloc>()
+                                  //       .rememberMeStream,
+                                  //   builder: (_, snapshot) {
+                                  //     return RememberMe(
+                                  //       check: snapshot.data ?? false,
+                                  //       onChange: (v) => context
+                                  //           .read<LoginBloc>()
+                                  //           .updateRememberMe(v),
+                                  //     );
+                                  //   },
+                                  // ),
                                   const Expanded(child: SizedBox()),
                                   InkWell(
                                     onTap: () {

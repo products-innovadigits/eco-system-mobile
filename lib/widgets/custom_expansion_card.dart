@@ -8,11 +8,17 @@ import '../../../helpers/styles.dart';
 
 class CustomExpansionCard extends StatefulWidget {
   const CustomExpansionCard(
-      {super.key, required this.child, required this.title, this.subTitle});
+      {super.key,
+      required this.child,
+      required this.title,
+      this.subTitle,
+      this.withExpanded = true,
+      this.action});
   final Widget child;
   final String title;
   final String? subTitle;
-
+  final Widget? action;
+  final bool withExpanded;
   @override
   State<CustomExpansionCard> createState() => _CustomExpansionCardState();
 }
@@ -32,34 +38,36 @@ class _CustomExpansionCardState extends State<CustomExpansionCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          InkWell(
-            onTap: () => setState(() => isExpanded = !isExpanded),
-            child: Row(
-              children: [
-                Expanded(
-                  child: RichText(
-                      text: TextSpan(
-                          text: widget.title,
-                          style: AppTextStyles.w600
-                              .copyWith(fontSize: 14, color: Styles.HEADER),
-                          children: [
-                        if (widget.subTitle != null)
-                          TextSpan(
-                            text: "  ${widget.subTitle}",
-                            style: AppTextStyles.w400.copyWith(
-                                fontSize: 12, color: Styles.PRIMARY_COLOR),
-                          )
-                      ])),
+          Row(
+            children: [
+              Expanded(
+                child: RichText(
+                    text: TextSpan(
+                        text: widget.title,
+                        style: AppTextStyles.w600
+                            .copyWith(fontSize: 14, color: Styles.HEADER),
+                        children: [
+                      if (widget.subTitle != null)
+                        TextSpan(
+                          text: "  ${widget.subTitle}",
+                          style: AppTextStyles.w400.copyWith(
+                              fontSize: 12, color: Styles.PRIMARY_COLOR),
+                        )
+                    ])),
+              ),
+              SizedBox(width: 12.w),
+              widget.action ?? SizedBox(),
+              if (widget.withExpanded)
+                InkWell(
+                  onTap: () => setState(() => isExpanded = !isExpanded),
+                  child: AnimatedRotation(
+                    duration: const Duration(milliseconds: 450),
+                    turns: isExpanded ? 0.5 : 0,
+                    child: customImageIconSVG(
+                        imageName: 'up', color: Styles.PRIMARY_COLOR),
+                  ),
                 ),
-                SizedBox(height: 12.h),
-                AnimatedRotation(
-                  duration: const Duration(milliseconds: 450),
-                  turns: isExpanded ? 0.5 : 0,
-                  child: customImageIconSVG(
-                      imageName: 'up', color: Styles.PRIMARY_COLOR),
-                ),
-              ],
-            ),
+            ],
           ),
           AnimatedCrossFade(
             crossFadeState: isExpanded

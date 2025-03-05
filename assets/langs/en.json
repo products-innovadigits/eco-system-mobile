@@ -202,6 +202,7 @@
   "welcome_login_title":"Welcome Dear,",
   "welcome_login_subtitle":"Have a fruitful Day",
   "login_helper_text":"Please fill up the required data",
+  "you_logged_in_successfully":"You logged in successfully",
   "period":"Period",
   "billing":"Billing",
   "billed_point":"Billed",
@@ -311,6 +312,17 @@
   "completed": "Completed",
   "advanced": "Advanced",
   "late": "Late",
+  "total_projects": "Total Project",
   "project_progress_rate": "Project progress rate",
-  "project_progress_rate_in_each_category": "Project progress rate in each category"
+  "project_progress_rate_in_each_category": "Project progress rate in each category",
+  "the_owning_entity": "the owning entity",
+  "project_life_cycle": "Project Life Cycle",
+  "project_category": "Project Category",
+  "project_manager": "Project Manager",
+  "project_team": "Project Team",
+  "risk_level": "Risk Level",
+  "budget": "Budget",
+  "outputs_number": "Outputs Number",
+  "entity_name": "Entity name",
+  "progress_at_each_stage_of_the_project": "Progress at each stage of the project"
 }

@@ -3,13 +3,12 @@ import 'package:eco_system/helpers/translation/all_translation.dart';
 import 'package:eco_system/utility/extensions.dart';
 import 'package:flutter/material.dart';
 import '../../../helpers/styles.dart';
-import '../../../widgets/images.dart';
+import '../model/project_details_model.dart';
+import 'project_content_card.dart';
 
 class ProjectDetailsDescription extends StatelessWidget {
-  const ProjectDetailsDescription(
-      {super.key, this.description, this.startDate, required this.endDate});
-  final String? description;
-  final DateTime? startDate, endDate;
+  const ProjectDetailsDescription({super.key, required this.model});
+  final ProjectDetailsModel model;
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +16,8 @@ class ProjectDetailsDescription extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          description ?? "",
-          textAlign: TextAlign.center,
+          model.description ?? "",
+          textAlign: TextAlign.start,
           style:
               AppTextStyles.w400.copyWith(fontSize: 12, color: Styles.HEADER),
         ),
@@ -27,79 +26,115 @@ class ProjectDetailsDescription extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Expanded(
-                child: Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(8.w),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Styles.PRIMARY_COLOR.withOpacity(0.1)),
-                  child: Images(
-                      image: "assets/svgs/calendar_tick.svg",
-                      width: 16.w,
-                      height: 16.w,
-                      color: Styles.PRIMARY_COLOR),
-                ),
-                SizedBox(width: 8.w),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      allTranslations.text("start_date"),
-                      textAlign: TextAlign.start,
-                      style: AppTextStyles.w400
-                          .copyWith(fontSize: 12, color: Styles.PRIMARY_COLOR),
-                    ),
-                    SizedBox(height: 4.h),
-                    Text(
-                      (startDate ?? DateTime.now()).format("d MMM yyyy"),
-                      textAlign: TextAlign.start,
-                      style: AppTextStyles.w400
-                          .copyWith(fontSize: 14, color: Styles.HEADER),
-                    ),
-                  ],
-                ),
-              ],
-            )),
+              child: ProjectContentCard(
+                icon: "assets/svgs/calendar.svg",
+                title: allTranslations.text("start_date"),
+                desc: (model.startDate ?? DateTime.now()).format("d MMM yyyy"),
+              ),
+            ),
+            SizedBox(width: 8.h),
             Expanded(
-                child: Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(8.w),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Styles.PRIMARY_COLOR.withOpacity(0.1)),
-                  child: Images(
-                      image: "assets/svgs/calendar_tick.svg",
-                      width: 16.w,
-                      height: 16.w,
-                      color: Styles.PRIMARY_COLOR),
-                ),
-                SizedBox(width: 8.w),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        allTranslations.text("end_date"),
-                        textAlign: TextAlign.end,
-                        style: AppTextStyles.w400.copyWith(
-                            fontSize: 12, color: Styles.PRIMARY_COLOR),
-                      ),
-                      SizedBox(height: 4.h),
-                      Text(
-                        (endDate ?? DateTime.now()).format("d MMM yyyy"),
-                        textAlign: TextAlign.end,
-                        style: AppTextStyles.w400
-                            .copyWith(fontSize: 14, color: Styles.HEADER),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ))
+              child: ProjectContentCard(
+                icon: "assets/svgs/calendar_tick.svg",
+                title: allTranslations.text("end_date"),
+                desc: (model.endDate ?? DateTime.now()).format("d MMM yyyy"),
+              ),
+            )
           ],
-        )
+        ),
+        SizedBox(height: 16.h),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+              child: ProjectContentCard(
+                icon: "assets/svgs/security-user.svg",
+                title: allTranslations.text("the_owning_entity"),
+                desc: model.sectionDepartment?.name ?? "",
+              ),
+            ),
+            SizedBox(width: 8.h),
+            Expanded(
+              child: ProjectContentCard(
+                icon: "assets/svgs/project_life_cycle.svg",
+                title: allTranslations.text("project_life_cycle"),
+                desc: model.projectLifeCycle?.projectStages
+                        ?.firstWhere((e) => e.id == model.lifeCycleId)
+                        .title ??
+                    "",
+              ),
+            )
+          ],
+        ),
+        SizedBox(height: 16.h),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+              child: ProjectContentCard(
+                icon: "assets/svgs/filter.svg",
+                title: allTranslations.text("project_category"),
+                desc: model.title ?? "",
+              ),
+            ),
+            SizedBox(width: 8.h),
+            Expanded(
+              child: ProjectContentCard(
+                icon: "assets/svgs/user.svg",
+                title: allTranslations.text("project_manager"),
+                desc: model.managerName ?? "",
+              ),
+            )
+          ],
+        ),
+        SizedBox(height: 16.h),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+              child: ProjectContentCard(
+                icon: "assets/svgs/people.svg",
+                title: allTranslations.text("project_team"),
+                desc: "${model.teamIds?.join(", ")}",
+              ),
+            ),
+            SizedBox(width: 8.h),
+            Expanded(
+              child: ProjectContentCard(
+                icon: "assets/svgs/warning.svg",
+                title: allTranslations.text("risk_level"),
+                desc: "${model.riskLevelId ?? 0}",
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 16.h),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+              child: ProjectContentCard(
+                icon: "assets/svgs/outline_moneys.svg",
+                title: allTranslations.text("budget"),
+                desc: "${model.budget ?? 0}",
+              ),
+            ),
+            SizedBox(width: 8.h),
+            Expanded(
+              child: ProjectContentCard(
+                icon: "assets/svgs/task.svg",
+                title: allTranslations.text("outputs_number"),
+                desc: "${model.outputCount ?? 0}",
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 16.h),
+        ProjectContentCard(
+          icon: "assets/svgs/building.svg",
+          title: allTranslations.text("entity_name"),
+          desc: "${model.implementorDepartmentName ?? ""}",
+        ),
       ],
     );
   }

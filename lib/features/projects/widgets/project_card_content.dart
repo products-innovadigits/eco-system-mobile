@@ -110,7 +110,7 @@ class ProjectCardContent extends StatelessWidget {
             ),
             SizedBox(width: 6.w),
             Text(
-              "${getProgressBar().toStringAsFixed(2)}%",
+              "${getProgressBar().toStringAsFixed(1)}%",
               style: AppTextStyles.w700
                   .copyWith(fontSize: 14, color: Styles.HEADER),
             ),

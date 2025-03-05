@@ -6,8 +6,15 @@ import 'package:flutter/material.dart';
 import '../../../../helpers/styles.dart';
 
 class ProjectCategoryHBarChart extends StatefulWidget {
-  const ProjectCategoryHBarChart({super.key, required this.data});
+  const ProjectCategoryHBarChart(
+      {super.key,
+      this.withIntervals = true,
+      required this.data,
+      this.textColor,
+      this.barColor});
   final List<ProjectProgressModel> data;
+  final Color? textColor, barColor;
+  final bool withIntervals;
 
   @override
   State<ProjectCategoryHBarChart> createState() =>
@@ -15,7 +22,7 @@ class ProjectCategoryHBarChart extends StatefulWidget {
 }
 
 class _ProjectCategoryHBarChartState extends State<ProjectCategoryHBarChart> {
-  late double interval;
+  double? interval;
 
   @override
   void initState() {
@@ -31,6 +38,7 @@ class _ProjectCategoryHBarChartState extends State<ProjectCategoryHBarChart> {
         aspectRatio: 1.2,
         child: BarChart(
           BarChartData(
+            minY: 0,
             maxY: 100,
             barTouchData: BarTouchData(
               handleBuiltInTouches: true,
@@ -69,18 +77,19 @@ class _ProjectCategoryHBarChartState extends State<ProjectCategoryHBarChart> {
                 sideTitles: SideTitles(
                   showTitles: true,
                   getTitlesWidget: (value, meta) => bottomTitles(value, meta,
-                      widget.data.map((e) => "${e.name ?? ""}").toList()),
+                      widget.data.map((e) => "${e.name ?? ""}").toList(),
+                      textColor: widget.textColor),
                   reservedSize: 60,
-                  // interval: interval,
+                  interval: interval,
                 ),
               ),
             ),
             borderData: FlBorderData(
-              border: Border.all(color: Styles.LIGHT_GREY_BORDER),
+              border: Border.all(color: Colors.transparent),
             ),
             gridData: FlGridData(
-                horizontalInterval: 20,
-                show: true,
+                horizontalInterval: interval,
+                show: widget.withIntervals,
                 drawVerticalLine: false,
                 drawHorizontalLine: true),
             barGroups: List.generate(
@@ -92,10 +101,16 @@ class _ProjectCategoryHBarChartState extends State<ProjectCategoryHBarChart> {
                       fromY: 0,
                       toY: widget.data[index].progress ?? 0,
                       width: 30,
-                      color: Styles.projectCategoryColors[index],
+                      color: widget.barColor ??
+                          Styles.projectCategoryColors[index],
+                      backDrawRodData: BackgroundBarChartRodData(
+                          show: true,
+                          color: Styles.LIGHT_GREY_BORDER,
+                          fromY: widget.data[index].progress ?? 0,
+                          toY: 100),
                       borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(10),
-                          topLeft: Radius.circular(10))),
+                          topRight: Radius.circular(2),
+                          topLeft: Radius.circular(2))),
                 ],
               ),
             ).toList(),
@@ -106,13 +121,13 @@ class _ProjectCategoryHBarChartState extends State<ProjectCategoryHBarChart> {
   }
 }
 
-Widget bottomTitles(
-    double value, TitleMeta meta, List<String> bottomTilesData) {
+Widget bottomTitles(double value, TitleMeta meta, List<String> bottomTilesData,
+    {Color? textColor}) {
   final Widget text = Text(
     bottomTilesData[value.toInt()],
     textAlign: TextAlign.center,
     style: AppTextStyles.w400.copyWith(
-      color: Styles.projectCategoryColors[value.toInt()],
+      color: textColor ?? Styles.projectCategoryColors[value.toInt()],
       fontSize: 12,
     ),
   );

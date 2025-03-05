@@ -44,8 +44,8 @@ class _ObjectiveDetailsChartState extends State<ObjectiveDetailsChart> {
               Expanded(
                 child: Text(
                   allTranslations.text("general_progress"),
-                  style: AppTextStyles.w600
-                      .copyWith(fontSize: 14, color: Styles.HEADER),
+                  style: AppTextStyles.w800
+                      .copyWith(fontSize: 18, color: Styles.HEADER),
                 ),
               ),
               SizedBox(height: 12.h),

@@ -43,6 +43,27 @@ class ProjectsProgressSection extends StatelessWidget {
                     onViewTap: () => CustomNavigator.push(Routes.PROJECTS),
                   ),
                   Divider(color: Styles.BORDER_COLOR),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          allTranslations.text("total_projects"),
+                          style: AppTextStyles.w500.copyWith(
+                            fontSize: 12,
+                            color: Styles.PRIMARY_COLOR,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        "100",
+                        style: AppTextStyles.w600.copyWith(
+                          fontSize: 20,
+                          color: Styles.PRIMARY_COLOR,
+                        ),
+                      )
+                    ],
+                  ),
                   ProjectsProgressChart(projects: projects),
                   SizedBox(height: 12.h),
                   Wrap(
