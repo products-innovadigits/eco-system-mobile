@@ -60,14 +60,7 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
         emit(Start());
       }
     } catch (e) {
-      AppCore.showSnackBar(
-        notification: AppNotification(
-          message: e.toString(),
-          backgroundColor: Styles.IN_ACTIVE,
-          borderColor: Styles.DARK_RED,
-          iconName: "fill-close-circle",
-        ),
-      );
+      AppCore.errorMessage(allTranslations.text('invalid_credentials'));
       emit(Error());
     }
   }
