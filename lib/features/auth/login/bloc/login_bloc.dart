@@ -25,7 +25,7 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
   Function(bool?) get updateRememberMe => rememberMe.sink.add;
   Stream<bool?> get rememberMeStream => rememberMe.stream.asBroadcastStream();
 
-  final  globalKey = GlobalKey<FormState>();
+  final globalKey = GlobalKey<FormState>();
 
   TextEditingController mailTEC = TextEditingController();
   TextEditingController passwordTEC = TextEditingController();
@@ -56,14 +56,7 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
         emit(Done());
         Future.delayed(const Duration(seconds: 1), () => clear());
       } else {
-        AppCore.showSnackBar(
-          notification: AppNotification(
-            message: res.data['message'],
-            backgroundColor: Styles.IN_ACTIVE,
-            borderColor: Styles.DARK_RED,
-            iconName: "fill-close-circle",
-          ),
-        );
+        AppCore.errorMessage(allTranslations.text('invalid_credentials'));
         emit(Start());
       }
     } catch (e) {
