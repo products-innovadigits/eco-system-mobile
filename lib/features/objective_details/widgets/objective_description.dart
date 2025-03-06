@@ -35,7 +35,7 @@ class ObjectiveDetailsDescription extends StatelessWidget {
                       shape: BoxShape.circle,
                       color: Styles.PRIMARY_COLOR.withOpacity(0.1)),
                   child: Images(
-                      image: "assets/svgs/calendar_tick.svg",
+                      image: "assets/svgs/calendar.svg",
                       width: 16.w,
                       height: 16.w,
                       color: Styles.PRIMARY_COLOR),

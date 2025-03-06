@@ -30,7 +30,7 @@
   "sing_in": "Sign in",
   "change_password": "Change Password",
   "please_enter_valid_account": "Please enter valid account",
-  "please_enter_valid_password": "Please enter valid password must be at least 6 characters",
+  "please_enter_valid_password": "Please enter valid password",
   "please_enter_valid_phone_number": "Please enter valid phone number",
   "please_enter_valid_user_name": "Please enter valid username ",
   "please_enter_valid_location": "Please enter a valid Location",

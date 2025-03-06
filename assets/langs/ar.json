@@ -31,7 +31,7 @@
   "sing_in": " تسجيل الدخول",
   "change_password": " غير كلمة السر",
   "please_enter_valid_account": " الرجاء إدخال حساب صالح",
-  "please_enter_valid_password": " الرجاء إدخال كلمة مرور صالحة يجب أن تتكون من 6 أحرف على الأقل",
+  "please_enter_valid_password": "الرجاء إدخال كلمة مرور صالحة",
   "please_enter_valid_phone_number": " الرجاء إدخال رقم هاتف صحيح",
   "please_enter_valid_user_name": " الرجاء إدخال اسم مستخدم صالح",
   "please_enter_valid_location": " الرجاء إدخال موقع صالح",

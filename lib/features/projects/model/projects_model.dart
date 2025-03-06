@@ -10,7 +10,7 @@ class ProjectsModel extends SingleMapper {
   ProjectsModel({this.data, this.statusCode, this.meta, this.message});
 
   ProjectsModel.fromJson(Map<String, dynamic> json) {
-    if (json['data'] != null && json['data']["items"] != null) {
+    if (json['data'] != null &&json['data'] is! String && json['data']["items"] != null) {
       data = [];
       json['data']["items"].forEach((v) {
         data!.add(ProjectDetailsModel.fromJson(v));

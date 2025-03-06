@@ -10,7 +10,9 @@ class ObjectivesModel extends SingleMapper {
   ObjectivesModel({this.data, this.statusCode, this.meta, this.message});
 
   ObjectivesModel.fromJson(Map<String, dynamic> json) {
-    if (json['data'] != null && json['data']["items"] != null) {
+    if (json['data'] != null &&
+        json['data'] is! String &&
+        json['data']["items"] != null) {
       data = [];
       json['data']["items"].forEach((v) {
         data!.add(ObjectiveDetailsModel.fromJson(v));
@@ -41,4 +43,3 @@ class ObjectivesModel extends SingleMapper {
     return ObjectivesModel.fromJson(json);
   }
 }
-

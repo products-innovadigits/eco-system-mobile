@@ -71,7 +71,7 @@ class ObjectivesBloc extends Bloc<AppEvent, AppState> {
 
       ObjectivesModel res = await ObjectivesRepo.getObjectives(_engine);
 
-      if (res.data!.isNotEmpty) {
+      if (res.data != null&&res.data!.isNotEmpty) {
         for (var objective in res.data ?? []) {
           _cards.add(ObjectiveCard(objective: objective));
         }

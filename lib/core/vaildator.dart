@@ -64,7 +64,7 @@ class EmailValidator {
 
 class PasswordValidator {
   static String? passwordValidator(var password) {
-    if (password!.length < 2) {
+    if (password!.length < 6) {
       return allTranslations.text("please_enter_valid_password");
     }
     return null;

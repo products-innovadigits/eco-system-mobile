@@ -51,7 +51,7 @@ class CustomTextField extends StatefulWidget {
     this.isReadOnly = false,
     this.isVisibleText = true,
     this.keyboardAction = TextInputAction.next,
-    this.autoValidateMode = AutovalidateMode.onUserInteraction,
+    this.autoValidateMode = AutovalidateMode.disabled,
     this.suffixSvg,
     this.validation,
     this.label,

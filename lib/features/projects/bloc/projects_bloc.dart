@@ -71,7 +71,7 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
 
       ProjectsModel res = await ProjectsRepo.getProjects(_engine);
 
-      if (res.data!.isNotEmpty) {
+      if (res.data != null&&res.data!.isNotEmpty) {
         for (var objective in res.data ?? []) {
           _cards.add(ProjectCard(project: objective));
         }

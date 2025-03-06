@@ -80,16 +80,11 @@ class ObjectivesView extends StatelessWidget {
                       );
                     }
                     if (state is Empty || state is Error) {
-                      return ListAnimator(
-                        customPadding: EdgeInsets.symmetric(horizontal: 16.w),
-                        data: [
-                          EmptyContainer(
-                            txt: allTranslations.text("oops"),
-                            subText: allTranslations.text(state is Error
-                                ? "something_went_wrong"
-                                : "there_is_no_data"),
-                          ),
-                        ],
+                      return EmptyContainer(
+                        txt: allTranslations.text("oops"),
+                        subText: allTranslations.text(state is Error
+                            ? "something_went_wrong"
+                            : "there_is_no_data"),
                       );
                     } else {
                       return SizedBox();

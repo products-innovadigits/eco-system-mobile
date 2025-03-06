@@ -13,7 +13,7 @@ class EmptyContainer extends StatelessWidget {
       {super.key,
       this.img,
       this.txt,
-      this.remain = 0.0,
+      this.remain = 200.0,
       this.subText,
       this.subStyle});
   @override
