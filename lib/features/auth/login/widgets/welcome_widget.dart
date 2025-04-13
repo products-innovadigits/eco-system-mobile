@@ -16,7 +16,7 @@ class WelcomeWidget extends StatelessWidget {
         allTranslations.text("login_header"),
         style: AppTextStyles.w700.copyWith(
           color: Styles.HEADER,
-          fontSize: 32,
+          fontSize: 28,
         ),
       ),
       SizedBox(height: 12.h),

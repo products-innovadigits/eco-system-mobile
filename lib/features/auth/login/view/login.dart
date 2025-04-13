@@ -25,11 +25,10 @@ class Login extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
           toolbarHeight: 100.h,
-          leadingWidth: 100.w,
+          leadingWidth: 80.w,
           leading: Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
-            child: Styles.logo(
-                color: Styles.PRIMARY_COLOR, width: 50.w, height: 50.w),
+            child: Styles.logo(color: Styles.PRIMARY_COLOR),
           )),
       body: SafeArea(
         child: BlocProvider(
@@ -48,10 +47,12 @@ class Login extends StatelessWidget {
                             const WelcomeWidget(),
                             SizedBox(height: 32.h),
                             CustomTextField(
-                              hint: allTranslations.text("enter_username"),
-                              label: allTranslations.text("username"),
-                              type: TextInputType.text,
-                              validation: NameValidator.nameValidator,
+                              // hint: allTranslations.text("enter_username"),
+                              hint: allTranslations.text("enter_email"),
+                              // label: allTranslations.text("username"),
+                              label: allTranslations.text("email"),
+                              type: TextInputType.emailAddress,
+                              // validation: EmailValidator.emailValidator,
                               controller: context.read<LoginBloc>().mailTEC,
                             ),
                             SizedBox(height: 16.h),
@@ -91,8 +92,8 @@ class Login extends StatelessWidget {
                                     },
                                     child: Text(
                                       allTranslations.text("forget_password"),
-                                      style: AppTextStyles.w500.copyWith(
-                                        color: Styles.PRIMARY_COLOR,
+                                      style: AppTextStyles.w700.copyWith(
+                                        color: Styles.HEADER,
                                         fontSize: 13,
                                         decoration: TextDecoration.underline,
                                         decorationColor: Styles.PRIMARY_COLOR,

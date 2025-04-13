@@ -54,6 +54,7 @@ class SharedHelper {
     writeData(CachingKey.SKIP, true);
     writeData(CachingKey.IS_LOGIN, true);
     writeData(CachingKey.USER, json.encode(model.toJson()));
+    log('SAVE USER INFO >>> ${json.encode(model.toJson())}');
     writeData(
         CachingKey.REMEMBER_ME,
         jsonEncode({

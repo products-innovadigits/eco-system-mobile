@@ -11,16 +11,13 @@ class HomeBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            SizedBox(height: context.h * 0.15),
-            ObjectivePercentageSection(),
-            ProjectsProgressSection(),
-            ProjectCategoryProgressSection(),
-          ],
-        ),
+      child: Column(
+        children: [
+          SizedBox(height: context.h * 0.15),
+          ObjectivePercentageSection(),
+          ProjectsProgressSection(),
+          ProjectCategoryProgressSection(),
+        ],
       ),
     );
   }

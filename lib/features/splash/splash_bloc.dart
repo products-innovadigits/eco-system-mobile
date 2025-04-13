@@ -14,7 +14,7 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
   }
 
   Future<void> onClick(Click event, Emitter<AppState> emit) async {
-    Future.delayed(const Duration(milliseconds: 1800), () async {
+    Future.delayed(const Duration(milliseconds: 2000), () async {
       ///Ask Notification Permission
       PermissionHandler.checkNotificationsPermission();
 

@@ -45,7 +45,8 @@ class HomeHeader extends StatelessWidget {
                               children: [
                                 TextSpan(
                                   text:
-                                      " ${allTranslations.text("mr/")} ${UserBloc.instance.user?.name ?? "Name"} ${DateTime.now().format("a") == "AM" ? "🌤" : "🌤"}",
+                                      // " ${allTranslations.text("mr/")} ${UserBloc.instance.user?.name ?? "Name"} ${DateTime.now().format("a") == "AM" ? "🌤" : "🌤"}",
+                                      " ${UserBloc.instance.user?.welcomeMessage} ${DateTime.now().format("a") == "AM" ? "🌤" : "🌤"}",
                                   style: AppTextStyles.w700.copyWith(
                                       fontSize: 24, color: Styles.WHITE_COLOR),
                                 )

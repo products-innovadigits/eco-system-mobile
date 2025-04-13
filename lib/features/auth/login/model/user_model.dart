@@ -3,6 +3,7 @@ import 'package:eco_system/network/mapper.dart';
 class UserModel extends SingleMapper {
   int? id;
   String? accessToken;
+  String? welcomeMessage;
   String? name;
   String? email;
   String? avatar;
@@ -10,6 +11,7 @@ class UserModel extends SingleMapper {
   UserModel({
     this.id,
     this.accessToken,
+    this.welcomeMessage,
     this.name,
     this.email,
     this.avatar,
@@ -17,6 +19,7 @@ class UserModel extends SingleMapper {
 
   UserModel.fromJson(Map<String, dynamic> json) {
     accessToken = json['tokken'];
+    welcomeMessage = json['wellcomeMessage'];
     name = json['name'];
     email = json['email'];
     avatar = json['avatar'];
@@ -25,6 +28,7 @@ class UserModel extends SingleMapper {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['tokken'] = accessToken;
+    data['wellcomeMessage'] = welcomeMessage;
     data['name'] = name;
     data['email'] = email;
     data['avatar'] = avatar;

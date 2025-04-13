@@ -9,11 +9,14 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          HomeHeader(),
-          HomeBody(),
-        ],
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Stack(
+          children: [
+            HomeHeader(),
+            HomeBody(),
+          ],
+        ),
       ),
     );
   }
