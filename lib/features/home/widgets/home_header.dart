@@ -1,5 +1,6 @@
 import 'package:eco_system/bloc/user_bloc.dart';
 import 'package:eco_system/core/app_state.dart';
+import 'package:eco_system/core/assets.gen.dart';
 import 'package:eco_system/helpers/text_styles.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
 import 'package:eco_system/utility/extensions.dart';
@@ -20,9 +21,9 @@ class HomeHeader extends StatelessWidget {
           width: context.w,
           height: context.h * 0.3,
           padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 24.h),
-          decoration: const BoxDecoration(
+          decoration:  BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage("assets/images/new_home_header_bg.png"),
+                  image: AssetImage(Assets.images.newHomeHeaderBg.path),
                   fit: BoxFit.cover)),
           child: SafeArea(
             child: Column(

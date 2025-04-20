@@ -1,5 +1,6 @@
 import 'package:eco_system/core/app_event.dart';
 import 'package:eco_system/core/app_state.dart';
+import 'package:eco_system/core/assets.gen.dart';
 import 'package:eco_system/features/ats/bloc/jobs_bloc.dart';
 import 'package:eco_system/features/ats/view/sections/candidate/candidate_stages_list_section.dart';
 import 'package:eco_system/features/ats/view/widgets/jobs/job_details_widget.dart';
@@ -42,7 +43,7 @@ class JobsListSection extends StatelessWidget {
                             JobDetailsWidget(hasStatus: hasStatus),
                             Row(
                               children: [
-                                Images(image: 'assets/svgs/multi-user.svg'),
+                                Images(image: Assets.svgs.multiUser.path),
                                 SizedBox(width: 8.w),
                                 Text(
                                   '32 مرشح نشط في الأنابيب',

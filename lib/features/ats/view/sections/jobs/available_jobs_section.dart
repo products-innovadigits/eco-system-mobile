@@ -1,5 +1,6 @@
 import 'package:eco_system/components/shimmer/custom_shimmer.dart';
 import 'package:eco_system/core/app_state.dart';
+import 'package:eco_system/core/app_strings/locale_keys.dart';
 import 'package:eco_system/features/ats/view/sections/jobs/jobs_list_section.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
 import 'package:eco_system/navigation/custom_navigation.dart';
@@ -36,7 +37,7 @@ class AvailableJobsSection extends StatelessWidget {
               child: Column(
                 children: [
                   SectionTitle(
-                    title: allTranslations.text("available_jobs"),
+                    title: allTranslations.text(LocaleKeys.available_jobs),
                     withView: true,
                     onViewTap: (){
                       CustomNavigator.push(Routes.JOBS);

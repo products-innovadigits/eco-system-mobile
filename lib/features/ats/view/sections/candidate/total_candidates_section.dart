@@ -1,3 +1,4 @@
+import 'package:eco_system/core/assets.gen.dart';
 import 'package:eco_system/helpers/styles.dart';
 import 'package:eco_system/helpers/text_styles.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
@@ -46,8 +47,8 @@ class TotalCandidatesSection extends StatelessWidget {
                           shape: BoxShape.circle,
                           border: Border.all(color: Styles.WHITE_COLOR),
                           image: DecorationImage(
-                              image: AssetImage('assets/images/avatar.png'),
-                              fit: BoxFit.contain)),
+                              image: AssetImage(Assets.images.avatar.path),
+                              fit: BoxFit.fill)),
                       child: index == 4
                           ? Container(
                               width: 32.w,

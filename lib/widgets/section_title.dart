@@ -31,7 +31,7 @@ class SectionTitle extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           if (icon != null) ...[
-            Images(image: 'assets/svgs/$icon.svg'),
+            Images(image: icon!),
             16.sw,
           ],
           Expanded(

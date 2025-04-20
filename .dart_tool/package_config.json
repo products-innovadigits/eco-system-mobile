@@ -3,9 +3,9 @@
   "packages": [
     {
       "name": "_fe_analyzer_shared",
-      "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/_fe_analyzer_shared-80.0.0",
+      "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/_fe_analyzer_shared-82.0.0",
       "packageUri": "lib/",
-      "languageVersion": "3.3"
+      "languageVersion": "3.5"
     },
     {
       "name": "_flutterfire_internals",
@@ -15,9 +15,9 @@
     },
     {
       "name": "analyzer",
-      "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/analyzer-7.3.0",
+      "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/analyzer-7.4.1",
       "packageUri": "lib/",
-      "languageVersion": "3.3"
+      "languageVersion": "3.5"
     },
     {
       "name": "animations",
@@ -39,7 +39,7 @@
     },
     {
       "name": "archive",
-      "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/archive-4.0.5",
+      "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/archive-4.0.6",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -471,7 +471,7 @@
     },
     {
       "name": "flutter_plugin_android_lifecycle",
-      "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.27",
+      "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.28",
       "packageUri": "lib/",
       "languageVersion": "3.6"
     },
@@ -495,7 +495,7 @@
     },
     {
       "name": "flutter_svg",
-      "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_svg-2.0.17",
+      "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_svg-2.1.0",
       "packageUri": "lib/",
       "languageVersion": "3.4"
     },
@@ -585,7 +585,7 @@
     },
     {
       "name": "google_maps_flutter_android",
-      "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/google_maps_flutter_android-2.16.0",
+      "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/google_maps_flutter_android-2.16.1",
       "packageUri": "lib/",
       "languageVersion": "3.6"
     },
@@ -681,7 +681,7 @@
     },
     {
       "name": "image_picker_android",
-      "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/image_picker_android-0.8.12+22",
+      "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/image_picker_android-0.8.12+23",
       "packageUri": "lib/",
       "languageVersion": "3.6"
     },
@@ -855,7 +855,7 @@
     },
     {
       "name": "path_provider_android",
-      "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/path_provider_android-2.2.16",
+      "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/path_provider_android-2.2.17",
       "packageUri": "lib/",
       "languageVersion": "3.6"
     },
@@ -957,7 +957,7 @@
     },
     {
       "name": "posix",
-      "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/posix-6.0.1",
+      "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/posix-6.0.2",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -1023,7 +1023,7 @@
     },
     {
       "name": "shared_preferences_android",
-      "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/shared_preferences_android-2.4.9",
+      "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/shared_preferences_android-2.4.10",
       "packageUri": "lib/",
       "languageVersion": "3.6"
     },
@@ -1227,7 +1227,7 @@
     },
     {
       "name": "url_launcher_android",
-      "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/url_launcher_android-6.3.15",
+      "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/url_launcher_android-6.3.16",
       "packageUri": "lib/",
       "languageVersion": "3.6"
     },
@@ -1317,13 +1317,13 @@
     },
     {
       "name": "web_socket",
-      "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/web_socket-0.1.6",
+      "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/web_socket-1.0.0",
       "packageUri": "lib/",
-      "languageVersion": "3.3"
+      "languageVersion": "3.4"
     },
     {
       "name": "web_socket_channel",
-      "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/web_socket_channel-3.0.2",
+      "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/web_socket_channel-3.0.3",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
@@ -1358,7 +1358,7 @@
       "languageVersion": "2.19"
     }
   ],
-  "generated": "2025-04-16T07:54:44.390204Z",
+  "generated": "2025-04-20T14:00:35.993828Z",
   "generator": "pub",
   "generatorVersion": "3.6.1",
   "flutterRoot": "file:///D:/Flutter/flutter_windows_3.27.2-stable/flutter",
