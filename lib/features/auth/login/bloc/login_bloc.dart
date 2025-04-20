@@ -1,17 +1,17 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:eco_system/bloc/user_bloc.dart';
 import 'package:eco_system/core/app_core.dart';
 import 'package:eco_system/core/app_event.dart';
-import 'package:eco_system/core/app_notification.dart';
 import 'package:eco_system/core/app_state.dart';
 import 'package:eco_system/features/auth/login/model/user_model.dart';
 import 'package:eco_system/features/auth/login/repo/login_repo.dart';
 import 'package:eco_system/helpers/shared_helper.dart';
 import 'package:eco_system/navigation/custom_navigation.dart';
 import 'package:eco_system/navigation/routes.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
-import '../../../../helpers/styles.dart';
+
 import '../../../../helpers/translation/all_translation.dart';
 
 class LoginBloc extends Bloc<AppEvent, AppState> {
@@ -22,7 +22,9 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
   }
 
   final rememberMe = BehaviorSubject<bool?>();
+
   Function(bool?) get updateRememberMe => rememberMe.sink.add;
+
   Stream<bool?> get rememberMeStream => rememberMe.stream.asBroadcastStream();
 
   final globalKey = GlobalKey<FormState>();
@@ -44,12 +46,9 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
       );
       if (res.statusCode == 200) {
         UserModel model = UserModel.fromJson(res.data['data']);
-
-        SharedHelper.sharedHelper!.saveUser(
-          model,
-          remember: rememberMe.valueOrNull!,
-          password: passwordTEC.text.trim(),
-        );
+        await SharedHelper.sharedHelper!.saveUser(model).then((v) {
+          UserBloc.instance.add(Click());
+        });
         CustomNavigator.push(Routes.MAIN_PAGE, clean: true, arguments: 0);
         AppCore.successMessage(
             allTranslations.text('you_logged_in_successfully'));

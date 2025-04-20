@@ -1,7 +1,6 @@
-import 'package:eco_system/helpers/translation/all_translation.dart';
-import 'package:flutter/material.dart';
 import 'package:eco_system/utility/extensions.dart';
-import 'package:eco_system/widgets/images.dart';
+import 'package:eco_system/widgets/nav_app_item.dart';
+import 'package:flutter/material.dart';
 
 class NavApp extends StatefulWidget {
   const NavApp({
@@ -9,6 +8,7 @@ class NavApp extends StatefulWidget {
     required this.index,
     this.onSelect,
   });
+
   final int index;
   final Function(int)? onSelect;
 
@@ -30,7 +30,7 @@ class _NavAppState extends State<NavApp> {
       currentIndex: widget.index,
       selectedLabelStyle: TextStyle(
           color: context.theme.primaryColor,
-          fontSize: 13,
+          fontSize: 11,
           fontWeight: FontWeight.w600),
       unselectedLabelStyle: TextStyle(
         color: context.theme.primaryColorDark,
@@ -40,32 +40,40 @@ class _NavAppState extends State<NavApp> {
       selectedItemColor: context.theme.primaryColor,
       items: [
         BottomNavigationBarItem(
-          icon: Images(
-            image: 'assets/svgs/home.svg',
-            color: _selectedColor(0),
-          ),
-          label: allTranslations.text("home"),
+          icon: NavAppItem(
+              title: 'home',
+              isSelected: widget.index == 0,
+              icon: 'home',
+              activeIcon: 'home-active',
+              color: _selectedColor(0)),
+          label: '',
         ),
         BottomNavigationBarItem(
-          icon: Images(
-            image: 'assets/svgs/reports.svg',
-            color: _selectedColor(1),
-          ),
-          label: allTranslations.text("reports"),
+          icon: NavAppItem(
+              title: 'reports',
+              isSelected: widget.index == 1,
+              icon: 'reports',
+              activeIcon: 'reports',
+              color: _selectedColor(1)),
+          label: '',
         ),
         BottomNavigationBarItem(
-          icon: Images(
-            image: 'assets/svgs/notification.svg',
-            color: _selectedColor(2),
-          ),
-          label: allTranslations.text("notifications"),
+          icon: NavAppItem(
+              title: 'notifications',
+              isSelected: widget.index == 2,
+              icon: 'notification',
+              activeIcon: 'notification',
+              color: _selectedColor(2)),
+          label: '',
         ),
         BottomNavigationBarItem(
-          icon: Images(
-            image: 'assets/svgs/more.svg',
-            color: _selectedColor(3),
-          ),
-          label: allTranslations.text("menu"),
+          icon: NavAppItem(
+              title: 'menu',
+              isSelected: widget.index == 3,
+              icon: 'more',
+              activeIcon: 'more',
+              color: _selectedColor(3)),
+          label: '',
         ),
       ],
     );

@@ -7,8 +7,21 @@ abstract class AppEvent {
 class Click extends AppEvent {
   Click({Object? arguments}) : super(arguments);
 }
+
+class Select extends AppEvent {
+  Select({Object? arguments}) : super(arguments);
+}
+
+class SelectTalent extends AppEvent {
+  SelectTalent({Object? arguments}) : super(arguments);
+}
+
 class Remember extends AppEvent {
   Remember({Object? arguments}) : super(arguments);
+}
+
+class Expand extends AppEvent {
+  Expand({Object? arguments}) : super(arguments);
 }
 
 class GetTenants extends AppEvent {
@@ -141,4 +154,28 @@ class ResendCode extends AppEvent {
 
 class AddToFav extends AppEvent {
   AddToFav({Object? arguments}) : super(arguments);
+}
+
+class InitCandidates extends AppEvent {
+  InitCandidates({Object? arguments}) : super(arguments);
+}
+
+class ExpandSkills extends AppEvent {
+  ExpandSkills({Object? arguments}) : super(arguments);
+}
+
+class PickSkill extends AppEvent {
+  PickSkill({Object? arguments}) : super(arguments);
+}
+
+class RemoveSkill extends AppEvent {
+  RemoveSkill({Object? arguments}) : super(arguments);
+}
+
+class Search extends AppEvent {
+  Search({Object? arguments}) : super(arguments);
+}
+
+class CancelSearch extends AppEvent {
+  CancelSearch({Object? arguments}) : super(arguments);
 }

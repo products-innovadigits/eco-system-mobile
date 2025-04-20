@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:eco_system/features/intro/view/onboarding.dart';
 import 'package:eco_system/widgets/nav_app.dart';
+import 'package:flutter/material.dart';
 
 import 'home/view/home_view.dart';
 

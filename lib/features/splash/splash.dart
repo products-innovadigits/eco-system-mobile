@@ -1,12 +1,12 @@
+import 'package:eco_system/components/animated_widget.dart';
+import 'package:eco_system/core/app_event.dart';
 import 'package:eco_system/core/app_state.dart';
 import 'package:eco_system/features/splash/splash_bloc.dart';
+import 'package:eco_system/helpers/styles.dart';
 import 'package:eco_system/utility/extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:eco_system/core/app_event.dart';
-import 'package:eco_system/components/animated_widget.dart';
-import 'package:eco_system/helpers/styles.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../helpers/text_styles.dart';
 

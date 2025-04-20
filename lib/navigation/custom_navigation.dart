@@ -1,11 +1,16 @@
-import 'package:eco_system/features/objectives/view/objectives_view.dart';
-import 'package:eco_system/features/projects/view/projects_view.dart';
-import 'package:flutter/material.dart';
+import 'package:eco_system/features/ats/view/screens/candidates.dart';
+import 'package:eco_system/features/ats/view/screens/jobs.dart';
+import 'package:eco_system/features/ats/view/screens/talent_pool.dart';
+import 'package:eco_system/features/auth/login/view/login.dart';
 import 'package:eco_system/features/auth/otp/view/otp_view.dart';
 import 'package:eco_system/features/intro/view/intro_view.dart';
-import 'package:eco_system/features/auth/login/view/login.dart';
-import 'package:eco_system/features/splash/splash.dart';
 import 'package:eco_system/features/main_page.dart';
+import 'package:eco_system/features/objectives/view/objectives_view.dart';
+import 'package:eco_system/features/projects/view/projects_view.dart';
+import 'package:eco_system/features/search/view/screens/search.dart';
+import 'package:eco_system/features/splash/splash.dart';
+import 'package:flutter/material.dart';
+
 import '../features/intro/view/onboarding.dart';
 import '../features/objective_details/view/objective_details_view.dart';
 import '../features/project_details/view/project_details_view.dart';
@@ -37,6 +42,17 @@ abstract class CustomNavigator {
         return pageRouteBuilder(const IntroView());
       case Routes.LOGIN:
         return pageRouteBuilder(const Login());
+      case Routes.JOBS:
+        return pageRouteBuilder(const Jobs());
+      case Routes.TALENT_POOL:
+        return pageRouteBuilder(const TalentPool());
+      case Routes.SEARCH:
+        return pageRouteBuilder(const SearchScreen());
+      case Routes.CANDIDATES:
+        return pageRouteBuilder(Candidates(
+            selectedStage: settings.arguments != null
+                ? settings.arguments as String
+                : ''));
       case Routes.OTP:
         return pageRouteBuilder(const OtpView());
 

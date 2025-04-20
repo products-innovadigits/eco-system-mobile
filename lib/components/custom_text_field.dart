@@ -107,7 +107,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       borderRadius: BorderRadius.circular(8),
       borderSide: BorderSide(
         style: BorderStyle.solid,
-        color: widget.borderColor ?? Styles.PRIMARY_COLOR,
+        color: widget.borderColor ?? Styles.BORDER,
         width: 1,
       ),
     );
@@ -116,7 +116,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       borderRadius: BorderRadius.circular(8),
       borderSide: BorderSide(
         style: BorderStyle.solid,
-        color: widget.borderColor ?? Styles.PRIMARY_COLOR,
+        color: widget.borderColor ?? Styles.BORDER,
       ),
     );
 
@@ -221,7 +221,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   fontWeight: FontWeight.w400,
                 ),
                 hintStyle: TextStyle(
-                  fontSize: 14,
+                  fontSize: 12,
                   color: widget.hintColor ?? Styles.HINT,
                   fontWeight: FontWeight.w400,
                 ),
@@ -275,7 +275,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                       ))
                     : _enabledBorders.copyWith(
                         borderSide: BorderSide(
-                            color: widget.borderColor ?? Styles.HINT,
+                            color: widget.borderColor ?? Styles.BORDER,
                             // (widget.controller?.text.isNotEmpty ?? false)
                             //     ? Styles.PRIMARY_COLOR
                             //     : Styles.HINT_COLOR,

@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:eco_system/utility/extensions.dart';
+import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class PinCode extends StatelessWidget {

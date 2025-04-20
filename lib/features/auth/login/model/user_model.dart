@@ -20,18 +20,18 @@ class UserModel extends SingleMapper {
   UserModel.fromJson(Map<String, dynamic> json) {
     accessToken = json['tokken'];
     welcomeMessage = json['wellcomeMessage'];
-    name = json['name'];
-    email = json['email'];
-    avatar = json['avatar'];
+    name = json['name'] ?? '';
+    email = json['email'] ?? '';
+    avatar = json['avatar'] ?? '';
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['tokken'] = accessToken;
     data['wellcomeMessage'] = welcomeMessage;
-    data['name'] = name;
-    data['email'] = email;
-    data['avatar'] = avatar;
+    data['name'] = name ?? '';
+    data['email'] = email ?? '';
+    data['avatar'] = avatar ?? '';
     return data;
   }
 

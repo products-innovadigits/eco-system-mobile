@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
+
 import '../navigation/custom_navigation.dart';
 
 extension StringEx on String {
@@ -60,8 +61,11 @@ extension StringEx on String {
 
 extension NumEx on int {
   Duration get hours => Duration(hours: this);
+
   Duration get minutes => Duration(minutes: this);
+
   Duration get seconds => Duration(seconds: this);
+
   Duration get milliseconds => Duration(milliseconds: this);
 }
 
@@ -112,9 +116,11 @@ extension ContextEX on BuildContext {
   double get h => MediaQuery.of(this).size.height;
 
   double get w => MediaQuery.of(this).size.width;
+
   ColorScheme get color => Theme.of(this).colorScheme;
 
   ThemeData get theme => Theme.of(this);
+
   TextTheme get textTheme => Theme.of(this).textTheme;
 }
 
@@ -144,6 +150,7 @@ extension ScreenScale on num {
   double get w =>
       MediaQuery.of(CustomNavigator.navigatorState.currentContext!).size.width *
       (toDouble() / 375);
+
   double get h =>
       MediaQuery.of(CustomNavigator.navigatorState.currentContext!)
           .size
@@ -151,4 +158,16 @@ extension ScreenScale on num {
       (toDouble() / 812);
 }
 
+extension ScreenScaleWidget on num {
+  Widget get sw => SizedBox(
+      width: MediaQuery.of(CustomNavigator.navigatorState.currentContext!)
+              .size
+              .width *
+          (toDouble() / 375));
 
+  Widget get sh => SizedBox(
+      height: MediaQuery.of(CustomNavigator.navigatorState.currentContext!)
+              .size
+              .height *
+          (toDouble() / 812));
+}

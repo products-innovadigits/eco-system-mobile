@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:eco_system/helpers/media_query_helper.dart';
 import 'package:eco_system/navigation/custom_navigation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 void showLoadingDialog() {
   showDialog(

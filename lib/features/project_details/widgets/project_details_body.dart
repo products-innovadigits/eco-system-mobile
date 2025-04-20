@@ -9,8 +9,6 @@ import '../../../helpers/styles.dart';
 import '../../../helpers/text_styles.dart';
 import '../../../helpers/translation/all_translation.dart';
 import '../../../widgets/custom_expansion_card.dart';
-import '../../../widgets/section_title.dart';
-import '../../objective_details/model/objective_chart_model.dart';
 import '../../project_categories_progress/model/project_progress_model.dart';
 import '../../project_categories_progress/widgets/project_category_h_bar_chart.dart';
 import '../../projects/widgets/project_card_content.dart';

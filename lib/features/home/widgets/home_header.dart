@@ -19,10 +19,10 @@ class HomeHeader extends StatelessWidget {
         return Container(
           width: context.w,
           height: context.h * 0.3,
-          padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 16.h),
+          padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 24.h),
           decoration: const BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage("assets/images/home_header_bg.png"),
+                  image: AssetImage("assets/images/new_home_header_bg.png"),
                   fit: BoxFit.cover)),
           child: SafeArea(
             child: Column(
@@ -34,24 +34,29 @@ class HomeHeader extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          RichText(
-                            text: TextSpan(
-                              text: allTranslations.text(
-                                  DateTime.now().format("a") == "AM"
-                                      ? "morning"
-                                      : "evening"),
-                              style: AppTextStyles.w700.copyWith(
-                                  fontSize: 24, color: Styles.WHITE_COLOR),
-                              children: [
-                                TextSpan(
-                                  text:
-                                      // " ${allTranslations.text("mr/")} ${UserBloc.instance.user?.name ?? "Name"} ${DateTime.now().format("a") == "AM" ? "🌤" : "🌤"}",
-                                      " ${UserBloc.instance.user?.welcomeMessage} ${DateTime.now().format("a") == "AM" ? "🌤" : "🌤"}",
-                                  style: AppTextStyles.w700.copyWith(
-                                      fontSize: 24, color: Styles.WHITE_COLOR),
-                                )
-                              ],
-                            ),
+                          // RichText(
+                          //   text: TextSpan(
+                          //     text: allTranslations.text(
+                          //         DateTime.now().format("a") == "AM"
+                          //             ? "morning"
+                          //             : "evening"),
+                          //     style: AppTextStyles.w700.copyWith(
+                          //         fontSize: 24, color: Styles.WHITE_COLOR),
+                          //     children: [
+                          //       TextSpan(
+                          //         text:
+                          //             // " ${allTranslations.text("mr/")} ${UserBloc.instance.user?.name ?? "Name"} ${DateTime.now().format("a") == "AM" ? "🌤" : "🌤"}",
+                          //             " ${UserBloc.instance.user?.welcomeMessage} ${DateTime.now().format("a") == "AM" ? "🌤" : "🌤"}",
+                          //         style: AppTextStyles.w700.copyWith(
+                          //             fontSize: 24, color: Styles.WHITE_COLOR),
+                          //       )
+                          //     ],
+                          //   ),
+                          // ),
+                          Text(
+                            " ${UserBloc.instance.user?.welcomeMessage} ${DateTime.now().format("a") == "AM" ? "🌤" : "🌤"}",
+                            style: AppTextStyles.w700.copyWith(
+                                fontSize: 24, color: Styles.WHITE_COLOR),
                           ),
                           SizedBox(height: 4.h),
                           Text(

@@ -1,0 +1,40 @@
+import 'package:eco_system/core/assets.gen.dart';
+import 'package:eco_system/helpers/styles.dart';
+import 'package:eco_system/helpers/text_styles.dart';
+import 'package:eco_system/helpers/translation/all_translation.dart';
+import 'package:eco_system/navigation/custom_navigation.dart';
+import 'package:eco_system/utility/extensions.dart';
+import 'package:eco_system/widgets/images.dart';
+import 'package:flutter/material.dart';
+
+class BottomSheetHeader extends StatelessWidget {
+  final String title;
+  final VoidCallback onReset;
+
+  const BottomSheetHeader(
+      {super.key, required this.title, required this.onReset});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        GestureDetector(
+          onTap: () => CustomNavigator.pop(),
+          child: Images(
+              image: Assets.svgs.arrowBack.path,
+              color: Styles.DETAILS,
+              height: 24.h,
+              width: 24.w),
+        ),
+        4.sw,
+        Text(
+          allTranslations.text(title),
+          style: AppTextStyles.w700.copyWith(fontSize: 16),
+        ),
+        const Spacer(),
+        GestureDetector(
+            onTap: onReset, child: Images(image: Assets.svgs.closeSquare.path)),
+      ],
+    );
+  }
+}

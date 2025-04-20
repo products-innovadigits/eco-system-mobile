@@ -14,9 +14,14 @@ abstract class Styles {
   static const Color ACTIVE = Color(0xFF2FAB86);
   static const Color IN_ACTIVE = Color(0xFFDB5353);
   static const Color PENDING = Color(0xFFA6840A);
-  static const Color SCAFFOLD_BG = Color(0xFFE5E5E5);
+  static const Color SCAFFOLD_BG = Color(0xffFCFCFC);
   static const Color HEADER = Color(0xFF000000);
+  static const Color BORDER = Color(0xFFF4F4F4);
+  static const Color ICON_GREY_COLOR = Color(0xFFCBCBCB);
 
+  static const Color TEXT_COLOR = Color(0xff00403C);
+  static const Color TEXT_BLUE_DARK_COLOR = Color(0xff001A6D);
+  static const Color SUB_TEXT_DARK_COLOR = Color(0xffB4B4B4);
   static const Color TITLE = Color(0xFF08131C);
   static const Color PLACE_HOLDER = Color(0xFF7F8B93);
   static const Color FILL_COLOR = Color(0xFFFAFAFA);
@@ -76,7 +81,7 @@ abstract class Styles {
       color: Styles.HEADER,
       fontSize: 12,
       fontWeight: FontWeight.w600,
-      fontFamily: 'text');
+      fontFamily: 'ar');
   static const TextStyle SUB_HEADER_STYLE =
       TextStyle(color: Styles.TITLE, fontSize: 12, fontWeight: FontWeight.w600);
   static TextStyle PLACE_HOLDER_STYLE({fontFamily, fontWeight, size}) =>
@@ -113,11 +118,11 @@ abstract class Styles {
   static Color statusColors(String value) {
     switch (value) {
       case "مكتمل":
-        return Color(0xFF16A567);
-      case "متقدم":
         return PRIMARY_COLOR;
+      case "متقدم":
+        return Color(0xFF376BAD);
       case "متأخر":
-        return SECONDARY_COLOR;
+        return Color(0xFFF39C12);
       default:
         return PRIMARY_COLOR;
     }

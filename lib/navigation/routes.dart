@@ -12,6 +12,10 @@ class Routes {
   static const PROFILE = "PROFILE";
   static const EDIT_PASSWORD = "EDIT_PASSWORD";
 
+  static const SEARCH = "SEARCH";
+  static const TALENT_POOL = "TALENT_POOL";
+  static const JOBS = "JOBS";
+  static const CANDIDATES = "CANDIDATES";
   static const OBJECTIVES = "OBJECTIVES";
   static const OBJECTIVE_DETAILS = "OBJECTIVE_DETAILS";
   static const PROJECTS = "PROJECTS";

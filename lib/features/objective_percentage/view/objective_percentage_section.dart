@@ -76,7 +76,9 @@ class ObjectivePercentageSection extends StatelessWidget {
                                     text: TextSpan(
                                       text: objectives[i].categoryName,
                                       style: AppTextStyles.w400.copyWith(
-                                          fontSize: 14, color: Styles.HEADER),
+                                          fontFamily: 'ar',
+                                          fontSize: 12,
+                                          color: Styles.HEADER),
                                       children: [
                                         // TextSpan(
                                         //   text: " ${78}",

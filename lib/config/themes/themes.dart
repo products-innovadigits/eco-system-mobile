@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import '../colors/dark_colors.dart';
 import '../colors/light_colors.dart';
 
@@ -22,7 +23,7 @@ ThemeData _buildLightTheme() {
     primaryColorDark: LightColor.primaryDark,
     secondaryHeaderColor: LightColor.secondary,
     canvasColor: LightColor.white,
-    scaffoldBackgroundColor: LightColor.white,
+    scaffoldBackgroundColor: LightColor.scaffoldBg,
     bottomAppBarTheme: const BottomAppBarTheme(
       color: LightColor.white,
       elevation: 10,

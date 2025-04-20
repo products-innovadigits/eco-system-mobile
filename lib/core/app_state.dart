@@ -1,6 +1,7 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
+
 import 'package:eco_system/network/mapper.dart';
+import 'package:flutter/cupertino.dart';
 
 abstract class AppState {
   Map<String, dynamic> toJson();

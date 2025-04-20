@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:eco_system/navigation/custom_navigation.dart';
+import 'package:flutter/material.dart';
 
 class CustomSimpleDialog {
   static parentSimpleDialog({

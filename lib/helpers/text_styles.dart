@@ -1,11 +1,17 @@
+import 'package:eco_system/helpers/styles.dart';
 import 'package:flutter/cupertino.dart';
 
-abstract class AppTextStyles{
-  static const TextStyle SCREEN_TITLE = TextStyle(fontWeight: FontWeight.w700,fontSize: 24);
-  static const TextStyle w800 = TextStyle(fontWeight: FontWeight.w800);
-  static const TextStyle w700 = TextStyle(fontWeight: FontWeight.w700);
-  static const TextStyle w600 = TextStyle(fontWeight: FontWeight.w600);
-  static const TextStyle w500 = TextStyle(fontWeight: FontWeight.w500);
-  static const TextStyle w400 = TextStyle(fontWeight: FontWeight.w400);
-
+abstract class AppTextStyles {
+  static const TextStyle SCREEN_TITLE =
+      TextStyle(fontWeight: FontWeight.w700, fontSize: 24);
+  static const TextStyle w800 =
+      TextStyle(fontWeight: FontWeight.w800, fontFamily: Styles.FONT_AR);
+  static const TextStyle w700 =
+      TextStyle(fontWeight: FontWeight.w700, fontFamily: Styles.FONT_AR);
+  static const TextStyle w600 =
+      TextStyle(fontWeight: FontWeight.w600, fontFamily: Styles.FONT_AR);
+  static const TextStyle w500 =
+      TextStyle(fontWeight: FontWeight.w500, fontFamily: Styles.FONT_AR);
+  static const TextStyle w400 =
+      TextStyle(fontWeight: FontWeight.w400, fontFamily: Styles.FONT_AR);
 }
