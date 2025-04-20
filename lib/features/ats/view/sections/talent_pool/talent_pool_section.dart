@@ -1,5 +1,7 @@
 import 'package:eco_system/components/shimmer/custom_shimmer.dart';
 import 'package:eco_system/core/app_state.dart';
+import 'package:eco_system/core/app_strings/locale_keys.dart';
+import 'package:eco_system/core/assets.gen.dart';
 import 'package:eco_system/features/ats/bloc/talent_pool_bloc.dart';
 import 'package:eco_system/features/ats/view/sections/candidate/total_candidates_section.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
@@ -33,10 +35,10 @@ class TalentPoolSection extends StatelessWidget {
               child: Column(
                 children: [
                   SectionTitle(
-                    title: allTranslations.text("talent_pool"),
+                    title: allTranslations.text(LocaleKeys.talent_pool),
                     subText:
-                        allTranslations.text("candidate_with_future_potential"),
-                    icon: 'triple-user',
+                        allTranslations.text(LocaleKeys.candidate_with_future_potential),
+                    icon: Assets.svgs.tripleUser.path,
                     onViewTap: () {},
                   ),
                   Divider(color: Styles.BORDER_COLOR),
