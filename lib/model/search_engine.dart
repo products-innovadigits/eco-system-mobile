@@ -1,25 +1,20 @@
 class SearchEngine {
-  String? query;
+  dynamic query;
   String? id;
-  int? currentPage;
-  String? filter;
-  Object? object;
-  var baseId = "";
+  int limit;
+  int totalCount;
+  int currentPage;
+  int maxPages;
+
   bool isLoading = true;
-  SearchEngine(
-    this.baseId, {
-    this.query,
+  SearchEngine({
     this.id,
-    this.filter = "",
+    this.query,
+    this.totalCount = 0,
+    this.limit = 10,
+    this.maxPages = 1,
     this.isLoading = true,
     this.currentPage = 0,
-    this.object,
-  });
-  SearchEngine.withNoId({
-    this.query,
-    this.currentPage = 0,
-    this.filter = "",
-    this.object,
   });
 
   updateCurrentPage(int page) => currentPage = page;
@@ -27,7 +22,6 @@ class SearchEngine {
   toJson() {
     Map data = {};
     data["query"] = query;
-    data["baseId"] = baseId;
     data["id"] = id;
     data["current_page"] = currentPage;
     return data;

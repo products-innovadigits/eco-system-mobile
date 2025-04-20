@@ -1,7 +1,9 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
+
 import 'package:eco_system/navigation/custom_navigation.dart';
 import 'package:eco_system/utility/utility.dart';
+import 'package:flutter/material.dart';
+
 import '../components/custom_images.dart';
 import '../helpers/styles.dart';
 import '../helpers/text_styles.dart';
@@ -86,5 +88,18 @@ class AppCore {
       iconName: 'fill-close-circle',
     ),
   );
+
+  static String getMonthName(int monthNumber) {
+    List<String> months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+
+    if (monthNumber < 1 || monthNumber > 12) {
+      return 'Invalid Month';
+    }
+
+    return months[monthNumber - 1];
+  }
 
 }

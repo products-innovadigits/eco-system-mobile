@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:eco_system/features/intro/view/onboarding.dart';
 import 'package:eco_system/widgets/nav_app.dart';
+import 'package:flutter/material.dart';
+
+import 'home/view/home_view.dart';
 
 class MainPage extends StatefulWidget {
   final int index;
@@ -23,15 +24,15 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   Widget fregmant(int index) {
     switch (index) {
       case 0:
-        return Container();
+        return HomeView();
       case 1:
-        return Container();
+        return SizedBox();
       case 2:
-        return Container();
+        return SizedBox();
       case 3:
-        return const OnBoarding();
+        return SizedBox();
       default:
-        return Container();
+        return SizedBox();
     }
   }
 

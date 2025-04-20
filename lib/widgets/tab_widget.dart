@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:eco_system/widgets/images.dart';
 import 'package:eco_system/helpers/styles.dart';
+import 'package:eco_system/widgets/images.dart';
+import 'package:flutter/material.dart';
 
 class TabWidget extends StatelessWidget {
   const TabWidget(this.data, this.isSelected, this.onClick,

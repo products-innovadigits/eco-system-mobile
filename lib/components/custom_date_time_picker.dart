@@ -1,19 +1,19 @@
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:eco_system/bloc/main_app_bloc.dart';
+import 'package:eco_system/components/confirm_bottom_sheet.dart';
 import 'package:eco_system/components/custom_images.dart';
 import 'package:eco_system/core/app_core.dart';
 import 'package:eco_system/core/app_notification.dart';
-import 'package:eco_system/components/confirm_bottom_sheet.dart';
 import 'package:eco_system/helpers/media_query_helper.dart';
-import 'package:eco_system/bloc/main_app_bloc.dart';
-import 'package:eco_system/navigation/custom_navigation.dart';
-import 'package:eco_system/utility/utility.dart';
-import 'package:intl/intl.dart';
 import 'package:eco_system/helpers/styles.dart';
 import 'package:eco_system/helpers/text_helper.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
+import 'package:eco_system/navigation/custom_navigation.dart';
+import 'package:eco_system/utility/utility.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../helpers/text_styles.dart';
 
@@ -68,7 +68,7 @@ class SelectDate extends StatelessWidget {
                       CustomNavigator.pop();
                     }
                   },
-                  list: CupertinoDatePicker(
+                  widget: CupertinoDatePicker(
                     mode: CupertinoDatePickerMode.date,
                     onDateTimeChanged: (value) {
                       date = value;
@@ -184,7 +184,7 @@ class _CustomSelectDateState extends State<CustomSelectDate> {
                   CustomNavigator.pop();
                 }
               },
-              list: CupertinoDatePicker(
+              widget: CupertinoDatePicker(
                 mode: CupertinoDatePickerMode.date,
                 onDateTimeChanged: (value) {
                   date = value;
@@ -295,7 +295,7 @@ class _DashboardSelectDateState extends State<DashboardSelectDate> {
                 CustomNavigator.pop();
               }
             },
-            list: CupertinoDatePicker(
+            widget: CupertinoDatePicker(
               mode: CupertinoDatePickerMode.date,
               onDateTimeChanged: (value) {
                 date = value;

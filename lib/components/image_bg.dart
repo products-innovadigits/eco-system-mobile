@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:eco_system/helpers/media_query_helper.dart';
 import 'package:eco_system/helpers/styles.dart';
+import 'package:flutter/material.dart';
 
 class ImageBG extends StatelessWidget {
   final String? image;

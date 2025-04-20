@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:eco_system/helpers/styles.dart';
+import 'package:flutter/cupertino.dart';
 
 class CustomToggle extends StatefulWidget {
   final String? title;

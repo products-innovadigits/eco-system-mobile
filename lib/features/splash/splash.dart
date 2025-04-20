@@ -1,12 +1,12 @@
+import 'package:eco_system/components/animated_widget.dart';
+import 'package:eco_system/core/app_event.dart';
 import 'package:eco_system/core/app_state.dart';
 import 'package:eco_system/features/splash/splash_bloc.dart';
-import 'package:eco_system/utility/extintions.dart';
-import 'package:flutter/material.dart';
-import 'package:eco_system/core/app_event.dart';
-import 'package:eco_system/components/animated_widget.dart';
 import 'package:eco_system/helpers/styles.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:eco_system/utility/extensions.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../helpers/text_styles.dart';
 
@@ -45,9 +45,10 @@ class _SplashState extends State<Splash> with WidgetsBindingObserver {
             body: Container(
               width: context.w,
               height: context.h,
+              padding: EdgeInsets.only(bottom: context.h * 0.1),
               decoration: const BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage("assets/images/splash_bg.png"),
+                      image: AssetImage("assets/images/new_splash_bg.png"),
                       fit: BoxFit.cover)),
               child: Center(
                 child: Column(
@@ -57,15 +58,16 @@ class _SplashState extends State<Splash> with WidgetsBindingObserver {
                     Styles.logo()
                         .animate()
                         .scale(
-                          begin: const Offset(0.5, 0.5),
-                          end: const Offset(1.0, 1.0),
+                          begin: const Offset(1.0, 1.0),
+                          end: const Offset(0.3, 0.3),
                           duration: 1000.ms,
                           delay: 0.ms,
                           curve: Curves.easeInOut,
+                          alignment: Alignment.bottomCenter,
                         )
                         .then(delay: 200.ms)
                         .shimmer(duration: 1000.ms, curve: Curves.easeInOut),
-                    SizedBox(height: 30.h),
+                    SizedBox(height: 16.h),
                     AnimatedWidgets(
                       durationMilli: 2000,
                       verticalOffset: 0.0,

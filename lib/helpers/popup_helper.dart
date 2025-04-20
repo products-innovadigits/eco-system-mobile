@@ -1,8 +1,9 @@
-import 'package:flutter/cupertino.dart';
+import 'package:eco_system/utility/extensions.dart';
 import 'package:flutter/material.dart';
 
 abstract class PopUpHelper {
-  static showTopSheet({@required BuildContext? context, @required Widget? child}) {
+  static showTopSheet(
+      {@required BuildContext? context, @required Widget? child}) {
     return showGeneralDialog(
       context: context!,
       barrierDismissible: true,
@@ -16,7 +17,10 @@ abstract class PopUpHelper {
             Card(
               child: child,
               elevation: 2,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15))),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(15),
+                      bottomRight: Radius.circular(15))),
             ),
           ],
         );
@@ -38,7 +42,9 @@ abstract class PopUpHelper {
     );
   }
 
-  static showBottomSheet({@required BuildContext? context, @required Widget? child}) {
+  static showBottomSheet(
+      {@required BuildContext? context, @required Widget? child,
+        double? height,}) {
     return showModalBottomSheet(
       context: context!,
       elevation: 2,
@@ -49,8 +55,28 @@ abstract class PopUpHelper {
         ),
       ),
       backgroundColor: Colors.white,
+      isScrollControlled: true,
       builder: (_) {
-        return child!;
+        return Container(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+            constraints: height != null
+                ? BoxConstraints(maxHeight: height)
+                : null,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: context.w * 0.2,
+                  height: 5.h,
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                ),
+                24.sh,
+                child!,
+              ],
+            ));
       },
     );
   }

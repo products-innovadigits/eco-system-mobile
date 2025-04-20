@@ -29,7 +29,7 @@ class CustomTextField extends StatefulWidget {
   final int? minLines;
   final double? borderWidth, prefixImageHeight, prefixImageWidth;
   final List<TextInputFormatter>? inputFormatters;
-  final Color? color, hintColor;
+  final Color? color, hintColor, borderColor;
   final Widget? suffixWidget, prefixWidget;
   final String? init;
   final TextStyle? headStyle;
@@ -51,7 +51,7 @@ class CustomTextField extends StatefulWidget {
     this.isReadOnly = false,
     this.isVisibleText = true,
     this.keyboardAction = TextInputAction.next,
-    this.autoValidateMode = AutovalidateMode.onUserInteraction,
+    this.autoValidateMode = AutovalidateMode.disabled,
     this.suffixSvg,
     this.validation,
     this.label,
@@ -81,6 +81,7 @@ class CustomTextField extends StatefulWidget {
     this.headStyle,
     this.headStart = true,
     this.headSpace = 4,
+    this.borderColor,
   }) : super(key: key);
 
   @override
@@ -88,22 +89,9 @@ class CustomTextField extends StatefulWidget {
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
-  final InputBorder _borders = const OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(14)),
-    borderSide: BorderSide(
-      style: BorderStyle.solid,
-      color: Styles.PRIMARY_COLOR,
-      width: 1,
-    ),
-  );
+  late InputBorder _borders;
 
-  final InputBorder _enabledBorders = const OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(14)),
-    borderSide: BorderSide(
-      style: BorderStyle.solid,
-      color: Styles.PRIMARY_COLOR,
-    ),
-  );
+  late InputBorder _enabledBorders;
 
   bool _isHidden = true;
 
@@ -111,6 +99,28 @@ class _CustomTextFieldState extends State<CustomTextField> {
     setState(() {
       _isHidden = !_isHidden;
     });
+  }
+
+  @override
+  void initState() {
+    _borders = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: BorderSide(
+        style: BorderStyle.solid,
+        color: widget.borderColor ?? Styles.BORDER,
+        width: 1,
+      ),
+    );
+
+    _enabledBorders = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: BorderSide(
+        style: BorderStyle.solid,
+        color: widget.borderColor ?? Styles.BORDER,
+      ),
+    );
+
+    super.initState();
   }
 
   @override
@@ -211,7 +221,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   fontWeight: FontWeight.w400,
                 ),
                 hintStyle: TextStyle(
-                  fontSize: 14,
+                  fontSize: 12,
                   color: widget.hintColor ?? Styles.HINT,
                   fontWeight: FontWeight.w400,
                 ),
@@ -265,7 +275,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                       ))
                     : _enabledBorders.copyWith(
                         borderSide: BorderSide(
-                            color: Styles.HINT,
+                            color: widget.borderColor ?? Styles.BORDER,
                             // (widget.controller?.text.isNotEmpty ?? false)
                             //     ? Styles.PRIMARY_COLOR
                             //     : Styles.HINT_COLOR,
@@ -278,7 +288,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     : _borders.copyWith(
                         borderSide: BorderSide(
                         width: widget.borderWidth ?? 1,
-                        color: Styles.HINT,
+                        color: widget.borderColor ?? Styles.HINT,
                       )),
                 focusedBorder: _borders.copyWith(
                     borderSide: widget.addBorder

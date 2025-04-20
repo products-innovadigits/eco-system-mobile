@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:eco_system/helpers/media_query_helper.dart';
 import 'package:intl/intl.dart';
 
 import 'translation/all_translation.dart';

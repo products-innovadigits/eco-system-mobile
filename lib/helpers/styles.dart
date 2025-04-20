@@ -4,19 +4,25 @@ import '../bloc/main_app_bloc.dart';
 
 abstract class Styles {
   static const Color RED_CHART_COLOR = Color(0xffE24F4F);
-  static const Color PRIMARY_COLOR = Color(0xff2b6c9f);
-  static const Color ACCENT_PRIMARY_COLOR = Color(0xffF7F1FC);
-  static const Color ACCENT_COLOR = Color(0xFF70EEC8);
+  // static const Color PRIMARY_COLOR = Color(0xff2b6c9f);
+  static const Color PRIMARY_COLOR = Color(0xff009990);
+  static const Color SECONDARY_COLOR = Color(0xffF39C12);
+  static const Color ACCENT_PRIMARY_COLOR = Color(0xff615E83);
   static const Color FIELD_BORDER = Color(0xFFF9F9FA);
   static const Color SUB_TEXT = Color(0xFF6A7887);
   static const Color BG_IMAGE_COLOR = Color(0xFF032D5F);
   static const Color ACTIVE = Color(0xFF2FAB86);
   static const Color IN_ACTIVE = Color(0xFFDB5353);
   static const Color PENDING = Color(0xFFA6840A);
-  static const Color SCAFFOLD_BG = Color(0xFFE5E5E5);
+  static const Color SCAFFOLD_BG = Color(0xffFCFCFC);
   static const Color HEADER = Color(0xFF000000);
+  static const Color BORDER = Color(0xFFF4F4F4);
+  static const Color ICON_GREY_COLOR = Color(0xFFCBCBCB);
 
-  static const Color TITLE = Color(0xFF08150D);
+  static const Color TEXT_COLOR = Color(0xff00403C);
+  static const Color TEXT_BLUE_DARK_COLOR = Color(0xff001A6D);
+  static const Color SUB_TEXT_DARK_COLOR = Color(0xffB4B4B4);
+  static const Color TITLE = Color(0xFF08131C);
   static const Color PLACE_HOLDER = Color(0xFF7F8B93);
   static const Color FILL_COLOR = Color(0xFFFAFAFA);
   static const Color CARD_BORDER = Color(0xFFE4E9FC);
@@ -44,7 +50,7 @@ abstract class Styles {
   static const Color SELECTED_BACKGROUND = Color(0xffCBC0FD);
   static const Color SUBTITLE = Color(0xff737373);
   static const Color REMOVE_COLOR = Color(0xffFDEEEE);
-  static const Color BORDER_COLOR = Color(0xffF2F2F2);
+  static const Color BORDER_COLOR = Color(0xffEFEFF5);
   static const Color ALERT_COLOR = Color(0xffDBAB02);
   static const Color DARK_RED = Color(0xff982929);
   static const Color DARK_GREEN = Color(0xff279473);
@@ -75,9 +81,9 @@ abstract class Styles {
       color: Styles.HEADER,
       fontSize: 12,
       fontWeight: FontWeight.w600,
-      fontFamily: 'text');
-  static const TextStyle SUB_HEADER_STYLE = TextStyle(
-      color: Styles.TITLE, fontSize: 12, fontWeight: FontWeight.w600);
+      fontFamily: 'ar');
+  static const TextStyle SUB_HEADER_STYLE =
+      TextStyle(color: Styles.TITLE, fontSize: 12, fontWeight: FontWeight.w600);
   static TextStyle PLACE_HOLDER_STYLE({fontFamily, fontWeight, size}) =>
       TextStyle(
           color: Styles.PLACE_HOLDER,
@@ -94,8 +100,8 @@ abstract class Styles {
   static Widget logo({Color? color, double? height, double? width}) =>
       Image.asset(
         'assets/logo.png',
-        height: height??190.0,
-        width: width??250.0,
+        height: height ?? 190.0,
+        width: width ?? 250.0,
         color: color,
         fit: BoxFit.contain,
       );
@@ -106,6 +112,31 @@ abstract class Styles {
   );
   static const Widget divider = Padding(
     padding: EdgeInsets.symmetric(horizontal: 24),
-    child: Divider(color: Styles.FILL_COLOR, thickness: 1.0),
+    child: Divider(color: Styles.HINT, thickness: 1.0),
   );
+
+  static Color statusColors(String value) {
+    switch (value) {
+      case "مكتمل":
+        return PRIMARY_COLOR;
+      case "متقدم":
+        return Color(0xFF376BAD);
+      case "متأخر":
+        return Color(0xFFF39C12);
+      default:
+        return PRIMARY_COLOR;
+    }
+  }
+
+  static const List<Color> projectCategoryColors = [
+    RED_CHART_COLOR,
+    PRIMARY_COLOR,
+    SECONDARY_COLOR,
+    ACTIVE,
+    ACCENT_PRIMARY_COLOR,
+    IN_ACTIVE,
+    FEED_COLOR2,
+    ORANGE2,
+    ORANGE3,
+  ];
 }

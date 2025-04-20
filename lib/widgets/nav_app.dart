@@ -1,6 +1,6 @@
+import 'package:eco_system/utility/extensions.dart';
+import 'package:eco_system/widgets/nav_app_item.dart';
 import 'package:flutter/material.dart';
-import 'package:eco_system/utility/extintions.dart';
-import 'package:eco_system/widgets/images.dart';
 
 class NavApp extends StatefulWidget {
   const NavApp({
@@ -8,6 +8,7 @@ class NavApp extends StatefulWidget {
     required this.index,
     this.onSelect,
   });
+
   final int index;
   final Function(int)? onSelect;
 
@@ -28,9 +29,9 @@ class _NavAppState extends State<NavApp> {
       type: BottomNavigationBarType.fixed,
       currentIndex: widget.index,
       selectedLabelStyle: TextStyle(
-        color: context.theme.primaryColor,
-        fontSize: 11,
-      ),
+          color: context.theme.primaryColor,
+          fontSize: 11,
+          fontWeight: FontWeight.w600),
       unselectedLabelStyle: TextStyle(
         color: context.theme.primaryColorDark,
         fontSize: 11,
@@ -39,32 +40,40 @@ class _NavAppState extends State<NavApp> {
       selectedItemColor: context.theme.primaryColor,
       items: [
         BottomNavigationBarItem(
-          icon: Images(
-            image: 'assets/svgs/cube.svg',
-            color: _selectedColor(0),
-          ),
-          label: "الرئيسية",
+          icon: NavAppItem(
+              title: 'home',
+              isSelected: widget.index == 0,
+              icon: 'home',
+              activeIcon: 'home-active',
+              color: _selectedColor(0)),
+          label: '',
         ),
         BottomNavigationBarItem(
-          icon: Images(
-            image: 'assets/svgs/invoices.svg',
-            color: _selectedColor(1),
-          ),
-          label: "المشاريع",
+          icon: NavAppItem(
+              title: 'reports',
+              isSelected: widget.index == 1,
+              icon: 'reports',
+              activeIcon: 'reports',
+              color: _selectedColor(1)),
+          label: '',
         ),
         BottomNavigationBarItem(
-          icon: Images(
-            image: 'assets/svgs/buildings.svg',
-            color: _selectedColor(2),
-          ),
-          label: "المفضلة",
+          icon: NavAppItem(
+              title: 'notifications',
+              isSelected: widget.index == 2,
+              icon: 'notification',
+              activeIcon: 'notification',
+              color: _selectedColor(2)),
+          label: '',
         ),
         BottomNavigationBarItem(
-          icon: Images(
-            image: 'assets/svgs/profile-circle.svg',
-            color: _selectedColor(3),
-          ),
-          label: "الحساب",
+          icon: NavAppItem(
+              title: 'menu',
+              isSelected: widget.index == 3,
+              icon: 'more',
+              activeIcon: 'more',
+              color: _selectedColor(3)),
+          label: '',
         ),
       ],
     );

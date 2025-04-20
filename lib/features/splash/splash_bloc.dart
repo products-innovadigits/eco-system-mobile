@@ -1,10 +1,11 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eco_system/core/app_event.dart';
 import 'package:eco_system/core/app_state.dart';
 import 'package:eco_system/helpers/shared_helper.dart';
 import 'package:eco_system/navigation/custom_navigation.dart';
 import 'package:eco_system/navigation/routes.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+
 import '../../bloc/user_bloc.dart';
 import '../../helpers/permissions.dart';
 
@@ -14,7 +15,7 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
   }
 
   Future<void> onClick(Click event, Emitter<AppState> emit) async {
-    Future.delayed(const Duration(milliseconds: 1800), () async {
+    Future.delayed(const Duration(milliseconds: 2000), () async {
       ///Ask Notification Permission
       PermissionHandler.checkNotificationsPermission();
 
@@ -36,7 +37,7 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
       if (!isLogin) {
         CustomNavigator.push(Routes.LOGIN, clean: true);
       } else {
-        CustomNavigator.push(Routes.DASHBOARD, clean: true, arguments: 0);
+        CustomNavigator.push(Routes.MAIN_PAGE, clean: true, arguments: 0);
       }
     });
   }

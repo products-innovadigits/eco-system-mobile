@@ -1,13 +1,15 @@
 import 'dart:io';
+
 import 'package:dio/dio.dart';
-import 'package:eco_system/helpers/text_styles.dart';
-import 'package:flutter/material.dart';
 import 'package:eco_system/components/custom_btn.dart';
 import 'package:eco_system/components/custom_images.dart';
 import 'package:eco_system/helpers/image_picker_helper.dart';
 import 'package:eco_system/helpers/media_query_helper.dart';
 import 'package:eco_system/helpers/styles.dart';
+import 'package:eco_system/helpers/text_styles.dart';
+import 'package:flutter/material.dart';
 import 'package:path/path.dart';
+
 import '../helpers/translation/all_translation.dart';
 
 class UploadImage extends StatefulWidget {

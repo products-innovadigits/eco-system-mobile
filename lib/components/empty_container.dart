@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:eco_system/helpers/media_query_helper.dart';
 import 'package:eco_system/helpers/styles.dart';
+import 'package:flutter/material.dart';
 
 class EmptyContainer extends StatelessWidget {
   final String? img;
@@ -13,7 +13,7 @@ class EmptyContainer extends StatelessWidget {
       {super.key,
       this.img,
       this.txt,
-      this.remain = 0.0,
+      this.remain = 200.0,
       this.subText,
       this.subStyle});
   @override

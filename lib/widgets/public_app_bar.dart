@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:eco_system/components/animated_widget.dart';
 import 'package:eco_system/components/custom_arrow_back.dart';
 import 'package:eco_system/components/custom_images.dart';
@@ -6,6 +5,7 @@ import 'package:eco_system/helpers/media_query_helper.dart';
 import 'package:eco_system/helpers/styles.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
 import 'package:eco_system/navigation/custom_navigation.dart';
+import 'package:flutter/material.dart';
 
 class PublicAppbar extends StatefulWidget {
   final String? title;
@@ -99,7 +99,7 @@ class _PublicAppbarState extends State<PublicAppbar> {
                                     child: Text(
                                       allTranslations.text("cancel"),
                                       style: const TextStyle(
-                                        color: Styles.ACCENT_COLOR,
+                                        color: Styles.ACCENT_PRIMARY_COLOR,
                                         fontWeight: FontWeight.w700,
                                         fontSize: 12,
                                       ),

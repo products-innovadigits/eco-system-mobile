@@ -1,8 +1,9 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
+
 import 'package:eco_system/helpers/text_helper.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
 import 'package:eco_system/utility/utility.dart';
+import 'package:flutter/material.dart';
 
 class Validator {
   var emailValidator =
@@ -64,7 +65,7 @@ class EmailValidator {
 
 class PasswordValidator {
   static String? passwordValidator(var password) {
-    if (password!.length < 2) {
+    if (password!.length < 6) {
       return allTranslations.text("please_enter_valid_password");
     }
     return null;

@@ -48,6 +48,11 @@ dependencies:
   pin_code_fields: ^8.0.1
   flutter_native_splash: ^2.4.4
   flutter_animate: ^4.5.2
+  fl_chart: ^0.70.2
+  syncfusion_flutter_charts: ^28.2.5+1
+  modal_bottom_sheet: ^3.0.0-pre
+  easy_localization: ^3.0.2
+
 
 
 
@@ -56,6 +61,18 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner:
+  flutter_gen_runner:
+  injectable_generator:
+
+flutter_gen:
+  output: lib/core/
+  line_length: 80
+  # Optional
+  integrations:
+    flutter_svg: true
+    rive: true
+    lottie: true
 
 flutter_icons:
   android: "launcher_icon"
@@ -78,17 +95,35 @@ flutter:
 
 
   fonts:
+
     - family: en
       fonts:
-        - asset: assets/fonts/Raleway-Regular.ttf
-        - asset: assets/fonts/Raleway-Bold.ttf
-    - family: text
-      fonts:
-        - asset: assets/fonts/Poppins-Regular.ttf
-    - family: italic
-      fonts:
-        - asset: assets/fonts/Raleway-Italic.ttf
+        - asset: assets/fonts/en/Roboto-Thin.ttf
+          weight: 300
+        - asset: assets/fonts/en/Roboto-Regular.ttf
+          weight: 500
+        - asset: assets/fonts/en/Roboto-Medium.ttf
+          weight: 600
+        - asset: assets/fonts/en/Roboto-Light.ttf
+          weight: 600
+        - asset: assets/fonts/en/Roboto-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/en/Roboto-Black.ttf
+          weight: 800
+
+
+
     - family: ar
       fonts:
-        - asset: assets/fonts/Tajawal-Regular.ttf
-
+        - asset: assets/fonts/ar/Montserrat-Arabic-Light.ttf
+          weight: 300
+        - asset: assets/fonts/ar/Montserrat-Arabic-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/ar/Montserrat-Arabic-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/ar/Montserrat-Arabic-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/ar/Montserrat-Arabic-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/ar/Montserrat-Arabic-ExtraBold.ttf
+          weight: 800
