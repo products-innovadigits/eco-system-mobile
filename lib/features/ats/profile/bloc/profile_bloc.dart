@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/app_event.dart';
@@ -10,15 +8,12 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
     on<Select>(_onSelectTab);
   }
 
-  final int selectedTabIndex = 0;
+  int selectedTabIndex = 0;
 
   _onSelectTab(Select event, Emitter<AppState> emit) async {
     int index = event.arguments as int;
-    log('Selected tab index: $index');
-    if (selectedTabIndex == index) {
-      emit(Done());
-    } else {
-      emit(Done());
-    }
+    if (selectedTabIndex != index) selectedTabIndex = index;
+
+    emit(Done());
   }
 }

@@ -203,6 +203,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/coin.svg
   SvgGenImage get coin => const SvgGenImage('assets/svgs/coin.svg');
 
+  /// File path: assets/svgs/correct.svg
+  SvgGenImage get correct => const SvgGenImage('assets/svgs/correct.svg');
+
   /// File path: assets/svgs/cube.svg
   SvgGenImage get cube => const SvgGenImage('assets/svgs/cube.svg');
 
@@ -435,6 +438,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/warning.svg
   SvgGenImage get warning => const SvgGenImage('assets/svgs/warning.svg');
 
+  /// File path: assets/svgs/wrong.svg
+  SvgGenImage get wrong => const SvgGenImage('assets/svgs/wrong.svg');
+
   /// List of all assets
   List<SvgGenImage> get values => [
     addCircle,
@@ -468,6 +474,7 @@ class $AssetsSvgsGen {
     closeCircle24,
     closeCircle32,
     coin,
+    correct,
     cube,
     danger,
     directboxSend,
@@ -536,6 +543,7 @@ class $AssetsSvgsGen {
     up,
     user,
     warning,
+    wrong,
   ];
 }
 
