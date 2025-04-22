@@ -343,6 +343,10 @@ abstract class  LocaleKeys {
   static const to = 'to';
   static const expected_salary = 'expected_salary';
   static const skills = 'skills';
+  static const profile = 'profile';
+  static const events = 'events';
+  static const answers = 'answers';
+  static const download_cv = 'download_cv';
   static const select_skills = 'select_skills';
 
 }

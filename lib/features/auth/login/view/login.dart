@@ -14,8 +14,8 @@ import '../../../../helpers/text_styles.dart';
 import '../bloc/login_bloc.dart';
 import '../widgets/welcome_widget.dart';
 
-class Login extends StatelessWidget {
-  const Login({super.key});
+class LoginView extends StatelessWidget {
+  const LoginView({super.key});
 
   @override
   Widget build(BuildContext context) {

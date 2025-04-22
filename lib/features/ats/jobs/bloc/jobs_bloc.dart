@@ -1,32 +1,29 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rxdart/rxdart.dart';
 
-import '../../../core/app_event.dart';
-import '../../../core/app_state.dart';
+import '../../../../core/app_event.dart';
+import '../../../../core/app_state.dart';
 
-class SearchBloc extends Bloc<AppEvent, AppState> {
-  SearchBloc() : super(Start()) {
+class JobsBloc extends Bloc<AppEvent, AppState> {
+  JobsBloc() : super(Start()) {
     on<Click>(onClick);
-    on<TapSearch>(_onTapSearch);
-    on<Searching>(_onSearching);
-    on<CancelSearch>(_onCancelSearch);
+    updateExpandedIndex(-1);
+    on<Expand>(onExpand);
   }
 
-  TextEditingController searchController = TextEditingController();
-  bool isActiveSearching = false;
+  final _expandedIndex = BehaviorSubject<int?>.seeded(-1);
 
-  void _onTapSearch(TapSearch event, Emitter<AppState> emit) {
-    isActiveSearching = true;
-    emit(Done());
-  }
+  Function(int?) get updateExpandedIndex => _expandedIndex.sink.add;
 
-  void _onSearching(Searching event, Emitter<AppState> emit) {
-    emit(Done());
-  }
+  Stream<int?> get updateExpandedStream =>
+      _expandedIndex.stream.asBroadcastStream();
 
-  void _onCancelSearch(CancelSearch event, Emitter<AppState> emit) {
-    if (searchController.text.isNotEmpty) {
-      searchController.clear();
+  Future<void> onExpand(Expand event, Emitter<AppState> emit) async {
+    int index = event.arguments as int;
+    if (_expandedIndex.value == index) {
+      updateExpandedIndex(-1);
+    } else {
+      updateExpandedIndex(index);
     }
     emit(Done());
   }

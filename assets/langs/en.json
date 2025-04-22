@@ -340,5 +340,9 @@
   "to": "To...",
   "expected_salary": "Expected Salary",
   "skills": "Skills",
+  "profile": "Profile",
+  "events": "Events",
+  "answers": "Answers",
+  "download_cv": "Download CV",
   "select_skills": "Select Skills"
 }
