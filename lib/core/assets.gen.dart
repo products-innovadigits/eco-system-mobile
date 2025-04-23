@@ -46,6 +46,10 @@ class $AssetsImagesGen {
   AssetGenImage get newSplashBg =>
       const AssetGenImage('assets/images/new_splash_bg.png');
 
+  /// File path: assets/images/prfile_header_bg.png
+  AssetGenImage get prfileHeaderBg =>
+      const AssetGenImage('assets/images/prfile_header_bg.png');
+
   /// File path: assets/images/splash.png
   AssetGenImage get splash => const AssetGenImage('assets/images/splash.png');
 
@@ -71,6 +75,7 @@ class $AssetsImagesGen {
     homeHeaderBg,
     newHomeHeaderBg,
     newSplashBg,
+    prfileHeaderBg,
     splash,
     splashBg,
     uploadImage,
@@ -142,12 +147,18 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/buildings.svg
   SvgGenImage get buildings => const SvgGenImage('assets/svgs/buildings.svg');
 
+  /// File path: assets/svgs/buliding.svg
+  SvgGenImage get buliding => const SvgGenImage('assets/svgs/buliding.svg');
+
   /// File path: assets/svgs/calendar.svg
   SvgGenImage get calendar => const SvgGenImage('assets/svgs/calendar.svg');
 
   /// File path: assets/svgs/calendar_tick.svg
   SvgGenImage get calendarTick =>
       const SvgGenImage('assets/svgs/calendar_tick.svg');
+
+  /// File path: assets/svgs/call.svg
+  SvgGenImage get call => const SvgGenImage('assets/svgs/call.svg');
 
   /// File path: assets/svgs/camera.svg
   SvgGenImage get camera => const SvgGenImage('assets/svgs/camera.svg');
@@ -195,6 +206,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/coin.svg
   SvgGenImage get coin => const SvgGenImage('assets/svgs/coin.svg');
 
+  /// File path: assets/svgs/correct.svg
+  SvgGenImage get correct => const SvgGenImage('assets/svgs/correct.svg');
+
   /// File path: assets/svgs/cube.svg
   SvgGenImage get cube => const SvgGenImage('assets/svgs/cube.svg');
 
@@ -234,6 +248,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/export.svg
   SvgGenImage get export => const SvgGenImage('assets/svgs/export.svg');
 
+  /// File path: assets/svgs/file.svg
+  SvgGenImage get file => const SvgGenImage('assets/svgs/file.svg');
+
   /// File path: assets/svgs/fill-close-circle.svg
   SvgGenImage get fillCloseCircle =>
       const SvgGenImage('assets/svgs/fill-close-circle.svg');
@@ -271,6 +288,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/language-circle.svg
   SvgGenImage get languageCircle =>
       const SvgGenImage('assets/svgs/language-circle.svg');
+
+  /// File path: assets/svgs/layers.svg
+  SvgGenImage get layers => const SvgGenImage('assets/svgs/layers.svg');
 
   /// File path: assets/svgs/left.svg
   SvgGenImage get left => const SvgGenImage('assets/svgs/left.svg');
@@ -350,6 +370,10 @@ class $AssetsSvgsGen {
   SvgGenImage get profileCircle =>
       const SvgGenImage('assets/svgs/profile-circle.svg');
 
+  /// File path: assets/svgs/profile-more.svg
+  SvgGenImage get profileMore =>
+      const SvgGenImage('assets/svgs/profile-more.svg');
+
   /// File path: assets/svgs/profile2.svg
   SvgGenImage get profile2 => const SvgGenImage('assets/svgs/profile2.svg');
 
@@ -420,6 +444,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/warning.svg
   SvgGenImage get warning => const SvgGenImage('assets/svgs/warning.svg');
 
+  /// File path: assets/svgs/wrong.svg
+  SvgGenImage get wrong => const SvgGenImage('assets/svgs/wrong.svg');
+
   /// List of all assets
   List<SvgGenImage> get values => [
     addCircle,
@@ -437,8 +464,10 @@ class $AssetsSvgsGen {
     building224,
     building2,
     buildings,
+    buliding,
     calendar,
     calendarTick,
+    call,
     camera,
     cardTick,
     chart,
@@ -452,6 +481,7 @@ class $AssetsSvgsGen {
     closeCircle24,
     closeCircle32,
     coin,
+    correct,
     cube,
     danger,
     directboxSend,
@@ -463,6 +493,7 @@ class $AssetsSvgsGen {
     emptyWalletTick,
     emptyWalletTime,
     export,
+    file,
     fillCloseCircle,
     filter,
     hide,
@@ -474,6 +505,7 @@ class $AssetsSvgsGen {
     iosLeft,
     iosRight,
     languageCircle,
+    layers,
     left,
     location,
     lock,
@@ -497,6 +529,7 @@ class $AssetsSvgsGen {
     people,
     printer,
     profileCircle,
+    profileMore,
     profile2,
     projectLifeCycle,
     properties,
@@ -518,6 +551,7 @@ class $AssetsSvgsGen {
     up,
     user,
     warning,
+    wrong,
   ];
 }
 

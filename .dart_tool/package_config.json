@@ -980,6 +980,12 @@
       "languageVersion": "3.6"
     },
     {
+      "name": "readmore",
+      "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/readmore-3.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
       "name": "recase",
       "rootUri": "file:///C:/Users/user/AppData/Local/Pub/Cache/hosted/pub.dev/recase-4.1.0",
       "packageUri": "lib/",
@@ -1358,7 +1364,7 @@
       "languageVersion": "2.19"
     }
   ],
-  "generated": "2025-04-20T14:00:35.993828Z",
+  "generated": "2025-04-23T12:45:45.438950Z",
   "generator": "pub",
   "generatorVersion": "3.6.1",
   "flutterRoot": "file:///D:/Flutter/flutter_windows_3.27.2-stable/flutter",

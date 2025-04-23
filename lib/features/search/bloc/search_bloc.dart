@@ -1,4 +1,3 @@
-import 'package:eco_system/navigation/custom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,23 +7,26 @@ import '../../../core/app_state.dart';
 class SearchBloc extends Bloc<AppEvent, AppState> {
   SearchBloc() : super(Start()) {
     on<Click>(onClick);
-    on<Search>(_onTapSearch);
+    on<TapSearch>(_onTapSearch);
+    on<Searching>(_onSearching);
     on<CancelSearch>(_onCancelSearch);
   }
 
   TextEditingController searchController = TextEditingController();
   bool isActiveSearching = false;
 
-  void _onTapSearch(Search event, Emitter<AppState> emit) {
+  void _onTapSearch(TapSearch event, Emitter<AppState> emit) {
     isActiveSearching = true;
+    emit(Done());
+  }
+
+  void _onSearching(Searching event, Emitter<AppState> emit) {
     emit(Done());
   }
 
   void _onCancelSearch(CancelSearch event, Emitter<AppState> emit) {
     if (searchController.text.isNotEmpty) {
       searchController.clear();
-    } else {
-      CustomNavigator.pop();
     }
     emit(Done());
   }

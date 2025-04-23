@@ -1,5 +1,5 @@
-import 'package:eco_system/features/ats/view/sections/jobs/available_jobs_section.dart';
-import 'package:eco_system/features/ats/view/sections/talent_pool/talent_pool_section.dart';
+import 'package:eco_system/features/ats/jobs/view/sections/available_jobs_section.dart';
+import 'package:eco_system/features/ats/talent_pool/view/sections/talent_pool_section.dart';
 import 'package:eco_system/utility/extensions.dart';
 import 'package:flutter/material.dart';
 

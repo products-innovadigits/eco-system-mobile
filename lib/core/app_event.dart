@@ -172,8 +172,12 @@ class RemoveSkill extends AppEvent {
   RemoveSkill({Object? arguments}) : super(arguments);
 }
 
-class Search extends AppEvent {
-  Search({Object? arguments}) : super(arguments);
+class TapSearch extends AppEvent {
+  TapSearch({Object? arguments}) : super(arguments);
+}
+
+class Searching extends AppEvent {
+  Searching({Object? arguments}) : super(arguments);
 }
 
 class CancelSearch extends AppEvent {

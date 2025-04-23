@@ -1,13 +1,14 @@
-import 'package:eco_system/features/ats/view/screens/candidates.dart';
-import 'package:eco_system/features/ats/view/screens/jobs.dart';
-import 'package:eco_system/features/ats/view/screens/talent_pool.dart';
+import 'package:eco_system/features/ats/candidates/view/screens/candidates_view.dart';
+import 'package:eco_system/features/ats/jobs/view/screens/jobs_view.dart';
+import 'package:eco_system/features/ats/profile/view/screens/profile_view.dart';
+import 'package:eco_system/features/ats/talent_pool/view/screens/talent_pool_view.dart';
 import 'package:eco_system/features/auth/login/view/login.dart';
 import 'package:eco_system/features/auth/otp/view/otp_view.dart';
 import 'package:eco_system/features/intro/view/intro_view.dart';
 import 'package:eco_system/features/main_page.dart';
 import 'package:eco_system/features/objectives/view/objectives_view.dart';
 import 'package:eco_system/features/projects/view/projects_view.dart';
-import 'package:eco_system/features/search/view/screens/search.dart';
+import 'package:eco_system/features/search/view/screens/search_view.dart';
 import 'package:eco_system/features/splash/splash.dart';
 import 'package:flutter/material.dart';
 
@@ -41,13 +42,15 @@ abstract class CustomNavigator {
       case Routes.INTRO:
         return pageRouteBuilder(const IntroView());
       case Routes.LOGIN:
-        return pageRouteBuilder(const Login());
+        return pageRouteBuilder(const LoginView());
       case Routes.JOBS:
-        return pageRouteBuilder(const Jobs());
+        return pageRouteBuilder(const JobsView());
       case Routes.TALENT_POOL:
-        return pageRouteBuilder(const TalentPool());
+        return pageRouteBuilder(const TalentPoolView());
       case Routes.SEARCH:
-        return pageRouteBuilder(const SearchScreen());
+        return pageRouteBuilder(const SearchView());
+      case Routes.PROFILE:
+        return pageRouteBuilder(const ProfileView());
       case Routes.CANDIDATES:
         return pageRouteBuilder(Candidates(
             selectedStage: settings.arguments != null
