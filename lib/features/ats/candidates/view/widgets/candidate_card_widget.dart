@@ -3,6 +3,7 @@ import 'package:eco_system/helpers/styles.dart';
 import 'package:eco_system/helpers/text_styles.dart';
 import 'package:eco_system/utility/extensions.dart';
 import 'package:eco_system/widgets/images.dart';
+import 'package:eco_system/widgets/percentage_avatar.dart';
 import 'package:flutter/material.dart';
 
 class CandidateCardWidget extends StatelessWidget {
@@ -22,44 +23,14 @@ class CandidateCardWidget extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                height: 35.h,
-                child: Stack(
-                  children: [
-                    Container(
-                      width: 32.w,
-                      height: 32.h,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                            color: Styles.PRIMARY_COLOR, width: 2),
-                        image: DecorationImage(
-                            image:
-                            AssetImage(Assets.images.avatar.path),
-                            fit: BoxFit.contain),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      right: 6.w,
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 4.w, vertical: 2.h),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(2),
-                            color: Styles.WHITE_COLOR),
-                        child: Center(
-                          child: Text(
-                            '10%',
-                            style: AppTextStyles.w600.copyWith(
-                                color: Styles.TEXT_BLUE_DARK_COLOR,
-                                fontSize: 6),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+              PercentageAvatar(
+                avatarPath: Assets.images.avatar.path,
+                percentage: '80',
+                avatarSize: 32.w,
+                percentageMargin: 4.w,
+                percentageRadius: 2.w,
+                percentageTextStyle: AppTextStyles.w600
+                    .copyWith(color: Styles.TEXT_BLUE_DARK_COLOR, fontSize: 6),
               ),
               8.sw,
               Column(
@@ -67,8 +38,8 @@ class CandidateCardWidget extends StatelessWidget {
                 children: [
                   Text(
                     'هشام منصور',
-                    style: AppTextStyles.w500.copyWith(
-                        color: Styles.TEXT_COLOR, fontSize: 12),
+                    style: AppTextStyles.w500
+                        .copyWith(color: Styles.TEXT_COLOR, fontSize: 12),
                   ),
                   2.sh,
                   Row(
@@ -79,8 +50,8 @@ class CandidateCardWidget extends StatelessWidget {
                             color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
                       ),
                       Text('5 من الوظائف',
-                          style: AppTextStyles.w400
-                              .copyWith(color: Styles.PRIMARY_COLOR, fontSize: 10))
+                          style: AppTextStyles.w400.copyWith(
+                              color: Styles.PRIMARY_COLOR, fontSize: 10))
                     ],
                   ),
                 ],
@@ -98,8 +69,8 @@ class CandidateCardWidget extends StatelessWidget {
             children: [
               Text(
                 'السعودية',
-                style: AppTextStyles.w500.copyWith(
-                    color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
+                style: AppTextStyles.w500
+                    .copyWith(color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8.w),
@@ -108,8 +79,8 @@ class CandidateCardWidget extends StatelessWidget {
               ),
               Text(
                 'قدم طلب منذ 3 اشهر',
-                style: AppTextStyles.w500.copyWith(
-                    color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
+                style: AppTextStyles.w500
+                    .copyWith(color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
               ),
             ],
           ),

@@ -343,6 +343,15 @@
   "profile": "Profile",
   "events": "Events",
   "answers": "Answers",
+  "work_experience": "Work Experience",
+  "education": "Education",
+  "read_more": "Read More",
+  "read_less": "Read Less",
+  "test_file": "Test File",
+  "career_objective": "Career Objective",
+  "candidate_source": "Candidate Source",
+  "notice_period": "Notice Period",
+  "current_salary": "Current Salary",
   "download_cv": "Download CV",
   "select_skills": "Select Skills"
 }

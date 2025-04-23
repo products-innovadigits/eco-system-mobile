@@ -4,6 +4,7 @@ import 'package:eco_system/features/ats/candidates/bloc/candidates_bloc.dart';
 import 'package:eco_system/helpers/styles.dart';
 import 'package:eco_system/helpers/text_styles.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
+import 'package:eco_system/utility/extensions.dart';
 import 'package:eco_system/widgets/images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -70,27 +71,24 @@ class CustomDropDownSkills extends StatelessWidget {
       spacing: 8,
       runSpacing: 12,
       children: bloc.selectedSkills.map((item) {
-        return Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-              decoration: BoxDecoration(
-                color: Styles.PRIMARY_COLOR.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Text(
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            color: Styles.PRIMARY_COLOR.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
                 item.name ?? "",
                 style: AppTextStyles.w400.copyWith(
                   fontSize: 10,
                   color: Styles.PRIMARY_COLOR,
                 ),
               ),
-            ),
-            PositionedDirectional(
-              end: -4,
-              top: -4,
-              child: InkWell(
+              4.sw,
+              InkWell(
                 onTap: () => bloc.add(RemoveSkill(arguments: item)),
                 child: Images(
                   image: Assets.svgs.fillCloseCircle.path,
@@ -98,9 +96,9 @@ class CustomDropDownSkills extends StatelessWidget {
                   width: 18,
                   height: 18,
                 ),
-              ),
-            ),
-          ],
+              )
+            ],
+          ),
         );
       }).toList(),
     );

@@ -32,7 +32,7 @@ class CandidatesFilterBottomSheet extends StatelessWidget {
           children: [
             Column(
               children: [
-                BottomSheetHeader(title: LocaleKeys.candidate, onReset: () {}),
+                BottomSheetHeader(title: LocaleKeys.candidate),
                 24.sh,
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

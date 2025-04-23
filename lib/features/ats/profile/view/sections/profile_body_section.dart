@@ -1,7 +1,10 @@
 import 'package:eco_system/core/app_event.dart';
 import 'package:eco_system/core/app_state.dart';
+import 'package:eco_system/core/enums.dart';
 import 'package:eco_system/features/ats/profile/bloc/profile_bloc.dart';
-import 'package:eco_system/features/ats/profile/view/sections/answers_tab_section.dart';
+import 'package:eco_system/features/ats/profile/view/sections/answers_tab/answers_section.dart';
+import 'package:eco_system/features/ats/profile/view/sections/events_tab/events_section.dart';
+import 'package:eco_system/features/ats/profile/view/sections/profile_tab/profile_section.dart';
 import 'package:eco_system/features/ats/profile/view/sections/profile_tabs_section.dart';
 import 'package:eco_system/utility/extensions.dart';
 import 'package:flutter/material.dart';
@@ -24,9 +27,11 @@ class ProfileBodySection extends StatelessWidget {
             Expanded(
                 child: SingleChildScrollView(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: bloc.selectedTabIndex == 2
-                  ? AnswersTabSection()
-                  : Container(),
+              child: bloc.selectedTab == ProfileEnum.answers
+                  ? AnswersSection()
+                  : bloc.selectedTab == ProfileEnum.events
+                      ? EventsSection()
+                      : ProfileSection(),
             ))
           ],
         ));

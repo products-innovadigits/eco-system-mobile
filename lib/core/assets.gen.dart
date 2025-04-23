@@ -147,6 +147,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/buildings.svg
   SvgGenImage get buildings => const SvgGenImage('assets/svgs/buildings.svg');
 
+  /// File path: assets/svgs/buliding.svg
+  SvgGenImage get buliding => const SvgGenImage('assets/svgs/buliding.svg');
+
   /// File path: assets/svgs/calendar.svg
   SvgGenImage get calendar => const SvgGenImage('assets/svgs/calendar.svg');
 
@@ -244,6 +247,9 @@ class $AssetsSvgsGen {
 
   /// File path: assets/svgs/export.svg
   SvgGenImage get export => const SvgGenImage('assets/svgs/export.svg');
+
+  /// File path: assets/svgs/file.svg
+  SvgGenImage get file => const SvgGenImage('assets/svgs/file.svg');
 
   /// File path: assets/svgs/fill-close-circle.svg
   SvgGenImage get fillCloseCircle =>
@@ -458,6 +464,7 @@ class $AssetsSvgsGen {
     building224,
     building2,
     buildings,
+    buliding,
     calendar,
     calendarTick,
     call,
@@ -486,6 +493,7 @@ class $AssetsSvgsGen {
     emptyWalletTick,
     emptyWalletTime,
     export,
+    file,
     fillCloseCircle,
     filter,
     hide,
