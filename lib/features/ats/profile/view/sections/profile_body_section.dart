@@ -1,4 +1,3 @@
-import 'package:eco_system/core/app_event.dart';
 import 'package:eco_system/core/app_state.dart';
 import 'package:eco_system/core/enums.dart';
 import 'package:eco_system/features/ats/profile/bloc/profile_bloc.dart';
@@ -17,25 +16,35 @@ class ProfileBodySection extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileBloc, AppState>(
       builder: (context, state) {
-        final bloc = context.read<ProfileBloc>();
+        final selectedTab =
+            context.select((ProfileBloc bloc) => bloc.selectedTab);
         return Expanded(
-            child: Column(
-          children: [
-            ProfileTabsSection(
-                onTabSelected: (index) => bloc.add(Select(arguments: index))),
-            20.sh,
-            Expanded(
+          child: Column(
+            children: [
+              ProfileTabsSection(),
+              20.sh,
+              Expanded(
                 child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: bloc.selectedTab == ProfileEnum.answers
-                  ? AnswersSection()
-                  : bloc.selectedTab == ProfileEnum.events
-                      ? EventsSection()
-                      : ProfileSection(),
-            ))
-          ],
-        ));
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: _getTabSection(selectedTab , context),
+                ),
+              ),
+            ],
+          ),
+        );
       },
     );
+  }
+
+  Widget _getTabSection(ProfileEnum selectedTab , BuildContext context) {
+    switch (selectedTab) {
+      case ProfileEnum.answers:
+        return AnswersSection();
+      case ProfileEnum.events:
+        return EventsSection();
+      case ProfileEnum.profile:
+      default:
+        return ProfileSection();
+    }
   }
 }

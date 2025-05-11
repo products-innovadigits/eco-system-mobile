@@ -12,6 +12,10 @@ class Select extends AppEvent {
   Select({Object? arguments}) : super(arguments);
 }
 
+class ShowDialog extends AppEvent {
+  ShowDialog({Object? arguments}) : super(arguments);
+}
+
 class SelectTalent extends AppEvent {
   SelectTalent({Object? arguments}) : super(arguments);
 }

@@ -355,5 +355,19 @@
   "notice_period": "مدة الاشعار",
   "current_salary": "الراتب الحالي",
   "download_cv": "تحميل السيرة الذاتية",
-  "select_skills": "إختر المهارات"
+  "select_skills": "إختر المهارات",
+  "compatibility": "مدي التوافق",
+  "keyword_matching": "مطابقة الكلمات المفتاحية",
+  "rating": "التقييم",
+  "comment": "التعليق",
+  "add_comment": "اضافة تعليق",
+  "communications": "المعاملات",
+  "knowledge": "المعرفة",
+  "technical_skills": "المهارات",
+  "ratings": "التقيمات",
+  "add_rating": "اضافة التقييم",
+  "enter_rating": "من ١ الي ٥ قم بتقييم",
+  "send_email": "ارسال بريد",
+  "copy_to_job": "نسخ الي وظيفة",
+  "transfer_to_another_stage": "نقل الي مرحلة اخري"
 }

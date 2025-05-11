@@ -2,12 +2,12 @@ import 'package:eco_system/helpers/styles.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
 import 'package:flutter/material.dart';
 
-class ProfileTabWidget extends StatelessWidget {
+class CustomTabWidget extends StatelessWidget {
   final String title;
   final bool isSelected;
   final VoidCallback onTap;
 
-  const ProfileTabWidget(
+  const CustomTabWidget(
       {super.key,
       required this.title,
       required this.isSelected,

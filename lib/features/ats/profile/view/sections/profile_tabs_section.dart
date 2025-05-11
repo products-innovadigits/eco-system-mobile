@@ -1,52 +1,32 @@
+import 'package:eco_system/core/app_event.dart';
 import 'package:eco_system/core/app_strings/locale_keys.dart';
 import 'package:eco_system/core/enums.dart';
-import 'package:eco_system/features/ats/profile/view/widgets/profile_tab_widget.dart';
+import 'package:eco_system/features/ats/profile/bloc/profile_bloc.dart';
+import 'package:eco_system/widgets/custom_tab_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProfileTabsSection extends StatefulWidget {
-  final Function(ProfileEnum) onTabSelected;
+class ProfileTabsSection extends StatelessWidget {
+  const ProfileTabsSection({super.key});
 
-  const ProfileTabsSection({super.key, required this.onTabSelected});
-
-  @override
-  State<ProfileTabsSection> createState() => _ProfileTabsSectionState();
-}
-
-class _ProfileTabsSectionState extends State<ProfileTabsSection> {
-  ProfileEnum selectedTab = ProfileEnum.profile;
+  static Map<ProfileEnum, String> tabTitles = {
+    ProfileEnum.profile: LocaleKeys.profile,
+    ProfileEnum.events: LocaleKeys.events,
+    ProfileEnum.answers: LocaleKeys.answers,
+  };
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: [
-        ProfileTabWidget(
-            title: LocaleKeys.profile,
-            isSelected: selectedTab == ProfileEnum.profile,
-            onTap: () {
-              setState(() {
-                selectedTab = ProfileEnum.profile;
-              });
-              widget.onTabSelected(ProfileEnum.profile);
-            }),
-        ProfileTabWidget(
-            title: LocaleKeys.events,
-            isSelected: selectedTab == ProfileEnum.events,
-            onTap: () {
-              setState(() {
-                selectedTab = ProfileEnum.events;
-              });
-              widget.onTabSelected(ProfileEnum.events);
-            }),
-        ProfileTabWidget(
-            title: LocaleKeys.answers,
-            isSelected: selectedTab == ProfileEnum.answers,
-            onTap: () {
-              setState(() {
-                selectedTab = ProfileEnum.answers;
-              });
-              widget.onTabSelected(ProfileEnum.answers);
-            }),
-      ],
+      children: ProfileEnum.values.map((tab) {
+        return CustomTabWidget(
+          title: tabTitles[tab] ?? '',
+          isSelected: context.watch<ProfileBloc>().selectedTab == tab,
+          onTap: () {
+            context.read<ProfileBloc>().add(Select(arguments: tab));
+          },
+        );
+      }).toList(),
     );
   }
 }

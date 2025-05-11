@@ -357,5 +357,19 @@ abstract class  LocaleKeys {
   static const current_salary = 'current_salary';
   static const download_cv = 'download_cv';
   static const select_skills = 'select_skills';
+  static const compatibility = 'compatibility';
+  static const keyword_matching = 'keyword_matching';
+  static const rating = 'rating';
+  static const comment = 'comment';
+  static const add_comment = 'add_comment';
+  static const communications = 'communications';
+  static const knowledge = 'knowledge';
+  static const technical_skills = 'technical_skills';
+  static const ratings = 'ratings';
+  static const add_rating = 'add_rating';
+  static const enter_rating = 'enter_rating';
+  static const send_email = 'send_email';
+  static const copy_to_job = 'copy_to_job';
+  static const transfer_to_another_stage = 'transfer_to_another_stage';
 
 }
