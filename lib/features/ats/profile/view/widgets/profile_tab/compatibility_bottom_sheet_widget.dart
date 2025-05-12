@@ -1,5 +1,6 @@
 import 'package:eco_system/core/app_strings/locale_keys.dart';
 import 'package:eco_system/core/assets.gen.dart';
+import 'package:eco_system/features/ats/profile/view/widgets/compatibility_percentage_widget.dart';
 import 'package:eco_system/helpers/styles.dart';
 import 'package:eco_system/helpers/text_styles.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
@@ -33,23 +34,9 @@ class CompatibilityBottomSheetWidget extends StatelessWidget {
             separatorBuilder: (context, index) => 16.sh,
             itemCount: 6),
         24.sh,
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
-          decoration: BoxDecoration(
-              color: Styles.PRIMARY_COLOR.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(8)),
-          child: Row(
-            children: [
-              Images(image: Assets.svgs.percentageCircle.path),
-              8.sw,
-              Text('${allTranslations.text(LocaleKeys.keyword_matching)} : ',
-                  style: AppTextStyles.w400.copyWith(color: Styles.TEXT_COLOR)),
-              2.sw,
-              Text('%80',
-                  style: AppTextStyles.w800.copyWith(color: Styles.PRIMARY_COLOR)),
-            ],
-          ),
-        ),
+        CompatibilityPercentageWidget(
+            title: allTranslations.text(LocaleKeys.keyword_matching),
+            percentage: 80),
       ],
     );
   }

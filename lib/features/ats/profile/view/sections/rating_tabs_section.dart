@@ -23,7 +23,7 @@ class _RatingTabsSectionState extends State<RatingTabsSection> {
         title: LocaleKeys.add_rating,
         isSelected: selectedTabIndex == 0,
         onTap: () {
-          context.read<ProfileBloc>().selectedRatingTabIndex = 0;
+          context.read<ProfileBloc>().add(SelectTab(arguments: 0));
           setState(() {
             selectedTabIndex = 0;
           });
@@ -33,7 +33,7 @@ class _RatingTabsSectionState extends State<RatingTabsSection> {
         title: LocaleKeys.ratings,
         isSelected: selectedTabIndex == 1,
         onTap: () {
-          context.read<ProfileBloc>().selectedRatingTabIndex = 1;
+          context.read<ProfileBloc>().add(SelectTab(arguments: 1));
           setState(() {
             selectedTabIndex = 1;
           });

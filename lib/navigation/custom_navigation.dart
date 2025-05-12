@@ -50,7 +50,10 @@ abstract class CustomNavigator {
       case Routes.SEARCH:
         return pageRouteBuilder(const SearchView());
       case Routes.PROFILE:
-        return pageRouteBuilder(const ProfileView());
+        return pageRouteBuilder(ProfileView(
+            isCandidate: settings.arguments != null
+                ? settings.arguments as bool
+                : false));
       case Routes.CANDIDATES:
         return pageRouteBuilder(Candidates(
             selectedStage: settings.arguments != null

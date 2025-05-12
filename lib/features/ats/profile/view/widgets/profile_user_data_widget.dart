@@ -35,7 +35,7 @@ class ProfileUserDataWidget extends StatelessWidget {
                       color: Styles.PRIMARY_COLOR),
                   8.sw,
                   Text(
-                    allTranslations.text(LocaleKeys.download_cv),
+                    allTranslations.text(LocaleKeys.cv),
                     style: AppTextStyles.w500.copyWith(
                         color: Styles.PRIMARY_COLOR,
                         fontSize: 10),

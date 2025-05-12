@@ -12,8 +12,24 @@ class Select extends AppEvent {
   Select({Object? arguments}) : super(arguments);
 }
 
+class SelectTab extends AppEvent {
+  SelectTab({Object? arguments}) : super(arguments);
+}
+
 class ShowDialog extends AppEvent {
   ShowDialog({Object? arguments}) : super(arguments);
+}
+
+class onTechSkillRate extends AppEvent {
+  onTechSkillRate({Object? arguments}) : super(arguments);
+}
+
+class onKnowledgeRate extends AppEvent {
+  onKnowledgeRate({Object? arguments}) : super(arguments);
+}
+
+class onCommunicationRate extends AppEvent {
+  onCommunicationRate({Object? arguments}) : super(arguments);
 }
 
 class SelectTalent extends AppEvent {
@@ -26,6 +42,10 @@ class Remember extends AppEvent {
 
 class Expand extends AppEvent {
   Expand({Object? arguments}) : super(arguments);
+}
+
+class ToggleExpand extends AppEvent {
+  ToggleExpand({Object? arguments}) : super(arguments);
 }
 
 class GetTenants extends AppEvent {
@@ -168,12 +188,24 @@ class ExpandSkills extends AppEvent {
   ExpandSkills({Object? arguments}) : super(arguments);
 }
 
+class ExpandKeywords extends AppEvent {
+  ExpandKeywords({Object? arguments}) : super(arguments);
+}
+
 class PickSkill extends AppEvent {
   PickSkill({Object? arguments}) : super(arguments);
 }
 
+class PickKeyword extends AppEvent {
+  PickKeyword({Object? arguments}) : super(arguments);
+}
+
 class RemoveSkill extends AppEvent {
   RemoveSkill({Object? arguments}) : super(arguments);
+}
+
+class RemoveKeywords extends AppEvent {
+  RemoveKeywords({Object? arguments}) : super(arguments);
 }
 
 class TapSearch extends AppEvent {

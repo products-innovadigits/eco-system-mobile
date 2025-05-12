@@ -1,8 +1,12 @@
+import 'package:eco_system/core/app_event.dart';
 import 'package:eco_system/core/app_state.dart';
 import 'package:eco_system/core/app_strings/locale_keys.dart';
 import 'package:eco_system/features/ats/profile/bloc/profile_bloc.dart';
-import 'package:eco_system/features/ats/profile/view/sections/rating_section.dart';
+import 'package:eco_system/features/ats/profile/view/sections/add_rating_tab_section.dart';
+import 'package:eco_system/features/ats/profile/view/sections/numbers_rating_section.dart';
 import 'package:eco_system/features/ats/profile/view/sections/rating_tabs_section.dart';
+import 'package:eco_system/features/ats/profile/view/sections/custom_rating_section.dart';
+import 'package:eco_system/features/ats/profile/view/sections/ratings_tab_section.dart';
 import 'package:eco_system/helpers/styles.dart';
 import 'package:eco_system/helpers/text_styles.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
@@ -26,24 +30,9 @@ class RatingsBottomSheet extends StatelessWidget {
             24.sh,
             RatingTabsSection(),
             24.sh,
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Styles.BORDER)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                      '${allTranslations.text(LocaleKeys.enter_rating)} ${allTranslations.text(LocaleKeys.technical_skills)}:',
-                      style: AppTextStyles.w400.copyWith(fontSize: 11)),
-                  16.sh,
-                  RatingSection(onRatingSelected: (rate) {
-                    profileBloc.selectedTechSkillsRate = rate;
-                  })
-                ],
-              ),
-            )
+            profileBloc.selectedRatingTabIndex == 0
+                ? AddRatingTabSection()
+                : RatingsSection()
           ],
         );
       },

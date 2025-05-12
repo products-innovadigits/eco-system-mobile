@@ -1,6 +1,9 @@
+import 'package:eco_system/components/custom_drop_list.dart';
 import 'package:eco_system/core/app_event.dart';
 import 'package:eco_system/core/app_state.dart';
+import 'package:eco_system/core/app_strings/locale_keys.dart';
 import 'package:eco_system/features/ats/candidates/bloc/candidates_bloc.dart';
+import 'package:eco_system/features/ats/candidates/view/sections/picked_choices_list.dart';
 import 'package:eco_system/helpers/styles.dart';
 import 'package:eco_system/helpers/text_styles.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
@@ -13,94 +16,71 @@ import '../../../../../core/assets.gen.dart'; // update path
 
 class CustomDropDownSkills extends StatelessWidget {
   final String? hint;
+  final List<DropListModel> selectedList;
+  final VoidCallback onExpand;
+  final bool isExpanded;
+  final void Function(DropListModel item) onRemove;
 
   const CustomDropDownSkills({
     super.key,
     this.hint,
+    required this.selectedList,
+    required this.onExpand,
+    required this.onRemove,
+    required this.isExpanded,
   });
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CandidatesBloc, AppState>(
       builder: (context, state) {
-        final bloc = context.read<CandidatesBloc>();
-        final selected = bloc.selectedSkills;
         return Column(
           children: [
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Styles.BORDER),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: selected.isEmpty
-                        ? Text(
-                            hint ?? allTranslations.text('select_skills'),
-                            style: AppTextStyles.w400
-                                .copyWith(fontSize: 12, color: Styles.HINT),
-                          )
-                        : _buildPickedWrap(context, bloc),
-                  ),
-                  const SizedBox(width: 12),
-                  InkWell(
-                    onTap: () => bloc.add(ExpandSkills()),
-                    child: Container(
-                      padding: const EdgeInsets.all(5),
-                      width: 24,
-                      height: 24,
-                      child: Images(image: Assets.svgs.arrowDown.path),
+            InkWell(
+              onTap: () {
+                if (selectedList.isEmpty) onExpand();
+              },
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Styles.BORDER),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: selectedList.isEmpty
+                          ? Text(
+                              hint ??
+                                  allTranslations
+                                      .text(LocaleKeys.select_skills),
+                              style: AppTextStyles.w400
+                                  .copyWith(fontSize: 12, color: Styles.HINT),
+                            )
+                          : PickedChoicesList(
+                              list: selectedList, onRemove: onRemove),
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 12),
+                    InkWell(
+                      onTap: () {
+                        if (!isExpanded) onExpand();
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(5),
+                        width: 24.w,
+                        height: 24.w,
+                        child: Images(image: Assets.svgs.arrowDown.path),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
         );
       },
-    );
-  }
-
-  Widget _buildPickedWrap(BuildContext context, CandidatesBloc bloc) {
-    return Wrap(
-      alignment: WrapAlignment.start,
-      spacing: 8,
-      runSpacing: 12,
-      children: bloc.selectedSkills.map((item) {
-        return Container(
-          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          decoration: BoxDecoration(
-            color: Styles.PRIMARY_COLOR.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                item.name ?? "",
-                style: AppTextStyles.w400.copyWith(
-                  fontSize: 10,
-                  color: Styles.PRIMARY_COLOR,
-                ),
-              ),
-              4.sw,
-              InkWell(
-                onTap: () => bloc.add(RemoveSkill(arguments: item)),
-                child: Images(
-                  image: Assets.svgs.fillCloseCircle.path,
-                  color: Styles.PRIMARY_COLOR,
-                  width: 18,
-                  height: 18,
-                ),
-              )
-            ],
-          ),
-        );
-      }).toList(),
     );
   }
 }

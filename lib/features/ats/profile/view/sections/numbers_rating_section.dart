@@ -3,16 +3,12 @@ import 'package:eco_system/helpers/text_styles.dart';
 import 'package:eco_system/utility/extensions.dart';
 import 'package:flutter/material.dart';
 
-class RatingSection extends StatefulWidget {
-  final Function(int index)? onRatingSelected;
-  const RatingSection({super.key, this.onRatingSelected});
+class NumbersRatingSection extends StatelessWidget {
+  final int selectedRating;
+  final Function(int rate)? onRatingSelected;
 
-  @override
-  State<RatingSection> createState() => _RatingSectionState();
-}
-
-class _RatingSectionState extends State<RatingSection> {
-  int selectedRatingIndex = 0;
+  const NumbersRatingSection(
+      {super.key, required this.selectedRating, this.onRatingSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -22,20 +18,17 @@ class _RatingSectionState extends State<RatingSection> {
         (index) => Expanded(
           child: GestureDetector(
             onTap: () {
-              setState(() {
-                widget.onRatingSelected?.call(index);
-                selectedRatingIndex = index;
-              });
+              onRatingSelected?.call(index);
             },
             child: Container(
                 margin: EdgeInsetsDirectional.only(end: 8.w),
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: selectedRatingIndex == index
+                  color: selectedRating == index
                       ? Styles.PRIMARY_COLOR.withValues(alpha: 0.1)
                       : Colors.transparent,
                   border: Border.all(
-                      color: selectedRatingIndex == index
+                      color: selectedRating == index
                           ? Styles.PRIMARY_COLOR
                           : Styles.BORDER),
                   borderRadius: BorderRadius.circular(4),
@@ -44,7 +37,7 @@ class _RatingSectionState extends State<RatingSection> {
                   child: Text(
                     index.toString(),
                     style: AppTextStyles.w400.copyWith(
-                        color: selectedRatingIndex == index
+                        color: selectedRating == index
                             ? Styles.PRIMARY_COLOR
                             : Styles.DETAILS),
                   ),

@@ -10,7 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileBodySection extends StatelessWidget {
-  const ProfileBodySection({super.key});
+  final bool isCandidate;
+  const ProfileBodySection({super.key, required this.isCandidate});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class ProfileBodySection extends StatelessWidget {
         return Expanded(
           child: Column(
             children: [
-              ProfileTabsSection(),
+              ProfileTabsSection(isCandidate: isCandidate),
               20.sh,
               Expanded(
                 child: SingleChildScrollView(

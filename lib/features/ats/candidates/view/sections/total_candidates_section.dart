@@ -31,43 +31,40 @@ class TotalCandidatesSection extends StatelessWidget {
             ),
           ],
         ),
-        InkWell(
-          onTap: () => CustomNavigator.push(Routes.TALENT_POOL),
-          child: Stack(
-            textDirection: TextDirection.ltr,
-            children: List.generate(
-                5,
-                (index) => Container(
-                      width: 32.w,
-                      height: 32.h,
-                      margin: index == 0
-                          ? EdgeInsets.only(left: 0)
-                          : EdgeInsets.only(left: index * 17.w),
-                      decoration: BoxDecoration(
-                          color: Styles.PRIMARY_COLOR,
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Styles.WHITE_COLOR),
-                          image: DecorationImage(
-                              image: AssetImage(Assets.images.avatar.path),
-                              fit: BoxFit.fill)),
-                      child: index == 4
-                          ? Container(
-                              width: 32.w,
-                              height: 32.h,
-                              decoration: BoxDecoration(
-                                  color: Colors.black.withValues(alpha: 0.5),
-                                  shape: BoxShape.circle),
-                              child: Center(
-                                child: Text(
-                                  '+5',
-                                  style: AppTextStyles.w400
-                                      .copyWith(color: Styles.WHITE_COLOR),
-                                ),
+        Stack(
+          textDirection: TextDirection.ltr,
+          children: List.generate(
+              5,
+              (index) => Container(
+                    width: 32.w,
+                    height: 32.h,
+                    margin: index == 0
+                        ? EdgeInsets.only(left: 0)
+                        : EdgeInsets.only(left: index * 17.w),
+                    decoration: BoxDecoration(
+                        color: Styles.PRIMARY_COLOR,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Styles.WHITE_COLOR),
+                        image: DecorationImage(
+                            image: AssetImage(Assets.images.avatar.path),
+                            fit: BoxFit.fill)),
+                    child: index == 4
+                        ? Container(
+                            width: 32.w,
+                            height: 32.h,
+                            decoration: BoxDecoration(
+                                color: Colors.black.withValues(alpha: 0.5),
+                                shape: BoxShape.circle),
+                            child: Center(
+                              child: Text(
+                                '+5',
+                                style: AppTextStyles.w400
+                                    .copyWith(color: Styles.WHITE_COLOR),
                               ),
-                            )
-                          : const SizedBox.shrink(),
-                    )),
-          ),
+                            ),
+                          )
+                        : const SizedBox.shrink(),
+                  )),
         ),
       ],
     );

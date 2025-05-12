@@ -2,7 +2,8 @@ import 'package:eco_system/core/app_event.dart';
 import 'package:eco_system/core/app_state.dart';
 import 'package:eco_system/core/assets.gen.dart';
 import 'package:eco_system/features/ats/profile/bloc/profile_bloc.dart';
-import 'package:eco_system/features/ats/profile/view/widgets/more_dialog.dart';
+import 'package:eco_system/features/ats/profile/view/widgets/applicant_more_dialog.dart';
+import 'package:eco_system/features/ats/profile/view/widgets/candidate_more_dialog.dart';
 import 'package:eco_system/features/ats/profile/view/widgets/profile_custom_appbar_widget.dart';
 import 'package:eco_system/features/ats/profile/view/widgets/profile_data_container_widget.dart';
 import 'package:eco_system/features/ats/profile/view/widgets/profile_user_data_widget.dart';
@@ -11,7 +12,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileHeaderSection extends StatefulWidget {
-  const ProfileHeaderSection({super.key});
+  final bool isCandidate;
+
+  const ProfileHeaderSection({super.key, required this.isCandidate});
 
   @override
   State<ProfileHeaderSection> createState() => _ProfileHeaderSectionState();
@@ -75,6 +78,7 @@ class _ProfileHeaderSectionState extends State<ProfileHeaderSection>
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        10.sh,
                         ProfileCustomAppbarWidget(
                             title: 'قائد فريق تصميم المنتجات'),
                         16.sh,
@@ -106,7 +110,9 @@ class _ProfileHeaderSectionState extends State<ProfileHeaderSection>
                   child: ScaleTransition(
                     scale: _scale,
                     alignment: Alignment.topLeft,
-                    child: MoreDialog(),
+                    child: widget.isCandidate
+                        ? CandidateMoreDialog()
+                        : ApplicantMoreDialog(),
                   ),
                 ),
             ],

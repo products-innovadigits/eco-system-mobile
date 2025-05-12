@@ -9,8 +9,11 @@ class CandidatesBloc extends Bloc<AppEvent, AppState> {
   CandidatesBloc() : super(Start()) {
     on<InitCandidates>(_onInitCandidates);
     on<PickSkill>(_onAddSkill);
+    on<PickKeyword>(_onAddKeyword);
     on<RemoveSkill>(_onRemoveSkill);
+    on<RemoveKeywords>(_onRemoveKeyword);
     on<ExpandSkills>(_onToggleSkillsExpanded);
+    on<ExpandKeywords>(_onToggleKeywordsExpanded);
     on<Click>(_onClick);
   }
 
@@ -25,6 +28,7 @@ class CandidatesBloc extends Bloc<AppEvent, AppState> {
       TextEditingController();
   final TextEditingController locationController = TextEditingController();
   bool expandSkills = false;
+  bool expandKeywords = false;
 
   final List<DropListModel> skills = [
     DropListModel(id: 1, name: 'تصميم واجهة '),
@@ -33,6 +37,14 @@ class CandidatesBloc extends Bloc<AppEvent, AppState> {
     DropListModel(id: 4, name: 'تصميم تطبيقات'),
     DropListModel(id: 5, name: 'تصميم تطبيقات'),
     DropListModel(id: 6, name: 'تصميم تطبيقات'),
+  ];
+
+  final List<DropListModel> keywords = [
+    DropListModel(id: 1, name: 'ui/ux designer'),
+    DropListModel(id: 2, name: 'Communication Skills'),
+    DropListModel(id: 3, name: 'Mobile App Development'),
+    DropListModel(id: 4, name: 'Web App Development'),
+    DropListModel(id: 5, name: 'Backend Development'),
   ];
   final List<DropListModel> currencies = [
     DropListModel(id: 1, name: 'ر.س'),
@@ -43,7 +55,13 @@ class CandidatesBloc extends Bloc<AppEvent, AppState> {
     DropListModel(id: 2, name: 'انثى'),
   ];
 
+  final List<DropListModel> qualified = [
+    DropListModel(id: 1, name: 'مؤهل'),
+    DropListModel(id: 2, name: 'غير مؤهل'),
+  ];
+
   List<DropListModel> selectedSkills = [];
+  List<DropListModel> selectedKeywords = [];
 
   final Map<String, GlobalKey> stageKeys = {
     'المرحلة التطبيقية': GlobalKey(),
@@ -91,6 +109,16 @@ class CandidatesBloc extends Bloc<AppEvent, AppState> {
     }
   }
 
+  void _onAddKeyword(PickKeyword event, Emitter<AppState> emit) {
+    final keyword = event.arguments as DropListModel;
+    if (!selectedKeywords.contains(keyword)) {
+      selectedKeywords.add(keyword);
+      keywords.remove(keyword);
+      expandKeywords = false;
+      emit(Done());
+    }
+  }
+
   void _onRemoveSkill(RemoveSkill event, Emitter<AppState> emit) {
     final skill = event.arguments as DropListModel;
     selectedSkills.remove(skill);
@@ -98,14 +126,34 @@ class CandidatesBloc extends Bloc<AppEvent, AppState> {
     emit(Done());
   }
 
+  void _onRemoveKeyword(RemoveKeywords event, Emitter<AppState> emit) {
+    final keyword = event.arguments as DropListModel;
+    selectedKeywords.remove(keyword);
+    keywords.add(keyword);
+    emit(Done());
+  }
+
   void _onToggleSkillsExpanded(ExpandSkills event, Emitter<AppState> emit) {
     expandSkills = !expandSkills;
+    if (expandKeywords) {
+      expandKeywords = false;
+    }
+    emit(Done());
+  }
+
+  void _onToggleKeywordsExpanded(ExpandKeywords event, Emitter<AppState> emit) {
+    expandKeywords = !expandKeywords;
+    if (expandSkills) {
+      expandSkills = false;
+    }
     emit(Done());
   }
 
   void reset() {
     selectedSkills.clear();
     expandSkills = false;
+    selectedKeywords.clear();
+    expandKeywords = false;
   }
 
   @override

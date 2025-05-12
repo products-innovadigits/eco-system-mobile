@@ -9,8 +9,8 @@ import 'package:eco_system/utility/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class Skills extends StatelessWidget {
-  const Skills({super.key});
+class Keywords extends StatelessWidget {
+  const Keywords({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,16 +20,16 @@ class Skills extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(allTranslations.text(LocaleKeys.skills),
+            Text(allTranslations.text(LocaleKeys.keyword),
                 style: AppTextStyles.w400.copyWith(fontSize: 12)),
             8.sh,
             CustomDropDownSkills(
-              hint: allTranslations.text(LocaleKeys.select_skills),
-              selectedList: bloc.selectedSkills,
-              onExpand: () => bloc.add(ExpandSkills()),
-              isExpanded: bloc.expandSkills,
+              hint: allTranslations.text(LocaleKeys.select_keywords),
+              selectedList: bloc.selectedKeywords,
+              onExpand: () => bloc.add(ExpandKeywords()),
+              isExpanded: bloc.expandKeywords,
               onRemove: (item) {
-                bloc.add(RemoveSkill(arguments: item));
+                bloc.add(RemoveKeywords(arguments: item));
               },
             ),
           ],
