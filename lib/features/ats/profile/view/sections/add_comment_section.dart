@@ -1,5 +1,3 @@
-import 'package:eco_system/components/custom_btn.dart';
-import 'package:eco_system/components/custom_text_field.dart';
 import 'package:eco_system/core/app_state.dart';
 import 'package:eco_system/core/app_strings/locale_keys.dart';
 import 'package:eco_system/core/assets.gen.dart';
@@ -9,9 +7,7 @@ import 'package:eco_system/helpers/popup_helper.dart';
 import 'package:eco_system/helpers/styles.dart';
 import 'package:eco_system/helpers/text_styles.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
-import 'package:eco_system/navigation/custom_navigation.dart';
 import 'package:eco_system/utility/extensions.dart';
-import 'package:eco_system/widgets/bottom_sheet_header.dart';
 import 'package:eco_system/widgets/images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,12 +38,12 @@ class AddCommentSection extends StatelessWidget {
             builder: (context, state) {
               return InkWell(
                 onTap: () {
-                  PopUpHelper.showBottomSheet(
-                      context: context,
-                      child: RatingReasonBottomSheet(
-                        commentController: commentController,
-                        onCommentAdded: onCommentAdded,
-                      ));
+                  // PopUpHelper.showBottomSheet(
+                  //     context: context,
+                  //     child: RatingReasonBottomSheet(
+                  //       commentController: commentController,
+                  //       onCommentAdded: onCommentAdded,
+                  //     ));
                 },
                 child: Row(
                   children: [

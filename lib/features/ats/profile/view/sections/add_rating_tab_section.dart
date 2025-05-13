@@ -1,8 +1,11 @@
+import 'package:eco_system/components/custom_btn.dart';
 import 'package:eco_system/core/app_event.dart';
+import 'package:eco_system/core/app_state.dart';
 import 'package:eco_system/core/app_strings/locale_keys.dart';
 import 'package:eco_system/features/ats/profile/bloc/profile_bloc.dart';
 import 'package:eco_system/features/ats/profile/view/sections/custom_rating_section.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
+import 'package:eco_system/navigation/custom_navigation.dart';
 import 'package:eco_system/utility/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,46 +15,53 @@ class AddRatingTabSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final profileBloc = context.read<ProfileBloc>();
-    return Column(
-      children: [
-        CustomRatingSection(
-          title: allTranslations.text(LocaleKeys.technical_skills),
-          commentController: profileBloc.techSkillsController,
-          selectedRating: profileBloc.selectedTechSkillsRate,
-          onCommentAdded: (comment) {
-            profileBloc.techSkillsController.text = comment;
-          },
-          onRatingSelected: (rate) {
-            profileBloc.add(onTechSkillRate(arguments: rate));
-          },
-        ),
-        16.sh,
-        CustomRatingSection(
-          title: allTranslations.text(LocaleKeys.knowledge),
-          commentController: profileBloc.knowledgeController,
-          selectedRating: profileBloc.selectedKnowledgeRate,
-          onCommentAdded: (comment) {
-            profileBloc.knowledgeController.text = comment;
-          },
-          onRatingSelected: (rate) {
-            profileBloc.add(onKnowledgeRate(arguments: rate));
-          },
-        ),
-        16.sh,
-        CustomRatingSection(
-          title: allTranslations.text(LocaleKeys.communications),
-          commentController: profileBloc.communicationController,
-          selectedRating: profileBloc.selectedCommunicationRate,
-          onCommentAdded: (comment) {
-            profileBloc.communicationController.text = comment;
-          },
-          onRatingSelected: (rate) {
-            profileBloc.add(onCommunicationRate(arguments: rate));
-          },
-        ),
-        16.sh,
-      ],
+    return BlocBuilder<ProfileBloc, AppState>(
+      builder: (context, state) {
+        final profileBloc = context.read<ProfileBloc>();
+        final ratingItems = profileBloc.ratingItems;
+
+        return Stack(
+          children: [
+            Column(
+              children: [
+                ListView.separated(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: ratingItems.length,
+                  separatorBuilder: (_, __) => 16.sh,
+                  itemBuilder: (_, index) {
+                    final item = ratingItems[index];
+                    final controller =
+                        TextEditingController(text: item.comment);
+
+                    return CustomRatingSection(
+                      title: allTranslations.text(item.title),
+                      selectedRating: item.rating,
+                      isCommentVisible: item.isCommentFieldVisible,
+                      comment: item.comment,
+                      onRatingSelected: (rate) => profileBloc
+                          .add(UpdateRating(index: index, rating: rate)),
+                      onCommentAdded: (comment) => profileBloc
+                          .add(AddComment(index: index, comment: comment)),
+                      onToggleCommentField: () =>
+                          profileBloc.add(ToggleCommentField(index: index)),
+                      controller: controller,
+                    );
+                  },
+                ),
+                70.sh,
+              ],
+            ),
+            Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: CustomBtn(
+                    text: allTranslations.text(LocaleKeys.save),
+                    onPressed: () => CustomNavigator.pop()))
+          ],
+        );
+      },
     );
   }
 }

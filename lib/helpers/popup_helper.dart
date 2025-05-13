@@ -1,5 +1,8 @@
+import 'package:eco_system/components/animated_widget.dart';
+import 'package:eco_system/navigation/custom_navigation.dart';
 import 'package:eco_system/utility/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 abstract class PopUpHelper {
   static showTopSheet(
@@ -42,12 +45,18 @@ abstract class PopUpHelper {
     );
   }
 
-  static showBottomSheet(
-      {@required BuildContext? context, @required Widget? child,
-        double? height,}) {
-    return showModalBottomSheet(
-      context: context!,
+  static showBottomSheet({
+    @required Widget? child,
+    double? height,
+  }) {
+    return showMaterialModalBottomSheet(
       elevation: 2,
+      enableDrag: true,
+      clipBehavior: Clip.antiAlias,
+      context: CustomNavigator.navigatorState.currentContext!,
+      expand: false,
+      useRootNavigator: true,
+      isDismissible: true,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(15),
@@ -55,28 +64,36 @@ abstract class PopUpHelper {
         ),
       ),
       backgroundColor: Colors.white,
-      isScrollControlled: true,
-      builder: (_) {
-        return Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-            constraints: height != null
-                ? BoxConstraints(maxHeight: height)
-                : null,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: context.w * 0.2,
-                  height: 5.h,
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(50),
+      // isScrollControlled: true,
+      builder: (context) {
+        return Padding(
+          padding: MediaQuery.of(CustomNavigator.navigatorState.currentContext!)
+              .viewInsets,
+          child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+              constraints:
+                  height != null ? BoxConstraints(maxHeight: height) : null,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: context.w * 0.2,
+                    height: 5.h,
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(50),
+                    ),
                   ),
-                ),
-                24.sh,
-                child!,
-              ],
-            ));
+                  24.sh,
+                  Flexible(
+                    child: ListAnimator(
+                      controller: ScrollController(),
+                      data: [child!],
+                    ),
+                  ),
+                ],
+              )),
+        );
       },
     );
   }

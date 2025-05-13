@@ -1,11 +1,8 @@
-import 'dart:developer';
-
 import 'package:eco_system/components/custom_btn.dart';
 import 'package:eco_system/core/app_state.dart';
 import 'package:eco_system/core/app_strings/locale_keys.dart';
 import 'package:eco_system/core/assets.gen.dart';
 import 'package:eco_system/features/ats/profile/bloc/profile_bloc.dart';
-import 'package:eco_system/features/ats/profile/view/sections/ratings_bottom_sheet.dart';
 import 'package:eco_system/features/ats/profile/view/widgets/more_dialog_tile_widget.dart';
 import 'package:eco_system/features/ats/talent_pool/view/widgets/assign_to_job_list.dart';
 import 'package:eco_system/helpers/popup_helper.dart';
@@ -38,7 +35,6 @@ class CandidateMoreDialog extends StatelessWidget {
                   iconPath: Assets.svgs.directboxSend.path,
                   onTap: () {
                     PopUpHelper.showBottomSheet(
-                      context: context,
                       height: context.h * 0.8,
                       child: Stack(
                         children: [

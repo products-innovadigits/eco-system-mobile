@@ -237,6 +237,10 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/edit-2.svg
   SvgGenImage get edit2 => const SvgGenImage('assets/svgs/edit-2.svg');
 
+  /// File path: assets/svgs/edit-outline.svg
+  SvgGenImage get editOutline =>
+      const SvgGenImage('assets/svgs/edit-outline.svg');
+
   /// File path: assets/svgs/edit.svg
   SvgGenImage get edit => const SvgGenImage('assets/svgs/edit.svg');
 
@@ -511,6 +515,7 @@ class $AssetsSvgsGen {
     documentDownload,
     documentText,
     edit2,
+    editOutline,
     edit,
     emptyImage,
     emptyWalletTick,

@@ -1,15 +1,9 @@
-import 'package:eco_system/core/app_event.dart';
 import 'package:eco_system/core/app_state.dart';
 import 'package:eco_system/core/app_strings/locale_keys.dart';
 import 'package:eco_system/features/ats/profile/bloc/profile_bloc.dart';
 import 'package:eco_system/features/ats/profile/view/sections/add_rating_tab_section.dart';
-import 'package:eco_system/features/ats/profile/view/sections/numbers_rating_section.dart';
 import 'package:eco_system/features/ats/profile/view/sections/rating_tabs_section.dart';
-import 'package:eco_system/features/ats/profile/view/sections/custom_rating_section.dart';
 import 'package:eco_system/features/ats/profile/view/sections/ratings_tab_section.dart';
-import 'package:eco_system/helpers/styles.dart';
-import 'package:eco_system/helpers/text_styles.dart';
-import 'package:eco_system/helpers/translation/all_translation.dart';
 import 'package:eco_system/utility/extensions.dart';
 import 'package:eco_system/widgets/bottom_sheet_header.dart';
 import 'package:flutter/material.dart';
@@ -29,10 +23,10 @@ class RatingsBottomSheet extends StatelessWidget {
             BottomSheetHeader(title: LocaleKeys.rating),
             24.sh,
             RatingTabsSection(),
-            24.sh,
             profileBloc.selectedRatingTabIndex == 0
                 ? AddRatingTabSection()
-                : RatingsSection()
+                : RatingsSection(),
+            24.sh,
           ],
         );
       },

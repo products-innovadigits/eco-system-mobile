@@ -45,7 +45,7 @@ class _CustomDropListState extends State<CustomDropList> {
           border: Border.all(color: Styles.BORDER)),
       child: DropdownButton<DropListModel>(
         icon: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10),
+          padding: EdgeInsets.symmetric(horizontal: 10.w),
           child: Images(image: Assets.svgs.arrowDown.path),
         ),
         iconSize: 24,

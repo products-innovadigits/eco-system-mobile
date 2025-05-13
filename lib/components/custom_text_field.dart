@@ -1,4 +1,5 @@
 import 'package:eco_system/helpers/text_styles.dart';
+import 'package:eco_system/utility/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -35,6 +36,8 @@ class CustomTextField extends StatefulWidget {
   final TextStyle? headStyle;
   final bool headStart;
   final double headSpace;
+  final double? maxSuffixIconHeight;
+  final EdgeInsetsGeometry? contentPadding;
 
   const CustomTextField({
     Key? key,
@@ -82,6 +85,7 @@ class CustomTextField extends StatefulWidget {
     this.headStart = true,
     this.headSpace = 4,
     this.borderColor,
+    this.contentPadding, this.maxSuffixIconHeight,
   }) : super(key: key);
 
   @override
@@ -188,10 +192,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
               decoration: InputDecoration(
                 fillColor: widget.color ?? Styles.WHITE_COLOR,
                 errorStyle: const TextStyle(color: Styles.RED_CHART_COLOR),
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+                contentPadding: widget.contentPadding ??
+                    EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                 prefixIconConstraints: BoxConstraints(maxHeight: 35),
-                suffixIconConstraints: const BoxConstraints(maxHeight: 35),
+                suffixIconConstraints:  BoxConstraints(maxHeight: widget.maxSuffixIconHeight ??  35),
                 hintText: widget.hint,
                 // labelText: widget.label,
                 alignLabelWithHint: true,

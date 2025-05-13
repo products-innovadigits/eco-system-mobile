@@ -1,6 +1,8 @@
 import 'package:eco_system/core/app_event.dart';
 import 'package:eco_system/core/app_state.dart';
+import 'package:eco_system/core/app_strings/locale_keys.dart';
 import 'package:eco_system/core/enums.dart';
+import 'package:eco_system/features/ats/profile/model/rating_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,9 +13,9 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
     on<ShowDialog>(_onShowMoreDialog);
     on<Expand>(_onExpand);
     on<ToggleExpand>(_onToggleExpansion);
-    on<onTechSkillRate>(_onTechSkillRate);
-    on<onKnowledgeRate>(_onKnowledgeRate);
-    on<onCommunicationRate>(_onCommunicationRate);
+    on<UpdateRating>(_onUpdateRating);
+    on<AddComment>(_onAddComment);
+    on<ToggleCommentField>(_onToggleCommentField);
   }
 
   bool isCareerObjExpanded = false;
@@ -21,15 +23,35 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
   bool isWorkExperienceExpanded = false;
   int reviewExpandedIndex = -1;
   bool showMoreDialog = false;
-  TextEditingController techSkillsController = TextEditingController();
-  TextEditingController knowledgeController = TextEditingController();
-  TextEditingController communicationController = TextEditingController();
 
   ProfileEnum selectedTab = ProfileEnum.profile;
   int selectedRatingTabIndex = 0;
-  int selectedTechSkillsRate = -1;
-  int selectedKnowledgeRate = -1;
-  int selectedCommunicationRate = -1;
+  List<RatingItem> ratingItems = [
+    RatingItem(title: LocaleKeys.technical_skills),
+    RatingItem(title: LocaleKeys.knowledge),
+    RatingItem(title: LocaleKeys.communications),
+  ];
+
+  _onUpdateRating(UpdateRating event, Emitter<AppState> emit) {
+    ratingItems[event.index] =
+        ratingItems[event.index].copyWith(rating: event.rating);
+    emit(Done());
+  }
+
+  _onAddComment(AddComment event, Emitter<AppState> emit) {
+    ratingItems[event.index] = ratingItems[event.index].copyWith(
+      comment: event.comment,
+      isCommentFieldVisible: false,
+    );
+    emit(Done());
+  }
+
+  _onToggleCommentField(ToggleCommentField event, Emitter<AppState> emit) {
+    ratingItems[event.index] = ratingItems[event.index].copyWith(
+      isCommentFieldVisible: !ratingItems[event.index].isCommentFieldVisible,
+    );
+    emit(Done());
+  }
 
   _onExpand(Expand event, Emitter<AppState> emit) async {
     if (event.arguments == 2) {
@@ -45,7 +67,11 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
 
   _onToggleExpansion(ToggleExpand event, Emitter<AppState> emit) async {
     int index = event.arguments as int;
-    reviewExpandedIndex = index;
+    if (reviewExpandedIndex == index) {
+      reviewExpandedIndex = -1;
+    } else {
+      reviewExpandedIndex = index;
+    }
     emit(Done());
   }
 
@@ -77,33 +103,13 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
     emit(Done());
   }
 
-  _onTechSkillRate(onTechSkillRate event, Emitter<AppState> emit) async {
-    int rate = event.arguments as int;
-    selectedTechSkillsRate = rate;
-    emit(Done());
-  }
-
-  _onKnowledgeRate(onKnowledgeRate event, Emitter<AppState> emit) async {
-    int rate = event.arguments as int;
-    selectedKnowledgeRate = rate;
-    emit(Done());
-  }
-
-  _onCommunicationRate(
-      onCommunicationRate event, Emitter<AppState> emit) async {
-    int rate = event.arguments as int;
-    selectedCommunicationRate = rate;
-    emit(Done());
-  }
-
   void resetRatingBottomSheetData() {
     selectedRatingTabIndex = 0;
     reviewExpandedIndex = -1;
-    selectedTechSkillsRate = -1;
-    selectedKnowledgeRate = -1;
-    selectedCommunicationRate = -1;
-    techSkillsController.clear();
-    knowledgeController.clear();
-    communicationController.clear();
+    ratingItems = [
+      RatingItem(title: LocaleKeys.technical_skills),
+      RatingItem(title: LocaleKeys.knowledge),
+      RatingItem(title: LocaleKeys.communications),
+    ];
   }
 }

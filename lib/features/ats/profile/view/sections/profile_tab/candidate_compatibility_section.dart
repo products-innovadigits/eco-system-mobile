@@ -14,8 +14,8 @@ class CandidateCompatibilitySection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => PopUpHelper.showBottomSheet(
-          context: context, child: CompatibilityBottomSheetWidget()),
+      onTap: () =>
+          PopUpHelper.showBottomSheet(child: CompatibilityBottomSheetWidget()),
       child: Container(
         width: context.w,
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),

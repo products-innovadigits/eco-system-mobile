@@ -333,9 +333,9 @@
   "start_search_candidate": "أبدا رحلة البحث عن مرشح !",
   "enter_keywords": "من فضلك قم بإدخال الكلمات الافتتاحية في شريط البحث لكي تجد ما تبحث عنه.",
   "show_all_results": "عرض جميع النتائج ",
-  "enter_gender": "ادخل الجنس...",
+  "select_gender": "اختر ذكر / انثى...",
   "gender": "الجنس",
-  "enter_your_location": "ادخل الموقع الجغرافي...",
+  "select_your_location": "اختر الموقع الجغرافي...",
   "experience": "سنين الخبرة",
   "currency": "العملة..",
   "from": "من...",
@@ -381,5 +381,12 @@
   "enter_rating": "من ١ الي ٥ قم بتقييم",
   "send_email": "ارسال بريد",
   "copy_to_job": "نسخ الي وظيفة",
-  "transfer_to_another_stage": "نقل الي مرحلة اخري"
+  "transfer_to_another_stage": "نقل الي مرحلة اخري",
+  "sort": "الترتيب",
+  "newest_to_oldest": "من الأحدث للأقدم",
+  "oldest_to_newest": "من الأقدم للأحدث",
+  "highest_price": "من الأعلى سعراً للأقل سعراً",
+  "lowest_price": "من الأقل سعراً للأعلى سعراً",
+  "most_experience": "من الأعلى للأقل في سنين الخبرة",
+  "least_experience": "من الأقل للأعلى في سنين الخبرة"
 }

@@ -12,6 +12,10 @@ class Select extends AppEvent {
   Select({Object? arguments}) : super(arguments);
 }
 
+class Sort extends AppEvent {
+  Sort({Object? arguments}) : super(arguments);
+}
+
 class SelectTab extends AppEvent {
   SelectTab({Object? arguments}) : super(arguments);
 }
@@ -219,3 +223,22 @@ class Searching extends AppEvent {
 class CancelSearch extends AppEvent {
   CancelSearch({Object? arguments}) : super(arguments);
 }
+
+
+class UpdateRating extends AppEvent {
+  final int index;
+  final int rating;
+  UpdateRating({required this.index, required this.rating}) : super(null);
+}
+
+class AddComment extends AppEvent {
+  final int index;
+  final String comment;
+  AddComment({required this.index, required this.comment}) : super(null);
+}
+
+class ToggleCommentField extends AppEvent {
+  final int index;
+  ToggleCommentField({required this.index}) : super(null);
+}
+

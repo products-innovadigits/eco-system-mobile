@@ -334,9 +334,9 @@ abstract class  LocaleKeys {
   static const start_search_candidate = 'start_search_candidate';
   static const enter_keywords = 'enter_keywords';
   static const show_all_results = 'show_all_results';
-  static const enter_gender = 'enter_gender';
+  static const select_gender = 'select_gender';
   static const gender = 'gender';
-  static const enter_your_location = 'enter_your_location';
+  static const select_your_location = 'select_your_location';
   static const experience = 'experience';
   static const currency = 'currency';
   static const from = 'from';
@@ -383,5 +383,12 @@ abstract class  LocaleKeys {
   static const send_email = 'send_email';
   static const copy_to_job = 'copy_to_job';
   static const transfer_to_another_stage = 'transfer_to_another_stage';
+  static const sort = 'sort';
+  static const newest_to_oldest = 'newest_to_oldest';
+  static const oldest_to_newest = 'oldest_to_newest';
+  static const highest_price = 'highest_price';
+  static const lowest_price = 'lowest_price';
+  static const most_experience = 'most_experience';
+  static const least_experience = 'least_experience';
 
 }

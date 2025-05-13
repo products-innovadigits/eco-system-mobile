@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:eco_system/core/app_state.dart';
 import 'package:eco_system/core/app_strings/locale_keys.dart';
 import 'package:eco_system/core/assets.gen.dart';
@@ -35,7 +33,6 @@ class ApplicantMoreDialog extends StatelessWidget {
                   onTap: () {
                     profileBloc.resetRatingBottomSheetData();
                     PopUpHelper.showBottomSheet(
-                        context: context,
                         child: BlocProvider.value(
                           value: profileBloc,
                           child: RatingsBottomSheet(),

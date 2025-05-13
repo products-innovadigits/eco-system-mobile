@@ -7,6 +7,7 @@ import 'package:eco_system/features/ats/talent_pool/view/widgets/assign_to_job_l
 import 'package:eco_system/features/ats/talent_pool/view/widgets/bottom_nav_action_widget.dart';
 import 'package:eco_system/helpers/styles.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
+import 'package:eco_system/navigation/custom_navigation.dart';
 import 'package:eco_system/utility/extensions.dart';
 import 'package:eco_system/widgets/bottom_sheet_header.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +50,7 @@ class TalentPoolBottomNav extends StatelessWidget {
                   child: CustomBtn(
                     width: context.w * 0.9,
                       text: allTranslations.text(LocaleKeys.save),
-                      onPressed: () {}),
+                      onPressed: () => CustomNavigator.pop()),
                 )
               ],
             ),
@@ -69,7 +70,7 @@ class TalentPoolBottomNav extends StatelessWidget {
                 16.sh,
                 CustomBtn(
                     text: allTranslations.text(LocaleKeys.save),
-                    onPressed: () {})
+                    onPressed: () => CustomNavigator.pop())
               ],
             ),
           ),
@@ -89,7 +90,7 @@ class TalentPoolBottomNav extends StatelessWidget {
                 16.sh,
                 CustomBtn(
                     text: allTranslations.text(LocaleKeys.save),
-                    onPressed: () {})
+                    onPressed: () => CustomNavigator.pop())
               ],
             ),
           ),

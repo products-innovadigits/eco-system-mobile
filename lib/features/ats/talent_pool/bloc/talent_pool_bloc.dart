@@ -1,3 +1,6 @@
+import 'package:eco_system/components/custom_drop_list.dart';
+import 'package:eco_system/core/app_strings/locale_keys.dart';
+import 'package:eco_system/helpers/translation/all_translation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,6 +10,7 @@ import '../../../../core/app_state.dart';
 class TalentPoolBloc extends Bloc<AppEvent, AppState> {
   TalentPoolBloc() : super(Start()) {
     on<Click>(onClick);
+    on<Sort>(_onSorting);
     on<Select>(onToggleSelection);
     on<SelectTalent>(onSelectTalent);
   }
@@ -14,6 +18,24 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
   TextEditingController fileNameController = TextEditingController();
   List<int> selectedTalentsList = [];
   bool activeSelection = false;
+  List<DropListModel> sortingList = [
+    DropListModel(
+        id: 1, name: allTranslations.text(LocaleKeys.newest_to_oldest)),
+    DropListModel(
+        id: 2, name: allTranslations.text(LocaleKeys.oldest_to_newest)),
+    DropListModel(id: 3, name: allTranslations.text(LocaleKeys.highest_price)),
+    DropListModel(id: 4, name: allTranslations.text(LocaleKeys.lowest_price)),
+    DropListModel(
+        id: 5, name: allTranslations.text(LocaleKeys.most_experience)),
+    DropListModel(
+        id: 6, name: allTranslations.text(LocaleKeys.least_experience)),
+  ];
+  DropListModel? selectedSorting;
+
+  _onSorting(Sort event, Emitter<AppState> emit) async {
+    selectedSorting = event.arguments as DropListModel?;
+    emit(Done());
+  }
 
   void onToggleSelection(Select event, Emitter<AppState> emit) async {
     activeSelection = event.arguments as bool;

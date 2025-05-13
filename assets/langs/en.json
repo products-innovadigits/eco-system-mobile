@@ -331,9 +331,9 @@
   "start_search_candidate": "Start Searching for Candidate",
   "enter_keywords": "Please enter your keywords in the search bar to find what you are looking for.",
   "show_all_results": "Show All Results",
-  "enter_gender": "Enter the gender...",
+  "select_gender": "Select Male/Female...",
   "gender": "Gender",
-  "enter_your_location": "Enter your location...",
+  "select_your_location": "Select your location...",
   "experience": "Experience",
   "currency": "Currency",
   "from": "From...",
@@ -379,5 +379,12 @@
   "enter_rating": "From 1 to 5 rate the ",
   "send_email": "Send Email",
   "copy_to_job": "Copy to Job",
-  "transfer_to_another_stage": "Transfer to another stage"
+  "transfer_to_another_stage": "Transfer to another stage",
+  "sort": "Sort",
+  "newest_to_oldest": "Newest to Oldest",
+  "oldest_to_newest": "Oldest to Newest",
+  "highest_price": "Highest Price to Lowest",
+  "lowest_price": "Lowest Price to Highest",
+  "most_experience": "Most to Least Experience",
+  "least_experience": "Least to Most Experience"
 }

@@ -1,10 +1,11 @@
 import 'package:eco_system/components/custom_btn.dart';
 import 'package:eco_system/components/custom_drop_list.dart';
-import 'package:eco_system/components/custom_text_field.dart';
 import 'package:eco_system/core/app_event.dart';
 import 'package:eco_system/core/app_state.dart';
 import 'package:eco_system/core/app_strings/locale_keys.dart';
+import 'package:eco_system/features/ats/bloc/filtration_bloc.dart';
 import 'package:eco_system/features/ats/candidates/bloc/candidates_bloc.dart';
+import 'package:eco_system/features/ats/candidates/view/sections/application_date.dart';
 import 'package:eco_system/features/ats/candidates/view/widgets/compatibility_rate.dart';
 import 'package:eco_system/features/ats/candidates/view/widgets/expected_salary_widget.dart';
 import 'package:eco_system/features/ats/candidates/view/widgets/experience.dart';
@@ -12,23 +13,26 @@ import 'package:eco_system/features/ats/candidates/view/widgets/gender.dart';
 import 'package:eco_system/features/ats/candidates/view/widgets/keywords.dart';
 import 'package:eco_system/features/ats/candidates/view/widgets/location.dart';
 import 'package:eco_system/features/ats/candidates/view/widgets/qualified.dart';
-import 'package:eco_system/features/ats/candidates/view/widgets/skills_widget.dart';
+import 'package:eco_system/features/ats/candidates/view/widgets/skills.dart';
 import 'package:eco_system/helpers/styles.dart';
 import 'package:eco_system/helpers/text_styles.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
+import 'package:eco_system/navigation/custom_navigation.dart';
 import 'package:eco_system/utility/extensions.dart';
 import 'package:eco_system/widgets/bottom_sheet_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CandidatesFilterBottomSheet extends StatelessWidget {
-  const CandidatesFilterBottomSheet({super.key});
+  final bool isTalentPool;
+
+  const CandidatesFilterBottomSheet({super.key, this.isTalentPool = false});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CandidatesBloc, AppState>(
+    return BlocBuilder<FiltrationBloc, AppState>(
       builder: (context, state) {
-        final bloc = context.read<CandidatesBloc>();
+        final bloc = context.read<FiltrationBloc>();
         final selectedSkills = bloc.selectedSkills;
         final selectedKeywords = bloc.selectedKeywords;
         final availableSkills =
@@ -41,17 +45,17 @@ class CandidatesFilterBottomSheet extends StatelessWidget {
               children: [
                 BottomSheetHeader(title: LocaleKeys.candidate),
                 24.sh,
-                SingleChildScrollView(
-                  child: SizedBox(
-                    height: context.h * 0.8,
-                    child: ListView(
-                      children: [
-                        Skills(),
-                        bloc.expandSkills
-                            ? _buildOptionsList(context, availableSkills,
-                                onPickItem: (item) =>
-                                    bloc.add(PickSkill(arguments: item)))
-                            : const SizedBox.shrink(),
+                SizedBox(
+                  height: isTalentPool ? context.h * 0.65 : context.h * 0.8,
+                  child: ListView(
+                    children: [
+                      Skills(),
+                      bloc.expandSkills
+                          ? _buildOptionsList(context, availableSkills,
+                              onPickItem: (item) =>
+                                  bloc.add(PickSkill(arguments: item)))
+                          : const SizedBox.shrink(),
+                      if (!isTalentPool) ...[
                         16.sh,
                         Keywords(),
                         bloc.expandKeywords
@@ -59,21 +63,25 @@ class CandidatesFilterBottomSheet extends StatelessWidget {
                                 onPickItem: (item) =>
                                     bloc.add(PickKeyword(arguments: item)))
                             : const SizedBox.shrink(),
-                        16.sh,
-                        ExpectedSalary(),
-                        16.sh,
-                        Experience(),
-                        16.sh,
-                        Location(),
-                        16.sh,
-                        Gender(),
+                      ],
+                      16.sh,
+                      ExpectedSalary(),
+                      16.sh,
+                      Experience(),
+                      16.sh,
+                      Location(),
+                      16.sh,
+                      Gender(),
+                      if (!isTalentPool) ...[
                         16.sh,
                         Qualified(),
                         16.sh,
+                        ApplicationDate(),
+                        16.sh,
                         CompatibilityRate(),
-                        60.sh
                       ],
-                    ),
+                      60.sh
+                    ],
                   ),
                 ),
               ],
@@ -83,7 +91,7 @@ class CandidatesFilterBottomSheet extends StatelessWidget {
               child: CustomBtn(
                   width: context.w * 0.9,
                   text: allTranslations.text(LocaleKeys.show_all_results),
-                  onPressed: () {}),
+                  onPressed: () => CustomNavigator.pop()),
             )
           ],
         );

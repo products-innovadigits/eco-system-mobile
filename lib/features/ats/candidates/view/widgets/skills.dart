@@ -1,7 +1,7 @@
 import 'package:eco_system/core/app_event.dart';
 import 'package:eco_system/core/app_state.dart';
 import 'package:eco_system/core/app_strings/locale_keys.dart';
-import 'package:eco_system/features/ats/candidates/bloc/candidates_bloc.dart';
+import 'package:eco_system/features/ats/bloc/filtration_bloc.dart';
 import 'package:eco_system/features/ats/candidates/view/widgets/custom_drop_down_skills.dart';
 import 'package:eco_system/helpers/text_styles.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
@@ -14,9 +14,9 @@ class Skills extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CandidatesBloc, AppState>(
+    return BlocBuilder<FiltrationBloc, AppState>(
       builder: (context, state) {
-        final bloc = context.read<CandidatesBloc>();
+        final bloc = context.read<FiltrationBloc>();
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
