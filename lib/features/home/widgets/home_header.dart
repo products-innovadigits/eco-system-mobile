@@ -19,7 +19,7 @@ class HomeHeader extends StatelessWidget {
       builder: (context, state) {
         return Container(
           width: context.w,
-          height: context.h * 0.3,
+          height: context.h * 0.30,
           padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 24.h),
           decoration:  BoxDecoration(
               image: DecorationImage(
@@ -29,6 +29,7 @@ class HomeHeader extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                35.sh,
                 Row(
                   children: [
                     Expanded(
@@ -55,23 +56,23 @@ class HomeHeader extends StatelessWidget {
                           //   ),
                           // ),
                           Text(
-                            " ${UserBloc.instance.user?.welcomeMessage} ${DateTime.now().format("a") == "AM" ? "🌤" : "🌤"}",
+                            " ${UserBloc.instance.user?.welcomeMessage ?? "صباح الخير "} ${DateTime.now().format("a") == "AM" ? "🌤" : "🌤"}",
                             style: AppTextStyles.w700.copyWith(
-                                fontSize: 24, color: Styles.WHITE_COLOR),
+                                fontSize: 20, color: Styles.WHITE_COLOR),
                           ),
-                          SizedBox(height: 4.h),
+                          4.sh,
                           Text(
                             allTranslations.text("home_welcome_message"),
                             style: AppTextStyles.w400.copyWith(
-                              fontSize: 16,
+                              fontSize: 14,
                               color: Color(0xffE8E9EB),
                             ),
                           )
                         ],
                       ),
                     ),
-                    SizedBox(width: 8.w),
-                    ProfileImageWidget(radius: 25.w),
+                    8.sw,
+                    ProfileImageWidget(radius: 22.w),
                   ],
                 ),
               ],

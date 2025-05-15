@@ -1,18 +1,11 @@
-import 'package:eco_system/components/custom_drop_list.dart';
-import 'package:eco_system/core/app_strings/locale_keys.dart';
-import 'package:eco_system/helpers/translation/all_translation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../core/app_event.dart';
-import '../../../../core/app_state.dart';
+import 'package:eco_system/utility/export.dart';
 
 class TalentPoolBloc extends Bloc<AppEvent, AppState> {
   TalentPoolBloc() : super(Start()) {
     on<Click>(onClick);
     on<Sort>(_onSorting);
     on<Select>(onToggleSelection);
-    on<SelectTalent>(onSelectTalent);
+    on<SelectTalent>(_onSelectTalent);
   }
 
   TextEditingController fileNameController = TextEditingController();
@@ -45,7 +38,7 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
     emit(Done());
   }
 
-  void onSelectTalent(SelectTalent event, Emitter<AppState> emit) {
+  void _onSelectTalent(SelectTalent event, Emitter<AppState> emit) {
     int talentId = event.arguments as int;
     if (event.arguments != null) {
       if (selectedTalentsList.contains(talentId)) {

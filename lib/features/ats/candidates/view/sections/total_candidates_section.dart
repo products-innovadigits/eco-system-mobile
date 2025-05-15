@@ -1,10 +1,4 @@
-import 'package:eco_system/core/app_strings/locale_keys.dart';
-import 'package:eco_system/core/assets.gen.dart';
-import 'package:eco_system/helpers/styles.dart';
-import 'package:eco_system/helpers/text_styles.dart';
-import 'package:eco_system/helpers/translation/all_translation.dart';
-import 'package:eco_system/utility/extensions.dart';
-import 'package:flutter/material.dart';
+import 'package:eco_system/utility/export.dart';
 
 class TotalCandidatesSection extends StatelessWidget {
   const TotalCandidatesSection({super.key});

@@ -1,19 +1,5 @@
-import 'package:eco_system/components/shimmer/custom_shimmer.dart';
-import 'package:eco_system/core/app_state.dart';
-import 'package:eco_system/core/app_strings/locale_keys.dart';
-import 'package:eco_system/core/assets.gen.dart';
-import 'package:eco_system/features/ats/candidates/view/sections/total_candidates_section.dart';
-import 'package:eco_system/features/ats/talent_pool/bloc/talent_pool_bloc.dart';
-import 'package:eco_system/helpers/translation/all_translation.dart';
-import 'package:eco_system/navigation/custom_navigation.dart';
-import 'package:eco_system/navigation/routes.dart';
-import 'package:eco_system/utility/extensions.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/app_event.dart';
-import '../../../../../helpers/styles.dart';
-import '../../../../../widgets/section_title.dart';
+import 'package:eco_system/utility/export.dart';
 
 class TalentPoolSection extends StatelessWidget {
   const TalentPoolSection({super.key});

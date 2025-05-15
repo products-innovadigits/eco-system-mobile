@@ -1,29 +1,15 @@
-import 'package:eco_system/core/assets.gen.dart';
-import 'package:eco_system/helpers/styles.dart';
-import 'package:eco_system/utility/extensions.dart';
-import 'package:eco_system/widgets/images.dart';
-import 'package:flutter/material.dart';
+import 'package:eco_system/utility/export.dart';
 
-class CustomCheckBoxWidget extends StatefulWidget {
-  final Function(bool) onCheck;
-
-  const CustomCheckBoxWidget({super.key, required this.onCheck});
-
-  @override
-  State<CustomCheckBoxWidget> createState() => _CustomCheckBoxWidgetState();
-}
-
-class _CustomCheckBoxWidgetState extends State<CustomCheckBoxWidget> {
-  bool isTalentSelected = false;
+class CustomCheckBoxWidget extends StatelessWidget {
+  final VoidCallback onCheck;
+  final bool isChecked;
+  const CustomCheckBoxWidget({super.key, required this.onCheck, this.isChecked = false});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        setState(() {
-          isTalentSelected = !isTalentSelected;
-          widget.onCheck(isTalentSelected);
-        });
+        onCheck();
       },
       child: Container(
         width: 24.w,
@@ -34,9 +20,9 @@ class _CustomCheckBoxWidgetState extends State<CustomCheckBoxWidget> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(2),
             border: Border.all(color: Styles.PRIMARY_COLOR),
-            color: isTalentSelected ? Styles.PRIMARY_COLOR : Styles.WHITE_COLOR,
+            color: isChecked ? Styles.PRIMARY_COLOR : Styles.WHITE_COLOR,
           ),
-          child: isTalentSelected
+          child: isChecked
               ? Images(image: Assets.svgs.check.path)
               : const SizedBox.shrink(),
         ),

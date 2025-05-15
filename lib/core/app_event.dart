@@ -1,3 +1,5 @@
+import 'package:eco_system/utility/export.dart';
+
 abstract class AppEvent {
   Object? arguments;
 
@@ -185,7 +187,13 @@ class AddToFav extends AppEvent {
 }
 
 class InitCandidates extends AppEvent {
-  InitCandidates({Object? arguments}) : super(arguments);
+  final String? targetStage;
+  final List<StageModel>? stages;
+  final String? jobTitle;
+
+  InitCandidates(
+      {this.targetStage, this.stages, this.jobTitle})
+      : super(null);
 }
 
 class ExpandSkills extends AppEvent {
@@ -224,21 +232,22 @@ class CancelSearch extends AppEvent {
   CancelSearch({Object? arguments}) : super(arguments);
 }
 
-
 class UpdateRating extends AppEvent {
   final int index;
   final int rating;
+
   UpdateRating({required this.index, required this.rating}) : super(null);
 }
 
 class AddComment extends AppEvent {
   final int index;
   final String comment;
+
   AddComment({required this.index, required this.comment}) : super(null);
 }
 
 class ToggleCommentField extends AppEvent {
   final int index;
+
   ToggleCommentField({required this.index}) : super(null);
 }
-

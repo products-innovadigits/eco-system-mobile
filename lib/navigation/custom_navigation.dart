@@ -66,16 +66,15 @@ abstract class CustomNavigator {
                 ? settings.arguments as bool
                 : false));
       case Routes.CANDIDATES:
+        final args = settings.arguments as InitCandidates?;
         return pageRouteBuilder(MultiBlocProvider(
           providers: [
             BlocProvider(
-                create: (_) => CandidatesBloc()..add(InitCandidates())),
+                create: (_) => CandidatesBloc()
+                  ..add(args ?? InitCandidates())),
             BlocProvider(create: (_) => FiltrationBloc()),
           ],
-          child: Candidates(
-              selectedStage: settings.arguments != null
-                  ? settings.arguments as String
-                  : ''),
+          child: const Candidates(),
         ));
       case Routes.OTP:
         return pageRouteBuilder(const OtpView());

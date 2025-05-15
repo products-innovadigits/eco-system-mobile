@@ -384,6 +384,8 @@ abstract class  LocaleKeys {
   static const copy_to_job = 'copy_to_job';
   static const transfer_to_another_stage = 'transfer_to_another_stage';
   static const sort = 'sort';
+  static const no_candidates = 'no_candidates';
+  static const candidate_in_pipeline = 'candidate_in_pipeline';
   static const newest_to_oldest = 'newest_to_oldest';
   static const oldest_to_newest = 'oldest_to_newest';
   static const highest_price = 'highest_price';

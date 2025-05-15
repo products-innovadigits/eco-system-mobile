@@ -383,6 +383,8 @@
   "copy_to_job": "نسخ الي وظيفة",
   "transfer_to_another_stage": "نقل الي مرحلة اخري",
   "sort": "الترتيب",
+  "no_candidates": "لا يوجد مرشحين",
+  "candidate_in_pipeline": "مرشح في المسار",
   "newest_to_oldest": "من الأحدث للأقدم",
   "oldest_to_newest": "من الأقدم للأحدث",
   "highest_price": "من الأعلى سعراً للأقل سعراً",

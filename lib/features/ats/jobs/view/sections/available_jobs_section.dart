@@ -1,18 +1,4 @@
-import 'package:eco_system/components/shimmer/custom_shimmer.dart';
-import 'package:eco_system/core/app_state.dart';
-import 'package:eco_system/core/app_strings/locale_keys.dart';
-import 'package:eco_system/features/ats/jobs/view/sections/jobs_list_section.dart';
-import 'package:eco_system/helpers/translation/all_translation.dart';
-import 'package:eco_system/navigation/custom_navigation.dart';
-import 'package:eco_system/navigation/routes.dart';
-import 'package:eco_system/utility/extensions.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../../core/app_event.dart';
-import '../../../../../helpers/styles.dart';
-import '../../../../../widgets/section_title.dart';
-import '../../bloc/jobs_bloc.dart';
+import 'package:eco_system/utility/export.dart';
 
 class AvailableJobsSection extends StatelessWidget {
   const AvailableJobsSection({super.key});
@@ -20,7 +6,7 @@ class AvailableJobsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => JobsBloc()..add(Click()),
+      create: (context) => JobsBloc()..add(Click(arguments: SearchEngine())),
       child: BlocBuilder<JobsBloc, AppState>(
         builder: (context, state) {
           if (state is Done) {
@@ -39,13 +25,13 @@ class AvailableJobsSection extends StatelessWidget {
                   SectionTitle(
                     title: allTranslations.text(LocaleKeys.available_jobs),
                     withView: true,
-                    onViewTap: (){
+                    onViewTap: () {
                       CustomNavigator.push(Routes.JOBS);
                     },
                   ),
                   Divider(color: Styles.BORDER_COLOR),
                   SizedBox(height: 12.h),
-                  JobsListSection(),
+                  JobsListSection(isHome: true),
                 ],
               ),
             );
@@ -54,9 +40,7 @@ class AvailableJobsSection extends StatelessWidget {
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
               child: CustomShimmerContainer(
-                height: context.h * 0.2,
-                width: context.w,
-              ),
+                  height: context.h * 0.2, width: context.w),
             );
           } else {
             return SizedBox();

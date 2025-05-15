@@ -1,3 +1,4 @@
+import 'package:eco_system/core/assets.gen.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
 import 'package:eco_system/utility/extensions.dart';
 import 'package:eco_system/widgets/images.dart';
@@ -26,9 +27,7 @@ class NavAppItem extends StatelessWidget {
           height: 20.h,
         ),
         Images(
-          image: isSelected
-              ? 'assets/svgs/$activeIcon.svg'
-              : 'assets/svgs/$icon.svg',
+          image: isSelected ? activeIcon : icon,
           color: color,
         ),
         SizedBox(height: 2.h),
@@ -43,7 +42,7 @@ class NavAppItem extends StatelessWidget {
         SizedBox(height: 10.h),
         isSelected
             ? Images(
-                image: 'assets/svgs/navbar-arrow.svg',
+                image: Assets.svgs.navbarArrow.path,
                 color: context.theme.primaryColor,
               )
             : SizedBox.shrink(),

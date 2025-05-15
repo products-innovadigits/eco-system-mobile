@@ -1,15 +1,5 @@
-import 'package:eco_system/core/app_event.dart';
-import 'package:eco_system/core/app_state.dart';
-import 'package:eco_system/core/assets.gen.dart';
-import 'package:eco_system/features/ats/profile/bloc/profile_bloc.dart';
-import 'package:eco_system/features/ats/profile/view/widgets/applicant_more_dialog.dart';
-import 'package:eco_system/features/ats/profile/view/widgets/candidate_more_dialog.dart';
-import 'package:eco_system/features/ats/profile/view/widgets/profile_custom_appbar_widget.dart';
-import 'package:eco_system/features/ats/profile/view/widgets/profile_data_container_widget.dart';
-import 'package:eco_system/features/ats/profile/view/widgets/profile_user_data_widget.dart';
-import 'package:eco_system/utility/extensions.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:eco_system/utility/export.dart';
 
 class ProfileHeaderSection extends StatefulWidget {
   final bool isCandidate;

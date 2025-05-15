@@ -1,13 +1,5 @@
-import 'package:eco_system/core/app_state.dart';
-import 'package:eco_system/core/enums.dart';
-import 'package:eco_system/features/ats/profile/bloc/profile_bloc.dart';
-import 'package:eco_system/features/ats/profile/view/sections/answers_tab/answers_section.dart';
-import 'package:eco_system/features/ats/profile/view/sections/events_tab/events_section.dart';
-import 'package:eco_system/features/ats/profile/view/sections/profile_tab/profile_section.dart';
-import 'package:eco_system/features/ats/profile/view/sections/profile_tabs_section.dart';
-import 'package:eco_system/utility/extensions.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:eco_system/utility/export.dart';
 
 class ProfileBodySection extends StatelessWidget {
   final bool isCandidate;

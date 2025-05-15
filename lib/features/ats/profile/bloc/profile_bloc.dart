@@ -1,10 +1,4 @@
-import 'package:eco_system/core/app_event.dart';
-import 'package:eco_system/core/app_state.dart';
-import 'package:eco_system/core/app_strings/locale_keys.dart';
-import 'package:eco_system/core/enums.dart';
-import 'package:eco_system/features/ats/profile/model/rating_model.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:eco_system/utility/export.dart';
 
 class ProfileBloc extends Bloc<AppEvent, AppState> {
   ProfileBloc() : super(Start()) {
@@ -26,10 +20,10 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
 
   ProfileEnum selectedTab = ProfileEnum.profile;
   int selectedRatingTabIndex = 0;
-  List<RatingItem> ratingItems = [
-    RatingItem(title: LocaleKeys.technical_skills),
-    RatingItem(title: LocaleKeys.knowledge),
-    RatingItem(title: LocaleKeys.communications),
+  List<RatingItemModel> ratingItems = [
+    RatingItemModel(title: LocaleKeys.technical_skills),
+    RatingItemModel(title: LocaleKeys.knowledge),
+    RatingItemModel(title: LocaleKeys.communications),
   ];
 
   _onUpdateRating(UpdateRating event, Emitter<AppState> emit) {
@@ -107,9 +101,9 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
     selectedRatingTabIndex = 0;
     reviewExpandedIndex = -1;
     ratingItems = [
-      RatingItem(title: LocaleKeys.technical_skills),
-      RatingItem(title: LocaleKeys.knowledge),
-      RatingItem(title: LocaleKeys.communications),
+      RatingItemModel(title: LocaleKeys.technical_skills),
+      RatingItemModel(title: LocaleKeys.knowledge),
+      RatingItemModel(title: LocaleKeys.communications),
     ];
   }
 }

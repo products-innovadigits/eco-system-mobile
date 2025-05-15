@@ -1,25 +1,22 @@
-import 'package:eco_system/core/assets.gen.dart';
-import 'package:eco_system/helpers/styles.dart';
-import 'package:eco_system/helpers/text_styles.dart';
-import 'package:eco_system/navigation/custom_navigation.dart';
-import 'package:eco_system/navigation/routes.dart';
-import 'package:eco_system/utility/extensions.dart';
-import 'package:eco_system/widgets/images.dart';
-import 'package:flutter/material.dart';
+import 'package:eco_system/utility/export.dart';
 
 class CandidateStagesListSection extends StatelessWidget {
-  const CandidateStagesListSection({super.key});
+  final List<StageModel> stages;
+  final String jobTitle;
+
+  const CandidateStagesListSection({super.key, required this.stages, required this.jobTitle});
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, GlobalKey> stageKeys = {
-      'المرحلة التطبيقية': GlobalKey(),
-      'مرحلة المقابلة الهاتفية': GlobalKey(),
-      'مرحلة التقييم': GlobalKey(),
-      'مرحلة المقابلة': GlobalKey(),
-      'مرحلة العرض': GlobalKey(),
-      'مرحلة التوظيف': GlobalKey(),
-    };
+    final Map<String, GlobalKey> stageKeys = Map.fromEntries(
+      stages.map(
+        (stage) => MapEntry(stage.type ?? '', GlobalKey()),
+      ),
+    );
+    final int candidateCount = stages.fold(
+      0,
+      (sum, stage) => sum + (stage.count ?? 0),
+    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -27,24 +24,40 @@ class CandidateStagesListSection extends StatelessWidget {
         ListView.separated(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) => InkWell(
-                  onTap: () => CustomNavigator.push(Routes.CANDIDATES,
-                      arguments: stageKeys.keys.elementAt(index)),
-                  child: Row(
-                    children: [
-                      Icon(Icons.circle, size: 10, color: Styles.PRIMARY_COLOR),
-                      SizedBox(width: 8.w),
-                      Text(
-                        stageKeys.keys.elementAt(index),
-                        style: AppTextStyles.w400.copyWith(fontSize: 10),
-                      ),
-                      const Spacer(),
-                      Images(image: Assets.svgs.arrowLeft.path, width: 7),
-                    ],
-                  ),
+            itemBuilder: (context, index) {
+              final Color stageColor = stages[index].color != null
+                  ? Color(int.parse('0xFF' + stages[index].color!.substring(1)))
+                  : Styles.PRIMARY_COLOR;
+              return InkWell(
+                onTap: () {
+                  CustomNavigator.push(
+                    Routes.CANDIDATES,
+                    arguments: InitCandidates(
+                        targetStage: stages[index].type,
+                        stages: stages,
+                        jobTitle: jobTitle),
+
+                    // arguments: stageKeys.keys.elementAt(index)
+                  );
+                  context.read<JobsBloc>().add(Expand(arguments: -1));
+                },
+                child: Row(
+                  children: [
+                    Icon(Icons.circle, size: 10, color: stageColor),
+                    SizedBox(width: 8.w),
+                    Text(
+                      // stageKeys.keys.elementAt(index),
+                      stages[index].type ?? '',
+                      style: AppTextStyles.w400.copyWith(fontSize: 10),
+                    ),
+                    const Spacer(),
+                    Images(image: Assets.svgs.arrowLeft.path, width: 7),
+                  ],
                 ),
+              );
+            },
             separatorBuilder: (context, index) => 16.sh,
-            itemCount: 6)
+            itemCount: stages.length),
       ],
     );
   }

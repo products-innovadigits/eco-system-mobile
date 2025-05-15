@@ -1,26 +1,20 @@
-import 'package:eco_system/core/assets.gen.dart';
-import 'package:eco_system/helpers/styles.dart';
-import 'package:eco_system/helpers/text_styles.dart';
-import 'package:eco_system/navigation/custom_navigation.dart';
-import 'package:eco_system/navigation/routes.dart';
-import 'package:eco_system/utility/extensions.dart';
-import 'package:eco_system/widgets/custom_check_box_widget.dart';
-import 'package:eco_system/widgets/images.dart';
-import 'package:flutter/material.dart';
+import 'package:eco_system/utility/export.dart';
 
 class TalentCardWidget extends StatelessWidget {
   final bool isSelectionActive;
-  final Function(bool) onSelectTalent;
+  final VoidCallback onSelectTalent;
+  final bool isTalentSelected;
 
   const TalentCardWidget(
       {super.key,
       required this.isSelectionActive,
-      required this.onSelectTalent});
+      required this.onSelectTalent,
+      required this.isTalentSelected});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => CustomNavigator.push(Routes.PROFILE , arguments: true),
+      onTap: () => CustomNavigator.push(Routes.PROFILE, arguments: true),
       child: Container(
         width: context.w,
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
@@ -34,7 +28,8 @@ class TalentCardWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 if (isSelectionActive) ...[
-                  CustomCheckBoxWidget(onCheck: onSelectTalent),
+                  CustomCheckBoxWidget(
+                      onCheck: onSelectTalent, isChecked: isTalentSelected),
                 ],
                 Container(
                   width: 40.w,
@@ -88,8 +83,8 @@ class TalentCardWidget extends StatelessWidget {
               children: [
                 Text(
                   'السعودية',
-                  style: AppTextStyles.w500
-                      .copyWith(color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
+                  style: AppTextStyles.w500.copyWith(
+                      color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8.w),
@@ -98,8 +93,8 @@ class TalentCardWidget extends StatelessWidget {
                 ),
                 Text(
                   'خبرة ٥ سنين',
-                  style: AppTextStyles.w500
-                      .copyWith(color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
+                  style: AppTextStyles.w500.copyWith(
+                      color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
                 ),
                 const Spacer(),
                 Text('1000 ر.س . اسبوعين ',

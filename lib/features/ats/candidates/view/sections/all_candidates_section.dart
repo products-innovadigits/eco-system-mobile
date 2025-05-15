@@ -1,11 +1,4 @@
-import 'package:eco_system/core/app_state.dart';
-import 'package:eco_system/features/ats/candidates/bloc/candidates_bloc.dart';
-import 'package:eco_system/features/ats/candidates/view/sections/stage_section.dart';
-import 'package:eco_system/helpers/styles.dart';
-import 'package:eco_system/helpers/text_styles.dart';
-import 'package:eco_system/utility/extensions.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:eco_system/utility/export.dart';
 
 class AllCandidatesSection extends StatelessWidget {
   const AllCandidatesSection({super.key});
@@ -20,15 +13,15 @@ class AllCandidatesSection extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text('قائد فريق تصميم المنتجات',
+                Text(bloc.jobTitle,
                     style: AppTextStyles.w700.copyWith(fontSize: 14)),
                 8.sw,
-                Text('(32)',
-                    style: AppTextStyles.w600.copyWith(
-                        color: Styles.PRIMARY_COLOR, fontSize: 14)),
+                Text('(${bloc.candidateCount})',
+                    style: AppTextStyles.w600
+                        .copyWith(color: Styles.PRIMARY_COLOR, fontSize: 14)),
               ],
             ),
-            16.sh,
+            8.sh,
             ListView.separated(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -37,7 +30,7 @@ class AllCandidatesSection extends StatelessWidget {
                 final stage = bloc.stages[index];
                 return StageSection(
                   key: bloc.keys[stage],
-                  stageName: stage,
+                  stage: stage,
                 );
               },
               separatorBuilder: (context, index) => 16.sh,

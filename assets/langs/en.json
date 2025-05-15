@@ -381,6 +381,8 @@
   "copy_to_job": "Copy to Job",
   "transfer_to_another_stage": "Transfer to another stage",
   "sort": "Sort",
+  "no_candidates": "No candidates",
+  "candidate_in_pipeline": "Candidate in Pipeline",
   "newest_to_oldest": "Newest to Oldest",
   "oldest_to_newest": "Oldest to Newest",
   "highest_price": "Highest Price to Lowest",

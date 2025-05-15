@@ -1,11 +1,4 @@
-import 'package:eco_system/components/custom_btn.dart';
-import 'package:eco_system/components/custom_text_field.dart';
-import 'package:eco_system/core/app_strings/locale_keys.dart';
-import 'package:eco_system/helpers/translation/all_translation.dart';
-import 'package:eco_system/navigation/custom_navigation.dart';
-import 'package:eco_system/utility/extensions.dart';
-import 'package:eco_system/widgets/bottom_sheet_header.dart';
-import 'package:flutter/material.dart';
+import 'package:eco_system/utility/export.dart';
 
 class RatingReasonBottomSheet extends StatelessWidget {
   final TextEditingController commentController;

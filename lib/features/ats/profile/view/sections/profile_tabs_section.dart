@@ -1,10 +1,4 @@
-import 'package:eco_system/core/app_event.dart';
-import 'package:eco_system/core/app_strings/locale_keys.dart';
-import 'package:eco_system/core/enums.dart';
-import 'package:eco_system/features/ats/profile/bloc/profile_bloc.dart';
-import 'package:eco_system/widgets/custom_tab_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:eco_system/utility/export.dart';
 
 class ProfileTabsSection extends StatelessWidget {
   final bool isCandidate;

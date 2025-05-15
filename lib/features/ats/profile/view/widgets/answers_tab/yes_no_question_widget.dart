@@ -1,8 +1,4 @@
-import 'package:eco_system/core/assets.gen.dart';
-import 'package:eco_system/helpers/text_styles.dart';
-import 'package:eco_system/utility/extensions.dart';
-import 'package:eco_system/widgets/images.dart';
-import 'package:flutter/material.dart';
+import 'package:eco_system/utility/export.dart';
 
 class YesNoQuestionWidget extends StatelessWidget {
   final String question;

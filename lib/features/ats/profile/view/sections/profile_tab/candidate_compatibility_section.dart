@@ -1,12 +1,5 @@
-import 'package:eco_system/core/assets.gen.dart';
-import 'package:eco_system/features/ats/profile/view/widgets/profile_tab/compatibility_bottom_sheet_widget.dart';
-import 'package:eco_system/helpers/popup_helper.dart';
-import 'package:eco_system/helpers/styles.dart';
-import 'package:eco_system/helpers/text_styles.dart';
-import 'package:eco_system/utility/extensions.dart';
-import 'package:eco_system/widgets/images.dart';
-import 'package:eco_system/widgets/percentage_avatar.dart';
-import 'package:flutter/material.dart';
+
+import 'package:eco_system/utility/export.dart';
 
 class CandidateCompatibilitySection extends StatelessWidget {
   const CandidateCompatibilitySection({super.key});
