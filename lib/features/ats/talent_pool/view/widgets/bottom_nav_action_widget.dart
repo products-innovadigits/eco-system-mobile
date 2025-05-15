@@ -16,16 +16,14 @@ class BottomNavActionWidget extends StatelessWidget {
       {super.key,
       required this.icon,
       required this.title,
-      required this.bottomSheetContent, this.height});
+      required this.bottomSheetContent,
+      this.height});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        PopUpHelper.showBottomSheet(
-            context: context,
-            height: height,
-            child: bottomSheetContent);
+        PopUpHelper.showBottomSheet(height: height, child: bottomSheetContent);
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,

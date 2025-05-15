@@ -1,7 +1,7 @@
 import 'package:eco_system/components/custom_drop_list.dart';
 import 'package:eco_system/components/custom_text_field.dart';
 import 'package:eco_system/core/app_strings/locale_keys.dart';
-import 'package:eco_system/features/ats/candidates/bloc/candidates_bloc.dart';
+import 'package:eco_system/features/ats/bloc/filtration_bloc.dart';
 import 'package:eco_system/helpers/text_styles.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
 import 'package:eco_system/utility/extensions.dart';
@@ -13,6 +13,7 @@ class ExpectedSalary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final filtrationBloc = context.read<FiltrationBloc>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -23,24 +24,24 @@ class ExpectedSalary extends StatelessWidget {
             Expanded(
               child: CustomTextField(
                 hint: allTranslations.text(LocaleKeys.from),
-                controller:
-                    context.read<CandidatesBloc>().expectedSalaryFromController,
+                controller: filtrationBloc.expectedSalaryFromController,
+                type: TextInputType.number,
               ),
             ),
             4.sw,
             Expanded(
               child: CustomTextField(
                 hint: allTranslations.text(LocaleKeys.to),
-                controller:
-                    context.read<CandidatesBloc>().expectedSalaryToController,
+                controller: filtrationBloc.expectedSalaryToController,
+                type: TextInputType.number,
               ),
             ),
             4.sw,
             Expanded(
               child: CustomDropList(
-                list: context.read<CandidatesBloc>().currencies,
+                list: filtrationBloc.currencies,
                 hint: allTranslations.text(LocaleKeys.currency),
-                onChanged: (value){},
+                onChanged: (value) {},
               ),
             ),
           ],

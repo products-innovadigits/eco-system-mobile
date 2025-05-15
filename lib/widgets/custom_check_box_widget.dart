@@ -26,17 +26,20 @@ class _CustomCheckBoxWidgetState extends State<CustomCheckBoxWidget> {
         });
       },
       child: Container(
-        padding: EdgeInsets.all(2),
-        width: 14.w,
-        height: 14.w,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(2),
-          border: Border.all(color: Styles.PRIMARY_COLOR),
-          color: isTalentSelected ? Styles.PRIMARY_COLOR : Styles.WHITE_COLOR,
+        width: 24.w,
+        height: 24.w,
+        padding: EdgeInsets.all(4.w),
+        child: Container(
+          padding: EdgeInsets.all(2),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(2),
+            border: Border.all(color: Styles.PRIMARY_COLOR),
+            color: isTalentSelected ? Styles.PRIMARY_COLOR : Styles.WHITE_COLOR,
+          ),
+          child: isTalentSelected
+              ? Images(image: Assets.svgs.check.path)
+              : const SizedBox.shrink(),
         ),
-        child: isTalentSelected
-            ? Images(image: Assets.svgs.check.path)
-            : const SizedBox.shrink(),
       ),
     );
   }

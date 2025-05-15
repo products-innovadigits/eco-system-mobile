@@ -5,6 +5,8 @@ import 'package:eco_system/core/assets.gen.dart';
 import 'package:eco_system/features/ats/candidates/view/sections/total_candidates_section.dart';
 import 'package:eco_system/features/ats/talent_pool/bloc/talent_pool_bloc.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
+import 'package:eco_system/navigation/custom_navigation.dart';
+import 'package:eco_system/navigation/routes.dart';
 import 'package:eco_system/utility/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,27 +26,30 @@ class TalentPoolSection extends StatelessWidget {
         builder: (context, state) {
           if (state is Done) {
             TalentPoolBloc talentPoolBloc = context.read<TalentPoolBloc>();
-            return Container(
-              width: context.w,
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-              margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-              decoration: BoxDecoration(
-                  color: Styles.WHITE_COLOR,
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: Styles.LIGHT_GREY_BORDER)),
-              child: Column(
-                children: [
-                  SectionTitle(
-                    title: allTranslations.text(LocaleKeys.talent_pool),
-                    subText:
-                        allTranslations.text(LocaleKeys.candidate_with_future_potential),
-                    icon: Assets.svgs.tripleUser.path,
-                    onViewTap: () {},
-                  ),
-                  Divider(color: Styles.BORDER_COLOR),
-                  SizedBox(height: 12.h),
-                  TotalCandidatesSection(),
-                ],
+            return InkWell(
+              onTap: () => CustomNavigator.push(Routes.TALENT_POOL),
+              child: Container(
+                width: context.w,
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                decoration: BoxDecoration(
+                    color: Styles.WHITE_COLOR,
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: Styles.LIGHT_GREY_BORDER)),
+                child: Column(
+                  children: [
+                    SectionTitle(
+                      title: allTranslations.text(LocaleKeys.talent_pool),
+                      subText:
+                          allTranslations.text(LocaleKeys.candidate_with_future_potential),
+                      icon: Assets.svgs.tripleUser.path,
+                      onViewTap: () {},
+                    ),
+                    Divider(color: Styles.BORDER_COLOR),
+                    SizedBox(height: 12.h),
+                    TotalCandidatesSection(),
+                  ],
+                ),
               ),
             );
           }

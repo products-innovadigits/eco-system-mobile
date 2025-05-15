@@ -18,18 +18,18 @@ class EducationSection extends StatelessWidget {
     return BlocBuilder<ProfileBloc, AppState>(
       builder: (context, state) {
         final profileBloc = context.read<ProfileBloc>();
-        return GestureDetector(
-          onTap: () => profileBloc.add(Expand(arguments: 1)),
-          child: Container(
-            width: context.w,
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-            decoration: BoxDecoration(
-                color: Styles.WHITE_COLOR,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Styles.BORDER)),
-            child: Column(
-              children: [
-                Row(
+        return Container(
+          width: context.w,
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+          decoration: BoxDecoration(
+              color: Styles.WHITE_COLOR,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Styles.BORDER)),
+          child: Column(
+            children: [
+              InkWell(
+                onTap: () => profileBloc.add(Expand(arguments: 1)),
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(allTranslations.text(LocaleKeys.education),
@@ -43,17 +43,17 @@ class EducationSection extends StatelessWidget {
                             : Styles.PRIMARY_COLOR),
                   ],
                 ),
-                if (profileBloc.isEducationExpanded == true) ...[
-                  ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) =>
-                          ExperienceEducationCardWidget(),
-                      separatorBuilder: (context, index) => 24.sh,
-                      itemCount: 3),
-                ]
-              ],
-            ),
+              ),
+              if (profileBloc.isEducationExpanded == true) ...[
+                ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) =>
+                        ExperienceEducationCardWidget(),
+                    separatorBuilder: (context, index) => 24.sh,
+                    itemCount: 3),
+              ]
+            ],
           ),
         );
       },

@@ -3,60 +3,95 @@ import 'package:eco_system/components/custom_drop_list.dart';
 import 'package:eco_system/core/app_event.dart';
 import 'package:eco_system/core/app_state.dart';
 import 'package:eco_system/core/app_strings/locale_keys.dart';
+import 'package:eco_system/features/ats/bloc/filtration_bloc.dart';
 import 'package:eco_system/features/ats/candidates/bloc/candidates_bloc.dart';
+import 'package:eco_system/features/ats/candidates/view/sections/application_date.dart';
+import 'package:eco_system/features/ats/candidates/view/widgets/compatibility_rate.dart';
 import 'package:eco_system/features/ats/candidates/view/widgets/expected_salary_widget.dart';
 import 'package:eco_system/features/ats/candidates/view/widgets/experience.dart';
 import 'package:eco_system/features/ats/candidates/view/widgets/gender.dart';
+import 'package:eco_system/features/ats/candidates/view/widgets/keywords.dart';
 import 'package:eco_system/features/ats/candidates/view/widgets/location.dart';
-import 'package:eco_system/features/ats/candidates/view/widgets/skills_widget.dart';
+import 'package:eco_system/features/ats/candidates/view/widgets/qualified.dart';
+import 'package:eco_system/features/ats/candidates/view/widgets/skills.dart';
 import 'package:eco_system/helpers/styles.dart';
 import 'package:eco_system/helpers/text_styles.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
+import 'package:eco_system/navigation/custom_navigation.dart';
 import 'package:eco_system/utility/extensions.dart';
 import 'package:eco_system/widgets/bottom_sheet_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CandidatesFilterBottomSheet extends StatelessWidget {
-  const CandidatesFilterBottomSheet({super.key});
+  final bool isTalentPool;
+
+  const CandidatesFilterBottomSheet({super.key, this.isTalentPool = false});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CandidatesBloc, AppState>(
+    return BlocBuilder<FiltrationBloc, AppState>(
       builder: (context, state) {
-        final bloc = context.read<CandidatesBloc>();
-        final selected = bloc.selectedSkills;
-        final available =
-            bloc.skills.where((s) => !selected.contains(s)).toList();
+        final bloc = context.read<FiltrationBloc>();
+        final selectedSkills = bloc.selectedSkills;
+        final selectedKeywords = bloc.selectedKeywords;
+        final availableSkills =
+            bloc.skills.where((s) => !selectedSkills.contains(s)).toList();
+        final availableKeywords =
+            bloc.keywords.where((s) => !selectedKeywords.contains(s)).toList();
         return Stack(
           children: [
             Column(
               children: [
                 BottomSheetHeader(title: LocaleKeys.candidate),
                 24.sh,
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: 16.h,
-                  children: [
-                    Skills(),
-                    ExpectedSalary(),
-                    Experience(),
-                    Location(),
-                    Gender(),
-                    50.sh
-                  ],
+                SizedBox(
+                  height: isTalentPool ? context.h * 0.65 : context.h * 0.8,
+                  child: ListView(
+                    children: [
+                      Skills(),
+                      bloc.expandSkills
+                          ? _buildOptionsList(context, availableSkills,
+                              onPickItem: (item) =>
+                                  bloc.add(PickSkill(arguments: item)))
+                          : const SizedBox.shrink(),
+                      if (!isTalentPool) ...[
+                        16.sh,
+                        Keywords(),
+                        bloc.expandKeywords
+                            ? _buildOptionsList(context, availableKeywords,
+                                onPickItem: (item) =>
+                                    bloc.add(PickKeyword(arguments: item)))
+                            : const SizedBox.shrink(),
+                      ],
+                      16.sh,
+                      ExpectedSalary(),
+                      16.sh,
+                      Experience(),
+                      16.sh,
+                      Location(),
+                      16.sh,
+                      Gender(),
+                      if (!isTalentPool) ...[
+                        16.sh,
+                        Qualified(),
+                        16.sh,
+                        ApplicationDate(),
+                        16.sh,
+                        CompatibilityRate(),
+                      ],
+                      60.sh
+                    ],
+                  ),
                 ),
               ],
             ),
-            bloc.expandSkills
-                ? _buildOptionsList(context, available, bloc)
-                : const SizedBox.shrink(),
             Positioned(
               bottom: 0,
               child: CustomBtn(
                   width: context.w * 0.9,
                   text: allTranslations.text(LocaleKeys.show_all_results),
-                  onPressed: () {}),
+                  onPressed: () => CustomNavigator.pop()),
             )
           ],
         );
@@ -65,11 +100,10 @@ class CandidatesFilterBottomSheet extends StatelessWidget {
   }
 }
 
-Widget _buildOptionsList(
-    BuildContext context, List<DropListModel> list, CandidatesBloc bloc) {
+Widget _buildOptionsList(BuildContext context, List<DropListModel> list,
+    {required void Function(DropListModel item) onPickItem}) {
   return Column(
     children: [
-      120.sh,
       Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -90,7 +124,7 @@ Widget _buildOptionsList(
           children: List.generate(list.length, (index) {
             final item = list[index];
             return GestureDetector(
-              onTap: () => bloc.add(PickSkill(arguments: item)),
+              onTap: () => onPickItem(item),
               child: Container(
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(vertical: 12),

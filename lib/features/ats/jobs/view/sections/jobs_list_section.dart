@@ -6,6 +6,8 @@ import 'package:eco_system/features/ats/jobs/bloc/jobs_bloc.dart';
 import 'package:eco_system/features/ats/jobs/view/widgets/job_details_widget.dart';
 import 'package:eco_system/helpers/styles.dart';
 import 'package:eco_system/helpers/text_styles.dart';
+import 'package:eco_system/navigation/custom_navigation.dart';
+import 'package:eco_system/navigation/routes.dart';
 import 'package:eco_system/utility/extensions.dart';
 import 'package:eco_system/widgets/images.dart';
 import 'package:flutter/material.dart';
@@ -40,30 +42,33 @@ class JobsListSection extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            JobDetailsWidget(hasStatus: hasStatus),
-                            Row(
-                              children: [
-                                Images(image: Assets.svgs.multiUser.path),
-                                SizedBox(width: 8.w),
-                                Text(
-                                  '32 مرشح نشط في الأنابيب',
-                                  style: AppTextStyles.w400.copyWith(
-                                      color: Styles.PRIMARY_COLOR,
-                                      fontSize: 12),
-                                ),
-                                const Spacer(),
-                                GestureDetector(
-                                  onTap: () =>
-                                      jobsBloc.add(Expand(arguments: index)),
-                                  child: Icon(
+                            InkWell(
+                                onTap: () =>
+                                    CustomNavigator.push(Routes.CANDIDATES),
+                                child: JobDetailsWidget(hasStatus: hasStatus)),
+                            InkWell(
+                              onTap: () =>
+                                  jobsBloc.add(Expand(arguments: index)),
+                              child: Row(
+                                children: [
+                                  Images(image: Assets.svgs.multiUser.path),
+                                  SizedBox(width: 8.w),
+                                  Text(
+                                    '32 مرشح نشط في الأنابيب',
+                                    style: AppTextStyles.w400.copyWith(
+                                        color: Styles.PRIMARY_COLOR,
+                                        fontSize: 12),
+                                  ),
+                                  const Spacer(),
+                                  Icon(
                                       snapshot.data != index
                                           ? Icons.keyboard_arrow_down_rounded
                                           : Icons.keyboard_arrow_up_rounded,
                                       color: snapshot.data != index
                                           ? Styles.ICON_GREY_COLOR
-                                          : Styles.PRIMARY_COLOR),
-                                )
-                              ],
+                                          : Styles.PRIMARY_COLOR)
+                                ],
+                              ),
                             ),
                             if (snapshot.data == index) ...[
                               CandidateStagesListSection()

@@ -187,6 +187,10 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/clock.svg
   SvgGenImage get clock => const SvgGenImage('assets/svgs/clock.svg');
 
+  /// File path: assets/svgs/close-circle.svg
+  SvgGenImage get closeCircle =>
+      const SvgGenImage('assets/svgs/close-circle.svg');
+
   /// File path: assets/svgs/close-circle16.svg
   SvgGenImage get closeCircle16 =>
       const SvgGenImage('assets/svgs/close-circle16.svg');
@@ -205,6 +209,9 @@ class $AssetsSvgsGen {
 
   /// File path: assets/svgs/coin.svg
   SvgGenImage get coin => const SvgGenImage('assets/svgs/coin.svg');
+
+  /// File path: assets/svgs/copy.svg
+  SvgGenImage get copy => const SvgGenImage('assets/svgs/copy.svg');
 
   /// File path: assets/svgs/correct.svg
   SvgGenImage get correct => const SvgGenImage('assets/svgs/correct.svg');
@@ -229,6 +236,10 @@ class $AssetsSvgsGen {
 
   /// File path: assets/svgs/edit-2.svg
   SvgGenImage get edit2 => const SvgGenImage('assets/svgs/edit-2.svg');
+
+  /// File path: assets/svgs/edit-outline.svg
+  SvgGenImage get editOutline =>
+      const SvgGenImage('assets/svgs/edit-outline.svg');
 
   /// File path: assets/svgs/edit.svg
   SvgGenImage get edit => const SvgGenImage('assets/svgs/edit.svg');
@@ -363,6 +374,10 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/people.svg
   SvgGenImage get people => const SvgGenImage('assets/svgs/people.svg');
 
+  /// File path: assets/svgs/percentage-circle.svg
+  SvgGenImage get percentageCircle =>
+      const SvgGenImage('assets/svgs/percentage-circle.svg');
+
   /// File path: assets/svgs/printer.svg
   SvgGenImage get printer => const SvgGenImage('assets/svgs/printer.svg');
 
@@ -416,8 +431,14 @@ class $AssetsSvgsGen {
   SvgGenImage get securityUser =>
       const SvgGenImage('assets/svgs/security-user.svg');
 
+  /// File path: assets/svgs/send.svg
+  SvgGenImage get send => const SvgGenImage('assets/svgs/send.svg');
+
   /// File path: assets/svgs/show.svg
   SvgGenImage get show => const SvgGenImage('assets/svgs/show.svg');
+
+  /// File path: assets/svgs/sms.svg
+  SvgGenImage get sms => const SvgGenImage('assets/svgs/sms.svg');
 
   /// File path: assets/svgs/solana.svg
   SvgGenImage get solana => const SvgGenImage('assets/svgs/solana.svg');
@@ -427,6 +448,10 @@ class $AssetsSvgsGen {
 
   /// File path: assets/svgs/task.svg
   SvgGenImage get task => const SvgGenImage('assets/svgs/task.svg');
+
+  /// File path: assets/svgs/tick-circle.svg
+  SvgGenImage get tickCircle =>
+      const SvgGenImage('assets/svgs/tick-circle.svg');
 
   /// File path: assets/svgs/triple-user.svg
   SvgGenImage get tripleUser =>
@@ -476,11 +501,13 @@ class $AssetsSvgsGen {
     checkCircle32,
     check,
     clock,
+    closeCircle,
     closeCircle16,
     closeSquare,
     closeCircle24,
     closeCircle32,
     coin,
+    copy,
     correct,
     cube,
     danger,
@@ -488,6 +515,7 @@ class $AssetsSvgsGen {
     documentDownload,
     documentText,
     edit2,
+    editOutline,
     edit,
     emptyImage,
     emptyWalletTick,
@@ -527,6 +555,7 @@ class $AssetsSvgsGen {
     notification,
     outlineMoneys,
     people,
+    percentageCircle,
     printer,
     profileCircle,
     profileMore,
@@ -542,10 +571,13 @@ class $AssetsSvgsGen {
     searchPlaceholder,
     search,
     securityUser,
+    send,
     show,
+    sms,
     solana,
     sort,
     task,
+    tickCircle,
     tripleUser,
     unitIcon,
     up,

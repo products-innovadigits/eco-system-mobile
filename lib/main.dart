@@ -116,6 +116,8 @@ class _MyAppState extends State<MyApp> {
                                         : Styles.FONT_AR,
                                   ),
                                 ),
+                        highlightColor: Colors.transparent,
+                        splashColor: Colors.transparent,
                         textTheme:
                             Themes.lightTheme().themeData.textTheme.apply(
                                   fontFamily: lang.data == 'en'
