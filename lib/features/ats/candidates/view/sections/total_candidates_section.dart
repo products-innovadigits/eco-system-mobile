@@ -1,7 +1,11 @@
+import 'package:eco_system/components/custom_network_image.dart';
+import 'package:eco_system/features/ats/talent_pool/model/candidate_model.dart';
 import 'package:eco_system/utility/export.dart';
 
 class TotalCandidatesSection extends StatelessWidget {
-  const TotalCandidatesSection({super.key});
+  final List<CandidateModel> talentsList;
+
+  const TotalCandidatesSection({super.key, required this.talentsList});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +22,7 @@ class TotalCandidatesSection extends StatelessWidget {
             ),
             4.sh,
             Text(
-              '103',
+              talentsList.length.toString(),
               style: AppTextStyles.w700.copyWith(fontSize: 14),
             ),
           ],
@@ -26,7 +30,7 @@ class TotalCandidatesSection extends StatelessWidget {
         Stack(
           textDirection: TextDirection.ltr,
           children: List.generate(
-              5,
+              talentsList.length > 5 ? 5 : talentsList.length,
               (index) => Container(
                     width: 32.w,
                     height: 32.h,
@@ -36,26 +40,21 @@ class TotalCandidatesSection extends StatelessWidget {
                     decoration: BoxDecoration(
                         color: Styles.PRIMARY_COLOR,
                         shape: BoxShape.circle,
-                        border: Border.all(color: Styles.WHITE_COLOR),
-                        image: DecorationImage(
-                            image: AssetImage(Assets.images.avatar.path),
-                            fit: BoxFit.fill)),
-                    child: index == 4
+                        border: Border.all(color: Styles.WHITE_COLOR)),
+                    child: (index == 4 && talentsList.length > 5)
                         ? Container(
-                            width: 32.w,
-                            height: 32.h,
                             decoration: BoxDecoration(
-                                color: Colors.black.withValues(alpha: 0.5),
+                                color: Colors.black.withValues(alpha: 0.1),
                                 shape: BoxShape.circle),
                             child: Center(
                               child: Text(
-                                '+5',
-                                style: AppTextStyles.w400
-                                    .copyWith(color: Styles.WHITE_COLOR),
+                                '+${talentsList.length - 5}',
+                                style: AppTextStyles.w400.copyWith(
+                                    color: Styles.WHITE_COLOR, fontSize: 11),
                               ),
                             ),
                           )
-                        : const SizedBox.shrink(),
+                        : CustomNetworkImage.circleNewWorkImage(backGroundColor: Styles.PRIMARY_COLOR ),
                   )),
         ),
       ],

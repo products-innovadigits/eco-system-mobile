@@ -1,15 +1,16 @@
+import 'package:eco_system/features/search/bloc/search_bloc.dart';
 import 'package:eco_system/utility/export.dart';
 
-class TalentPoolListSection extends StatelessWidget {
-  const TalentPoolListSection({
+class TalentPoolSearchSection extends StatelessWidget {
+  const TalentPoolSearchSection({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TalentPoolBloc, AppState>(
+    return BlocBuilder<SearchBloc, AppState>(
       builder: (context, state) {
-        final bloc = context.read<TalentPoolBloc>();
+        final bloc = context.read<SearchBloc>();
         final talentsList = bloc.talentsList;
         if (state is Loading) return LoadingShimmerList();
         if (state is Done)
@@ -17,20 +18,18 @@ class TalentPoolListSection extends StatelessWidget {
             children: [
               Expanded(
                   child: ListView.separated(
-                physics: const BouncingScrollPhysics(),
-                itemCount: talentsList.length,
-                controller: bloc.scrollController,
-                itemBuilder: (context, index) {
-                  return TalentCardWidget(
-                    onSelectTalent: () =>
-                        bloc.add(SelectTalent(arguments: index)),
-                    isTalentSelected: bloc.selectedTalentsList.contains(index),
-                    isSelectionActive: bloc.activeSelection,
-                    talent: talentsList[index],
-                  );
-                },
-                separatorBuilder: (context, index) => 16.sh,
-              )),
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: talentsList.length,
+                    controller: bloc.scrollController,
+                    itemBuilder: (context, index) {
+                      return TalentCardWidget(
+                        onSelectTalent: () =>
+                            bloc.add(SelectTalent(arguments: index)),
+                        talent: talentsList[index],
+                      );
+                    },
+                    separatorBuilder: (context, index) => 16.sh,
+                  )),
               CustomLoading(isTextLoading: true, loading: state.loading)
             ],
           );

@@ -337,7 +337,7 @@ abstract class  LocaleKeys {
   static const select_gender = 'select_gender';
   static const gender = 'gender';
   static const select_your_location = 'select_your_location';
-  static const experience = 'experience';
+  static const experience_years = 'experience_years';
   static const currency = 'currency';
   static const from = 'from';
   static const to = 'to';
@@ -379,11 +379,15 @@ abstract class  LocaleKeys {
   static const technical_skills = 'technical_skills';
   static const ratings = 'ratings';
   static const add_rating = 'add_rating';
+  static const add_skill = 'add_skill';
   static const enter_rating = 'enter_rating';
   static const send_email = 'send_email';
   static const copy_to_job = 'copy_to_job';
   static const transfer_to_another_stage = 'transfer_to_another_stage';
   static const sort = 'sort';
+  static const experience = 'experience';
+  static const years = 'years';
+  static const chances = 'chances';
   static const no_candidates = 'no_candidates';
   static const candidate_in_pipeline = 'candidate_in_pipeline';
   static const newest_to_oldest = 'newest_to_oldest';

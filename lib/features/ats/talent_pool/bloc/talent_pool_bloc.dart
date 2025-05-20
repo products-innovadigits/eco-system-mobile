@@ -1,14 +1,24 @@
+import 'package:eco_system/features/ats/talent_pool/model/candidate_model.dart';
+import 'package:eco_system/features/ats/talent_pool/repo/talent_pool_repo.dart';
+import 'package:eco_system/features/ats/talent_pool/service/talent_service.dart';
 import 'package:eco_system/utility/export.dart';
 
 class TalentPoolBloc extends Bloc<AppEvent, AppState> {
   TalentPoolBloc() : super(Start()) {
-    on<Click>(onClick);
+    scrollController = ScrollController();
+    fileNameController = TextEditingController();
+    customScroll(scrollController);
+    on<Click>(_getTalents);
     on<Sort>(_onSorting);
     on<Select>(onToggleSelection);
     on<SelectTalent>(_onSelectTalent);
   }
 
-  TextEditingController fileNameController = TextEditingController();
+  List<CandidateModel> talentsList = [];
+  late SearchEngine _engine;
+  late ScrollController scrollController;
+
+  late TextEditingController fileNameController;
   List<int> selectedTalentsList = [];
   bool activeSelection = false;
   List<DropListModel> sortingList = [
@@ -50,26 +60,53 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
     emit(Done());
   }
 
-  onClick(AppEvent event, Emitter<AppState> emit) async {
-    emit(Done());
-    // try {
-    //   emit(Loading());
-    //
-    //   Response res = await JobsRepo.getObjectivePercentage();
-    //
-    //   if (res.statusCode == 200 &&
-    //       res.data != null &&
-    //       res.data["data"] != null &&
-    //       res.data["data"]["totalPercentage"] != null) {
-    //     emit(Done(data: res.data["data"]["totalPercentage"]));
-    //   } else {
-    //     AppCore.errorMessage(allTranslations.text('something_went_wrong'));
-    //     emit(Error());
-    //   }
-    // } catch (e) {
-    //   AppCore.errorMessage(allTranslations.text('something_went_wrong'));
-    //
-    //   emit(Error());
-    // }
+  void customScroll(ScrollController controller) {
+    controller.addListener(() {
+      bool scroll = AppCore.scrollListener(
+          controller, _engine.maxPages, _engine.currentPage);
+      if (scroll) {
+        _engine.updateCurrentPage(_engine.currentPage);
+        add(Click(arguments: _engine));
+      }
+    });
+  }
+
+  void _getTalents(AppEvent event, Emitter<AppState> emit) async {
+    try {
+      _engine = event.arguments as SearchEngine;
+
+      if (_engine.currentPage == 0) {
+        talentsList.clear();
+        emit(Loading());
+      } else {
+        emit(Done(loading: true));
+      }
+
+      final newTalents = await TalentPoolService.getTalents(_engine);
+      talentsList.addAll(newTalents);
+
+      if (talentsList.isNotEmpty) {
+        emit(Done());
+      } else {
+        emit(Empty());
+      }
+    } catch (e) {
+      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+      emit(Error());
+    }
+  }
+
+
+
+  @override
+  Future<void> close() {
+    scrollController.dispose();
+    fileNameController.dispose();
+    selectedTalentsList.clear();
+    talentsList.clear();
+    activeSelection = false;
+    selectedSorting = null;
+    _engine = SearchEngine();
+    return super.close();
   }
 }

@@ -1,4 +1,4 @@
-
+import 'package:eco_system/features/ats/talent_pool/model/candidate_model.dart';
 import 'package:eco_system/utility/export.dart';
 
 class ProfileHeaderSection extends StatefulWidget {
@@ -45,69 +45,89 @@ class _ProfileHeaderSectionState extends State<ProfileHeaderSection>
       builder: (context, state) {
         final profileBloc = context.read<ProfileBloc>();
         _handleAnimation(profileBloc.showMoreDialog);
-        return GestureDetector(
-          onTap: () {
-            if (profileBloc.showMoreDialog) {
-              profileBloc.add(ShowDialog(arguments: false));
-            }
-          },
-          child: Stack(
-            children: [
-              Container(
-                width: context.w,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(Assets.images.prfileHeaderBg.path),
-                    fit: BoxFit.fill,
+        if (state is Done) {
+          CandidateModel candidateModel = state.model as CandidateModel;
+          return GestureDetector(
+            onTap: () {
+              if (profileBloc.showMoreDialog) {
+                profileBloc.add(ShowDialog(arguments: false));
+              }
+            },
+            child: Stack(
+              children: [
+                Container(
+                  width: context.w,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(Assets.images.prfileHeaderBg.path),
+                      fit: BoxFit.fill,
+                    ),
                   ),
-                ),
-                child: SafeArea(
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        10.sh,
-                        ProfileCustomAppbarWidget(
-                            title: 'قائد فريق تصميم المنتجات'),
-                        16.sh,
-                        ProfileUserDataWidget(),
-                        10.sh,
-                        Row(
-                          spacing: 8.w,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            ProfileDataContainerWidget(
-                              title: 'مرحلة المقابلة الهاتفية',
-                              icon: Assets.svgs.layers.path,
+                  child: SafeArea(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 16.w, vertical: 16.h),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          10.sh,
+                          ProfileCustomAppbarWidget(
+                              title: candidateModel.jobTitle ?? ''),
+                          16.sh,
+                          if (candidateModel.resume?.url != null)
+                            ProfileUserDataWidget(
+                              cvUrl: candidateModel.resume?.url ?? '',
                             ),
-                            ProfileDataContainerWidget(
-                              title: '010908888',
-                              icon: Assets.svgs.call.path,
-                            ),
-                          ],
-                        ),
-                      ],
+                          10.sh,
+                          Row(
+                            spacing: 8.w,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              if (candidateModel.lastChance?.stageName != null)
+                                ProfileDataContainerWidget(
+                                  title: candidateModel.lastChance!.stageName!,
+                                  icon: Assets.svgs.layers.path,
+                                ),
+                              if (candidateModel.phone != null)
+                                ProfileDataContainerWidget(
+                                  title: candidateModel.phone!,
+                                  icon: Assets.svgs.call.path,
+                                ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              if (profileBloc.showMoreDialog || _controller.isAnimating)
-                Positioned(
-                  left: 0.w,
-                  top: 0.h,
-                  child: ScaleTransition(
-                    scale: _scale,
-                    alignment: Alignment.topLeft,
-                    child: widget.isCandidate
-                        ? CandidateMoreDialog()
-                        : ApplicantMoreDialog(),
+                if (profileBloc.showMoreDialog || _controller.isAnimating)
+                  Positioned(
+                    left: 0.w,
+                    top: 0.h,
+                    child: ScaleTransition(
+                      scale: _scale,
+                      alignment: Alignment.topLeft,
+                      child: widget.isCandidate
+                          ? CandidateMoreDialog()
+                          : ApplicantMoreDialog(),
+                    ),
                   ),
-                ),
+              ],
+            ),
+          );
+        }
+        if (state is Loading) {
+          return Column(
+            children: [
+              CustomShimmerContainer(
+                height: 130.h,
+                width: context.w,
+              ),
             ],
-          ),
-        );
+          );
+        } else {
+          return const SizedBox();
+        }
       },
     );
   }

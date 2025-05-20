@@ -1,23 +1,17 @@
-import 'dart:developer';
-
 import 'package:eco_system/utility/export.dart';
 
 class JobsBloc extends Bloc<AppEvent, AppState> {
   JobsBloc() : super(Start()) {
     scrollController = ScrollController();
-    searchTEC = TextEditingController();
     customScroll(scrollController);
     on<Click>(_getJobs);
     on<Expand>(onExpand);
     on<Select>(_onSelectJob);
   }
 
-  final List<Widget> _cards = [];
   List<JobDataModel> jobsList = [];
   late SearchEngine _engine;
-
   late ScrollController scrollController;
-  TextEditingController? searchTEC;
 
   final _expandedIndex = BehaviorSubject<int?>.seeded(-1);
 
@@ -67,7 +61,7 @@ class JobsBloc extends Bloc<AppEvent, AppState> {
       _engine = event.arguments as SearchEngine;
 
       if (_engine.currentPage == 0) {
-        _cards.clear();
+        jobsList.clear();
         emit(Loading());
       } else {
         emit(Done(loading: true));
@@ -102,10 +96,9 @@ class JobsBloc extends Bloc<AppEvent, AppState> {
   @override
   Future<void> close() {
     scrollController.dispose();
-    searchTEC?.dispose();
     _expandedIndex.close();
     selectedJobsList.clear();
-    _cards.clear();
+    jobsList.clear();
     return super.close();
   }
 }

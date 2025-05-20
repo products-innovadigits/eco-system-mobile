@@ -208,8 +208,8 @@ class PickSkill extends AppEvent {
   PickSkill({Object? arguments}) : super(arguments);
 }
 
-class PickKeyword extends AppEvent {
-  PickKeyword({Object? arguments}) : super(arguments);
+class PickTag extends AppEvent {
+  PickTag({Object? arguments}) : super(arguments);
 }
 
 class RemoveSkill extends AppEvent {

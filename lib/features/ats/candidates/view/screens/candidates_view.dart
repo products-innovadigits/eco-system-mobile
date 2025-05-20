@@ -21,7 +21,7 @@ class Candidates extends StatelessWidget {
                       child: CandidatesFilterBottomSheet(),
                     ));
               },
-              onTapSearch: () => CustomNavigator.push(Routes.SEARCH),
+              onTapSearch: () => CustomNavigator.push(Routes.SEARCH , arguments: SearchEnum.candidates),
               searchHintText:
               allTranslations.text(LocaleKeys.searching_for_candidate)),
           body: SingleChildScrollView(

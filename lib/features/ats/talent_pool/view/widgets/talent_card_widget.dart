@@ -1,20 +1,25 @@
+import 'package:eco_system/features/ats/talent_pool/model/candidate_model.dart';
 import 'package:eco_system/utility/export.dart';
 
 class TalentCardWidget extends StatelessWidget {
-  final bool isSelectionActive;
+  final bool? isSelectionActive;
   final VoidCallback onSelectTalent;
-  final bool isTalentSelected;
+  final bool? isTalentSelected;
+  final CandidateModel talent;
 
   const TalentCardWidget(
       {super.key,
-      required this.isSelectionActive,
+      this.isSelectionActive,
       required this.onSelectTalent,
-      required this.isTalentSelected});
+      this.isTalentSelected,
+      required this.talent});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => CustomNavigator.push(Routes.PROFILE, arguments: true),
+      onTap: () => CustomNavigator.push(Routes.PROFILE,
+          arguments:
+              ProfileViewArgs(isCandidate: false, candidateId: talent.id ?? 0)),
       child: Container(
         width: context.w,
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
@@ -22,89 +27,118 @@ class TalentCardWidget extends StatelessWidget {
             color: Styles.WHITE_COLOR,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(color: Styles.BORDER)),
-        child: Column(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
+            if (isSelectionActive != null && isSelectionActive == true) ...[
+              CustomCheckBoxWidget(
+                  onCheck: onSelectTalent, isChecked: isTalentSelected == true),
+              8.sw,
+            ],
+            Container(
+              width: 40.w,
+              height: 40.h,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Styles.PRIMARY_COLOR,
+                  image: DecorationImage(
+                      image: AssetImage(Assets.images.avatar.path))),
+            ),
+            8.sw,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (isSelectionActive) ...[
-                  CustomCheckBoxWidget(
-                      onCheck: onSelectTalent, isChecked: isTalentSelected),
-                ],
-                Container(
-                  width: 40.w,
-                  height: 40.h,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                        image: AssetImage(Assets.images.avatar.path),
-                        fit: BoxFit.contain),
-                  ),
+                Text(
+                  talent.name ?? '',
+                  style: AppTextStyles.w500
+                      .copyWith(color: Styles.TEXT_COLOR, fontSize: 12),
                 ),
-                8.sw,
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                2.sh,
+                Row(
                   children: [
                     Text(
-                      'محمد عزيز',
-                      style: AppTextStyles.w500
-                          .copyWith(color: Styles.TEXT_COLOR, fontSize: 12),
+                      '${talent.jobTitle} . ',
+                      style: AppTextStyles.w400.copyWith(
+                          color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
                     ),
-                    2.sh,
-                    Row(
-                      children: [
-                        Text(
-                          'مدير المشروعات . ',
-                          style: AppTextStyles.w400.copyWith(
-                              color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
-                        ),
-                        Text('5 من الوظائف',
-                            style: AppTextStyles.w400.copyWith(
-                                color: Styles.PRIMARY_COLOR, fontSize: 10))
-                      ],
-                    ),
+                    Text(
+                        '${talent.chancesCount} ${allTranslations.text(LocaleKeys.chances)}',
+                        style: AppTextStyles.w400.copyWith(
+                            color: Styles.PRIMARY_COLOR, fontSize: 10))
                   ],
                 ),
-                const Spacer(),
-                Container(
-                    width: 24.w,
-                    height: 24.h,
-                    alignment: AlignmentDirectional.centerEnd,
-                    padding: EdgeInsets.all(6),
-                    child: Images(image: Assets.svgs.arrowLeft.path)),
+                if (talent.profile?.location != null &&
+                    talent.profile?.experience != null &&
+                    talent.profile?.expectedSalary != null &&
+                    talent.profile?.noticePeriod != null)
+                  _profileDetails(talent.profile),
               ],
             ),
-            Padding(
-              padding: EdgeInsets.all(12.h),
-              child: Divider(color: Styles.BORDER),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  'السعودية',
-                  style: AppTextStyles.w500.copyWith(
-                      color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w),
-                  child: Icon(Icons.circle,
-                      color: Styles.SUB_TEXT_DARK_COLOR, size: 5),
-                ),
-                Text(
-                  'خبرة ٥ سنين',
-                  style: AppTextStyles.w500.copyWith(
-                      color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
-                ),
-                const Spacer(),
-                Text('1000 ر.س . اسبوعين ',
-                    style: AppTextStyles.w400
-                        .copyWith(color: Styles.PRIMARY_COLOR, fontSize: 10))
-              ],
-            ),
+            const Spacer(),
+            Container(
+                width: 24.w,
+                height: 24.h,
+                alignment: AlignmentDirectional.centerEnd,
+                padding: EdgeInsets.all(6),
+                child: Images(image: Assets.svgs.arrowLeft.path)),
           ],
         ),
       ),
     );
   }
+}
+
+Widget _profileDetails(ProfileModel? profile) {
+  return Column(
+    children: [
+      Padding(
+        padding: EdgeInsets.all(12.h),
+        child: Divider(color: Styles.BORDER),
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          if (profile?.location != null)
+            Text(
+              '${profile?.location ?? ''}',
+              style: AppTextStyles.w500
+                  .copyWith(color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
+            ),
+          if (profile?.location != null && profile?.experience != null)
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.w),
+              child: Icon(Icons.circle,
+                  color: Styles.SUB_TEXT_DARK_COLOR, size: 5),
+            ),
+          if (profile?.experience != null)
+            Text(
+              '${allTranslations.text(LocaleKeys.experience)} ${profile?.experience ?? ''} ${allTranslations.text(LocaleKeys.years)}',
+              style: AppTextStyles.w500
+                  .copyWith(color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
+            ),
+          const Spacer(),
+          Row(
+            children: [
+              if (profile?.expectedSalary != null)
+                Text(
+                    '${profile?.expectedSalary ?? ''} ${profile?.currency?.name ?? ''}',
+                    style: AppTextStyles.w400
+                        .copyWith(color: Styles.PRIMARY_COLOR, fontSize: 10)),
+              if (profile?.expectedSalary != null &&
+                  profile?.noticePeriod != null)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.w),
+                  child:
+                      Icon(Icons.circle, color: Styles.PRIMARY_COLOR, size: 5),
+                ),
+              if (profile?.noticePeriod != null)
+                Text('${profile?.noticePeriod ?? ''}',
+                    style: AppTextStyles.w400
+                        .copyWith(color: Styles.PRIMARY_COLOR, fontSize: 10)),
+            ],
+          )
+        ],
+      )
+    ],
+  );
 }

@@ -1,4 +1,3 @@
-
 import 'package:eco_system/utility/export.dart';
 
 class TalentPoolSection extends StatelessWidget {
@@ -7,13 +6,17 @@ class TalentPoolSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TalentPoolBloc()..add(Click()),
+      create: (context) =>
+          TalentPoolBloc()..add(Click(arguments: SearchEngine())),
       child: BlocBuilder<TalentPoolBloc, AppState>(
         builder: (context, state) {
           if (state is Done) {
             TalentPoolBloc talentPoolBloc = context.read<TalentPoolBloc>();
             return InkWell(
-              onTap: () => CustomNavigator.push(Routes.TALENT_POOL),
+              onTap: () {
+                // talentPoolBloc.add(Click(arguments: SearchEngine()));
+                CustomNavigator.push(Routes.TALENT_POOL);
+              },
               child: Container(
                 width: context.w,
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
@@ -26,14 +29,15 @@ class TalentPoolSection extends StatelessWidget {
                   children: [
                     SectionTitle(
                       title: allTranslations.text(LocaleKeys.talent_pool),
-                      subText:
-                          allTranslations.text(LocaleKeys.candidate_with_future_potential),
+                      subText: allTranslations
+                          .text(LocaleKeys.candidate_with_future_potential),
                       icon: Assets.svgs.tripleUser.path,
                       onViewTap: () {},
                     ),
                     Divider(color: Styles.BORDER_COLOR),
                     SizedBox(height: 12.h),
-                    TotalCandidatesSection(),
+                    TotalCandidatesSection(
+                        talentsList: talentPoolBloc.talentsList),
                   ],
                 ),
               ),
@@ -48,7 +52,7 @@ class TalentPoolSection extends StatelessWidget {
               ),
             );
           } else {
-            return SizedBox();
+            return SizedBox.shrink();
           }
         },
       ),

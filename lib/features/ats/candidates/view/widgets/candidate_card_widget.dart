@@ -6,7 +6,9 @@ class CandidateCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => CustomNavigator.push(Routes.PROFILE),
+      //TODO pass the candidate id
+      onTap: () => CustomNavigator.push(Routes.PROFILE,
+          arguments: ProfileViewArgs(isCandidate: true, candidateId: 500)),
       child: Container(
         width: context.w,
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
@@ -81,18 +83,18 @@ class CandidateCardWidget extends StatelessWidget {
                 const Spacer(),
                 Text(
                   '\$ غير متوفر .',
-                  style: AppTextStyles.w500.copyWith(
-                      color: Styles.PRIMARY_COLOR, fontSize: 10),
+                  style: AppTextStyles.w500
+                      .copyWith(color: Styles.PRIMARY_COLOR, fontSize: 10),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 4.w),
-                  child: Icon(Icons.circle,
-                      color: Styles.PRIMARY_COLOR, size: 4),
+                  child:
+                      Icon(Icons.circle, color: Styles.PRIMARY_COLOR, size: 4),
                 ),
                 Text(
                   'اسبوعين',
-                  style: AppTextStyles.w500.copyWith(
-                      color: Styles.PRIMARY_COLOR, fontSize: 10),
+                  style: AppTextStyles.w500
+                      .copyWith(color: Styles.PRIMARY_COLOR, fontSize: 10),
                 ),
               ],
             ),

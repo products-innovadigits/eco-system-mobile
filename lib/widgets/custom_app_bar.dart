@@ -103,7 +103,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                         onTap: () {
                           onTapSearch!();
                         },
-                        readOnly: onTapSearch != null,
+                        readOnly: onSearching == null,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),

@@ -10,37 +10,101 @@ class CandidatesFilterBottomSheet extends StatelessWidget {
     return BlocBuilder<FiltrationBloc, AppState>(
       builder: (context, state) {
         final bloc = context.read<FiltrationBloc>();
-        final selectedSkills = bloc.selectedSkills;
-        final selectedKeywords = bloc.selectedKeywords;
-        final availableSkills =
-            bloc.skills.where((s) => !selectedSkills.contains(s)).toList();
-        final availableKeywords =
-            bloc.keywords.where((s) => !selectedKeywords.contains(s)).toList();
+        // final selectedSkills = bloc.selectedSkills;
+        final selectedTags = bloc.selectedTags;
+        // final availableSkills =
+        //     bloc.skills.where((s) => !selectedSkills.contains(s)).toList();
+        final availableTags =
+            bloc.tagsList.where((s) => !selectedTags.contains(s)).toList();
         return Stack(
           children: [
             Column(
               children: [
                 BottomSheetHeader(title: LocaleKeys.candidate),
-                24.sh,
                 SizedBox(
-                  height: isTalentPool ? context.h * 0.65 : context.h * 0.8,
+                  height: context.h * 0.8,
                   child: ListView(
                     children: [
-                      Skills(),
-                      bloc.expandSkills
-                          ? _buildOptionsList(context, availableSkills,
-                              onPickItem: (item) =>
-                                  bloc.add(PickSkill(arguments: item)))
-                          : const SizedBox.shrink(),
-                      if (!isTalentPool) ...[
+                      Text(allTranslations.text(LocaleKeys.skills),
+                          style: AppTextStyles.w400.copyWith(fontSize: 12)),
+                      8.sh,
+                      Container(
+                        padding: EdgeInsets.symmetric(vertical: 8.h),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Styles.BORDER),
+                        ),
+                        child: Stack(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16.w),
+                              child: Wrap(
+                                children: [
+                                  TextField(
+                                    controller: bloc.skillController,
+                                    maxLines: 1,
+                                    style: AppTextStyles.w400
+                                        .copyWith(fontSize: 12),
+                                    decoration: InputDecoration(
+                                        hintText: allTranslations
+                                            .text(LocaleKeys.add_skill),
+                                        hintStyle: AppTextStyles.w400
+                                            .copyWith(
+                                            fontSize: 12,
+                                            color: Styles.HINT),
+                                        border: InputBorder.none,
+                                        focusedBorder: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        errorBorder: InputBorder.none,
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 8.h)),
+                                  ),
+                                  if (bloc.selectedSkills.isNotEmpty) ...[
+                                    PickedChoicesList(
+                                        list: bloc.selectedSkills,
+                                        onRemove: (item) => bloc
+                                            .add(RemoveSkill(arguments: item))),
+                                    16.sw,
+                                  ],
+                                ],
+                              ),
+                            ),
+                            Positioned.directional(
+                              textDirection: TextDirection.ltr,
+                              start: 0,
+                              bottom: 0,
+                              child: InkWell(
+                                onTap: () {
+                                  bloc.add(PickSkill(
+                                      arguments: DropListModel(
+                                          name: bloc.skillController.text)));
+                                },
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.symmetric(
+                                      horizontal: 8.w),
+                                  child: Icon(Icons.add , color: Styles.PRIMARY_COLOR, size: 20),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Skills(),
+                      // bloc.expandSkills
+                      //     ? _buildOptionsList(context, availableSkills,
+                      //         onPickItem: (item) =>
+                      //             bloc.add(PickSkill(arguments: item)))
+                      //     : const SizedBox.shrink(),
+                      // if (!isTalentPool) ...[
                         16.sh,
-                        Keywords(),
+                        Tags(),
                         bloc.expandKeywords
-                            ? _buildOptionsList(context, availableKeywords,
+                            ? _buildOptionsList(context, availableTags,
                                 onPickItem: (item) =>
-                                    bloc.add(PickKeyword(arguments: item)))
+                                    bloc.add(PickTag(arguments: item)))
                             : const SizedBox.shrink(),
-                      ],
+                      // ],
                       16.sh,
                       ExpectedSalary(),
                       16.sh,

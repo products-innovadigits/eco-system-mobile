@@ -1,7 +1,9 @@
 import 'package:eco_system/utility/export.dart';
 
 class ProfileUserDataWidget extends StatelessWidget {
-  const ProfileUserDataWidget({super.key});
+  final String cvUrl;
+
+  const ProfileUserDataWidget({super.key, required this.cvUrl});
 
   @override
   Widget build(BuildContext context) {

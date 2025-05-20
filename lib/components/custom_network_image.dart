@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
+import 'package:eco_system/utility/export.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomNetworkImage {
   static const key = 'customCacheKey';
@@ -104,24 +105,26 @@ class CustomNetworkImage {
       imageUrl: image == "" || image == null ? "https://" : image,
       repeat: ImageRepeat.noRepeat,
       errorWidget: (a, c, b) => Container(
-        height: radius! * 2,
-        width: radius * 2,
+        padding: EdgeInsets.all(8),
+        height: radius != null ? radius * 2 : null,
+        width: radius != null ? radius * 2 : null,
         decoration: BoxDecoration(
             border: color != null ? Border.all(color: color, width: 1) : null,
             shape: BoxShape.circle),
         child: CircleAvatar(
           radius: radius,
           backgroundColor: backGroundColor ?? Colors.white,
-          backgroundImage:
-              Image.asset("assets/images/home/pro.png", fit: BoxFit.contain)
-                  .image,
+          child: SvgPicture.asset(
+            Assets.svgs.user.path,
+            colorFilter: ColorFilter.mode(Styles.WHITE_COLOR, BlendMode.srcIn),
+          ),
         ),
       ),
       fadeInDuration: const Duration(seconds: 1),
       fadeOutDuration: const Duration(seconds: 2),
       placeholder: (context, url) => Container(
-        height: radius! * 2,
-        width: radius * 2,
+        height: radius != null ? radius * 2 : null,
+        width: radius != null ? radius * 2 : null,
         decoration: BoxDecoration(
             border: color != null ? Border.all(color: color, width: 1) : null,
             shape: BoxShape.circle),
@@ -133,8 +136,8 @@ class CustomNetworkImage {
       ),
       imageBuilder: (context, provider) {
         return Container(
-          height: radius! * 2,
-          width: radius * 2,
+          height: radius != null ? radius * 2 : null,
+          width: radius != null ? radius * 2 : null,
           decoration: BoxDecoration(
               border: color != null ? Border.all(color: color, width: 1) : null,
               shape: BoxShape.circle),

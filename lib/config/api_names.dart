@@ -21,5 +21,11 @@ abstract class ApiNames {
 
   // Jobs APIs ====================
   static const jobs = "chances";
-  
+
+  // Talent Pool APIs ====================
+  static const talents = "candidates";
+  static candidateDetails(id) => "candidates/$id";
+  // Filters
+  static const tags = "tags/get-all";
+
 }

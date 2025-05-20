@@ -1,7 +1,11 @@
+import 'package:dio/dio.dart';
+import 'package:eco_system/features/ats/profile/repo/profile_repo.dart';
+import 'package:eco_system/features/ats/talent_pool/model/candidate_model.dart';
 import 'package:eco_system/utility/export.dart';
 
 class ProfileBloc extends Bloc<AppEvent, AppState> {
   ProfileBloc() : super(Start()) {
+    on<Click>(_getCandidateDetails);
     on<Select>(_onSelectTab);
     on<SelectTab>(_onSelectRatingTab);
     on<ShowDialog>(_onShowMoreDialog);
@@ -105,5 +109,29 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
       RatingItemModel(title: LocaleKeys.knowledge),
       RatingItemModel(title: LocaleKeys.communications),
     ];
+  }
+
+  _getCandidateDetails(AppEvent event, Emitter<AppState> emit) async {
+    try {
+      emit(Loading());
+
+      Response res =
+      await ProfileRepo.getCandidateDetails(event.arguments as int);
+
+      if (res.statusCode == 200 &&
+          res.data != null &&
+          res.data["data"] != null) {
+        CandidateModel model =
+        CandidateModel.fromJson(res.data["data"]);
+        emit(Done(model: model));
+      } else {
+        AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+        emit(Error());
+      }
+    } catch (e) {
+      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+
+      emit(Error());
+    }
   }
 }

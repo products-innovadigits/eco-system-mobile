@@ -1,7 +1,7 @@
 import 'package:eco_system/utility/export.dart';
 
-class Keywords extends StatelessWidget {
-  const Keywords({super.key});
+class Tags extends StatelessWidget {
+  const Tags({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class Keywords extends StatelessWidget {
             8.sh,
             CustomDropDownSkills(
               hint: allTranslations.text(LocaleKeys.select_keywords),
-              selectedList: bloc.selectedKeywords,
+              selectedList: bloc.selectedTags,
               onExpand: () => bloc.add(ExpandKeywords()),
               isExpanded: bloc.expandKeywords,
               onRemove: (item) {

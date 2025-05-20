@@ -1,15 +1,18 @@
+import 'package:eco_system/features/ats/repo/filtration_repo.dart';
 import 'package:eco_system/utility/export.dart';
 
 class FiltrationBloc extends Bloc<AppEvent, AppState> {
   FiltrationBloc() : super(Start()) {
     on<PickSkill>(_onAddSkill);
-    on<PickKeyword>(_onAddKeyword);
+    on<Click>(_getTags);
+    on<PickTag>(_onAddTag);
     on<RemoveSkill>(_onRemoveSkill);
-    on<RemoveKeywords>(_onRemoveKeyword);
+    on<RemoveKeywords>(_onRemoveTag);
     on<ExpandSkills>(_onToggleSkillsExpanded);
     on<ExpandKeywords>(_onToggleKeywordsExpanded);
   }
 
+  final TextEditingController skillController = TextEditingController();
   final TextEditingController expectedSalaryFromController =
       TextEditingController();
   final TextEditingController expectedSalaryToController =
@@ -26,23 +29,7 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
   bool expandSkills = false;
   bool expandKeywords = false;
 
-  final List<DropListModel> skills = [
-    DropListModel(id: 1, name: 'تصميم واجهة '),
-    DropListModel(id: 2, name: 'تصميم مواقع'),
-    DropListModel(id: 3, name: 'تصميم تطبيقات'),
-    DropListModel(id: 4, name: 'تصميم تطبيقات'),
-    DropListModel(id: 5, name: 'تصميم تطبيقات'),
-    DropListModel(id: 6, name: 'تصميم تطبيقات'),
-  ];
-
-  final List<DropListModel> keywords = [
-    DropListModel(id: 1, name: 'ui/ux designer'),
-    DropListModel(id: 2, name: 'Communication Skills'),
-    DropListModel(id: 3, name: 'Mobile App Development'),
-    DropListModel(id: 4, name: 'Web App Development'),
-    DropListModel(id: 5, name: 'Backend Development'),
-    DropListModel(id: 6, name: 'QA'),
-  ];
+  final List<DropListModel> tagsList = [];
   final List<DropListModel> currencies = [
     DropListModel(id: 1, name: 'ر.س'),
     DropListModel(id: 2, name: 'ج.م'),
@@ -65,23 +52,22 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
   ];
 
   List<DropListModel> selectedSkills = [];
-  List<DropListModel> selectedKeywords = [];
+  List<DropListModel> selectedTags = [];
 
   void _onAddSkill(PickSkill event, Emitter<AppState> emit) {
     final skill = event.arguments as DropListModel;
     if (!selectedSkills.contains(skill)) {
       selectedSkills.add(skill);
-      skills.remove(skill);
-      expandSkills = false;
+      skillController.clear();
       emit(Done());
     }
   }
 
-  void _onAddKeyword(PickKeyword event, Emitter<AppState> emit) {
-    final keyword = event.arguments as DropListModel;
-    if (!selectedKeywords.contains(keyword)) {
-      selectedKeywords.add(keyword);
-      keywords.remove(keyword);
+  void _onAddTag(PickTag event, Emitter<AppState> emit) {
+    final tag = event.arguments as DropListModel;
+    if (!selectedTags.contains(tag)) {
+      selectedTags.add(tag);
+      tagsList.remove(tag);
       expandKeywords = false;
       emit(Done());
     }
@@ -90,14 +76,13 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
   void _onRemoveSkill(RemoveSkill event, Emitter<AppState> emit) {
     final skill = event.arguments as DropListModel;
     selectedSkills.remove(skill);
-    skills.add(skill);
     emit(Done());
   }
 
-  void _onRemoveKeyword(RemoveKeywords event, Emitter<AppState> emit) {
-    final keyword = event.arguments as DropListModel;
-    selectedKeywords.remove(keyword);
-    keywords.add(keyword);
+  void _onRemoveTag(RemoveKeywords event, Emitter<AppState> emit) {
+    final tag = event.arguments as DropListModel;
+    selectedTags.remove(tag);
+    tagsList.add(tag);
     emit(Done());
   }
 
@@ -117,10 +102,32 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
     emit(Done());
   }
 
+  void _getTags(AppEvent event, Emitter<AppState> emit) async {
+    emit(Loading());
+    try {
+      final res = await FiltrationRepo.getTags();
+
+      if (res.data != null && res.data!.isNotEmpty) {
+        for (var tag in res.data!) {
+          if (tag.value != null) tagsList.add(DropListModel(name: tag.value));
+        }
+      }
+
+      if (tagsList.isNotEmpty) {
+        emit(Done());
+      } else {
+        emit(Empty());
+      }
+    } catch (e) {
+      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+      emit(Error());
+    }
+  }
+
   void reset() {
     selectedSkills.clear();
     expandSkills = false;
-    selectedKeywords.clear();
+    selectedTags.clear();
     expandKeywords = false;
     expectedSalaryFromController.clear();
     expectedSalaryToController.clear();
@@ -130,6 +137,7 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
     locationController.clear();
     applicationDateController.clear();
     compatibilityRateController.clear();
+    skillController.clear();
   }
 
   @override

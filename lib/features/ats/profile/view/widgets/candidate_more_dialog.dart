@@ -7,7 +7,7 @@ class CandidateMoreDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileBloc, AppState>(
       builder: (context, state) {
-        final profileBloc = context.read<ProfileBloc>();
+        // final profileBloc = context.read<ProfileBloc>();
         return SafeArea(
           child: Container(
             margin: EdgeInsets.only(left: 16.w, top: 46.h),
