@@ -1,4 +1,4 @@
-
+import 'package:eco_system/features/ats/talent_pool/model/candidate_model.dart';
 import 'package:eco_system/utility/export.dart';
 
 class WorkExperienceSection extends StatelessWidget {
@@ -6,6 +6,8 @@ class WorkExperienceSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<ExperienceModel> experienceList =
+        context.read<ProfileBloc>().candidateModel?.profile?.experience ?? [];
     return BlocBuilder<ProfileBloc, AppState>(
       builder: (context, state) {
         final profileBloc = context.read<ProfileBloc>();

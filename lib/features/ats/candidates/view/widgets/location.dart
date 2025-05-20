@@ -15,7 +15,7 @@ class Location extends StatelessWidget {
         CustomDropList(
           list: filtrationBloc.locations,
           hint: allTranslations.text(LocaleKeys.select_your_location),
-          onChanged: (value){},
+          onChanged: (value) {},
         ),
         // CustomTextField(
         //   hint: allTranslations.text(LocaleKeys.enter_your_location),
@@ -27,6 +27,6 @@ class Location extends StatelessWidget {
         //  },
         // ),
       ],
-    );;
+    );
   }
 }

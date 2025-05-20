@@ -1,11 +1,11 @@
 import 'package:eco_system/utility/export.dart';
 
 class ProfileView extends StatelessWidget {
-  final bool isCandidate;
+  final bool isTalent;
   final int candidateId;
 
   const ProfileView(
-      {super.key, this.isCandidate = false, required this.candidateId});
+      {super.key, this.isTalent = false, required this.candidateId});
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +14,8 @@ class ProfileView extends StatelessWidget {
       child: Scaffold(
         body: Column(
           children: [
-            ProfileHeaderSection(isCandidate: isCandidate),
-            ProfileBodySection(isCandidate: isCandidate),
+            ProfileHeaderSection(isTalent: isTalent),
+            ProfileBodySection(isTalent: isTalent),
           ],
         ),
       ),

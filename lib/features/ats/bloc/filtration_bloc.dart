@@ -27,7 +27,7 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
   final TextEditingController compatibilityRateController =
       TextEditingController();
   bool expandSkills = false;
-  bool expandKeywords = false;
+  bool expandTags = false;
 
   final List<DropListModel> tagsList = [];
   final List<DropListModel> currencies = [
@@ -38,14 +38,12 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
     DropListModel(id: 1, name: 'ذكر'),
     DropListModel(id: 2, name: 'انثى'),
   ];
-
   final List<DropListModel> locations = [
     DropListModel(id: 1, name: 'مصر'),
     DropListModel(id: 2, name: 'السعودية'),
     DropListModel(id: 3, name: 'الامارات'),
     DropListModel(id: 4, name: 'الكويت'),
   ];
-
   final List<DropListModel> qualified = [
     DropListModel(id: 1, name: 'مؤهل'),
     DropListModel(id: 2, name: 'غير مؤهل'),
@@ -54,9 +52,10 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
   List<DropListModel> selectedSkills = [];
   List<DropListModel> selectedTags = [];
 
+
   void _onAddSkill(PickSkill event, Emitter<AppState> emit) {
     final skill = event.arguments as DropListModel;
-    if (!selectedSkills.contains(skill)) {
+    if (!selectedSkills.contains(skill) && skillController.text.isNotEmpty) {
       selectedSkills.add(skill);
       skillController.clear();
       emit(Done());
@@ -68,7 +67,7 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
     if (!selectedTags.contains(tag)) {
       selectedTags.add(tag);
       tagsList.remove(tag);
-      expandKeywords = false;
+      expandTags = false;
       emit(Done());
     }
   }
@@ -88,14 +87,14 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
 
   void _onToggleSkillsExpanded(ExpandSkills event, Emitter<AppState> emit) {
     expandSkills = !expandSkills;
-    if (expandKeywords) {
-      expandKeywords = false;
+    if (expandTags) {
+      expandTags = false;
     }
     emit(Done());
   }
 
   void _onToggleKeywordsExpanded(ExpandKeywords event, Emitter<AppState> emit) {
-    expandKeywords = !expandKeywords;
+    expandTags = !expandTags;
     if (expandSkills) {
       expandSkills = false;
     }
@@ -128,7 +127,7 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
     selectedSkills.clear();
     expandSkills = false;
     selectedTags.clear();
-    expandKeywords = false;
+    expandTags = false;
     expectedSalaryFromController.clear();
     expectedSalaryToController.clear();
     experienceToController.clear();

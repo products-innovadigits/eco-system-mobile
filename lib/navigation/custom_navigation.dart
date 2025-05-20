@@ -51,7 +51,7 @@ abstract class CustomNavigator {
       case Routes.PROFILE:
         final args = settings.arguments as ProfileViewArgs?;
         return pageRouteBuilder(ProfileView(
-            isCandidate: args?.isCandidate ?? false,
+            isTalent: args?.isTalent ?? false,
             candidateId: args?.candidateId ?? 0));
       case Routes.CANDIDATES:
         final args = settings.arguments as InitCandidates?;
@@ -136,11 +136,11 @@ abstract class CustomNavigator {
 
 // ProfileViewArgs
 class ProfileViewArgs {
-  final bool isCandidate;
+  final bool isTalent;
   final int candidateId;
 
   ProfileViewArgs({
-    required this.isCandidate,
+    required this.isTalent,
     required this.candidateId,
   });
 }

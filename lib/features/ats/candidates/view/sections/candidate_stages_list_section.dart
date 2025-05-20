@@ -4,19 +4,11 @@ class CandidateStagesListSection extends StatelessWidget {
   final List<StageModel> stages;
   final String jobTitle;
 
-  const CandidateStagesListSection({super.key, required this.stages, required this.jobTitle});
+  const CandidateStagesListSection(
+      {super.key, required this.stages, required this.jobTitle});
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, GlobalKey> stageKeys = Map.fromEntries(
-      stages.map(
-        (stage) => MapEntry(stage.type ?? '', GlobalKey()),
-      ),
-    );
-    final int candidateCount = stages.fold(
-      0,
-      (sum, stage) => sum + (stage.count ?? 0),
-    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

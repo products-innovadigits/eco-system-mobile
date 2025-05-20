@@ -15,9 +15,9 @@ class Gender extends StatelessWidget {
         CustomDropList(
           list: filtrationBloc.genders,
           hint: allTranslations.text(LocaleKeys.select_gender),
-          onChanged: (value){},
+          onChanged: (value) {},
         ),
       ],
-    );;
+    );
   }
 }

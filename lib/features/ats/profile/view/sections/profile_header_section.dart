@@ -2,9 +2,9 @@ import 'package:eco_system/features/ats/talent_pool/model/candidate_model.dart';
 import 'package:eco_system/utility/export.dart';
 
 class ProfileHeaderSection extends StatefulWidget {
-  final bool isCandidate;
+  final bool isTalent;
 
-  const ProfileHeaderSection({super.key, required this.isCandidate});
+  const ProfileHeaderSection({super.key, required this.isTalent});
 
   @override
   State<ProfileHeaderSection> createState() => _ProfileHeaderSectionState();
@@ -46,7 +46,7 @@ class _ProfileHeaderSectionState extends State<ProfileHeaderSection>
         final profileBloc = context.read<ProfileBloc>();
         _handleAnimation(profileBloc.showMoreDialog);
         if (state is Done) {
-          CandidateModel candidateModel = state.model as CandidateModel;
+          CandidateModel? candidateModel = profileBloc.candidateModel;
           return GestureDetector(
             onTap: () {
               if (profileBloc.showMoreDialog) {
@@ -72,25 +72,28 @@ class _ProfileHeaderSectionState extends State<ProfileHeaderSection>
                         children: [
                           10.sh,
                           ProfileCustomAppbarWidget(
-                              title: candidateModel.jobTitle ?? ''),
+                              title: candidateModel?.jobTitle ?? ''),
                           16.sh,
-                          if (candidateModel.resume?.url != null)
+                          if (candidateModel?.resume?.url != null)
                             ProfileUserDataWidget(
-                              cvUrl: candidateModel.resume?.url ?? '',
+                              cvUrl: candidateModel?.resume?.url ?? '',
+                              showAvatarPercentage: !widget.isTalent,
+                              name: candidateModel?.name ?? '',
+                              email: candidateModel?.email ?? '',
                             ),
-                          10.sh,
+                          12.sh,
                           Row(
                             spacing: 8.w,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              if (candidateModel.lastChance?.stageName != null)
+                              if (candidateModel?.lastChance?.stageName != null)
                                 ProfileDataContainerWidget(
-                                  title: candidateModel.lastChance!.stageName!,
+                                  title: candidateModel!.lastChance!.stageName!,
                                   icon: Assets.svgs.layers.path,
                                 ),
-                              if (candidateModel.phone != null)
+                              if (candidateModel?.phone != null)
                                 ProfileDataContainerWidget(
-                                  title: candidateModel.phone!,
+                                  title: candidateModel!.phone!,
                                   icon: Assets.svgs.call.path,
                                 ),
                             ],
@@ -107,7 +110,7 @@ class _ProfileHeaderSectionState extends State<ProfileHeaderSection>
                     child: ScaleTransition(
                       scale: _scale,
                       alignment: Alignment.topLeft,
-                      child: widget.isCandidate
+                      child: widget.isTalent
                           ? CandidateMoreDialog()
                           : ApplicantMoreDialog(),
                     ),
@@ -120,7 +123,7 @@ class _ProfileHeaderSectionState extends State<ProfileHeaderSection>
           return Column(
             children: [
               CustomShimmerContainer(
-                height: 130.h,
+                height: 250.h,
                 width: context.w,
               ),
             ],

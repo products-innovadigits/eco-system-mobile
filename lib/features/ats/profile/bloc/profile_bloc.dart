@@ -5,7 +5,7 @@ import 'package:eco_system/utility/export.dart';
 
 class ProfileBloc extends Bloc<AppEvent, AppState> {
   ProfileBloc() : super(Start()) {
-    on<Click>(_getCandidateDetails);
+    on<Click>(_getTalentDetails);
     on<Select>(_onSelectTab);
     on<SelectTab>(_onSelectRatingTab);
     on<ShowDialog>(_onShowMoreDialog);
@@ -22,6 +22,7 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
   int reviewExpandedIndex = -1;
   bool showMoreDialog = false;
 
+  CandidateModel? candidateModel;
   ProfileEnum selectedTab = ProfileEnum.profile;
   int selectedRatingTabIndex = 0;
   List<RatingItemModel> ratingItems = [
@@ -111,19 +112,19 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
     ];
   }
 
-  _getCandidateDetails(AppEvent event, Emitter<AppState> emit) async {
+  _getTalentDetails(AppEvent event, Emitter<AppState> emit) async {
     try {
       emit(Loading());
 
       Response res =
-      await ProfileRepo.getCandidateDetails(event.arguments as int);
+          await ProfileRepo.getCandidateDetails(event.arguments as int);
 
       if (res.statusCode == 200 &&
           res.data != null &&
           res.data["data"] != null) {
-        CandidateModel model =
-        CandidateModel.fromJson(res.data["data"]);
-        emit(Done(model: model));
+        CandidateModel model = CandidateModel.fromJson(res.data["data"]);
+        candidateModel = model;
+        emit(Done());
       } else {
         AppCore.errorMessage(allTranslations.text('something_went_wrong'));
         emit(Error());

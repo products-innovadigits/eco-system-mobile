@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:eco_system/features/ats/talent_pool/model/candidate_model.dart';
-import 'package:eco_system/features/ats/talent_pool/repo/talent_pool_repo.dart';
 import 'package:eco_system/features/ats/talent_pool/service/talent_service.dart';
 import 'package:eco_system/utility/export.dart';
 
@@ -75,7 +74,7 @@ class SearchBloc extends Bloc<AppEvent, AppState> {
         emit(Done(loading: true));
       }
 
-      final newTalents = await TalentPoolService.getTalents(_engine);
+      final newTalents = await TalentPoolService.getTalents(engine: _engine);
       talentsList.addAll(newTalents);
 
       if (talentsList.isNotEmpty) {

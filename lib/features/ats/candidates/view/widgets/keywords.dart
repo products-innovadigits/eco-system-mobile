@@ -18,7 +18,7 @@ class Tags extends StatelessWidget {
               hint: allTranslations.text(LocaleKeys.select_keywords),
               selectedList: bloc.selectedTags,
               onExpand: () => bloc.add(ExpandKeywords()),
-              isExpanded: bloc.expandKeywords,
+              isExpanded: bloc.expandTags,
               onRemove: (item) {
                 bloc.add(RemoveKeywords(arguments: item));
               },

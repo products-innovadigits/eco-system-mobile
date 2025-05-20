@@ -2,8 +2,8 @@
 import 'package:eco_system/utility/export.dart';
 
 class ProfileBodySection extends StatelessWidget {
-  final bool isCandidate;
-  const ProfileBodySection({super.key, required this.isCandidate});
+  final bool isTalent;
+  const ProfileBodySection({super.key, required this.isTalent});
 
   @override
   Widget build(BuildContext context) {
@@ -14,12 +14,12 @@ class ProfileBodySection extends StatelessWidget {
         return Expanded(
           child: Column(
             children: [
-              ProfileTabsSection(isCandidate: isCandidate),
+              ProfileTabsSection(isTalent: isTalent),
               20.sh,
               Expanded(
                 child: SingleChildScrollView(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: _getTabSection(selectedTab , context),
+                  child: _getTabSection(selectedTab , isTalent),
                 ),
               ),
             ],
@@ -29,7 +29,7 @@ class ProfileBodySection extends StatelessWidget {
     );
   }
 
-  Widget _getTabSection(ProfileEnum selectedTab , BuildContext context) {
+  Widget _getTabSection(ProfileEnum selectedTab , bool isTalent) {
     switch (selectedTab) {
       case ProfileEnum.answers:
         return AnswersSection();
@@ -37,7 +37,7 @@ class ProfileBodySection extends StatelessWidget {
         return EventsSection();
       case ProfileEnum.profile:
       default:
-        return ProfileSection();
+        return ProfileSection(isTalent: isTalent);
     }
   }
 }

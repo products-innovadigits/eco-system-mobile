@@ -21,6 +21,7 @@ class ProfileDataContainerWidget extends StatelessWidget {
           6.sw,
           Text(
             title,
+            textDirection: TextDirection.ltr,
             style: AppTextStyles.w500
                 .copyWith(color: Styles.WHITE_COLOR, fontSize: 10),
           ),

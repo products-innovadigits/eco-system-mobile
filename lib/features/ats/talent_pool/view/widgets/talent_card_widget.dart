@@ -19,7 +19,7 @@ class TalentCardWidget extends StatelessWidget {
     return InkWell(
       onTap: () => CustomNavigator.push(Routes.PROFILE,
           arguments:
-              ProfileViewArgs(isCandidate: false, candidateId: talent.id ?? 0)),
+              ProfileViewArgs(isTalent: true, candidateId: talent.id ?? 0)),
       child: Container(
         width: context.w,
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),

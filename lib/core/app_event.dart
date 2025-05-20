@@ -191,9 +191,7 @@ class InitCandidates extends AppEvent {
   final List<StageModel>? stages;
   final String? jobTitle;
 
-  InitCandidates(
-      {this.targetStage, this.stages, this.jobTitle})
-      : super(null);
+  InitCandidates({this.targetStage, this.stages, this.jobTitle}) : super(null);
 }
 
 class ExpandSkills extends AppEvent {
@@ -250,4 +248,8 @@ class ToggleCommentField extends AppEvent {
   final int index;
 
   ToggleCommentField({required this.index}) : super(null);
+}
+
+class ApplyFilters extends AppEvent {
+  ApplyFilters({Object? arguments}) : super(arguments);
 }

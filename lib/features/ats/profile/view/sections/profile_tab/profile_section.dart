@@ -2,7 +2,8 @@
 import 'package:eco_system/utility/export.dart';
 
 class ProfileSection extends StatelessWidget {
-  const ProfileSection({super.key});
+  final bool isTalent;
+  const ProfileSection({super.key, required this.isTalent});
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +11,7 @@ class ProfileSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 16.h,
       children: [
-        CandidateCompatibilitySection(),
+       if(!isTalent) CandidateCompatibilitySection(),
         CandidateInfoSection(),
         CandidateSkillsSection(),
         WorkExperienceSection(),

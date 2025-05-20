@@ -1,26 +1,27 @@
 import 'package:eco_system/utility/export.dart';
 
-class CandidatesFilterBottomSheet extends StatelessWidget {
-  const CandidatesFilterBottomSheet({super.key});
+class TalentPoolFilterBottomSheet extends StatelessWidget {
+  const TalentPoolFilterBottomSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FiltrationBloc, AppState>(
       builder: (context, state) {
-        final bloc = context.read<FiltrationBloc>();
-        // final selectedSkills = bloc.selectedSkills;
-        final selectedTags = bloc.selectedTags;
-        // final availableSkills =
-        //     bloc.skills.where((s) => !selectedSkills.contains(s)).toList();
-        final availableTags =
-            bloc.tagsList.where((s) => !selectedTags.contains(s)).toList();
+        final filterBloc = context.read<FiltrationBloc>();
+        final talentBloc = context.read<TalentPoolBloc>();
+
+        final selectedTags = filterBloc.selectedTags;
+        final availableTags = filterBloc.tagsList
+            .where((s) => !selectedTags.contains(s))
+            .toList();
+
         return Stack(
           children: [
             Column(
               children: [
                 BottomSheetHeader(title: LocaleKeys.candidate),
                 SizedBox(
-                  height: context.h * 0.8,
+                  height: context.h * 0.7,
                   child: ListView(
                     children: [
                       Text(allTranslations.text(LocaleKeys.skills),
@@ -40,7 +41,7 @@ class CandidatesFilterBottomSheet extends StatelessWidget {
                               child: Wrap(
                                 children: [
                                   TextField(
-                                    controller: bloc.skillController,
+                                    controller: filterBloc.skillController,
                                     maxLines: 1,
                                     style: AppTextStyles.w400
                                         .copyWith(fontSize: 12),
@@ -56,10 +57,10 @@ class CandidatesFilterBottomSheet extends StatelessWidget {
                                         contentPadding: EdgeInsets.symmetric(
                                             vertical: 8.h)),
                                   ),
-                                  if (bloc.selectedSkills.isNotEmpty) ...[
+                                  if (filterBloc.selectedSkills.isNotEmpty) ...[
                                     PickedChoicesList(
-                                        list: bloc.selectedSkills,
-                                        onRemove: (item) => bloc
+                                        list: filterBloc.selectedSkills,
+                                        onRemove: (item) => filterBloc
                                             .add(RemoveSkill(arguments: item))),
                                     16.sw,
                                   ],
@@ -72,9 +73,10 @@ class CandidatesFilterBottomSheet extends StatelessWidget {
                               bottom: 0,
                               child: InkWell(
                                 onTap: () {
-                                  bloc.add(PickSkill(
+                                  filterBloc.add(PickSkill(
                                       arguments: DropListModel(
-                                          name: bloc.skillController.text)));
+                                          name: filterBloc
+                                              .skillController.text)));
                                 },
                                 child: Padding(
                                   padding: EdgeInsetsDirectional.symmetric(
@@ -87,21 +89,13 @@ class CandidatesFilterBottomSheet extends StatelessWidget {
                           ],
                         ),
                       ),
-                      // Skills(),
-                      // bloc.expandSkills
-                      //     ? _buildOptionsList(context, availableSkills,
-                      //         onPickItem: (item) =>
-                      //             bloc.add(PickSkill(arguments: item)))
-                      //     : const SizedBox.shrink(),
-                      // if (!isTalentPool) ...[
                       16.sh,
                       Tags(),
-                      bloc.expandTags
+                      filterBloc.expandTags
                           ? _buildOptionsList(context, availableTags,
                               onPickItem: (item) =>
-                                  bloc.add(PickTag(arguments: item)))
+                                  filterBloc.add(PickTag(arguments: item)))
                           : const SizedBox.shrink(),
-                      // ],
                       16.sh,
                       ExpectedSalary(),
                       16.sh,
@@ -110,13 +104,6 @@ class CandidatesFilterBottomSheet extends StatelessWidget {
                       Location(),
                       16.sh,
                       Gender(),
-                      16.sh,
-                      Qualified(),
-                      16.sh,
-                      ApplicationDate(),
-                      16.sh,
-                      CompatibilityRate(),
-
                       60.sh
                     ],
                   ),
@@ -128,7 +115,13 @@ class CandidatesFilterBottomSheet extends StatelessWidget {
               child: CustomBtn(
                   width: context.w * 0.9,
                   text: allTranslations.text(LocaleKeys.show_all_results),
-                  onPressed: () {}),
+                  onPressed: () {
+                    talentBloc.add(ApplyFilters(arguments: {
+                      "skills": filterBloc.selectedSkills,
+                      "tags": filterBloc.selectedTags
+                    }));
+                    CustomNavigator.pop();
+                  }),
             )
           ],
         );

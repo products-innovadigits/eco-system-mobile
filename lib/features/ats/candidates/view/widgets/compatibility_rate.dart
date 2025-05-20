@@ -22,6 +22,5 @@ class CompatibilityRate extends StatelessWidget {
         ),
       ],
     );
-    ;
   }
 }

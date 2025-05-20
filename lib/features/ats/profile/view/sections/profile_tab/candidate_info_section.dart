@@ -1,4 +1,4 @@
-
+import 'package:eco_system/features/ats/talent_pool/model/candidate_model.dart';
 import 'package:eco_system/utility/export.dart';
 
 class CandidateInfoSection extends StatelessWidget {
@@ -6,6 +6,8 @@ class CandidateInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CandidateModel? candidateModel =
+        context.read<ProfileBloc>().candidateModel;
     return GridView(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -19,19 +21,19 @@ class CandidateInfoSection extends StatelessWidget {
       // Number of items
       children: [
         CandidateInfoCardWidget(
-            title: allTranslations.text(LocaleKeys.current_salary),
-            value: '5000\$'),
+            title: allTranslations.text(LocaleKeys.location),
+            value: candidateModel?.profile?.location ?? '-'),
         CandidateInfoCardWidget(
             title: allTranslations.text(LocaleKeys.expected_salary),
-            value: '8000\$',
+            value: candidateModel?.profile?.expectedSalary ?? '-',
             isPrimaryColor: false),
         CandidateInfoCardWidget(
             title: allTranslations.text(LocaleKeys.notice_period),
-            value: 'اسبوع',
+            value: candidateModel?.profile?.noticePeriod ?? '-',
             isPrimaryColor: false),
         CandidateInfoCardWidget(
             title: allTranslations.text(LocaleKeys.candidate_source),
-            value: 'لينكد ان'),
+            value: candidateModel?.source ?? '-'),
       ],
     );
   }
