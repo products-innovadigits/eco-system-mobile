@@ -1,8 +1,5 @@
-import 'package:eco_system/core/app_strings/locale_keys.dart';
-import 'package:eco_system/features/ats/profile/view/widgets/profile_tab/candidate_info_card_widget.dart';
-import 'package:eco_system/helpers/translation/all_translation.dart';
-import 'package:eco_system/utility/extensions.dart';
-import 'package:flutter/material.dart';
+
+import 'package:eco_system/utility/export.dart';
 
 class CandidateInfoSection extends StatelessWidget {
   const CandidateInfoSection({super.key});

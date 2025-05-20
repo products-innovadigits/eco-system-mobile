@@ -1,27 +1,4 @@
-import 'package:eco_system/components/custom_btn.dart';
-import 'package:eco_system/components/custom_drop_list.dart';
-import 'package:eco_system/core/app_event.dart';
-import 'package:eco_system/core/app_state.dart';
-import 'package:eco_system/core/app_strings/locale_keys.dart';
-import 'package:eco_system/features/ats/bloc/filtration_bloc.dart';
-import 'package:eco_system/features/ats/candidates/bloc/candidates_bloc.dart';
-import 'package:eco_system/features/ats/candidates/view/sections/application_date.dart';
-import 'package:eco_system/features/ats/candidates/view/widgets/compatibility_rate.dart';
-import 'package:eco_system/features/ats/candidates/view/widgets/expected_salary_widget.dart';
-import 'package:eco_system/features/ats/candidates/view/widgets/experience.dart';
-import 'package:eco_system/features/ats/candidates/view/widgets/gender.dart';
-import 'package:eco_system/features/ats/candidates/view/widgets/keywords.dart';
-import 'package:eco_system/features/ats/candidates/view/widgets/location.dart';
-import 'package:eco_system/features/ats/candidates/view/widgets/qualified.dart';
-import 'package:eco_system/features/ats/candidates/view/widgets/skills.dart';
-import 'package:eco_system/helpers/styles.dart';
-import 'package:eco_system/helpers/text_styles.dart';
-import 'package:eco_system/helpers/translation/all_translation.dart';
-import 'package:eco_system/navigation/custom_navigation.dart';
-import 'package:eco_system/utility/extensions.dart';
-import 'package:eco_system/widgets/bottom_sheet_header.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:eco_system/utility/export.dart';
 
 class CandidatesFilterBottomSheet extends StatelessWidget {
   final bool isTalentPool;
@@ -33,37 +10,101 @@ class CandidatesFilterBottomSheet extends StatelessWidget {
     return BlocBuilder<FiltrationBloc, AppState>(
       builder: (context, state) {
         final bloc = context.read<FiltrationBloc>();
-        final selectedSkills = bloc.selectedSkills;
-        final selectedKeywords = bloc.selectedKeywords;
-        final availableSkills =
-            bloc.skills.where((s) => !selectedSkills.contains(s)).toList();
-        final availableKeywords =
-            bloc.keywords.where((s) => !selectedKeywords.contains(s)).toList();
+        // final selectedSkills = bloc.selectedSkills;
+        final selectedTags = bloc.selectedTags;
+        // final availableSkills =
+        //     bloc.skills.where((s) => !selectedSkills.contains(s)).toList();
+        final availableTags =
+            bloc.tagsList.where((s) => !selectedTags.contains(s)).toList();
         return Stack(
           children: [
             Column(
               children: [
                 BottomSheetHeader(title: LocaleKeys.candidate),
-                24.sh,
                 SizedBox(
-                  height: isTalentPool ? context.h * 0.65 : context.h * 0.8,
+                  height: context.h * 0.8,
                   child: ListView(
                     children: [
-                      Skills(),
-                      bloc.expandSkills
-                          ? _buildOptionsList(context, availableSkills,
-                              onPickItem: (item) =>
-                                  bloc.add(PickSkill(arguments: item)))
-                          : const SizedBox.shrink(),
-                      if (!isTalentPool) ...[
+                      Text(allTranslations.text(LocaleKeys.skills),
+                          style: AppTextStyles.w400.copyWith(fontSize: 12)),
+                      8.sh,
+                      Container(
+                        padding: EdgeInsets.symmetric(vertical: 8.h),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Styles.BORDER),
+                        ),
+                        child: Stack(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16.w),
+                              child: Wrap(
+                                children: [
+                                  TextField(
+                                    controller: bloc.skillController,
+                                    maxLines: 1,
+                                    style: AppTextStyles.w400
+                                        .copyWith(fontSize: 12),
+                                    decoration: InputDecoration(
+                                        hintText: allTranslations
+                                            .text(LocaleKeys.add_skill),
+                                        hintStyle: AppTextStyles.w400
+                                            .copyWith(
+                                            fontSize: 12,
+                                            color: Styles.HINT),
+                                        border: InputBorder.none,
+                                        focusedBorder: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        errorBorder: InputBorder.none,
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 8.h)),
+                                  ),
+                                  if (bloc.selectedSkills.isNotEmpty) ...[
+                                    PickedChoicesList(
+                                        list: bloc.selectedSkills,
+                                        onRemove: (item) => bloc
+                                            .add(RemoveSkill(arguments: item))),
+                                    16.sw,
+                                  ],
+                                ],
+                              ),
+                            ),
+                            Positioned.directional(
+                              textDirection: TextDirection.ltr,
+                              start: 0,
+                              bottom: 0,
+                              child: InkWell(
+                                onTap: () {
+                                  bloc.add(PickSkill(
+                                      arguments: DropListModel(
+                                          name: bloc.skillController.text)));
+                                },
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.symmetric(
+                                      horizontal: 8.w),
+                                  child: Icon(Icons.add , color: Styles.PRIMARY_COLOR, size: 20),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Skills(),
+                      // bloc.expandSkills
+                      //     ? _buildOptionsList(context, availableSkills,
+                      //         onPickItem: (item) =>
+                      //             bloc.add(PickSkill(arguments: item)))
+                      //     : const SizedBox.shrink(),
+                      // if (!isTalentPool) ...[
                         16.sh,
-                        Keywords(),
+                        Tags(),
                         bloc.expandKeywords
-                            ? _buildOptionsList(context, availableKeywords,
+                            ? _buildOptionsList(context, availableTags,
                                 onPickItem: (item) =>
-                                    bloc.add(PickKeyword(arguments: item)))
+                                    bloc.add(PickTag(arguments: item)))
                             : const SizedBox.shrink(),
-                      ],
+                      // ],
                       16.sh,
                       ExpectedSalary(),
                       16.sh,

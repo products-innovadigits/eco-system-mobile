@@ -1,6 +1,5 @@
-import 'package:eco_system/features/ats/profile/view/sections/events_tab/event_details_card_widget.dart';
-import 'package:eco_system/utility/extensions.dart';
-import 'package:flutter/material.dart';
+
+import 'package:eco_system/utility/export.dart';
 
 class EventsSection extends StatelessWidget {
   const EventsSection({super.key});

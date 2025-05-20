@@ -18,5 +18,14 @@ abstract class ApiNames {
   static const projects = "Project";
   static const projectPriorityLevels = "Project/PeriortyLevels";
   static projectDetails(id) => "Project/$id";
-  
+
+  // Jobs APIs ====================
+  static const jobs = "chances";
+
+  // Talent Pool APIs ====================
+  static const talents = "candidates";
+  static candidateDetails(id) => "candidates/$id";
+  // Filters
+  static const tags = "tags/get-all";
+
 }

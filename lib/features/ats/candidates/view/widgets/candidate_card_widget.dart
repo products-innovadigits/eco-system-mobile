@@ -1,12 +1,4 @@
-import 'package:eco_system/core/assets.gen.dart';
-import 'package:eco_system/helpers/styles.dart';
-import 'package:eco_system/helpers/text_styles.dart';
-import 'package:eco_system/navigation/custom_navigation.dart';
-import 'package:eco_system/navigation/routes.dart';
-import 'package:eco_system/utility/extensions.dart';
-import 'package:eco_system/widgets/images.dart';
-import 'package:eco_system/widgets/percentage_avatar.dart';
-import 'package:flutter/material.dart';
+import 'package:eco_system/utility/export.dart';
 
 class CandidateCardWidget extends StatelessWidget {
   const CandidateCardWidget({super.key});
@@ -14,7 +6,9 @@ class CandidateCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => CustomNavigator.push(Routes.PROFILE),
+      //TODO pass the candidate id
+      onTap: () => CustomNavigator.push(Routes.PROFILE,
+          arguments: ProfileViewArgs(isCandidate: true, candidateId: 500)),
       child: Container(
         width: context.w,
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
@@ -77,14 +71,30 @@ class CandidateCardWidget extends StatelessWidget {
                       color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w),
+                  padding: EdgeInsets.symmetric(horizontal: 4.w),
                   child: Icon(Icons.circle,
-                      color: Styles.SUB_TEXT_DARK_COLOR, size: 5),
+                      color: Styles.SUB_TEXT_DARK_COLOR, size: 4),
                 ),
                 Text(
-                  'قدم طلب منذ 3 اشهر',
+                  'خبرة ٥ سنين',
                   style: AppTextStyles.w500.copyWith(
                       color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
+                ),
+                const Spacer(),
+                Text(
+                  '\$ غير متوفر .',
+                  style: AppTextStyles.w500
+                      .copyWith(color: Styles.PRIMARY_COLOR, fontSize: 10),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 4.w),
+                  child:
+                      Icon(Icons.circle, color: Styles.PRIMARY_COLOR, size: 4),
+                ),
+                Text(
+                  'اسبوعين',
+                  style: AppTextStyles.w500
+                      .copyWith(color: Styles.PRIMARY_COLOR, fontSize: 10),
                 ),
               ],
             ),

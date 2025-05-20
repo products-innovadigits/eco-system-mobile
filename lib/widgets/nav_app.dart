@@ -1,3 +1,5 @@
+import 'package:eco_system/core/app_strings/locale_keys.dart';
+import 'package:eco_system/core/assets.gen.dart';
 import 'package:eco_system/utility/extensions.dart';
 import 'package:eco_system/widgets/nav_app_item.dart';
 import 'package:flutter/material.dart';
@@ -41,37 +43,37 @@ class _NavAppState extends State<NavApp> {
       items: [
         BottomNavigationBarItem(
           icon: NavAppItem(
-              title: 'home',
+              title: LocaleKeys.home,
               isSelected: widget.index == 0,
-              icon: 'home',
-              activeIcon: 'home-active',
+              icon: Assets.svgs.home.path,
+              activeIcon: Assets.svgs.homeActive.path,
               color: _selectedColor(0)),
           label: '',
         ),
         BottomNavigationBarItem(
           icon: NavAppItem(
-              title: 'reports',
+              title: LocaleKeys.reports,
               isSelected: widget.index == 1,
-              icon: 'reports',
-              activeIcon: 'reports',
+              icon: Assets.svgs.reports.path,
+              activeIcon: Assets.svgs.reports.path,
               color: _selectedColor(1)),
           label: '',
         ),
         BottomNavigationBarItem(
           icon: NavAppItem(
-              title: 'notifications',
+              title: LocaleKeys.notifications,
               isSelected: widget.index == 2,
-              icon: 'notification',
-              activeIcon: 'notification',
+              icon: Assets.svgs.notification.path,
+              activeIcon: Assets.svgs.notification.path,
               color: _selectedColor(2)),
           label: '',
         ),
         BottomNavigationBarItem(
           icon: NavAppItem(
-              title: 'menu',
+              title: LocaleKeys.menu,
               isSelected: widget.index == 3,
-              icon: 'more',
-              activeIcon: 'more',
+              icon: Assets.svgs.more.path,
+              activeIcon: Assets.svgs.more.path,
               color: _selectedColor(3)),
           label: '',
         ),

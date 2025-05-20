@@ -24,7 +24,7 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
 
       SharedHelper helper = SharedHelper();
       bool? isLogin = await helper.readBoolean(CachingKey.IS_LOGIN);
-      bool? skip = await helper.readBoolean(CachingKey.SKIP);
+      // bool? skip = await helper.readBoolean(CachingKey.SKIP);
 
       ///Get Setting
       if (isLogin) {

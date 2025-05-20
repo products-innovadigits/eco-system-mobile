@@ -1,12 +1,4 @@
-import 'package:eco_system/core/app_strings/locale_keys.dart';
-import 'package:eco_system/core/assets.gen.dart';
-import 'package:eco_system/features/ats/profile/view/widgets/compatibility_percentage_widget.dart';
-import 'package:eco_system/helpers/text_styles.dart';
-import 'package:eco_system/helpers/translation/all_translation.dart';
-import 'package:eco_system/utility/extensions.dart';
-import 'package:eco_system/widgets/bottom_sheet_header.dart';
-import 'package:eco_system/widgets/images.dart';
-import 'package:flutter/material.dart';
+import 'package:eco_system/utility/export.dart';
 
 class CompatibilityBottomSheetWidget extends StatelessWidget {
   const CompatibilityBottomSheetWidget({super.key});

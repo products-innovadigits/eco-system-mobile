@@ -1,6 +1,7 @@
 class SearchEngine {
   dynamic query;
   String? id;
+  String? searchText;
   int limit;
   int totalCount;
   int currentPage;
@@ -9,6 +10,7 @@ class SearchEngine {
   bool isLoading = true;
   SearchEngine({
     this.id,
+    this.searchText,
     this.query,
     this.totalCount = 0,
     this.limit = 10,
@@ -23,6 +25,7 @@ class SearchEngine {
     Map data = {};
     data["query"] = query;
     data["id"] = id;
+    data["searchText"] = searchText;
     data["current_page"] = currentPage;
     return data;
   }

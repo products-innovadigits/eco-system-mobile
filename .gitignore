@@ -27,6 +27,9 @@ migrate_working_dir/
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
+.packages
+.metadata
+.generated/
 .flutter-plugins
 .flutter-plugins-dependencies
 .pub-cache/
@@ -48,3 +51,16 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Ignore Android CMake build files
+android/app/.cxx/
+*.o
+*.bin
+*.cmake
+*.so
+
+# Plugin registrants and configs
+**/GeneratedPluginRegistrant.*
+**/generated_plugin_registrant.dart
+**/generated_plugins.cmake
+**/package_config.json

@@ -1,8 +1,5 @@
+import 'package:eco_system/utility/export.dart';
 
-import 'package:eco_system/features/ats/profile/view/widgets/answers_tab/wh_question_widget.dart';
-import 'package:eco_system/features/ats/profile/view/widgets/answers_tab/yes_no_question_widget.dart';
-import 'package:eco_system/utility/extensions.dart';
-import 'package:flutter/material.dart';
 
 class AnswersSection extends StatelessWidget {
   const AnswersSection({super.key});

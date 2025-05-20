@@ -1,13 +1,11 @@
-import 'package:eco_system/core/app_event.dart';
-import 'package:eco_system/core/app_state.dart';
-import 'package:eco_system/core/app_strings/locale_keys.dart';
-import 'package:eco_system/core/enums.dart';
-import 'package:eco_system/features/ats/profile/model/rating_model.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:dio/dio.dart';
+import 'package:eco_system/features/ats/profile/repo/profile_repo.dart';
+import 'package:eco_system/features/ats/talent_pool/model/candidate_model.dart';
+import 'package:eco_system/utility/export.dart';
 
 class ProfileBloc extends Bloc<AppEvent, AppState> {
   ProfileBloc() : super(Start()) {
+    on<Click>(_getCandidateDetails);
     on<Select>(_onSelectTab);
     on<SelectTab>(_onSelectRatingTab);
     on<ShowDialog>(_onShowMoreDialog);
@@ -26,10 +24,10 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
 
   ProfileEnum selectedTab = ProfileEnum.profile;
   int selectedRatingTabIndex = 0;
-  List<RatingItem> ratingItems = [
-    RatingItem(title: LocaleKeys.technical_skills),
-    RatingItem(title: LocaleKeys.knowledge),
-    RatingItem(title: LocaleKeys.communications),
+  List<RatingItemModel> ratingItems = [
+    RatingItemModel(title: LocaleKeys.technical_skills),
+    RatingItemModel(title: LocaleKeys.knowledge),
+    RatingItemModel(title: LocaleKeys.communications),
   ];
 
   _onUpdateRating(UpdateRating event, Emitter<AppState> emit) {
@@ -107,9 +105,33 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
     selectedRatingTabIndex = 0;
     reviewExpandedIndex = -1;
     ratingItems = [
-      RatingItem(title: LocaleKeys.technical_skills),
-      RatingItem(title: LocaleKeys.knowledge),
-      RatingItem(title: LocaleKeys.communications),
+      RatingItemModel(title: LocaleKeys.technical_skills),
+      RatingItemModel(title: LocaleKeys.knowledge),
+      RatingItemModel(title: LocaleKeys.communications),
     ];
+  }
+
+  _getCandidateDetails(AppEvent event, Emitter<AppState> emit) async {
+    try {
+      emit(Loading());
+
+      Response res =
+      await ProfileRepo.getCandidateDetails(event.arguments as int);
+
+      if (res.statusCode == 200 &&
+          res.data != null &&
+          res.data["data"] != null) {
+        CandidateModel model =
+        CandidateModel.fromJson(res.data["data"]);
+        emit(Done(model: model));
+      } else {
+        AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+        emit(Error());
+      }
+    } catch (e) {
+      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+
+      emit(Error());
+    }
   }
 }

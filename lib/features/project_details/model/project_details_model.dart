@@ -58,7 +58,7 @@ class ProjectDetailsModel extends SingleMapper {
 
   ProjectDetailsModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    title = json['title']??json['name'];
+    title = json['title'] ?? json['name'];
     description = json['description'];
     startDate =
         json['startDate'] != null ? DateTime.parse(json['startDate']) : null;
@@ -137,7 +137,7 @@ class ProjectLifeCycleModel {
 
   ProjectLifeCycleModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    title = json['title']??json['name'];
+    title = json['title'] ?? json['name'];
     description = json['description'];
     if (json['projectStages'] != null) {
       projectStages = <ProjectStagesModel>[];
@@ -178,10 +178,10 @@ class ProjectStagesModel {
 
   ProjectStagesModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    title = json['title']??json['name'];
+    title = json['title'] ?? json['name'];
     description = json['description'];
     lifeCycleId = json['lifeCycleId'];
-    progress = double.tryParse(json['progress']?.toString()??"0");
+    progress = double.tryParse(json['progress']?.toString() ?? "0");
     if (json['projectProcesses'] != null) {
       projectProcesses = <ProjectProcessModel>[];
       json['projectProcesses'].forEach((v) {
@@ -212,7 +212,7 @@ class ProjectProcessModel {
   int? stageId;
   int? departmentId;
   int? workflowId;
-  Null? workflow;
+  dynamic workflow;
   int? viewOrder;
   double? progress;
   bool? isRunningWorkflow;
@@ -237,14 +237,14 @@ class ProjectProcessModel {
 
   ProjectProcessModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    title = json['title']??json['name'];
+    title = json['title'] ?? json['name'];
     description = json['description'];
     stageId = json['stageId'];
     departmentId = json['departmentId'];
     workflowId = json['workflowId'];
     workflow = json['workflow'];
     viewOrder = json['viewOrder'];
-    progress = double.tryParse(json['progress']?.toString()??"0");
+    progress = double.tryParse(json['progress']?.toString() ?? "0");
     isRunningWorkflow = json['isRunningWorkflow'];
     isCompletedWorkflow = json['isCompletedWorkflow'];
     runningWorkflowTime = json['runningWorkflowTime'];

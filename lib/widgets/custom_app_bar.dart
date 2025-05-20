@@ -18,7 +18,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool? withFilter;
   final bool? withSorting;
   final bool? withCancelBtn;
-  final bool? readOnly;
   final VoidCallback? onCanceling;
   final VoidCallback? onFiltering;
   final VoidCallback? onSorting;
@@ -40,7 +39,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.onTapSearch,
     this.withCancelBtn,
     this.onCanceling,
-    this.readOnly,
     this.searchController,
   });
 
@@ -105,7 +103,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                         onTap: () {
                           onTapSearch!();
                         },
-                        readOnly: readOnly ?? false,
+                        readOnly: onSearching == null,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),

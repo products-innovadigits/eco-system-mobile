@@ -1,9 +1,5 @@
-import 'package:eco_system/core/app_strings/locale_keys.dart';
-import 'package:eco_system/features/ats/profile/view/sections/manager_details_review_section.dart';
-import 'package:eco_system/features/ats/profile/view/widgets/compatibility_percentage_widget.dart';
-import 'package:eco_system/helpers/translation/all_translation.dart';
-import 'package:eco_system/utility/extensions.dart';
-import 'package:flutter/material.dart';
+
+import 'package:eco_system/utility/export.dart';
 
 class RatingsSection extends StatelessWidget {
   const RatingsSection({super.key});

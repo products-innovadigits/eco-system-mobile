@@ -1,19 +1,4 @@
-import 'package:eco_system/components/shimmer/custom_shimmer.dart';
-import 'package:eco_system/core/app_state.dart';
-import 'package:eco_system/core/app_strings/locale_keys.dart';
-import 'package:eco_system/core/assets.gen.dart';
-import 'package:eco_system/features/ats/candidates/view/sections/total_candidates_section.dart';
-import 'package:eco_system/features/ats/talent_pool/bloc/talent_pool_bloc.dart';
-import 'package:eco_system/helpers/translation/all_translation.dart';
-import 'package:eco_system/navigation/custom_navigation.dart';
-import 'package:eco_system/navigation/routes.dart';
-import 'package:eco_system/utility/extensions.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../../core/app_event.dart';
-import '../../../../../helpers/styles.dart';
-import '../../../../../widgets/section_title.dart';
+import 'package:eco_system/utility/export.dart';
 
 class TalentPoolSection extends StatelessWidget {
   const TalentPoolSection({super.key});
@@ -21,13 +6,17 @@ class TalentPoolSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TalentPoolBloc()..add(Click()),
+      create: (context) =>
+          TalentPoolBloc()..add(Click(arguments: SearchEngine())),
       child: BlocBuilder<TalentPoolBloc, AppState>(
         builder: (context, state) {
           if (state is Done) {
             TalentPoolBloc talentPoolBloc = context.read<TalentPoolBloc>();
             return InkWell(
-              onTap: () => CustomNavigator.push(Routes.TALENT_POOL),
+              onTap: () {
+                // talentPoolBloc.add(Click(arguments: SearchEngine()));
+                CustomNavigator.push(Routes.TALENT_POOL);
+              },
               child: Container(
                 width: context.w,
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
@@ -40,14 +29,15 @@ class TalentPoolSection extends StatelessWidget {
                   children: [
                     SectionTitle(
                       title: allTranslations.text(LocaleKeys.talent_pool),
-                      subText:
-                          allTranslations.text(LocaleKeys.candidate_with_future_potential),
+                      subText: allTranslations
+                          .text(LocaleKeys.candidate_with_future_potential),
                       icon: Assets.svgs.tripleUser.path,
                       onViewTap: () {},
                     ),
                     Divider(color: Styles.BORDER_COLOR),
                     SizedBox(height: 12.h),
-                    TotalCandidatesSection(),
+                    TotalCandidatesSection(
+                        talentsList: talentPoolBloc.talentsList),
                   ],
                 ),
               ),
@@ -62,7 +52,7 @@ class TalentPoolSection extends StatelessWidget {
               ),
             );
           } else {
-            return SizedBox();
+            return SizedBox.shrink();
           }
         },
       ),

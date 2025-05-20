@@ -15,7 +15,7 @@ class HomeBody extends StatelessWidget {
     return SafeArea(
       child: Column(
         children: [
-          SizedBox(height: context.h * 0.15),
+          SizedBox(height: context.h * 0.16),
           AvailableJobsSection(),
           TalentPoolSection(),
           ObjectivePercentageSection(),

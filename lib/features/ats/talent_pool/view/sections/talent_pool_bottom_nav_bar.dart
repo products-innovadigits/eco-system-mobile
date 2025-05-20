@@ -1,17 +1,4 @@
-import 'package:eco_system/components/custom_btn.dart';
-import 'package:eco_system/components/custom_text_field.dart';
-import 'package:eco_system/core/app_strings/locale_keys.dart';
-import 'package:eco_system/core/assets.gen.dart';
-import 'package:eco_system/features/ats/talent_pool/bloc/talent_pool_bloc.dart';
-import 'package:eco_system/features/ats/talent_pool/view/widgets/assign_to_job_list.dart';
-import 'package:eco_system/features/ats/talent_pool/view/widgets/bottom_nav_action_widget.dart';
-import 'package:eco_system/helpers/styles.dart';
-import 'package:eco_system/helpers/translation/all_translation.dart';
-import 'package:eco_system/navigation/custom_navigation.dart';
-import 'package:eco_system/utility/extensions.dart';
-import 'package:eco_system/widgets/bottom_sheet_header.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:eco_system/utility/export.dart';
 
 class TalentPoolBottomNav extends StatelessWidget {
   const TalentPoolBottomNav({super.key});
@@ -34,25 +21,35 @@ class TalentPoolBottomNav extends StatelessWidget {
             icon: Assets.svgs.directboxSend.path,
             title: LocaleKeys.assign_to_job,
             height: context.h * 0.8,
-            bottomSheetContent: Stack(
-              children: [
-                Column(
-                  children: [
-                    BottomSheetHeader(
-                        title: LocaleKeys.assign_to_job),
-                    24.sh,
-                    AssignToJobList(),
-                    52.sh,
-                  ],
-                ),
-                Positioned(
-                  bottom: 0,
-                  child: CustomBtn(
-                    width: context.w * 0.9,
-                      text: allTranslations.text(LocaleKeys.save),
-                      onPressed: () => CustomNavigator.pop()),
-                )
-              ],
+            bottomSheetContent: BlocProvider(
+              create: (_) => JobsBloc(),
+              child: BlocBuilder<JobsBloc, AppState>(
+                builder: (context, state) {
+                  final jobsBloc = context.read<JobsBloc>();
+                  return Stack(
+                    children: [
+                      Column(
+                        children: [
+                          BottomSheetHeader(title: LocaleKeys.assign_to_job),
+                          24.sh,
+                          AssignToJobList(
+                              onSelectJob: (index) =>
+                                  jobsBloc..add(Select(arguments: index)),
+                              selectedJobsList: jobsBloc.selectedJobsList),
+                          52.sh,
+                        ],
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        child: CustomBtn(
+                            width: context.w * 0.9,
+                            text: allTranslations.text(LocaleKeys.save),
+                            onPressed: () => CustomNavigator.pop()),
+                      )
+                    ],
+                  );
+                },
+              ),
             ),
           ),
           BottomNavActionWidget(
@@ -60,7 +57,9 @@ class TalentPoolBottomNav extends StatelessWidget {
             title: LocaleKeys.export_zip,
             bottomSheetContent: Column(
               children: [
-                BottomSheetHeader(title: LocaleKeys.export_zip,),
+                BottomSheetHeader(
+                  title: LocaleKeys.export_zip,
+                ),
                 24.sh,
                 CustomTextField(
                   hint: allTranslations.text(LocaleKeys.enter_file_name),
@@ -79,8 +78,7 @@ class TalentPoolBottomNav extends StatelessWidget {
             title: LocaleKeys.export_excel,
             bottomSheetContent: Column(
               children: [
-                BottomSheetHeader(
-                    title: LocaleKeys.export_excel),
+                BottomSheetHeader(title: LocaleKeys.export_excel),
                 24.sh,
                 CustomTextField(
                   hint: allTranslations.text(LocaleKeys.enter_file_name),

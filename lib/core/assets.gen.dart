@@ -272,6 +272,10 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/hide.svg
   SvgGenImage get hide => const SvgGenImage('assets/svgs/hide.svg');
 
+  /// File path: assets/svgs/home-active.svg
+  SvgGenImage get homeActive =>
+      const SvgGenImage('assets/svgs/home-active.svg');
+
   /// File path: assets/svgs/home.svg
   SvgGenImage get home => const SvgGenImage('assets/svgs/home.svg');
 
@@ -351,6 +355,10 @@ class $AssetsSvgsGen {
 
   /// File path: assets/svgs/multi-user.svg
   SvgGenImage get multiUser => const SvgGenImage('assets/svgs/multi-user.svg');
+
+  /// File path: assets/svgs/navbar-arrow.svg
+  SvgGenImage get navbarArrow =>
+      const SvgGenImage('assets/svgs/navbar-arrow.svg');
 
   /// File path: assets/svgs/note.svg
   SvgGenImage get note => const SvgGenImage('assets/svgs/note.svg');
@@ -525,6 +533,7 @@ class $AssetsSvgsGen {
     fillCloseCircle,
     filter,
     hide,
+    homeActive,
     home,
     infoCircle,
     infoCircle64,
@@ -549,6 +558,7 @@ class $AssetsSvgsGen {
     moreCircle2,
     more,
     multiUser,
+    navbarArrow,
     note,
     notificationBing,
     notificationStatus,

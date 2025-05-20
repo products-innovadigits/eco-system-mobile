@@ -16,3 +16,13 @@ class ProfileEnum extends Enum<String> {
   static const List<ProfileEnum> values = [profile, events, answers];
 }
 
+class SearchEnum extends Enum<String> {
+  const SearchEnum(String value) : super(value);
+
+  static const SearchEnum talentPool = SearchEnum('talentPool');
+  static const SearchEnum candidates = SearchEnum('candidates');
+  static const SearchEnum jobs = SearchEnum('jobs');
+
+  static const List<SearchEnum> values = [talentPool, candidates, jobs];
+}
+

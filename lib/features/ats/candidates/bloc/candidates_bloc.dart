@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../core/app_event.dart';
-import '../../../../core/app_state.dart';
+import 'package:eco_system/utility/export.dart';
 
 class CandidatesBloc extends Bloc<AppEvent, AppState> {
   CandidatesBloc() : super(Start()) {
@@ -11,23 +7,22 @@ class CandidatesBloc extends Bloc<AppEvent, AppState> {
   }
 
   final ScrollController scrollController = ScrollController();
+  String jobTitle = '';
+  int candidateCount = 0;
 
+  final Map<StageModel, GlobalKey> _stageKeys = {};
 
-  final Map<String, GlobalKey> stageKeys = {
-    'المرحلة التطبيقية': GlobalKey(),
-    'مرحلة المقابلة الهاتفية': GlobalKey(),
-    'مرحلة التقييم': GlobalKey(),
-    'مرحلة المقابلة': GlobalKey(),
-    'مرحلة العرض': GlobalKey(),
-    'مرحلة التوظيف': GlobalKey(),
-  };
+  List<StageModel> get stages => _stageKeys.keys.toList();
 
-  List<String> get stages => stageKeys.keys.toList();
+  Map<StageModel, GlobalKey> get keys => _stageKeys;
 
-  Map<String, GlobalKey> get keys => stageKeys;
+  void scrollToStage(String targetStage) {
+    final match = _stageKeys.keys.firstWhere(
+      (s) => s.type == targetStage,
+      orElse: () => StageModel(),
+    );
+    final key = _stageKeys[match];
 
-  void scrollToStage(String stage) {
-    final key = stageKeys[stage];
     if (key?.currentContext != null) {
       Scrollable.ensureVisible(
         key!.currentContext!,
@@ -39,9 +34,20 @@ class CandidatesBloc extends Bloc<AppEvent, AppState> {
   }
 
   void _onInitCandidates(InitCandidates event, Emitter<AppState> emit) {
-    emit(Done(data: event.arguments as String?));
+    _stageKeys.clear();
+    for (final stage in event.stages ?? []) {
+      _stageKeys[stage] = GlobalKey();
+    }
+    jobTitle = event.jobTitle ?? '';
+    candidateCount = event.stages?.fold(
+          0,
+          (sum, stage) => sum! + (stage.count ?? 0),
+        ) ??
+        0;
+    emit(Done(data: event.targetStage));
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
-     if(event.arguments != null) scrollToStage(event.arguments as String);
+      if (event.targetStage != null) scrollToStage(event.targetStage!);
     });
   }
 
