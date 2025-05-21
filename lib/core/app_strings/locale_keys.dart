@@ -20,6 +20,7 @@ abstract class  LocaleKeys {
   static const confirm_password = 'confirm_password';
   static const current_password = 'current_password';
   static const reset_password = 'reset_password';
+  static const reset = 'reset';
   static const login_to_your = 'login_to_your';
   static const account = 'account';
   static const login_header = 'login_header';

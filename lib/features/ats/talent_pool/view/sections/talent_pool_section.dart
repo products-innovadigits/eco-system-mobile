@@ -14,7 +14,7 @@ class TalentPoolSection extends StatelessWidget {
             TalentPoolBloc talentPoolBloc = context.read<TalentPoolBloc>();
             return InkWell(
               onTap: () {
-                // talentPoolBloc.add(Click(arguments: SearchEngine()));
+               context.read<FiltrationBloc>().reset();
                 CustomNavigator.push(Routes.TALENT_POOL);
               },
               child: Container(

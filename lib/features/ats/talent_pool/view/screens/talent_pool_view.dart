@@ -14,11 +14,13 @@ class TalentPoolView extends StatelessWidget {
           TalentPoolBloc()..add(Click(arguments: SearchEngine())),
       child: BlocBuilder<TalentPoolBloc, AppState>(
         builder: (context, state) {
+          final bloc = context.read<TalentPoolBloc>();
           return Scaffold(
             appBar: CustomAppBar(
                 title: allTranslations.text(LocaleKeys.talent_pool),
                 withSearch: true,
                 withFilter: true,
+                isFiltered: bloc.isFiltered,
                 withSorting: true,
                 onTapSearch: () => CustomNavigator.push(Routes.SEARCH,
                     arguments: SearchEnum.talentPool),
@@ -26,7 +28,7 @@ class TalentPoolView extends StatelessWidget {
                 searchHintText:
                     allTranslations.text(LocaleKeys.searching_for_candidate),
                 onFiltering: () {
-                  context.read<FiltrationBloc>().reset();
+                  // context.read<FiltrationBloc>().reset();
                   PopUpHelper.showBottomSheet(
                     child: BlocProvider.value(
                       value: context.read<TalentPoolBloc>(),

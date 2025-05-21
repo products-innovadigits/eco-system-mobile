@@ -253,3 +253,7 @@ class ToggleCommentField extends AppEvent {
 class ApplyFilters extends AppEvent {
   ApplyFilters({Object? arguments}) : super(arguments);
 }
+
+class Reset extends AppEvent {
+  Reset({Object? arguments}) : super(arguments);
+}

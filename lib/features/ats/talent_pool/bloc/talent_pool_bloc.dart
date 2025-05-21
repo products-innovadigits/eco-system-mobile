@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:eco_system/features/ats/talent_pool/model/candidate_model.dart';
 import 'package:eco_system/features/ats/talent_pool/service/talent_service.dart';
 import 'package:eco_system/utility/export.dart';
@@ -12,6 +14,7 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
     on<Select>(onToggleSelection);
     on<SelectTalent>(_onSelectTalent);
     on<ApplyFilters>(_onApplyFilters);
+    on<Reset>(_onResetFilters);
   }
 
   List<CandidateModel> talentsList = [];
@@ -21,6 +24,7 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
   late TextEditingController fileNameController;
   List<int> selectedTalentsList = [];
   bool activeSelection = false;
+  bool isFiltered = false;
   List<DropListModel> sortingList = [
     DropListModel(
         id: 1, name: allTranslations.text(LocaleKeys.newest_to_oldest)),
@@ -86,6 +90,16 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
             .toList() ??
         [];
 
+    isFiltered = true;
+    _engine = SearchEngine();
+    talentsList.clear();
+    add(Click(arguments: _engine));
+  }
+
+  void _onResetFilters(Reset event, Emitter<AppState> emit) {
+    selectedSkills.clear();
+    selectedTags.clear();
+    isFiltered = false;
     _engine = SearchEngine();
     talentsList.clear();
     add(Click(arguments: _engine));

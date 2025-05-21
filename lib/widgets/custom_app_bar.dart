@@ -16,6 +16,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool withBottomBorder;
   final bool? withSearch;
   final bool? withFilter;
+  final bool? isFiltered;
   final bool? withSorting;
   final bool? withCancelBtn;
   final VoidCallback? onCanceling;
@@ -40,6 +41,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.withCancelBtn,
     this.onCanceling,
     this.searchController,
+    this.isFiltered = false,
   });
 
   @override
@@ -164,15 +166,31 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                         }
                       },
                       child: Container(
-                        padding: EdgeInsets.all(14),
+                        padding: EdgeInsets.all(12),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(color: Styles.BORDER),
                         ),
-                        child: Images(
-                            image: Assets.svgs.filter.path,
-                            height: 20.h,
-                            width: 20.w),
+                        child: Stack(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(2),
+                              child: Images(
+                                  image: Assets.svgs.filter.path,
+                                  height: 20.h,
+                                  width: 20.w),
+                            ),
+                            if (isFiltered == true)
+                              PositionedDirectional(
+                                  top: 0,
+                                  start: 2.w,
+                                  child: Icon(
+                                    Icons.circle,
+                                    color: Styles.PRIMARY_COLOR,
+                                    size: 8,
+                                  ))
+                          ],
+                        ),
                       ),
                     )
                   ],

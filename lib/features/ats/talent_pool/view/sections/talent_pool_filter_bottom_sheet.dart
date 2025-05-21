@@ -21,7 +21,7 @@ class TalentPoolFilterBottomSheet extends StatelessWidget {
               children: [
                 BottomSheetHeader(title: LocaleKeys.candidate),
                 SizedBox(
-                  height: context.h * 0.7,
+                  height: context.h * 0.8,
                   child: ListView(
                     children: [
                       Text(allTranslations.text(LocaleKeys.skills),
@@ -103,8 +103,7 @@ class TalentPoolFilterBottomSheet extends StatelessWidget {
                       16.sh,
                       Location(),
                       16.sh,
-                      Gender(),
-                      60.sh
+                      Gender()
                     ],
                   ),
                 ),
@@ -112,16 +111,40 @@ class TalentPoolFilterBottomSheet extends StatelessWidget {
             ),
             Positioned(
               bottom: 0,
-              child: CustomBtn(
-                  width: context.w * 0.9,
-                  text: allTranslations.text(LocaleKeys.show_all_results),
-                  onPressed: () {
-                    talentBloc.add(ApplyFilters(arguments: {
-                      "skills": filterBloc.selectedSkills,
-                      "tags": filterBloc.selectedTags
-                    }));
-                    CustomNavigator.pop();
-                  }),
+              left: 0,
+              right: 0,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: CustomBtn(
+                      text: allTranslations.text(LocaleKeys.show_all_results),
+                      onPressed: () {
+                        talentBloc.add(ApplyFilters(arguments: {
+                          "skills": filterBloc.selectedSkills,
+                          "tags": filterBloc.selectedTags
+                        }));
+                        CustomNavigator.pop();
+                      },
+                    ),
+                  ),
+                  if (talentBloc.isFiltered) ...[
+                    8.sw,
+                    Expanded(
+                      child: CustomBtn(
+                        text: allTranslations.text(LocaleKeys.reset),
+                        color: Styles.WHITE_COLOR,
+                        textColor: Styles.PRIMARY_COLOR,
+                        borderColor: Styles.PRIMARY_COLOR,
+                        onPressed: () {
+                          talentBloc.add(Reset());
+                          filterBloc.reset();
+                          CustomNavigator.pop();
+                        },
+                      ),
+                    ),
+                  ]
+                ],
+              ),
             )
           ],
         );

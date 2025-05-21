@@ -11,8 +11,10 @@ class TalentPoolService {
       "page": engine.currentPage + 1,
       "limit": engine.limit,
       "search": engine.searchText,
-      if (skills != null) "skills": skills,
-      if (tags != null) "tags": tags,
+      if (skills != null)
+        ...{for (var i = 0; i < skills.length; i++) "skills[$i]": skills[i]},
+      if (tags != null)
+        ...{for (var i = 0; i < tags.length; i++) "tags[$i]": tags[i]},
       "embed": "profile",
     };
 
