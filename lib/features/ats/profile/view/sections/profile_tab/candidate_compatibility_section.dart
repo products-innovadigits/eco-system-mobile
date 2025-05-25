@@ -1,4 +1,5 @@
 
+import 'package:eco_system/features/ats/profile/view/widgets/profile_tab/compatibility_bottom_sheet_widget.dart';
 import 'package:eco_system/utility/export.dart';
 
 class CandidateCompatibilitySection extends StatelessWidget {

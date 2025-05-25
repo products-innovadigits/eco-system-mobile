@@ -1,3 +1,4 @@
+import 'package:eco_system/features/ats/profile/view/widgets/compatibility_percentage_widget.dart';
 import 'package:eco_system/utility/export.dart';
 
 class CompatibilityBottomSheetWidget extends StatelessWidget {

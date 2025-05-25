@@ -1,7 +1,15 @@
 import 'package:eco_system/utility/export.dart';
 
 class ExpectedSalary extends StatelessWidget {
-  const ExpectedSalary({super.key});
+  final String? expectedSalaryFrom;
+  final String? expectedSalaryTo;
+  final String? currency;
+
+  const ExpectedSalary(
+      {super.key,
+      this.expectedSalaryFrom,
+      this.expectedSalaryTo,
+      this.currency});
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +40,12 @@ class ExpectedSalary extends StatelessWidget {
             Expanded(
               child: CustomDropList(
                 list: filtrationBloc.currencies,
-                hint: allTranslations.text(LocaleKeys.currency),
-                onChanged: (value) {},
+                hint: filtrationBloc.currencyController.text.isEmpty
+                    ? allTranslations.text(LocaleKeys.currency)
+                    : filtrationBloc.currencyController.text,
+                onChanged: (value) {
+                  filtrationBloc.currencyController.text = value.name ?? '';
+                },
               ),
             ),
           ],

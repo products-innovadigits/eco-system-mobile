@@ -1,3 +1,5 @@
+import 'package:eco_system/features/ats/profile/view/sections/comment_field_section.dart';
+import 'package:eco_system/features/ats/profile/view/sections/numbers_rating_section.dart';
 import 'package:eco_system/utility/export.dart';
 
 class CustomRatingSection extends StatelessWidget {

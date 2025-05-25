@@ -1,4 +1,4 @@
-import 'package:eco_system/utility/export.dart';
+import 'package:eco_system/features/ats/jobs/model/jobs_model.dart';
 
 abstract class AppEvent {
   Object? arguments;
@@ -192,14 +192,6 @@ class InitCandidates extends AppEvent {
   final String? jobTitle;
 
   InitCandidates({this.targetStage, this.stages, this.jobTitle}) : super(null);
-}
-
-class ExpandSkills extends AppEvent {
-  ExpandSkills({Object? arguments}) : super(arguments);
-}
-
-class ExpandKeywords extends AppEvent {
-  ExpandKeywords({Object? arguments}) : super(arguments);
 }
 
 class PickSkill extends AppEvent {

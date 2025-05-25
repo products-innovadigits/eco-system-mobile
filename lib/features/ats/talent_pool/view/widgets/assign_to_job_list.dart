@@ -1,3 +1,4 @@
+import 'package:eco_system/features/ats/talent_pool/view/widgets/status_widget.dart';
 import 'package:eco_system/utility/export.dart';
 
 class AssignToJobList extends StatelessWidget {

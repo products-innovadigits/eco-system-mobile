@@ -29,7 +29,7 @@ class CustomDropList extends StatefulWidget {
 
 /// This is the private State class that goes with CustomDropList.
 class _CustomDropListState extends State<CustomDropList> {
-  late DropListModel dropdownValue = DropListModel(
+  late DropListModel dropdownValue =  DropListModel(
       id: 0, name: widget.hint ?? allTranslations.text(LocaleKeys.select));
 
   @override

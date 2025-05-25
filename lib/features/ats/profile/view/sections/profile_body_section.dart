@@ -1,4 +1,7 @@
-
+import 'package:eco_system/features/ats/profile/view/sections/answers_tab/answers_section.dart';
+import 'package:eco_system/features/ats/profile/view/sections/events_tab/events_section.dart';
+import 'package:eco_system/features/ats/profile/view/sections/profile_tab/profile_section.dart';
+import 'package:eco_system/features/ats/profile/view/sections/profile_tabs_section.dart';
 import 'package:eco_system/utility/export.dart';
 
 class ProfileBodySection extends StatelessWidget {

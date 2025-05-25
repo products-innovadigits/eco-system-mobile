@@ -1,3 +1,4 @@
+import 'package:eco_system/features/ats/jobs/model/jobs_model.dart';
 import 'package:eco_system/utility/export.dart';
 
 abstract class JobsRepo {

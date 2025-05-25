@@ -1,3 +1,6 @@
+import 'package:eco_system/features/ats/talent_pool/bloc/talent_pool_bloc.dart';
+import 'package:eco_system/features/ats/talent_pool/view/sections/sorting_bottom_sheet.dart';
+import 'package:eco_system/features/ats/talent_pool/view/sections/talent_pool_bottom_nav_bar.dart';
 import 'package:eco_system/features/ats/talent_pool/view/sections/talent_pool_list_section.dart';
 import 'package:eco_system/features/ats/talent_pool/view/widgets/multiple_select_btn_widget.dart';
 import 'package:eco_system/utility/export.dart';
@@ -28,7 +31,7 @@ class TalentPoolView extends StatelessWidget {
                 searchHintText:
                     allTranslations.text(LocaleKeys.searching_for_candidate),
                 onFiltering: () {
-                  // context.read<FiltrationBloc>().reset();
+                  context.read<FiltrationBloc>().collapseExpandedLists();
                   PopUpHelper.showBottomSheet(
                     child: BlocProvider.value(
                       value: context.read<TalentPoolBloc>(),

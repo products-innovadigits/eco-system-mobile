@@ -1,7 +1,9 @@
+
 import 'package:eco_system/utility/export.dart';
 
 class Location extends StatelessWidget {
-  const Location({super.key});
+  final String? location;
+  const Location({super.key, this.location});
 
   @override
   Widget build(BuildContext context) {

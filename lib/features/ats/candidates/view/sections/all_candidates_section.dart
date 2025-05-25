@@ -1,3 +1,5 @@
+import 'package:eco_system/features/ats/candidates/bloc/candidates_bloc.dart';
+import 'package:eco_system/features/ats/candidates/view/sections/stage_section.dart';
 import 'package:eco_system/utility/export.dart';
 
 class AllCandidatesSection extends StatelessWidget {

@@ -54,6 +54,7 @@ dependencies:
   easy_localization: ^3.0.2
   readmore: ^3.0.0
   flutter_debouncer: ^2.0.0
+  fluttertoast: ^8.2.12
 
 
 

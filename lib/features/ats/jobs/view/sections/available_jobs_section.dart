@@ -1,3 +1,4 @@
+import 'package:eco_system/features/ats/jobs/view/sections/jobs_list_section.dart';
 import 'package:eco_system/utility/export.dart';
 
 class AvailableJobsSection extends StatelessWidget {

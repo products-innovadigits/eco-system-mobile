@@ -1,3 +1,4 @@
+import 'package:eco_system/features/ats/candidates/bloc/candidates_bloc.dart';
 import 'package:eco_system/features/ats/candidates/view/screens/candidates_view.dart';
 import 'package:eco_system/features/ats/jobs/view/screens/jobs_view.dart';
 import 'package:eco_system/features/ats/profile/view/screens/profile_view.dart';

@@ -1,3 +1,5 @@
+import 'package:eco_system/features/ats/jobs/model/jobs_model.dart';
+import 'package:eco_system/features/ats/jobs/view/widgets/job_card_widget.dart';
 import 'package:eco_system/utility/export.dart';
 
 class JobsListSection extends StatelessWidget {
