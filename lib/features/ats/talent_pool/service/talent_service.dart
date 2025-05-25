@@ -1,4 +1,3 @@
-import 'package:eco_system/features/ats/talent_pool/model/candidate_model.dart';
 import 'package:eco_system/features/ats/talent_pool/repo/talent_pool_repo.dart';
 import 'package:eco_system/utility/export.dart';
 

@@ -1,20 +1,18 @@
-import 'dart:async';
-
-import 'package:eco_system/features/ats/talent_pool/model/candidate_model.dart';
-import 'package:eco_system/features/ats/talent_pool/service/talent_service.dart';
 import 'package:eco_system/utility/export.dart';
 
 class SearchBloc extends Bloc<AppEvent, AppState> {
   SearchBloc() : super(Start()) {
     scrollController = ScrollController();
     customScroll(scrollController);
-    on<Click>(_getTalents);
+    on<GetTalents>(_getTalents);
+    on<GetJobs>(_getJobs);
     on<TapSearch>(_onTapSearch);
     on<Searching>(_onSearching);
     on<CancelSearch>(_onCancelSearch);
   }
 
   List<CandidateModel> talentsList = [];
+  List<JobDataModel> jobsList = [];
   late SearchEngine _engine;
   late ScrollController scrollController;
   TextEditingController searchController = TextEditingController();
@@ -32,13 +30,15 @@ class SearchBloc extends Bloc<AppEvent, AppState> {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
 
     _debounce = Timer(const Duration(milliseconds: 500), () {
-      final context = CustomNavigator.navigatorState.currentContext;
       if (searchEnum == SearchEnum.talentPool) {
-        add(Click(arguments: SearchEngine(searchText: searchController.text)));
+        add(GetTalents(
+            arguments: SearchEngine(searchText: searchController.text)));
       } else if (searchEnum == SearchEnum.jobs) {
-        context?.read<JobsBloc>().add(
-              Click(arguments: SearchEngine()),
-            );
+        add(GetJobs(
+            arguments: SearchEngine(searchText: searchController.text)));
+      } else if (searchEnum == SearchEnum.candidates) {
+        add(GetCandidates(
+            arguments: SearchEngine(searchText: searchController.text)));
       }
     });
 
@@ -78,6 +78,33 @@ class SearchBloc extends Bloc<AppEvent, AppState> {
       talentsList.addAll(newTalents);
 
       if (talentsList.isNotEmpty) {
+        emit(Done());
+      } else {
+        emit(Empty());
+      }
+    } catch (e) {
+      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+      emit(Error());
+    }
+  }
+
+  void _getJobs(AppEvent event, Emitter<AppState> emit) async {
+    emit(Loading());
+    try {
+      _engine = event.arguments as SearchEngine;
+
+      if (_engine.currentPage == 0) {
+        jobsList.clear();
+        emit(Loading());
+      } else {
+        emit(Done(loading: true));
+      }
+
+      final jobs = await JobsService.getJobs(engine: _engine);
+
+      jobsList.addAll(jobs);
+
+      if (jobsList.isNotEmpty) {
         emit(Done());
       } else {
         emit(Empty());

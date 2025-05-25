@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:eco_system/features/ats/profile/model/rating_model.dart';
 import 'package:eco_system/features/ats/profile/repo/profile_repo.dart';
-import 'package:eco_system/features/ats/talent_pool/model/candidate_model.dart';
 import 'package:eco_system/utility/export.dart';
 
 class ProfileBloc extends Bloc<AppEvent, AppState> {

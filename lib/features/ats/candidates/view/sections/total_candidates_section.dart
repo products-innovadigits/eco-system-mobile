@@ -1,5 +1,4 @@
 import 'package:eco_system/components/custom_network_image.dart';
-import 'package:eco_system/features/ats/talent_pool/model/candidate_model.dart';
 import 'package:eco_system/utility/export.dart';
 
 class TotalCandidatesSection extends StatelessWidget {

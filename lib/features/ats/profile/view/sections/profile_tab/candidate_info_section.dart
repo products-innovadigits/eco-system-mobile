@@ -1,5 +1,4 @@
 import 'package:eco_system/features/ats/profile/view/widgets/profile_tab/candidate_info_card_widget.dart';
-import 'package:eco_system/features/ats/talent_pool/model/candidate_model.dart';
 import 'package:eco_system/utility/export.dart';
 
 class CandidateInfoSection extends StatelessWidget {

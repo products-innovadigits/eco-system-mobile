@@ -3,7 +3,6 @@ import 'package:eco_system/features/ats/profile/view/widgets/candidate_more_dial
 import 'package:eco_system/features/ats/profile/view/widgets/profile_custom_appbar_widget.dart';
 import 'package:eco_system/features/ats/profile/view/widgets/profile_data_container_widget.dart';
 import 'package:eco_system/features/ats/profile/view/widgets/profile_user_data_widget.dart';
-import 'package:eco_system/features/ats/talent_pool/model/candidate_model.dart';
 import 'package:eco_system/utility/export.dart';
 
 class ProfileHeaderSection extends StatefulWidget {

@@ -1,5 +1,3 @@
-import 'package:eco_system/features/ats/jobs/model/jobs_model.dart';
-import 'package:eco_system/features/ats/jobs/repo/jobs_repo.dart';
 import 'package:eco_system/utility/export.dart';
 
 class JobsBloc extends Bloc<AppEvent, AppState> {
@@ -69,20 +67,9 @@ class JobsBloc extends Bloc<AppEvent, AppState> {
         emit(Done(loading: true));
       }
 
-      _engine.query = {
-        "pageIndex": _engine.currentPage + 1,
-        "pageSize": _engine.limit,
-      };
+      final jobs = await JobsService.getJobs(engine: _engine);
 
-      final res = await JobsRepo.getJobs(_engine);
-
-      if (res.data != null && res.data!.isNotEmpty) {
-        for (var job in res.data!) {
-          jobsList.add(job);
-        }
-        _engine.currentPage += 1;
-        _engine.maxPages += 1;
-      }
+      jobsList.addAll(jobs);
 
       if (jobsList.isNotEmpty) {
         emit(Done());

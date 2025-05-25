@@ -10,6 +10,18 @@ class Click extends AppEvent {
   Click({Object? arguments}) : super(arguments);
 }
 
+class GetJobs extends AppEvent {
+  GetJobs({Object? arguments}) : super(arguments);
+}
+
+class GetTalents extends AppEvent {
+  GetTalents({Object? arguments}) : super(arguments);
+}
+
+class GetCandidates extends AppEvent {
+  GetCandidates({Object? arguments}) : super(arguments);
+}
+
 class Select extends AppEvent {
   Select({Object? arguments}) : super(arguments);
 }

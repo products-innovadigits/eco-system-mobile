@@ -1,7 +1,9 @@
 import 'package:eco_system/features/search/bloc/search_bloc.dart';
 import 'package:eco_system/features/search/view/sections/empty_search_section.dart';
+import 'package:eco_system/features/search/view/sections/search_history_section.dart';
 import 'package:eco_system/utility/export.dart';
 
+import '../sections/jobs_search_section.dart';
 import '../sections/talent_pool_search_section.dart';
 
 class SearchView extends StatelessWidget {
@@ -30,54 +32,25 @@ class SearchView extends StatelessWidget {
             body: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
               child: bloc.searchController.text.isNotEmpty
-                  ? TalentPoolSearchSection()
+                  ? _getSearchList(searchEnum)
                   : bloc.isActiveSearching
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  allTranslations
-                                      .text(LocaleKeys.search_history),
-                                  style: AppTextStyles.w400.copyWith(
-                                      color: Styles.SUB_TEXT_DARK_COLOR),
-                                ),
-                                Text(allTranslations.text(LocaleKeys.delete),
-                                    style: AppTextStyles.w400.copyWith(
-                                        color: Styles.PRIMARY_COLOR,
-                                        fontSize: 12)),
-                              ],
-                            ),
-                            12.sh,
-                            ListView.separated(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: 5,
-                                separatorBuilder: (context, index) => 16.sh,
-                                itemBuilder: (context, index) => Row(
-                                      children: [
-                                        Images(image: Assets.svgs.clock.path),
-                                        8.sw,
-                                        Text(
-                                          'قائد تصميم المنتجات ',
-                                          style: AppTextStyles.w400.copyWith(
-                                              color: Styles.TEXT_COLOR),
-                                        ),
-                                        const Spacer(),
-                                        Images(
-                                            image:
-                                                Assets.svgs.arrowHistory.path)
-                                      ],
-                                    )),
-                          ],
-                        )
+                      ? SearchHistorySection()
                       : EmptySearchSection(),
             ),
           );
         },
       ),
     );
+  }
+}
+
+Widget _getSearchList(SearchEnum searchEnum) {
+  switch (searchEnum) {
+    case SearchEnum.talentPool:
+      return const TalentPoolSearchSection();
+    case SearchEnum.jobs:
+      return const JobsSearchSection();
+    default:
+      return const TalentPoolSearchSection();
   }
 }
