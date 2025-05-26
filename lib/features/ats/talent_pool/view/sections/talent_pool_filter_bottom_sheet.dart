@@ -1,11 +1,4 @@
-import 'package:eco_system/features/ats/candidates/view/widgets/expected_salary_widget.dart';
-import 'package:eco_system/features/ats/candidates/view/widgets/experience.dart';
-import 'package:eco_system/features/ats/candidates/view/widgets/gender.dart';
-import 'package:eco_system/features/ats/candidates/view/widgets/location.dart';
-import 'package:eco_system/features/ats/candidates/view/widgets/skills.dart';
-import 'package:eco_system/features/ats/candidates/view/widgets/tags.dart';
 import 'package:eco_system/features/ats/talent_pool/bloc/talent_pool_bloc.dart';
-import 'package:eco_system/features/ats/talent_pool/model/candidate_filter_model.dart';
 import 'package:eco_system/utility/export.dart';
 
 class TalentPoolFilterBottomSheet extends StatelessWidget {
@@ -36,19 +29,13 @@ class TalentPoolFilterBottomSheet extends StatelessWidget {
                           16.sh,
                           Tags(selectedTags: filterModel.selectedTags),
                           16.sh,
-                          ExpectedSalary(
-                            expectedSalaryFrom: filterModel.expectedSalaryFrom,
-                            expectedSalaryTo: filterModel.expectedSalaryTo,
-                            currency: filterModel.currency,
-                          ),
+                          ExpectedSalary(),
                           16.sh,
-                          Experience(
-                            experienceFrom: filterModel.experienceFrom,
-                            experienceTo: filterModel.experienceTo,
-                          ),
+                          Experience(),
                           16.sh,
-                          Location(location: filterModel.location),
-                          Gender()
+                          Location(),
+                          16.sh,
+                          Gender(),
                         ],
                       );
                     },
@@ -72,7 +59,8 @@ class TalentPoolFilterBottomSheet extends StatelessWidget {
                           text:
                               allTranslations.text(LocaleKeys.show_all_results),
                           active: filterModel.hasActiveFilters,
-                          onPressed: () => filterBloc.applyFilters(talentBloc),
+                          onPressed: () =>
+                              filterBloc.applyFilters(talentBloc: talentBloc),
                         ),
                       ),
                       if (talentBloc.isFiltered) ...[
@@ -84,7 +72,7 @@ class TalentPoolFilterBottomSheet extends StatelessWidget {
                             textColor: Styles.PRIMARY_COLOR,
                             borderColor: Styles.PRIMARY_COLOR,
                             onPressed: () =>
-                                filterBloc.resetFilters(talentBloc),
+                                filterBloc.resetFilters(talentBloc: talentBloc),
                           ),
                         ),
                       ]

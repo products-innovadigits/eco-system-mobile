@@ -1,6 +1,6 @@
+import 'package:eco_system/features/ats/candidates/bloc/candidates_bloc.dart';
 import 'package:eco_system/features/ats/repo/filtration_repo.dart';
 import 'package:eco_system/features/ats/talent_pool/bloc/talent_pool_bloc.dart';
-import 'package:eco_system/features/ats/talent_pool/model/candidate_filter_model.dart';
 import 'package:eco_system/utility/export.dart';
 
 class FiltrationBloc extends Bloc<AppEvent, AppState> {
@@ -35,8 +35,11 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
   // BehaviorSubject for filter state
   final _filterSubject = BehaviorSubject<CandidateFilterModel>.seeded(
       const CandidateFilterModel());
+
   Stream<CandidateFilterModel> get filterStream => _filterSubject.stream;
+
   CandidateFilterModel get filterModel => _filterSubject.value;
+
   Function(CandidateFilterModel) get updateFilter => _filterSubject.sink.add;
 
   final List<DropListModel> tagsList = [];
@@ -237,21 +240,30 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
     ));
   }
 
-  void applyFilters(TalentPoolBloc talentBloc) {
+  void applyFilters(
+      {TalentPoolBloc? talentBloc, CandidatesBloc? candidatesBloc}) {
     if (!validateFilters()) {
       return;
     }
 
-    talentBloc.add(ApplyFilters(arguments: {
-      "skills": filterModel.selectedSkills,
-      "tags": filterModel.selectedTags
-    }));
+    if (talentBloc != null)
+      talentBloc.add(ApplyFilters(arguments: {
+        "skills": filterModel.selectedSkills,
+        "tags": filterModel.selectedTags
+      }));
+    if (candidatesBloc != null)
+      candidatesBloc.add(ApplyFilters(arguments: {
+        "skills": filterModel.selectedSkills,
+        "tags": filterModel.selectedTags
+      }));
     collapseExpandedLists();
     CustomNavigator.pop();
   }
 
-  void resetFilters(TalentPoolBloc talentBloc) {
-    talentBloc.add(Reset());
+  void resetFilters(
+      {TalentPoolBloc? talentBloc, CandidatesBloc? candidatesBloc}) {
+    if (talentBloc != null) talentBloc.add(Reset());
+    if (candidatesBloc != null) candidatesBloc.add(Reset());
     reset();
     CustomNavigator.pop();
   }

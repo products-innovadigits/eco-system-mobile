@@ -79,7 +79,11 @@ class CandidateFilterModel {
   }
 
   bool get isValidCurrency {
-    if (expectedSalaryFrom == null && expectedSalaryTo == null) return true;
+    // Only validate currency if both salary fields are not null and not empty
+    if (expectedSalaryFrom == null || expectedSalaryFrom!.isEmpty ||
+        expectedSalaryTo == null || expectedSalaryTo!.isEmpty) {
+      return true;
+    }
     return currency != null && currency!.isNotEmpty;
   }
 
@@ -122,8 +126,12 @@ class CandidateFilterModel {
       errors.add(allTranslations.text(LocaleKeys.salary_range_validation));
     }
 
-    if (!isValidCurrency) {
-      errors.add(allTranslations.text(LocaleKeys.currency_required));
+    // Only validate currency if both salary fields are not null and not empty
+    if (expectedSalaryFrom != null && expectedSalaryFrom!.isNotEmpty &&
+        expectedSalaryTo != null && expectedSalaryTo!.isNotEmpty) {
+      if (!isValidCurrency) {
+        errors.add(allTranslations.text(LocaleKeys.currency_required));
+      }
     }
 
     if (!isValidExperienceRange) {

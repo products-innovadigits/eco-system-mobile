@@ -1,9 +1,7 @@
 import 'package:eco_system/utility/export.dart';
 
 class Experience extends StatelessWidget {
-  final String? experienceFrom;
-  final String? experienceTo;
-  const Experience({super.key, this.experienceFrom, this.experienceTo});
+  const Experience({super.key});
 
   @override
   Widget build(BuildContext context) {

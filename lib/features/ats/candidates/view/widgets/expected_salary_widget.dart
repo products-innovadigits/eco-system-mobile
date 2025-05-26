@@ -1,15 +1,9 @@
 import 'package:eco_system/utility/export.dart';
 
 class ExpectedSalary extends StatelessWidget {
-  final String? expectedSalaryFrom;
-  final String? expectedSalaryTo;
-  final String? currency;
 
   const ExpectedSalary(
-      {super.key,
-      this.expectedSalaryFrom,
-      this.expectedSalaryTo,
-      this.currency});
+      {super.key,});
 
   @override
   Widget build(BuildContext context) {

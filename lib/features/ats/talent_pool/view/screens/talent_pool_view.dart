@@ -34,7 +34,7 @@ class TalentPoolView extends StatelessWidget {
                   context.read<FiltrationBloc>().collapseExpandedLists();
                   PopUpHelper.showBottomSheet(
                     child: BlocProvider.value(
-                      value: context.read<TalentPoolBloc>(),
+                      value: bloc,
                       child: const TalentPoolFilterBottomSheet(),
                     ),
                   );

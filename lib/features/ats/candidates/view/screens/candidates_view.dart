@@ -11,17 +11,18 @@ class Candidates extends StatelessWidget {
     return BlocBuilder<CandidatesBloc, AppState>(
       builder: (context, state) {
         final bloc = context.read<CandidatesBloc>();
-        final filtrationBloc = context.read<FiltrationBloc>();
         return Scaffold(
           appBar: CustomAppBar(
               title: allTranslations.text(LocaleKeys.candidates),
               withSearch: true,
               withFilter: true,
+              isFiltered: bloc.isFiltered,
               onFiltering: () {
+                context.read<FiltrationBloc>().collapseExpandedLists();
                 PopUpHelper.showBottomSheet(
                     child: BlocProvider.value(
-                      value: filtrationBloc..reset(),
-                      child: CandidatesFilterBottomSheet(),
+                      value: bloc,
+                      child: const CandidatesFilterBottomSheet(),
                     ));
               },
               onTapSearch: () => CustomNavigator.push(Routes.SEARCH , arguments: SearchEnum.candidates),
