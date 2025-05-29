@@ -34,17 +34,14 @@ class TalentPoolView extends StatelessWidget {
                   context.read<FiltrationBloc>().collapseExpandedLists();
                   PopUpHelper.showBottomSheet(
                     child: BlocProvider.value(
-                      value: bloc,
-                      child: const TalentPoolFilterBottomSheet(),
-                    ),
+                        value: bloc, child: TalentPoolFilterBottomSheet()),
                   );
                 },
                 onSorting: () => PopUpHelper.showBottomSheet(
                       child: BlocProvider.value(
-                        value: context.read<TalentPoolBloc>()
-                          ..selectedSorting = null,
-                        child: const SortingBottomSheet(),
-                      ),
+                          value: context.read<TalentPoolBloc>()
+                            ..selectedSorting = null,
+                          child: const SortingBottomSheet()),
                     )),
             body: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),

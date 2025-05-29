@@ -22,7 +22,7 @@ class Candidates extends StatelessWidget {
                 PopUpHelper.showBottomSheet(
                     child: BlocProvider.value(
                       value: bloc,
-                      child: const CandidatesFilterBottomSheet(),
+                      child: CandidatesFilterBottomSheet(),
                     ));
               },
               onTapSearch: () => CustomNavigator.push(Routes.SEARCH , arguments: SearchEnum.candidates),
