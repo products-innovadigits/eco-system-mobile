@@ -1,4 +1,5 @@
-
+import 'package:eco_system/features/ats/profile/view/sections/events_tab/follow_up_manager_details_section.dart';
+import 'package:eco_system/features/ats/profile/view/widgets/events_tab/test_file_widget.dart';
 import 'package:eco_system/utility/export.dart';
 
 class EventDetailsCardWidget extends StatelessWidget {
@@ -23,19 +24,19 @@ class EventDetailsCardWidget extends StatelessWidget {
             children: [
               RichText(
                   text: TextSpan(children: [
-                    TextSpan(
-                        text: 'هشام منصور الان في ',
-                        style: AppTextStyles.w400
-                            .copyWith(color: Color(0xff666666), fontSize: 10)),
-                    TextSpan(
-                        text: 'مرحلة المقابلة الشخصية ',
-                        style: AppTextStyles.w400
-                            .copyWith(color: Color(0xff94B849), fontSize: 10)),
-                    TextSpan(
-                        text: 'ينتظر تحديد موعد الاختبار',
-                        style: AppTextStyles.w400
-                            .copyWith(color: Color(0xff666666), fontSize: 10)),
-                  ])),
+                TextSpan(
+                    text: 'هشام منصور الان في ',
+                    style: AppTextStyles.w400
+                        .copyWith(color: Color(0xff666666), fontSize: 10)),
+                TextSpan(
+                    text: 'مرحلة المقابلة الشخصية ',
+                    style: AppTextStyles.w400
+                        .copyWith(color: Color(0xff94B849), fontSize: 10)),
+                TextSpan(
+                    text: 'ينتظر تحديد موعد الاختبار',
+                    style: AppTextStyles.w400
+                        .copyWith(color: Color(0xff666666), fontSize: 10)),
+              ])),
               16.sh,
               TestFileWidget()
             ],

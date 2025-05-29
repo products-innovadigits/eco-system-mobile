@@ -1,10 +1,5 @@
-import 'package:eco_system/bloc/main_app_bloc.dart';
-import 'package:eco_system/config/colors/light_colors.dart';
-import 'package:eco_system/config/themes/themes.dart';
-import 'package:eco_system/helpers/shared_helper.dart';
-import 'package:eco_system/helpers/translation/all_translation.dart';
-import 'package:eco_system/helpers/translation/translations.dart';
-import 'package:eco_system/utility/un_focus.dart';
+// Flutter core imports
+// Third-party imports
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -15,12 +10,20 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 
+// Local imports
+import 'bloc/main_app_bloc.dart';
+import 'config/colors/light_colors.dart';
 import 'config/providers.dart';
+import 'config/themes/themes.dart';
 import 'firebase_options.dart';
 import 'helpers/notification_helper/notification_helper.dart';
+import 'helpers/shared_helper.dart';
 import 'helpers/styles.dart';
+import 'helpers/translation/all_translation.dart';
+import 'helpers/translation/translations.dart';
 import 'navigation/custom_navigation.dart';
 import 'navigation/routes.dart';
+import 'utility/un_focus.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

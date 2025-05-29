@@ -1,4 +1,4 @@
-import 'package:eco_system/utility/export.dart';
+import 'package:eco_system/features/ats/jobs/model/jobs_model.dart';
 
 abstract class AppEvent {
   Object? arguments;
@@ -8,6 +8,18 @@ abstract class AppEvent {
 
 class Click extends AppEvent {
   Click({Object? arguments}) : super(arguments);
+}
+
+class GetJobs extends AppEvent {
+  GetJobs({Object? arguments}) : super(arguments);
+}
+
+class GetTalents extends AppEvent {
+  GetTalents({Object? arguments}) : super(arguments);
+}
+
+class GetCandidates extends AppEvent {
+  GetCandidates({Object? arguments}) : super(arguments);
 }
 
 class Select extends AppEvent {
@@ -191,17 +203,7 @@ class InitCandidates extends AppEvent {
   final List<StageModel>? stages;
   final String? jobTitle;
 
-  InitCandidates(
-      {this.targetStage, this.stages, this.jobTitle})
-      : super(null);
-}
-
-class ExpandSkills extends AppEvent {
-  ExpandSkills({Object? arguments}) : super(arguments);
-}
-
-class ExpandKeywords extends AppEvent {
-  ExpandKeywords({Object? arguments}) : super(arguments);
+  InitCandidates({this.targetStage, this.stages, this.jobTitle}) : super(null);
 }
 
 class PickSkill extends AppEvent {
@@ -250,4 +252,12 @@ class ToggleCommentField extends AppEvent {
   final int index;
 
   ToggleCommentField({required this.index}) : super(null);
+}
+
+class ApplyFilters extends AppEvent {
+  ApplyFilters({Object? arguments}) : super(arguments);
+}
+
+class Reset extends AppEvent {
+  Reset({Object? arguments}) : super(arguments);
 }

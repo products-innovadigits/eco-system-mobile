@@ -11,6 +11,7 @@ class PercentageAvatar extends StatelessWidget {
   final double? percentageMargin;
   final double? percentageRadius;
   final TextStyle? percentageTextStyle;
+  final bool? withPercentage;
 
   const PercentageAvatar(
       {super.key,
@@ -20,7 +21,8 @@ class PercentageAvatar extends StatelessWidget {
       this.stackHeight,
       this.percentageTextStyle,
       this.percentageMargin,
-      this.percentageRadius});
+      this.percentageRadius,
+      this.withPercentage = true});
 
   @override
   Widget build(BuildContext context) {
@@ -38,26 +40,29 @@ class PercentageAvatar extends StatelessWidget {
                   image: AssetImage(avatarPath), fit: BoxFit.fill),
             ),
           ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-              margin: EdgeInsets.symmetric(horizontal: percentageMargin ?? 8.w),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(percentageRadius ?? 16.w),
-                  color: Styles.WHITE_COLOR),
-              child: Center(
-                child: Text(
-                  '$percentage%',
-                  style: percentageTextStyle ??
-                      AppTextStyles.w600
-                          .copyWith(color: Styles.PRIMARY_COLOR, fontSize: 10),
+          if (withPercentage == true)
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+                margin:
+                    EdgeInsets.symmetric(horizontal: percentageMargin ?? 8.w),
+                decoration: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.circular(percentageRadius ?? 16.w),
+                    color: Styles.WHITE_COLOR),
+                child: Center(
+                  child: Text(
+                    '$percentage%',
+                    style: percentageTextStyle ??
+                        AppTextStyles.w600.copyWith(
+                            color: Styles.PRIMARY_COLOR, fontSize: 10),
+                  ),
                 ),
               ),
-            ),
-          )
+            )
         ],
       ),
     );

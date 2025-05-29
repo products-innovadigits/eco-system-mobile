@@ -1,3 +1,4 @@
+import 'package:eco_system/features/ats/profile/view/sections/custom_rating_section.dart';
 import 'package:eco_system/utility/export.dart';
 
 class AddRatingTabSection extends StatelessWidget {

@@ -1,9 +1,9 @@
 import 'package:eco_system/utility/export.dart';
 
 class ProfileTabsSection extends StatelessWidget {
-  final bool isCandidate;
+  final bool isTalent;
 
-  const ProfileTabsSection({super.key, required this.isCandidate});
+  const ProfileTabsSection({super.key, required this.isTalent});
 
   static Map<ProfileEnum, String> applicantTabTitles = {
     ProfileEnum.profile: LocaleKeys.profile,
@@ -11,7 +11,7 @@ class ProfileTabsSection extends StatelessWidget {
     ProfileEnum.answers: LocaleKeys.answers,
   };
 
-  static Map<ProfileEnum, String> candidateTabTitles = {
+  static Map<ProfileEnum, String> talentTabTitles = {
     ProfileEnum.profile: LocaleKeys.profile,
     ProfileEnum.events: LocaleKeys.events,
   };
@@ -19,9 +19,8 @@ class ProfileTabsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: (isCandidate ? candidateTabTitles : applicantTabTitles)
-          .keys
-          .map((tab) {
+      children:
+          (isTalent ? talentTabTitles : applicantTabTitles).keys.map((tab) {
         return CustomTabWidget(
           title: applicantTabTitles[tab] ?? '',
           isSelected: context.watch<ProfileBloc>().selectedTab == tab,

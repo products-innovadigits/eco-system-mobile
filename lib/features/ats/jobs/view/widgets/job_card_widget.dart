@@ -1,3 +1,5 @@
+import 'package:eco_system/features/ats/candidates/view/sections/candidate_stages_list_section.dart';
+import 'package:eco_system/features/ats/jobs/view/widgets/job_details_widget.dart';
 import 'package:eco_system/utility/export.dart';
 
 class JobCardWidget extends StatelessWidget {
@@ -26,6 +28,7 @@ class JobCardWidget extends StatelessWidget {
         children: [
           InkWell(
               onTap: () {
+                context.read<FiltrationBloc>().reset();
                 CustomNavigator.push(Routes.CANDIDATES,
                     arguments: InitCandidates(
                         stages: jobDataModel?.stages,

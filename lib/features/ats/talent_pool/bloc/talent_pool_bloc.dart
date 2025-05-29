@@ -1,6 +1,3 @@
-import 'package:eco_system/features/ats/talent_pool/model/candidate_model.dart';
-import 'package:eco_system/features/ats/talent_pool/repo/talent_pool_repo.dart';
-import 'package:eco_system/features/ats/talent_pool/service/talent_service.dart';
 import 'package:eco_system/utility/export.dart';
 
 class TalentPoolBloc extends Bloc<AppEvent, AppState> {
@@ -12,6 +9,8 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
     on<Sort>(_onSorting);
     on<Select>(onToggleSelection);
     on<SelectTalent>(_onSelectTalent);
+    on<ApplyFilters>(_onApplyFilters);
+    on<Reset>(_onResetFilters);
   }
 
   List<CandidateModel> talentsList = [];
@@ -21,6 +20,7 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
   late TextEditingController fileNameController;
   List<int> selectedTalentsList = [];
   bool activeSelection = false;
+  bool isFiltered = false;
   List<DropListModel> sortingList = [
     DropListModel(
         id: 1, name: allTranslations.text(LocaleKeys.newest_to_oldest)),
@@ -34,6 +34,9 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
         id: 6, name: allTranslations.text(LocaleKeys.least_experience)),
   ];
   DropListModel? selectedSorting;
+
+  List<String> selectedSkills = [];
+  List<String> selectedTags = [];
 
   _onSorting(Sort event, Emitter<AppState> emit) async {
     selectedSorting = event.arguments as DropListModel?;
@@ -71,6 +74,33 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
     });
   }
 
+  void _onApplyFilters(ApplyFilters event, Emitter<AppState> emit) {
+    final Map<String, dynamic> filters =
+        event.arguments as Map<String, dynamic>;
+    selectedSkills = (filters['skills'] as List<DropListModel>?)
+            ?.map((skill) => skill.name ?? '')
+            .toList() ??
+        [];
+    selectedTags = (filters['tags'] as List<DropListModel>?)
+            ?.map((tag) => tag.name ?? '')
+            .toList() ??
+        [];
+
+    isFiltered = true;
+    _engine = SearchEngine();
+    talentsList.clear();
+    add(Click(arguments: _engine));
+  }
+
+  void _onResetFilters(Reset event, Emitter<AppState> emit) {
+    selectedSkills.clear();
+    selectedTags.clear();
+    isFiltered = false;
+    _engine = SearchEngine();
+    talentsList.clear();
+    add(Click(arguments: _engine));
+  }
+
   void _getTalents(AppEvent event, Emitter<AppState> emit) async {
     try {
       _engine = event.arguments as SearchEngine;
@@ -82,7 +112,11 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
         emit(Done(loading: true));
       }
 
-      final newTalents = await TalentPoolService.getTalents(_engine);
+      final newTalents = await TalentPoolService.getTalents(
+        engine: _engine,
+        skills: selectedSkills,
+        tags: selectedTags,
+      );
       talentsList.addAll(newTalents);
 
       if (talentsList.isNotEmpty) {
@@ -96,8 +130,6 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
     }
   }
 
-
-
   @override
   Future<void> close() {
     scrollController.dispose();
@@ -106,6 +138,8 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
     talentsList.clear();
     activeSelection = false;
     selectedSorting = null;
+    selectedSkills.clear();
+    selectedTags.clear();
     _engine = SearchEngine();
     return super.close();
   }

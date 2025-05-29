@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:eco_system/navigation/custom_navigation.dart';
 import 'package:eco_system/utility/utility.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../components/custom_images.dart';
 import '../helpers/styles.dart';
@@ -42,6 +43,7 @@ class AppCore {
           behavior: notification.isFloating
               ? SnackBarBehavior.floating
               : SnackBarBehavior.fixed,
+          elevation: 1000,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(notification.radius),
               side: BorderSide(width: 1, color: notification.borderColor)),
@@ -71,28 +73,67 @@ class AppCore {
     });
   }
 
+  static showToastSnackBar({required AppNotification notification}) {
+    // Timer(const Duration(milliseconds: 200), () {
+      Fluttertoast.showToast(
+          msg: notification.message,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Styles.IN_ACTIVE,
+          textColor: Colors.white,
+          fontSize: 14.0);
+    // });
+  }
 
   static successMessage(message) => AppCore.showSnackBar(
-    notification: AppNotification(
-        message: message,
-        backgroundColor: Styles.ACTIVE,
-        borderColor: Styles.GREEN4,
-        iconName: 'check-circle'),
-  );
+        notification: AppNotification(
+            message: message,
+            backgroundColor: Styles.ACTIVE,
+            borderColor: Styles.GREEN4,
+            iconName: 'check-circle'),
+      );
+
+  static successToastMessage(message) => AppCore.showToastSnackBar(
+        notification: AppNotification(
+            message: message,
+            backgroundColor: Styles.ACTIVE,
+            borderColor: Styles.GREEN4,
+            iconName: 'check-circle'),
+      );
 
   static errorMessage(message) => AppCore.showSnackBar(
-    notification: AppNotification(
-      message: message,
-      backgroundColor: Styles.IN_ACTIVE,
-      borderColor: Styles.DARK_RED,
-      iconName: 'fill-close-circle',
-    ),
-  );
+        notification: AppNotification(
+          message: message,
+          backgroundColor: Styles.IN_ACTIVE,
+          borderColor: Styles.DARK_RED,
+          iconName: 'fill-close-circle',
+        ),
+      );
+
+  static errorToastMessage(message) => AppCore.showToastSnackBar(
+        notification: AppNotification(
+          message: message,
+          backgroundColor: Styles.IN_ACTIVE,
+          borderColor: Styles.DARK_RED,
+          iconName: 'fill-close-circle',
+        ),
+      );
 
   static String getMonthName(int monthNumber) {
     List<String> months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
     ];
 
     if (monthNumber < 1 || monthNumber > 12) {
@@ -101,5 +142,4 @@ class AppCore {
 
     return months[monthNumber - 1];
   }
-
 }

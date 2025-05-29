@@ -1,3 +1,4 @@
+import 'package:eco_system/features/ats/talent_pool/view/widgets/talent_card_widget.dart';
 import 'package:eco_system/features/search/bloc/search_bloc.dart';
 import 'package:eco_system/utility/export.dart';
 

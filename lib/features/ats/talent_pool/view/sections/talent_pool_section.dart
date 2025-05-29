@@ -1,3 +1,5 @@
+import 'package:eco_system/features/ats/candidates/view/sections/total_candidates_section.dart';
+import 'package:eco_system/features/ats/talent_pool/bloc/talent_pool_bloc.dart';
 import 'package:eco_system/utility/export.dart';
 
 class TalentPoolSection extends StatelessWidget {
@@ -14,7 +16,7 @@ class TalentPoolSection extends StatelessWidget {
             TalentPoolBloc talentPoolBloc = context.read<TalentPoolBloc>();
             return InkWell(
               onTap: () {
-                // talentPoolBloc.add(Click(arguments: SearchEngine()));
+                context.read<FiltrationBloc>().reset();
                 CustomNavigator.push(Routes.TALENT_POOL);
               },
               child: Container(

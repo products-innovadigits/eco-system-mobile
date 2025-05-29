@@ -1,3 +1,4 @@
+import 'package:eco_system/features/ats/candidates/bloc/candidates_bloc.dart';
 import 'package:eco_system/features/ats/candidates/view/screens/candidates_view.dart';
 import 'package:eco_system/features/ats/jobs/view/screens/jobs_view.dart';
 import 'package:eco_system/features/ats/profile/view/screens/profile_view.dart';
@@ -51,7 +52,7 @@ abstract class CustomNavigator {
       case Routes.PROFILE:
         final args = settings.arguments as ProfileViewArgs?;
         return pageRouteBuilder(ProfileView(
-            isCandidate: args?.isCandidate ?? false,
+            isTalent: args?.isTalent ?? false,
             candidateId: args?.candidateId ?? 0));
       case Routes.CANDIDATES:
         final args = settings.arguments as InitCandidates?;
@@ -136,11 +137,11 @@ abstract class CustomNavigator {
 
 // ProfileViewArgs
 class ProfileViewArgs {
-  final bool isCandidate;
+  final bool isTalent;
   final int candidateId;
 
   ProfileViewArgs({
-    required this.isCandidate,
+    required this.isTalent,
     required this.candidateId,
   });
 }

@@ -1,3 +1,6 @@
+import 'package:eco_system/features/ats/candidates/bloc/candidates_bloc.dart';
+import 'package:eco_system/features/ats/candidates/view/sections/all_candidates_section.dart';
+import 'package:eco_system/features/ats/candidates/view/sections/candidates_filter_bottom_sheet.dart';
 import 'package:eco_system/utility/export.dart';
 
 class Candidates extends StatelessWidget {
@@ -8,16 +11,17 @@ class Candidates extends StatelessWidget {
     return BlocBuilder<CandidatesBloc, AppState>(
       builder: (context, state) {
         final bloc = context.read<CandidatesBloc>();
-        final filtrationBloc = context.read<FiltrationBloc>();
         return Scaffold(
           appBar: CustomAppBar(
               title: allTranslations.text(LocaleKeys.candidates),
               withSearch: true,
               withFilter: true,
+              isFiltered: bloc.isFiltered,
               onFiltering: () {
+                context.read<FiltrationBloc>().collapseExpandedLists();
                 PopUpHelper.showBottomSheet(
                     child: BlocProvider.value(
-                      value: filtrationBloc..reset(),
+                      value: bloc,
                       child: CandidatesFilterBottomSheet(),
                     ));
               },

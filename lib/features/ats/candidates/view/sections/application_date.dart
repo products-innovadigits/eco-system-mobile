@@ -41,6 +41,5 @@ class ApplicationDate extends StatelessWidget {
         ),
       ],
     );
-    ;
   }
 }

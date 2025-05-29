@@ -1,3 +1,5 @@
+import 'package:eco_system/features/ats/talent_pool/bloc/talent_pool_bloc.dart';
+import 'package:eco_system/features/ats/talent_pool/view/widgets/talent_card_widget.dart';
 import 'package:eco_system/utility/export.dart';
 
 class TalentPoolListSection extends StatelessWidget {
@@ -16,21 +18,26 @@ class TalentPoolListSection extends StatelessWidget {
           return Column(
             children: [
               Expanded(
-                  child: ListView.separated(
-                physics: const BouncingScrollPhysics(),
-                itemCount: talentsList.length,
-                controller: bloc.scrollController,
-                itemBuilder: (context, index) {
-                  return TalentCardWidget(
-                    onSelectTalent: () =>
-                        bloc.add(SelectTalent(arguments: index)),
-                    isTalentSelected: bloc.selectedTalentsList.contains(index),
-                    isSelectionActive: bloc.activeSelection,
-                    talent: talentsList[index],
-                  );
-                },
-                separatorBuilder: (context, index) => 16.sh,
-              )),
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      bloc.add(Click(arguments: SearchEngine()));
+                    },
+                    child: ListView.separated(
+                                    physics: const BouncingScrollPhysics(),
+                                    itemCount: talentsList.length,
+                                    controller: bloc.scrollController,
+                                    itemBuilder: (context, index) {
+                    return TalentCardWidget(
+                      onSelectTalent: () =>
+                          bloc.add(SelectTalent(arguments: index)),
+                      isTalentSelected: bloc.selectedTalentsList.contains(index),
+                      isSelectionActive: bloc.activeSelection,
+                      talent: talentsList[index],
+                    );
+                                    },
+                                    separatorBuilder: (context, index) => 16.sh,
+                                  ),
+                  )),
               CustomLoading(isTextLoading: true, loading: state.loading)
             ],
           );

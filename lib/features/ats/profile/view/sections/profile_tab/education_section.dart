@@ -1,4 +1,5 @@
 
+import 'package:eco_system/features/ats/profile/view/widgets/profile_tab/experience_education_card_widget.dart';
 import 'package:eco_system/utility/export.dart';
 
 class EducationSection extends StatelessWidget {

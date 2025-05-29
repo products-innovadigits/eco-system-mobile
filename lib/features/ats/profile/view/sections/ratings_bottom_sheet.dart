@@ -1,4 +1,7 @@
 
+import 'package:eco_system/features/ats/profile/view/sections/add_rating_tab_section.dart';
+import 'package:eco_system/features/ats/profile/view/sections/rating_tabs_section.dart';
+import 'package:eco_system/features/ats/profile/view/sections/ratings_tab_section.dart';
 import 'package:eco_system/utility/export.dart';
 
 class RatingsBottomSheet extends StatelessWidget {

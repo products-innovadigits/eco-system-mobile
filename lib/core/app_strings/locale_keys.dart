@@ -2,7 +2,7 @@
 
 // ignore_for_file: constant_identifier_names
 
-abstract class  LocaleKeys {
+abstract class LocaleKeys {
   static const unit_name = 'unit_name';
   static const username = 'username';
   static const welcome_back = 'welcome_back';
@@ -20,6 +20,7 @@ abstract class  LocaleKeys {
   static const confirm_password = 'confirm_password';
   static const current_password = 'current_password';
   static const reset_password = 'reset_password';
+  static const reset = 'reset';
   static const login_to_your = 'login_to_your';
   static const account = 'account';
   static const login_header = 'login_header';
@@ -33,7 +34,8 @@ abstract class  LocaleKeys {
   static const change_password = 'change_password';
   static const please_enter_valid_account = 'please_enter_valid_account';
   static const please_enter_valid_password = 'please_enter_valid_password';
-  static const please_enter_valid_phone_number = 'please_enter_valid_phone_number';
+  static const please_enter_valid_phone_number =
+      'please_enter_valid_phone_number';
   static const please_enter_valid_user_name = 'please_enter_valid_user_name';
   static const please_enter_valid_location = 'please_enter_valid_location';
   static const please_enter_valid_email = 'please_enter_valid_email';
@@ -303,11 +305,13 @@ abstract class  LocaleKeys {
   static const late = 'late';
   static const available_jobs = 'available_jobs';
   static const talent_pool = 'talent_pool';
-  static const candidate_with_future_potential = 'candidate_with_future_potential';
+  static const candidate_with_future_potential =
+      'candidate_with_future_potential';
   static const total_candidates = 'total_candidates';
   static const total_projects = 'total_projects';
   static const project_progress_rate = 'project_progress_rate';
-  static const project_progress_rate_in_each_category = 'project_progress_rate_in_each_category';
+  static const project_progress_rate_in_each_category =
+      'project_progress_rate_in_each_category';
   static const the_owning_entity = 'the_owning_entity';
   static const project_life_cycle = 'project_life_cycle';
   static const project_category = 'project_category';
@@ -317,7 +321,8 @@ abstract class  LocaleKeys {
   static const budget = 'budget';
   static const outputs_number = 'outputs_number';
   static const entity_name = 'entity_name';
-  static const progress_at_each_stage_of_the_project = 'progress_at_each_stage_of_the_project';
+  static const progress_at_each_stage_of_the_project =
+      'progress_at_each_stage_of_the_project';
   static const jobs = 'jobs';
   static const delete = 'delete';
   static const search_history = 'search_history';
@@ -388,6 +393,8 @@ abstract class  LocaleKeys {
   static const experience = 'experience';
   static const years = 'years';
   static const chances = 'chances';
+  static const salary_range_validation = 'salary_range_validation';
+  static const experience_validation = 'experience_validation';
   static const no_candidates = 'no_candidates';
   static const candidate_in_pipeline = 'candidate_in_pipeline';
   static const newest_to_oldest = 'newest_to_oldest';
@@ -396,5 +403,5 @@ abstract class  LocaleKeys {
   static const lowest_price = 'lowest_price';
   static const most_experience = 'most_experience';
   static const least_experience = 'least_experience';
-
+  static const currency_required = 'currency_required';
 }
