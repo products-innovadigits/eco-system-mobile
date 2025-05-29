@@ -1,19 +1,22 @@
-import 'package:eco_system/features/ats/profile/view/widgets/profile_tab/experience_education_card_widget.dart';
+import 'package:eco_system/features/ats/profile/view/widgets/profile_tab/certificate_card_widget.dart';
 import 'package:eco_system/utility/export.dart';
 
-class WorkExperienceSection extends StatelessWidget {
-  const WorkExperienceSection({super.key});
+class CertificatesSection extends StatelessWidget {
+  const CertificatesSection({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileBloc, AppState>(
       builder: (context, state) {
         final profileBloc = context.read<ProfileBloc>();
-        final List<ExperienceModel> experienceList =
-            profileBloc.candidateModel?.profile?.experience ?? [];
+        final List<CertificateModel> certificatesList =
+            profileBloc.candidateModel?.profile?.certificates ?? [];
         return state is Loading
-            ? CustomShimmerContainer(height: 60 , borderRadius: 8,)
-            : experienceList.isEmpty
+            ? CustomShimmerContainer(
+                height: 60,
+                borderRadius: 8,
+              )
+            : certificatesList.isEmpty
                 ? const SizedBox.shrink()
                 : Container(
                     width: context.w,
@@ -26,38 +29,33 @@ class WorkExperienceSection extends StatelessWidget {
                     child: Column(
                       children: [
                         InkWell(
-                          onTap: () => profileBloc.add(Expand(arguments: 0)),
+                          onTap: () => profileBloc.add(Expand(arguments: 2)),
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                  allTranslations
-                                      .text(LocaleKeys.work_experience),
+                                  allTranslations.text(LocaleKeys.certificates),
                                   style: AppTextStyles.w500),
-                              4.sw,
-                              Text('(اكثر من ٣ سنوات)',
-                                  style: AppTextStyles.w500
-                                      .copyWith(color: Styles.PRIMARY_COLOR)),
-                              const Spacer(),
                               Icon(
-                                  profileBloc.isWorkExperienceExpanded == false
+                                  profileBloc.isCertificatesExpanded == false
                                       ? Icons.keyboard_arrow_down_rounded
                                       : Icons.keyboard_arrow_up_rounded,
-                                  color: profileBloc.isWorkExperienceExpanded ==
+                                  color: profileBloc.isCertificatesExpanded ==
                                           false
                                       ? Styles.ICON_GREY_COLOR
                                       : Styles.PRIMARY_COLOR),
                             ],
                           ),
                         ),
-                        if (profileBloc.isWorkExperienceExpanded == true) ...[
+                        if (profileBloc.isCertificatesExpanded == true) ...[
                           ListView.separated(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (context, index) =>
-                                  ExperienceCardWidget(
-                                      experience: experienceList[index]),
+                                  CertificateCardWidget(
+                                      certificate: certificatesList[index]),
                               separatorBuilder: (context, index) => 24.sh,
-                              itemCount: experienceList.length),
+                              itemCount: certificatesList.length),
                         ]
                       ],
                     ),

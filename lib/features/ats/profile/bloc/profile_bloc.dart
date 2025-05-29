@@ -16,7 +16,7 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
     on<ToggleCommentField>(_onToggleCommentField);
   }
 
-  bool isCareerObjExpanded = false;
+  bool isCertificatesExpanded = false;
   bool isEducationExpanded = false;
   bool isWorkExperienceExpanded = false;
   int reviewExpandedIndex = -1;
@@ -54,7 +54,7 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
 
   _onExpand(Expand event, Emitter<AppState> emit) async {
     if (event.arguments == 2) {
-      isCareerObjExpanded = !isCareerObjExpanded;
+      isCertificatesExpanded = !isCertificatesExpanded;
     } else if (event.arguments == 1) {
       isEducationExpanded = !isEducationExpanded;
     } else if (event.arguments == 0) {

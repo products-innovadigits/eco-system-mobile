@@ -2,7 +2,7 @@
 import 'package:eco_system/features/ats/profile/view/sections/profile_tab/candidate_compatibility_section.dart';
 import 'package:eco_system/features/ats/profile/view/sections/profile_tab/candidate_info_section.dart';
 import 'package:eco_system/features/ats/profile/view/sections/profile_tab/candidate_skills_section.dart';
-import 'package:eco_system/features/ats/profile/view/sections/profile_tab/career_obj_section.dart';
+import 'package:eco_system/features/ats/profile/view/sections/profile_tab/certificates_section.dart';
 import 'package:eco_system/features/ats/profile/view/sections/profile_tab/education_section.dart';
 import 'package:eco_system/features/ats/profile/view/sections/profile_tab/work_experience_section.dart';
 import 'package:eco_system/utility/export.dart';
@@ -22,7 +22,7 @@ class ProfileSection extends StatelessWidget {
         CandidateSkillsSection(),
         WorkExperienceSection(),
         EducationSection(),
-        CareerObjSection(),
+        CertificatesSection(),
         16.sh,
       ],
     );

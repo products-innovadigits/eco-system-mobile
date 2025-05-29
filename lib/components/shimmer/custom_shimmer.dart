@@ -65,10 +65,11 @@ class CustomShimmerCircleImage extends StatelessWidget {
 class CustomShimmerContainer extends StatelessWidget {
   final double? height;
   final double? width;
+  final double? borderRadius;
   const CustomShimmerContainer({
     super.key,
     this.height,
-    this.width,
+    this.width, this.borderRadius,
   });
 
   @override
@@ -78,7 +79,7 @@ class CustomShimmerContainer extends StatelessWidget {
         height: height,
         width: width ?? MediaQueryHelper.width,
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(15.0)),
+            color: Colors.white, borderRadius: BorderRadius.circular(borderRadius ?? 15.0)),
       ),
     );
   }

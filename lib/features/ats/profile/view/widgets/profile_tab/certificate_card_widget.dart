@@ -1,9 +1,9 @@
 import 'package:eco_system/utility/export.dart';
 
-class ExperienceCardWidget extends StatelessWidget {
-  final ExperienceModel experience;
+class CertificateCardWidget extends StatelessWidget {
+  final CertificateModel certificate;
 
-  const ExperienceCardWidget({super.key, required this.experience});
+  const CertificateCardWidget({super.key, required this.certificate});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class ExperienceCardWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    experience.company ?? '-',
+                    certificate.name ?? '-',
                     style: AppTextStyles.w400.copyWith(fontSize: 12),
                   ),
                   4.sh,
@@ -37,13 +37,13 @@ class ExperienceCardWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        experience.title ?? '-',
+                        certificate.orginization ?? '-',
                         style: AppTextStyles.w400.copyWith(
                             color: Styles.PRIMARY_COLOR, fontSize: 10),
                       ),
                       4.sw,
                       Text(
-                        '${experience.startDate} - ${experience.endDate}',
+                        certificate.date ?? '-',
                         style: AppTextStyles.w400.copyWith(
                             color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
                       ),
