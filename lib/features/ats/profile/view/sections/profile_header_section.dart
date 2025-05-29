@@ -127,7 +127,7 @@ class _ProfileHeaderSectionState extends State<ProfileHeaderSection>
           return Column(
             children: [
               CustomShimmerContainer(
-                height: 250.h,
+                height: 320.h,
                 width: context.w,
               ),
             ],

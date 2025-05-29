@@ -1,9 +1,9 @@
 import 'package:eco_system/utility/export.dart';
 
-class ExperienceCardWidget extends StatelessWidget {
-  final ExperienceModel experience;
+class EducationCardWidget extends StatelessWidget {
+  final EducationModel educationModel;
 
-  const ExperienceCardWidget({super.key, required this.experience});
+  const EducationCardWidget({super.key, required this.educationModel});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class ExperienceCardWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    experience.company ?? '-',
+                    educationModel.school ?? 'اينوفا ديجتس',
                     style: AppTextStyles.w400.copyWith(fontSize: 12),
                   ),
                   4.sh,
@@ -37,13 +37,13 @@ class ExperienceCardWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        experience.title ?? '-',
+                        educationModel.degree ?? 'قائد تصميم المنتجات .',
                         style: AppTextStyles.w400.copyWith(
                             color: Styles.PRIMARY_COLOR, fontSize: 10),
                       ),
                       4.sw,
                       Text(
-                        '${experience.startDate} - ${experience.endDate}',
+                        '${educationModel.startDate} - ${educationModel.endDate}',
                         style: AppTextStyles.w400.copyWith(
                             color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
                       ),
@@ -53,19 +53,22 @@ class ExperienceCardWidget extends StatelessWidget {
               )
             ],
           ),
-          // 8.sh,
-          // ReadMoreText(
-          //   'قمت بقيادة دورة حياة تطوير منتجات B2B و SaaS، مع ضمان التوافق مع الأهداف.قمت بقيادة دورة حياة تطوير قمت بقيادة دورة حياة تطوير منتجات B2B و SaaS، مع ضمان التوافق مع الأهداف.قمت بقيادة دورة حياة تطوير',
-          //   trimMode: TrimMode.Line,
-          //   trimLines: 2,
-          //   colorClickableText: Styles.PRIMARY_COLOR,
-          //   trimExpandedText: allTranslations.text(LocaleKeys.read_less),
-          //   trimCollapsedText: allTranslations.text(LocaleKeys.read_more),
-          //   moreStyle: AppTextStyles.w400
-          //       .copyWith(color: Styles.PRIMARY_COLOR, fontSize: 8),
-          //   style: AppTextStyles.w400
-          //       .copyWith(color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 8),
-          // )
+          if (educationModel.fieldStudy != null &&
+              educationModel.fieldStudy!.isNotEmpty) ...[
+            8.sh,
+            ReadMoreText(
+              educationModel.fieldStudy ?? '',
+              trimMode: TrimMode.Line,
+              trimLines: 2,
+              colorClickableText: Styles.PRIMARY_COLOR,
+              trimExpandedText: allTranslations.text(LocaleKeys.read_less),
+              trimCollapsedText: allTranslations.text(LocaleKeys.read_more),
+              moreStyle: AppTextStyles.w400
+                  .copyWith(color: Styles.PRIMARY_COLOR, fontSize: 8),
+              style: AppTextStyles.w400
+                  .copyWith(color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 8),
+            )
+          ],
         ],
       ),
     );

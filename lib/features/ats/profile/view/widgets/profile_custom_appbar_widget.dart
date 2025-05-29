@@ -2,8 +2,10 @@ import 'package:eco_system/utility/export.dart';
 
 class ProfileCustomAppbarWidget extends StatelessWidget {
   final String title;
+  final bool? isLoading;
 
-  const ProfileCustomAppbarWidget({super.key, required this.title});
+  const ProfileCustomAppbarWidget(
+      {super.key, required this.title, this.isLoading = false});
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +16,10 @@ class ProfileCustomAppbarWidget extends StatelessWidget {
             child: Images(
                 image: Assets.svgs.arrowBack.path, color: Styles.WHITE_COLOR)),
         8.sw,
-        Text(title,
-            style: AppTextStyles.w700.copyWith(color: Styles.WHITE_COLOR)),
+        isLoading == true
+            ? CustomShimmerContainer(width: 120.w, height: 30, borderRadius: 4)
+            : Text(title,
+                style: AppTextStyles.w700.copyWith(color: Styles.WHITE_COLOR)),
         const Spacer(),
         GestureDetector(
             onTap: () => context.read<ProfileBloc>().add(ShowDialog()),

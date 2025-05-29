@@ -387,6 +387,7 @@
   "experience_validation": "Experience range is invalid: from value must be less than or equal to to value",
   "currency_required": "Currency required",
   "experience": "experience",
+  "certificates": "Certificates",
   "years": "years",
   "chances": "chances",
   "no_candidates": "No candidates",
