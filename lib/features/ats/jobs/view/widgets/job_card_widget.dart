@@ -53,21 +53,35 @@ class JobCardWidget extends StatelessWidget {
                       .copyWith(color: Styles.PRIMARY_COLOR, fontSize: 12),
                 ),
                 const Spacer(),
-                Icon(
-                    isExpanded == false
-                        ? Icons.keyboard_arrow_down_rounded
-                        : Icons.keyboard_arrow_up_rounded,
-                    color: isExpanded == false
-                        ? Styles.ICON_GREY_COLOR
-                        : Styles.PRIMARY_COLOR)
+                AnimatedRotation(
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeInOut,
+                  turns: isExpanded == true ? 0.5 : 0,
+                  child: Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    color: isExpanded == true
+                        ? Styles.PRIMARY_COLOR
+                        : Styles.ICON_GREY_COLOR,
+                  ),
+                )
               ],
             ),
           ),
-          if (isExpanded == true) ...[
-            CandidateStagesListSection(
-                stages: jobDataModel?.stages ?? [],
-                jobTitle: jobDataModel?.title ?? ''),
-          ]
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+            margin: EdgeInsets.only(top: isExpanded == true ? 12.h : 0),
+            child: AnimatedOpacity(
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
+              opacity: isExpanded == true ? 1.0 : 0.0,
+              child: isExpanded == true
+                  ? CandidateStagesListSection(
+                      stages: jobDataModel?.stages ?? [],
+                      jobTitle: jobDataModel?.title ?? '')
+                  : const SizedBox.shrink(),
+            ),
+          ),
         ],
       ),
     );

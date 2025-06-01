@@ -389,6 +389,8 @@ abstract class  LocaleKeys {
   static const experience = 'experience';
   static const certificates = 'certificates';
   static const years = 'years';
+  static const no_internet_connection = 'no_internet_connection';
+  static const press_again_to_exit = 'press_again_to_exit';
   static const chances = 'chances';
   static const salary_range_validation = 'salary_range_validation';
   static const experience_validation = 'experience_validation';
