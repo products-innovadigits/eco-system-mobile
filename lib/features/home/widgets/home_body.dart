@@ -18,9 +18,9 @@ class HomeBody extends StatelessWidget {
           SizedBox(height: context.h * 0.16),
           AvailableJobsSection(),
           TalentPoolSection(),
-          ObjectivePercentageSection(),
-          ProjectsProgressSection(),
-          ProjectCategoryProgressSection(),
+          // ObjectivePercentageSection(),
+          // ProjectsProgressSection(),
+          // ProjectCategoryProgressSection(),
         ],
       ),
     );
