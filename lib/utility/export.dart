@@ -1,5 +1,7 @@
 export 'dart:async';
 
+export 'package:connectivity_plus/connectivity_plus.dart';
+export 'package:eco_system/bloc/main_app_bloc.dart';
 export 'package:eco_system/components/animated_widget.dart';
 export 'package:eco_system/components/custom_btn.dart';
 export 'package:eco_system/components/custom_drop_list.dart';

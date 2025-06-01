@@ -3,6 +3,7 @@ import 'package:eco_system/features/ats/profile/view/widgets/candidate_more_dial
 import 'package:eco_system/features/ats/profile/view/widgets/profile_custom_appbar_widget.dart';
 import 'package:eco_system/features/ats/profile/view/widgets/profile_data_container_widget.dart';
 import 'package:eco_system/features/ats/profile/view/widgets/profile_user_data_widget.dart';
+import 'package:eco_system/helpers/launcher_helper.dart';
 import 'package:eco_system/utility/export.dart';
 
 class ProfileHeaderSection extends StatefulWidget {
@@ -94,11 +95,14 @@ class _ProfileHeaderSectionState extends State<ProfileHeaderSection>
                                 ProfileDataContainerWidget(
                                   title: candidateModel!.lastChance!.stageName!,
                                   icon: Assets.svgs.layers.path,
+                                  onTap: () {},
                                 ),
                               if (candidateModel?.phone != null)
                                 ProfileDataContainerWidget(
                                   title: candidateModel!.phone!,
                                   icon: Assets.svgs.call.path,
+                                  onTap: () => LauncherHelper.makePhoneCall(
+                                      candidateModel.phone ?? ''),
                                 ),
                             ],
                           ),
@@ -116,7 +120,8 @@ class _ProfileHeaderSectionState extends State<ProfileHeaderSection>
                       alignment: Alignment.topLeft,
                       child: widget.isTalent
                           ? CandidateMoreDialog()
-                          : ApplicantMoreDialog(),
+                          : ApplicantMoreDialog(
+                              email: candidateModel?.email ?? ''),
                     ),
                   ),
               ],

@@ -143,4 +143,6 @@ abstract class Styles {
     ORANGE2,
     ORANGE3,
   ];
+
+  static const Color ERROR_COLOR = Color(0xFFE53935);
 }

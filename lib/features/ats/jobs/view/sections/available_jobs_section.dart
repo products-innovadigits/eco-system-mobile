@@ -41,8 +41,19 @@ class AvailableJobsSection extends StatelessWidget {
               child: CustomShimmerContainer(
                   height: context.h * 0.2, width: context.w),
             );
+          }
+          if (state is Error) {
+            return Padding(
+              padding: EdgeInsets.only(top: 24.h),
+              child: EmptyContainer(
+                  txt: allTranslations.text(LocaleKeys.something_went_wrong)),
+            );
           } else {
-            return SizedBox();
+            return Padding(
+              padding: EdgeInsets.only(top: 24.h),
+              child: EmptyContainer(
+                  txt: allTranslations.text(LocaleKeys.there_is_no_data)),
+            );
           }
         },
       ),

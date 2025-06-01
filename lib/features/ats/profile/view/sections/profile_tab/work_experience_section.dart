@@ -12,7 +12,10 @@ class WorkExperienceSection extends StatelessWidget {
         final List<ExperienceModel> experienceList =
             profileBloc.candidateModel?.profile?.experience ?? [];
         return state is Loading
-            ? CustomShimmerContainer(height: 60 , borderRadius: 8,)
+            ? CustomShimmerContainer(
+                height: 60,
+                borderRadius: 8,
+              )
             : experienceList.isEmpty
                 ? const SizedBox.shrink()
                 : Container(
@@ -33,10 +36,13 @@ class WorkExperienceSection extends StatelessWidget {
                                   allTranslations
                                       .text(LocaleKeys.work_experience),
                                   style: AppTextStyles.w500),
-                              4.sw,
-                              Text('(اكثر من ٣ سنوات)',
-                                  style: AppTextStyles.w500
-                                      .copyWith(color: Styles.PRIMARY_COLOR)),
+                              // if(experienceList.isNotEmpty)...[
+                              //   4.sw,
+                              //   Text(
+                              //       '(اكثر من ٣ ${allTranslations.text(LocaleKeys.years)})',
+                              //       style: AppTextStyles.w500
+                              //           .copyWith(color: Styles.PRIMARY_COLOR)),
+                              // ],
                               const Spacer(),
                               Icon(
                                   profileBloc.isWorkExperienceExpanded == false

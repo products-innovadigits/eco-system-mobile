@@ -389,6 +389,8 @@
   "experience": "experience",
   "certificates": "Certificates",
   "years": "years",
+  "no_internet_connection": "No Internet Connection",
+  "press_again_to_exit": "Press back again to exit",
   "chances": "chances",
   "no_candidates": "No candidates",
   "candidate_in_pipeline": "Candidate in Pipeline",

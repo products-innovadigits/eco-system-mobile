@@ -74,16 +74,14 @@ class AppCore {
   }
 
   static showToastSnackBar({required AppNotification notification}) {
-    // Timer(const Duration(milliseconds: 200), () {
-      Fluttertoast.showToast(
-          msg: notification.message,
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Styles.IN_ACTIVE,
-          textColor: Colors.white,
-          fontSize: 14.0);
-    // });
+    Fluttertoast.showToast(
+        msg: notification.message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: notification.backgroundColor,
+        textColor: Colors.white,
+        fontSize: notification.fontSize);
   }
 
   static successMessage(message) => AppCore.showSnackBar(
@@ -92,6 +90,11 @@ class AppCore {
             backgroundColor: Styles.ACTIVE,
             borderColor: Styles.GREEN4,
             iconName: 'check-circle'),
+      );
+
+  static warningExitMessage(message) => AppCore.showToastSnackBar(
+        notification: AppNotification(
+            message: message, backgroundColor: Styles.DETAILS, fontSize: 16),
       );
 
   static successToastMessage(message) => AppCore.showToastSnackBar(

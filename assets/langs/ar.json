@@ -388,6 +388,8 @@
   "experience": "خبرة",
   "certificates": "الشهادات",
   "years": "سنين",
+  "no_internet_connection": "لا يوجد اتصال بالإنترنت",
+  "press_again_to_exit": "اضغط مرة أخرى للخروج",
   "chances": "من الوظائف",
   "salary_range_validation": "بيانات الراتب المتوقع غير صحيحة",
   "experience_validation": "بيانات الخبرة غير صحيحة",
