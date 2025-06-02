@@ -27,7 +27,7 @@ class Tags extends StatelessWidget {
               },
             ),
             bloc.filterModel.expandTags
-                ? _buildOptionsList(context, availableTags,
+                ? _buildTagsList(context, availableTags,
                     onPickItem: (item) => bloc.add(PickTag(arguments: item)))
                 : const SizedBox.shrink(),
           ],
@@ -37,7 +37,7 @@ class Tags extends StatelessWidget {
   }
 }
 
-Widget _buildOptionsList(BuildContext context, List<DropListModel> list,
+Widget _buildTagsList(BuildContext context, List<DropListModel> list,
     {required void Function(DropListModel item) onPickItem}) {
   return Column(
     children: [

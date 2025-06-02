@@ -5,9 +5,10 @@ import 'package:eco_system/utility/export.dart';
 
 class FiltrationBloc extends Bloc<AppEvent, AppState> {
   FiltrationBloc() : super(Start()) {
-    on<PickSkill>(_onAddSkill);
+    on<AddSkill>(_onAddSkill);
     on<Click>(_getTags);
     on<PickTag>(_onAddTag);
+    on<Update>(_onChangeSkill);
     on<RemoveSkill>(_onRemoveSkill);
     on<RemoveKeywords>(_onRemoveTag);
     on<Expand>(_onToggleTagsExpansion);
@@ -116,7 +117,11 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
     ));
   }
 
-  void _onAddSkill(PickSkill event, Emitter<AppState> emit) {
+  void _onChangeSkill(AppEvent event, Emitter<AppState> emit) {
+    emit(Done());
+  }
+
+  void _onAddSkill(AddSkill event, Emitter<AppState> emit) {
     final skill = event.arguments as DropListModel;
     if (!filterModel.selectedSkills.contains(skill) &&
         skillController.text.isNotEmpty) {

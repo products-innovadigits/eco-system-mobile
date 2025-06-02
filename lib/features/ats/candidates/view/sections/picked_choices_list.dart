@@ -13,7 +13,7 @@ class PickedChoicesList extends StatelessWidget {
       runSpacing: 12,
       children: list.map((item) {
         return Container(
-          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          padding: EdgeInsetsDirectional.only(start: 12.w,end: 8.w, top: 6.h , bottom: 6.h),
           decoration: BoxDecoration(
             color: Styles.PRIMARY_COLOR.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(20),

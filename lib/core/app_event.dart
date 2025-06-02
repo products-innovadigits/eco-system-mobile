@@ -206,8 +206,8 @@ class InitCandidates extends AppEvent {
   InitCandidates({this.targetStage, this.stages, this.jobTitle}) : super(null);
 }
 
-class PickSkill extends AppEvent {
-  PickSkill({Object? arguments}) : super(arguments);
+class AddSkill extends AppEvent {
+  AddSkill({Object? arguments}) : super(arguments);
 }
 
 class PickTag extends AppEvent {

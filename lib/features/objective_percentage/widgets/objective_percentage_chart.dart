@@ -138,12 +138,12 @@ class _ObjectivePercentageChartState extends State<ObjectivePercentageChart> {
   emptyState() {
     return [
       PieChartSectionData(
-        color: Color(0xFFE7EAEC),
+        color: Styles.SURFACE,
         title: "",
         value: 100,
         radius: 50,
         borderSide: BorderSide(
-          color: Color(0xFFE7EAEC),
+          color: Styles.SURFACE,
         ),
       )
     ];
