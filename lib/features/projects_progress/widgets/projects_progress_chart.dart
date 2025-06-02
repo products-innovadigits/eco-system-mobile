@@ -83,12 +83,12 @@ class _ProjectsProgressChartState extends State<ProjectsProgressChart> {
   emptyState() {
     return [
       PieChartSectionData(
-        color: Color(0xFFE7EAEC),
+        color: Styles.SURFACE,
         title: "",
         value: 100,
         radius: 100.w,
         borderSide: BorderSide(
-          color: Color(0xFFE7EAEC),
+          color: Styles.SURFACE,
         ),
       )
     ];

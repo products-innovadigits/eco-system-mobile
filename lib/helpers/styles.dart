@@ -19,7 +19,7 @@ abstract class Styles {
   static const Color BORDER = Color(0xFFF4F4F4);
   static const Color ICON_GREY_COLOR = Color(0xFFCBCBCB);
   static const Color ICON_DARK_COLOR = Color(0xFF292D32);
-  static const Color SURFACE = Color(0xFFE6EDF5);
+  static const Color SURFACE = Color(0xFFE7EAEC);
   static const Color SURFACE_SECONDARY = Color(0xFFE6F5F4);
   static const Color DARK_BLUE = Color(0xFF054699);
 
