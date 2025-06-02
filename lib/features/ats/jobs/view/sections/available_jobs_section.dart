@@ -29,7 +29,7 @@ class AvailableJobsSection extends StatelessWidget {
                     },
                   ),
                   Divider(color: Styles.BORDER_COLOR),
-                  SizedBox(height: 12.h),
+                  12.sh,
                   JobsListSection(isHome: true),
                 ],
               ),
@@ -41,18 +41,13 @@ class AvailableJobsSection extends StatelessWidget {
               child: CustomShimmerContainer(
                   height: context.h * 0.2, width: context.w),
             );
-          }
-          if (state is Error) {
-            return Padding(
-              padding: EdgeInsets.only(top: 24.h),
-              child: EmptyContainer(
-                  txt: allTranslations.text(LocaleKeys.something_went_wrong)),
-            );
           } else {
             return Padding(
               padding: EdgeInsets.only(top: 24.h),
               child: EmptyContainer(
-                  txt: allTranslations.text(LocaleKeys.there_is_no_data)),
+                  txt: state is Error
+                      ? allTranslations.text(LocaleKeys.something_went_wrong)
+                      : allTranslations.text(LocaleKeys.there_is_no_data)),
             );
           }
         },

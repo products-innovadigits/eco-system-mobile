@@ -18,42 +18,52 @@ class TalentPoolView extends StatelessWidget {
       child: BlocBuilder<TalentPoolBloc, AppState>(
         builder: (context, state) {
           final bloc = context.read<TalentPoolBloc>();
-          return Scaffold(
-            appBar: CustomAppBar(
-                title: allTranslations.text(LocaleKeys.talent_pool),
-                withSearch: true,
-                withFilter: true,
-                isFiltered: bloc.isFiltered,
-                withSorting: true,
-                onTapSearch: () => CustomNavigator.push(Routes.SEARCH,
-                    arguments: SearchEnum.talentPool),
-                action: MultipleSelectBtnWidget(),
-                searchHintText:
-                    allTranslations.text(LocaleKeys.searching_for_candidate),
-                onFiltering: () {
-                  context.read<FiltrationBloc>().collapseExpandedLists();
-                  PopUpHelper.showBottomSheet(
-                    child: BlocProvider.value(
-                        value: bloc, child: TalentPoolFilterBottomSheet()),
-                  );
-                },
-                onSorting: () => PopUpHelper.showBottomSheet(
+          return PopScope(
+            canPop: !bloc.activeSelection,
+            onPopInvoked: (didPop) {
+              if (!didPop && bloc.activeSelection) {
+                bloc.add(Select(arguments: false));
+              }
+            },
+            child: Scaffold(
+              appBar: CustomAppBar(
+                  title: allTranslations.text(LocaleKeys.talent_pool),
+                  withSearch: true,
+                  withFilter: true,
+                  isFiltered: bloc.isFiltered,
+                  withSorting: true,
+                  withCancelBtn: true,
+                  onSearching: (value) => bloc.onSearching(value),
+                  onCanceling: () => bloc.onCancelSearch(),
+                  searchController: bloc.searchController,
+                  action: MultipleSelectBtnWidget(),
+                  searchHintText:
+                      allTranslations.text(LocaleKeys.search_job_title_or_name),
+                  onFiltering: () {
+                    context.read<FiltrationBloc>().collapseExpandedLists();
+                    PopUpHelper.showBottomSheet(
                       child: BlocProvider.value(
-                          value: context.read<TalentPoolBloc>()
-                            ..selectedSorting = null,
-                          child: const SortingBottomSheet()),
-                    )),
-            body: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-              child: TalentPoolListSection(),
-            ),
-            bottomNavigationBar: BlocBuilder<TalentPoolBloc, AppState>(
-              builder: (context, state) {
-                final bloc = context.read<TalentPoolBloc>();
-                return bloc.selectedTalentsList.isNotEmpty
-                    ? const TalentPoolBottomNav()
-                    : const SizedBox.shrink();
-              },
+                          value: bloc, child: TalentPoolFilterBottomSheet()),
+                    );
+                  },
+                  onSorting: () => PopUpHelper.showBottomSheet(
+                        child: BlocProvider.value(
+                            value: context.read<TalentPoolBloc>()
+                              ..selectedSorting = null,
+                            child: const SortingBottomSheet()),
+                      )),
+              body: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                child: TalentPoolListSection(),
+              ),
+              bottomNavigationBar: BlocBuilder<TalentPoolBloc, AppState>(
+                builder: (context, state) {
+                  final bloc = context.read<TalentPoolBloc>();
+                  return bloc.selectedTalentsList.isNotEmpty
+                      ? const TalentPoolBottomNav()
+                      : const SizedBox.shrink();
+                },
+              ),
             ),
           );
         },

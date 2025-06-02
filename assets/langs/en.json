@@ -399,5 +399,6 @@
   "highest_price": "Highest Price to Lowest",
   "lowest_price": "Lowest Price to Highest",
   "most_experience": "Most to Least Experience",
-  "least_experience": "Least to Most Experience"
+  "least_experience": "Least to Most Experience",
+  "search_job_title_or_name": "Search by name or job title..."
 }
