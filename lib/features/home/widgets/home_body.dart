@@ -8,18 +8,16 @@ class HomeBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(height: context.h * 0.16),
-            AvailableJobsSection(),
-            TalentPoolSection(),
-            // ObjectivePercentageSection(),
-            // ProjectsProgressSection(),
-            // ProjectCategoryProgressSection(),
-          ],
-        ),
+    return SafeArea(
+      child: Column(
+        children: [
+          (context.h * 0.16).sh,
+          AvailableJobsSection(),
+          TalentPoolSection(),
+          // ObjectivePercentageSection(),
+          // ProjectsProgressSection(),
+          // ProjectCategoryProgressSection(),
+        ],
       ),
     );
   }

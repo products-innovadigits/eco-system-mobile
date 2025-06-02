@@ -1,3 +1,4 @@
+import 'package:eco_system/features/ats/talent_pool/bloc/talent_pool_bloc.dart';
 import 'package:eco_system/utility/export.dart';
 
 class TalentCardWidget extends StatelessWidget {
@@ -16,14 +17,26 @@ class TalentCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => CustomNavigator.push(Routes.PROFILE,
-          arguments:
-              ProfileViewArgs(isTalent: true, candidateId: talent.id ?? 0)),
+      splashColor: Styles.PRIMARY_COLOR.withValues(alpha: 0.1),
+      onLongPress: () {
+        if (!isSelectionActive!) {
+          context.read<TalentPoolBloc>().add(Select(arguments: true));
+          onSelectTalent();
+        }
+      },
+      onTap: () {
+        if (isSelectionActive == true) {
+          onSelectTalent();
+        } else {
+          CustomNavigator.push(Routes.PROFILE,
+              arguments:
+                  ProfileViewArgs(isTalent: true, candidateId: talent.id ?? 0));
+        }
+      },
       child: Container(
         width: context.w,
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
         decoration: BoxDecoration(
-            color: Styles.WHITE_COLOR,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(color: Styles.BORDER)),
         child: Row(
@@ -44,42 +57,48 @@ class TalentCardWidget extends StatelessWidget {
                       image: AssetImage(Assets.images.avatar.path))),
             ),
             8.sw,
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  talent.name ?? '',
-                  style: AppTextStyles.w500
-                      .copyWith(color: Styles.TEXT_COLOR, fontSize: 12),
-                ),
-                2.sh,
-                Row(
-                  children: [
-                    Text(
-                      '${talent.jobTitle} . ',
-                      style: AppTextStyles.w400.copyWith(
-                          color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
-                    ),
-                    Text(
-                        '${talent.chancesCount} ${allTranslations.text(LocaleKeys.chances)}',
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    talent.name ?? '',
+                    style: AppTextStyles.w500
+                        .copyWith(color: Styles.TEXT_COLOR, fontSize: 12),
+                  ),
+                  2.sh,
+                  Row(
+                    children: [
+                      Text(
+                        '${talent.jobTitle} . ',
                         style: AppTextStyles.w400.copyWith(
-                            color: Styles.PRIMARY_COLOR, fontSize: 10))
-                  ],
-                ),
-                if (talent.profile?.location != null &&
-                    talent.profile?.experience != null &&
-                    talent.profile?.expectedSalary != null &&
-                    talent.profile?.noticePeriod != null)
-                  _profileDetails(talent.profile),
-              ],
+                            color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
+                      ),
+                      Text(
+                          '${talent.chancesCount} ${allTranslations.text(LocaleKeys.chances)}',
+                          style: AppTextStyles.w400.copyWith(
+                              color: Styles.PRIMARY_COLOR, fontSize: 10))
+                    ],
+                  ),
+                  if (talent.profile?.location != null &&
+                      talent.profile?.experience != null &&
+                      talent.profile?.expectedSalary != null &&
+                      talent.profile?.noticePeriod != null)
+                    _profileDetails(talent.profile),
+                ],
+              ),
             ),
-            const Spacer(),
-            Container(
-                width: 24.w,
-                height: 24.h,
-                alignment: AlignmentDirectional.centerEnd,
-                padding: EdgeInsets.all(6),
-                child: Images(image: Assets.svgs.arrowLeft.path)),
+            InkWell(
+              onTap: () => CustomNavigator.push(Routes.PROFILE,
+                  arguments: ProfileViewArgs(
+                      isTalent: true, candidateId: talent.id ?? 0)),
+              child: Container(
+                  width: 24.w,
+                  height: 24.h,
+                  alignment: AlignmentDirectional.centerEnd,
+                  padding: EdgeInsets.all(6),
+                  child: Images(image: Assets.svgs.arrowLeft.path)),
+            ),
           ],
         ),
       ),

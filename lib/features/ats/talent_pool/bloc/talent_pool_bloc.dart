@@ -4,6 +4,7 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
   TalentPoolBloc() : super(Start()) {
     scrollController = ScrollController();
     fileNameController = TextEditingController();
+    searchController = TextEditingController();
     customScroll(scrollController);
     on<Click>(_getTalents);
     on<Sort>(_onSorting);
@@ -16,8 +17,10 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
   List<CandidateModel> talentsList = [];
   late SearchEngine _engine;
   late ScrollController scrollController;
+  Timer? _debounce;
 
   late TextEditingController fileNameController;
+  late TextEditingController searchController;
   List<int> selectedTalentsList = [];
   bool activeSelection = false;
   bool isFiltered = false;
@@ -87,7 +90,8 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
         [];
 
     isFiltered = true;
-    _engine = SearchEngine();
+    activeSelection = false;
+    _engine = SearchEngine(searchText: searchController.text);
     talentsList.clear();
     add(Click(arguments: _engine));
   }
@@ -95,10 +99,25 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
   void _onResetFilters(Reset event, Emitter<AppState> emit) {
     selectedSkills.clear();
     selectedTags.clear();
+    activeSelection = false;
     isFiltered = false;
-    _engine = SearchEngine();
+    _engine = SearchEngine(searchText: searchController.text);
     talentsList.clear();
     add(Click(arguments: _engine));
+  }
+
+  void onSearching(String searchText) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      add(Click(arguments: SearchEngine(searchText: searchText)));
+    });
+  }
+
+  void onCancelSearch() {
+    if (searchController.text.isNotEmpty) {
+      searchController.clear();
+      add(Click(arguments: SearchEngine()));
+    }
   }
 
   void _getTalents(AppEvent event, Emitter<AppState> emit) async {
@@ -134,6 +153,7 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
   Future<void> close() {
     scrollController.dispose();
     fileNameController.dispose();
+    searchController.dispose();
     selectedTalentsList.clear();
     talentsList.clear();
     activeSelection = false;

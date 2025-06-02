@@ -1,5 +1,6 @@
+import 'dart:async';
+
 import 'package:eco_system/bloc/main_app_bloc.dart';
-import 'package:eco_system/core/app_strings/locale_keys.dart';
 import 'package:eco_system/core/assets.gen.dart';
 import 'package:eco_system/helpers/styles.dart';
 import 'package:eco_system/helpers/text_styles.dart';
@@ -8,7 +9,7 @@ import 'package:eco_system/utility/extensions.dart';
 import 'package:eco_system/widgets/images.dart';
 import 'package:flutter/material.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String? title;
   final String? searchHintText;
   final Widget? action;
@@ -45,6 +46,41 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   });
 
   @override
+  State<CustomAppBar> createState() => _CustomAppBarState();
+
+  @override
+  Size get preferredSize => Size(
+      CustomNavigator.navigatorState.currentContext!.w,
+      (withSearch ?? true) ? 120.h : 100.h);
+}
+
+class _CustomAppBarState extends State<CustomAppBar> {
+  late FocusNode _focusNode;
+  bool _isSearchFocused = false;
+  Timer? _debounceTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = FocusNode();
+    _focusNode.addListener(_onFocusChange);
+  }
+
+  void _onFocusChange() {
+    setState(() {
+      _isSearchFocused = _focusNode.hasFocus;
+    });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.removeListener(_onFocusChange);
+    _focusNode.dispose();
+    _debounceTimer?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
@@ -52,8 +88,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           color: Styles.WHITE_COLOR,
           border: Border(
               bottom: BorderSide(
-                  color:
-                      withBottomBorder ? Styles.BORDER : Colors.transparent))),
+                  color: widget.withBottomBorder
+                      ? Styles.BORDER
+                      : Colors.transparent))),
       child: SafeArea(
         bottom: false,
         child: Column(
@@ -77,7 +114,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 8.sw,
                 Expanded(
                   child: Text(
-                    title ?? "",
+                    widget.title ?? "",
                     style: AppTextStyles.w700.copyWith(
                       fontSize: 18,
                       color: Styles.TEXT_COLOR,
@@ -85,28 +122,52 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     textAlign: TextAlign.start,
                   ),
                 ),
-                action ?? SizedBox()
+                widget.action ?? SizedBox()
               ],
             ),
-            if (withSearch ?? false)
+            if (widget.withSearch ?? false)
               Row(
-                crossAxisAlignment: (withCancelBtn ?? false)
-                    ? CrossAxisAlignment.center
-                    : CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Expanded(
                     child: Padding(
                       padding: EdgeInsets.only(top: 8.h),
                       child: TextField(
-                        controller: searchController,
+                        controller: widget.searchController,
+                        focusNode: _focusNode,
+                        textInputAction: TextInputAction.done,
+                        onSubmitted: (_) {
+                          _focusNode.unfocus();
+                        },
                         onChanged: (v) {
-                          onSearching!(v);
+                          if (_debounceTimer?.isActive ?? false)
+                            _debounceTimer?.cancel();
+                          _debounceTimer =
+                              Timer(const Duration(milliseconds: 500), () {
+                            widget.onSearching!(v);
+                          });
                         },
-                        onTap: () {
-                          onTapSearch!();
-                        },
-                        readOnly: onSearching == null,
+                        onTap: widget.onTapSearch,
+                        readOnly: widget.onSearching == null,
                         decoration: InputDecoration(
+                          suffixIcon: _isSearchFocused
+                              ? GestureDetector(
+                                  onTap: () {
+                                    widget.searchController?.clear();
+                                    _focusNode.unfocus();
+                                    if (widget.onCanceling != null) {
+                                      widget.onCanceling!();
+                                    }
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Images(
+                                      image: Assets.svgs.closeCircle.path,
+                                      color: Styles.ICON_GREY_COLOR,
+                                    ),
+                                  ),
+                                )
+                              : null,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(color: Styles.BORDER),
@@ -115,7 +176,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(color: Styles.BORDER),
                           ),
-                          hintText: searchHintText,
+                          hintText: widget.searchHintText,
                           hintStyle: const TextStyle(
                               fontWeight: FontWeight.w200,
                               fontSize: 12,
@@ -136,78 +197,73 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       ),
                     ),
                   ),
-                  if (withSorting ?? false) ...[
-                    8.sw,
-                    GestureDetector(
-                      onTap: () {
-                        if (onSorting != null) {
-                          onSorting!();
-                        }
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(14),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Styles.BORDER),
-                        ),
-                        child: Images(
-                            image: Assets.svgs.sort.path,
-                            height: 20.h,
-                            width: 20.w),
-                      ),
-                    )
-                  ],
-                  if (withFilter ?? false) ...[
-                    8.sw,
-                    GestureDetector(
-                      onTap: () {
-                        if (onFiltering != null) {
-                          onFiltering!();
-                        }
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Styles.BORDER),
-                        ),
-                        child: Stack(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(2),
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 500),
+                    width: _isSearchFocused ? 0 : null,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (widget.withSorting ?? false) ...[
+                          8.sw,
+                          GestureDetector(
+                            onTap: () {
+                              if (widget.onSorting != null) {
+                                widget.onSorting!();
+                              }
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(14),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: Styles.BORDER),
+                              ),
                               child: Images(
-                                  image: Assets.svgs.filter.path,
+                                  image: Assets.svgs.sort.path,
                                   height: 20.h,
                                   width: 20.w),
                             ),
-                            if (isFiltered == true)
-                              PositionedDirectional(
-                                  top: 0,
-                                  start: 2.w,
-                                  child: Icon(
-                                    Icons.circle,
-                                    color: Styles.PRIMARY_COLOR,
-                                    size: 8,
-                                  ))
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                  if (withCancelBtn ?? false) ...[
-                    8.sw,
-                    GestureDetector(
-                        onTap: () {
-                          if (onCanceling != null) {
-                            onCanceling!();
-                          }
-                        },
-                        child: Text(
-                          LocaleKeys.cancel,
-                          style: AppTextStyles.w400
-                              .copyWith(color: Styles.SUB_TEXT_DARK_COLOR),
-                        ))
-                  ],
+                          )
+                        ],
+                        if (widget.withFilter ?? false) ...[
+                          8.sw,
+                          GestureDetector(
+                            onTap: () {
+                              if (widget.onFiltering != null) {
+                                widget.onFiltering!();
+                              }
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: Styles.BORDER),
+                              ),
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(2),
+                                    child: Images(
+                                        image: Assets.svgs.filter.path,
+                                        height: 20.h,
+                                        width: 20.w),
+                                  ),
+                                  if (widget.isFiltered == true)
+                                    PositionedDirectional(
+                                        top: 0,
+                                        start: 2.w,
+                                        child: Icon(
+                                          Icons.circle,
+                                          color: Styles.PRIMARY_COLOR,
+                                          size: 8,
+                                        ))
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ],
+                    ),
+                  ),
                 ],
               )
           ],
@@ -215,9 +271,4 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
     );
   }
-
-  @override
-  Size get preferredSize => Size(
-      CustomNavigator.navigatorState.currentContext!.w,
-      (withSearch ?? true) ? 120.h : 100.h);
 }

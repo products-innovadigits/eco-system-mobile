@@ -403,5 +403,6 @@ abstract class  LocaleKeys {
   static const lowest_price = 'lowest_price';
   static const most_experience = 'most_experience';
   static const least_experience = 'least_experience';
+  static const search_job_title_or_name = 'search_job_title_or_name';
 
 }

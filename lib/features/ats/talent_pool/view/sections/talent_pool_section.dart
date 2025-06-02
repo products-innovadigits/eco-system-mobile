@@ -37,7 +37,7 @@ class TalentPoolSection extends StatelessWidget {
                       onViewTap: () {},
                     ),
                     Divider(color: Styles.BORDER_COLOR),
-                    SizedBox(height: 12.h),
+                    12.sh,
                     TotalCandidatesSection(
                         talentsList: talentPoolBloc.talentsList),
                   ],
@@ -53,8 +53,15 @@ class TalentPoolSection extends StatelessWidget {
                 width: context.w,
               ),
             );
-          } else {
-            return SizedBox.shrink();
+          }
+          else {
+            return Padding(
+              padding: EdgeInsets.only(top: 24.h),
+              child: EmptyContainer(
+                  txt: state is Error
+                      ? allTranslations.text(LocaleKeys.something_went_wrong)
+                      : allTranslations.text(LocaleKeys.there_is_no_data)),
+            );
           }
         },
       ),
