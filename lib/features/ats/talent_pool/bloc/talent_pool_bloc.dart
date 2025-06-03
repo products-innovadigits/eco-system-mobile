@@ -1,4 +1,10 @@
+import 'dart:developer';
+
+import 'package:eco_system/helpers/launcher_helper.dart';
 import 'package:eco_system/utility/export.dart';
+
+import '../model/file_model.dart';
+import '../repo/talent_pool_repo.dart';
 
 class TalentPoolBloc extends Bloc<AppEvent, AppState> {
   TalentPoolBloc() : super(Start()) {
@@ -9,12 +15,15 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
     on<Click>(_getTalents);
     on<Sort>(_onSorting);
     on<Select>(onToggleSelection);
+    on<SelectJob>(_onSelectJob);
     on<SelectTalent>(_onSelectTalent);
     on<ApplyFilters>(_onApplyFilters);
     on<Reset>(_onResetFilters);
+    on<Export>(_onExport);
   }
 
   List<CandidateModel> talentsList = [];
+  List<int> selectedJobsList = [];
   late SearchEngine _engine;
   late ScrollController scrollController;
   Timer? _debounce;
@@ -63,6 +72,12 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
         selectedTalentsList.add(talentId);
       }
     }
+    emit(Done());
+  }
+
+  void _onSelectJob(SelectJob event, Emitter<AppState> emit) {
+    selectedJobsList = event.arguments as List<int>;
+    log('selectedJobsList: $selectedJobsList');
     emit(Done());
   }
 
@@ -142,6 +157,29 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
         emit(Done());
       } else {
         emit(Empty());
+      }
+    } catch (e) {
+      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+      emit(Error());
+    }
+  }
+
+  Future<void> _onExport(Export event, Emitter<AppState> emit) async {
+    final bool isExcel = event.arguments as bool;
+    try {
+      emit(Exporting());
+
+      final FileModel fileUrl = await TalentPoolRepo.exportFile(
+          fileName: fileNameController.text,
+          isExcel: isExcel,
+          selectedTalentsList: selectedTalentsList);
+
+      if (fileUrl.url != null && fileUrl.url!.isNotEmpty) {
+        await LauncherHelper.openUrl(fileUrl.url!).then((v) {
+          CustomNavigator.pop();
+          AppCore.successToastMessage(fileUrl.message);
+          emit(Done());
+        });
       }
     } catch (e) {
       AppCore.errorMessage(allTranslations.text('something_went_wrong'));
