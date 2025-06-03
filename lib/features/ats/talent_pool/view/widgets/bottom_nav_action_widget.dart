@@ -16,30 +16,30 @@ class BottomNavActionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TalentPoolBloc, AppState>(
-      builder: (context, state) {
-        final bloc = context.read<TalentPoolBloc>();
-        return GestureDetector(
-          onTap: () {
-            bloc.fileNameController.clear();
-            PopUpHelper.showBottomSheet(
-                height: height, child: bottomSheetContent);
-          },
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Images(image: icon, color: Styles.DETAILS),
-              8.sh,
-              Text(
-                allTranslations.text(title),
-                style: AppTextStyles.w400
-                    .copyWith(fontSize: 11, color: Styles.DETAILS),
-              )
-            ],
-          ),
-        );
+    final bloc = context.read<TalentPoolBloc>();
+    return InkWell(
+      onTap: () {
+        bloc.fileNameController.clear();
+        PopUpHelper.showBottomSheet(
+            height: height,
+            child: BlocProvider.value(
+              value: bloc,
+              child: bottomSheetContent,
+            ));
       },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Images(image: icon, color: Styles.DETAILS),
+          8.sh,
+          Text(
+            allTranslations.text(title),
+            style: AppTextStyles.w400
+                .copyWith(fontSize: 11, color: Styles.DETAILS),
+          )
+        ],
+      ),
     );
   }
 }

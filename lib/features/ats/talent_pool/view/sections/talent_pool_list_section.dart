@@ -29,8 +29,8 @@ class TalentPoolListSection extends StatelessWidget {
                   controller: bloc.scrollController,
                   itemBuilder: (context, index) {
                     return TalentCardWidget(
-                      onSelectTalent: () => bloc
-                          .add(SelectTalent(arguments: talentsList[index].id)),
+                      onSelectTalent: () => bloc.add(SelectTalent(
+                          arguments: {"talentId": talentsList[index].id})),
                       isTalentSelected: bloc.selectedTalentsList
                           .contains(talentsList[index].id),
                       isSelectionActive: bloc.activeSelection,

@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:eco_system/helpers/launcher_helper.dart';
 import 'package:eco_system/utility/export.dart';
 
 import '../model/file_model.dart';
@@ -26,7 +23,6 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
   List<int> selectedJobsList = [];
   late SearchEngine _engine;
   late ScrollController scrollController;
-  Timer? _debounce;
 
   late TextEditingController fileNameController;
   late TextEditingController searchController;
@@ -64,20 +60,29 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
   }
 
   void _onSelectTalent(SelectTalent event, Emitter<AppState> emit) {
-    int talentId = event.arguments as int;
-    if (event.arguments != null) {
+    bool selectAll =
+        (event.arguments as Map<String, dynamic>?)?['selectAll'] as bool? ??
+            false;
+    int? talentId =
+        (event.arguments as Map<String, dynamic>?)?['talentId'] as int?;
+
+    if (selectAll) {
+      selectedTalentsList
+          .addAll(talentsList.map((talent) => talent.id ?? 0).toList());
+    }
+    if (talentId != null) {
       if (selectedTalentsList.contains(talentId)) {
         selectedTalentsList.remove(talentId);
       } else {
         selectedTalentsList.add(talentId);
       }
     }
+
     emit(Done());
   }
 
   void _onSelectJob(SelectJob event, Emitter<AppState> emit) {
     selectedJobsList = event.arguments as List<int>;
-    log('selectedJobsList: $selectedJobsList');
     emit(Done());
   }
 
@@ -121,16 +126,8 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
     add(Click(arguments: _engine));
   }
 
-  void onSearching(String searchText) {
-    if (_debounce?.isActive ?? false) _debounce?.cancel();
-    _debounce = Timer(const Duration(milliseconds: 500), () {
-      add(Click(arguments: SearchEngine(searchText: searchText)));
-    });
-  }
-
   void onCancelSearch() {
     if (searchController.text.isNotEmpty) {
-      searchController.clear();
       add(Click(arguments: SearchEngine()));
     }
   }
@@ -173,12 +170,12 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
           fileName: fileNameController.text,
           isExcel: isExcel,
           selectedTalentsList: selectedTalentsList);
-
       if (fileUrl.url != null && fileUrl.url!.isNotEmpty) {
-        await LauncherHelper.openUrl(fileUrl.url!).then((v) {
-          CustomNavigator.pop();
-          AppCore.successToastMessage(fileUrl.message);
-          emit(Done());
+        CustomNavigator.pop();
+        AppCore.successToastMessage(fileUrl.message);
+        emit(Done());
+        Future.delayed(Duration(milliseconds: 1500), () {
+          LauncherHelper.openUrl(fileUrl.url!);
         });
       }
     } catch (e) {

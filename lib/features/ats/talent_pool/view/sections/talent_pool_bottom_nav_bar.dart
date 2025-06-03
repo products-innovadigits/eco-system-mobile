@@ -55,17 +55,15 @@ class TalentPoolBottomNav extends StatelessWidget {
               ),
             ),
           ),
-          BlocBuilder<TalentPoolBloc, AppState>(
-            builder: (context, state) {
-              final bloc = context.read<TalentPoolBloc>();
-              return BottomNavActionWidget(
-                icon: Assets.svgs.documentDownload.path,
-                title: LocaleKeys.export_zip,
-                bottomSheetContent: Column(
+          BottomNavActionWidget(
+            icon: Assets.svgs.documentDownload.path,
+            title: LocaleKeys.export_zip,
+            bottomSheetContent: BlocBuilder<TalentPoolBloc, AppState>(
+              builder: (context, state) {
+                final bloc = context.read<TalentPoolBloc>();
+                return Column(
                   children: [
-                    BottomSheetHeader(
-                      title: LocaleKeys.export_zip,
-                    ),
+                    BottomSheetHeader(title: LocaleKeys.export_zip),
                     24.sh,
                     CustomTextField(
                       hint: allTranslations.text(LocaleKeys.enter_file_name),
@@ -75,21 +73,22 @@ class TalentPoolBottomNav extends StatelessWidget {
                     16.sh,
                     CustomBtn(
                         text: allTranslations.text(LocaleKeys.save),
+                        loading: state is Exporting,
                         onPressed: () {
                           bloc.add(Export(arguments: false));
                         })
                   ],
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
-          BlocBuilder<TalentPoolBloc, AppState>(
-            builder: (context, state) {
-              final bloc = context.read<TalentPoolBloc>();
-              return BottomNavActionWidget(
-                icon: Assets.svgs.export.path,
-                title: LocaleKeys.export_excel,
-                bottomSheetContent: Column(
+          BottomNavActionWidget(
+            icon: Assets.svgs.export.path,
+            title: LocaleKeys.export_excel,
+            bottomSheetContent: BlocBuilder<TalentPoolBloc, AppState>(
+              builder: (context, state) {
+                final bloc = context.read<TalentPoolBloc>();
+                return Column(
                   children: [
                     BottomSheetHeader(title: LocaleKeys.export_excel),
                     24.sh,
@@ -101,13 +100,14 @@ class TalentPoolBottomNav extends StatelessWidget {
                     16.sh,
                     CustomBtn(
                         text: allTranslations.text(LocaleKeys.save),
+                        loading: state is Exporting,
                         onPressed: () {
                           bloc.add(Export(arguments: true));
                         })
                   ],
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ],
       ),

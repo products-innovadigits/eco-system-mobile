@@ -13,7 +13,9 @@ class MultipleSelectBtnWidget extends StatelessWidget {
             ? Row(
                 children: [
                   GestureDetector(
-                    onTap: (){},
+                    onTap: () {
+                      bloc.add(SelectTalent(arguments: {"selectAll": true}));
+                    },
                     child: Text(
                       allTranslations.text(LocaleKeys.select_all),
                       style: AppTextStyles.w400

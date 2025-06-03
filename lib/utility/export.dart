@@ -36,6 +36,7 @@ export 'package:eco_system/features/ats/talent_pool/model/candidate_filter_model
 export 'package:eco_system/features/ats/talent_pool/model/candidate_model.dart';
 export 'package:eco_system/features/ats/talent_pool/service/talent_service.dart';
 export 'package:eco_system/helpers/date_picker_helper.dart';
+export 'package:eco_system/helpers/launcher_helper.dart';
 export 'package:eco_system/helpers/popup_helper.dart';
 export 'package:eco_system/helpers/styles.dart';
 export 'package:eco_system/helpers/text_styles.dart';
@@ -60,3 +61,4 @@ export 'package:flutter/services.dart';
 export 'package:flutter_bloc/flutter_bloc.dart';
 export 'package:readmore/readmore.dart';
 export 'package:rxdart/rxdart.dart';
+

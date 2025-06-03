@@ -33,7 +33,8 @@ class TalentPoolView extends StatelessWidget {
                   isFiltered: bloc.isFiltered,
                   withSorting: true,
                   withCancelBtn: true,
-                  onSearching: (value) => bloc.onSearching(value),
+                  onSearching: (value) => bloc
+                      .add(Click(arguments: SearchEngine(searchText: value))),
                   onCanceling: () => bloc.onCancelSearch(),
                   searchController: bloc.searchController,
                   action: MultipleSelectBtnWidget(),
@@ -56,14 +57,9 @@ class TalentPoolView extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
                 child: TalentPoolListSection(),
               ),
-              bottomNavigationBar: BlocBuilder<TalentPoolBloc, AppState>(
-                builder: (context, state) {
-                  final bloc = context.read<TalentPoolBloc>();
-                  return bloc.selectedTalentsList.isNotEmpty
-                      ? const TalentPoolBottomNav()
-                      : const SizedBox.shrink();
-                },
-              ),
+              bottomNavigationBar: bloc.selectedTalentsList.isNotEmpty
+                  ? const TalentPoolBottomNav()
+                  : const SizedBox.shrink(),
             ),
           );
         },
