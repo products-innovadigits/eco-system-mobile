@@ -53,7 +53,7 @@
     </queries>
 
     <application
-        android:label="Eco System"
+        android:label="Nawah"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
         android:requestLegacyExternalStorage="true"

@@ -269,3 +269,7 @@ class Reset extends AppEvent {
 class Export extends AppEvent {
   Export({Object? arguments}) : super(arguments);
 }
+
+class Assign extends AppEvent {
+  Assign({Object? arguments}) : super(arguments);
+}

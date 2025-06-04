@@ -25,6 +25,7 @@ abstract class ApiNames {
   static const talents = "candidates";
   static const exportZipFile = "candidates/export-resumes";
   static const exportExcelFile = "candidates/export-resumes-excel";
+  static const assignCandidatesToJobs = "candidates/assign-jobs";
   static candidateDetails(id) => "candidates/$id";
   // Filters
   static const tags = "tags/get-all";

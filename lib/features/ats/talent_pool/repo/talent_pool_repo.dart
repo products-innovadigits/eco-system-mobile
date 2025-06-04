@@ -12,6 +12,16 @@ abstract class TalentPoolRepo {
     );
   }
 
+  static Future<String> assignToJob(
+      {required List<int> selectedTalentsList,
+      required List<int> selectedJobsList}) async {
+    return await Network().request(
+      ApiNames.assignCandidatesToJobs,
+      method: ServerMethods.POST,
+      body: {"job_ids": selectedJobsList, "candidate_ids": selectedTalentsList},
+    );
+  }
+
   static Future<FileModel> exportFile(
       {required List<int> selectedTalentsList,
       required String fileName,

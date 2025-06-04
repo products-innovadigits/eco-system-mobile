@@ -17,6 +17,7 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
     on<ApplyFilters>(_onApplyFilters);
     on<Reset>(_onResetFilters);
     on<Export>(_onExport);
+    on<Assign>(_onAssignJobs);
   }
 
   List<CandidateModel> talentsList = [];
@@ -55,6 +56,7 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
     activeSelection = event.arguments as bool;
     if (activeSelection == false) {
       selectedTalentsList.clear();
+      selectedJobsList.clear();
     }
     emit(Done());
   }
@@ -178,6 +180,23 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
           LauncherHelper.openUrl(fileUrl.url!);
         });
       }
+    } catch (e) {
+      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+      emit(Error());
+    }
+  }
+
+  Future<void> _onAssignJobs(Assign event, Emitter<AppState> emit) async {
+    try {
+      emit(Exporting());
+
+      await TalentPoolRepo.assignToJob(
+          selectedJobsList: selectedJobsList,
+          selectedTalentsList: selectedTalentsList);
+
+      CustomNavigator.pop();
+      // AppCore.successToastMessage();
+      emit(Done());
     } catch (e) {
       AppCore.errorMessage(allTranslations.text('something_went_wrong'));
       emit(Error());

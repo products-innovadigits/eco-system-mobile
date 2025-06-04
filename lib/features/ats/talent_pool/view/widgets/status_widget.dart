@@ -1,7 +1,8 @@
 import 'package:eco_system/utility/export.dart';
 
 class StatusWidget extends StatelessWidget {
-  const StatusWidget({super.key});
+  final String status;
+  const StatusWidget({super.key, required this.status});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class StatusWidget extends StatelessWidget {
           ),
           child: Center(
               child: Text(
-                'نشطة',
+                status,
                 style: AppTextStyles.w400.copyWith(
                     fontSize: 10, color: Styles.PRIMARY_COLOR),
               )),
