@@ -7,6 +7,7 @@ class JobsService {
     engine.query = {
       "page": engine.currentPage + 1,
       "limit": engine.limit,
+      "search": engine.searchText,
       "title": engine.searchText
     };
 
