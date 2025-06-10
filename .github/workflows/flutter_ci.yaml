@@ -21,6 +21,16 @@ jobs:
           flutter-version: '3.29.3'
           channel: stable
 
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.pub-cache
+            .dart_tool
+          key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-flutter-
+
       - name: Install dependencies
         run: flutter pub get
 
@@ -29,14 +39,8 @@ jobs:
 
       - name: Run build_runner
         run: |
-          if grep -q "build_runner" pubspec.yaml; then
+          if grep -q "build_runner" pubspec.yaml || grep -q "flutter_gen_runner" pubspec.yaml; then
             flutter pub run build_runner build --delete-conflicting-outputs
-          fi
-
-      - name: Run flutter_gen_runner
-        run: |
-          if grep -q "flutter_gen_runner" pubspec.yaml; then
-            flutter pub run flutter_gen_runner build
           fi
 
       - name: Format check
