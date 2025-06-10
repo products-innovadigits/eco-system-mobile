@@ -1,4 +1,3 @@
-
 import 'package:eco_system/utility/export.dart';
 
 class Location extends StatelessWidget {
@@ -13,20 +12,16 @@ class Location extends StatelessWidget {
         Text(allTranslations.text(LocaleKeys.location),
             style: AppTextStyles.w400.copyWith(fontSize: 12)),
         8.sh,
-        CustomDropList(
-          list: filtrationBloc.locations,
-          hint: allTranslations.text(LocaleKeys.select_your_location),
-          onChanged: (value) {},
-        ),
-        // CustomTextField(
-        //   hint: allTranslations.text(LocaleKeys.enter_your_location),
-        //   controller:
-        //   context.read<CandidatesBloc>().locationController,
-        //  isReadOnly: true,
-        //  onTap: (){
-        //
-        //  },
+        // CustomDropList(
+        //   list: filtrationBloc.locations,
+        //   hint: allTranslations.text(LocaleKeys.select_your_location),
+        //   onChanged: (value) {},
         // ),
+        CustomTextField(
+          hint: allTranslations.text(LocaleKeys.select_your_location),
+          controller: filtrationBloc.locationController,
+          onChanged: (location) {},
+        ),
       ],
     );
   }
