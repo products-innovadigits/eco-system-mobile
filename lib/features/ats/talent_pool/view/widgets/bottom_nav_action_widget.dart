@@ -1,3 +1,4 @@
+import 'package:eco_system/features/ats/talent_pool/bloc/talent_pool_bloc.dart';
 import 'package:eco_system/utility/export.dart';
 
 class BottomNavActionWidget extends StatelessWidget {
@@ -15,9 +16,16 @@ class BottomNavActionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    final bloc = context.read<TalentPoolBloc>();
+    return InkWell(
       onTap: () {
-        PopUpHelper.showBottomSheet(height: height, child: bottomSheetContent);
+        bloc.fileNameController.clear();
+        PopUpHelper.showBottomSheet(
+            height: height,
+            child: BlocProvider.value(
+              value: bloc,
+              child: bottomSheetContent,
+            ));
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,

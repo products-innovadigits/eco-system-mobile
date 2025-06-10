@@ -1,5 +1,8 @@
 import 'package:eco_system/utility/export.dart';
 
+import '../model/file_model.dart';
+import '../repo/talent_pool_repo.dart';
+
 class TalentPoolBloc extends Bloc<AppEvent, AppState> {
   TalentPoolBloc() : super(Start()) {
     scrollController = ScrollController();
@@ -9,15 +12,18 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
     on<Click>(_getTalents);
     on<Sort>(_onSorting);
     on<Select>(onToggleSelection);
+    on<SelectJob>(_onSelectJob);
     on<SelectTalent>(_onSelectTalent);
     on<ApplyFilters>(_onApplyFilters);
     on<Reset>(_onResetFilters);
+    on<Export>(_onExport);
+    on<Assign>(_onAssignJobs);
   }
 
   List<CandidateModel> talentsList = [];
+  List<int> selectedJobsList = [];
   late SearchEngine _engine;
   late ScrollController scrollController;
-  Timer? _debounce;
 
   late TextEditingController fileNameController;
   late TextEditingController searchController;
@@ -50,19 +56,35 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
     activeSelection = event.arguments as bool;
     if (activeSelection == false) {
       selectedTalentsList.clear();
+      selectedJobsList.clear();
     }
     emit(Done());
   }
 
   void _onSelectTalent(SelectTalent event, Emitter<AppState> emit) {
-    int talentId = event.arguments as int;
-    if (event.arguments != null) {
+    bool selectAll =
+        (event.arguments as Map<String, dynamic>?)?['selectAll'] as bool? ??
+            false;
+    int? talentId =
+        (event.arguments as Map<String, dynamic>?)?['talentId'] as int?;
+
+    if (selectAll) {
+      selectedTalentsList
+          .addAll(talentsList.map((talent) => talent.id ?? 0).toList());
+    }
+    if (talentId != null) {
       if (selectedTalentsList.contains(talentId)) {
         selectedTalentsList.remove(talentId);
       } else {
         selectedTalentsList.add(talentId);
       }
     }
+
+    emit(Done());
+  }
+
+  void _onSelectJob(SelectJob event, Emitter<AppState> emit) {
+    selectedJobsList = event.arguments as List<int>;
     emit(Done());
   }
 
@@ -106,16 +128,8 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
     add(Click(arguments: _engine));
   }
 
-  void onSearching(String searchText) {
-    if (_debounce?.isActive ?? false) _debounce?.cancel();
-    _debounce = Timer(const Duration(milliseconds: 500), () {
-      add(Click(arguments: SearchEngine(searchText: searchText)));
-    });
-  }
-
   void onCancelSearch() {
     if (searchController.text.isNotEmpty) {
-      searchController.clear();
       add(Click(arguments: SearchEngine()));
     }
   }
@@ -143,6 +157,46 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
       } else {
         emit(Empty());
       }
+    } catch (e) {
+      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+      emit(Error());
+    }
+  }
+
+  Future<void> _onExport(Export event, Emitter<AppState> emit) async {
+    final bool isExcel = event.arguments as bool;
+    try {
+      emit(Exporting());
+
+      final FileModel fileUrl = await TalentPoolRepo.exportFile(
+          fileName: fileNameController.text,
+          isExcel: isExcel,
+          selectedTalentsList: selectedTalentsList);
+      if (fileUrl.url != null && fileUrl.url!.isNotEmpty) {
+        CustomNavigator.pop();
+        AppCore.successToastMessage(fileUrl.message);
+        emit(Done());
+        Future.delayed(Duration(milliseconds: 1500), () {
+          LauncherHelper.openUrl(fileUrl.url!);
+        });
+      }
+    } catch (e) {
+      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+      emit(Error());
+    }
+  }
+
+  Future<void> _onAssignJobs(Assign event, Emitter<AppState> emit) async {
+    try {
+      emit(Exporting());
+
+      await TalentPoolRepo.assignToJob(
+          selectedJobsList: selectedJobsList,
+          selectedTalentsList: selectedTalentsList);
+
+      CustomNavigator.pop();
+      // AppCore.successToastMessage();
+      emit(Done());
     } catch (e) {
       AppCore.errorMessage(allTranslations.text('something_went_wrong'));
       emit(Error());

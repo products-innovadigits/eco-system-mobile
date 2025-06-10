@@ -143,7 +143,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                           if (_debounceTimer?.isActive ?? false)
                             _debounceTimer?.cancel();
                           _debounceTimer =
-                              Timer(const Duration(milliseconds: 500), () {
+                              Timer(const Duration(milliseconds: 600), () {
                             widget.onSearching!(v);
                           });
                         },
@@ -153,10 +153,10 @@ class _CustomAppBarState extends State<CustomAppBar> {
                           suffixIcon: _isSearchFocused
                               ? GestureDetector(
                                   onTap: () {
-                                    widget.searchController?.clear();
-                                    _focusNode.unfocus();
                                     if (widget.onCanceling != null) {
                                       widget.onCanceling!();
+                                      widget.searchController?.clear();
+                                      _focusNode.unfocus();
                                     }
                                   },
                                   child: Padding(

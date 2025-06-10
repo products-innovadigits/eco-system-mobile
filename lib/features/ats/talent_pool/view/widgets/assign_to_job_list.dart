@@ -2,7 +2,7 @@ import 'package:eco_system/features/ats/talent_pool/view/widgets/status_widget.d
 import 'package:eco_system/utility/export.dart';
 
 class AssignToJobList extends StatelessWidget {
-  final Function(int) onSelectJob;
+  final Function(List<int>) onSelectJob;
   final List<int> selectedJobsList;
 
   const AssignToJobList(
@@ -10,56 +10,71 @@ class AssignToJobList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: context.h * 0.6,
-      child: ListView.separated(
-        itemBuilder: (context, index) => InkWell(
-          onTap: () => onSelectJob(index),
-          child: Container(
-            width: context.w,
-            decoration: BoxDecoration(
-                color: Styles.WHITE_COLOR,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Styles.BORDER)),
-            child: Column(
-              children: [
-                StatusWidget(),
-                Padding(
-                  padding:
-                      EdgeInsetsDirectional.only(start: 12.w, bottom: 24.h),
-                  child: Row(
+    return BlocBuilder<JobsBloc, AppState>(
+      builder: (context, state) {
+        final bloc = context.read<JobsBloc>();
+        final jobsList = bloc.jobsList;
+        return SizedBox(
+          height: context.h * 0.6,
+          child: ListView.separated(
+            itemBuilder: (context, index) {
+              final job = jobsList[index];
+              return InkWell(
+                onTap: () {
+                  bloc.add(Select(arguments: job.id));
+                  onSelectJob(bloc.selectedJobsList);
+                },
+                child: Container(
+                  width: context.w,
+                  decoration: BoxDecoration(
+                      color: Styles.WHITE_COLOR,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: Styles.BORDER)),
+                  child: Column(
                     children: [
-                      CustomCheckBoxWidget(
-                          onCheck: () => onSelectJob(index),
-                          isChecked: selectedJobsList.contains(index)),
-                      8.sw,
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'قائد فريق  تصميم المنتجات',
-                            style: AppTextStyles.w500
-                                .copyWith(color: Styles.TEXT_COLOR),
-                          ),
-                          4.sh,
-                          Text(
-                            'دوام كامل . مصر . تصميم',
-                            style: AppTextStyles.w400.copyWith(
-                                color: Styles.SUB_TEXT_DARK_COLOR,
-                                fontSize: 10),
-                          ),
-                        ],
-                      ),
+                      if (job.status != null) StatusWidget(status: job.status!),
+                      Padding(
+                        padding: EdgeInsetsDirectional.only(
+                            start: 12.w, bottom: 24.h),
+                        child: Row(
+                          children: [
+                            CustomCheckBoxWidget(
+                                onCheck: () {
+                                  bloc.add(Select(arguments: job.id));
+                                  onSelectJob(bloc.selectedJobsList);
+                                },
+                                isChecked: selectedJobsList.contains(job.id)),
+                            8.sw,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  job.title ?? '',
+                                  style: AppTextStyles.w500
+                                      .copyWith(color: Styles.TEXT_COLOR),
+                                ),
+                                4.sh,
+                                Text(
+                                  '${job.chanceType} . ${job.address} . ${job.department}',
+                                  style: AppTextStyles.w400.copyWith(
+                                      color: Styles.SUB_TEXT_DARK_COLOR,
+                                      fontSize: 10),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
-                )
-              ],
-            ),
+                ),
+              );
+            },
+            separatorBuilder: (context, index) => 12.sh,
+            itemCount: jobsList.length,
           ),
-        ),
-        separatorBuilder: (context, index) => 12.sh,
-        itemCount: 12,
-      ),
+        );
+      },
     );
   }
 }

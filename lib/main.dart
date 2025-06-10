@@ -111,7 +111,7 @@ class _MyAppState extends State<MyApp> {
                       GlobalWidgetsLocalizations.delegate,
                       GlobalCupertinoLocalizations.delegate,
                     ],
-                    title: "Eco System",
+                    title: "Nawah",
                     themeMode: ThemeMode.light,
                     theme: Themes.lightTheme().themeData.copyWith(
                           appBarTheme: Themes.lightTheme()

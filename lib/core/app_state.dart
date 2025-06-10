@@ -56,6 +56,11 @@ class Loading extends AppState {
   Map<String, dynamic> toJson() => {"state": "Loading"};
 }
 
+class Exporting extends AppState {
+  @override
+  Map<String, dynamic> toJson() => {"state": "Exporting"};
+}
+
 class Empty extends AppState {
   final bool? initial;
   Empty({this.initial});

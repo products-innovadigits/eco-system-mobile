@@ -26,6 +26,10 @@ class Select extends AppEvent {
   Select({Object? arguments}) : super(arguments);
 }
 
+class SelectJob extends AppEvent {
+  SelectJob({Object? arguments}) : super(arguments);
+}
+
 class Sort extends AppEvent {
   Sort({Object? arguments}) : super(arguments);
 }
@@ -260,4 +264,12 @@ class ApplyFilters extends AppEvent {
 
 class Reset extends AppEvent {
   Reset({Object? arguments}) : super(arguments);
+}
+
+class Export extends AppEvent {
+  Export({Object? arguments}) : super(arguments);
+}
+
+class Assign extends AppEvent {
+  Assign({Object? arguments}) : super(arguments);
 }

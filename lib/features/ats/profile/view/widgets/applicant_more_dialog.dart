@@ -1,7 +1,6 @@
 import 'package:eco_system/features/ats/profile/view/sections/ratings_bottom_sheet.dart';
 import 'package:eco_system/features/ats/profile/view/widgets/more_dialog_tile_widget.dart';
 import 'package:eco_system/features/ats/talent_pool/view/widgets/assign_to_job_list.dart';
-import 'package:eco_system/helpers/launcher_helper.dart';
 import 'package:eco_system/utility/export.dart';
 
 class ApplicantMoreDialog extends StatelessWidget {
