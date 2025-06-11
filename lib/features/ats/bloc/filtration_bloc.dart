@@ -251,16 +251,12 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
       return;
     }
 
-    if (talentBloc != null)
-      talentBloc.add(ApplyFilters(arguments: {
-        "skills": filterModel.selectedSkills,
-        "tags": filterModel.selectedTags
-      }));
-    if (candidatesBloc != null)
-      candidatesBloc.add(ApplyFilters(arguments: {
-        "skills": filterModel.selectedSkills,
-        "tags": filterModel.selectedTags
-      }));
+    if (talentBloc != null) {
+      talentBloc.add(ApplyFilters(arguments: filterModel));
+    }
+    if (candidatesBloc != null) {
+      candidatesBloc.add(ApplyFilters(arguments: filterModel));
+    }
     collapseExpandedLists();
     CustomNavigator.pop();
   }

@@ -21,6 +21,7 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
   }
 
   List<CandidateModel> talentsList = [];
+  int? candidatesCount;
   List<int> selectedJobsList = [];
   late SearchEngine _engine;
   late ScrollController scrollController;
@@ -44,8 +45,7 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
   ];
   DropListModel? selectedSorting;
 
-  List<String> selectedSkills = [];
-  List<String> selectedTags = [];
+  CandidateFilterModel filterModel = const CandidateFilterModel();
 
   _onSorting(Sort event, Emitter<AppState> emit) async {
     selectedSorting = event.arguments as DropListModel?;
@@ -100,17 +100,7 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
   }
 
   void _onApplyFilters(ApplyFilters event, Emitter<AppState> emit) {
-    final Map<String, dynamic> filters =
-        event.arguments as Map<String, dynamic>;
-    selectedSkills = (filters['skills'] as List<DropListModel>?)
-            ?.map((skill) => skill.name ?? '')
-            .toList() ??
-        [];
-    selectedTags = (filters['tags'] as List<DropListModel>?)
-            ?.map((tag) => tag.name ?? '')
-            .toList() ??
-        [];
-
+    filterModel = event.arguments as CandidateFilterModel;
     isFiltered = true;
     activeSelection = false;
     _engine = SearchEngine(searchText: searchController.text);
@@ -119,8 +109,7 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
   }
 
   void _onResetFilters(Reset event, Emitter<AppState> emit) {
-    selectedSkills.clear();
-    selectedTags.clear();
+    filterModel = const CandidateFilterModel();
     activeSelection = false;
     isFiltered = false;
     _engine = SearchEngine(searchText: searchController.text);
@@ -145,12 +134,14 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
         emit(Done(loading: true));
       }
 
-      final newTalents = await TalentPoolService.getTalents(
+      final talentModel = await TalentPoolService.getTalents(
         engine: _engine,
-        skills: selectedSkills,
-        tags: selectedTags,
+        filters: isFiltered ? filterModel : null,
       );
-      talentsList.addAll(newTalents);
+      candidatesCount = talentModel.meta?.total;
+      if (talentModel.data != null && talentModel.data!.isNotEmpty) {
+        talentsList.addAll(talentModel.data!);
+      }
 
       if (talentsList.isNotEmpty) {
         emit(Done());
@@ -187,15 +178,23 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
   }
 
   Future<void> _onAssignJobs(Assign event, Emitter<AppState> emit) async {
+    int? talentId = event.arguments as int?;
     try {
       emit(Exporting());
 
-      await TalentPoolRepo.assignToJob(
+      final res = await TalentPoolRepo.assignToJob(
           selectedJobsList: selectedJobsList,
-          selectedTalentsList: selectedTalentsList);
-
+          selectedTalentsList:
+              talentId != null ? [talentId] : selectedTalentsList);
       CustomNavigator.pop();
-      // AppCore.successToastMessage();
+      if (res.status == 200) {
+        selectedJobsList.clear();
+        selectedTalentsList.clear();
+        activeSelection = false;
+        AppCore.successMessage(res.message);
+      } else {
+        AppCore.errorMessage(res.message);
+      }
       emit(Done());
     } catch (e) {
       AppCore.errorMessage(allTranslations.text('something_went_wrong'));
@@ -212,8 +211,7 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
     talentsList.clear();
     activeSelection = false;
     selectedSorting = null;
-    selectedSkills.clear();
-    selectedTags.clear();
+    filterModel = const CandidateFilterModel();
     _engine = SearchEngine();
     return super.close();
   }

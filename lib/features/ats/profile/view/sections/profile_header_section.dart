@@ -46,6 +46,7 @@ class _ProfileHeaderSectionState extends State<ProfileHeaderSection>
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileBloc, AppState>(
+      buildWhen: (previous, current) => current is! Exporting,
       builder: (context, state) {
         final profileBloc = context.read<ProfileBloc>();
         _handleAnimation(profileBloc.showMoreDialog);
@@ -118,7 +119,8 @@ class _ProfileHeaderSectionState extends State<ProfileHeaderSection>
                       scale: _scale,
                       alignment: Alignment.topLeft,
                       child: widget.isTalent
-                          ? CandidateMoreDialog()
+                          ? CandidateMoreDialog(
+                              candidateId: profileBloc.candidateModel?.id ?? 0)
                           : ApplicantMoreDialog(
                               email: candidateModel?.email ?? ''),
                     ),

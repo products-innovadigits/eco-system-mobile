@@ -22,7 +22,6 @@ class TalentPoolSection extends StatelessWidget {
               child: Container(
                 width: context.w,
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                 decoration: BoxDecoration(
                     color: Styles.WHITE_COLOR,
                     borderRadius: BorderRadius.circular(14),
@@ -39,7 +38,8 @@ class TalentPoolSection extends StatelessWidget {
                     Divider(color: Styles.BORDER_COLOR),
                     12.sh,
                     TotalCandidatesSection(
-                        talentsList: talentPoolBloc.talentsList),
+                        talentsList: talentPoolBloc.talentsList,
+                        candidatesCount: talentPoolBloc.candidatesCount ?? 0),
                   ],
                 ),
               ),
@@ -47,20 +47,41 @@ class TalentPoolSection extends StatelessWidget {
           }
           if (state is Loading) {
             return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+              padding: EdgeInsets.only(top: 24.h),
               child: CustomShimmerContainer(
                 height: context.h * 0.2,
                 width: context.w,
               ),
             );
           }
-          else {
+          if (state is Error) {
+            return Padding(
+              padding: EdgeInsets.only(top: 24.h),
+              child: ErrorContainerWidget(
+                  header: Column(
+                    children: [
+                      SectionTitle(
+                        title: allTranslations.text(LocaleKeys.talent_pool),
+                        subText: allTranslations
+                            .text(LocaleKeys.candidate_with_future_potential),
+                        icon: Assets.svgs.tripleUser.path,
+                        onViewTap: () {},
+                      ),
+                      Divider(color: Styles.BORDER_COLOR)
+                    ],
+                  ),
+                  onTryAgain: () {
+                    context
+                        .read<TalentPoolBloc>()
+                        .add(Click(arguments: SearchEngine()));
+                  }),
+            );
+          } else {
             return Padding(
               padding: EdgeInsets.only(top: 24.h),
               child: EmptyContainer(
-                  txt: state is Error
-                      ? allTranslations.text(LocaleKeys.something_went_wrong)
-                      : allTranslations.text(LocaleKeys.there_is_no_data)),
+                txt: allTranslations.text(LocaleKeys.there_is_no_data),
+              ),
             );
           }
         },

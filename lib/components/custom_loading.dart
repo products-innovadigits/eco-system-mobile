@@ -1,6 +1,4 @@
-import 'package:eco_system/helpers/media_query_helper.dart';
-import 'package:eco_system/helpers/styles.dart';
-import 'package:flutter/material.dart';
+import 'package:eco_system/utility/export.dart';
 
 class CustomLoading extends StatelessWidget {
   final bool? loading;
@@ -26,7 +24,7 @@ class CustomLoading extends StatelessWidget {
     return isTextLoading
         ? Visibility(
             visible: loading ?? true,
-            child: const SizedBox(
+            child: SizedBox(
                 height: 50,
                 child: Center(
                   child: Row(
@@ -34,7 +32,7 @@ class CustomLoading extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "Loading ... ",
+                        allTranslations.text(LocaleKeys.loading),
                         style: Styles.SUB_HEADER_STYLE,
                       )
                     ],

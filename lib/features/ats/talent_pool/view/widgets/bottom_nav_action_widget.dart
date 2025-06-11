@@ -16,14 +16,14 @@ class BottomNavActionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<TalentPoolBloc>();
+    final talentPoolBloc = context.read<TalentPoolBloc>();
     return InkWell(
       onTap: () {
-        bloc.fileNameController.clear();
+        talentPoolBloc.fileNameController.clear();
         PopUpHelper.showBottomSheet(
             height: height,
             child: BlocProvider.value(
-              value: bloc,
+              value: talentPoolBloc,
               child: bottomSheetContent,
             ));
       },

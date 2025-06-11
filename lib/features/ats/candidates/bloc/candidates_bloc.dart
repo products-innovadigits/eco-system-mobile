@@ -13,8 +13,7 @@ class CandidatesBloc extends Bloc<AppEvent, AppState> {
   late SearchEngine _engine;
   String jobTitle = '';
   int candidateCount = 0;
-  List<String> selectedSkills = [];
-  List<String> selectedTags = [];
+  CandidateFilterModel filterModel = const CandidateFilterModel();
   bool isFiltered = false;
 
   final Map<StageModel, GlobalKey> _stageKeys = {};
@@ -59,17 +58,7 @@ class CandidatesBloc extends Bloc<AppEvent, AppState> {
   }
 
   void _onApplyFilters(ApplyFilters event, Emitter<AppState> emit) {
-    final Map<String, dynamic> filters =
-        event.arguments as Map<String, dynamic>;
-    selectedSkills = (filters['skills'] as List<DropListModel>?)
-            ?.map((skill) => skill.name ?? '')
-            .toList() ??
-        [];
-    selectedTags = (filters['tags'] as List<DropListModel>?)
-            ?.map((tag) => tag.name ?? '')
-            .toList() ??
-        [];
-
+    filterModel = event.arguments as CandidateFilterModel;
     isFiltered = true;
     _engine = SearchEngine();
     candidatesList.clear();
@@ -77,8 +66,7 @@ class CandidatesBloc extends Bloc<AppEvent, AppState> {
   }
 
   void _onResetFilters(Reset event, Emitter<AppState> emit) {
-    selectedSkills.clear();
-    selectedTags.clear();
+    filterModel = const CandidateFilterModel();
     isFiltered = false;
     _engine = SearchEngine();
     candidatesList.clear();
@@ -96,12 +84,13 @@ class CandidatesBloc extends Bloc<AppEvent, AppState> {
         emit(Done(loading: true));
       }
 
-      final newTalents = await TalentPoolService.getTalents(
+      final talentModel = await TalentPoolService.getTalents(
         engine: _engine,
-        skills: selectedSkills,
-        tags: selectedTags,
+        filters: isFiltered ? filterModel : null,
       );
-      candidatesList.addAll(newTalents);
+      if (talentModel.data != null && talentModel.data!.isNotEmpty) {
+        candidatesList.addAll(talentModel.data!);
+      }
 
       if (candidatesList.isNotEmpty) {
         emit(Done());
@@ -119,8 +108,7 @@ class CandidatesBloc extends Bloc<AppEvent, AppState> {
     scrollController.dispose();
     _stageKeys.clear();
     candidatesList.clear();
-    selectedSkills.clear();
-    selectedTags.clear();
+    filterModel = const CandidateFilterModel();
     isFiltered = false;
     _engine = SearchEngine();
     return super.close();

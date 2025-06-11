@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:eco_system/features/ats/profile/model/rating_model.dart';
 import 'package:eco_system/features/ats/profile/repo/profile_repo.dart';
+import 'package:eco_system/features/ats/talent_pool/repo/talent_pool_repo.dart';
 import 'package:eco_system/utility/export.dart';
 
 class ProfileBloc extends Bloc<AppEvent, AppState> {
@@ -13,6 +14,7 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
     on<ToggleExpand>(_onToggleExpansion);
     on<UpdateRating>(_onUpdateRating);
     on<AddComment>(_onAddComment);
+    on<Assign>(_onAssignJobs);
     on<ToggleCommentField>(_onToggleCommentField);
   }
 
@@ -21,6 +23,7 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
   bool isWorkExperienceExpanded = false;
   int reviewExpandedIndex = -1;
   bool showMoreDialog = false;
+  List<int> selectedJobsList = [];
 
   CandidateModel? candidateModel;
   ProfileEnum selectedTab = ProfileEnum.profile;
@@ -110,6 +113,28 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
       RatingItemModel(title: LocaleKeys.knowledge),
       RatingItemModel(title: LocaleKeys.communications),
     ];
+  }
+
+  Future<void> _onAssignJobs(Assign event, Emitter<AppState> emit) async {
+    int talentId = event.arguments as int;
+    try {
+      emit(Exporting());
+
+      final res = await TalentPoolRepo.assignToJob(
+          selectedJobsList: selectedJobsList, selectedTalentsList: [talentId]);
+      CustomNavigator.pop();
+      if (res.status == 200) {
+        selectedJobsList.clear();
+        add(Click(arguments: candidateModel?.id));
+        AppCore.successMessage(res.message);
+      } else {
+        AppCore.errorMessage(res.message);
+        emit(Done());
+      }
+    } catch (e) {
+      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+      emit(Error());
+    }
   }
 
   _getTalentDetails(AppEvent event, Emitter<AppState> emit) async {

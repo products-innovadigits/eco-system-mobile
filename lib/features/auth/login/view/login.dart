@@ -22,7 +22,7 @@ class LoginView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
           toolbarHeight: 100.h,
-          leadingWidth: 80.w,
+          leadingWidth: 110.w,
           leading: Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
             child: Styles.logo(color: Styles.PRIMARY_COLOR),
