@@ -38,6 +38,9 @@ class TalentPoolService {
       if (filters.compatibilityRate != null) {
         queryParams['compatibility_rate'] = filters.compatibilityRate;
       }
+      if (filters.gender != null) {
+        queryParams['gender'] = filters.gender;
+      }
       if (filters.selectedSkills.isNotEmpty) {
         for (var i = 0; i < filters.selectedSkills.length; i++) {
           queryParams['skills[$i]'] = filters.selectedSkills[i].name;

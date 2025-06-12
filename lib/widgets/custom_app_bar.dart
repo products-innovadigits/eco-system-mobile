@@ -51,7 +51,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => Size(
       CustomNavigator.navigatorState.currentContext!.w,
-      (withSearch ?? true) ? 120.h : 100.h);
+      (withSearch ?? true) ? 122.h : 100.h);
 }
 
 class _CustomAppBarState extends State<CustomAppBar> {

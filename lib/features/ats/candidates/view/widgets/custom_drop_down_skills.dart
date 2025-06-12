@@ -1,26 +1,11 @@
 import 'package:eco_system/features/ats/candidates/view/sections/picked_choices_list.dart';
 import 'package:eco_system/utility/export.dart';
 
-/// A custom dropdown widget for selecting skills or tags.
-/// Features:
-/// - Toggleable dropdown list
-/// - Visual feedback for expanded state
-/// - Support for selected items with remove functionality
-/// - Customizable hint text
 class CustomDropDownSkills extends StatelessWidget {
-  /// Hint text to display when no items are selected
   final String? hint;
-
-  /// List of currently selected items
   final List<DropListModel> selectedList;
-
-  /// Callback function triggered when dropdown is toggled
   final VoidCallback onExpand;
-
-  /// Current state of the dropdown (expanded/collapsed)
   final bool isExpanded;
-
-  /// Callback function for removing selected items
   final void Function(DropListModel item) onRemove;
 
   const CustomDropDownSkills({
@@ -36,13 +21,11 @@ class CustomDropDownSkills extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Main container that acts as the dropdown trigger
         InkWell(
-          // Allow toggling by tapping anywhere on the container
           onTap: onExpand,
           child: Container(
             width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               border: Border.all(color: Styles.BORDER),
@@ -50,7 +33,6 @@ class CustomDropDownSkills extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Left side: Either shows hint text or selected items
                 Expanded(
                   child: selectedList.isEmpty
                       ? Text(
@@ -65,10 +47,9 @@ class CustomDropDownSkills extends StatelessWidget {
                 const SizedBox(width: 12),
                 // Right side: Dropdown arrow button
                 InkWell(
-                  // Allow toggling by tapping the arrow
                   onTap: onExpand,
                   child: Container(
-                    padding: const EdgeInsets.all(5),
+                    padding: EdgeInsets.all(5.w),
                     width: 24.w,
                     height: 24.w,
                     child: Images(

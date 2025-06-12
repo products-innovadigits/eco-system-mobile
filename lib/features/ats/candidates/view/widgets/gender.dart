@@ -9,13 +9,20 @@ class Gender extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(allTranslations.text(LocaleKeys.gender),
-            style: AppTextStyles.w400.copyWith(fontSize: 12)),
+        Text(
+          allTranslations.text(LocaleKeys.gender),
+          style: AppTextStyles.w400.copyWith(fontSize: 12.w),
+        ),
         8.sh,
         CustomDropList(
           list: filtrationBloc.genders,
-          hint: allTranslations.text(LocaleKeys.select_gender),
-          onChanged: (value) {},
+          hint: filtrationBloc.genderController.text.isEmpty
+              ? allTranslations.text(LocaleKeys.select_gender)
+              : filtrationBloc.genderController.text,
+          onChanged: (value) {
+            filtrationBloc.genderController.text = value.name ?? '';
+            filtrationBloc.add(UpdateGender(arguments: value));
+          },
         ),
       ],
     );

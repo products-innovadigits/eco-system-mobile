@@ -3,6 +3,11 @@ import 'package:eco_system/features/ats/repo/filtration_repo.dart';
 import 'package:eco_system/features/ats/talent_pool/bloc/talent_pool_bloc.dart';
 import 'package:eco_system/utility/export.dart';
 
+/// Event for updating the gender filter
+class UpdateGender extends AppEvent {
+  UpdateGender({Object? arguments}) : super(arguments);
+}
+
 class FiltrationBloc extends Bloc<AppEvent, AppState> {
   FiltrationBloc() : super(Start()) {
     on<AddSkill>(_onAddSkill);
@@ -12,6 +17,7 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
     on<RemoveSkill>(_onRemoveSkill);
     on<RemoveKeywords>(_onRemoveTag);
     on<Expand>(_onToggleTagsExpansion);
+    on<UpdateGender>(_onUpdateGender);
 
     // Setup text controller listeners
     _setupTextControllerListeners();
@@ -32,6 +38,7 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
       TextEditingController();
   final TextEditingController compatibilityRateController =
       TextEditingController();
+  final TextEditingController genderController = TextEditingController();
 
   // BehaviorSubject for filter state
   final _filterSubject = BehaviorSubject<CandidateFilterModel>.seeded(
@@ -77,6 +84,7 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
     locationController.addListener(_updateLocationFilter);
     applicationDateController.addListener(_updateApplicationDateFilter);
     compatibilityRateController.addListener(_updateCompatibilityRateFilter);
+    genderController.addListener(_updateGenderFilter);
   }
 
   void _updateSalaryFilters() {
@@ -114,6 +122,13 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
     final currentModel = _filterSubject.value;
     updateFilter(currentModel.copyWith(
       compatibilityRate: compatibilityRateController.text,
+    ));
+  }
+
+  void _updateGenderFilter() {
+    final currentModel = _filterSubject.value;
+    updateFilter(currentModel.copyWith(
+      gender: genderController.text,
     ));
   }
 
@@ -175,6 +190,23 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
     emit(Done());
   }
 
+  void _onUpdateGender(UpdateGender event, Emitter<AppState> emit) {
+    final gender = event.arguments as DropListModel;
+    genderController.text = gender.name ?? '';
+    final currentModel = _filterSubject.value;
+    // Map Arabic gender values to English
+    String? mappedGender;
+    if (gender.name == 'ذكر') {
+      mappedGender = 'male';
+    } else if (gender.name == 'انثى') {
+      mappedGender = 'female';
+    }
+    updateFilter(currentModel.copyWith(
+      gender: mappedGender,
+    ));
+    emit(Done());
+  }
+
   void _getTags(AppEvent event, Emitter<AppState> emit) async {
     emit(Loading());
     try {
@@ -228,6 +260,7 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
     applicationDateController.clear();
     compatibilityRateController.clear();
     skillController.clear();
+    genderController.clear();
 
     // Reset all active fields
     updateFilter(filterModel.copyWith(
@@ -241,6 +274,7 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
       location: null,
       applicationDate: null,
       compatibilityRate: null,
+      gender: null,
       expandTags: false,
     ));
   }
@@ -282,6 +316,7 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
     locationController.removeListener(_updateLocationFilter);
     applicationDateController.removeListener(_updateApplicationDateFilter);
     compatibilityRateController.removeListener(_updateCompatibilityRateFilter);
+    genderController.removeListener(_updateGenderFilter);
 
     // Dispose controllers
     experienceToController.dispose();
@@ -292,6 +327,7 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
     locationController.dispose();
     applicationDateController.dispose();
     compatibilityRateController.dispose();
+    genderController.dispose();
     return super.close();
   }
 }
