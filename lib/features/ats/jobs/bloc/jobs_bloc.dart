@@ -3,6 +3,7 @@ import 'package:eco_system/utility/export.dart';
 class JobsBloc extends Bloc<AppEvent, AppState> {
   JobsBloc() : super(Start()) {
     scrollController = ScrollController();
+    searchController = TextEditingController();
     customScroll(scrollController);
     on<Click>(_getJobs);
     on<Expand>(onExpand);
@@ -12,6 +13,7 @@ class JobsBloc extends Bloc<AppEvent, AppState> {
   List<JobDataModel> jobsList = [];
   late SearchEngine _engine;
   late ScrollController scrollController;
+  late TextEditingController searchController;
 
   final _expandedIndex = BehaviorSubject<int?>.seeded(-1);
 
@@ -53,6 +55,12 @@ class JobsBloc extends Bloc<AppEvent, AppState> {
         add(Click(arguments: _engine));
       }
     });
+  }
+
+  void onCancelSearch() {
+    if (searchController.text.isNotEmpty) {
+      add(Click(arguments: SearchEngine()));
+    }
   }
 
   void _getJobs(AppEvent event, Emitter<AppState> emit) async {

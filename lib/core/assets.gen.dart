@@ -601,15 +601,24 @@ class Assets {
   const Assets._();
 
   static const String aEnv = '.env';
-  static const AssetGenImage appIcon = AssetGenImage('assets/app_icon.png');
+  static const AssetGenImage appIconPng = AssetGenImage('assets/app-icon.png');
+  static const AssetGenImage appIconPng_ = AssetGenImage('assets/app_icon.png');
   static const $AssetsImagesGen images = $AssetsImagesGen();
   static const $AssetsLangsGen langs = $AssetsLangsGen();
   static const AssetGenImage logo = AssetGenImage('assets/logo.png');
+  static const AssetGenImage nawahLogo = AssetGenImage('assets/nawah_logo.png');
   static const AssetGenImage splash = AssetGenImage('assets/splash.png');
   static const $AssetsSvgsGen svgs = $AssetsSvgsGen();
 
   /// List of all assets
-  static List<dynamic> get values => [aEnv, appIcon, logo, splash];
+  static List<dynamic> get values => [
+    aEnv,
+    appIconPng,
+    appIconPng_,
+    logo,
+    nawahLogo,
+    splash,
+  ];
 }
 
 class AssetGenImage {

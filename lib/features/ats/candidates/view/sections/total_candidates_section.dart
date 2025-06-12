@@ -3,8 +3,10 @@ import 'package:eco_system/utility/export.dart';
 
 class TotalCandidatesSection extends StatelessWidget {
   final List<CandidateModel> talentsList;
+  final int candidatesCount;
 
-  const TotalCandidatesSection({super.key, required this.talentsList});
+  const TotalCandidatesSection(
+      {super.key, required this.talentsList, required this.candidatesCount});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class TotalCandidatesSection extends StatelessWidget {
             ),
             4.sh,
             Text(
-              talentsList.length.toString(),
+              candidatesCount.toString(),
               style: AppTextStyles.w700.copyWith(fontSize: 14),
             ),
           ],
@@ -47,13 +49,15 @@ class TotalCandidatesSection extends StatelessWidget {
                                 shape: BoxShape.circle),
                             child: Center(
                               child: Text(
-                                '+${talentsList.length - 5}',
+                                '+${candidatesCount - 5}',
                                 style: AppTextStyles.w400.copyWith(
-                                    color: Styles.WHITE_COLOR, fontSize: 11),
+                                    color: Styles.WHITE_COLOR,
+                                    fontSize: candidatesCount > 99 ? 10 : 11),
                               ),
                             ),
                           )
-                        : CustomNetworkImage.circleNewWorkImage(backGroundColor: Styles.PRIMARY_COLOR ),
+                        : CustomNetworkImage.circleNewWorkImage(
+                            backGroundColor: Styles.PRIMARY_COLOR),
                   )),
         ),
       ],

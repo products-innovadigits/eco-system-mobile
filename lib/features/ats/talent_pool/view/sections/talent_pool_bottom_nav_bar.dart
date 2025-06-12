@@ -24,31 +24,35 @@ class TalentPoolBottomNav extends StatelessWidget {
             icon: Assets.svgs.directboxSend.path,
             title: LocaleKeys.assign_to_job,
             height: context.h * 0.8,
-            bottomSheetContent: Stack(
-              children: [
-                Column(
+            bottomSheetContent: BlocBuilder<TalentPoolBloc, AppState>(
+              builder: (context, state) {
+                final bloc = context.read<TalentPoolBloc>();
+                return Stack(
                   children: [
-                    BottomSheetHeader(title: LocaleKeys.assign_to_job),
-                    AssignToJobList(
-                        onSelectJob: (jobs) {
-                          context.read<TalentPoolBloc>().selectedJobsList =
-                              jobs;
-                        },
-                        selectedJobsList:
-                            context.read<TalentPoolBloc>().selectedJobsList),
-                    52.sh,
+                    Column(
+                      children: [
+                        BottomSheetHeader(title: LocaleKeys.assign_to_job),
+                        AssignToJobList(
+                            onSelectJob: (jobs) {
+                              bloc.selectedJobsList = jobs;
+                            },
+                            selectedJobsList: bloc.selectedJobsList),
+                        52.sh,
+                      ],
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      child: CustomBtn(
+                          width: context.w * 0.9,
+                          loading: state is Exporting,
+                          text: allTranslations.text(LocaleKeys.save),
+                          onPressed: () {
+                            context.read<TalentPoolBloc>().add(Assign());
+                          }),
+                    )
                   ],
-                ),
-                Positioned(
-                  bottom: 0,
-                  child: CustomBtn(
-                      width: context.w * 0.9,
-                      text: allTranslations.text(LocaleKeys.save),
-                      onPressed: () {
-                        context.read<TalentPoolBloc>().add(Assign());
-                      }),
-                )
-              ],
+                );
+              },
             ),
           ),
           BottomNavActionWidget(

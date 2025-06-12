@@ -103,9 +103,9 @@ abstract class Styles {
 
   static Widget logo({Color? color, double? height, double? width}) =>
       Image.asset(
-        'assets/logo.png',
-        height: height ?? 190.0,
-        width: width ?? 250.0,
+        'assets/nawah_logo.png',
+        height: height ?? 300.0,
+        width: width ?? 300.0,
         color: color,
         fit: BoxFit.contain,
       );

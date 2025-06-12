@@ -8,23 +8,31 @@ class JobsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-          title: allTranslations.text('jobs'),
-          withSearch: true,
-          onTapSearch: () =>
-              CustomNavigator.push(Routes.SEARCH, arguments: SearchEnum.jobs),
-          searchHintText: allTranslations.text(LocaleKeys.searching_for_job)),
+        title: allTranslations.text(LocaleKeys.jobs),
+        withSearch: true,
+        withCancelBtn: true,
+        onCanceling: () => context.read<JobsBloc>().onCancelSearch(),
+        // onTapSearch: () =>
+        //     CustomNavigator.push(Routes.SEARCH, arguments: SearchEnum.jobs),
+        searchHintText: allTranslations.text(LocaleKeys.searching_for_job),
+        searchController: context.read<JobsBloc>().searchController,
+        onSearching: (value) => context
+            .read<JobsBloc>()
+            .add(Click(arguments: SearchEngine(searchText: value))),
+      ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
         child: BlocBuilder<JobsBloc, AppState>(
           builder: (context, state) {
             if (state is Loading) return LoadingShimmerList();
-            if (state is Done)
+            if (state is Done) {
               return Column(
                 children: [
                   Expanded(child: JobsListSection()),
                   CustomLoading(isTextLoading: true, loading: state.loading)
                 ],
               );
+            }
             if (state is Empty || state is Error) {
               return EmptyContainer(
                 txt: allTranslations.text("oops"),

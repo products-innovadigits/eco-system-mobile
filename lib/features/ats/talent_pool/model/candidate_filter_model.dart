@@ -9,6 +9,7 @@ class CandidateFilterModel {
   final String? experienceFrom;
   final String? experienceTo;
   final String? location;
+  final String? gender;
   final String? applicationDate;
   final String? compatibilityRate;
   final bool expandTags;
@@ -22,6 +23,7 @@ class CandidateFilterModel {
     this.experienceFrom,
     this.experienceTo,
     this.location,
+    this.gender,
     this.applicationDate,
     this.compatibilityRate,
     this.expandTags = false,
@@ -36,6 +38,7 @@ class CandidateFilterModel {
     String? experienceFrom,
     String? experienceTo,
     String? location,
+    String? gender,
     String? applicationDate,
     String? compatibilityRate,
     bool? expandTags,
@@ -49,6 +52,7 @@ class CandidateFilterModel {
       experienceFrom: experienceFrom ?? this.experienceFrom,
       experienceTo: experienceTo ?? this.experienceTo,
       location: location ?? this.location,
+      gender: gender ?? this.gender,
       applicationDate: applicationDate ?? this.applicationDate,
       compatibilityRate: compatibilityRate ?? this.compatibilityRate,
       expandTags: expandTags ?? this.expandTags,
@@ -65,6 +69,7 @@ class CandidateFilterModel {
       experienceFrom: null,
       experienceTo: null,
       location: null,
+      gender: null,
       applicationDate: null,
       compatibilityRate: null,
       expandTags: false,
@@ -150,6 +155,7 @@ class CandidateFilterModel {
         (experienceFrom != null && experienceFrom!.isNotEmpty) ||
         (experienceTo != null && experienceTo!.isNotEmpty) ||
         (location != null && location!.isNotEmpty) ||
+        (gender != null && gender!.isNotEmpty) ||
         (applicationDate != null && applicationDate!.isNotEmpty) ||
         (compatibilityRate != null && compatibilityRate!.isNotEmpty);
   }
