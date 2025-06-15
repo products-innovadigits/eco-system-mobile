@@ -15,6 +15,8 @@ class JobsListSection extends StatelessWidget {
             stream: jobsBloc.updateExpandedStream,
             builder: (context, snapshot) {
               return ListView.separated(
+                  controller:
+                      isHome == false ? jobsBloc.scrollController : null,
                   shrinkWrap: isHome == false ? false : true,
                   physics: isHome == false
                       ? const BouncingScrollPhysics()

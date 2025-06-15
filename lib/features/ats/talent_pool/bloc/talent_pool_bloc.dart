@@ -191,6 +191,7 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
         selectedJobsList.clear();
         selectedTalentsList.clear();
         activeSelection = false;
+        add(Click(arguments: SearchEngine()));
         AppCore.successMessage(res.message);
       } else {
         AppCore.errorMessage(res.message);

@@ -4,9 +4,9 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:eco_system/bloc/main_app_bloc.dart';
+import 'package:eco_system/helpers/secure_storage_helper.dart';
 
 import '../config/app_config.dart';
-import '../helpers/shared_helper.dart';
 import 'error/api_error_handler.dart';
 import 'mapper.dart';
 import 'network_logger.dart';
@@ -36,7 +36,8 @@ class Network {
     Map<String, dynamic>? header,
     ServerMethods method = ServerMethods.GET,
   }) async {
-    String token = await SharedHelper().readString(CachingKey.TOKEN);
+    // String token = await SharedHelper().readString(CachingKey.TOKEN);
+    String token = await SecureStorageHelper().getToken();
 
     _dio.options.headers = {
       'Authorization': 'Bearer $token',

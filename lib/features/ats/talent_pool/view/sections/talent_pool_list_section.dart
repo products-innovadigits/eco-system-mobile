@@ -15,7 +15,7 @@ class TalentPoolListSection extends StatelessWidget {
         final bloc = context.read<TalentPoolBloc>();
         final talentsList = bloc.talentsList;
         if (state is Loading) return LoadingShimmerList();
-        if (state is Done)
+        if (state is Done) {
           return Column(
             children: [
               Expanded(
@@ -43,6 +43,7 @@ class TalentPoolListSection extends StatelessWidget {
               CustomLoading(isTextLoading: true, loading: state.loading)
             ],
           );
+        }
         if (state is Empty || state is Error) {
           return EmptyContainer(
             txt: allTranslations.text("oops"),

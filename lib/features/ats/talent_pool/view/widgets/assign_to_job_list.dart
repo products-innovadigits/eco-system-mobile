@@ -34,69 +34,94 @@ class _AssignToJobListState extends State<AssignToJobList> {
 
   @override
   Widget build(BuildContext context) {
-    final jobsList = context.read<JobsBloc>().jobsList;
-    return SizedBox(
-      height: context.h * 0.6,
-      child: ListView.separated(
-        itemBuilder: (context, index) {
-          final job = jobsList[index];
-          return InkWell(
-            onTap: () {
-              if (job.id != null) {
-                _handleJobSelection(job.id!);
-              }
-            },
-            child: Container(
-              width: context.w,
-              decoration: BoxDecoration(
-                  color: Styles.WHITE_COLOR,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Styles.BORDER)),
-              child: Column(
-                children: [
-                  if (job.status != null) StatusWidget(status: job.status!),
-                  Padding(
-                    padding:
-                        EdgeInsetsDirectional.only(start: 12.w, bottom: 24.h),
-                    child: Row(
-                      children: [
-                        CustomCheckBoxWidget(
-                            onCheck: () {
-                              if (job.id != null) {
-                                _handleJobSelection(job.id!);
-                              }
-                            },
-                            isChecked: job.id != null &&
-                                _selectedJobs.contains(job.id)),
-                        8.sw,
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+    return BlocBuilder<JobsBloc, AppState>(
+      builder: (context, state) {
+        final jobsBloc = context.read<JobsBloc>();
+        final jobsList = jobsBloc.jobsList;
+        if (state is Loading) return LoadingShimmerList();
+        if (state is Done) {
+          return Column(
+            children: [
+              SizedBox(
+                height: context.h * 0.6,
+                child: ListView.separated(
+                  controller: jobsBloc.scrollController,
+                  physics: const BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    final job = jobsList[index];
+                    return InkWell(
+                      onTap: () {
+                        if (job.id != null) {
+                          _handleJobSelection(job.id!);
+                        }
+                      },
+                      child: Container(
+                        width: context.w,
+                        decoration: BoxDecoration(
+                            color: Styles.WHITE_COLOR,
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: Styles.BORDER)),
+                        child: Column(
                           children: [
-                            Text(
-                              job.title ?? '',
-                              style: AppTextStyles.w500
-                                  .copyWith(color: Styles.TEXT_COLOR),
-                            ),
-                            4.sh,
-                            Text(
-                              '${job.chanceType} . ${job.address} . ${job.department}',
-                              style: AppTextStyles.w400.copyWith(
-                                  color: Styles.SUB_TEXT_DARK_COLOR,
-                                  fontSize: 10),
-                            ),
+                            if (job.status != null) StatusWidget(status: job.status!),
+                            Padding(
+                              padding: EdgeInsetsDirectional.only(
+                                  start: 12.w, bottom: 24.h),
+                              child: Row(
+                                children: [
+                                  CustomCheckBoxWidget(
+                                      onCheck: () {
+                                        if (job.id != null) {
+                                          _handleJobSelection(job.id!);
+                                        }
+                                      },
+                                      isChecked: job.id != null &&
+                                          _selectedJobs.contains(job.id)),
+                                  8.sw,
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        job.title ?? '',
+                                        style: AppTextStyles.w500
+                                            .copyWith(color: Styles.TEXT_COLOR),
+                                      ),
+                                      4.sh,
+                                      Text(
+                                        '${job.chanceType} . ${job.address} . ${job.department}',
+                                        style: AppTextStyles.w400.copyWith(
+                                            color: Styles.SUB_TEXT_DARK_COLOR,
+                                            fontSize: 10),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            )
                           ],
                         ),
-                      ],
-                    ),
-                  )
-                ],
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) => 12.sh,
+                  itemCount: jobsList.length,
+                ),
               ),
-            ),
+              CustomLoading(isTextLoading: true, loading: state.loading)
+            ],
           );
-        },
-        separatorBuilder: (context, index) => 12.sh,
-        itemCount: jobsList.length,
-      ),
+        }
+        if (state is Empty || state is Error) {
+          return EmptyContainer(
+            txt: allTranslations.text("oops"),
+            subText: allTranslations.text(state is Error
+                ? LocaleKeys.something_went_wrong
+                : LocaleKeys.there_is_no_data),
+          );
+        } else {
+          return SizedBox();
+        }
+      },
     );
   }
 }

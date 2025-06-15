@@ -5,6 +5,7 @@ import 'package:eco_system/core/enums.dart';
 import 'package:eco_system/helpers/translation/all_translation.dart';
 import 'package:eco_system/navigation/custom_navigation.dart';
 import 'package:eco_system/navigation/routes.dart';
+import 'package:eco_system/utility/utility.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../features/auth/login/model/user_model.dart';
@@ -49,13 +50,15 @@ class SharedHelper {
     box!.delete(key.value);
   }
 
-  Future<void> saveUser(UserModel model,
-      {bool remember = false, String? password}) async {
-    writeData(CachingKey.TOKEN, model.accessToken);
+  Future<void> saveUser(
+      // UserModel model,
+      // {bool remember = false, String? password}
+      ) async {
+    // writeData(CachingKey.TOKEN, model.accessToken);
     writeData(CachingKey.SKIP, true);
     writeData(CachingKey.IS_LOGIN, true);
-    writeData(CachingKey.USER, json.encode(model.toJson()));
-    log('SAVE USER INFO >>> ${json.encode(model.toJson())}');
+    // writeData(CachingKey.USER, json.encode(model.toJson()));
+    // log('SAVE USER INFO >>> ${json.encode(model.toJson())}');
     // writeData(
     //     CachingKey.REMEMBER_ME,
     //     jsonEncode({
@@ -68,7 +71,7 @@ class SharedHelper {
   Future<UserModel> getUser() async {
     UserModel _user;
     _user = UserModel.fromJson(jsonDecode(box!.get(CachingKey.USER.value)!));
-    log('USER INFO >>> ${_user.toJson()}');
+    cprint('USER INFO >>> ${_user.toJson()}');
     return _user;
   }
 
