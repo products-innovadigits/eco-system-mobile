@@ -1,11 +1,9 @@
-import 'package:eco_system/helpers/media_query_helper.dart';
-import 'package:eco_system/helpers/styles.dart';
-import 'package:flutter/material.dart';
+import 'package:eco_system/utility/export.dart';
 
 class EmptyContainer extends StatelessWidget {
   final String? img;
   final String? txt;
-  final String? subText;
+  final String? desc;
   final double? remain;
   final TextStyle? subStyle;
 
@@ -14,8 +12,9 @@ class EmptyContainer extends StatelessWidget {
       this.img,
       this.txt,
       this.remain = 200.0,
-      this.subText,
+      this.desc,
       this.subStyle});
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -26,29 +25,22 @@ class EmptyContainer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset(
-                img ?? 'assets/images/empty_image.png',
-                width: MediaQueryHelper.width * .8,
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Text(
-                  txt ?? "No Data Yet !",
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                  ),
+              Images(image: img ?? Assets.svgs.emptyBox.path),
+              const SizedBox(height: 24),
+              Text(
+                txt ?? allTranslations.text(LocaleKeys.there_is_no_data),
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 12),
               Text(
-                subText ?? "",
+                desc ?? "",
                 textAlign: TextAlign.center,
-                style: subStyle ?? Styles.SUB_HEADER_STYLE,
+                style: subStyle ??
+                    AppTextStyles.w400.copyWith(color: Styles.DETAILS , fontSize: 12),
               )
             ],
           ),

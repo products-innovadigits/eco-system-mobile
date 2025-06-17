@@ -146,7 +146,11 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
       if (talentsList.isNotEmpty) {
         emit(Done());
       } else {
-        emit(Empty());
+        if (_engine.query['search'].toString().isEmpty) {
+          emit(Empty(initial: true));
+        } else {
+          emit(Empty(initial: false));
+        }
       }
     } catch (e) {
       AppCore.errorMessage(allTranslations.text('something_went_wrong'));

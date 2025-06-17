@@ -397,6 +397,12 @@ abstract class  LocaleKeys {
   static const experience_validation = 'experience_validation';
   static const currency_required = 'currency_required';
   static const no_candidates = 'no_candidates';
+  static const no_candidates_desc = 'no_candidates_desc';
+  static const no_talents = 'no_talents';
+  static const page_not_found = 'page_not_found';
+  static const page_not_found_desc = 'page_not_found_desc';
+  static const no_talents_desc = 'no_talents_desc';
+  static const no_data_desc = 'no_data_desc';
   static const candidate_in_pipeline = 'candidate_in_pipeline';
   static const newest_to_oldest = 'newest_to_oldest';
   static const oldest_to_newest = 'oldest_to_newest';

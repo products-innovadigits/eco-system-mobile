@@ -256,6 +256,16 @@ class $AssetsSvgsGen {
   SvgGenImage get emptyWalletTime =>
       const SvgGenImage('assets/svgs/empty-wallet-time.svg');
 
+  /// File path: assets/svgs/empty_box.svg
+  SvgGenImage get emptyBox => const SvgGenImage('assets/svgs/empty_box.svg');
+
+  /// File path: assets/svgs/empty_candidates.svg
+  SvgGenImage get emptyCandidates =>
+      const SvgGenImage('assets/svgs/empty_candidates.svg');
+
+  /// File path: assets/svgs/error.svg
+  SvgGenImage get error => const SvgGenImage('assets/svgs/error.svg');
+
   /// File path: assets/svgs/export.svg
   SvgGenImage get export => const SvgGenImage('assets/svgs/export.svg');
 
@@ -528,6 +538,9 @@ class $AssetsSvgsGen {
     emptyImage,
     emptyWalletTick,
     emptyWalletTime,
+    emptyBox,
+    emptyCandidates,
+    error,
     export,
     file,
     fillCloseCircle,

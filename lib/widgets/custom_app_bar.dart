@@ -25,6 +25,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final VoidCallback? onSorting;
   final ValueChanged? onSearching;
   final VoidCallback? onTapSearch;
+  final VoidCallback? onBackBtn;
 
   const CustomAppBar({
     super.key,
@@ -41,6 +42,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.onTapSearch,
     this.withCancelBtn,
     this.onCanceling,
+    this.onBackBtn,
     this.searchController,
     this.isFiltered = false,
   });
@@ -100,7 +102,10 @@ class _CustomAppBarState extends State<CustomAppBar> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 InkWell(
-                    onTap: () => CustomNavigator.pop(),
+                    onTap: () {
+                      widget.onBackBtn?.call();
+                      CustomNavigator.pop();
+                    },
                     child: RotatedBox(
                       quarterTurns:
                           mainAppBloc.lang.valueOrNull == "en" ? 2 : 0,

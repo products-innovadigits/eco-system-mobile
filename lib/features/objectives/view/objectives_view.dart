@@ -81,7 +81,7 @@ class ObjectivesView extends StatelessWidget {
                     if (state is Empty || state is Error) {
                       return EmptyContainer(
                         txt: allTranslations.text("oops"),
-                        subText: allTranslations.text(state is Error
+                        desc: allTranslations.text(state is Error
                             ? "something_went_wrong"
                             : "there_is_no_data"),
                       );

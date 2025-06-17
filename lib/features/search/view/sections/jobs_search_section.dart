@@ -38,7 +38,7 @@ class JobsSearchSection extends StatelessWidget {
         if (state is Empty || state is Error) {
           return EmptyContainer(
             txt: allTranslations.text("oops"),
-            subText: allTranslations.text(state is Error
+            desc: allTranslations.text(state is Error
                 ? LocaleKeys.something_went_wrong
                 : LocaleKeys.there_is_no_data),
           );

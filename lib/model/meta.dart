@@ -4,6 +4,7 @@ class Meta {
   int? total;
   int? countPage;
   int? limit;
+  int? lastPage;
 
 
   Meta({this.currPage, this.countPage, this.limit});
@@ -13,6 +14,7 @@ class Meta {
     count = json['count'];
     total = json['total'];
     countPage = json['pages_count'];
+    lastPage = json['last_page'];
     limit = json['limit'];
 
   }
@@ -23,6 +25,7 @@ class Meta {
     data['count'] = count;
     data['total'] = total;
     data['count_page'] = countPage;
+    data['last_page'] = lastPage;
     data['limit'] = limit;
     return data;
   }

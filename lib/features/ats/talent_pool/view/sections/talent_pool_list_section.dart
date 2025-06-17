@@ -44,15 +44,22 @@ class TalentPoolListSection extends StatelessWidget {
             ],
           );
         }
-        if (state is Empty || state is Error) {
+        if (state is Empty) {
           return EmptyContainer(
-            txt: allTranslations.text("oops"),
-            subText: allTranslations.text(state is Error
-                ? LocaleKeys.something_went_wrong
-                : LocaleKeys.there_is_no_data),
+            img: Assets.svgs.emptyCandidates.path,
+            txt: state.initial == true
+                ? allTranslations.text(LocaleKeys.no_talents)
+                : allTranslations.text(LocaleKeys.there_is_no_data),
+            desc: state.initial == true
+                ? allTranslations.text(LocaleKeys.no_talents_desc)
+                : allTranslations.text(LocaleKeys.there_is_no_data),
           );
         } else {
-          return SizedBox();
+          return EmptyContainer(
+            img: Assets.svgs.error.path,
+            txt: allTranslations.text(LocaleKeys.page_not_found),
+            desc: allTranslations.text(LocaleKeys.page_not_found_desc),
+          );
         }
       },
     );
