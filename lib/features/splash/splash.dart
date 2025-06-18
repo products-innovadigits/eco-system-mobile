@@ -32,11 +32,6 @@ class _SplashState extends State<Splash> with WidgetsBindingObserver {
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) async {
-    super.didChangeAppLifecycleState(state);
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SplashBloc()..add(Click()),
@@ -56,21 +51,35 @@ class _SplashState extends State<Splash> with WidgetsBindingObserver {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Styles.logo(height: 150.h, width: 150.w)
-                        .animate(onPlay: (controller) => controller.repeat())
-                        .scale(
-                          begin: const Offset(1.0, 1.0),
-                          end: const Offset(1.1, 1.1),
-                          duration: 800.ms,
-                          curve: Curves.easeInOut,
-                        )
-                        .then()
-                        .scale(
-                          begin: const Offset(1.1, 1.1),
-                          end: const Offset(1.0, 1.0),
-                          duration: 800.ms,
-                          curve: Curves.easeInOut,
-                        ),
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Icon(Icons.circle,
+                            color: Styles.WHITE_COLOR, size: 30.h),
+                        Styles.logo(height: 150.h, width: 150.w)
+                            .animate(delay: Duration(milliseconds: 600))
+                            .scale(
+                              begin: const Offset(0.0, 0.0),
+                              end: const Offset(1.1, 1.1),
+                              duration: 800.ms,
+                              curve: Curves.easeInOut,
+                            )
+                            .then()
+                            .scale(
+                              begin: const Offset(1.05, 1.05),
+                              end: const Offset(1.0, 1.0),
+                              duration: 500.ms,
+                              curve: Curves.easeInOut,
+                            )
+                            .then()
+                            .scale(
+                              begin: const Offset(1.0, 1.0),
+                              end: const Offset(1.05, 1.05),
+                              duration: 500.ms,
+                              curve: Curves.easeInOut,
+                            ),
+                      ],
+                    ),
                     SizedBox(height: 12.h),
                     AnimatedWidgets(
                       durationMilli: 2000,
