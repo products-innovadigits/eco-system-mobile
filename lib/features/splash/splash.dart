@@ -56,19 +56,22 @@ class _SplashState extends State<Splash> with WidgetsBindingObserver {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Styles.logo()
-                        .animate()
+                    Styles.logo(height: 150.h, width: 150.w)
+                        .animate(onPlay: (controller) => controller.repeat())
                         .scale(
                           begin: const Offset(1.0, 1.0),
-                          end: const Offset(0.5, 0.5),
-                          duration: 1000.ms,
-                          delay: 0.ms,
+                          end: const Offset(1.1, 1.1),
+                          duration: 800.ms,
                           curve: Curves.easeInOut,
-                          alignment: Alignment.bottomCenter,
                         )
-                        .then(delay: 200.ms)
-                        .shimmer(duration: 1000.ms, curve: Curves.easeInOut),
-                    SizedBox(height: 4.h),
+                        .then()
+                        .scale(
+                          begin: const Offset(1.1, 1.1),
+                          end: const Offset(1.0, 1.0),
+                          duration: 800.ms,
+                          curve: Curves.easeInOut,
+                        ),
+                    SizedBox(height: 12.h),
                     AnimatedWidgets(
                       durationMilli: 2000,
                       verticalOffset: 0.0,
