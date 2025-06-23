@@ -19,9 +19,9 @@ class SearchEngine {
     this.currentPage = 0,
   });
 
-  updateCurrentPage(int page) => currentPage = page;
+  int updateCurrentPage(int page) => currentPage = page;
 
-  toJson() {
+  Map toJson() {
     Map data = {};
     data["query"] = query;
     data["id"] = id;

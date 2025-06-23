@@ -20,51 +20,39 @@ class WorkExperienceSection extends StatelessWidget {
                 ? const SizedBox.shrink()
                 : Container(
                     width: context.w,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
                     decoration: BoxDecoration(
-                        color: Styles.WHITE_COLOR,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Styles.BORDER)),
-                    child: Column(
-                      children: [
-                        InkWell(
-                          onTap: () => profileBloc.add(Expand(arguments: 0)),
-                          child: Row(
-                            children: [
-                              Text(
-                                  allTranslations
-                                      .text(LocaleKeys.work_experience),
-                                  style: AppTextStyles.w500),
-                              // if(experienceList.isNotEmpty)...[
-                              //   4.sw,
-                              //   Text(
-                              //       '(اكثر من ٣ ${allTranslations.text(LocaleKeys.years)})',
-                              //       style: AppTextStyles.w500
-                              //           .copyWith(color: Styles.PRIMARY_COLOR)),
-                              // ],
-                              const Spacer(),
-                              Icon(
-                                  profileBloc.isWorkExperienceExpanded == false
-                                      ? Icons.keyboard_arrow_down_rounded
-                                      : Icons.keyboard_arrow_up_rounded,
-                                  color: profileBloc.isWorkExperienceExpanded ==
-                                          false
-                                      ? Styles.ICON_GREY_COLOR
-                                      : Styles.PRIMARY_COLOR),
-                            ],
+                      color: Styles.WHITE_COLOR,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Styles.BORDER),
+                    ),
+                    child: ExpansionTile(
+                      tilePadding: EdgeInsets.symmetric(horizontal: 16.w),
+                      title: Text(
+                        allTranslations.text(LocaleKeys.work_experience),
+                        style: AppTextStyles.w500.copyWith(
+                          color: Styles.HEADER,
+                          fontSize: 14,
+                        ),
+                      ),
+                      shape: const Border(),
+                      collapsedShape: const Border(),
+                      iconColor: Styles.PRIMARY_COLOR,
+                      collapsedIconColor: Styles.ICON_GREY_COLOR,
+                      collapsedTextColor: Styles.HEADER,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.w)
+                              .copyWith(bottom: 16.h),
+                          child: ListView.separated(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) =>
+                                ExperienceCardWidget(
+                                    experience: experienceList[index]),
+                            separatorBuilder: (context, index) => 24.sh,
+                            itemCount: experienceList.length,
                           ),
                         ),
-                        if (profileBloc.isWorkExperienceExpanded == true) ...[
-                          ListView.separated(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemBuilder: (context, index) =>
-                                  ExperienceCardWidget(
-                                      experience: experienceList[index]),
-                              separatorBuilder: (context, index) => 24.sh,
-                              itemCount: experienceList.length),
-                        ]
                       ],
                     ),
                   );

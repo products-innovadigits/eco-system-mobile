@@ -10,7 +10,7 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
     on<Select>(_onSelectTab);
     on<SelectTab>(_onSelectRatingTab);
     on<ShowDialog>(_onShowMoreDialog);
-    on<Expand>(_onExpand);
+    // on<Expand>(_onExpand);
     on<ToggleExpand>(_onToggleExpansion);
     on<UpdateRating>(_onUpdateRating);
     on<AddComment>(_onAddComment);
@@ -18,9 +18,9 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
     on<ToggleCommentField>(_onToggleCommentField);
   }
 
-  bool isCertificatesExpanded = false;
-  bool isEducationExpanded = false;
-  bool isWorkExperienceExpanded = false;
+  // bool isCertificatesExpanded = false;
+  // bool isEducationExpanded = false;
+  // bool isWorkExperienceExpanded = false;
   int reviewExpandedIndex = -1;
   bool showMoreDialog = false;
   List<int> selectedJobsList = [];
@@ -34,13 +34,13 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
     RatingItemModel(title: LocaleKeys.communications),
   ];
 
-  _onUpdateRating(UpdateRating event, Emitter<AppState> emit) {
+  void _onUpdateRating(UpdateRating event, Emitter<AppState> emit) {
     ratingItems[event.index] =
         ratingItems[event.index].copyWith(rating: event.rating);
     emit(Done());
   }
 
-  _onAddComment(AddComment event, Emitter<AppState> emit) {
+  void _onAddComment(AddComment event, Emitter<AppState> emit) {
     ratingItems[event.index] = ratingItems[event.index].copyWith(
       comment: event.comment,
       isCommentFieldVisible: false,
@@ -48,26 +48,26 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
     emit(Done());
   }
 
-  _onToggleCommentField(ToggleCommentField event, Emitter<AppState> emit) {
+  void _onToggleCommentField(ToggleCommentField event, Emitter<AppState> emit) {
     ratingItems[event.index] = ratingItems[event.index].copyWith(
       isCommentFieldVisible: !ratingItems[event.index].isCommentFieldVisible,
     );
     emit(Done());
   }
 
-  _onExpand(Expand event, Emitter<AppState> emit) async {
-    if (event.arguments == 2) {
-      isCertificatesExpanded = !isCertificatesExpanded;
-    } else if (event.arguments == 1) {
-      isEducationExpanded = !isEducationExpanded;
-    } else if (event.arguments == 0) {
-      isWorkExperienceExpanded = !isWorkExperienceExpanded;
-    }
-    showMoreDialog = false;
-    emit(Done());
-  }
+  // Future<void> _onExpand(Expand event, Emitter<AppState> emit) async {
+  //   if (event.arguments == 2) {
+  //     isCertificatesExpanded = !isCertificatesExpanded;
+  //   } else if (event.arguments == 1) {
+  //     isEducationExpanded = !isEducationExpanded;
+  //   } else if (event.arguments == 0) {
+  //     isWorkExperienceExpanded = !isWorkExperienceExpanded;
+  //   }
+  //   showMoreDialog = false;
+  //   emit(Done());
+  // }
 
-  _onToggleExpansion(ToggleExpand event, Emitter<AppState> emit) async {
+  Future<void> _onToggleExpansion(ToggleExpand event, Emitter<AppState> emit) async {
     int index = event.arguments as int;
     if (reviewExpandedIndex == index) {
       reviewExpandedIndex = -1;
@@ -77,7 +77,7 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
     emit(Done());
   }
 
-  _onSelectTab(Select event, Emitter<AppState> emit) async {
+  Future<void> _onSelectTab(Select event, Emitter<AppState> emit) async {
     showMoreDialog = false;
     final ProfileEnum tab = event.arguments as ProfileEnum;
     if (selectedTab != tab) {
@@ -86,7 +86,7 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
     emit(Done());
   }
 
-  _onSelectRatingTab(SelectTab event, Emitter<AppState> emit) async {
+  Future<void> _onSelectRatingTab(SelectTab event, Emitter<AppState> emit) async {
     int tabIndex = event.arguments as int;
     if (selectedRatingTabIndex != tabIndex) {
       selectedRatingTabIndex = tabIndex;
@@ -94,7 +94,7 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
     emit(Done());
   }
 
-  _onShowMoreDialog(ShowDialog event, Emitter<AppState> emit) async {
+  Future<void> _onShowMoreDialog(ShowDialog event, Emitter<AppState> emit) async {
     bool? isDialogOpen = event.arguments as bool?;
     if (isDialogOpen == null) {
       showMoreDialog = !showMoreDialog;
@@ -137,7 +137,7 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
     }
   }
 
-  _getTalentDetails(AppEvent event, Emitter<AppState> emit) async {
+  Future<void> _getTalentDetails(AppEvent event, Emitter<AppState> emit) async {
     try {
       emit(Loading());
 

@@ -3,8 +3,8 @@ import 'package:eco_system/utility/export.dart';
 class CandidateFilterModel {
   final List<DropListModel> selectedSkills;
   final List<DropListModel> selectedTags;
-  final String? expectedSalaryFrom;
-  final String? expectedSalaryTo;
+  final String? salaryMin;
+  final String? salaryMax;
   final String? currency;
   final String? experienceFrom;
   final String? experienceTo;
@@ -17,8 +17,8 @@ class CandidateFilterModel {
   const CandidateFilterModel({
     this.selectedSkills = const [],
     this.selectedTags = const [],
-    this.expectedSalaryFrom,
-    this.expectedSalaryTo,
+    this.salaryMin,
+    this.salaryMax,
     this.currency,
     this.experienceFrom,
     this.experienceTo,
@@ -46,8 +46,8 @@ class CandidateFilterModel {
     return CandidateFilterModel(
       selectedSkills: selectedSkills ?? this.selectedSkills,
       selectedTags: selectedTags ?? this.selectedTags,
-      expectedSalaryFrom: expectedSalaryFrom ?? this.expectedSalaryFrom,
-      expectedSalaryTo: expectedSalaryTo ?? this.expectedSalaryTo,
+      salaryMin: expectedSalaryFrom ?? this.salaryMin,
+      salaryMax: expectedSalaryTo ?? this.salaryMax,
       currency: currency ?? this.currency,
       experienceFrom: experienceFrom ?? this.experienceFrom,
       experienceTo: experienceTo ?? this.experienceTo,
@@ -63,8 +63,8 @@ class CandidateFilterModel {
     return const CandidateFilterModel(
       selectedSkills: [],
       selectedTags: [],
-      expectedSalaryFrom: null,
-      expectedSalaryTo: null,
+      salaryMin: null,
+      salaryMax: null,
       currency: null,
       experienceFrom: null,
       experienceTo: null,
@@ -77,16 +77,16 @@ class CandidateFilterModel {
   }
 
   bool get isValidSalaryRange {
-    if (expectedSalaryFrom == null && expectedSalaryTo == null) return true;
-    final from = double.tryParse(expectedSalaryFrom ?? '0') ?? 0;
-    final to = double.tryParse(expectedSalaryTo ?? '0') ?? 0;
+    if (salaryMin == null && salaryMax == null) return true;
+    final from = double.tryParse(salaryMin ?? '0') ?? 0;
+    final to = double.tryParse(salaryMax ?? '0') ?? 0;
     return from <= to;
   }
 
   bool get isValidCurrency {
     // Only validate currency if both salary fields are not null and not empty
-    if (expectedSalaryFrom == null || expectedSalaryFrom!.isEmpty ||
-        expectedSalaryTo == null || expectedSalaryTo!.isEmpty) {
+    if (salaryMin == null || salaryMin!.isEmpty ||
+        salaryMax == null || salaryMax!.isEmpty) {
       return true;
     }
     return currency != null && currency!.isNotEmpty;
@@ -105,8 +105,8 @@ class CandidateFilterModel {
 
   /// Checks if salary filter is active
   bool get hasActiveSalary =>
-      expectedSalaryFrom != null ||
-      expectedSalaryTo != null ||
+      salaryMin != null ||
+      salaryMax != null ||
       currency != null;
 
   /// Checks if experience filter is active
@@ -132,8 +132,8 @@ class CandidateFilterModel {
     }
 
     // Only validate currency if both salary fields are not null and not empty
-    if (expectedSalaryFrom != null && expectedSalaryFrom!.isNotEmpty &&
-        expectedSalaryTo != null && expectedSalaryTo!.isNotEmpty) {
+    if (salaryMin != null && salaryMin!.isNotEmpty &&
+        salaryMax != null && salaryMax!.isNotEmpty) {
       if (!isValidCurrency) {
         errors.add(allTranslations.text(LocaleKeys.currency_required));
       }
@@ -149,8 +149,8 @@ class CandidateFilterModel {
   bool get hasActiveFilters {
     return hasActiveSkills ||
         hasActiveTags ||
-        (expectedSalaryFrom != null && expectedSalaryFrom!.isNotEmpty) ||
-        (expectedSalaryTo != null && expectedSalaryTo!.isNotEmpty) ||
+        (salaryMin != null && salaryMin!.isNotEmpty) ||
+        (salaryMax != null && salaryMax!.isNotEmpty) ||
         (currency != null && currency!.isNotEmpty) ||
         (experienceFrom != null && experienceFrom!.isNotEmpty) ||
         (experienceTo != null && experienceTo!.isNotEmpty) ||

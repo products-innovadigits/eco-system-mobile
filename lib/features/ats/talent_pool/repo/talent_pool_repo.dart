@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:eco_system/utility/export.dart';
 
 import '../model/file_model.dart';
@@ -33,5 +34,10 @@ abstract class TalentPoolRepo {
       model: FileModel(),
       body: {"file_name": fileName, "candidate_ids": selectedTalentsList},
     );
+  }
+
+  static Future<Response> getSortTypes() async {
+    return await Network()
+        .request(ApiNames.sortingList, method: ServerMethods.GET);
   }
 }

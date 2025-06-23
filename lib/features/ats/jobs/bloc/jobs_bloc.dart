@@ -82,11 +82,7 @@ class JobsBloc extends Bloc<AppEvent, AppState> {
       if (jobsList.isNotEmpty) {
         emit(Done());
       } else {
-        if (_engine.query['search'].toString().isEmpty) {
-          emit(Empty(initial: true));
-        } else {
-          emit(Empty(initial: false));
-        }
+        emit(Empty());
       }
     } catch (e) {
       AppCore.errorMessage(allTranslations.text('something_went_wrong'));
@@ -103,3 +99,4 @@ class JobsBloc extends Bloc<AppEvent, AppState> {
     return super.close();
   }
 }
+

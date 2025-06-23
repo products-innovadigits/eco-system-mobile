@@ -18,6 +18,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final bool? withSearch;
   final bool? withFilter;
   final bool? isFiltered;
+  final bool? isSorted;
   final bool? withSorting;
   final bool? withCancelBtn;
   final VoidCallback? onCanceling;
@@ -45,6 +46,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.onBackBtn,
     this.searchController,
     this.isFiltered = false,
+    this.isSorted = false,
   });
 
   @override
@@ -222,10 +224,26 @@ class _CustomAppBarState extends State<CustomAppBar> {
                                 borderRadius: BorderRadius.circular(8),
                                 border: Border.all(color: Styles.BORDER),
                               ),
-                              child: Images(
-                                  image: Assets.svgs.sort.path,
-                                  height: 20.h,
-                                  width: 20.w),
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(2),
+                                    child: Images(
+                                        image: Assets.svgs.sort.path,
+                                        height: 20.h,
+                                        width: 20.w),
+                                  ),
+                                  if (widget.isSorted == true)
+                                    PositionedDirectional(
+                                        top: 2.h,
+                                        start: 1.w,
+                                        child: Icon(
+                                          Icons.circle,
+                                          color: Styles.PRIMARY_COLOR,
+                                          size: 8,
+                                        ))
+                                ],
+                              ),
                             ),
                           )
                         ],

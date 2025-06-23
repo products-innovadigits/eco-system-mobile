@@ -52,8 +52,9 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
 
   final List<DropListModel> tagsList = [];
   final List<DropListModel> currencies = [
-    DropListModel(id: 1, name: 'ر.س'),
-    DropListModel(id: 2, name: 'ج.م'),
+    DropListModel(id: 1, name: 'rs'),
+    DropListModel(id: 2, name: 'egp'),
+    DropListModel(id: 3, name: 'usd'),
   ];
   final List<DropListModel> genders = [
     DropListModel(id: 1, name: 'ذكر'),

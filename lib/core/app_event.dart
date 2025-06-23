@@ -30,8 +30,15 @@ class SelectJob extends AppEvent {
   SelectJob({Object? arguments}) : super(arguments);
 }
 
-class Sort extends AppEvent {
-  Sort({Object? arguments}) : super(arguments);
+class SelectSorting extends AppEvent {
+  SelectSorting({Object? arguments}) : super(arguments);
+}
+
+class Sorting extends AppEvent {
+  Sorting({Object? arguments}) : super(arguments);
+}
+class GetSort extends AppEvent {
+  GetSort({Object? arguments}) : super(arguments);
 }
 
 class SelectTab extends AppEvent {
@@ -40,18 +47,6 @@ class SelectTab extends AppEvent {
 
 class ShowDialog extends AppEvent {
   ShowDialog({Object? arguments}) : super(arguments);
-}
-
-class onTechSkillRate extends AppEvent {
-  onTechSkillRate({Object? arguments}) : super(arguments);
-}
-
-class onKnowledgeRate extends AppEvent {
-  onKnowledgeRate({Object? arguments}) : super(arguments);
-}
-
-class onCommunicationRate extends AppEvent {
-  onCommunicationRate({Object? arguments}) : super(arguments);
 }
 
 class SelectTalent extends AppEvent {
@@ -262,8 +257,16 @@ class ApplyFilters extends AppEvent {
   ApplyFilters({Object? arguments}) : super(arguments);
 }
 
+class ApplySorting extends AppEvent {
+  ApplySorting({Object? arguments}) : super(arguments);
+}
+
 class Reset extends AppEvent {
   Reset({Object? arguments}) : super(arguments);
+}
+
+class ResetSorting extends AppEvent {
+  ResetSorting({Object? arguments}) : super(arguments);
 }
 
 class Export extends AppEvent {

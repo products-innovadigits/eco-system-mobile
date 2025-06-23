@@ -29,7 +29,7 @@ class CustomDropList extends StatefulWidget {
 
 /// This is the private State class that goes with CustomDropList.
 class _CustomDropListState extends State<CustomDropList> {
-  late DropListModel dropdownValue =  DropListModel(
+  late DropListModel dropdownValue = DropListModel(
       id: 0, name: widget.hint ?? allTranslations.text(LocaleKeys.select));
 
   @override
@@ -59,8 +59,9 @@ class _CustomDropListState extends State<CustomDropList> {
                     dropdownValue.name!,
                     style: AppTextStyles.w400.copyWith(
                         fontSize: 12.0,
-                        color:
-                            dropdownValue.id != 0 ? Styles.HEADER : Styles.HINT),
+                        color: dropdownValue.id != 0
+                            ? Styles.HEADER
+                            : Styles.HINT),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -100,6 +101,7 @@ class DropListModel {
   final int? id;
   final String? name;
   final int? value;
+  final String? key;
 
-  DropListModel({this.id, this.name, this.value});
+  DropListModel({this.id, this.name, this.value, this.key});
 }

@@ -5,20 +5,22 @@ class TalentPoolService {
   static Future<TalentPoolModel> getTalents({
     required SearchEngine engine,
     CandidateFilterModel? filters,
+    String? sortingKey,
   }) async {
     Map<String, dynamic> queryParams = {
       "page": engine.currentPage + 1,
       "limit": engine.limit,
       "search": engine.searchText,
       "embed": "profile",
+      if(sortingKey != null) "sorting_key": sortingKey,
     };
 
     if (filters != null) {
-      if (filters.expectedSalaryFrom != null) {
-        queryParams['expected_salary_from'] = filters.expectedSalaryFrom;
+      if (filters.salaryMin != null) {
+        queryParams['salaryMin'] = filters.salaryMin;
       }
-      if (filters.expectedSalaryTo != null) {
-        queryParams['expected_salary_to'] = filters.expectedSalaryTo;
+      if (filters.salaryMax != null) {
+        queryParams['salaryMax'] = filters.salaryMax;
       }
       if (filters.currency != null) {
         queryParams['currency'] = filters.currency;

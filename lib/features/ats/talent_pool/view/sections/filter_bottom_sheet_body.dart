@@ -7,7 +7,7 @@ class FilterBottomSheetBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: context.h * 0.8,
+      height: context.h * 0.65,
       child: ListView(
         children: [
           Skills(selectedSkills: filterModel.selectedSkills),
@@ -16,10 +16,10 @@ class FilterBottomSheetBody extends StatelessWidget {
           16.sh,
           ExpectedSalary(),
           16.sh,
-          Experience(),
-          16.sh,
-          Location(),
-          16.sh,
+          // Experience(),
+          // 16.sh,
+          // Location(),
+          // 16.sh,
           Gender(),
         ],
       ),

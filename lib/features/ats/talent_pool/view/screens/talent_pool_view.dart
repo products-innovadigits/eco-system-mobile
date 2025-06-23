@@ -13,8 +13,9 @@ class TalentPoolView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          TalentPoolBloc()..add(Click(arguments: SearchEngine())),
+      create: (context) => TalentPoolBloc()
+        ..add(Click(arguments: SearchEngine()))
+        ..add(GetSort()),
       child: BlocBuilder<TalentPoolBloc, AppState>(
         builder: (context, state) {
           final bloc = context.read<TalentPoolBloc>();
@@ -31,6 +32,7 @@ class TalentPoolView extends StatelessWidget {
                   withSearch: true,
                   withFilter: true,
                   isFiltered: bloc.isFiltered,
+                  isSorted: bloc.appliedSorting != null,
                   withSorting: true,
                   withCancelBtn: true,
                   onSearching: (value) => bloc
@@ -49,8 +51,7 @@ class TalentPoolView extends StatelessWidget {
                   },
                   onSorting: () => PopUpHelper.showBottomSheet(
                         child: BlocProvider.value(
-                            value: context.read<TalentPoolBloc>()
-                              ..selectedSorting = null,
+                            value: context.read<TalentPoolBloc>(),
                             child: const SortingBottomSheet()),
                       )),
               body: Padding(

@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:dio/dio.dart';
 import 'package:eco_system/utility/export.dart';
 
 import '../model/file_model.dart';
@@ -10,12 +13,15 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
     searchController = TextEditingController();
     customScroll(scrollController);
     on<Click>(_getTalents);
-    on<Sort>(_onSorting);
+    on<GetSort>(_getSortTypes);
+    on<SelectSorting>(_onSelectSorting);
     on<Select>(onToggleSelection);
     on<SelectJob>(_onSelectJob);
     on<SelectTalent>(_onSelectTalent);
     on<ApplyFilters>(_onApplyFilters);
+    on<ApplySorting>(_onApplySorting);
     on<Reset>(_onResetFilters);
+    on<ResetSorting>(_onResetSorting);
     on<Export>(_onExport);
     on<Assign>(_onAssignJobs);
   }
@@ -31,23 +37,14 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
   List<int> selectedTalentsList = [];
   bool activeSelection = false;
   bool isFiltered = false;
-  List<DropListModel> sortingList = [
-    DropListModel(
-        id: 1, name: allTranslations.text(LocaleKeys.newest_to_oldest)),
-    DropListModel(
-        id: 2, name: allTranslations.text(LocaleKeys.oldest_to_newest)),
-    DropListModel(id: 3, name: allTranslations.text(LocaleKeys.highest_price)),
-    DropListModel(id: 4, name: allTranslations.text(LocaleKeys.lowest_price)),
-    DropListModel(
-        id: 5, name: allTranslations.text(LocaleKeys.most_experience)),
-    DropListModel(
-        id: 6, name: allTranslations.text(LocaleKeys.least_experience)),
-  ];
+  List<DropListModel> sortingList = [];
+  DropListModel? appliedSorting;
   DropListModel? selectedSorting;
 
   CandidateFilterModel filterModel = const CandidateFilterModel();
 
-  _onSorting(Sort event, Emitter<AppState> emit) async {
+  Future<void> _onSelectSorting(
+      SelectSorting event, Emitter<AppState> emit) async {
     selectedSorting = event.arguments as DropListModel?;
     emit(Done());
   }
@@ -108,12 +105,28 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
     add(Click(arguments: _engine));
   }
 
+  void _onApplySorting(ApplySorting event, Emitter<AppState> emit) {
+    appliedSorting = selectedSorting;
+    log('Applied Sorting: ${appliedSorting?.key}');
+    CustomNavigator.pop();
+    _engine = SearchEngine(searchText: searchController.text);
+    add(Click(arguments: _engine));
+  }
+
   void _onResetFilters(Reset event, Emitter<AppState> emit) {
     filterModel = const CandidateFilterModel();
     activeSelection = false;
     isFiltered = false;
     _engine = SearchEngine(searchText: searchController.text);
     talentsList.clear();
+    add(Click(arguments: _engine));
+  }
+
+  void _onResetSorting(ResetSorting event, Emitter<AppState> emit) {
+    appliedSorting = null;
+    selectedSorting = null;
+    CustomNavigator.pop();
+    _engine = SearchEngine(searchText: searchController.text);
     add(Click(arguments: _engine));
   }
 
@@ -137,6 +150,7 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
       final talentModel = await TalentPoolService.getTalents(
         engine: _engine,
         filters: isFiltered ? filterModel : null,
+        sortingKey: appliedSorting?.key,
       );
       candidatesCount = talentModel.meta?.total;
       if (talentModel.data != null && talentModel.data!.isNotEmpty) {
@@ -151,6 +165,38 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
         } else {
           emit(Empty(initial: false));
         }
+      }
+    } catch (e) {
+      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+      emit(Error());
+    }
+  }
+
+  void _getSortTypes(AppEvent event, Emitter<AppState> emit) async {
+    if (sortingList.isNotEmpty) {
+      return;
+    }
+    emit(Loading());
+    try {
+      final Response res = await TalentPoolRepo.getSortTypes();
+
+      if (res.statusCode == 200) {
+        final Map<String, dynamic>? data =
+            res.data['data'] as Map<String, dynamic>?;
+        if (data != null && data.isNotEmpty) {
+          data.forEach((key, value) {
+            sortingList.add(DropListModel(
+              key: key.toString(),
+              name: value.toString(),
+            ));
+          });
+        }
+      }
+
+      if (sortingList.isNotEmpty) {
+        emit(Done());
+      } else {
+        emit(Empty());
       }
     } catch (e) {
       AppCore.errorMessage(allTranslations.text('something_went_wrong'));
