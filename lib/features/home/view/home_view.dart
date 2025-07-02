@@ -4,7 +4,8 @@ import '../widgets/home_body.dart';
 import '../widgets/home_header.dart';
 
 class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+  final List<String> systems;
+  const HomeView({super.key, required this.systems});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class HomeView extends StatelessWidget {
         child: Stack(
           children: [
             HomeHeader(),
-            HomeBody(),
+            HomeBody(systems: systems),
           ],
         ),
       ),

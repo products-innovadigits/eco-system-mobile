@@ -1,7 +1,4 @@
-import 'package:eco_system/navigation/custom_navigation.dart';
-import 'package:eco_system/navigation/routes.dart';
-import 'package:eco_system/utility/extensions.dart';
-import 'package:flutter/material.dart';
+import 'package:core_package/core/utility/export.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class IntroView extends StatefulWidget {
@@ -36,6 +33,7 @@ class _IntroViewState extends State<IntroView> {
       ],
     ),
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -142,7 +140,9 @@ class _IntroViewState extends State<IntroView> {
             GestureDetector(
               onTap: () {
                 if (selectPage == introItems.length - 1) {
-                  CustomNavigator.push(Routes.MAIN_PAGE, arguments: 3);
+                  CustomNavigator.push(Routes.MAIN_PAGE,
+                      arguments: MainPageArgs(
+                          index: 3, systems: UserBloc.activeSystems));
                 } else {
                   controller.nextPage(
                     duration: const Duration(milliseconds: 300),

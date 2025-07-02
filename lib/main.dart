@@ -1,31 +1,26 @@
 // Flutter core imports
 // Third-party imports
+import 'package:core_package/core/config/colors/light_colors.dart';
+import 'package:core_package/core/config/providers.dart';
+import 'package:core_package/core/config/themes/themes.dart';
+import 'package:core_package/core/helpers/font_sizes.dart';
+import 'package:core_package/core/helpers/notification_helper/notification_helper.dart';
+import 'package:core_package/core/helpers/translation/translations.dart';
+import 'package:core_package/core/services/connectivity_service.dart';
+import 'package:core_package/core/utility/export.dart' hide Routes;
+import 'package:core_package/core/utility/un_focus.dart';
+import 'package:core_package/core/widgets/connectivity_wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 
 // Local imports
-import 'bloc/main_app_bloc.dart';
-import 'config/colors/light_colors.dart';
-import 'config/providers.dart';
-import 'config/themes/themes.dart';
 import 'firebase_options.dart';
-import 'helpers/notification_helper/notification_helper.dart';
-import 'helpers/shared_helper.dart';
-import 'helpers/styles.dart';
-import 'helpers/translation/all_translation.dart';
-import 'helpers/translation/translations.dart';
 import 'navigation/custom_navigation.dart';
 import 'navigation/routes.dart';
-import 'services/connectivity_service.dart';
-import 'utility/un_focus.dart';
-import 'widgets/connectivity_wrapper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -98,7 +93,7 @@ class _MyAppState extends State<MyApp> {
                       );
                     },
                     initialRoute: Routes.SPLASH,
-                    onGenerateRoute: CustomNavigator.onCreateRoute,
+                    onGenerateRoute: AppRouter.onGenerateRoute,
                     navigatorKey: CustomNavigator.navigatorState,
                     navigatorObservers: [CustomNavigator.routeObserver],
                     debugShowCheckedModeBanner: false,
@@ -122,8 +117,8 @@ class _MyAppState extends State<MyApp> {
                                   color: LightColor.black,
                                 ),
                                 titleTextStyle: TextStyle(
-                                  color: LightColor.black,
-                                  fontSize: 16,
+                                  color: context.color.primary,
+                                  fontSize: FontSizes.f16,
                                   fontWeight: FontWeight.w600,
                                   fontFamily: lang.data == 'en'
                                       ? Styles.FONT_EN

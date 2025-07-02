@@ -1,5 +1,4 @@
-import 'package:eco_system/config/api_names.dart';
-import 'package:eco_system/network/network_layer.dart';
+import 'package:core_package/core/utility/export.dart';
 
 abstract class LoginRepo {
   static Future<dynamic> login({
@@ -9,8 +8,8 @@ abstract class LoginRepo {
     return await Network().request(
       ApiNames.login,
       body: {
-        // "login": username,
-        "email": username,
+        "login": username,
+        // "email": username,
         "password": password,
       },
       method: ServerMethods.POST,

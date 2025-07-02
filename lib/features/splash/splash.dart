@@ -1,15 +1,6 @@
-import 'package:eco_system/components/animated_widget.dart';
-import 'package:eco_system/core/app_event.dart';
-import 'package:eco_system/core/app_state.dart';
-import 'package:eco_system/core/assets.gen.dart';
+import 'package:core_package/core/utility/export.dart';
 import 'package:eco_system/features/splash/splash_bloc.dart';
-import 'package:eco_system/helpers/styles.dart';
-import 'package:eco_system/utility/extensions.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../helpers/text_styles.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -44,7 +35,7 @@ class _SplashState extends State<Splash> with WidgetsBindingObserver {
               padding: EdgeInsets.only(bottom: context.h * 0.1),
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage(Assets.images.newSplashBg.path),
+                      image: AssetImage(Assets.images.newBrandingSplashBg.path),
                       fit: BoxFit.cover)),
               child: Center(
                 child: Column(

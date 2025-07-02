@@ -1,12 +1,13 @@
-import 'package:eco_system/utility/export.dart';
-import 'package:eco_system/widgets/nav_app.dart';
+import 'package:core_package/core/utility/export.dart';
+import 'package:core_package/core/widgets/nav_app.dart';
 
 import 'home/view/home_view.dart';
 
 class MainPage extends StatefulWidget {
   final int index;
+  final List<String> systems;
 
-  const MainPage({super.key, this.index = 0});
+  const MainPage({super.key, this.index = 0, required this.systems});
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -32,10 +33,10 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     super.initState();
   }
 
-  Widget fregmant(int index) {
+  Widget fregmant(int index , {required List<String> systems}) {
     switch (index) {
       case 0:
-        return HomeView();
+        return HomeView(systems: systems);
       case 1:
         return SizedBox();
       case 2:
@@ -60,7 +61,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
         }
       },
       child: Scaffold(
-        body: fregmant(_index),
+        body: fregmant(_index , systems: widget.systems),
         bottomNavigationBar: NavApp(
           index: _index,
           onSelect: (p0) {
