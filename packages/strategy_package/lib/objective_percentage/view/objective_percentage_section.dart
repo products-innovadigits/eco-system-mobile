@@ -26,7 +26,7 @@ class ObjectivePercentageSection extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
               margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
               decoration: BoxDecoration(
-                  color: Styles.WHITE_COLOR,
+                  color: context.color.surface,
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(color: Styles.LIGHT_GREY_BORDER)),
               child: Column(
@@ -53,7 +53,7 @@ class ObjectivePercentageSection extends StatelessWidget {
                                   Icons.circle,
                                   color: Styles.statusColors(
                                       objectives[i].categoryName ?? ""),
-                                  size: 16,
+                                  size: 14,
                                 ),
                                 SizedBox(width: 4.w),
                                 Flexible(
@@ -61,10 +61,7 @@ class ObjectivePercentageSection extends StatelessWidget {
                                     textAlign: TextAlign.center,
                                     text: TextSpan(
                                       text: objectives[i].categoryName,
-                                      style: AppTextStyles.w400.copyWith(
-                                          fontFamily: 'ar',
-                                          fontSize: 12,
-                                          color: Styles.HEADER),
+                                      style: context.textTheme.bodyMedium,
                                       children: [
                                         // TextSpan(
                                         //   text: " ${78}",

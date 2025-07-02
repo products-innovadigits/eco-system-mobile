@@ -80,7 +80,8 @@ class CustomTextField extends StatefulWidget {
     this.headStart = true,
     this.headSpace = 4,
     this.borderColor,
-    this.contentPadding, this.maxSuffixIconHeight,
+    this.contentPadding,
+    this.maxSuffixIconHeight,
   }) : super(key: key);
 
   @override
@@ -140,15 +141,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
             if (widget.label != null)
               Padding(
                 padding: const EdgeInsets.only(bottom: 6.0),
-                child: Text(
-                  widget.label ?? "",
-                  style: widget.headStyle ??
-                      AppTextStyles.w400.copyWith(
-                        color: context.color.onPrimary,
-                        fontSize: FontSizes.f14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                ),
+                child: Text(widget.label ?? "",
+                    style: widget.headStyle ?? context.textTheme.labelSmall),
               ),
             if (widget.headLabel != null) SizedBox(height: widget.headSpace),
             TextFormField(
@@ -181,7 +175,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   : widget.inputFormatters,
               style: TextStyle(
                 fontSize: 14,
-                color: context.color.onPrimary,
+                color: context.color.onSurface,
                 fontWeight: FontWeight.w500,
               ),
               decoration: InputDecoration(
@@ -190,7 +184,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 contentPadding: widget.contentPadding ??
                     EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                 prefixIconConstraints: BoxConstraints(maxHeight: 35),
-                suffixIconConstraints:  BoxConstraints(maxHeight: widget.maxSuffixIconHeight ??  35),
+                suffixIconConstraints:
+                    BoxConstraints(maxHeight: widget.maxSuffixIconHeight ?? 35),
                 hintText: widget.hint,
                 // labelText: widget.label,
                 alignLabelWithHint: true,
@@ -292,8 +287,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 focusedBorder: _borders.copyWith(
                     borderSide: widget.addBorder
                         ? null
-                        : BorderSide(
-                            width: 1, color: context.color.primary)),
+                        : BorderSide(width: 1, color: context.color.primary)),
                 errorBorder: !widget.addBorder
                     ? null
                     : _borders.copyWith(

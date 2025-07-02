@@ -74,7 +74,7 @@ ThemeData _buildLightTheme() {
       buttonColor: LightColor.backgroundPrimary,
     ),
     iconTheme: base.iconTheme.copyWith(
-      color: LightColor.backgroundPrimary,
+      color: LightColor.white,
     ),
     sliderTheme: const SliderThemeData().copyWith(
       valueIndicatorColor: LightColor.secondary,
@@ -85,19 +85,20 @@ ThemeData _buildLightTheme() {
       centerTitle: true,
       elevation: 0,
       backgroundColor: LightColor.white,
-      foregroundColor: LightColor.backgroundPrimary,
+      foregroundColor: LightColor.white,
       surfaceTintColor: LightColor.white,
       titleTextStyle: const TextStyle(
         fontSize: 16,
         color: LightColor.backgroundPrimary,
         fontWeight: FontWeight.w700,
       ),
-      systemOverlayStyle: SystemUiOverlayStyle.dark.copyWith(
-        systemNavigationBarColor: Colors.white,
-        statusBarColor: LightColor.white,
-        systemNavigationBarIconBrightness: Brightness.dark,
-        statusBarIconBrightness: Brightness.dark,
-      ),
+      // systemOverlayStyle: SystemUiOverlayStyle(
+      //   systemNavigationBarColor: Colors.transparent,
+      //   statusBarColor: Colors.transparent,
+      //   systemNavigationBarIconBrightness: Brightness.light,
+      //   statusBarIconBrightness: Brightness.light,
+      //   statusBarBrightness: Brightness.dark,
+      // ),
     ),
     pageTransitionsTheme: const PageTransitionsTheme(
       builders: {
@@ -206,10 +207,12 @@ ThemeData _buildDarkTheme() {
       centerTitle: true,
       elevation: 1.0,
       toolbarHeight: 38,
-      systemOverlayStyle: SystemUiOverlayStyle.light.copyWith(
-        systemNavigationBarIconBrightness: Brightness.light,
-        systemNavigationBarColor: DarkColor.offWhite,
+      systemOverlayStyle: SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.transparent,
+        statusBarColor: Colors.transparent,
+        systemNavigationBarIconBrightness: Brightness.dark,
         statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.dark,
       ),
     ),
     inputDecorationTheme: InputDecorationTheme(

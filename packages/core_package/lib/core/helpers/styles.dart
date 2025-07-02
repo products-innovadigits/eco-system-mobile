@@ -1,3 +1,4 @@
+import 'package:core_package/core/config/colors/light_colors.dart';
 import 'package:flutter/material.dart';
 
 import '../bloc/main_app_bloc.dart';
@@ -122,13 +123,13 @@ abstract class Styles {
   static Color statusColors(String value) {
     switch (value) {
       case "مكتمل":
-        return PRIMARY_COLOR;
+        return Color(0xFFDC6803);
       case "متقدم":
-        return Color(0xFF376BAD);
+        return LightColor.backgroundPrimary;
       case "متأخر":
-        return Color(0xFFF39C12);
+        return Color(0xFF079455);
       default:
-        return PRIMARY_COLOR;
+        return LightColor.backgroundPrimary;
     }
   }
 

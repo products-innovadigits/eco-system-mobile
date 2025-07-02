@@ -4,8 +4,8 @@ class LightColor {
   // static const Color primary = Color(0xff2b6c9f);
   static const Color scaffoldBg = Color(0xffFCFCFC);
   // static const Color primary = Color(0xff009990);
-  static const Color backgroundPrimary = Color(0xff009990);
-  static const Color textPrimary = Color(0xff009990);
+  static const Color backgroundPrimary = Color(0xff020F4C);
+  static const Color textPrimary = Color(0xff020F4C);
   static const Color borderInfo = Color(0xff175CD3);
   static const Color textDefaultDisabled = Color(0xff9DA4AE);
   static const Color primaryDark = Color(0xff64748B);

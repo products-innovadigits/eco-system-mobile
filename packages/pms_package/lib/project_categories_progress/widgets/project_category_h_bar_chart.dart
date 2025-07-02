@@ -72,8 +72,8 @@ class _ProjectCategoryHBarChartState extends State<ProjectCategoryHBarChart> {
                 sideTitles: SideTitles(
                   showTitles: true,
                   getTitlesWidget: (value, meta) => bottomTitles(value, meta,
-                      widget.data.map((e) => "${e.name ?? ""}").toList(),
-                      textColor: widget.textColor),
+                      widget.data.map((e) => e.name ?? "").toList(),
+                      textColor: context.color.outline),
                   reservedSize: 60,
                   interval: interval,
                 ),
@@ -100,7 +100,7 @@ class _ProjectCategoryHBarChartState extends State<ProjectCategoryHBarChart> {
                           Styles.projectCategoryColors[index],
                       backDrawRodData: BackgroundBarChartRodData(
                           show: true,
-                          color: Styles.LIGHT_GREY_BORDER,
+                          color: Colors.transparent,
                           fromY: widget.data[index].progress ?? 0,
                           toY: 100),
                       borderRadius: const BorderRadius.only(

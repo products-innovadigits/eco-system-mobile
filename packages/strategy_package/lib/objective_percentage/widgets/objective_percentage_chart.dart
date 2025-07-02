@@ -2,6 +2,7 @@ import '../../shared/strategy_exports.dart';
 
 class ObjectivePercentageChart extends StatefulWidget {
   const ObjectivePercentageChart({super.key, required this.objectives});
+
   final List<ObjectivePercentageModel> objectives;
 
   @override
@@ -12,6 +13,7 @@ class ObjectivePercentageChart extends StatefulWidget {
 class _ObjectivePercentageChartState extends State<ObjectivePercentageChart> {
   int touchedIndex = -1;
   bool isEmpty = true;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ObjectivePercentageBloc, AppState>(
@@ -46,7 +48,7 @@ class _ObjectivePercentageChartState extends State<ObjectivePercentageChart> {
                       border: Border.all(color: Styles.LIGHT_GREY_BORDER)),
                   sectionsSpace: 5.w,
                   centerSpaceRadius: 50.w,
-                  sections: isEmpty || showingSections().length <= 0
+                  sections: isEmpty || showingSections().isEmpty
                       ? emptyState()
                       : showingSections(),
                 ),
@@ -61,16 +63,14 @@ class _ObjectivePercentageChartState extends State<ObjectivePercentageChart> {
                           textAlign: TextAlign.center,
                           text: TextSpan(
                             text: allTranslations.text("objective_percentage"),
-                            style: AppTextStyles.w600
-                                .copyWith(fontSize: 12, color: Styles.HEADER),
+                            style: context.textTheme.labelSmall,
                             children: [
                               TextSpan(
                                 text: "\n${state.data ?? 0}",
-                                style: AppTextStyles.w700.copyWith(
-                                    fontSize: 14,
+                                style: context.textTheme.titleLarge?.copyWith(
                                     color: isEmpty
-                                        ? Styles.DETAILS
-                                        : Styles.PRIMARY_COLOR),
+                                        ? context.color.outline
+                                        : context.color.primary),
                               )
                             ],
                           ),

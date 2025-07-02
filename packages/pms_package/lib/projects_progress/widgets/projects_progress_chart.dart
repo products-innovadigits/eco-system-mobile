@@ -36,7 +36,7 @@ class _ProjectsProgressChartState extends State<ProjectsProgressChart> {
           borderData: FlBorderData(
               show: false, border: Border.all(color: Styles.LIGHT_GREY_BORDER)),
           centerSpaceRadius: 0.w,
-          sections: isEmpty || showingSections().length <= 0
+          sections: isEmpty || showingSections().isEmpty
               ? emptyState()
               : showingSections(),
         ),

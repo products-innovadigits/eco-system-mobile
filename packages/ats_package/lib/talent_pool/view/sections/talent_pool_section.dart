@@ -47,7 +47,7 @@ class TalentPoolSection extends StatelessWidget {
           }
           if (state is Loading) {
             return Padding(
-              padding: EdgeInsets.only(top: 24.h),
+              padding: EdgeInsets.only(top: 12.h , right: 16.w, left: 16.w),
               child: CustomShimmerContainer(
                 height: context.h * 0.2,
                 width: context.w,
@@ -56,7 +56,7 @@ class TalentPoolSection extends StatelessWidget {
           }
           if (state is Error) {
             return Padding(
-              padding: EdgeInsets.only(top: 24.h),
+              padding: EdgeInsets.all(16.w),
               child: ErrorContainerWidget(
                   header: Column(
                     children: [

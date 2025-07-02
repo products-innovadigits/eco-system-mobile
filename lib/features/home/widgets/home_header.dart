@@ -12,7 +12,7 @@ class HomeHeader extends StatelessWidget {
         return Container(
           width: context.w,
           height: context.h * 0.30,
-          padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 24.h),
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
           color: context.color.primary,
           // decoration:  BoxDecoration(
           //     image: DecorationImage(
@@ -23,7 +23,7 @@ class HomeHeader extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                35.sh,
+                45.sh,
                 Row(
                   children: [
                     Expanded(
@@ -57,10 +57,8 @@ class HomeHeader extends StatelessWidget {
                           4.sh,
                           Text(
                             allTranslations.text("home_welcome_message"),
-                            style: AppTextStyles.w400.copyWith(
-                              fontSize: FontSizes.f14,
-                              color: context.color.onPrimary,
-                            ),
+                            style: context.textTheme.bodyMedium
+                                ?.copyWith(color: context.color.onPrimary),
                           )
                         ],
                       ),

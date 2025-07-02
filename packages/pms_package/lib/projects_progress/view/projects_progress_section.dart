@@ -38,17 +38,14 @@ class ProjectsProgressSection extends StatelessWidget {
                       Expanded(
                         child: Text(
                           allTranslations.text("total_projects"),
-                          style: AppTextStyles.w500.copyWith(
-                            fontSize: 12,
-                            color: Styles.PRIMARY_COLOR,
-                          ),
+                          style: context.textTheme.labelSmall,
                         ),
                       ),
                       Text(
                         "100",
                         style: AppTextStyles.w600.copyWith(
                           fontSize: 20,
-                          color: Styles.PRIMARY_COLOR,
+                          color: Color(0xff2B6C9F),
                         ),
                       )
                     ],
