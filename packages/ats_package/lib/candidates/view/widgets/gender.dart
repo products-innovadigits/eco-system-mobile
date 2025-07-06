@@ -10,10 +10,8 @@ class Gender extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          allTranslations.text(LocaleKeys.gender),
-          style: AppTextStyles.w400.copyWith(fontSize: 12.w),
-        ),
+        Text(allTranslations.text(LocaleKeys.gender),
+            style: context.textTheme.bodySmall),
         8.sh,
         CustomDropList(
           list: filtrationBloc.genders,

@@ -9,6 +9,6 @@ abstract class ProviderList {
     // BlocProvider<TalentPoolBloc>(
     //     create: (_) => TalentPoolBloc()..add(Click(arguments: SearchEngine()))),
     BlocProvider<FiltrationBloc>(
-        create: (_) => FiltrationBloc()..add(Click()), lazy: false),
+        create: (_) => FiltrationBloc()),
   ];
 }

@@ -26,7 +26,8 @@ class JobDetailsWidget extends StatelessWidget {
           children: [
             Text(
               jobTitle,
-              style: AppTextStyles.w400.copyWith(color: context.color.onSurface),
+              style: context.textTheme.bodyMedium
+                  ?.copyWith(color: context.color.onSurface),
             ),
             // if (hasStatus ?? false)
             //   Container(
@@ -47,12 +48,12 @@ class JobDetailsWidget extends StatelessWidget {
         SizedBox(height: 8.h),
         Text(
           '$jobType . $address . $department',
-          style: AppTextStyles.w400
-              .copyWith(color: context.color.outline, fontSize: FontSizes.f10),
+          style: context.textTheme.bodyMedium
+              ?.copyWith(color: context.color.outline, fontSize: FontSizes.f10),
         ),
         Padding(
           padding: EdgeInsets.all(14.h),
-          child: Divider(color: context.color.outline),
+          child: Divider(color: Styles.LIGHT_GREY_BORDER),
         ),
       ],
     );

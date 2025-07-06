@@ -13,9 +13,10 @@ class FilterBottomSheetBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: context.h * 0.65,
-      child: ListView(
-        children: [
+      height: context.h * 0.60,
+      child: ListAnimator(
+        data: [
+          16.sh,
           Skills(selectedSkills: filterModel.selectedSkills),
           16.sh,
           Tags(selectedTags: filterModel.selectedTags),

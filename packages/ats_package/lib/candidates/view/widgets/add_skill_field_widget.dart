@@ -33,8 +33,8 @@ class AddSkillFieldWidget extends StatelessWidget {
               },
               decoration: InputDecoration(
                   hintText: allTranslations.text(LocaleKeys.add_skill),
-                  hintStyle: AppTextStyles.w400
-                      .copyWith(fontSize: 10, color: Styles.DETAILS),
+                  hintStyle: context.textTheme.bodySmall
+                      ?.copyWith(color: context.color.outline),
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
                   enabledBorder: InputBorder.none,
@@ -53,11 +53,11 @@ class AddSkillFieldWidget extends StatelessWidget {
             child: bloc.skillController.text.isNotEmpty
                 ? Images(
                     image: Assets.svgs.send.path,
-                    color: Styles.DETAILS,
+                    color: context.color.outline,
                     height: 20)
                 : Icon(
                     Icons.add,
-                    color: Styles.DETAILS,
+                    color: context.color.outline,
                     size: 16,
                   ),
           ),

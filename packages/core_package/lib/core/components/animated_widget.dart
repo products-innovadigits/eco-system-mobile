@@ -1,4 +1,3 @@
-
 import 'package:core_package/core/utility/export.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
@@ -43,6 +42,7 @@ class ListAnimator extends StatefulWidget {
   final ScrollController? controller;
   final dynamic direction;
   final dynamic addPadding;
+  final double? separatorPadding;
   final bool scroll;
   final dynamic customPadding;
   final Stream<int>? scrollControllerStream;
@@ -56,6 +56,7 @@ class ListAnimator extends StatefulWidget {
     this.horizontalOffset,
     this.direction,
     this.addPadding = true,
+    this.separatorPadding,
     this.customPadding,
     this.scrollControllerStream,
     this.scroll = true,
@@ -72,7 +73,7 @@ class _ListAnimatorState extends State<ListAnimator> {
       stream: widget.scrollControllerStream,
       builder: (context, snapshot) {
         return AnimationLimiter(
-          child: ListView.builder(
+          child: ListView.separated(
             controller: widget.controller,
             padding: widget.customPadding ??
                 EdgeInsets.only(top: widget.addPadding ? 0 : 0),
@@ -92,6 +93,8 @@ class _ListAnimatorState extends State<ListAnimator> {
                 ),
               );
             },
+            separatorBuilder: (BuildContext context, int index) =>
+                SizedBox(height: widget.separatorPadding),
             itemCount: widget.data!.length,
           ),
         );

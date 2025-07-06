@@ -1,4 +1,5 @@
 import 'package:ats_package/shared/ats_exports.dart';
+import 'package:core_package/core/helpers/font_sizes.dart';
 import 'package:core_package/core/utility/export.dart';
 import 'package:core_package/core/widgets/custom_check_box_widget.dart';
 
@@ -18,7 +19,7 @@ class TalentCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      splashColor: Styles.PRIMARY_COLOR.withValues(alpha: 0.1),
+      highlightColor: context.color.onSurfaceVariant.withValues(alpha: 0.2),
       onLongPress: () {
         if (!isSelectionActive!) {
           context.read<TalentPoolBloc>().add(Select(arguments: true));
@@ -53,7 +54,6 @@ class TalentCardWidget extends StatelessWidget {
               height: 40.h,
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Styles.PRIMARY_COLOR,
                   image: DecorationImage(
                       image: AssetImage(Assets.images.avatar.path))),
             ),
@@ -74,15 +74,16 @@ class TalentCardWidget extends StatelessWidget {
                       Expanded(
                         child: Text(
                           '${talent.jobTitle} . ',
-                          style: AppTextStyles.w400.copyWith(
-                              color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
+                          style: context.textTheme.bodySmall?.copyWith(
+                              fontSize: FontSizes.f10,
+                              color: context.color.outline),
                         ),
                       ),
                       Expanded(
                         child: Text(
                             '${talent.chancesCount} ${allTranslations.text(LocaleKeys.chances)}',
-                            style: AppTextStyles.w400.copyWith(
-                                color: Styles.PRIMARY_COLOR, fontSize: 10)),
+                            style: context.textTheme.bodySmall
+                                ?.copyWith(fontSize: FontSizes.f10)),
                       )
                     ],
                   ),
@@ -90,7 +91,7 @@ class TalentCardWidget extends StatelessWidget {
                       talent.profile?.experience != null &&
                       talent.profile?.expectedSalary != null &&
                       talent.profile?.noticePeriod != null)
-                    _profileDetails(talent.profile),
+                    _profileDetails(talent.profile, context),
                 ],
               ),
             ),
@@ -112,7 +113,7 @@ class TalentCardWidget extends StatelessWidget {
   }
 }
 
-Widget _profileDetails(ProfileModel? profile) {
+Widget _profileDetails(ProfileModel? profile, BuildContext context) {
   return Column(
     children: [
       Padding(
@@ -124,9 +125,9 @@ Widget _profileDetails(ProfileModel? profile) {
         children: [
           if (profile?.location != null)
             Text(
-              '${profile?.location ?? ''}',
-              style: AppTextStyles.w500
-                  .copyWith(color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
+              profile?.location ?? '',
+              style: context.textTheme.titleSmall?.copyWith(
+                  fontSize: FontSizes.f10, color: context.color.outline),
             ),
           if (profile?.location != null && profile?.experience != null)
             Padding(
@@ -137,8 +138,8 @@ Widget _profileDetails(ProfileModel? profile) {
           if (profile?.experience != null)
             Text(
               '${allTranslations.text(LocaleKeys.experience)} ${profile?.experience ?? ''} ${allTranslations.text(LocaleKeys.years)}',
-              style: AppTextStyles.w500
-                  .copyWith(color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
+              style: context.textTheme.titleSmall?.copyWith(
+                  fontSize: FontSizes.f10, color: context.color.outline),
             ),
           const Spacer(),
           Row(
@@ -146,19 +147,19 @@ Widget _profileDetails(ProfileModel? profile) {
               if (profile?.expectedSalary != null)
                 Text(
                     '${profile?.expectedSalary ?? ''} ${profile?.currency?.name ?? ''}',
-                    style: AppTextStyles.w400
-                        .copyWith(color: Styles.PRIMARY_COLOR, fontSize: 10)),
+                    style: context.textTheme.bodySmall?.copyWith(
+                        fontSize: FontSizes.f10, color: context.color.primary)),
               if (profile?.expectedSalary != null &&
                   profile?.noticePeriod != null)
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8.w),
                   child:
-                      Icon(Icons.circle, color: Styles.PRIMARY_COLOR, size: 5),
+                      Icon(Icons.circle, color: context.color.primary, size: 5),
                 ),
               if (profile?.noticePeriod != null)
                 Text('${profile?.noticePeriod ?? ''}',
-                    style: AppTextStyles.w400
-                        .copyWith(color: Styles.PRIMARY_COLOR, fontSize: 10)),
+                    style: context.textTheme.bodySmall?.copyWith(
+                        fontSize: FontSizes.f10, color: context.color.primary)),
             ],
           )
         ],

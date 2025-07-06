@@ -19,8 +19,8 @@ class CandidateStagesListSection extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               final Color stageColor = stages[index].color != null
-                  ? Color(int.parse('0xFF' + stages[index].color!.substring(1)))
-                  : Styles.PRIMARY_COLOR;
+                  ? Color(int.parse('0xFF${stages[index].color!.substring(1)}'))
+                  : context.color.primary;
               return InkWell(
                 onTap: () {
                   context.read<FiltrationBloc>().reset();
@@ -42,10 +42,10 @@ class CandidateStagesListSection extends StatelessWidget {
                     Text(
                       // stageKeys.keys.elementAt(index),
                       stages[index].type ?? '',
-                      style: AppTextStyles.w400.copyWith(fontSize: 10),
+                      style: context.textTheme.bodySmall?.copyWith(fontSize: 10),
                     ),
                     const Spacer(),
-                    Images(image: Assets.svgs.arrowLeft.path, width: 7),
+                    Images(image: Assets.svgs.arrowLeft.path, width: 6 , color: context.color.outline),
                   ],
                 ),
               );

@@ -46,7 +46,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => Size(
       CustomNavigator.navigatorState.currentContext!.w,
-      (withSearch ?? true) ? 122.h : 100.h);
+      (withSearch ?? false) ? 122.h : 65.h);
 }
 
 class _CustomAppBarState extends State<CustomAppBar> {
@@ -77,17 +77,17 @@ class _CustomAppBarState extends State<CustomAppBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
-      decoration: BoxDecoration(
-          color: Styles.WHITE_COLOR,
-          border: Border(
-              bottom: BorderSide(
-                  color: widget.withBottomBorder
-                      ? Styles.BORDER
-                      : Colors.transparent))),
-      child: SafeArea(
-        bottom: false,
+    return SafeArea(
+      bottom: false,
+      child: Container(
+        padding: EdgeInsets.only(right: 16.w , left: 16.w, top: 24.h),
+        decoration: BoxDecoration(
+            color: Styles.WHITE_COLOR,
+            border: Border(
+                bottom: BorderSide(
+                    color: widget.withBottomBorder
+                        ? Styles.BORDER
+                        : Colors.transparent))),
         child: Column(
           children: [
             Row(
@@ -104,23 +104,20 @@ class _CustomAppBarState extends State<CustomAppBar> {
                           mainAppBloc.lang.valueOrNull == "en" ? 2 : 0,
                       child: Images(
                         image: Assets.svgs.arrowBack.path,
-                        color: Styles.DETAILS,
+                        color: context.color.primary,
                         width: 20.w,
                         height: 20.h,
                       ),
                     )),
-                8.sw,
+                // 8.sw,
                 Expanded(
                   child: Text(
                     widget.title ?? "",
-                    style: AppTextStyles.w700.copyWith(
-                      fontSize: 18,
-                      color: Styles.TEXT_COLOR,
-                    ),
-                    textAlign: TextAlign.start,
+                    style: context.textTheme.titleLarge,
+                    textAlign: TextAlign.center,
                   ),
                 ),
-                widget.action ?? SizedBox()
+                widget.action ?? SizedBox(width: 16.w)
               ],
             ),
             if (widget.withSearch ?? false)
@@ -129,7 +126,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: EdgeInsets.only(top: 8.h),
+                      padding: EdgeInsets.only(top: 16.h),
                       child: TextField(
                         controller: widget.searchController,
                         focusNode: _focusNode,
@@ -138,8 +135,9 @@ class _CustomAppBarState extends State<CustomAppBar> {
                           _focusNode.unfocus();
                         },
                         onChanged: (v) {
-                          if (_debounceTimer?.isActive ?? false)
+                          if (_debounceTimer?.isActive ?? false) {
                             _debounceTimer?.cancel();
+                          }
                           _debounceTimer =
                               Timer(const Duration(milliseconds: 600), () {
                             widget.onSearching!(v);
@@ -230,7 +228,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                                         start: 1.w,
                                         child: Icon(
                                           Icons.circle,
-                                          color: Styles.PRIMARY_COLOR,
+                                          color: context.color.onSurfaceVariant,
                                           size: 8,
                                         ))
                                 ],
@@ -267,7 +265,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                                         start: 2.w,
                                         child: Icon(
                                           Icons.circle,
-                                          color: Styles.PRIMARY_COLOR,
+                                          color: context.color.onSurfaceVariant,
                                           size: 8,
                                         ))
                                 ],

@@ -55,8 +55,7 @@ class SectionTitle extends StatelessWidget {
                 children: [
                   Text(
                     "${allTranslations.text("view_more")}  ",
-                    style: AppTextStyles.w500
-                        .copyWith(fontSize: 11, color: Styles.PRIMARY_COLOR),
+                    style: context.textTheme.labelSmall?.copyWith(color: context.color.onSurfaceVariant),
                   ),
                   // Icon(Icons.arrow_forward_rounded,
                   //     size: 16, color: Styles.PRIMARY_COLOR)

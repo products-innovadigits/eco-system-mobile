@@ -17,6 +17,7 @@ class TalentPoolSection extends StatelessWidget {
             return InkWell(
               onTap: () {
                 context.read<FiltrationBloc>().reset();
+                context.read<FiltrationBloc>().add(Click());
                 CustomNavigator.push(Routes.TALENT_POOL);
               },
               child: Container(
@@ -47,7 +48,7 @@ class TalentPoolSection extends StatelessWidget {
           }
           if (state is Loading) {
             return Padding(
-              padding: EdgeInsets.only(top: 12.h , right: 16.w, left: 16.w),
+              padding: EdgeInsets.only(top: 12.h),
               child: CustomShimmerContainer(
                 height: context.h * 0.2,
                 width: context.w,

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:ats_package/shared/ats_exports.dart';
 import 'package:ats_package/talent_pool/model/file_model.dart';
 import 'package:ats_package/talent_pool/repo/talent_pool_repo.dart';
@@ -107,7 +105,6 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
 
   void _onApplySorting(ApplySorting event, Emitter<AppState> emit) {
     appliedSorting = selectedSorting;
-    log('Applied Sorting: ${appliedSorting?.key}');
     CustomNavigator.pop();
     _engine = SearchEngine(searchText: searchController.text);
     add(Click(arguments: _engine));
@@ -166,7 +163,7 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
           emit(Empty(initial: false));
         }
       }
-      add(GetSort());
+      if (sortingList.isEmpty) add(GetSort());
     } catch (e) {
       AppCore.errorMessage(allTranslations.text('something_went_wrong'));
       emit(Error());
@@ -174,9 +171,6 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
   }
 
   void _getSortTypes(AppEvent event, Emitter<AppState> emit) async {
-    if (sortingList.isNotEmpty) {
-      return;
-    }
     // emit(Loading());
     try {
       final Response res = await TalentPoolRepo.getSortTypes();

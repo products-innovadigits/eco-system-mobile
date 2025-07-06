@@ -14,7 +14,7 @@ class StatusWidget extends StatelessWidget {
               horizontal: 12.w, vertical: 6.h),
           decoration: BoxDecoration(
             color:
-            Styles.PRIMARY_COLOR.withValues(alpha: 0.1),
+            context.color.onSurfaceVariant.withValues(alpha: 0.2),
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(16),
             ),
@@ -23,7 +23,7 @@ class StatusWidget extends StatelessWidget {
               child: Text(
                 status,
                 style: AppTextStyles.w400.copyWith(
-                    fontSize: 10, color: Styles.PRIMARY_COLOR),
+                    fontSize: 10, color: context.color.onSurfaceVariant),
               )),
         ),
       ],

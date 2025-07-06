@@ -18,13 +18,12 @@ class TotalCandidatesSection extends StatelessWidget {
           children: [
             Text(
               allTranslations.text(LocaleKeys.total_candidates),
-              style: AppTextStyles.w400
-                  .copyWith(fontSize: 12, color: Styles.DETAILS),
+              style: context.textTheme.bodySmall?.copyWith(color: context.color.outline),
             ),
             4.sh,
             Text(
               candidatesCount.toString(),
-              style: AppTextStyles.w700.copyWith(fontSize: 14),
+              style: context.textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w700),
             ),
           ],
         ),
@@ -39,7 +38,7 @@ class TotalCandidatesSection extends StatelessWidget {
                         ? EdgeInsets.only(left: 0)
                         : EdgeInsets.only(left: index * 17.w),
                     decoration: BoxDecoration(
-                        color: Styles.PRIMARY_COLOR,
+                        color: context.color.primary,
                         shape: BoxShape.circle,
                         border: Border.all(color: Styles.WHITE_COLOR)),
                     child: (index == 4 && talentsList.length > 5)
@@ -50,14 +49,14 @@ class TotalCandidatesSection extends StatelessWidget {
                             child: Center(
                               child: Text(
                                 '+${candidatesCount - 5}',
-                                style: AppTextStyles.w400.copyWith(
-                                    color: Styles.WHITE_COLOR,
+                                style: context.textTheme.bodySmall?.copyWith(
+                                    color: context.color.onPrimary,
                                     fontSize: candidatesCount > 99 ? 10 : 11),
                               ),
                             ),
                           )
                         : CustomNetworkImage.circleNewWorkImage(
-                            backGroundColor: Styles.PRIMARY_COLOR),
+                            backGroundColor: context.color.primary),
                   )),
         ),
       ],

@@ -30,6 +30,7 @@ class TalentPoolBottomNav extends StatelessWidget {
                     Column(
                       children: [
                         BottomSheetHeader(title: LocaleKeys.assign_to_job),
+                        24.sh,
                         AssignToJobList(
                             onSelectJob: (jobs) {
                               bloc.selectedJobsList = jobs;

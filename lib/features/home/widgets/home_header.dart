@@ -1,4 +1,3 @@
-import 'package:core_package/core/helpers/font_sizes.dart';
 import 'package:core_package/core/utility/export.dart';
 import 'package:core_package/core/widgets/profile_image_widget.dart';
 

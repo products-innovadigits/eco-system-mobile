@@ -41,6 +41,7 @@ class Network {
   Future<dynamic> request(
     String endpoint, {
     body,
+    String systemType = 'strategy',
     Mapper? model,
     Map<String, dynamic>? query,
     Map<String, dynamic>? header,
@@ -60,7 +61,10 @@ class Network {
     }
     try {
       Response response = await _dio.request(
-        AppConfig.baseUrl + endpoint,
+        (systemType == 'strategy'
+                ? AppConfig.strategyBaseUrl
+                : AppConfig.atsBaseUrl) +
+            endpoint,
         data: body,
         queryParameters: query,
         options: Options(

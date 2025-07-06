@@ -1,9 +1,7 @@
 // Flutter core imports
 // Third-party imports
-import 'package:core_package/core/config/colors/light_colors.dart';
 import 'package:core_package/core/config/providers.dart';
 import 'package:core_package/core/config/themes/themes.dart';
-import 'package:core_package/core/helpers/font_sizes.dart';
 import 'package:core_package/core/helpers/notification_helper/notification_helper.dart';
 import 'package:core_package/core/helpers/translation/translations.dart';
 import 'package:core_package/core/services/connectivity_service.dart';

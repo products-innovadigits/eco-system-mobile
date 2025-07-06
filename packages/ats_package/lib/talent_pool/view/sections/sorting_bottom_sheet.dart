@@ -16,22 +16,38 @@ class SortingBottomSheet extends StatelessWidget {
               children: [
                 BottomSheetHeader(title: LocaleKeys.sort),
                 24.sh,
-                ListView.separated(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) => CustomSortTileWidget(
-                        title: bloc.sortingList[index].name ?? '',
-                        isSelected: bloc.selectedSorting?.key ==
-                            bloc.sortingList[index].key,
-                        onSelect: () {
-                          bloc.add(SelectSorting(
-                              arguments: bloc.sortingList.firstWhere(
-                                  (element) =>
-                                      element.key ==
-                                      bloc.sortingList[index].key)));
-                        }),
-                    separatorBuilder: (context, index) => 16.sh,
-                    itemCount: bloc.sortingList.length),
+                ListAnimator(
+                  separatorPadding: 16.h,
+                  data: List.generate(
+                      bloc.sortingList.length,
+                      (index) => CustomSortTileWidget(
+                          title: bloc.sortingList[index].name ?? '',
+                          isSelected: bloc.selectedSorting?.key ==
+                              bloc.sortingList[index].key,
+                          onSelect: () {
+                            bloc.add(SelectSorting(
+                                arguments: bloc.sortingList.firstWhere(
+                                    (element) =>
+                                        element.key ==
+                                        bloc.sortingList[index].key)));
+                          })),
+                ),
+                // ListView.separated(
+                //     shrinkWrap: true,
+                //     physics: const NeverScrollableScrollPhysics(),
+                //     itemBuilder: (context, index) => CustomSortTileWidget(
+                //         title: bloc.sortingList[index].name ?? '',
+                //         isSelected: bloc.selectedSorting?.key ==
+                //             bloc.sortingList[index].key,
+                //         onSelect: () {
+                //           bloc.add(SelectSorting(
+                //               arguments: bloc.sortingList.firstWhere(
+                //                   (element) =>
+                //                       element.key ==
+                //                       bloc.sortingList[index].key)));
+                //         }),
+                //     separatorBuilder: (context, index) => 16.sh,
+                //     itemCount: bloc.sortingList.length),
                 80.sh,
               ],
             ),
@@ -43,11 +59,9 @@ class SortingBottomSheet extends StatelessWidget {
                 children: [
                   Expanded(
                     child: CustomBtn(
-                        text:
-                            allTranslations.text(LocaleKeys.show_all_results),
+                        text: allTranslations.text(LocaleKeys.show_all_results),
                         active: bloc.selectedSorting != null,
-                        onPressed: () =>
-                            bloc.add(ApplySorting())),
+                        onPressed: () => bloc.add(ApplySorting())),
                   ),
                   if (bloc.appliedSorting != null) ...[
                     8.sw,
@@ -57,8 +71,7 @@ class SortingBottomSheet extends StatelessWidget {
                           color: Styles.WHITE_COLOR,
                           textColor: Styles.PRIMARY_COLOR,
                           borderColor: Styles.PRIMARY_COLOR,
-                          onPressed: () =>
-                              bloc.add(ResetSorting())),
+                          onPressed: () => bloc.add(ResetSorting())),
                     ),
                   ],
                 ],

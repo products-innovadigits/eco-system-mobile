@@ -20,6 +20,7 @@ ThemeData _buildLightTheme() {
       onSurface: LightColor.textPrimary,
       outline: LightColor.textDefaultDisabled,
       onPrimary: LightColor.white,
+      onSurfaceVariant: LightColor.borderInfo,
     ),
     brightness: Brightness.light,
     primaryColor: LightColor.backgroundPrimary,

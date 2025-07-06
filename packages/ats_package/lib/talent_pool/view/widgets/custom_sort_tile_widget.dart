@@ -16,13 +16,15 @@ class CustomSortTileWidget extends StatelessWidget {
     return InkWell(
       onTap: onSelect,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             width: 22.w,
             height: 22.h,
             decoration: BoxDecoration(
-                color:
-                    isSelected ? Styles.PRIMARY_COLOR : Styles.ICON_GREY_COLOR,
+                color: isSelected
+                    ? context.color.primary
+                    : context.color.outline.withValues(alpha: 0.6),
                 shape: BoxShape.circle),
             child: Center(
                 child: const Icon(
@@ -34,7 +36,7 @@ class CustomSortTileWidget extends StatelessWidget {
           8.sw,
           Text(
             title,
-            style: AppTextStyles.w500.copyWith(fontSize: 12),
+            style: context.textTheme.labelSmall,
           ),
         ],
       ),

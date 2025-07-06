@@ -188,7 +188,6 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
     final gender = event.arguments as DropListModel;
     genderController.text = gender.name ?? '';
     final currentModel = _filterSubject.value;
-    // Map Arabic gender values to English
     String? mappedGender;
     if (gender.name == 'ذكر') {
       mappedGender = 'male';
@@ -202,7 +201,7 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
   }
 
   void _getTags(AppEvent event, Emitter<AppState> emit) async {
-    if (UserBloc.activeSystems.contains('ats')) {
+    if (UserBloc.activeSystems.contains('ats') && tagsList.isEmpty) {
       emit(Loading());
       try {
         final res = await FiltrationRepo.getTags();

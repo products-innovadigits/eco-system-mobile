@@ -1,4 +1,5 @@
 import 'package:ats_package/shared/ats_exports.dart';
+import 'package:core_package/core/helpers/font_sizes.dart';
 import 'package:core_package/core/utility/export.dart';
 
 
@@ -19,8 +20,7 @@ class MultipleSelectBtnWidget extends StatelessWidget {
                     },
                     child: Text(
                       allTranslations.text(LocaleKeys.select_all),
-                      style: AppTextStyles.w400
-                          .copyWith(fontSize: 12, color: Styles.PRIMARY_COLOR),
+                      style: context.textTheme.bodySmall?.copyWith(color: context.color.onSurfaceVariant),
                     ),
                   ),
                   8.sw,
@@ -28,8 +28,7 @@ class MultipleSelectBtnWidget extends StatelessWidget {
                     onTap: () => bloc.add(Select(arguments: false)),
                     child: Text(
                       allTranslations.text(LocaleKeys.cancel),
-                      style: AppTextStyles.w400.copyWith(
-                          fontSize: 10, color: Styles.SUB_TEXT_DARK_COLOR),
+                      style: context.textTheme.bodySmall?.copyWith(color: context.color.outline, fontSize: FontSizes.f10),
                     ),
                   ),
                 ],
@@ -38,8 +37,7 @@ class MultipleSelectBtnWidget extends StatelessWidget {
                 onTap: () => bloc.add(Select(arguments: true)),
                 child: Text(
                   allTranslations.text(LocaleKeys.select),
-                  style: AppTextStyles.w400
-                      .copyWith(fontSize: 12, color: Styles.PRIMARY_COLOR),
+                  style: context.textTheme.bodySmall?.copyWith(color: context.color.onSurfaceVariant),
                 ),
               );
       },

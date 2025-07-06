@@ -53,9 +53,8 @@ class CustomBtn extends StatelessWidget {
                   )
                 : Text(
                     text,
-                    style: context.textTheme.headlineLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: textColor ?? context.color.background,
+                    style: context.textTheme.titleSmall?.copyWith(
+                      color: textColor ?? context.color.onPrimary,
                       fontSize: fontSize,
                     ),
                   ),

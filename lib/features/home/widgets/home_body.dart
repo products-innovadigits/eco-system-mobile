@@ -14,20 +14,24 @@ class HomeBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Column(
-        children: [
-          115.sh,
-          if (systems.contains('ats'))...[
-            AvailableJobsSection(),
-            16.sh,
-            TalentPoolSection(),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        child: Column(
+          spacing: 16.h,
+          children: [
+            115.sh,
+            if (systems.contains('strategy')) ObjectivePercentageSection(),
+            if (systems.contains('pms')) ...[
+              ProjectsProgressSection(),
+              ProjectCategoryProgressSection(),
+              if (systems.contains('ats')) ...[
+                AvailableJobsSection(),
+                TalentPoolSection(),
+              ],
+              16.sh
+            ],
           ],
-          if (systems.contains('strategy')) ObjectivePercentageSection(),
-          if (systems.contains('pms')) ...[
-            ProjectsProgressSection(),
-            ProjectCategoryProgressSection(),
-          ],
-        ],
+        ),
       ),
     );
   }

@@ -15,7 +15,7 @@ class BottomSheetHeader extends StatelessWidget {
       children: [
         Text(
           allTranslations.text(title),
-          style: AppTextStyles.w700.copyWith(fontSize: 16),
+          style: context.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
         ),
         const Spacer(),
         GestureDetector(

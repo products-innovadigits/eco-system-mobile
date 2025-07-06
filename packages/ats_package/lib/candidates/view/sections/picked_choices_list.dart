@@ -15,7 +15,7 @@ class PickedChoicesList extends StatelessWidget {
         return Container(
           padding: EdgeInsetsDirectional.only(start: 12.w,end: 8.w, top: 6.h , bottom: 6.h),
           decoration: BoxDecoration(
-            color: Styles.PRIMARY_COLOR.withValues(alpha: 0.1),
+            color: context.color.onSurfaceVariant.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Row(
@@ -23,17 +23,14 @@ class PickedChoicesList extends StatelessWidget {
             children: [
               Text(
                 item.name ?? "",
-                style: AppTextStyles.w400.copyWith(
-                  fontSize: 10,
-                  color: Styles.PRIMARY_COLOR,
-                ),
+                style: context.textTheme.bodySmall,
               ),
               4.sw,
               InkWell(
                 onTap: () => onRemove(item),
                 child: Images(
                   image: Assets.svgs.fillCloseCircle.path,
-                  color: Styles.PRIMARY_COLOR,
+                  color: context.color.primary,
                   width: 18,
                   height: 18,
                 ),

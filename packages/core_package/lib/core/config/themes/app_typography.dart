@@ -8,28 +8,34 @@ abstract class AppTypography {
   static const displayLarge = TextStyle(
       fontSize: FontSizes.f32,
       fontWeight: FontWeight.w700,
+      fontFamily: Styles.FONT_AR,
       color: LightColor.textPrimary);
   static const displayMedium = TextStyle(
       fontSize: FontSizes.f28,
       fontWeight: FontWeight.w700,
+      fontFamily: Styles.FONT_AR,
       color: LightColor.textPrimary);
   static const displaySmall = TextStyle(
       fontSize: FontSizes.f26,
       fontWeight: FontWeight.w700,
+      fontFamily: Styles.FONT_AR,
       color: LightColor.textPrimary);
 
   // Headline
   static const headlineLarge = TextStyle(
       fontSize: FontSizes.f24,
       fontWeight: FontWeight.w700,
+      fontFamily: Styles.FONT_AR,
       color: LightColor.textPrimary);
   static const headlineMedium = TextStyle(
       fontSize: FontSizes.f22,
       fontWeight: FontWeight.w600,
+      fontFamily: Styles.FONT_AR,
       color: LightColor.textPrimary);
   static const headlineSmall = TextStyle(
       fontSize: FontSizes.f20,
       fontWeight: FontWeight.w500,
+      fontFamily: Styles.FONT_AR,
       color: LightColor.textPrimary);
 
   // Title

@@ -17,7 +17,7 @@ class Skills extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(allTranslations.text(LocaleKeys.skills),
-                style: AppTextStyles.w400.copyWith(fontSize: 12)),
+                style: context.textTheme.bodySmall),
             8.sh,
             Container(
               padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),

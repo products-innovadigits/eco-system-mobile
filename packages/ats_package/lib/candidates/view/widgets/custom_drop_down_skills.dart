@@ -38,8 +38,8 @@ class CustomDropDownSkills extends StatelessWidget {
                       ? Text(
                           hint ??
                               allTranslations.text(LocaleKeys.select_skills),
-                          style: AppTextStyles.w400
-                              .copyWith(fontSize: 12, color: Styles.HINT),
+                          style: context.textTheme.bodySmall
+                              ?.copyWith(color: context.color.outline),
                         )
                       : PickedChoicesList(
                           list: selectedList, onRemove: onRemove),
@@ -54,8 +54,7 @@ class CustomDropDownSkills extends StatelessWidget {
                     height: 24.w,
                     child: Images(
                       image: Assets.svgs.arrowDown.path,
-                      // Added visual feedback: arrow changes color when expanded
-                      color: isExpanded ? Styles.PRIMARY_COLOR : null,
+                      color: isExpanded ? context.color.onSurfaceVariant : null,
                     ),
                   ),
                 ),

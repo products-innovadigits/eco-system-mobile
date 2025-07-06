@@ -24,7 +24,6 @@ class ObjectivePercentageSection extends StatelessWidget {
             return Container(
               width: context.w,
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-              margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
               decoration: BoxDecoration(
                   color: context.color.surface,
                   borderRadius: BorderRadius.circular(14),
@@ -82,7 +81,7 @@ class ObjectivePercentageSection extends StatelessWidget {
           }
           if (state is Loading) {
             return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+              padding: EdgeInsets.symmetric(vertical: 12.h),
               child: CustomShimmerContainer(
                 height: context.h * 0.2,
                 width: context.w,

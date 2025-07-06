@@ -23,22 +23,38 @@ class TalentPoolListSection extends StatelessWidget {
                 onRefresh: () async {
                   bloc.add(Click(arguments: SearchEngine()));
                 },
-                child: ListView.separated(
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: talentsList.length,
+                child: ListAnimator(
                   controller: bloc.scrollController,
-                  itemBuilder: (context, index) {
-                    return TalentCardWidget(
-                      onSelectTalent: () => bloc.add(SelectTalent(
-                          arguments: {"talentId": talentsList[index].id})),
-                      isTalentSelected: bloc.selectedTalentsList
-                          .contains(talentsList[index].id),
-                      isSelectionActive: bloc.activeSelection,
-                      talent: talentsList[index],
-                    );
-                  },
-                  separatorBuilder: (context, index) => 16.sh,
+                  separatorPadding: 16.h,
+                  data: List.generate(
+                      talentsList.length,
+                      (index) => TalentCardWidget(
+                            onSelectTalent: () => bloc.add(SelectTalent(
+                                arguments: {
+                                  "talentId": talentsList[index].id
+                                })),
+                            isTalentSelected: bloc.selectedTalentsList
+                                .contains(talentsList[index].id),
+                            isSelectionActive: bloc.activeSelection,
+                            talent: talentsList[index],
+                          )),
                 ),
+                // ListView.separated(
+                //   physics: const BouncingScrollPhysics(),
+                //   itemCount: talentsList.length,
+                //   controller: bloc.scrollController,
+                //   itemBuilder: (context, index) {
+                //     return TalentCardWidget(
+                //       onSelectTalent: () => bloc.add(SelectTalent(
+                //           arguments: {"talentId": talentsList[index].id})),
+                //       isTalentSelected: bloc.selectedTalentsList
+                //           .contains(talentsList[index].id),
+                //       isSelectionActive: bloc.activeSelection,
+                //       talent: talentsList[index],
+                //     );
+                //   },
+                //   separatorBuilder: (context, index) => 16.sh,
+                // ),
               )),
               CustomLoading(isTextLoading: true, loading: state.loading)
             ],

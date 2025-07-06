@@ -20,7 +20,7 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
       // bool? skip = await helper.readBoolean(CachingKey.SKIP);
 
       ///Get Setting
-      UserBloc.activeSystems = ['pms', 'strategy'];
+      UserBloc.activeSystems = ['pms', 'strategy' , 'ats'];
       if (isLogin) {
         UserBloc.instance.add(Click());
       }

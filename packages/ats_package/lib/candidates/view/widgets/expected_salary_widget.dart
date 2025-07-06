@@ -13,7 +13,7 @@ class ExpectedSalary extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(allTranslations.text(LocaleKeys.expected_salary),
-            style: AppTextStyles.w400.copyWith(fontSize: 12)),
+            style: context.textTheme.bodySmall),
         Row(
           children: [
             Expanded(

@@ -16,7 +16,7 @@ class Tags extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(allTranslations.text(LocaleKeys.keyword),
-                style: AppTextStyles.w400.copyWith(fontSize: 12)),
+                style: context.textTheme.bodySmall),
             8.sh,
             CustomDropDownSkills(
               hint: allTranslations.text(LocaleKeys.select_keywords),
@@ -73,10 +73,7 @@ Widget _buildTagsList(BuildContext context, List<DropListModel> list,
                 ),
                 child: Text(
                   item.name ?? "",
-                  style: AppTextStyles.w400.copyWith(
-                    color: Styles.TEXT_COLOR,
-                    fontSize: 12,
-                  ),
+                  style: context.textTheme.bodySmall,
                 ),
               ),
             );

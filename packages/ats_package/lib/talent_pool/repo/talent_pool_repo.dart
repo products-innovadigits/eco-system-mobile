@@ -11,6 +11,7 @@ abstract class TalentPoolRepo {
       query: data.query,
       method: ServerMethods.GET,
       model: TalentPoolModel(),
+      systemType: 'ats',
     );
   }
 
@@ -22,6 +23,7 @@ abstract class TalentPoolRepo {
       method: ServerMethods.POST,
       body: {"chances": selectedJobsList, "candidates": selectedTalentsList},
       model: DefaultRequestModel(),
+      systemType: 'ats',
     );
   }
 
@@ -33,12 +35,14 @@ abstract class TalentPoolRepo {
       isExcel ? ApiNames.exportExcelFile : ApiNames.exportZipFile,
       method: ServerMethods.POST,
       model: FileModel(),
+      systemType: 'ats',
       body: {"file_name": fileName, "candidate_ids": selectedTalentsList},
     );
   }
 
   static Future<Response> getSortTypes() async {
     return await Network()
-        .request(ApiNames.sortingList, method: ServerMethods.GET);
+        .request(ApiNames.sortingList, method: ServerMethods.GET,
+      systemType: 'ats',);
   }
 }

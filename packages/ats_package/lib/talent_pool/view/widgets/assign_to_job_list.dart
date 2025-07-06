@@ -47,10 +47,10 @@ class _AssignToJobListState extends State<AssignToJobList> {
             children: [
               SizedBox(
                 height: context.h * 0.6,
-                child: ListView.separated(
+                child: ListAnimator(
                   controller: jobsBloc.scrollController,
-                  physics: const BouncingScrollPhysics(),
-                  itemBuilder: (context, index) {
+                  separatorPadding: 16.h,
+                  data: List.generate(jobsList.length, (index){
                     final job = jobsList[index];
                     return InkWell(
                       onTap: () {
@@ -84,12 +84,11 @@ class _AssignToJobListState extends State<AssignToJobList> {
                                   8.sw,
                                   Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         job.title ?? '',
-                                        style: AppTextStyles.w500
-                                            .copyWith(color: Styles.TEXT_COLOR),
+                                        style: context.textTheme.titleSmall,
                                       ),
                                       4.sh,
                                       Text(
@@ -107,10 +106,71 @@ class _AssignToJobListState extends State<AssignToJobList> {
                         ),
                       ),
                     );
-                  },
-                  separatorBuilder: (context, index) => 12.sh,
-                  itemCount: jobsList.length,
+                  }),
                 ),
+                // child: ListView.separated(
+                //   controller: jobsBloc.scrollController,
+                //   physics: const BouncingScrollPhysics(),
+                //   itemBuilder: (context, index) {
+                //     final job = jobsList[index];
+                //     return InkWell(
+                //       onTap: () {
+                //         if (job.id != null) {
+                //           _handleJobSelection(job.id!);
+                //         }
+                //       },
+                //       child: Container(
+                //         width: context.w,
+                //         decoration: BoxDecoration(
+                //             color: Styles.WHITE_COLOR,
+                //             borderRadius: BorderRadius.circular(16),
+                //             border: Border.all(color: Styles.BORDER)),
+                //         child: Column(
+                //           children: [
+                //             if (job.status != null)
+                //               StatusWidget(status: job.status!),
+                //             Padding(
+                //               padding: EdgeInsetsDirectional.only(
+                //                   start: 12.w, bottom: 24.h),
+                //               child: Row(
+                //                 children: [
+                //                   CustomCheckBoxWidget(
+                //                       onCheck: () {
+                //                         if (job.id != null) {
+                //                           _handleJobSelection(job.id!);
+                //                         }
+                //                       },
+                //                       isChecked: job.id != null &&
+                //                           _selectedJobs.contains(job.id)),
+                //                   8.sw,
+                //                   Column(
+                //                     crossAxisAlignment:
+                //                         CrossAxisAlignment.start,
+                //                     children: [
+                //                       Text(
+                //                         job.title ?? '',
+                //                         style: context.textTheme.titleSmall,
+                //                       ),
+                //                       4.sh,
+                //                       Text(
+                //                         '${job.chanceType} . ${job.address} . ${job.department}',
+                //                         style: AppTextStyles.w400.copyWith(
+                //                             color: Styles.SUB_TEXT_DARK_COLOR,
+                //                             fontSize: 10),
+                //                       ),
+                //                     ],
+                //                   ),
+                //                 ],
+                //               ),
+                //             )
+                //           ],
+                //         ),
+                //       ),
+                //     );
+                //   },
+                //   separatorBuilder: (context, index) => 12.sh,
+                //   itemCount: jobsList.length,
+                // ),
               ),
               CustomLoading(isTextLoading: true, loading: state.loading)
             ],
