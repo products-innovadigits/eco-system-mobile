@@ -29,30 +29,34 @@ class WorkExperienceSection extends StatelessWidget {
                     child: ExpansionTile(
                       tilePadding: EdgeInsets.symmetric(horizontal: 16.w),
                       title: Text(
-                        allTranslations.text(LocaleKeys.work_experience),
-                        style: AppTextStyles.w500.copyWith(
-                          color: Styles.HEADER,
-                          fontSize: 14,
-                        ),
-                      ),
+                          allTranslations.text(LocaleKeys.work_experience),
+                          style: context.textTheme.titleMedium),
                       shape: const Border(),
                       collapsedShape: const Border(),
-                      iconColor: Styles.PRIMARY_COLOR,
-                      collapsedIconColor: Styles.ICON_GREY_COLOR,
-                      collapsedTextColor: Styles.HEADER,
+                      iconColor: context.color.onSurfaceVariant,
+                      collapsedIconColor: context.color.outline,
+                      collapsedTextColor: context.color.onSurface,
                       children: <Widget>[
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 16.w)
                               .copyWith(bottom: 16.h),
-                          child: ListView.separated(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) =>
-                                ExperienceCardWidget(
-                                    experience: experienceList[index]),
-                            separatorBuilder: (context, index) => 24.sh,
-                            itemCount: experienceList.length,
+                          child: ListAnimator(
+                            separatorPadding: 24.h,
+                            data: List.generate(
+                              experienceList.length,
+                              (index) => ExperienceCardWidget(
+                                  experience: experienceList[index]),
+                            ),
                           ),
+                          // child: ListView.separated(
+                          //   shrinkWrap: true,
+                          //   physics: const NeverScrollableScrollPhysics(),
+                          //   itemBuilder: (context, index) =>
+                          //       ExperienceCardWidget(
+                          //           experience: experienceList[index]),
+                          //   separatorBuilder: (context, index) => 24.sh,
+                          //   itemCount: experienceList.length,
+                          // ),
                         ),
                       ],
                     ),

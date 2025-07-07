@@ -15,20 +15,28 @@ class ProfileBodySection extends StatelessWidget {
       builder: (context, state) {
         final selectedTab =
             context.select((ProfileBloc bloc) => bloc.selectedTab);
-        return Expanded(
-          child: Column(
-            children: [
-              if (state is Done) ProfileTabsSection(isTalent: isTalent),
-              20.sh,
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: _getTabSection(selectedTab, isTalent),
+        if (state is Error) {
+          return EmptyContainer(
+            img: Assets.svgs.error.path,
+            txt: allTranslations.text(LocaleKeys.page_not_found),
+            desc: allTranslations.text(LocaleKeys.page_not_found_desc),
+          );
+        } else {
+          return Expanded(
+            child: Column(
+              children: [
+                if (state is Done) ProfileTabsSection(isTalent: isTalent),
+                20.sh,
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: _getTabSection(selectedTab, isTalent),
+                  ),
                 ),
-              ),
-            ],
-          ),
-        );
+              ],
+            ),
+          );
+        }
       },
     );
   }

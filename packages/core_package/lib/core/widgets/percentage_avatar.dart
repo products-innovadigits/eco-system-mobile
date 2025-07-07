@@ -23,7 +23,7 @@ class PercentageAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: stackHeight ?? avatarSize,
       child: Stack(
         children: [
@@ -31,10 +31,11 @@ class PercentageAvatar extends StatelessWidget {
             width: avatarSize,
             height: avatarSize,
             decoration: BoxDecoration(
+              color: context.color.surface,
               shape: BoxShape.circle,
-              border: Border.all(color: Styles.PRIMARY_COLOR, width: 3),
+              border: Border.all(color: context.color.surface, width: 3),
               image: DecorationImage(
-                  image: AssetImage(avatarPath), fit: BoxFit.fill),
+                  image: AssetImage(avatarPath), fit: BoxFit.contain),
             ),
           ),
           if (withPercentage == true)
@@ -54,8 +55,7 @@ class PercentageAvatar extends StatelessWidget {
                   child: Text(
                     '$percentage%',
                     style: percentageTextStyle ??
-                        AppTextStyles.w600.copyWith(
-                            color: Styles.PRIMARY_COLOR, fontSize: 10),
+                        context.textTheme.titleSmall?.copyWith(fontSize: 10),
                   ),
                 ),
               ),

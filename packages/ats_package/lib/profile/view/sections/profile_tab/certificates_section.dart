@@ -28,25 +28,33 @@ class CertificatesSection extends StatelessWidget {
                     child: ExpansionTile(
                       tilePadding: EdgeInsets.symmetric(horizontal: 16.w),
                       title: Text(allTranslations.text(LocaleKeys.certificates),
-                          style: AppTextStyles.w500
-                              .copyWith(color: Styles.HEADER, fontSize: 14)),
+                          style: context.textTheme.titleMedium),
                       shape: const Border(),
                       collapsedShape: const Border(),
-                      iconColor: Styles.PRIMARY_COLOR,
-                      collapsedIconColor: Styles.ICON_GREY_COLOR,
-                      collapsedTextColor: Styles.HEADER,
+                      iconColor: context.color.onSurfaceVariant,
+                      collapsedIconColor: context.color.outline,
+                      collapsedTextColor: context.color.onSurface,
                       children: <Widget>[
                         Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16.w)
-                                .copyWith(bottom: 16.h),
-                            child: ListView.separated(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) =>
-                                    CertificateCardWidget(
-                                        certificate: certificatesList[index]),
-                                separatorBuilder: (context, index) => 24.sh,
-                                itemCount: certificatesList.length)),
+                          padding: EdgeInsets.symmetric(horizontal: 16.w)
+                              .copyWith(bottom: 16.h),
+                          child: ListAnimator(
+                            separatorPadding: 24.h,
+                            data: List.generate(
+                              certificatesList.length,
+                              (index) => CertificateCardWidget(
+                                  certificate: certificatesList[index]),
+                            ),
+                          ),
+                          // child: ListView.separated(
+                          //     shrinkWrap: true,
+                          //     physics: const NeverScrollableScrollPhysics(),
+                          //     itemBuilder: (context, index) =>
+                          //         CertificateCardWidget(
+                          //             certificate: certificatesList[index]),
+                          //     separatorBuilder: (context, index) => 24.sh,
+                          //     itemCount: certificatesList.length)
+                        ),
                       ],
                     ),
                   );

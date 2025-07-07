@@ -1,0 +1,19 @@
+default_platform(:android)
+
+platform :android do
+  desc "Build APK and Distribute to Firebase"
+  lane :distribute_ci do |options|
+    test_email = options[:test_email]
+
+    # Build the APK
+    sh("flutter", "build", "apk", "--release")
+
+    # Upload to Firebase App Distribution
+    firebase_app_distribution(
+      app: "1:419893562273:android:5d15901a1b38730eb659e0",
+      firebase_cli_token: ENV["FIREBASE_TOKEN"],
+      release_notes: "🚀 Automated CI release from GitHub Actions",
+      testers: "#{test_email},abdelraheemsaad014@gmail.com,mohamed.abbas@innovadigits.com,khloud.mohamed.saleh@gmail.com"
+    )
+  end
+end

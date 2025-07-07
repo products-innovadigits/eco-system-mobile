@@ -20,13 +20,12 @@ class ProfileDataContainerWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(48)),
         child: Row(
           children: [
-            Images(image: icon),
+            Images(image: icon , color: context.color.onSurfaceVariant),
             6.sw,
             Text(
               title,
               textDirection: TextDirection.ltr,
-              style: AppTextStyles.w500
-                  .copyWith(color: Styles.WHITE_COLOR, fontSize: 10),
+              style: context.textTheme.labelSmall?.copyWith(color: context.color.onPrimary , fontSize: 10),
             ),
           ],
         ),

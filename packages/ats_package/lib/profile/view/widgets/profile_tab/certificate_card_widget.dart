@@ -22,30 +22,39 @@ class CertificateCardWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8)),
               child: Images(
                   image: Assets.svgs.building.path,
-                  color: Styles.PRIMARY_COLOR),
+                  color: context.color.onSurface),
             ),
             8.sw,
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   certificate.name ?? '-',
-                  style: AppTextStyles.w400.copyWith(fontSize: 12),
+                  style: context.textTheme.bodySmall,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 4.sh,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      certificate.orginization ?? '-',
-                      style: AppTextStyles.w400.copyWith(
-                          color: Styles.PRIMARY_COLOR, fontSize: 10),
-                    ),
+                    if (certificate.orginization != null &&
+                        certificate.orginization!.isNotEmpty)
+                      Text(
+                        certificate.orginization ?? '-',
+                        style: context.textTheme.bodySmall?.copyWith(
+                            color: context.color.onSurfaceVariant,
+                            fontSize: 10),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     4.sw,
-                    Text(
+                    if (certificate.date != null &&
+                        certificate.date!.isNotEmpty)
+                      Text(
                       certificate.date ?? '-',
-                      style: AppTextStyles.w400.copyWith(
-                          color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
+                      style: context.textTheme.bodySmall?.copyWith(
+                          color: context.color.outline, fontSize: 10),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),

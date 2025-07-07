@@ -71,20 +71,20 @@ class TalentCardWidget extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Expanded(
+                      Flexible(
                         child: Text(
                           '${talent.jobTitle} . ',
                           style: context.textTheme.bodySmall?.copyWith(
                               fontSize: FontSizes.f10,
                               color: context.color.outline),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      Expanded(
-                        child: Text(
-                            '${talent.chancesCount} ${allTranslations.text(LocaleKeys.chances)}',
-                            style: context.textTheme.bodySmall
-                                ?.copyWith(fontSize: FontSizes.f10)),
-                      )
+                      Text(
+                          '${talent.chancesCount} ${allTranslations.text(LocaleKeys.chances)}',
+                          style: context.textTheme.bodySmall?.copyWith(
+                              fontSize: FontSizes.f10,
+                              color: context.color.onSurfaceVariant))
                     ],
                   ),
                   if (talent.profile?.location != null &&
@@ -104,7 +104,9 @@ class TalentCardWidget extends StatelessWidget {
                   height: 24.h,
                   alignment: AlignmentDirectional.centerEnd,
                   padding: EdgeInsets.all(6),
-                  child: Images(image: Assets.svgs.arrowLeft.path)),
+                  child: Images(
+                      image: Assets.svgs.arrowLeft.path,
+                      color: context.color.outline)),
             ),
           ],
         ),

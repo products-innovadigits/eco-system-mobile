@@ -109,14 +109,13 @@ class _CustomAppBarState extends State<CustomAppBar> {
                         height: 20.h,
                       ),
                     )),
-                // 8.sw,
-                Expanded(
-                  child: Text(
-                    widget.title ?? "",
-                    style: context.textTheme.titleLarge,
-                    textAlign: TextAlign.center,
-                  ),
+                8.sw,
+                Text(
+                  widget.title ?? "",
+                  style: context.textTheme.titleLarge,
+                  textAlign: TextAlign.center,
                 ),
+                const Spacer(),
                 widget.action ?? SizedBox(width: 16.w)
               ],
             ),

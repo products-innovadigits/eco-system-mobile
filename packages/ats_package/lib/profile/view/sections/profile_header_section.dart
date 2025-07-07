@@ -58,12 +58,13 @@ class _ProfileHeaderSectionState extends State<ProfileHeaderSection>
               children: [
                 Container(
                   width: context.w,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(Assets.images.prfileHeaderBg.path),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
+                  color: context.color.primary,
+                  // decoration: BoxDecoration(
+                  //   image: DecorationImage(
+                  //     image: AssetImage(Assets.images.prfileHeaderBg.path),
+                  //     fit: BoxFit.fill,
+                  //   ),
+                  // ),
                   child: SafeArea(
                     child: Padding(
                       padding: EdgeInsets.symmetric(
@@ -75,13 +76,12 @@ class _ProfileHeaderSectionState extends State<ProfileHeaderSection>
                           ProfileCustomAppbarWidget(
                               title: candidateModel?.jobTitle ?? ''),
                           16.sh,
-                          if (candidateModel?.resume?.url != null)
-                            ProfileUserDataWidget(
-                              cvUrl: candidateModel?.resume?.url ?? '',
-                              showAvatarPercentage: !widget.isTalent,
-                              name: candidateModel?.name ?? '',
-                              email: candidateModel?.email ?? '',
-                            ),
+                          ProfileUserDataWidget(
+                            cvUrl: candidateModel?.resume?.url ?? '',
+                            showAvatarPercentage: !widget.isTalent,
+                            name: candidateModel?.name ?? '',
+                            email: candidateModel?.email ?? '',
+                          ),
                           12.sh,
                           Row(
                             spacing: 8.w,

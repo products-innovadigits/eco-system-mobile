@@ -40,7 +40,8 @@ class CandidateSkillsSection extends StatelessWidget {
                 children: [
                   Text(
                     allTranslations.text(LocaleKeys.skills),
-                    style: AppTextStyles.w700,
+                    style: context.textTheme.titleSmall
+                        ?.copyWith(fontWeight: FontWeight.w600),
                   ),
                   8.sh,
                   Wrap(
@@ -49,18 +50,17 @@ class CandidateSkillsSection extends StatelessWidget {
                     children: List.generate(
                       skills.length,
                       (index) => Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 12.w, vertical: 6.h),
                         decoration: BoxDecoration(
-                          color: Styles.PRIMARY_COLOR.withValues(alpha: 0.1),
+                          color: context.color.onSurfaceVariant
+                              .withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
                           skills[index],
-                          style: AppTextStyles.w400.copyWith(
-                            fontSize: 10,
-                            color: Styles.PRIMARY_COLOR,
-                          ),
+                          style: context.textTheme.bodySmall
+                              ?.copyWith(fontSize: 10),
                         ),
                       ),
                     ),
@@ -71,7 +71,6 @@ class CandidateSkillsSection extends StatelessWidget {
     );
   }
 }
-
 
 Widget _buildShimmerSkill() {
   return Shimmer.fromColors(

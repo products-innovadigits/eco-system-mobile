@@ -23,7 +23,7 @@ class ProfileUserDataWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             PercentageAvatar(
-                avatarPath: Assets.images.avatar.path,
+                avatarPath: Assets.images.avatar2.path,
                 percentage: '10',
                 withPercentage: showAvatarPercentage,
                 avatarSize: 64.w),
@@ -32,20 +32,20 @@ class ProfileUserDataWidget extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
                 decoration: BoxDecoration(
-                    color: Styles.WHITE_COLOR,
+                    color: context.color.surface,
                     borderRadius: BorderRadius.circular(10)),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    Images(
+                        image: Assets.svgs.documentDownload.path,
+                        color: context.color.onSurface),
+                    8.sw,
                     Text(
                       'CV',
                       style: AppTextStyles.w500
-                          .copyWith(color: Styles.PRIMARY_COLOR),
+                          .copyWith(color: context.color.onSurface),
                     ),
-                    8.sw,
-                    Images(
-                        image: Assets.svgs.documentDownload.path,
-                        color: Styles.PRIMARY_COLOR),
                   ],
                 ),
               ),
@@ -54,11 +54,10 @@ class ProfileUserDataWidget extends StatelessWidget {
         ),
         10.sh,
         Text(name,
-            style: AppTextStyles.w600
-                .copyWith(fontSize: 16, color: Styles.WHITE_COLOR)),
+            style: context.textTheme.titleLarge?.copyWith(color: context.color.onPrimary)),
         4.sh,
         Text(email,
-            style: AppTextStyles.w400.copyWith(color: Styles.WHITE_COLOR)),
+            style: context.textTheme.bodyMedium?.copyWith(color: context.color.onPrimary)),
       ],
     );
   }

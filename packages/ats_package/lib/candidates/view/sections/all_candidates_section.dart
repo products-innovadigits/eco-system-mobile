@@ -15,11 +15,10 @@ class AllCandidatesSection extends StatelessWidget {
             Row(
               children: [
                 Text(bloc.jobTitle,
-                    style: AppTextStyles.w700.copyWith(fontSize: 14)),
+                    style: context.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
                 8.sw,
                 Text('(${bloc.candidateCount})',
-                    style: AppTextStyles.w600
-                        .copyWith(color: Styles.PRIMARY_COLOR, fontSize: 14)),
+                    style: context.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600)),
               ],
             ),
             8.sh,

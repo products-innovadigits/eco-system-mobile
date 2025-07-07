@@ -1,3 +1,4 @@
+import 'package:core_package/core/config/colors/light_colors.dart';
 import 'package:core_package/core/utility/export.dart';
 
 class AppCore {
@@ -77,29 +78,29 @@ class AppCore {
   static successMessage(message) => AppCore.showSnackBar(
         notification: AppNotification(
             message: message,
-            backgroundColor: Styles.ACTIVE,
-            borderColor: Styles.GREEN4,
+            backgroundColor: LightColor.borderInfo,
+            borderColor: LightColor.borderInfo,
             iconName: 'check-circle'),
       );
 
   static warningExitMessage(message) => AppCore.showToastSnackBar(
         notification: AppNotification(
-            message: message, backgroundColor: Styles.DETAILS, fontSize: 16),
+            message: message, backgroundColor: LightColor.textDefaultDisabled, fontSize: 16),
       );
 
   static successToastMessage(message) => AppCore.showToastSnackBar(
         notification: AppNotification(
             message: message,
-            backgroundColor: Styles.ACTIVE,
-            borderColor: Styles.GREEN4,
+            backgroundColor: LightColor.borderInfo,
+            borderColor: LightColor.borderInfo,
             iconName: 'check-circle'),
       );
 
   static errorMessage(message) => AppCore.showSnackBar(
         notification: AppNotification(
           message: message,
-          backgroundColor: Styles.IN_ACTIVE,
-          borderColor: Styles.DARK_RED,
+          backgroundColor: LightColor.brightRed,
+          borderColor: LightColor.brightRed,
           iconName: 'fill-close-circle',
         ),
       );
@@ -107,8 +108,8 @@ class AppCore {
   static errorToastMessage(message) => AppCore.showToastSnackBar(
         notification: AppNotification(
           message: message,
-          backgroundColor: Styles.IN_ACTIVE,
-          borderColor: Styles.DARK_RED,
+          backgroundColor: LightColor.brightRed,
+          borderColor: LightColor.brightRed,
           iconName: 'fill-close-circle',
         ),
       );

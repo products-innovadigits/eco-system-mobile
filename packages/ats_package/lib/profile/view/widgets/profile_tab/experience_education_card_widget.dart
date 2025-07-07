@@ -18,38 +18,45 @@ class ExperienceCardWidget extends StatelessWidget {
               height: 32.w,
               padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
-                  color: Styles.PRIMARY_COLOR.withValues(alpha: 0.1),
+                  color: context.color.onSurfaceVariant.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8)),
               child: Images(
                   image: Assets.svgs.building.path,
-                  color: Styles.PRIMARY_COLOR),
+                  color: context.color.onSurface),
             ),
             8.sw,
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  experience.company ?? '-',
-                  style: AppTextStyles.w400.copyWith(fontSize: 12),
-                ),
-                4.sh,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      experience.title ?? '-',
-                      style: AppTextStyles.w400.copyWith(
-                          color: Styles.PRIMARY_COLOR, fontSize: 10),
-                    ),
-                    4.sw,
-                    Text(
-                      '${experience.startDate} - ${experience.endDate}',
-                      style: AppTextStyles.w400.copyWith(
-                          color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
-                    ),
-                  ],
-                ),
-              ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    experience.company ?? '-',
+                    style: context.textTheme.bodySmall,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  4.sh,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          '${experience.title} . ' ?? '-',
+                          style: context.textTheme.bodySmall?.copyWith(
+                              color: context.color.onSurfaceVariant,
+                              fontSize: 10),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Text(
+                        '${experience.startDate} - ${experience.endDate}',
+                        style: context.textTheme.bodySmall?.copyWith(
+                            color: context.color.outline, fontSize: 10),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             )
           ],
         ),

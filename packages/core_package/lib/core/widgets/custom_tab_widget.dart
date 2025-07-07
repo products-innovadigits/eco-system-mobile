@@ -22,10 +22,10 @@ class CustomTabWidget extends StatelessWidget {
           curve: Curves.easeInOut,
           padding: EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Styles.WHITE_COLOR,
+            color: context.color.surface,
             border: Border(
               bottom: BorderSide(
-                color: isSelected ? Styles.PRIMARY_COLOR : Styles.BORDER,
+                color: isSelected ? context.color.primary : context.color.outlineVariant,
                 width: isSelected ? 2 : 1,
               ),
             ),
@@ -33,12 +33,11 @@ class CustomTabWidget extends StatelessWidget {
           child: AnimatedDefaultTextStyle(
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
-            style: AppTextStyles.w400.copyWith(
-              fontSize: 12,
+            style: context.textTheme.bodyMedium!.copyWith(
               fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
               color: isSelected
-                  ? Styles.PRIMARY_COLOR
-                  : Styles.SUB_TEXT_DARK_COLOR,
+                  ? context.color.onSurface
+                  : context.color.outline,
             ),
             child: Text(
               allTranslations.text(title),

@@ -10,24 +10,24 @@ class CandidateDataSection extends StatelessWidget {
       children: [
         Text(
           'السعودية',
-          style: AppTextStyles.w500.copyWith(
-              color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
+          style: context.textTheme.labelSmall
+              ?.copyWith(color: context.color.outline , fontSize: 10),
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 4.w),
           child: Icon(Icons.circle,
-              color: Styles.SUB_TEXT_DARK_COLOR, size: 4),
+              color: context.color.outline, size: 4),
         ),
         Text(
           'خبرة ٥ سنين',
-          style: AppTextStyles.w500.copyWith(
-              color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
+          style: context.textTheme.labelSmall
+              ?.copyWith(color: context.color.outline , fontSize: 10),
         ),
         const Spacer(),
         Text(
           '\$ غير متوفر .',
-          style: AppTextStyles.w500
-              .copyWith(color: Styles.PRIMARY_COLOR, fontSize: 10),
+          style: context.textTheme.labelSmall
+              ?.copyWith(color: context.color.onSurfaceVariant , fontSize: 10),
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 4.w),
@@ -36,8 +36,8 @@ class CandidateDataSection extends StatelessWidget {
         ),
         Text(
           'اسبوعين',
-          style: AppTextStyles.w500
-              .copyWith(color: Styles.PRIMARY_COLOR, fontSize: 10),
+          style: context.textTheme.labelSmall
+              ?.copyWith(color: context.color.onSurfaceVariant , fontSize: 10),
         ),
       ],
     );

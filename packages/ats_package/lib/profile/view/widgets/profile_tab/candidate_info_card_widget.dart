@@ -17,7 +17,7 @@ class CandidateInfoCardWidget extends StatelessWidget {
       decoration: BoxDecoration(
           color: (isPrimaryColor ?? true)
               ? Styles.PRIMARY_COLOR.withValues(alpha: 0.1)
-              : Styles.DARK_BLUE.withValues(alpha: 0.1),
+              : context.color.onSurfaceVariant.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(12)),
       child: Center(
         child: Column(
@@ -25,14 +25,12 @@ class CandidateInfoCardWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(value,
-                style: AppTextStyles.w700.copyWith(
-                    color: (isPrimaryColor ?? true)
-                        ? Styles.PRIMARY_COLOR
-                        : Styles.DARK_BLUE , fontSize: 16)),
+                style: context.textTheme.titleLarge
+                    ?.copyWith(color: context.color.primary)),
             4.sh,
             Text(title,
-                style: AppTextStyles.w600
-                    .copyWith(color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10)),
+                style: context.textTheme.titleSmall
+                    ?.copyWith(fontSize: 10, color: context.color.outline)),
           ],
         ),
       ),

@@ -22,33 +22,38 @@ class StageSection extends StatelessWidget {
               SizedBox(width: 8.w),
               Text(
                 stage.type ?? '',
-                style: AppTextStyles.w500
-                    .copyWith(fontSize: 12, color: Styles.PRIMARY_COLOR),
+                style: context.textTheme.labelSmall
+                    ?.copyWith(color: context.color.onSurfaceVariant),
               ),
               4.sw,
               Text('(${stage.count})',
-                  style: AppTextStyles.w500
-                      .copyWith(color: Styles.PRIMARY_COLOR, fontSize: 12)),
+                  style: context.textTheme.labelSmall
+                      ?.copyWith(color: context.color.onSurfaceVariant)),
             ],
           ),
           16.sh,
-        stage.count == 0 ? Container(
-          width: context.w,
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 40.h),
-          decoration: BoxDecoration(
-              color: Styles.WHITE_COLOR,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Styles.BORDER)),
-          child: Center(child: Text(allTranslations.text(LocaleKeys.no_candidates))),
-        ) :  ListView.separated(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: stage.count ?? 0,
-            itemBuilder: (context, index) {
-              return CandidateCardWidget();
-            },
-            separatorBuilder: (context, index) => 16.sh,
-          ),
+          stage.count == 0
+              ? Container(
+                  width: context.w,
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 40.h),
+                  decoration: BoxDecoration(
+                      color: Styles.WHITE_COLOR,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: context.color.outlineVariant)),
+                  child: Center(
+                      child:
+                          Text(allTranslations.text(LocaleKeys.no_candidates))),
+                )
+              : ListView.separated(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: stage.count ?? 0,
+                  itemBuilder: (context, index) {
+                    return CandidateCardWidget();
+                  },
+                  separatorBuilder: (context, index) => 16.sh,
+                ),
         ],
       ),
     );

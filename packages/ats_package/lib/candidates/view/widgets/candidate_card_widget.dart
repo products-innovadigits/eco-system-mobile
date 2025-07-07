@@ -14,22 +14,22 @@ class CandidateCardWidget extends StatelessWidget {
         width: context.w,
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
         decoration: BoxDecoration(
-            color: Styles.WHITE_COLOR,
+            color: context.color.surface,
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Styles.BORDER)),
+            border: Border.all(color: context.color.outlineVariant)),
         child: Column(
           children: [
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 PercentageAvatar(
                   avatarPath: Assets.images.avatar.path,
                   percentage: '80',
-                  avatarSize: 32.w,
-                  percentageMargin: 4.w,
+                  avatarSize: 42.w,
+                  percentageMargin: 8.w,
                   percentageRadius: 2.w,
-                  percentageTextStyle: AppTextStyles.w600.copyWith(
-                      color: Styles.TEXT_BLUE_DARK_COLOR, fontSize: 6),
+                  percentageTextStyle: context.textTheme.labelSmall
+                      ?.copyWith(fontSize: 6),
                 ),
                 8.sw,
                 Column(
@@ -37,31 +37,30 @@ class CandidateCardWidget extends StatelessWidget {
                   children: [
                     Text(
                       'هشام منصور',
-                      style: AppTextStyles.w500
-                          .copyWith(color: Styles.TEXT_COLOR, fontSize: 12),
+                      style: context.textTheme.labelSmall
                     ),
                     2.sh,
                     Row(
                       children: [
                         Text(
                           'مدير المشروعات . ',
-                          style: AppTextStyles.w400.copyWith(
-                              color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
+                          style: context.textTheme.bodySmall
+                              ?.copyWith(color: context.color.outline)
                         ),
                         Text('5 من الوظائف',
-                            style: AppTextStyles.w400.copyWith(
-                                color: Styles.PRIMARY_COLOR, fontSize: 10))
+                            style: context.textTheme.bodySmall
+                                ?.copyWith(color: context.color.onSurfaceVariant))
                       ],
                     ),
                   ],
                 ),
                 const Spacer(),
-                Images(image: Assets.svgs.arrowLeft.path),
+                Images(image: Assets.svgs.arrowLeft.path , color: context.color.outline),
               ],
             ),
             Padding(
               padding: EdgeInsets.all(12.h),
-              child: Divider(color: Styles.BORDER),
+              child: Divider(color: context.color.outlineVariant),
             ),
             CandidateDataSection()
           ],
