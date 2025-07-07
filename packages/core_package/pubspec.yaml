@@ -37,4 +37,4 @@ dependencies:
   flutter_dotenv: ^5.2.1
   flutter_image_compress: ^2.4.0
   pin_code_fields: ^8.0.1
-  path: ^1.9.1
+  path: ^1.9.0
