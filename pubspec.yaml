@@ -35,7 +35,7 @@ dependencies:
   geolocator: ^14.0.1
   flutter_native_splash: ^2.4.4
   flutter_animate: ^4.5.2
-  syncfusion_flutter_charts: ^29.2.11
+#  syncfusion_flutter_charts: ^29.2.11
   flutter_debouncer: ^2.0.0
   open_file: ^3.5.10
   modal_bottom_sheet: ^3.0.0-pre
