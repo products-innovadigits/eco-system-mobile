@@ -1,10 +1,4 @@
-import 'package:eco_system/components/animated_widget.dart';
-import 'package:eco_system/components/custom_btn.dart';
-import 'package:eco_system/helpers/styles.dart';
-import 'package:eco_system/navigation/custom_navigation.dart';
-import 'package:eco_system/navigation/routes.dart';
-import 'package:eco_system/utility/extensions.dart';
-import 'package:flutter/material.dart';
+import 'package:core_package/core/utility/export.dart';
 
 class OnBoarding extends StatefulWidget {
   const OnBoarding({super.key});

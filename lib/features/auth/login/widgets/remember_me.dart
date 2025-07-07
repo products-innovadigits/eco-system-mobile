@@ -1,12 +1,7 @@
-import 'package:eco_system/helpers/translation/all_translation.dart';
-import 'package:eco_system/utility/extensions.dart';
-import 'package:flutter/material.dart';
-
-import '../../../../helpers/styles.dart';
-import '../../../../helpers/text_styles.dart';
+import 'package:core_package/core/utility/export.dart';
 
 class RememberMe extends StatelessWidget {
-  const RememberMe({
+  const RememberMe({super.key,
     this.check = false,
     required this.onChange,
   });

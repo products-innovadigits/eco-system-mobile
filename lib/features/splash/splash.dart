@@ -1,15 +1,6 @@
-import 'package:eco_system/components/animated_widget.dart';
-import 'package:eco_system/core/app_event.dart';
-import 'package:eco_system/core/app_state.dart';
-import 'package:eco_system/core/assets.gen.dart';
+import 'package:core_package/core/utility/export.dart';
 import 'package:eco_system/features/splash/splash_bloc.dart';
-import 'package:eco_system/helpers/styles.dart';
-import 'package:eco_system/utility/extensions.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../helpers/text_styles.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -18,22 +9,22 @@ class Splash extends StatefulWidget {
   State<Splash> createState() => _SplashState();
 }
 
-class _SplashState extends State<Splash> with WidgetsBindingObserver {
+class _SplashState extends State<Splash>
+    with WidgetsBindingObserver, TickerProviderStateMixin {
+  late final AnimationController controller;
+
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
+    controller = AnimationController(vsync: this);
     super.initState();
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    controller.dispose();
     super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) async {
-    super.didChangeAppLifecycleState(state);
   }
 
   @override
@@ -46,41 +37,32 @@ class _SplashState extends State<Splash> with WidgetsBindingObserver {
             body: Container(
               width: context.w,
               height: context.h,
-              padding: EdgeInsets.only(bottom: context.h * 0.1),
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(Assets.images.newSplashBg.path),
-                      fit: BoxFit.cover)),
+              color: context.color.primary,
+              // decoration: BoxDecoration(
+              //     image: DecorationImage(
+              //         image: AssetImage(Assets.images.newBrandingSplashBg.path),
+              //         fit: BoxFit.cover)),
               child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                child: Stack(
+                  alignment: Alignment.center,
                   children: [
-                    Styles.logo()
-                        .animate()
+                    // Icon(Icons.circle, color: Styles.WHITE_COLOR, size: 30.h),
+                    Styles.logo(height: 180.h, width: 180.w)
+                        .animate(
+                            onComplete: (controller) => controller.repeat())
+                        .scale(
+                          begin: const Offset(1.1, 1.1),
+                          end: const Offset(1.0, 1.0),
+                          duration: 500.ms,
+                          curve: Curves.easeInOut,
+                        )
+                        .then()
                         .scale(
                           begin: const Offset(1.0, 1.0),
-                          end: const Offset(0.5, 0.5),
-                          duration: 1000.ms,
-                          delay: 0.ms,
+                          end: const Offset(1.1, 1.1),
+                          duration: 500.ms,
                           curve: Curves.easeInOut,
-                          alignment: Alignment.bottomCenter,
-                        )
-                        .then(delay: 200.ms)
-                        .shimmer(duration: 1000.ms, curve: Curves.easeInOut),
-                    SizedBox(height: 4.h),
-                    AnimatedWidgets(
-                      durationMilli: 2000,
-                      verticalOffset: 0.0,
-                      horizontalOffset: 0.0,
-                      child: Text(
-                        "Nawah",
-                        style: AppTextStyles.w800.copyWith(
-                          fontSize: 32,
-                          color: Styles.WHITE_COLOR,
                         ),
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -91,3 +73,17 @@ class _SplashState extends State<Splash> with WidgetsBindingObserver {
     );
   }
 }
+
+// SizedBox(height: 12.h),
+// AnimatedWidgets(
+//   durationMilli: 2000,
+//   verticalOffset: 0.0,
+//   horizontalOffset: 0.0,
+//   child: Text(
+//     "Nawah",
+//     style: AppTextStyles.w800.copyWith(
+//       fontSize: 32,
+//       color: Styles.WHITE_COLOR,
+//     ),
+//   ),
+// ),

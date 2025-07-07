@@ -347,7 +347,7 @@
   "work_experience": "Work Experience",
   "education": "Education",
   "read_more": "Read More",
-  "read_less": "Read Less",
+  "read_less": "Read Less...",
   "test_file": "Test File",
   "career_objective": "Career Objective",
   "candidate_source": "Candidate Source",
@@ -393,7 +393,6 @@
   "no_internet_connection": "No Internet Connection",
   "press_again_to_exit": "Press back again to exit",
   "chances": "chances",
-  "no_candidates": "No candidates",
   "candidate_in_pipeline": "Candidate in Pipeline",
   "newest_to_oldest": "Newest to Oldest",
   "oldest_to_newest": "Oldest to Newest",
@@ -401,5 +400,12 @@
   "lowest_price": "Lowest Price to Highest",
   "most_experience": "Most to Least Experience",
   "least_experience": "Least to Most Experience",
-  "search_job_title_or_name": "Search by name or job title..."
+  "search_job_title_or_name": "Search by name or job title...",
+  "no_candidates": "No Candidates Yet!",
+  "no_candidates_desc": "\"There are currently no candidates. When you add candidates,\n they will automatically appear here.\"",
+  "no_talents": "No Talents Yet!",
+  "page_not_found": "Page Not Found",
+  "page_not_found_desc": "\"Sorry, we can't find the page you're looking for.\nCheck the link or return to the home page.\"",
+  "no_talents_desc": "\"There are currently no talents. When you add a talent group,\n they will automatically appear here.\"",
+  "no_data_desc": "\"There is no data to display at this time. When you enter data,\n it will appear here automatically.\""
 }

@@ -1,8 +1,5 @@
-import 'package:eco_system/components/animated_widget.dart';
-import 'package:eco_system/components/custom_btn.dart';
-import 'package:eco_system/utility/extensions.dart';
-import 'package:eco_system/widgets/pin_code.dart';
-import 'package:flutter/material.dart';
+import 'package:core_package/core/utility/export.dart';
+import 'package:core_package/core/widgets/pin_code.dart';
 
 class OtpView extends StatefulWidget {
   const OtpView({super.key});

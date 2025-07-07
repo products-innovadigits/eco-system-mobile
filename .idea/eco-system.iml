@@ -192,6 +192,18 @@
       <excludeFolder url="file://$MODULE_DIR$/windows/flutter/ephemeral/.plugin_symlinks/shared_preferences_windows/example/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/windows/flutter/ephemeral/.plugin_symlinks/shared_preferences_windows/example/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/windows/flutter/ephemeral/.plugin_symlinks/shared_preferences_windows/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/ats_package/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/ats_package/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/ats_package/build" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/core_package/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/core_package/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/core_package/build" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/pms_package/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/pms_package/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/pms_package/build" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/strategy_package/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/strategy_package/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/strategy_package/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

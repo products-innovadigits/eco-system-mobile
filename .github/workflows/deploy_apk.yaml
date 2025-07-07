@@ -1,0 +1,42 @@
+name: Deploy APK to Firebase
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_email:
+        description: 'Add new tester email (will also send to fixed list)'
+        required: true
+        default: 'client@example.com'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.x' # Replace with your Flutter version
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1
+
+      - name: Install Fastlane
+        run: gem install fastlane
+
+      - name: Distribute via Firebase App Distribution
+        run: |
+          fastlane android distribute_ci test_email:${{ github.event.inputs.test_email }}
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

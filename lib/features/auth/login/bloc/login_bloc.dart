@@ -1,18 +1,5 @@
-import 'package:dio/dio.dart';
-import 'package:eco_system/bloc/user_bloc.dart';
-import 'package:eco_system/core/app_core.dart';
-import 'package:eco_system/core/app_event.dart';
-import 'package:eco_system/core/app_state.dart';
-import 'package:eco_system/features/auth/login/model/user_model.dart';
+import 'package:core_package/core/utility/export.dart';
 import 'package:eco_system/features/auth/login/repo/login_repo.dart';
-import 'package:eco_system/helpers/shared_helper.dart';
-import 'package:eco_system/navigation/custom_navigation.dart';
-import 'package:eco_system/navigation/routes.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rxdart/rxdart.dart';
-
-import '../../../../helpers/translation/all_translation.dart';
 
 class LoginBloc extends Bloc<AppEvent, AppState> {
   LoginBloc() : super(Start()) {
@@ -46,10 +33,16 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
       );
       if (res.statusCode == 200) {
         UserModel model = UserModel.fromJson(res.data['data']);
-        await SharedHelper.sharedHelper!.saveUser(model).then((v) {
+        await SecureStorageHelper.secureStorageHelper!
+            .saveUser(model)
+            .then((v) {
           UserBloc.instance.add(Click());
         });
-        CustomNavigator.push(Routes.MAIN_PAGE, clean: true, arguments: 0);
+        await SharedHelper.sharedHelper!.saveUser();
+        CustomNavigator.push(Routes.MAIN_PAGE,
+            clean: true,
+            arguments:
+                MainPageArgs(index: 0, systems: UserBloc.activeSystems));
         AppCore.successMessage(
             allTranslations.text('you_logged_in_successfully'));
         emit(Done());
@@ -59,6 +52,7 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
         emit(Start());
       }
     } catch (e) {
+      cprint('Something went wrong: $e');
       AppCore.errorMessage(allTranslations.text('invalid_credentials'));
       emit(Error());
     }
