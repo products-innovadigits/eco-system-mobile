@@ -6,7 +6,7 @@ on:
       test_email:
         description: 'Add new tester email (will also send to fixed list)'
         required: true
-        default: 'client@example.com'
+        default: 'Enter the client email...'
 
 jobs:
   build:
@@ -19,7 +19,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.x' # Replace with your Flutter version
+          flutter-version: '3.32.2'
 
       - name: Install Dependencies
         run: flutter pub get
