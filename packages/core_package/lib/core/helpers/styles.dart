@@ -123,13 +123,13 @@ abstract class Styles {
   static Color statusColors(String value) {
     switch (value) {
       case "مكتمل":
-        return Color(0xFFDC6803);
+        return LightColor.chartSecondary;
       case "متقدم":
-        return LightColor.backgroundPrimary;
+        return LightColor.chartPrimary;
       case "متأخر":
-        return Color(0xFF079455);
+        return LightColor.chartTertiary;
       default:
-        return LightColor.backgroundPrimary;
+        return LightColor.chartPrimary;
     }
   }
 

@@ -85,11 +85,11 @@ class _ObjectiveBarChartState extends State<ObjectiveBarChart> {
                 ),
               ),
               borderData: FlBorderData(
-                border: const Border(
+                border:  Border(
                   top: BorderSide.none,
                   right: BorderSide.none,
                   left: BorderSide(width: 1, color: Colors.transparent),
-                  bottom: BorderSide(width: 1, color: Styles.LIGHT_GREY_BORDER),
+                  bottom: BorderSide(width: 1, color: context.color.outline),
                 ),
               ),
               gridData: FlGridData(

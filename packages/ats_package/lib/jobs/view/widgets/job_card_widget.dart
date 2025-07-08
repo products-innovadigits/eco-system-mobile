@@ -21,7 +21,7 @@ class JobCardWidget extends StatelessWidget {
       decoration: BoxDecoration(
           color: context.color.surface,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Styles.LIGHT_GREY_BORDER)),
+          border: Border.all(color: context.color.outline)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -49,7 +49,7 @@ class JobCardWidget extends StatelessWidget {
                 Text(
                   '$pipelineCandidatesCount ${allTranslations.text(LocaleKeys.candidate_in_pipeline)}',
                   style: context.textTheme.bodySmall
-                      ?.copyWith(color: context.color.onSurfaceVariant),
+                      ?.copyWith(color: context.color.secondary),
                 ),
                 const Spacer(),
                 AnimatedRotation(
@@ -59,7 +59,7 @@ class JobCardWidget extends StatelessWidget {
                   child: Icon(
                     Icons.keyboard_arrow_down_rounded,
                     color: isExpanded == true
-                        ? context.color.onSurfaceVariant
+                        ? context.color.secondary
                         : context.color.outline,
                   ),
                 )

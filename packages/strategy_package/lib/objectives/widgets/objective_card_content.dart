@@ -1,7 +1,10 @@
+import 'package:core_package/core/helpers/font_sizes.dart';
+
 import '../../shared/strategy_exports.dart';
 
 class ObjectiveCardContent extends StatelessWidget {
   const ObjectiveCardContent({super.key, required this.objective});
+
   final ObjectiveDetailsModel objective;
 
   @override
@@ -15,9 +18,10 @@ class ObjectiveCardContent extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(8.w),
               decoration: BoxDecoration(
-                  color: Styles.WHITE_COLOR,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Styles.LIGHT_GREY_BORDER)),
+                color: context.color.surface,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: context.color.outline),
+              ),
               child: Images(
                 image: "assets/svgs/moneys.svg",
                 width: 24.w,
@@ -31,38 +35,39 @@ class ObjectiveCardContent extends StatelessWidget {
                 children: [
                   Text(
                     objective.title ?? "",
-                    style: AppTextStyles.w700
-                        .copyWith(fontSize: 16, color: Styles.HEADER),
+                    style: context.textTheme.displaySmall?.copyWith(
+                      fontSize: FontSizes.f14,
+                    ),
                   ),
                   SizedBox(height: 4.h),
                   RichText(
                     textAlign: TextAlign.center,
                     text: TextSpan(
-                      text: allTranslations.text("time_left") +
-                          " ${(objective.endDate?.difference(DateTime.now()).inDays ?? 0) > 0 ? (objective.endDate?.difference(DateTime.now()).inDays ?? 0) : 0}" +
-                          allTranslations.text("days"),
-                      style: AppTextStyles.w400
-                          .copyWith(fontSize: 12, color: Styles.DARK_RED),
+                      text:
+                          "${allTranslations.text("time_left")} ${(objective.endDate?.difference(DateTime.now()).inDays ?? 0) > 0 ? (objective.endDate?.difference(DateTime.now()).inDays ?? 0) : 0}${allTranslations.text("days")}",
+                      style: context.textTheme.bodySmall,
                       children: [
                         TextSpan(
                           text: " | ",
-                          style: AppTextStyles.w400
-                              .copyWith(fontSize: 14, color: Styles.DETAILS),
+                          style: AppTextStyles.w400.copyWith(
+                            fontSize: 14,
+                            color: Styles.DETAILS,
+                          ),
                         ),
                         TextSpan(
-                          text: allTranslations.text("deliver_date") +
-                              ": " +
-                              (objective.endDate ?? DateTime.now())
-                                  .format("d/M/yyyy"),
-                          style: AppTextStyles.w400
-                              .copyWith(fontSize: 14, color: Styles.DETAILS),
-                        )
+                          text:
+                              "${allTranslations.text("deliver_date")}: ${(objective.endDate ?? DateTime.now()).format("d/M/yyyy")}",
+                          style: AppTextStyles.w400.copyWith(
+                            fontSize: 14,
+                            color: Styles.DETAILS,
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
         Padding(
@@ -81,15 +86,19 @@ class ObjectiveCardContent extends StatelessWidget {
             Expanded(
               child: Text(
                 allTranslations.text("progress"),
-                style: AppTextStyles.w400
-                    .copyWith(fontSize: 14, color: Styles.DETAILS),
+                style: AppTextStyles.w400.copyWith(
+                  fontSize: 14,
+                  color: Styles.DETAILS,
+                ),
               ),
             ),
             SizedBox(width: 6.w),
             Text(
               "${objective.weight?.toStringAsFixed(1) ?? ""}%",
-              style: AppTextStyles.w700
-                  .copyWith(fontSize: 14, color: Styles.HEADER),
+              style: AppTextStyles.w700.copyWith(
+                fontSize: 14,
+                color: Styles.HEADER,
+              ),
             ),
           ],
         ),

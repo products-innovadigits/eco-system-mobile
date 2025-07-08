@@ -16,7 +16,7 @@ class ApplicationDate extends StatelessWidget {
           hint: allTranslations.text(LocaleKeys.enter_application_date),
           controller: filtrationBloc.applicationDateController,
           isReadOnly: true,
-          borderColor: Styles.BORDER_COLOR,
+          borderColor: context.color.outline,
           onTap: () async {
             DatePickerHelper.showDatePickerDialog(
               context,

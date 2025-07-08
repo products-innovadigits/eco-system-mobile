@@ -1,18 +1,20 @@
+import 'package:core_package/core/config/colors/light_colors.dart';
 import 'package:core_package/core/utility/export.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 abstract class CustomBottomSheet {
-  static show(
-      {Function()? onConfirm,
-      String? label,
-      String? buttonText,
-      required Widget widget,
-      double? height,
-      Widget? child,
-      bool? isLoading,
-      bool withPadding = true,
-      Function()? onCancel,
-      Function()? onClose}) {
+  static show({
+    Function()? onConfirm,
+    String? label,
+    String? buttonText,
+    required Widget widget,
+    double? height,
+    Widget? child,
+    bool? isLoading,
+    bool withPadding = true,
+    Function()? onCancel,
+    Function()? onClose,
+  }) {
     return showMaterialModalBottomSheet(
       enableDrag: true,
       clipBehavior: Clip.antiAlias,
@@ -23,8 +25,9 @@ abstract class CustomBottomSheet {
       isDismissible: true,
       builder: (_) {
         return Padding(
-          padding: MediaQuery.of(CustomNavigator.navigatorState.currentContext!)
-              .viewInsets,
+          padding: MediaQuery.of(
+            CustomNavigator.navigatorState.currentContext!,
+          ).viewInsets,
           child: Container(
             height: height ?? 500.h,
             width: CustomNavigator.navigatorState.currentContext!.w,
@@ -48,8 +51,9 @@ abstract class CustomBottomSheet {
                   ),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                      color: Styles.HINT,
-                      borderRadius: BorderRadius.circular(100)),
+                    color: Styles.HINT,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
                 ),
                 if (label != null)
                   Padding(
@@ -59,9 +63,7 @@ abstract class CustomBottomSheet {
                       children: [
                         Text(
                           label,
-                          style: AppTextStyles.w500.copyWith(
-                            fontSize: 18,
-                          ),
+                          style: AppTextStyles.w500.copyWith(fontSize: 18),
                         ),
                         GestureDetector(
                           onTap: () {
@@ -73,38 +75,40 @@ abstract class CustomBottomSheet {
                             size: 24,
                             color: Styles.DETAILS,
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
                 if (label != null)
                   Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 8.h, horizontal: 18.w),
-                    child: const Divider(
-                      color: Styles.BORDER_COLOR,
+                    padding: EdgeInsets.symmetric(
+                      vertical: 8.h,
+                      horizontal: 18.w,
                     ),
+                    child: const Divider(color: LightColor.border),
                   ),
                 Expanded(child: widget),
                 Visibility(
                   visible: child != null || onConfirm != null,
                   child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
-                    child: child ??
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 18.w,
+                      vertical: 18.h,
+                    ),
+                    child:
+                        child ??
                         CustomBtn(
-                          text: allTranslations.text(buttonText
-                              ?? "confirm"),
+                          text: allTranslations.text(buttonText ?? "confirm"),
                           loading: isLoading ?? false,
                           onPressed: onConfirm,
                         ),
                   ),
                 ),
                 SizedBox(
-                    height: MediaQuery.of(
-                            CustomNavigator.navigatorState.currentContext!)
-                        .viewInsets
-                        .bottom),
+                  height: MediaQuery.of(
+                    CustomNavigator.navigatorState.currentContext!,
+                  ).viewInsets.bottom,
+                ),
               ],
             ),
           ),

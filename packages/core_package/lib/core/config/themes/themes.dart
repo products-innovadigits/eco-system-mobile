@@ -12,19 +12,20 @@ ThemeData _buildLightTheme() {
   final base = ThemeData.light();
   return base.copyWith(
     colorScheme: const ColorScheme.light(
+      surface: LightColor.scaffoldBg,
+      surfaceContainer: LightColor.cardBg,
+      primary: LightColor.primary,
       secondary: LightColor.secondary,
-      primary: LightColor.backgroundPrimary,
-      primaryContainer: LightColor.primaryColorLight,
-      error: LightColor.brightRed,
-      surface: LightColor.white,
-      onSurface: LightColor.textPrimary,
-      outline: LightColor.textDefaultDisabled,
+      tertiary: LightColor.tertiary,
+      onSurface: LightColor.primary,
+      outline: LightColor.border,
+      outlineVariant: LightColor.placeHolderText,
       onPrimary: LightColor.white,
-      onSurfaceVariant: LightColor.borderInfo,
-      outlineVariant: LightColor.greyLight,
+      error: LightColor.error,
+      errorContainer: LightColor.warning
     ),
     brightness: Brightness.light,
-    primaryColor: LightColor.backgroundPrimary,
+    primaryColor: LightColor.primary,
     primaryColorLight: LightColor.primaryColorLight,
     primaryColorDark: LightColor.primaryDark,
     secondaryHeaderColor: LightColor.secondary,
@@ -39,13 +40,13 @@ ThemeData _buildLightTheme() {
     highlightColor: LightColor.grey,
     splashColor: LightColor.white,
     unselectedWidgetColor: LightColor.white,
-    disabledColor: LightColor.backgroundPrimary.withOpacity(0.3),
+    disabledColor: LightColor.primary.withOpacity(0.3),
     toggleButtonsTheme: const ToggleButtonsThemeData(
       color: LightColor.secondary,
     ),
     dialogBackgroundColor: LightColor.white,
-    indicatorColor: LightColor.backgroundPrimary,
-    hintColor: LightColor.backgroundPrimary,
+    indicatorColor: LightColor.primary,
+    hintColor: LightColor.primary,
     primaryTextTheme: Typography.material2018(
       platform: TargetPlatform.iOS,
     ).black,
@@ -70,10 +71,10 @@ ThemeData _buildLightTheme() {
       labelSmall: AppTypography.labelSmall,
     ),
     primaryIconTheme: const IconThemeData(
-      color: LightColor.backgroundPrimary,
+      color: LightColor.primary,
     ),
     buttonTheme: base.buttonTheme.copyWith(
-      buttonColor: LightColor.backgroundPrimary,
+      buttonColor: LightColor.primary,
     ),
     iconTheme: base.iconTheme.copyWith(
       color: LightColor.white,
@@ -91,7 +92,7 @@ ThemeData _buildLightTheme() {
       surfaceTintColor: LightColor.white,
       titleTextStyle: const TextStyle(
         fontSize: 16,
-        color: LightColor.backgroundPrimary,
+        color: LightColor.primary,
         fontWeight: FontWeight.w700,
       ),
       // systemOverlayStyle: SystemUiOverlayStyle(
@@ -130,13 +131,13 @@ ThemeData _buildLightTheme() {
     ),
     dataTableTheme: DataTableThemeData(
       dataRowColor: MaterialStateProperty.all(
-        LightColor.brightRed,
+        LightColor.error,
       ),
       headingRowColor: MaterialStateProperty.all(
         LightColor.white,
       ),
       headingTextStyle: const TextStyle(
-        color: LightColor.brightRed,
+        color: LightColor.error,
       ),
     ),
     snackBarTheme: base.snackBarTheme.copyWith(
@@ -147,7 +148,7 @@ ThemeData _buildLightTheme() {
     ),
     radioTheme: RadioThemeData(
       fillColor: MaterialStateProperty.all(
-        LightColor.backgroundPrimary,
+        LightColor.primary,
       ),
     ),
   );

@@ -20,7 +20,7 @@ class MultipleSelectBtnWidget extends StatelessWidget {
                     },
                     child: Text(
                       allTranslations.text(LocaleKeys.select_all),
-                      style: context.textTheme.bodySmall?.copyWith(color: context.color.onSurfaceVariant),
+                      style: context.textTheme.bodySmall?.copyWith(color: context.color.secondary),
                     ),
                   ),
                   8.sw,
@@ -37,7 +37,7 @@ class MultipleSelectBtnWidget extends StatelessWidget {
                 onTap: () => bloc.add(Select(arguments: true)),
                 child: Text(
                   allTranslations.text(LocaleKeys.select),
-                  style: context.textTheme.bodySmall?.copyWith(color: context.color.onSurfaceVariant),
+                  style: context.textTheme.bodySmall?.copyWith(color: context.color.secondary),
                 ),
               );
       },

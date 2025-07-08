@@ -15,7 +15,7 @@ class AvailableJobsSection extends StatelessWidget {
             decoration: BoxDecoration(
                 color: Styles.WHITE_COLOR,
                 borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: Styles.LIGHT_GREY_BORDER)),
+                border: Border.all(color: context.color.outline)),
             child: Column(
               children: [
                 SectionTitle(
@@ -28,7 +28,7 @@ class AvailableJobsSection extends StatelessWidget {
                     CustomNavigator.push(Routes.JOBS);
                   },
                 ),
-                Divider(color: Styles.BORDER_COLOR),
+                Divider(color: context.color.outline),
                 12.sh,
                 JobsListSection(isHome: true),
               ],
@@ -58,7 +58,7 @@ class AvailableJobsSection extends StatelessWidget {
                         CustomNavigator.push(Routes.JOBS);
                       },
                     ),
-                    Divider(color: Styles.BORDER_COLOR),
+                    Divider(color: context.color.outline),
                   ],
                 ),
                 onTryAgain: () {

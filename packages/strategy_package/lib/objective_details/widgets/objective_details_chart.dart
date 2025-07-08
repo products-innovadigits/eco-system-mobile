@@ -30,7 +30,7 @@ class _ObjectiveDetailsChartState extends State<ObjectiveDetailsChart> {
       padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
       decoration: BoxDecoration(
           color: Styles.WHITE_COLOR,
-          border: Border.all(color: Styles.BORDER_COLOR),
+          border: Border.all(color: context.color.outline),
           borderRadius: BorderRadius.circular(12)),
       child: Column(
         children: [
@@ -79,7 +79,7 @@ class _ObjectiveDetailsChartState extends State<ObjectiveDetailsChart> {
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 12.h),
-            child: Divider(color: Styles.BORDER_COLOR),
+            child: Divider(color: context.color.outline),
           ),
           currentTime == ChartTime.Month
               ? ObjectiveBarMonthlyChart()

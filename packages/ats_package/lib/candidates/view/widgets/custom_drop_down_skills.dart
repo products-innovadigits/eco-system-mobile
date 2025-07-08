@@ -54,7 +54,7 @@ class CustomDropDownSkills extends StatelessWidget {
                     height: 24.w,
                     child: Images(
                       image: Assets.svgs.arrowDown.path,
-                      color: isExpanded ? context.color.onSurfaceVariant : null,
+                      color: isExpanded ? context.color.secondary : null,
                     ),
                   ),
                 ),

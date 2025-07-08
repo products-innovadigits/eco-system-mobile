@@ -17,7 +17,7 @@ class ProjectCardContent extends StatelessWidget {
               decoration: BoxDecoration(
                   color: Styles.WHITE_COLOR,
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Styles.LIGHT_GREY_BORDER)),
+                  border: Border.all(color: context.color.outline)),
               child: Images(
                 image: "assets/svgs/moneys.svg",
                 width: 24.w,

@@ -21,7 +21,7 @@ class _ObjectiveDetailsLayoutState extends State<ObjectiveDetailsLayout> {
       padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
       decoration: BoxDecoration(
           color: Styles.WHITE_COLOR,
-          border: Border.all(color: Styles.BORDER_COLOR),
+          border: Border.all(color: context.color.outline),
           borderRadius: BorderRadius.circular(12)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,7 +65,7 @@ class _ObjectiveDetailsLayoutState extends State<ObjectiveDetailsLayout> {
               children: [
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 12.h),
-                  child: Divider(color: Styles.BORDER_COLOR),
+                  child: Divider(color: context.color.outline),
                 ),
                 widget.child
               ],

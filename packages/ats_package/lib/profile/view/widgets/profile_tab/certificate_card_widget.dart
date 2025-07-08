@@ -43,7 +43,7 @@ class CertificateCardWidget extends StatelessWidget {
                       Text(
                         certificate.orginization ?? '-',
                         style: context.textTheme.bodySmall?.copyWith(
-                            color: context.color.onSurfaceVariant,
+                            color: context.color.secondary,
                             fontSize: 10),
                         overflow: TextOverflow.ellipsis,
                       ),

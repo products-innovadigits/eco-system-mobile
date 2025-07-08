@@ -16,7 +16,7 @@ class CandidateCardWidget extends StatelessWidget {
         decoration: BoxDecoration(
             color: context.color.surface,
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: context.color.outlineVariant)),
+            border: Border.all(color: context.color.outline)),
         child: Column(
           children: [
             Row(
@@ -49,7 +49,7 @@ class CandidateCardWidget extends StatelessWidget {
                         ),
                         Text('5 من الوظائف',
                             style: context.textTheme.bodySmall
-                                ?.copyWith(color: context.color.onSurfaceVariant))
+                                ?.copyWith(color: context.color.secondary))
                       ],
                     ),
                   ],
@@ -60,7 +60,7 @@ class CandidateCardWidget extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.all(12.h),
-              child: Divider(color: context.color.outlineVariant),
+              child: Divider(color: context.color.outline),
             ),
             CandidateDataSection()
           ],

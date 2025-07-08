@@ -56,7 +56,7 @@ class ProjectPriorityFilter extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Styles.LIGHT_GREY_BORDER,
+                  color: context.color.outline,
                 ),
                 borderRadius: BorderRadius.circular(8),
               ),

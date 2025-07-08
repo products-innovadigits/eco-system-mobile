@@ -54,7 +54,7 @@ class StrategicAxisFilter extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Styles.LIGHT_GREY_BORDER,
+                  color: context.color.outline,
                 ),
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -127,7 +127,7 @@ class _SelectionViewState extends State<_SelectionView> {
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             decoration: BoxDecoration(
               color: _selectedItem?.id == widget.list[index].id
-                  ? Styles.PRIMARY_COLOR
+                  ? context.color.primary
                   : Styles.WHITE_COLOR,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(

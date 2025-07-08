@@ -227,7 +227,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                                         start: 1.w,
                                         child: Icon(
                                           Icons.circle,
-                                          color: context.color.onSurfaceVariant,
+                                          color: context.color.secondary,
                                           size: 8,
                                         ))
                                 ],
@@ -264,7 +264,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                                         start: 2.w,
                                         child: Icon(
                                           Icons.circle,
-                                          color: context.color.onSurfaceVariant,
+                                          color: context.color.secondary,
                                           size: 8,
                                         ))
                                 ],

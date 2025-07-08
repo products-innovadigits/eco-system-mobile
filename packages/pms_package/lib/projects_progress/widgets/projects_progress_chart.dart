@@ -4,6 +4,7 @@ import '../model/project_progress_model.dart';
 
 class ProjectsProgressChart extends StatefulWidget {
   const ProjectsProgressChart({super.key, required this.projects});
+
   final List<ProjectProgressModel> projects;
 
   @override
@@ -13,6 +14,7 @@ class ProjectsProgressChart extends StatefulWidget {
 class _ProjectsProgressChartState extends State<ProjectsProgressChart> {
   int touchedIndex = -1;
   bool isEmpty = false;
+
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
@@ -34,10 +36,10 @@ class _ProjectsProgressChartState extends State<ProjectsProgressChart> {
             },
           ),
           borderData: FlBorderData(
-              show: false, border: Border.all(color: Styles.LIGHT_GREY_BORDER)),
+              show: false, border: Border.all(color: context.color.outline)),
           centerSpaceRadius: 0.w,
           sections: isEmpty || showingSections().isEmpty
-              ? emptyState()
+              ? emptyState(context)
               : showingSections(),
         ),
       ),
@@ -55,20 +57,18 @@ class _ProjectsProgressChartState extends State<ProjectsProgressChart> {
         value: widget.projects[i].value ?? 0,
         radius: radius,
         borderSide: BorderSide(
-          color: Styles.LIGHT_GREY_BORDER,
+          color: context.color.outline,
         ),
         badgeWidget: Container(
           padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 10.h),
           decoration: BoxDecoration(
-              border: Border.all(color: Styles.LIGHT_GREY_BORDER),
-              color: Styles.WHITE_COLOR,
+              border: Border.all(color: context.color.outline),
+              color: context.color.surfaceContainer,
               shape: BoxShape.circle),
           child: Text(
             '${widget.projects[i].value?.toStringAsFixed(0)}%',
-            style: AppTextStyles.w600.copyWith(
-              fontSize: 12,
-              color: Styles.HEADER,
-            ),
+            style: context.textTheme.labelSmall
+                ?.copyWith(fontWeight: FontWeight.w600),
           ),
         ),
         badgePositionPercentageOffset: 1.05,
@@ -76,16 +76,14 @@ class _ProjectsProgressChartState extends State<ProjectsProgressChart> {
     });
   }
 
-  emptyState() {
+  emptyState(BuildContext context) {
     return [
       PieChartSectionData(
-        color: Styles.SURFACE,
+        color: context.color.surfaceContainer,
         title: "",
         value: 100,
         radius: 100.w,
-        borderSide: BorderSide(
-          color: Styles.SURFACE,
-        ),
+        borderSide: BorderSide(color: context.color.surfaceContainer),
       )
     ];
   }

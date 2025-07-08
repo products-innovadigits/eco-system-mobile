@@ -40,7 +40,7 @@ class _ProjectsSearchBarState extends State<ProjectsSearchBar> {
                         hint: allTranslations.text("search_hint"),
                         controller: context.read<ProjectsBloc>().searchTEC,
                         prefixSvg: "search",
-                        borderColor: Styles.LIGHT_GREY_BORDER,
+                        borderColor: context.color.outline,
                         addBorder: true,
                         onChanged: (v) {
                           if (timer != null) if (timer!.isActive)

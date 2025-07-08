@@ -53,7 +53,7 @@ class JobDetailsWidget extends StatelessWidget {
         ),
         Padding(
           padding: EdgeInsets.all(14.h),
-          child: Divider(color: Styles.LIGHT_GREY_BORDER),
+          child: Divider(color: context.color.outline),
         ),
       ],
     );

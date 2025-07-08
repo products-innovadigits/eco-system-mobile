@@ -17,7 +17,7 @@ class ProjectDetailsBody extends StatelessWidget {
                 child: ProjectCardContent(project: model),
               ),
               SizedBox(height: 12.h),
-              Divider(color: Styles.BORDER_COLOR, thickness: 1.0),
+              Divider(color: context.color.outline, thickness: 1.0),
 
               ///Project Description
               CustomExpansionCard(
@@ -54,7 +54,7 @@ class ProjectDetailsBody extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(100),
                     color: Styles.WHITE_COLOR,
-                    border: Border.all(color: Styles.LIGHT_GREY_BORDER),
+                    border: Border.all(color: context.color.outline),
                   ),
                   child: Center(
                     child: Text(
@@ -91,7 +91,7 @@ class ProjectDetailsBody extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 12.h),
-              Divider(color: Styles.BORDER_COLOR, thickness: 1.0),
+              Divider(color: context.color.outline, thickness: 1.0),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
                 child: CustomShimmerContainer(

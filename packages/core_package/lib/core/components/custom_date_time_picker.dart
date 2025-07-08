@@ -91,7 +91,7 @@ class SelectDate extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               color: Styles.FILL_COLOR,
-              border: Border.all(color: Styles.LIGHT_GREY_BORDER, width: 1),
+              border: Border.all(color: context.color.outline, width: 1),
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5.0),

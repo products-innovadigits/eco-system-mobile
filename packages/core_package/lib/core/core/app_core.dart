@@ -78,29 +78,29 @@ class AppCore {
   static successMessage(message) => AppCore.showSnackBar(
         notification: AppNotification(
             message: message,
-            backgroundColor: LightColor.borderInfo,
-            borderColor: LightColor.borderInfo,
+            backgroundColor: LightColor.secondary,
+            borderColor: LightColor.secondary,
             iconName: 'check-circle'),
       );
 
   static warningExitMessage(message) => AppCore.showToastSnackBar(
         notification: AppNotification(
-            message: message, backgroundColor: LightColor.textDefaultDisabled, fontSize: 16),
+            message: message, backgroundColor: LightColor.border, fontSize: 16),
       );
 
   static successToastMessage(message) => AppCore.showToastSnackBar(
         notification: AppNotification(
             message: message,
-            backgroundColor: LightColor.borderInfo,
-            borderColor: LightColor.borderInfo,
+            backgroundColor: LightColor.secondary,
+            borderColor: LightColor.secondary,
             iconName: 'check-circle'),
       );
 
   static errorMessage(message) => AppCore.showSnackBar(
         notification: AppNotification(
           message: message,
-          backgroundColor: LightColor.brightRed,
-          borderColor: LightColor.brightRed,
+          backgroundColor: LightColor.error,
+          borderColor: LightColor.error,
           iconName: 'fill-close-circle',
         ),
       );
@@ -108,8 +108,8 @@ class AppCore {
   static errorToastMessage(message) => AppCore.showToastSnackBar(
         notification: AppNotification(
           message: message,
-          backgroundColor: LightColor.brightRed,
-          borderColor: LightColor.brightRed,
+          backgroundColor: LightColor.error,
+          borderColor: LightColor.error,
           iconName: 'fill-close-circle',
         ),
       );

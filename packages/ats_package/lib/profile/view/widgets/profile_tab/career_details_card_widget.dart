@@ -69,11 +69,11 @@ class CareerDetailsCardWidget extends StatelessWidget {
             desc,
             trimMode: TrimMode.Line,
             trimLines: 2,
-            colorClickableText: context.color.onSurfaceVariant,
+            colorClickableText: context.color.secondary,
             trimExpandedText: allTranslations.text(LocaleKeys.read_less),
             trimCollapsedText: allTranslations.text(LocaleKeys.read_more),
             moreStyle: context.textTheme.bodySmall
-                ?.copyWith(color: context.color.onSurfaceVariant, fontSize: 8),
+                ?.copyWith(color: context.color.secondary, fontSize: 8),
             style: context.textTheme.bodySmall
                 ?.copyWith(color: context.color.outline, fontSize: 8),
           )

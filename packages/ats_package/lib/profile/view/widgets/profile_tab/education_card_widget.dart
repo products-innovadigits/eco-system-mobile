@@ -40,7 +40,7 @@ class EducationCardWidget extends StatelessWidget {
                     Text(
                       educationModel.degree ?? 'قائد تصميم المنتجات .',
                       style: context.textTheme.bodySmall?.copyWith(
-                          color: context.color.onSurfaceVariant,
+                          color: context.color.secondary,
                           fontSize: 10),
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -67,13 +67,13 @@ class EducationCardWidget extends StatelessWidget {
             child: ReadMoreText(
               educationModel.fieldStudy ?? '',
               trimMode: TrimMode.Line,
-              colorClickableText: context.color.onSurfaceVariant,
+              colorClickableText: context.color.secondary,
               trimExpandedText: allTranslations.text(LocaleKeys.read_less),
               trimCollapsedText: allTranslations.text(LocaleKeys.read_more),
               lessStyle: context.textTheme.labelSmall
-                  ?.copyWith(color: context.color.onSurfaceVariant , fontSize: 10),
+                  ?.copyWith(color: context.color.secondary , fontSize: 10),
               moreStyle: context.textTheme.labelSmall
-                  ?.copyWith(color: context.color.onSurfaceVariant , fontSize: 10),
+                  ?.copyWith(color: context.color.secondary , fontSize: 10),
             ),
           )
         ],
