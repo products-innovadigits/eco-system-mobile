@@ -1,6 +1,16 @@
 source "https://rubygems.org"
 
 gem "fastlane"
+gem "json", "~> 2.6"
+gem "optparse"
+gem "base64"
+gem "nkf"
+gem "rexml"
+gem "logger"
+gem "rake"
+gem "mutex_m"
 
-plugins_path = File.join(File.dirname(__FILE__), '.', 'Pluginfile')
-eval_gemfile(plugins_path) if File.exist?(plugins_path)
+gem "fastlane-plugin-firebase_app_distribution"
+#
+# plugins_path = File.join(File.dirname(__FILE__), '.', 'Pluginfile')
+# eval_gemfile(plugins_path) if File.exist?(plugins_path)
