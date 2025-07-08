@@ -59,7 +59,7 @@
       "name": "ats_package",
       "rootUri": "../packages/ats_package",
       "packageUri": "lib/",
-      "languageVersion": "2.19"
+      "languageVersion": "3.8"
     },
     {
       "name": "bloc",
@@ -203,7 +203,7 @@
       "name": "core_package",
       "rootUri": "../packages/core_package",
       "packageUri": "lib/",
-      "languageVersion": "2.19"
+      "languageVersion": "3.8"
     },
     {
       "name": "cross_file",
@@ -1307,7 +1307,7 @@
       "name": "strategy_package",
       "rootUri": "../packages/strategy_package",
       "packageUri": "lib/",
-      "languageVersion": "2.19"
+      "languageVersion": "3.8"
     },
     {
       "name": "stream_channel",
@@ -1511,7 +1511,7 @@
       "name": "eco_system",
       "rootUri": "../",
       "packageUri": "lib/",
-      "languageVersion": "2.19"
+      "languageVersion": "3.8"
     }
   ],
   "generator": "pub",
