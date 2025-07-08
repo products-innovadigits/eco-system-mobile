@@ -24,8 +24,11 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
+      - name: Set Gradle Heap Size
+        run: echo "org.gradle.jvmargs=-Xmx4g" >> android/gradle.properties
+
       - name: Build APK
-        run: flutter build apk --release
+        run: flutter build apk --release --no-shrink
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
