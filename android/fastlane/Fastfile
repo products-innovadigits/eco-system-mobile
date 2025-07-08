@@ -13,7 +13,8 @@ platform :android do
       app: "1:419893562273:android:5d15901a1b38730eb659e0",
       firebase_cli_token: ENV["FIREBASE_TOKEN"],
       release_notes: "🚀 Automated CI release from GitHub Actions",
-      testers: "#{test_email},abdelraheemsaad014@gmail.com,mohamed.abbas@innovadigits.com,khloud.mohamed.saleh@gmail.com"
+      testers: "#{test_email},abdelraheemsaad014@gmail.com,mohamed.abbas@innovadigits.com,khloud.mohamed.saleh@gmail.com",
+      apk_path: "build/app/outputs/flutter-apk/app-release.apk",
     )
   end
 end
