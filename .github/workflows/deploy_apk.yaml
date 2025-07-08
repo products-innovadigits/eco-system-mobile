@@ -38,6 +38,13 @@ jobs:
       - name: Install Fastlane
         run: gem install fastlane
 
+      - name: Install Bundler
+        run: gem install bundler
+
+      - name: Install Fastlane plugins
+        working-directory: android
+        run: bundle exec fastlane install_plugins
+
       - name: Distribute via Firebase App Distribution
         working-directory: android
         run: |
