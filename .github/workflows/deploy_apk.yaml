@@ -39,6 +39,7 @@ jobs:
         run: gem install fastlane
 
       - name: Distribute via Firebase App Distribution
+        working-directory: android
         run: |
           fastlane android distribute_ci test_email:${{ github.event.inputs.test_email }}
         env:
