@@ -42,6 +42,7 @@ class AppRouter {
           ),
         );
 
+      /// Strategy Routes ===========================================
       case Routes.OBJECTIVES:
         return MaterialPageRoute(builder: (_) => const ObjectivesView());
 
@@ -50,6 +51,8 @@ class AppRouter {
           builder: (_) => ObjectiveDetailsView(id: settings.arguments as int),
         );
 
+
+      /// PMS Routes ===========================================
       case Routes.PROJECTS:
         return MaterialPageRoute(builder: (_) => const ProjectsView());
 
@@ -58,6 +61,8 @@ class AppRouter {
           builder: (_) => ProjectDetailsView(id: settings.arguments as int),
         );
 
+
+      /// ATS Routes ===========================================
       case Routes.JOBS:
         return MaterialPageRoute(builder: (_) => const JobsView());
 
@@ -84,9 +89,8 @@ class AppRouter {
 
       default:
         return MaterialPageRoute(
-          builder: (_) => const Scaffold(
-            body: Center(child: Text("404 - Page Not Found")),
-          ),
+          builder: (_) =>
+              const Scaffold(body: Center(child: Text("404 - Page Not Found"))),
         );
     }
   }

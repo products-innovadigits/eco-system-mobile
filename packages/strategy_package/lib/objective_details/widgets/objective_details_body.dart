@@ -14,12 +14,8 @@ class ObjectiveDetailsBody extends StatelessWidget {
           state.model as ObjectiveDetailsModel;
           return Column(
             children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: ObjectiveCardContent(objective: model),
-              ),
+              ObjectiveCardContent(objective: model , isDetails: true),
               SizedBox(height: 12.h),
-              Divider(color: context.color.outline, thickness: 1.0),
 
               ///Objective Description
               ObjectiveDetailsLayout(

@@ -37,7 +37,7 @@ class _ObjectiveBarChartState extends State<ObjectiveBarChart> {
                 handleBuiltInTouches: true,
                 touchTooltipData: BarTouchTooltipData(
                   getTooltipColor: (touchedSpot) =>
-                      Styles.PRIMARY_COLOR.withOpacity(0.1),
+                      context.color.secondary.withValues(alpha: 0.1),
                 ),
               ),
               titlesData: FlTitlesData(
@@ -95,6 +95,10 @@ class _ObjectiveBarChartState extends State<ObjectiveBarChart> {
               gridData: FlGridData(
                   horizontalInterval: 10,
                   show: true,
+                  getDrawingHorizontalLine: (value) => FlLine(
+                      color: context.color.secondary.withValues(alpha: 0.1),
+                      dashArray: const [5, 5],
+                      strokeWidth: 0.5),
                   drawVerticalLine: false,
                   drawHorizontalLine: true),
               barGroups: List.generate(
@@ -111,8 +115,8 @@ class _ObjectiveBarChartState extends State<ObjectiveBarChart> {
                                         .map((e) => e.objectValue ?? 0)
                                         .toList())
                                     .reduce((a, b) => a > b ? a : b)
-                            ? Styles.PRIMARY_COLOR
-                            : Styles.ACCENT_PRIMARY_COLOR,
+                            ? context.color.primary
+                            : context.color.secondary,
                         borderRadius: const BorderRadius.only(
                             topRight: Radius.circular(10),
                             topLeft: Radius.circular(10))),

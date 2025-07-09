@@ -1,21 +1,18 @@
 import 'package:pms_package/shared/pms_exports.dart';
 
-
 class ProjectDetailsDescription extends StatelessWidget {
   const ProjectDetailsDescription({super.key, required this.model});
+
   final ProjectDetailsModel model;
 
   @override
   Widget build(BuildContext context) {
+    final projectStages = model.projectLifeCycle?.projectStages ?? [];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          model.description ?? "",
-          textAlign: TextAlign.start,
-          style:
-              AppTextStyles.w400.copyWith(fontSize: 12, color: Styles.HEADER),
-        ),
+        Text(model.description ?? "",
+            textAlign: TextAlign.start, style: context.textTheme.bodySmall),
         SizedBox(height: 16.h),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -51,13 +48,16 @@ class ProjectDetailsDescription extends StatelessWidget {
             SizedBox(width: 8.h),
             Expanded(
               child: ProjectContentCard(
-                icon: "assets/svgs/project_life_cycle.svg",
-                title: allTranslations.text("project_life_cycle"),
-                desc: model.projectLifeCycle?.projectStages
-                        ?.firstWhere((e) => e.id == model.lifeCycleId)
-                        .title ??
-                    "",
-              ),
+                  icon: "assets/svgs/project_life_cycle.svg",
+                  title: allTranslations.text("project_life_cycle"),
+                  desc: projectStages.isNotEmpty
+                      ? (projectStages[0].title ?? '')
+                      : ''
+                  // model.projectLifeCycle?.projectStages
+                  //         ?.firstWhere((e) => e.lifeCycleId == model.lifeCycleId)
+                  //         .title ??
+                  //     "",
+                  ),
             )
           ],
         ),

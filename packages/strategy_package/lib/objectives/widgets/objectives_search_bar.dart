@@ -38,6 +38,7 @@ class _ObjectivesSearchBarState extends State<ObjectivesSearchBar> {
                       flex: 5,
                       child: CustomTextField(
                         hint: allTranslations.text("search_hint"),
+                        hintColor: context.color.outlineVariant,
                         controller: context.read<ObjectivesBloc>().searchTEC,
                         prefixSvg: "search",
                         borderColor: context.color.outline,

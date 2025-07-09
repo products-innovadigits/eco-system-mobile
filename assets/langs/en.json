@@ -407,5 +407,6 @@
   "page_not_found": "Page Not Found",
   "page_not_found_desc": "\"Sorry, we can't find the page you're looking for.\nCheck the link or return to the home page.\"",
   "no_talents_desc": "\"There are currently no talents. When you add a talent group,\n they will automatically appear here.\"",
-  "no_data_desc": "\"There is no data to display at this time. When you enter data,\n it will appear here automatically.\""
+  "no_data_desc": "\"There is no data to display at this time. When you enter data,\n it will appear here automatically.\"",
+  "kpis_general_progress": "التقدم العام للاهداف"
 }

@@ -49,7 +49,7 @@ class JobDetailsWidget extends StatelessWidget {
         Text(
           '$jobType . $address . $department',
           style: context.textTheme.bodyMedium
-              ?.copyWith(color: context.color.outline, fontSize: FontSizes.f10),
+              ?.copyWith(color: context.color.outlineVariant, fontSize: FontSizes.f10),
         ),
         Padding(
           padding: EdgeInsets.all(14.h),

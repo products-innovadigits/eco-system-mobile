@@ -45,8 +45,9 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => Size(
-      CustomNavigator.navigatorState.currentContext!.w,
-      (withSearch ?? false) ? 122.h : 65.h);
+    CustomNavigator.navigatorState.currentContext!.w,
+    (withSearch ?? false) ? 122.h : 65.h,
+  );
 }
 
 class _CustomAppBarState extends State<CustomAppBar> {
@@ -80,14 +81,17 @@ class _CustomAppBarState extends State<CustomAppBar> {
     return SafeArea(
       bottom: false,
       child: Container(
-        padding: EdgeInsets.only(right: 16.w , left: 16.w, top: 24.h),
+        padding: EdgeInsets.only(right: 16.w, left: 16.w, top: 24.h),
         decoration: BoxDecoration(
-            color: Styles.WHITE_COLOR,
-            border: Border(
-                bottom: BorderSide(
-                    color: widget.withBottomBorder
-                        ? Styles.BORDER
-                        : Colors.transparent))),
+          color: context.color.surfaceContainer,
+          border: Border(
+            bottom: BorderSide(
+              color: widget.withBottomBorder
+                  ? context.color.outline
+                  : Colors.transparent,
+            ),
+          ),
+        ),
         child: Column(
           children: [
             Row(
@@ -95,20 +99,20 @@ class _CustomAppBarState extends State<CustomAppBar> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 InkWell(
-                    onTap: () {
-                      widget.onBackBtn?.call();
-                      CustomNavigator.pop();
-                    },
-                    child: RotatedBox(
-                      quarterTurns:
-                          mainAppBloc.lang.valueOrNull == "en" ? 2 : 0,
-                      child: Images(
-                        image: Assets.svgs.arrowBack.path,
-                        color: context.color.primary,
-                        width: 20.w,
-                        height: 20.h,
-                      ),
-                    )),
+                  onTap: () {
+                    widget.onBackBtn?.call();
+                    CustomNavigator.pop();
+                  },
+                  child: RotatedBox(
+                    quarterTurns: mainAppBloc.lang.valueOrNull == "en" ? 2 : 0,
+                    child: Images(
+                      image: Assets.svgs.arrowBack.path,
+                      color: context.color.primary,
+                      width: 20.w,
+                      height: 20.h,
+                    ),
+                  ),
+                ),
                 8.sw,
                 Text(
                   widget.title ?? "",
@@ -116,7 +120,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                   textAlign: TextAlign.center,
                 ),
                 const Spacer(),
-                widget.action ?? SizedBox(width: 16.w)
+                widget.action ?? SizedBox(width: 16.w),
               ],
             ),
             if (widget.withSearch ?? false)
@@ -137,10 +141,12 @@ class _CustomAppBarState extends State<CustomAppBar> {
                           if (_debounceTimer?.isActive ?? false) {
                             _debounceTimer?.cancel();
                           }
-                          _debounceTimer =
-                              Timer(const Duration(milliseconds: 600), () {
-                            widget.onSearching!(v);
-                          });
+                          _debounceTimer = Timer(
+                            const Duration(milliseconds: 600),
+                            () {
+                              widget.onSearching!(v);
+                            },
+                          );
                         },
                         onTap: widget.onTapSearch,
                         readOnly: widget.onSearching == null,
@@ -158,24 +164,27 @@ class _CustomAppBarState extends State<CustomAppBar> {
                                     padding: const EdgeInsets.all(12.0),
                                     child: Images(
                                       image: Assets.svgs.closeCircle.path,
-                                      color: Styles.ICON_GREY_COLOR,
+                                      color: context.color.outlineVariant,
                                     ),
                                   ),
                                 )
                               : null,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(color: Styles.BORDER),
+                            borderSide: BorderSide(
+                              color: context.color.outline,
+                            ),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(color: Styles.BORDER),
+                            borderSide: BorderSide(
+                              color: context.color.outline,
+                            ),
                           ),
                           hintText: widget.searchHintText,
-                          hintStyle: const TextStyle(
-                              fontWeight: FontWeight.w200,
-                              fontSize: 12,
-                              color: Styles.SUB_TEXT_DARK_COLOR),
+                          hintStyle: context.textTheme.bodySmall?.copyWith(
+                            color: context.color.outlineVariant,
+                          ),
                           prefixIcon: Padding(
                             padding: EdgeInsets.all(14),
                             child: Images(image: Assets.svgs.search.path),
@@ -185,10 +194,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                             vertical: 10.h,
                           ),
                         ),
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14,
-                            color: Styles.TEXT_COLOR),
+                        style: context.textTheme.titleSmall,
                       ),
                     ),
                   ),
@@ -210,30 +216,35 @@ class _CustomAppBarState extends State<CustomAppBar> {
                               padding: EdgeInsets.all(14),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
-                                border: Border.all(color: Styles.BORDER),
+                                border: Border.all(
+                                  color: context.color.outlineVariant,
+                                ),
                               ),
                               child: Stack(
                                 children: [
                                   Container(
                                     padding: EdgeInsets.all(2),
                                     child: Images(
-                                        image: Assets.svgs.sort.path,
-                                        height: 20.h,
-                                        width: 20.w),
+                                      image: Assets.svgs.sort.path,
+                                      color: context.color.outlineVariant,
+                                      height: 20.h,
+                                      width: 20.w,
+                                    ),
                                   ),
                                   if (widget.isSorted == true)
                                     PositionedDirectional(
-                                        top: 2.h,
-                                        start: 1.w,
-                                        child: Icon(
-                                          Icons.circle,
-                                          color: context.color.secondary,
-                                          size: 8,
-                                        ))
+                                      top: 2.h,
+                                      start: 1.w,
+                                      child: Icon(
+                                        Icons.circle,
+                                        color: context.color.secondary,
+                                        size: 8,
+                                      ),
+                                    ),
                                 ],
                               ),
                             ),
-                          )
+                          ),
                         ],
                         if (widget.withFilter ?? false) ...[
                           8.sw,
@@ -247,36 +258,41 @@ class _CustomAppBarState extends State<CustomAppBar> {
                               padding: EdgeInsets.all(12),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
-                                border: Border.all(color: Styles.BORDER),
+                                border: Border.all(
+                                  color: context.color.outline,
+                                ),
                               ),
                               child: Stack(
                                 children: [
                                   Container(
                                     padding: EdgeInsets.all(2),
                                     child: Images(
-                                        image: Assets.svgs.filter.path,
-                                        height: 20.h,
-                                        width: 20.w),
+                                      image: Assets.svgs.filter.path,
+                                      color: context.color.outlineVariant,
+                                      height: 20.h,
+                                      width: 20.w,
+                                    ),
                                   ),
                                   if (widget.isFiltered == true)
                                     PositionedDirectional(
-                                        top: 0,
-                                        start: 2.w,
-                                        child: Icon(
-                                          Icons.circle,
-                                          color: context.color.secondary,
-                                          size: 8,
-                                        ))
+                                      top: 0,
+                                      start: 2.w,
+                                      child: Icon(
+                                        Icons.circle,
+                                        color: context.color.secondary,
+                                        size: 8,
+                                      ),
+                                    ),
                                 ],
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ],
                     ),
                   ),
                 ],
-              )
+              ),
           ],
         ),
       ),

@@ -25,7 +25,7 @@ class ObjectivePercentageSection extends StatelessWidget {
               width: context.w,
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
               decoration: BoxDecoration(
-                  color: context.color.surface,
+                  color: context.color.surfaceContainer,
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(color: context.color.outline)),
               child: Column(
@@ -36,6 +36,7 @@ class ObjectivePercentageSection extends StatelessWidget {
                     onViewTap: () => CustomNavigator.push(Routes.OBJECTIVES),
                   ),
                   Divider(color: context.color.outline),
+                  SizedBox(height: 12.h),
                   ObjectivePercentageChart(objectives: objectives),
                   SizedBox(height: 12.h),
                   Wrap(

@@ -7,6 +7,7 @@ class ProjectCategoryHBarChart extends StatefulWidget {
       required this.data,
       this.textColor,
       this.barColor});
+
   final List<ProjectCategoriesProgressModel> data;
   final Color? textColor, barColor;
   final bool withIntervals;
@@ -38,9 +39,8 @@ class _ProjectCategoryHBarChartState extends State<ProjectCategoryHBarChart> {
             barTouchData: BarTouchData(
               handleBuiltInTouches: true,
               touchTooltipData: BarTouchTooltipData(
-                getTooltipColor: (touchedSpot) =>
-                    Styles.PRIMARY_COLOR.withOpacity(0.1),
-              ),
+                  getTooltipColor: (touchedSpot) =>
+                      context.color.secondary.withValues(alpha: 0.1)),
             ),
             rotationQuarterTurns: 3,
             titlesData: FlTitlesData(
@@ -73,7 +73,7 @@ class _ProjectCategoryHBarChartState extends State<ProjectCategoryHBarChart> {
                   showTitles: true,
                   getTitlesWidget: (value, meta) => bottomTitles(value, meta,
                       widget.data.map((e) => e.name ?? "").toList(),
-                      textColor: context.color.outline),
+                      textColor: context.color.outlineVariant),
                   reservedSize: 60,
                   interval: interval,
                 ),
@@ -86,6 +86,10 @@ class _ProjectCategoryHBarChartState extends State<ProjectCategoryHBarChart> {
                 horizontalInterval: interval,
                 show: widget.withIntervals,
                 drawVerticalLine: false,
+                getDrawingHorizontalLine: (value) => FlLine(
+                    color: context.color.outline,
+                    strokeWidth: 0.8,
+                    dashArray: const [4, 4]),
                 drawHorizontalLine: true),
             barGroups: List.generate(
               widget.data.length,
@@ -95,7 +99,7 @@ class _ProjectCategoryHBarChartState extends State<ProjectCategoryHBarChart> {
                   BarChartRodData(
                       fromY: 0,
                       toY: widget.data[index].progress ?? 0,
-                      width: 30,
+                      width: 20.w,
                       color: widget.barColor ??
                           Styles.projectCategoryColors[index],
                       backDrawRodData: BackgroundBarChartRodData(
@@ -103,9 +107,7 @@ class _ProjectCategoryHBarChartState extends State<ProjectCategoryHBarChart> {
                           color: Colors.transparent,
                           fromY: widget.data[index].progress ?? 0,
                           toY: 100),
-                      borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(2),
-                          topLeft: Radius.circular(2))),
+                      borderRadius: BorderRadius.circular(4)),
                 ],
               ),
             ).toList(),
@@ -118,31 +120,28 @@ class _ProjectCategoryHBarChartState extends State<ProjectCategoryHBarChart> {
 
 Widget bottomTitles(double value, TitleMeta meta, List<String> bottomTilesData,
     {Color? textColor}) {
-  final Widget text = Text(
-    bottomTilesData[value.toInt()],
-    textAlign: TextAlign.center,
-    style: AppTextStyles.w400.copyWith(
-      color: textColor ?? Styles.projectCategoryColors[value.toInt()],
-      fontSize: 12,
-    ),
-  );
+  final context = CustomNavigator.navigatorState.currentContext;
+  final Widget text = Text(bottomTilesData[value.toInt()],
+      textAlign: TextAlign.center,
+      style: context?.textTheme.bodySmall?.copyWith(
+          color: textColor ?? Styles.projectCategoryColors[value.toInt()],
+          fontSize: 11));
 
   return SideTitleWidget(
     // axisSide: meta.axisSide,
-    space: 12,
+    space: 10,
     meta: meta,
     child: text,
   );
 }
 
 Widget leftTitles(double value, TitleMeta meta) {
+  final context = CustomNavigator.navigatorState.currentContext;
   final formattedValue = (value).toStringAsFixed(0);
   final Widget text = Text(
-    formattedValue + "%",
-    style: AppTextStyles.w400.copyWith(
-      color: Styles.ACCENT_PRIMARY_COLOR,
-      fontSize: 12,
-    ),
+    "$formattedValue%",
+    style: context?.textTheme.bodySmall
+        ?.copyWith(color: context.color.outlineVariant),
   );
 
   return SideTitleWidget(

@@ -13,7 +13,7 @@ class AvailableJobsSection extends StatelessWidget {
             width: context.w,
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
             decoration: BoxDecoration(
-                color: Styles.WHITE_COLOR,
+                color: context.color.surfaceContainer,
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(color: context.color.outline)),
             child: Column(

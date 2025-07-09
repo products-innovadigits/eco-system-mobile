@@ -42,7 +42,6 @@ class _ObjectiveDetailsViewState extends State<ObjectiveDetailsView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 16.h),
               Expanded(
                   child: ListAnimator(
                     controller: scrollController,
@@ -50,14 +49,16 @@ class _ObjectiveDetailsViewState extends State<ObjectiveDetailsView> {
                   ///Objective Details
                   ObjectiveDetailsBody(),
 
+                  ///Objective Chart
+                  ObjectiveDetailsChart(scrollController: scrollController),
+
                   ///Objective indicators
                   ObjectiveKPIS(),
 
                   ///Objective indicators
                   ObjectiveInitiatives(),
 
-                  ///Objective Chart
-                  ObjectiveDetailsChart(scrollController: scrollController),
+
                 ],
               ))
             ],

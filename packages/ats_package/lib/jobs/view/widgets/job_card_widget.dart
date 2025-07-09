@@ -19,7 +19,7 @@ class JobCardWidget extends StatelessWidget {
       width: context.w,
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
       decoration: BoxDecoration(
-          color: context.color.surface,
+          color: context.color.surfaceContainer,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: context.color.outline)),
       child: Column(
@@ -52,17 +52,7 @@ class JobCardWidget extends StatelessWidget {
                       ?.copyWith(color: context.color.secondary),
                 ),
                 const Spacer(),
-                AnimatedRotation(
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeInOut,
-                  turns: isExpanded == true ? 0.5 : 0,
-                  child: Icon(
-                    Icons.keyboard_arrow_down_rounded,
-                    color: isExpanded == true
-                        ? context.color.secondary
-                        : context.color.outline,
-                  ),
-                )
+                AnimatedExpansionArrowWidget(isExpanded: isExpanded ?? false)
               ],
             ),
           ),

@@ -1,4 +1,3 @@
-
 import 'package:pms_package/shared/pms_exports.dart';
 
 class ProjectDetailsBody extends StatelessWidget {
@@ -12,16 +11,12 @@ class ProjectDetailsBody extends StatelessWidget {
           ProjectDetailsModel model = state.model as ProjectDetailsModel;
           return Column(
             children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: ProjectCardContent(project: model),
-              ),
+              ProjectCardContent(project: model, isDetails: true),
               SizedBox(height: 12.h),
-              Divider(color: context.color.outline, thickness: 1.0),
 
               ///Project Description
               CustomExpansionCard(
-                title: allTranslations.text("description"),
+                title: allTranslations.text(LocaleKeys.description),
                 child: ProjectDetailsDescription(
                   model: model,
                 ),
@@ -33,8 +28,8 @@ class ProjectDetailsBody extends StatelessWidget {
                     .text("progress_at_each_stage_of_the_project"),
                 withExpanded: false,
                 child: ProjectCategoryHBarChart(
-                    barColor: Styles.PRIMARY_COLOR,
-                    textColor: Styles.DETAILS,
+                    barColor: context.color.primary,
+                    textColor: context.color.outlineVariant,
                     withIntervals: false,
                     data: model.projectLifeCycle?.projectStages
                             ?.map((e) => ProjectCategoriesProgressModel(
@@ -53,17 +48,14 @@ class ProjectDetailsBody extends StatelessWidget {
                   margin: EdgeInsets.symmetric(horizontal: 6.w),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(100),
-                    color: Styles.WHITE_COLOR,
+                    color: context.color.surfaceContainer,
                     border: Border.all(color: context.color.outline),
                   ),
                   child: Center(
                     child: Text(
                       allTranslations.text("Month"),
-                      style: AppTextStyles.w600.copyWith(
-                        fontSize: 14,
-                        height: 1.2,
-                        color: Styles.HEADER,
-                      ),
+                      style: context.textTheme.labelMedium
+                          ?.copyWith(fontWeight: FontWeight.w600, height: 1.2),
                     ),
                   ),
                 ),

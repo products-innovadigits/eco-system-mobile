@@ -1,5 +1,7 @@
 
 
+import 'package:core_package/core/helpers/font_sizes.dart';
+
 import '../../shared/strategy_exports.dart';
 
 class ObjectiveDetailsChart extends StatefulWidget {
@@ -29,7 +31,7 @@ class _ObjectiveDetailsChartState extends State<ObjectiveDetailsChart> {
       margin: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
       padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
       decoration: BoxDecoration(
-          color: Styles.WHITE_COLOR,
+          color: context.color.surfaceContainer,
           border: Border.all(color: context.color.outline),
           borderRadius: BorderRadius.circular(12)),
       child: Column(
@@ -38,9 +40,8 @@ class _ObjectiveDetailsChartState extends State<ObjectiveDetailsChart> {
             children: [
               Expanded(
                 child: Text(
-                  allTranslations.text("general_progress"),
-                  style: AppTextStyles.w800
-                      .copyWith(fontSize: 18, color: Styles.HEADER),
+                  allTranslations.text(LocaleKeys.kpis_general_progress),
+                  style: context.textTheme.titleLarge?.copyWith(fontSize: FontSizes.f14),
                 ),
               ),
               SizedBox(height: 12.h),
@@ -59,17 +60,17 @@ class _ObjectiveDetailsChartState extends State<ObjectiveDetailsChart> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
                       color: currentTime == ChartTime.values[i]
-                          ? Styles.PRIMARY_COLOR
-                          : Styles.PRIMARY_COLOR.withOpacity(0.1),
+                          ? context.color.primary
+                          : context.color.secondary.withValues(alpha: 0.1),
                     ),
                     child: Text(
                       allTranslations.text(ChartTime.values[i].name),
-                      style: AppTextStyles.w600.copyWith(
-                        fontSize: 14,
+                      style:context.textTheme.labelMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
                         height: 1.5,
                         color: currentTime == ChartTime.values[i]
-                            ? Styles.WHITE_COLOR
-                            : Styles.HEADER,
+                            ? context.color.onPrimary
+                            : context.color.primary,
                       ),
                     ),
                   ),

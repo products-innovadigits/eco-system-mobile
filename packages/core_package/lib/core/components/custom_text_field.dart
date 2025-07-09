@@ -107,7 +107,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       borderRadius: BorderRadius.circular(8),
       borderSide: BorderSide(
         style: BorderStyle.solid,
-        color: widget.borderColor ?? Styles.BORDER,
+        color: widget.borderColor ?? context.color.outline,
         width: 1,
       ),
     );
@@ -116,7 +116,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       borderRadius: BorderRadius.circular(8),
       borderSide: BorderSide(
         style: BorderStyle.solid,
-        color: widget.borderColor ?? Styles.BORDER,
+        color: widget.borderColor ?? context.color.outline,
       ),
     );
 
@@ -141,8 +141,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
             if (widget.label != null)
               Padding(
                 padding: const EdgeInsets.only(bottom: 6.0),
-                child: Text(widget.label ?? "",
-                    style: widget.headStyle ?? context.textTheme.labelSmall),
+                child: Text(
+                  widget.label ?? "",
+                  style: widget.headStyle ?? context.textTheme.labelSmall,
+                ),
               ),
             if (widget.headLabel != null) SizedBox(height: widget.headSpace),
             TextFormField(
@@ -173,23 +175,22 @@ class _CustomTextFieldState extends State<CustomTextField> {
                       // LengthLimitingTextInputFormatter(11),
                     ]
                   : widget.inputFormatters,
-              style: TextStyle(
-                fontSize: 14,
-                color: context.color.onSurface,
-                fontWeight: FontWeight.w500,
-              ),
+              style: context.textTheme.labelLarge,
               decoration: InputDecoration(
-                fillColor: widget.color ?? Styles.WHITE_COLOR,
-                errorStyle: const TextStyle(color: Styles.RED_CHART_COLOR),
-                contentPadding: widget.contentPadding ??
+                fillColor: widget.color ?? context.color.surfaceContainer,
+                errorStyle: TextStyle(color: context.color.error),
+                contentPadding:
+                    widget.contentPadding ??
                     EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                 prefixIconConstraints: BoxConstraints(maxHeight: 35),
-                suffixIconConstraints:
-                    BoxConstraints(maxHeight: widget.maxSuffixIconHeight ?? 35),
+                suffixIconConstraints: BoxConstraints(
+                  maxHeight: widget.maxSuffixIconHeight ?? 35,
+                ),
                 hintText: widget.hint,
                 // labelText: widget.label,
                 alignLabelWithHint: true,
-                prefixIcon: widget.prefixWidget ??
+                prefixIcon:
+                    widget.prefixWidget ??
                     (widget.prefixSvg != null
                         ? Padding(
                             padding: const EdgeInsets.only(right: 16, left: 16),
@@ -198,10 +199,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
                               height: widget.prefixImageHeight ?? 18,
                               width: widget.prefixImageHeight ?? 18,
                               color: widget.controller == null
-                                  ? Styles.HINT
+                                  ? context.color.outlineVariant
                                   : (widget.controller!.text.isEmpty)
-                                      ? Styles.HINT
-                                      : Styles.PRIMARY_COLOR,
+                                  ? context.color.outlineVariant
+                                  : context.color.primary,
                             ),
                           )
                         : null),
@@ -214,90 +215,90 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 //   color: widget.hintColor ?? Styles.HINT,
                 //   fontWeight: FontWeight.w400,
                 // ),
-                hintStyle: TextStyle(
-                  fontSize: FontSizes.f12,
-                  color: widget.hintColor ?? context.color.outline,
-                  fontWeight: FontWeight.w400,
+                hintStyle: context.textTheme.bodyMedium?.copyWith(
+                  color: widget.hintColor ?? context.color.outlineVariant,
                 ),
-                suffixIcon: widget.suffixWidget ??
+                suffixIcon:
+                    widget.suffixWidget ??
                     (widget.suffixIcon != null
-                        ? Icon(
-                            widget.suffixIcon,
-                            size: 18,
-                          )
+                        ? Icon(widget.suffixIcon, size: 18)
                         : widget.suffixSvg != null
-                            ? Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 24),
-                                child: customImageIconSVG(
-                                  imageName: widget.suffixSvg!,
-                                  height: 18,
-                                  width: 18,
-                                  color: widget.controller!.text.isEmpty
-                                      ? Styles.PRIMARY_COLOR.withOpacity(0.5)
-                                      : Styles.PRIMARY_COLOR,
-                                ),
-                              )
-                            : widget.isPassword == true
-                                ? IconButton(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 18),
-                                    onPressed: _visibility,
-                                    alignment: Alignment.center,
-                                    icon: _isHidden
-                                        ? customImageIconSVG(
-                                            imageName: "hide",
-                                            height: 18.0,
-                                            width: 18.0,
-                                            color: Styles.DETAILS,
-                                          )
-                                        : customImageIconSVG(
-                                            imageName: "show",
-                                            height: 18.0,
-                                            width: 18.0,
-                                            color: Styles.DETAILS,
-                                          ),
+                        ? Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 24),
+                            child: customImageIconSVG(
+                              imageName: widget.suffixSvg!,
+                              height: 18,
+                              width: 18,
+                              color: widget.controller!.text.isEmpty
+                                  ? context.color.primary.withValues(alpha: 0.5)
+                                  : context.color.primary,
+                            ),
+                          )
+                        : widget.isPassword == true
+                        ? IconButton(
+                            padding: const EdgeInsets.symmetric(horizontal: 18),
+                            onPressed: _visibility,
+                            alignment: Alignment.center,
+                            icon: _isHidden
+                                ? customImageIconSVG(
+                                    imageName: "hide",
+                                    height: 18.0,
+                                    width: 18.0,
+                                    color: context.color.primary,
                                   )
-                                : null),
+                                : customImageIconSVG(
+                                    imageName: "show",
+                                    height: 18.0,
+                                    width: 18.0,
+                                    color: context.color.primary,
+                                  ),
+                          )
+                        : null),
                 filled: widget.isFilled ?? true,
 
                 // fillColor: color,
                 enabledBorder: !widget.addBorder
                     ? _enabledBorders.copyWith(
-                        borderSide: const BorderSide(
-                        color: Styles.WHITE_COLOR,
-                      ))
+                        borderSide: BorderSide(color: context.color.surfaceContainer),
+                      )
                     : _enabledBorders.copyWith(
                         borderSide: BorderSide(
-                            color: widget.borderColor ?? Styles.BORDER,
-                            // (widget.controller?.text.isNotEmpty ?? false)
-                            //     ? Styles.PRIMARY_COLOR
-                            //     : Styles.HINT_COLOR,
-                            width: 1,
-                            style: widget.borderWidth == 0
-                                ? BorderStyle.none
-                                : BorderStyle.solid)),
+                          color: widget.borderColor ?? context.color.outline,
+                          // (widget.controller?.text.isNotEmpty ?? false)
+                          //     ? Styles.PRIMARY_COLOR
+                          //     : Styles.HINT_COLOR,
+                          width: 1,
+                          style: widget.borderWidth == 0
+                              ? BorderStyle.none
+                              : BorderStyle.solid,
+                        ),
+                      ),
                 disabledBorder: !widget.addBorder
                     ? null
                     : _borders.copyWith(
                         borderSide: BorderSide(
-                        width: widget.borderWidth ?? 1,
-                        color: widget.borderColor ?? Styles.HINT,
-                      )),
+                          width: widget.borderWidth ?? 1,
+                          color: widget.borderColor ?? context.color.outlineVariant,
+                        ),
+                      ),
                 focusedBorder: _borders.copyWith(
-                    borderSide: widget.addBorder
-                        ? null
-                        : BorderSide(width: 1, color: context.color.primary)),
+                  borderSide: widget.addBorder
+                      ? null
+                      : BorderSide(width: 1, color: context.color.primary),
+                ),
                 errorBorder: !widget.addBorder
                     ? null
                     : _borders.copyWith(
                         borderSide: BorderSide(
-                            width: widget.borderWidth ?? 1,
-                            color: Styles.IN_ACTIVE)),
+                          width: widget.borderWidth ?? 1,
+                          color: context.color.error,
+                        ),
+                      ),
                 border: !widget.addBorder
                     ? null
                     : _borders.copyWith(
-                        borderSide: BorderSide(width: widget.borderWidth ?? 1)),
+                        borderSide: BorderSide(width: widget.borderWidth ?? 1),
+                      ),
               ),
             ),
           ],
