@@ -34,7 +34,7 @@ class FilterButtonsSection extends StatelessWidget {
             Expanded(
               child: CustomBtn(
                 text: allTranslations.text(LocaleKeys.reset),
-                color: Styles.WHITE_COLOR,
+                color: context.color.surfaceContainer,
                 textColor: Styles.PRIMARY_COLOR,
                 borderColor: Styles.PRIMARY_COLOR,
                 onPressed: onResetFilters,

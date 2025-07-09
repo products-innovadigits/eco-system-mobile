@@ -10,7 +10,7 @@ class AddSkillFieldWidget extends StatelessWidget {
     return Container(
       width: 100.w,
       decoration: BoxDecoration(
-        color: Styles.SURFACE.withValues(alpha: 0.3),
+        color: context.color.secondary.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
@@ -22,7 +22,7 @@ class AddSkillFieldWidget extends StatelessWidget {
             child: TextField(
               controller: bloc.skillController,
               maxLines: 1,
-              style: AppTextStyles.w400.copyWith(fontSize: 12),
+              style: context.textTheme.bodySmall,
               onChanged: (v) => bloc.add(Update()),
               onSubmitted: (v) {
                 if (v.isNotEmpty) {
@@ -34,7 +34,7 @@ class AddSkillFieldWidget extends StatelessWidget {
               decoration: InputDecoration(
                   hintText: allTranslations.text(LocaleKeys.add_skill),
                   hintStyle: context.textTheme.bodySmall
-                      ?.copyWith(color: context.color.outline),
+                      ?.copyWith(color: context.color.outlineVariant),
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
                   enabledBorder: InputBorder.none,
@@ -53,11 +53,11 @@ class AddSkillFieldWidget extends StatelessWidget {
             child: bloc.skillController.text.isNotEmpty
                 ? Images(
                     image: Assets.svgs.send.path,
-                    color: context.color.outline,
+                    color: context.color.secondary,
                     height: 20)
                 : Icon(
                     Icons.add,
-                    color: context.color.outline,
+                    color: context.color.secondary,
                     size: 16,
                   ),
           ),

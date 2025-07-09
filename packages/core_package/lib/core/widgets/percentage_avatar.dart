@@ -50,7 +50,7 @@ class PercentageAvatar extends StatelessWidget {
                 decoration: BoxDecoration(
                     borderRadius:
                         BorderRadius.circular(percentageRadius ?? 16.w),
-                    color: Styles.WHITE_COLOR),
+                    color: context.color.surfaceContainer),
                 child: Center(
                   child: Text(
                     '$percentage%',

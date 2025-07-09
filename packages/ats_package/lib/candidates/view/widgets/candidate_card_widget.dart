@@ -45,7 +45,7 @@ class CandidateCardWidget extends StatelessWidget {
                         Text(
                           'مدير المشروعات . ',
                           style: context.textTheme.bodySmall
-                              ?.copyWith(color: context.color.outline)
+                              ?.copyWith(color: context.color.outlineVariant)
                         ),
                         Text('5 من الوظائف',
                             style: context.textTheme.bodySmall

@@ -78,7 +78,7 @@ class ProfileImageWidget extends StatelessWidget {
                         padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
                             boxShadow: kElevationToShadow[1],
-                            color: Styles.WHITE_COLOR,
+                            color: context.color.surfaceContainer,
                             borderRadius: BorderRadius.circular(100)),
                         child: customImageIconSVG(
                           imageName: "camera",

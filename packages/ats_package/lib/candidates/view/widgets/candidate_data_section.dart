@@ -11,17 +11,17 @@ class CandidateDataSection extends StatelessWidget {
         Text(
           'السعودية',
           style: context.textTheme.labelSmall
-              ?.copyWith(color: context.color.outline , fontSize: 10),
+              ?.copyWith(color: context.color.outlineVariant , fontSize: 10),
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 4.w),
           child: Icon(Icons.circle,
-              color: context.color.outline, size: 4),
+              color: context.color.outlineVariant, size: 4),
         ),
         Text(
           'خبرة ٥ سنين',
           style: context.textTheme.labelSmall
-              ?.copyWith(color: context.color.outline , fontSize: 10),
+              ?.copyWith(color: context.color.outlineVariant , fontSize: 10),
         ),
         const Spacer(),
         Text(
@@ -32,7 +32,7 @@ class CandidateDataSection extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 4.w),
           child:
-          Icon(Icons.circle, color: Styles.PRIMARY_COLOR, size: 4),
+          Icon(Icons.circle, color: context.color.secondary, size: 4),
         ),
         Text(
           'اسبوعين',

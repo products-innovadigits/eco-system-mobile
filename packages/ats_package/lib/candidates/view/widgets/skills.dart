@@ -24,7 +24,7 @@ class Skills extends StatelessWidget {
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Styles.BORDER),
+                border: Border.all(color: context.color.outline),
               ),
               child: Wrap(
                 crossAxisAlignment: WrapCrossAlignment.end,

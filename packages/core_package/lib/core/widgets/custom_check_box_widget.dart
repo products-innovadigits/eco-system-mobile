@@ -21,7 +21,7 @@ class CustomCheckBoxWidget extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(2),
             border: Border.all(color: context.color.secondary),
-            color: isChecked ? context.color.secondary : Styles.WHITE_COLOR,
+            color: isChecked ? context.color.secondary : context.color.surfaceContainer,
           ),
           child: isChecked
               ? Images(image: Assets.svgs.check.path)

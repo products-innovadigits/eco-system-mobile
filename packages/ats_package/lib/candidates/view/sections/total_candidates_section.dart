@@ -40,7 +40,7 @@ class TotalCandidatesSection extends StatelessWidget {
                     decoration: BoxDecoration(
                         color: context.color.primary,
                         shape: BoxShape.circle,
-                        border: Border.all(color: Styles.WHITE_COLOR)),
+                        border: Border.all(color: context.color.surfaceContainer)),
                     child: (index == 4 && talentsList.length > 5)
                         ? Container(
                             decoration: BoxDecoration(

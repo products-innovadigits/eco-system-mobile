@@ -12,12 +12,12 @@ class HomeHeader extends StatelessWidget {
           width: context.w,
           height: context.h * 0.30,
           padding: EdgeInsets.symmetric(horizontal: 16.w),
-          color: context.color.primary,
-          // decoration:  BoxDecoration(
-          //     image: DecorationImage(
-          //         image: AssetImage(Assets.images.newHomeHeaderBg.path),
-          //         fit: BoxFit.cover)
-          // ),
+          // color: context.color.primary,
+          decoration:  BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(Assets.images.newHomeHeaderBg.path),
+                  fit: BoxFit.cover)
+          ),
           child: SafeArea(
             child: Column(
               mainAxisSize: MainAxisSize.min,

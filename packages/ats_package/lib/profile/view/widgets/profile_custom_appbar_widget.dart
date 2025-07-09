@@ -15,18 +15,18 @@ class ProfileCustomAppbarWidget extends StatelessWidget {
         GestureDetector(
             onTap: () => CustomNavigator.pop(),
             child: Images(
-                image: Assets.svgs.arrowBack.path, color: Styles.WHITE_COLOR)),
+                image: Assets.svgs.arrowBack.path, color: context.color.surfaceContainer)),
         8.sw,
         isLoading == true
             ? CustomShimmerContainer(width: 120.w, height: 30, borderRadius: 4)
             : Text(title,
-                style: AppTextStyles.w700.copyWith(color: Styles.WHITE_COLOR)),
+                style: context.textTheme.titleSmall?.copyWith(color: context.color.surfaceContainer , fontWeight: FontWeight.w700)),
         const Spacer(),
         GestureDetector(
             onTap: () => context.read<ProfileBloc>().add(ShowDialog()),
             child: Images(
                 image: Assets.svgs.profileMore.path,
-                color: Styles.WHITE_COLOR)),
+                color: context.color.surfaceContainer)),
       ],
     );
   }

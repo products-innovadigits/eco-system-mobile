@@ -109,7 +109,7 @@ class _ObjectivePercentageChartState extends State<ObjectivePercentageChart> {
           padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 10.h),
           decoration: BoxDecoration(
               border: Border.all(color: context.color.outline),
-              color: Styles.WHITE_COLOR,
+              color: context.color.surfaceContainer,
               shape: BoxShape.circle),
           child: Text(
             '${widget.objectives[i].value?.toStringAsFixed(0)}%',

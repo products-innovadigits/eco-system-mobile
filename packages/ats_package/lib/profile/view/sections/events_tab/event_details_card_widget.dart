@@ -16,7 +16,7 @@ class EventDetailsCardWidget extends StatelessWidget {
           width: context.w,
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
           decoration: BoxDecoration(
-              color: Styles.WHITE_COLOR,
+              color: context.color.surfaceContainer,
               borderRadius: BorderRadius.circular(8),
               border: Border.all(color: Styles.BORDER)),
           child: Column(
