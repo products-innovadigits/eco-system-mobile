@@ -7,7 +7,7 @@ class AnimatedExpansionArrowWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedRotation(
-      duration: const Duration(milliseconds: 600),
+      duration: const Duration(milliseconds: 400),
       curve: Curves.easeInOut,
       turns: isExpanded ? 0.5 : 0,
       child: Icon(

@@ -26,7 +26,7 @@ class _CustomExpansionCardState extends State<CustomExpansionCard> {
       margin: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
       padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
       decoration: BoxDecoration(
-          color: Styles.WHITE_COLOR,
+          color: context.color.surfaceContainer,
           border: Border.all(color: context.color.outline),
           borderRadius: BorderRadius.circular(12)),
       child: Column(

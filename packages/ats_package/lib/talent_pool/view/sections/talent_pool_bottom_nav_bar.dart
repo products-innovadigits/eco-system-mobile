@@ -14,7 +14,7 @@ class TalentPoolBottomNav extends StatelessWidget {
             topLeft: Radius.circular(16),
             topRight: Radius.circular(16),
           ),
-          color: Styles.WHITE_COLOR),
+          color: context.color.surfaceContainer),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [

@@ -226,7 +226,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                                     padding: EdgeInsets.all(2),
                                     child: Images(
                                       image: Assets.svgs.sort.path,
-                                      color: context.color.outlineVariant,
+                                      color: context.color.outline,
                                       height: 20.h,
                                       width: 20.w,
                                     ),

@@ -1,4 +1,3 @@
-import 'package:core_package/core/helpers/font_sizes.dart';
 import 'package:core_package/core/utility/export.dart';
 
 class CustomTextField extends StatefulWidget {
@@ -102,12 +101,17 @@ class _CustomTextFieldState extends State<CustomTextField> {
   }
 
   @override
-  void initState() {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // Safe to access Theme.of(context) / context.color here
+    final outlineColor = widget.borderColor ?? context.color.outline;
+
     _borders = OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
       borderSide: BorderSide(
         style: BorderStyle.solid,
-        color: widget.borderColor ?? context.color.outline,
+        color: outlineColor,
         width: 1,
       ),
     );
@@ -116,12 +120,32 @@ class _CustomTextFieldState extends State<CustomTextField> {
       borderRadius: BorderRadius.circular(8),
       borderSide: BorderSide(
         style: BorderStyle.solid,
-        color: widget.borderColor ?? context.color.outline,
+        color: outlineColor,
       ),
     );
-
-    super.initState();
   }
+
+  // @override
+  // void initState() {
+  //   _borders = OutlineInputBorder(
+  //     borderRadius: BorderRadius.circular(8),
+  //     borderSide: BorderSide(
+  //       style: BorderStyle.solid,
+  //       color: widget.borderColor ?? context.color.outline,
+  //       width: 1,
+  //     ),
+  //   );
+  //
+  //   _enabledBorders = OutlineInputBorder(
+  //     borderRadius: BorderRadius.circular(8),
+  //     borderSide: BorderSide(
+  //       style: BorderStyle.solid,
+  //       color: widget.borderColor ?? context.color.outline,
+  //     ),
+  //   );
+  //
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {

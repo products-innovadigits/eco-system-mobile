@@ -27,9 +27,9 @@ class CustomSortTileWidget extends StatelessWidget {
                     : context.color.outline.withValues(alpha: 0.6),
                 shape: BoxShape.circle),
             child: Center(
-                child: const Icon(
+                child:  Icon(
               Icons.circle,
-              color: Styles.WHITE_COLOR,
+              color: context.color.surfaceContainer,
               size: 13,
             )),
           ),

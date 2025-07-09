@@ -1,3 +1,4 @@
+import 'package:core_package/core/helpers/font_sizes.dart';
 import 'package:core_package/core/utility/export.dart';
 
 class ProfileDataContainerWidget extends StatelessWidget {
@@ -16,16 +17,16 @@ class ProfileDataContainerWidget extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
         decoration: BoxDecoration(
             color: Colors.transparent,
-            border: Border.all(color: Styles.WHITE_COLOR),
+            border: Border.all(color: context.color.surfaceContainer),
             borderRadius: BorderRadius.circular(48)),
         child: Row(
           children: [
-            Images(image: icon , color: context.color.secondary),
+            Images(image: icon , color: context.color.onPrimary),
             6.sw,
             Text(
               title,
               textDirection: TextDirection.ltr,
-              style: context.textTheme.labelSmall?.copyWith(color: context.color.onPrimary , fontSize: 10),
+              style: context.textTheme.labelSmall?.copyWith(color: context.color.onPrimary , fontSize: FontSizes.f10),
             ),
           ],
         ),

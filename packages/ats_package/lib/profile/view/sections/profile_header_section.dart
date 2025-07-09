@@ -58,13 +58,12 @@ class _ProfileHeaderSectionState extends State<ProfileHeaderSection>
               children: [
                 Container(
                   width: context.w,
-                  color: context.color.primary,
-                  // decoration: BoxDecoration(
-                  //   image: DecorationImage(
-                  //     image: AssetImage(Assets.images.prfileHeaderBg.path),
-                  //     fit: BoxFit.fill,
-                  //   ),
-                  // ),
+                  // color: context.color.primary,
+                  decoration:  BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage(Assets.images.newHomeHeaderBg.path),
+                          fit: BoxFit.cover)
+                  ),
                   child: SafeArea(
                     child: Padding(
                       padding: EdgeInsets.symmetric(

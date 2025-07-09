@@ -243,6 +243,10 @@ class $AssetsSvgsGen {
   SvgGenImage get documentText =>
       const SvgGenImage('assets/svgs/document-text.svg');
 
+  /// File path: assets/svgs/download-box.svg
+  SvgGenImage get downloadBox =>
+      const SvgGenImage('assets/svgs/download-box.svg');
+
   /// File path: assets/svgs/edit-2.svg
   SvgGenImage get edit2 => const SvgGenImage('assets/svgs/edit-2.svg');
 
@@ -541,6 +545,7 @@ class $AssetsSvgsGen {
     directboxSend,
     documentDownload,
     documentText,
+    downloadBox,
     edit2,
     editOutline,
     edit,

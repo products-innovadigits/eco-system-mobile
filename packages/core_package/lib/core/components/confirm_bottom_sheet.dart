@@ -1,4 +1,3 @@
-import 'package:core_package/core/config/colors/light_colors.dart';
 import 'package:core_package/core/utility/export.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 

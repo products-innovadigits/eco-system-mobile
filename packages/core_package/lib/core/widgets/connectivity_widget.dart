@@ -31,14 +31,14 @@ class ConnectivityWidget extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.wifi_off_rounded,
-                        color: Styles.WHITE_COLOR,
+                        color: context.color.surfaceContainer,
                         size: 20,
                       ),
                       8.sw,
                       Text(
                         allTranslations.text(LocaleKeys.no_internet_connection),
                         style: AppTextStyles.w500.copyWith(
-                          color: Styles.WHITE_COLOR,
+                          color: context.color.surfaceContainer,
                           fontSize: 14,
                         ),
                       ),
@@ -47,7 +47,7 @@ class ConnectivityWidget extends StatelessWidget {
                         IconButton(
                           icon: Icon(
                             Icons.refresh_rounded,
-                            color: Styles.WHITE_COLOR,
+                            color: context.color.surfaceContainer,
                             size: 20,
                           ),
                           onPressed: () async {

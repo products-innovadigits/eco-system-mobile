@@ -40,7 +40,7 @@ class ExperienceCardWidget extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          '${experience.title} . ' ?? '-',
+                          '${experience.title} . ',
                           style: context.textTheme.bodySmall?.copyWith(
                               color: context.color.secondary,
                               fontSize: 10),

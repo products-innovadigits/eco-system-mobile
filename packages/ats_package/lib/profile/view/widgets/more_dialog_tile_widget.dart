@@ -29,14 +29,14 @@ class MoreDialogTileWidget extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
               child: Row(
                 children: [
-                  Images(image: iconPath),
+                  Images(image: iconPath , color: context.color.secondary),
                   8.sw,
                   Text(allTranslations.text(title),
-                      style: AppTextStyles.w400.copyWith(fontSize: 12))
+                      style: context.textTheme.bodySmall)
                 ],
               ),
             ),
-            Divider(color: Styles.BORDER, height: 2.h),
+            Divider(color: context.color.outline, height: 2.h),
           ],
         ),
       ),

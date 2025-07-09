@@ -59,7 +59,7 @@ class _AnimatedContainerDemoState extends State<AnimatedContainerDemo> {
               },
               child: Text(
                 isExpanded ? 'Collapse' : 'Expand',
-                style: AppTextStyles.w500.copyWith(color: Styles.WHITE_COLOR),
+                style: AppTextStyles.w500.copyWith(color: context.color.surfaceContainer),
               ),
             ),
           ],

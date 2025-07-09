@@ -38,7 +38,7 @@ class StageSection extends StatelessWidget {
                   padding:
                       EdgeInsets.symmetric(horizontal: 16.w, vertical: 40.h),
                   decoration: BoxDecoration(
-                      color: Styles.WHITE_COLOR,
+                      color: context.color.surfaceContainer,
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(color: context.color.outline)),
                   child: Center(

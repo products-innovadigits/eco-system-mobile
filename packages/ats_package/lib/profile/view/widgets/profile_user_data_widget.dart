@@ -38,13 +38,12 @@ class ProfileUserDataWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Images(
-                        image: Assets.svgs.documentDownload.path,
+                        image: Assets.svgs.downloadBox.path,
                         color: context.color.onSurface),
                     8.sw,
                     Text(
                       'CV',
-                      style: AppTextStyles.w500
-                          .copyWith(color: context.color.onSurface),
+                      style: context.textTheme.labelSmall,
                     ),
                   ],
                 ),

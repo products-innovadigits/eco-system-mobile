@@ -45,7 +45,7 @@ class CandidateStagesListSection extends StatelessWidget {
                       style: context.textTheme.bodySmall?.copyWith(fontSize: 10),
                     ),
                     const Spacer(),
-                    Images(image: Assets.svgs.arrowLeft.path, width: 6 , color: context.color.outline),
+                    Images(image: Assets.svgs.arrowLeft.path, width: 6 , color: context.color.outlineVariant),
                   ],
                 ),
               );

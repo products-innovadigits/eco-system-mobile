@@ -9,7 +9,7 @@ class TestFileWidget extends StatelessWidget {
       padding: EdgeInsets.symmetric(
           horizontal: 16.w, vertical: 10.h),
       decoration: BoxDecoration(
-          color: Styles.WHITE_COLOR,
+          color: context.color.surfaceContainer,
           border: Border.all(color: Styles.BORDER),
           borderRadius: BorderRadius.circular(10)),
       child: Row(

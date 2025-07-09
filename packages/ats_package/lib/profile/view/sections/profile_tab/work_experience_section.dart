@@ -22,7 +22,7 @@ class WorkExperienceSection extends StatelessWidget {
                 : Container(
                     width: context.w,
                     decoration: BoxDecoration(
-                      color: Styles.WHITE_COLOR,
+                      color: context.color.surfaceContainer,
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(color: Styles.BORDER),
                     ),

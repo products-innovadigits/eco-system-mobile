@@ -26,14 +26,14 @@ class RememberMe extends StatelessWidget {
               height: 18.h,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  color: check ? Styles.PRIMARY_COLOR : Styles.WHITE_COLOR,
+                  color: check ? Styles.PRIMARY_COLOR : context.color.surfaceContainer,
                   border: Border.all(
                       color: check ? Styles.PRIMARY_COLOR : Styles.DETAILS,
                       width: 1)),
               child: check
-                  ? const Icon(
+                  ?  Icon(
                       Icons.check,
-                      color: Styles.WHITE_COLOR,
+                      color: context.color.surfaceContainer,
                       size: 14,
                     )
                   : null,

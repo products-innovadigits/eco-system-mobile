@@ -69,19 +69,19 @@ class _PublicAppbarState extends State<PublicAppbar> {
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
                                       hintText: allTranslations.text("search"),
-                                      hintStyle: const TextStyle(
+                                      hintStyle:  TextStyle(
                                           fontWeight: FontWeight.w200,
                                           fontSize: 12,
-                                          color: Styles.WHITE_COLOR),
+                                          color: context.color.surfaceContainer),
                                       contentPadding:
                                           const EdgeInsets.symmetric(
                                         horizontal: 15.0,
                                       ),
                                     ),
-                                    style: const TextStyle(
+                                    style:  TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 14,
-                                        color: Styles.WHITE_COLOR),
+                                        color: context.color.surfaceContainer),
                                   ),
                                 ),
                                 InkWell(
@@ -125,7 +125,7 @@ class _PublicAppbarState extends State<PublicAppbar> {
                                 style: TextStyle(
                                     fontSize: widget.fontSize ?? 24,
                                     fontWeight: FontWeight.w700,
-                                    color: Styles.WHITE_COLOR),
+                                    color: context.color.surfaceContainer),
                               ),
                             ),
                           ),

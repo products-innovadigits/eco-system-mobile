@@ -300,7 +300,7 @@ class _DashboardSelectDateState extends State<DashboardSelectDate> {
           const SizedBox(
             width: 4,
           ),
-          const Icon(Icons.arrow_drop_down, color: Styles.WHITE_COLOR)
+           Icon(Icons.arrow_drop_down, color: context.color.surfaceContainer)
         ],
       ),
     );
