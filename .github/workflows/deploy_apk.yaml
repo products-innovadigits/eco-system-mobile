@@ -5,7 +5,7 @@ on:
     inputs:
       test_email:
         description: 'Add new tester email (will also send to fixed list)'
-        required: true
+        required: false
         default: 'Enter the client email...'
 
 jobs:

@@ -8,14 +8,19 @@ platform :android do
     # Build the APK
     sh("flutter", "build", "apk", "--release")
 
+
+    firebase_args = {
+        app: "1:419893562273:android:5d15901a1b38730eb659e0",
+        firebase_cli_token: ENV["FIREBASE_TOKEN"],
+        release_notes: "🚀 Automated CI release from GitHub Actions",
+        groups: "nawah-team",
+        apk_path: "../build/app/outputs/flutter-apk/app-release.apk"
+      }
+
+    # Add testers only if email is provided
+      firebase_args[:testers] = test_email unless test_email.to_s.strip.empty?
+
     # Upload to Firebase App Distribution
-    firebase_app_distribution(
-      app: "1:419893562273:android:5d15901a1b38730eb659e0",
-      firebase_cli_token: ENV["FIREBASE_TOKEN"],
-      release_notes: "🚀 Automated CI release from GitHub Actions",
-      testers: "#{test_email}",
-      groups: "nawah-team",
-      apk_path: "../build/app/outputs/flutter-apk/app-release.apk"
-    )
+      firebase_app_distribution(**firebase_args)
   end
 end
