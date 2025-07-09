@@ -17,7 +17,7 @@ class CandidateInfoCardWidget extends StatelessWidget {
       decoration: BoxDecoration(
           color: (isPrimaryColor ?? true)
               ? Styles.PRIMARY_COLOR.withValues(alpha: 0.1)
-              : context.color.onSurfaceVariant.withValues(alpha: 0.1),
+              : context.color.secondary.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(12)),
       child: Center(
         child: Column(

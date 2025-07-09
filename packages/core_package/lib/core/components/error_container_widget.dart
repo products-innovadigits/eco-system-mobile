@@ -16,7 +16,7 @@ class ErrorContainerWidget extends StatelessWidget {
       decoration: BoxDecoration(
           color: Styles.WHITE_COLOR,
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: Styles.LIGHT_GREY_BORDER)),
+          border: Border.all(color: context.color.outline)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

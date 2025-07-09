@@ -1,4 +1,4 @@
-
+import 'package:core_package/core/helpers/font_sizes.dart';
 import 'package:core_package/core/utility/export.dart';
 
 class EmptyContainer extends StatelessWidget {
@@ -8,13 +8,14 @@ class EmptyContainer extends StatelessWidget {
   final double? remain;
   final TextStyle? subStyle;
 
-  const EmptyContainer(
-      {super.key,
-      this.img,
-      this.txt,
-      this.remain = 200.0,
-      this.desc,
-      this.subStyle});
+  const EmptyContainer({
+    super.key,
+    this.img,
+    this.txt,
+    this.remain = 200.0,
+    this.desc,
+    this.subStyle,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,18 +32,20 @@ class EmptyContainer extends StatelessWidget {
               Text(
                 txt ?? allTranslations.text(LocaleKeys.there_is_no_data),
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
+                style: context.textTheme.titleLarge?.copyWith(
+                  fontSize: FontSizes.f16,
                 ),
               ),
               const SizedBox(height: 12),
               Text(
                 desc ?? "",
                 textAlign: TextAlign.center,
-                style: subStyle ??
-                    AppTextStyles.w400.copyWith(color: Styles.DETAILS , fontSize: 12),
-              )
+                style:
+                    subStyle ??
+                    context.textTheme.bodySmall?.copyWith(
+                      color: context.color.outlineVariant,
+                    ),
+              ),
             ],
           ),
         ),

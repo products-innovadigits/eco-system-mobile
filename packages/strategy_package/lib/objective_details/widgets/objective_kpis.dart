@@ -23,10 +23,7 @@ class ObjectiveKPIS extends StatelessWidget {
                               flex: 3,
                               child: Text(
                                 list[i].kpiTitle ?? "",
-                                style: AppTextStyles.w400.copyWith(
-                                  fontSize: 12,
-                                  color: Styles.TITLE,
-                                ),
+                                style: context.textTheme.bodySmall,
                               ),
                             ),
                             Expanded(
@@ -37,16 +34,16 @@ class ObjectiveKPIS extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(100),
                                   child: LinearProgressIndicator(
                                     value: (list[i].value ?? 0) / 100,
-                                    color: Styles.PRIMARY_COLOR,
-                                    backgroundColor: Styles.HINT,
+                                    minHeight: 6.h,
+                                    color: context.color.secondary,
+                                    backgroundColor: context.color.secondary.withValues(alpha: 0.1),
                                   ),
                                 ),
                               ),
                             ),
                             Text(
                               "${list[i].value ?? ""}%",
-                              style: AppTextStyles.w700
-                                  .copyWith(fontSize: 12, color: Styles.HEADER),
+                              style: context.textTheme.labelSmall,
                             ),
                           ],
                         ),

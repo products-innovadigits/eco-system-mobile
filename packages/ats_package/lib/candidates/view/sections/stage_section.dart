@@ -23,12 +23,12 @@ class StageSection extends StatelessWidget {
               Text(
                 stage.type ?? '',
                 style: context.textTheme.labelSmall
-                    ?.copyWith(color: context.color.onSurfaceVariant),
+                    ?.copyWith(color: context.color.secondary),
               ),
               4.sw,
               Text('(${stage.count})',
                   style: context.textTheme.labelSmall
-                      ?.copyWith(color: context.color.onSurfaceVariant)),
+                      ?.copyWith(color: context.color.secondary)),
             ],
           ),
           16.sh,
@@ -40,7 +40,7 @@ class StageSection extends StatelessWidget {
                   decoration: BoxDecoration(
                       color: Styles.WHITE_COLOR,
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: context.color.outlineVariant)),
+                      border: Border.all(color: context.color.outline)),
                   child: Center(
                       child:
                           Text(allTranslations.text(LocaleKeys.no_candidates))),

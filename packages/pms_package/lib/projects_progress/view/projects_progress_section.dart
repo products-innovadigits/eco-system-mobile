@@ -20,9 +20,9 @@ class ProjectsProgressSection extends StatelessWidget {
               width: context.w,
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
               decoration: BoxDecoration(
-                  color: Styles.WHITE_COLOR,
+                  color: context.color.surfaceContainer,
                   borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: Styles.LIGHT_GREY_BORDER)),
+                  border: Border.all(color: context.color.outline)),
               child: Column(
                 children: [
                   SectionTitle(
@@ -30,7 +30,7 @@ class ProjectsProgressSection extends StatelessWidget {
                     withView: true,
                     onViewTap: () => CustomNavigator.push(Routes.PROJECTS),
                   ),
-                  Divider(color: Styles.BORDER_COLOR),
+                  Divider(color: context.color.outline),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -43,9 +43,7 @@ class ProjectsProgressSection extends StatelessWidget {
                       Text(
                         "100",
                         style: AppTextStyles.w600.copyWith(
-                          fontSize: 20,
-                          color: Color(0xff2B6C9F),
-                        ),
+                            fontSize: 20, color: context.color.secondary),
                       )
                     ],
                   ),
@@ -73,8 +71,7 @@ class ProjectsProgressSection extends StatelessWidget {
                                     textAlign: TextAlign.center,
                                     text: TextSpan(
                                       text: projects[i].categoryName,
-                                      style: AppTextStyles.w400.copyWith(
-                                          fontSize: 14, color: Styles.HEADER),
+                                      style: context.textTheme.bodyMedium,
                                       children: [
                                         // TextSpan(
                                         //   text: " ${78}",

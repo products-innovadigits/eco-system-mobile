@@ -17,8 +17,8 @@ class ProjectCard extends StatelessWidget {
         margin: EdgeInsets.symmetric(vertical: 8.h),
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
         decoration: BoxDecoration(
-            color: Styles.WHITE_COLOR,
-            border: Border.all(color: Styles.LIGHT_GREY_BORDER),
+            color: context.color.surfaceContainer,
+            border: Border.all(color: context.color.outline),
             borderRadius: BorderRadius.circular(12.w)),
         child: ProjectCardContent(project: project),
       ),

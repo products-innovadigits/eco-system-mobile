@@ -24,23 +24,26 @@ class TalentPoolSection extends StatelessWidget {
                 width: context.w,
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
                 decoration: BoxDecoration(
-                    color: Styles.WHITE_COLOR,
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: Styles.LIGHT_GREY_BORDER)),
+                  color: context.color.surfaceContainer,
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: context.color.outline),
+                ),
                 child: Column(
                   children: [
                     SectionTitle(
                       title: allTranslations.text(LocaleKeys.talent_pool),
-                      subText: allTranslations
-                          .text(LocaleKeys.candidate_with_future_potential),
+                      subText: allTranslations.text(
+                        LocaleKeys.candidate_with_future_potential,
+                      ),
                       icon: Assets.svgs.tripleUser.path,
                       onViewTap: () {},
                     ),
-                    Divider(color: Styles.BORDER_COLOR),
+                    Divider(color: context.color.outline),
                     12.sh,
                     TotalCandidatesSection(
-                        talentsList: talentPoolBloc.talentsList,
-                        candidatesCount: talentPoolBloc.candidatesCount ?? 0),
+                      talentsList: talentPoolBloc.talentsList,
+                      candidatesCount: talentPoolBloc.candidatesCount ?? 0,
+                    ),
                   ],
                 ),
               ),
@@ -59,23 +62,25 @@ class TalentPoolSection extends StatelessWidget {
             return Padding(
               padding: EdgeInsets.all(16.w),
               child: ErrorContainerWidget(
-                  header: Column(
-                    children: [
-                      SectionTitle(
-                        title: allTranslations.text(LocaleKeys.talent_pool),
-                        subText: allTranslations
-                            .text(LocaleKeys.candidate_with_future_potential),
-                        icon: Assets.svgs.tripleUser.path,
-                        onViewTap: () {},
+                header: Column(
+                  children: [
+                    SectionTitle(
+                      title: allTranslations.text(LocaleKeys.talent_pool),
+                      subText: allTranslations.text(
+                        LocaleKeys.candidate_with_future_potential,
                       ),
-                      Divider(color: Styles.BORDER_COLOR)
-                    ],
-                  ),
-                  onTryAgain: () {
-                    context
-                        .read<TalentPoolBloc>()
-                        .add(Click(arguments: SearchEngine()));
-                  }),
+                      icon: Assets.svgs.tripleUser.path,
+                      onViewTap: () {},
+                    ),
+                    Divider(color: context.color.outline),
+                  ],
+                ),
+                onTryAgain: () {
+                  context.read<TalentPoolBloc>().add(
+                    Click(arguments: SearchEngine()),
+                  );
+                },
+              ),
             );
           } else {
             return Padding(

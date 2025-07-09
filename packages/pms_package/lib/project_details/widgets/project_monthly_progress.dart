@@ -63,7 +63,7 @@ class _ProjectMonthlyProgressState extends State<ProjectMonthlyProgress> {
                   getTitlesWidget: (value, meta) => bottomTitles(
                     value,
                     meta,
-                    widget.data.map((e) => "${e.name ?? ""}").toList(),
+                    widget.data.map((e) => e.name ?? "").toList(),
                   ),
                   reservedSize: 30,
                   interval: 1,
@@ -80,13 +80,13 @@ class _ProjectMonthlyProgressState extends State<ProjectMonthlyProgress> {
                         widget.data[i].progress ?? 0)),
                 isCurved: false,
                 gradient: LinearGradient(
-                  colors: [Colors.orange.shade700, Colors.orange.shade400],
+                  colors: [context.color.primary, context.color.primary.withValues(alpha: 0.2)],
                 ),
                 belowBarData: BarAreaData(
                   show: true,
                   gradient: LinearGradient(
                     colors: [
-                      Colors.orange.withOpacity(0.1),
+                      context.color.primary.withValues(alpha: 0.1),
                       Colors.transparent,
                     ],
                     begin: Alignment.topCenter,
@@ -124,10 +124,7 @@ class _ProjectMonthlyProgressState extends State<ProjectMonthlyProgress> {
     final Widget text = Text(
       bottomTilesData[value.toInt()],
       textAlign: TextAlign.center,
-      style: AppTextStyles.w400.copyWith(
-        color: Styles.projectCategoryColors[value.toInt()],
-        fontSize: 12,
-      ),
+      style: context.textTheme.bodySmall?.copyWith(color: context.color.outlineVariant)
     );
 
     return SideTitleWidget(
@@ -142,10 +139,7 @@ class _ProjectMonthlyProgressState extends State<ProjectMonthlyProgress> {
     final formattedValue = (value).toStringAsFixed(0);
     final Widget text = Text(
       "$formattedValue%",
-      style: AppTextStyles.w400.copyWith(
-        color: Styles.ACCENT_PRIMARY_COLOR,
-        fontSize: 12,
-      ),
+      style: context.textTheme.bodySmall?.copyWith(color: context.color.outlineVariant)
     );
 
     return SideTitleWidget(

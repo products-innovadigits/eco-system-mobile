@@ -25,7 +25,7 @@ class CustomTabWidget extends StatelessWidget {
             color: context.color.surface,
             border: Border(
               bottom: BorderSide(
-                color: isSelected ? context.color.primary : context.color.outlineVariant,
+                color: isSelected ? context.color.primary : context.color.outline,
                 width: isSelected ? 2 : 1,
               ),
             ),

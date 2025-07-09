@@ -20,7 +20,7 @@ class ProfileDataContainerWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(48)),
         child: Row(
           children: [
-            Images(image: icon , color: context.color.onSurfaceVariant),
+            Images(image: icon , color: context.color.secondary),
             6.sw,
             Text(
               title,

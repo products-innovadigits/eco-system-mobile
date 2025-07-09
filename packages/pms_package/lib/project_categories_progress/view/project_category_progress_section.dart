@@ -21,9 +21,9 @@ class ProjectCategoryProgressSection extends StatelessWidget {
               width: context.w,
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
               decoration: BoxDecoration(
-                  color: context.color.surface,
+                  color: context.color.surfaceContainer,
                   borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: Styles.LIGHT_GREY_BORDER)),
+                  border: Border.all(color: context.color.outline)),
               child: Column(
                 children: [
                   SectionTitle(
@@ -32,7 +32,7 @@ class ProjectCategoryProgressSection extends StatelessWidget {
                     withView: false,
                     onViewTap: () => CustomNavigator.push(Routes.PROJECTS),
                   ),
-                  Divider(color: Styles.BORDER_COLOR),
+                  Divider(color: context.color.outline),
                   ProjectCategoryHBarChart(data: projectCategoriesProgress),
                 ],
               ),

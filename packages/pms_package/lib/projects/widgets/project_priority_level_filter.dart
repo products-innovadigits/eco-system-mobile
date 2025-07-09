@@ -55,8 +55,9 @@ class ProjectPriorityFilter extends StatelessWidget {
               height: 45.h,
               padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
               decoration: BoxDecoration(
+                color: context.color.surfaceContainer,
                 border: Border.all(
-                  color: Styles.LIGHT_GREY_BORDER,
+                  color: context.color.outline,
                 ),
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -67,11 +68,10 @@ class ProjectPriorityFilter extends StatelessWidget {
                       initialSelection?.name ?? allTranslations.text("all"),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
-                      style: AppTextStyles.w400.copyWith(
-                          fontSize: 14,
+                      style: context.textTheme.bodyMedium?.copyWith(
                           color: initialSelection != null
-                              ? Styles.HEADER
-                              : Styles.HINT),
+                              ? context.color.primary
+                              : context.color.outlineVariant),
                     ),
                   ),
                   SizedBox(width: 12.w),
@@ -129,13 +129,13 @@ class _SelectionViewState extends State<_SelectionView> {
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             decoration: BoxDecoration(
               color: _selectedItem?.id == widget.list[index].id
-                  ? Styles.PRIMARY_COLOR
-                  : Styles.WHITE_COLOR,
+                  ? context.color.primary
+                  : context.color.surfaceContainer,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
                   color: _selectedItem?.id == widget.list[index].id
-                      ? Styles.WHITE_COLOR
-                      : Styles.PRIMARY_COLOR),
+                      ? context.color.surfaceContainer
+                      : context.color.primary),
             ),
             width: context.w,
             child: Row(
@@ -148,8 +148,8 @@ class _SelectionViewState extends State<_SelectionView> {
                       fontSize: 16,
                       overflow: TextOverflow.ellipsis,
                       color: _selectedItem?.id == widget.list[index].id
-                          ? Styles.WHITE_COLOR
-                          : Styles.PRIMARY_COLOR,
+                          ? context.color.surfaceContainer
+                          : context.color.primary,
                     ),
                   ),
                 ),
@@ -159,8 +159,8 @@ class _SelectionViewState extends State<_SelectionView> {
                         : Icons.radio_button_off,
                     size: 22,
                     color: _selectedItem?.id == widget.list[index].id
-                        ? Styles.WHITE_COLOR
-                        : Styles.PRIMARY_COLOR)
+                        ? context.color.surfaceContainer
+                        : context.color.primary)
               ],
             ),
           ),

@@ -281,6 +281,7 @@ abstract class  LocaleKeys {
   static const time_left = 'time_left';
   static const progress = 'progress';
   static const general_progress = 'general_progress';
+  static const kpis_general_progress = 'kpis_general_progress';
   static const description = 'description';
   static const kpis = 'kpis';
   static const scale = 'scale';

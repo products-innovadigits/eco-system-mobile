@@ -14,12 +14,8 @@ class ObjectiveDetailsBody extends StatelessWidget {
           state.model as ObjectiveDetailsModel;
           return Column(
             children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: ObjectiveCardContent(objective: model),
-              ),
+              ObjectiveCardContent(objective: model , isDetails: true),
               SizedBox(height: 12.h),
-              Divider(color: Styles.BORDER_COLOR, thickness: 1.0),
 
               ///Objective Description
               ObjectiveDetailsLayout(
@@ -44,7 +40,7 @@ class ObjectiveDetailsBody extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 12.h),
-              Divider(color: Styles.BORDER_COLOR, thickness: 1.0),
+              Divider(color: context.color.outline, thickness: 1.0),
               CustomShimmerContainer(
                 height: 130.h,
                 width: context.w,

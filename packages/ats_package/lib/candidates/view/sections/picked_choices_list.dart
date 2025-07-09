@@ -15,7 +15,7 @@ class PickedChoicesList extends StatelessWidget {
         return Container(
           padding: EdgeInsetsDirectional.only(start: 12.w,end: 8.w, top: 6.h , bottom: 6.h),
           decoration: BoxDecoration(
-            color: context.color.onSurfaceVariant.withValues(alpha: 0.1),
+            color: context.color.secondary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Row(

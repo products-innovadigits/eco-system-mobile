@@ -1,35 +1,37 @@
+import 'package:core_package/core/config/colors/light_colors.dart';
 import 'package:core_package/core/utility/export.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 abstract class CustomBottomSheet {
-  static show(
-      {Function()? onConfirm,
-      String? label,
-      String? buttonText,
-      required Widget widget,
-      double? height,
-      Widget? child,
-      bool? isLoading,
-      bool withPadding = true,
-      Function()? onCancel,
-      Function()? onClose}) {
+  static show({
+    Function()? onConfirm,
+    String? label,
+    String? buttonText,
+    required Widget widget,
+    double? height,
+    Widget? child,
+    bool? isLoading,
+    bool withPadding = true,
+    Function()? onCancel,
+    Function()? onClose,
+  }) {
+    final context = CustomNavigator.navigatorState.currentContext!;
     return showMaterialModalBottomSheet(
       enableDrag: true,
       clipBehavior: Clip.antiAlias,
       backgroundColor: Colors.transparent,
-      context: CustomNavigator.navigatorState.currentContext!,
+      context: context,
       expand: false,
       useRootNavigator: true,
       isDismissible: true,
       builder: (_) {
         return Padding(
-          padding: MediaQuery.of(CustomNavigator.navigatorState.currentContext!)
-              .viewInsets,
+          padding: MediaQuery.of(context).viewInsets,
           child: Container(
             height: height ?? 500.h,
-            width: CustomNavigator.navigatorState.currentContext!.w,
+            width: context.w,
             decoration: BoxDecoration(
-              color: Styles.WHITE_COLOR,
+              color: context.color.surfaceContainer,
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(30.w),
                 topLeft: Radius.circular(30.w),
@@ -48,8 +50,9 @@ abstract class CustomBottomSheet {
                   ),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                      color: Styles.HINT,
-                      borderRadius: BorderRadius.circular(100)),
+                    color: context.color.outlineVariant,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
                 ),
                 if (label != null)
                   Padding(
@@ -59,8 +62,8 @@ abstract class CustomBottomSheet {
                       children: [
                         Text(
                           label,
-                          style: AppTextStyles.w500.copyWith(
-                            fontSize: 18,
+                          style: context.textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                         GestureDetector(
@@ -68,43 +71,37 @@ abstract class CustomBottomSheet {
                             CustomNavigator.pop();
                             onCancel?.call();
                           },
-                          child: const Icon(
-                            Icons.clear,
-                            size: 24,
-                            color: Styles.DETAILS,
-                          ),
-                        )
+                          child: SvgPicture.asset(Assets.svgs.closeSquare.path),
+                        ),
                       ],
                     ),
                   ),
                 if (label != null)
                   Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 8.h, horizontal: 18.w),
-                    child: const Divider(
-                      color: Styles.BORDER_COLOR,
+                    padding: EdgeInsets.symmetric(
+                      vertical: 8.h,
+                      horizontal: 18.w,
                     ),
+                    child: Divider(color: context.color.outline),
                   ),
                 Expanded(child: widget),
                 Visibility(
                   visible: child != null || onConfirm != null,
                   child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
-                    child: child ??
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 18.w,
+                      vertical: 18.h,
+                    ),
+                    child:
+                        child ??
                         CustomBtn(
-                          text: allTranslations.text(buttonText
-                              ?? "confirm"),
+                          text: allTranslations.text(buttonText ?? "confirm"),
                           loading: isLoading ?? false,
                           onPressed: onConfirm,
                         ),
                   ),
                 ),
-                SizedBox(
-                    height: MediaQuery.of(
-                            CustomNavigator.navigatorState.currentContext!)
-                        .viewInsets
-                        .bottom),
+                SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
               ],
             ),
           ),

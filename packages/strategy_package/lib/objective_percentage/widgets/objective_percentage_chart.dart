@@ -45,7 +45,7 @@ class _ObjectivePercentageChartState extends State<ObjectivePercentageChart> {
                   ),
                   borderData: FlBorderData(
                       show: false,
-                      border: Border.all(color: Styles.LIGHT_GREY_BORDER)),
+                      border: Border.all(color: context.color.outline)),
                   sectionsSpace: 5.w,
                   centerSpaceRadius: 50.w,
                   sections: isEmpty || showingSections().isEmpty
@@ -103,12 +103,12 @@ class _ObjectivePercentageChartState extends State<ObjectivePercentageChart> {
         value: widget.objectives[i].value ?? 0,
         radius: radius,
         borderSide: BorderSide(
-          color: Styles.LIGHT_GREY_BORDER,
+          color: context.color.outline,
         ),
         badgeWidget: Container(
           padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 10.h),
           decoration: BoxDecoration(
-              border: Border.all(color: Styles.LIGHT_GREY_BORDER),
+              border: Border.all(color: context.color.outline),
               color: Styles.WHITE_COLOR,
               shape: BoxShape.circle),
           child: Text(

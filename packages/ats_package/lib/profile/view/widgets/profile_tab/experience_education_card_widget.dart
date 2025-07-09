@@ -18,7 +18,7 @@ class ExperienceCardWidget extends StatelessWidget {
               height: 32.w,
               padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
-                  color: context.color.onSurfaceVariant.withValues(alpha: 0.1),
+                  color: context.color.secondary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8)),
               child: Images(
                   image: Assets.svgs.building.path,
@@ -42,7 +42,7 @@ class ExperienceCardWidget extends StatelessWidget {
                         child: Text(
                           '${experience.title} . ' ?? '-',
                           style: context.textTheme.bodySmall?.copyWith(
-                              color: context.color.onSurfaceVariant,
+                              color: context.color.secondary,
                               fontSize: 10),
                           overflow: TextOverflow.ellipsis,
                         ),

@@ -53,7 +53,7 @@ class CandidateSkillsSection extends StatelessWidget {
                         padding: EdgeInsets.symmetric(
                             horizontal: 12.w, vertical: 6.h),
                         decoration: BoxDecoration(
-                          color: context.color.onSurfaceVariant
+                          color: context.color.secondary
                               .withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(20),
                         ),

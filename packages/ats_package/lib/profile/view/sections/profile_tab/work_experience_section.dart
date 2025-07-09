@@ -33,7 +33,7 @@ class WorkExperienceSection extends StatelessWidget {
                           style: context.textTheme.titleMedium),
                       shape: const Border(),
                       collapsedShape: const Border(),
-                      iconColor: context.color.onSurfaceVariant,
+                      iconColor: context.color.secondary,
                       collapsedIconColor: context.color.outline,
                       collapsedTextColor: context.color.onSurface,
                       children: <Widget>[

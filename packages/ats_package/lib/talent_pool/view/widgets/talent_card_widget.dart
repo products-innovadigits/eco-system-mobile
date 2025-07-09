@@ -19,7 +19,7 @@ class TalentCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      highlightColor: context.color.onSurfaceVariant.withValues(alpha: 0.2),
+      highlightColor: context.color.secondary.withValues(alpha: 0.2),
       onLongPress: () {
         if (!isSelectionActive!) {
           context.read<TalentPoolBloc>().add(Select(arguments: true));
@@ -84,7 +84,7 @@ class TalentCardWidget extends StatelessWidget {
                           '${talent.chancesCount} ${allTranslations.text(LocaleKeys.chances)}',
                           style: context.textTheme.bodySmall?.copyWith(
                               fontSize: FontSizes.f10,
-                              color: context.color.onSurfaceVariant))
+                              color: context.color.secondary))
                     ],
                   ),
                   if (talent.profile?.location != null &&

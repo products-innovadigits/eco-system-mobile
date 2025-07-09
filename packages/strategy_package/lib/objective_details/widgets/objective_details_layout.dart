@@ -20,8 +20,8 @@ class _ObjectiveDetailsLayoutState extends State<ObjectiveDetailsLayout> {
       margin: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
       padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
       decoration: BoxDecoration(
-          color: Styles.WHITE_COLOR,
-          border: Border.all(color: Styles.BORDER_COLOR),
+          color: context.color.surfaceContainer,
+          border: Border.all(color: context.color.outline),
           borderRadius: BorderRadius.circular(12)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,24 +34,17 @@ class _ObjectiveDetailsLayoutState extends State<ObjectiveDetailsLayout> {
                   child: RichText(
                       text: TextSpan(
                           text: widget.title,
-                          style: AppTextStyles.w600
-                              .copyWith(fontSize: 14, color: Styles.HEADER),
+                          style: context.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
                           children: [
                         if (widget.subTitle != null)
                           TextSpan(
                             text: "  ${widget.subTitle}",
-                            style: AppTextStyles.w400.copyWith(
-                                fontSize: 12, color: Styles.PRIMARY_COLOR),
+                            style: context.textTheme.bodySmall?.copyWith(color: context.color.secondary),
                           )
                       ])),
                 ),
                 SizedBox(height: 12.h),
-                AnimatedRotation(
-                  duration: const Duration(milliseconds: 450),
-                  turns: isExpanded ? 0.5 : 0,
-                  child: customImageIconSVG(
-                      imageName: 'up', color: Styles.PRIMARY_COLOR),
-                ),
+                AnimatedExpansionArrowWidget(isExpanded: isExpanded)
               ],
             ),
           ),
@@ -65,7 +58,7 @@ class _ObjectiveDetailsLayoutState extends State<ObjectiveDetailsLayout> {
               children: [
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 12.h),
-                  child: Divider(color: Styles.BORDER_COLOR),
+                  child: Divider(color: context.color.outline),
                 ),
                 widget.child
               ],

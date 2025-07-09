@@ -5,6 +5,7 @@ import '../bloc/main_app_bloc.dart';
 
 abstract class Styles {
   static const Color RED_CHART_COLOR = Color(0xffE24F4F);
+
   // static const Color PRIMARY_COLOR = Color(0xff2b6c9f);
   static const Color PRIMARY_COLOR = Color(0xff009990);
   static const Color SECONDARY_COLOR = Color(0xffF39C12);
@@ -67,36 +68,59 @@ abstract class Styles {
   static const Color CIRCLE_BACKGROUND6 = Color(0xff817C0B);
   static const Color CIRCLE_BACKGROUND7 = Color(0xff728ADE);
   static const Color CIRCLE_BACKGROUND8 = Color(0xff49A5A5);
-  static const SCREEN_PADDING =
-      const EdgeInsets.symmetric(horizontal: 16, vertical: 20);
-  static const HORIZONTAL_PADDING =
-      const EdgeInsets.symmetric(horizontal: 16, vertical: 20);
-  static const VERTICAL_PADDING =
-      const EdgeInsets.symmetric(horizontal: 16, vertical: 20);
-  static const TextStyle UN_SELECTED_TAB =
-      TextStyle(color: Styles.HINT, fontSize: 13, fontWeight: FontWeight.w600);
+  static const SCREEN_PADDING = const EdgeInsets.symmetric(
+    horizontal: 16,
+    vertical: 20,
+  );
+  static const HORIZONTAL_PADDING = const EdgeInsets.symmetric(
+    horizontal: 16,
+    vertical: 20,
+  );
+  static const VERTICAL_PADDING = const EdgeInsets.symmetric(
+    horizontal: 16,
+    vertical: 20,
+  );
+  static const TextStyle UN_SELECTED_TAB = TextStyle(
+    color: Styles.HINT,
+    fontSize: 13,
+    fontWeight: FontWeight.w600,
+  );
   static const TextStyle SELECTED_TAB = TextStyle(
-      color: Styles.PRIMARY_COLOR, fontSize: 13, fontWeight: FontWeight.w800);
+    color: Styles.PRIMARY_COLOR,
+    fontSize: 13,
+    fontWeight: FontWeight.w800,
+  );
+
   static TextStyle HEADER_STYLE({size}) => TextStyle(
-      color: Styles.HEADER,
-      fontSize: size ?? 14,
-      fontWeight: FontWeight.w700,
-      fontFamily: mainAppBloc.lang.valueOrNull);
+    color: Styles.HEADER,
+    fontSize: size ?? 14,
+    fontWeight: FontWeight.w700,
+    fontFamily: mainAppBloc.lang.valueOrNull,
+  );
   static const TextStyle MINI_HEADER_STYLE = TextStyle(
-      color: Styles.HEADER,
-      fontSize: 12,
-      fontWeight: FontWeight.w600,
-      fontFamily: 'ar');
-  static const TextStyle SUB_HEADER_STYLE =
-      TextStyle(color: Styles.TITLE, fontSize: 12, fontWeight: FontWeight.w600);
+    color: Styles.HEADER,
+    fontSize: 12,
+    fontWeight: FontWeight.w600,
+    fontFamily: 'ar',
+  );
+  static const TextStyle SUB_HEADER_STYLE = TextStyle(
+    color: Styles.TITLE,
+    fontSize: 12,
+    fontWeight: FontWeight.w600,
+  );
+
   static TextStyle PLACE_HOLDER_STYLE({fontFamily, fontWeight, size}) =>
       TextStyle(
-          color: Styles.PLACE_HOLDER,
-          fontSize: size ?? 12,
-          fontWeight: fontWeight ?? FontWeight.w800,
-          fontFamily: fontFamily ?? mainAppBloc.lang.valueOrNull);
+        color: Styles.PLACE_HOLDER,
+        fontSize: size ?? 12,
+        fontWeight: fontWeight ?? FontWeight.w800,
+        fontFamily: fontFamily ?? mainAppBloc.lang.valueOrNull,
+      );
   static const TextStyle CONTENT_STYLE = TextStyle(
-      fontSize: 16, fontWeight: FontWeight.normal, color: Colors.grey);
+    fontSize: 16,
+    fontWeight: FontWeight.normal,
+    color: Colors.grey,
+  );
 
   static const String FONT_EN = 'en';
   static const String FONT_AR = 'ar';
@@ -120,16 +144,19 @@ abstract class Styles {
     child: Divider(color: Styles.HINT, thickness: 1.0),
   );
 
-  static Color statusColors(String value) {
+  static Color statusColors(String value, {bool isLineProgress = false}) {
+    final primaryChart = isLineProgress
+        ? LightColor.secondary
+        : LightColor.chartPrimary;
     switch (value) {
       case "مكتمل":
-        return Color(0xFFDC6803);
+        return LightColor.chartSecondary;
       case "متقدم":
-        return LightColor.backgroundPrimary;
+        return primaryChart;
       case "متأخر":
-        return Color(0xFF079455);
+        return LightColor.chartTertiary;
       default:
-        return LightColor.backgroundPrimary;
+        return primaryChart;
     }
   }
 

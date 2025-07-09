@@ -20,7 +20,6 @@ class ProjectDetailsView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 16.h),
               Expanded(
                   child: ListAnimator(
                 data: [

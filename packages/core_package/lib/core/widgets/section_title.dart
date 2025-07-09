@@ -1,4 +1,3 @@
-
 import 'package:core_package/core/helpers/font_sizes.dart';
 import 'package:core_package/core/utility/export.dart';
 
@@ -25,29 +24,32 @@ class SectionTitle extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          if (icon != null) ...[
-            Images(image: icon!),
-            16.sw,
-          ],
+          if (icon != null) ...[Images(image: icon!), 16.sw],
           Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: AppTextStyles.w700.copyWith(fontSize: FontSizes.f14 , color: context.color.onSurface),
-              ),
-              if (subText != null)
-                Padding(
-                  padding: EdgeInsets.only(top: 4.h),
-                  child: Text(
-                    subText!,
-                    style: AppTextStyles.w400
-                        .copyWith(fontSize: 11, color: Styles.DETAILS),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: AppTextStyles.w700.copyWith(
+                    fontSize: FontSizes.f14,
+                    color: context.color.onSurface,
                   ),
                 ),
-            ],
-          )),
+                if (subText != null)
+                  Padding(
+                    padding: EdgeInsets.only(top: 4.h),
+                    child: Text(
+                      subText!,
+                      style: context.textTheme.labelSmall?.copyWith(
+                        fontSize: 11,
+                        color: context.color.outlineVariant,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
           if (withView)
             InkWell(
               onTap: onViewTap,
@@ -55,13 +57,15 @@ class SectionTitle extends StatelessWidget {
                 children: [
                   Text(
                     "${allTranslations.text("view_more")}  ",
-                    style: context.textTheme.labelSmall?.copyWith(color: context.color.onSurfaceVariant),
+                    style: context.textTheme.labelSmall?.copyWith(
+                      color: context.color.secondary,
+                    ),
                   ),
                   // Icon(Icons.arrow_forward_rounded,
                   //     size: 16, color: Styles.PRIMARY_COLOR)
                 ],
               ),
-            )
+            ),
         ],
       ),
     );
@@ -77,10 +81,7 @@ class SectionTitleShimmer extends StatelessWidget {
       padding: EdgeInsets.only(bottom: 12.h),
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          CustomShimmerText(width: 100),
-          CustomShimmerText(width: 70),
-        ],
+        children: [CustomShimmerText(width: 100), CustomShimmerText(width: 70)],
       ),
     );
   }

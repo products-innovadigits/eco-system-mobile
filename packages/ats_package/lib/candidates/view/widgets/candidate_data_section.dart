@@ -27,7 +27,7 @@ class CandidateDataSection extends StatelessWidget {
         Text(
           '\$ غير متوفر .',
           style: context.textTheme.labelSmall
-              ?.copyWith(color: context.color.onSurfaceVariant , fontSize: 10),
+              ?.copyWith(color: context.color.secondary , fontSize: 10),
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 4.w),
@@ -37,7 +37,7 @@ class CandidateDataSection extends StatelessWidget {
         Text(
           'اسبوعين',
           style: context.textTheme.labelSmall
-              ?.copyWith(color: context.color.onSurfaceVariant , fontSize: 10),
+              ?.copyWith(color: context.color.secondary , fontSize: 10),
         ),
       ],
     );
