@@ -50,7 +50,7 @@ class HomeHeader extends StatelessWidget {
                           //   ),
                           // ),
                           Text(
-                            " ${UserBloc.instance.userModel?.user?.name ?? "صباح الخير "} ${DateTime.now().format("a") == "AM" ? "🌤" : "🌤"}",
+                            " ${UserBloc.instance.userModel?.welcomeMessage ?? "صباح الخير "} ${DateTime.now().format("a") == "AM" ? "🌤" : "🌤"}",
                             style: context.textTheme.displaySmall?.copyWith(
                               color: context.color.onPrimary,
                             ),

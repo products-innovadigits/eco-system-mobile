@@ -13,51 +13,57 @@ class CertificatesSection extends StatelessWidget {
         final List<CertificateModel> certificatesList =
             profileBloc.candidateModel?.profile?.certificates ?? [];
         return state is Loading
-            ? CustomShimmerContainer(
-                height: 60,
-                borderRadius: 8,
-              )
+            ? CustomShimmerContainer(height: 60, borderRadius: 8)
             : certificatesList.isEmpty
-                ? const SizedBox.shrink()
-                : Container(
-                    width: context.w,
-                    decoration: BoxDecoration(
-                        color: context.color.surfaceContainer,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: context.color.outline)),
-                    child: ExpansionTile(
-                      tilePadding: EdgeInsets.symmetric(horizontal: 16.w),
-                      title: Text(allTranslations.text(LocaleKeys.certificates),
-                          style: context.textTheme.titleMedium),
-                      shape: const Border(),
-                      collapsedShape: const Border(),
-                      iconColor: context.color.secondary,
-                      collapsedIconColor: context.color.outline,
-                      collapsedTextColor: context.color.onSurface,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.w)
-                              .copyWith(bottom: 16.h),
-                          child: ListAnimator(
-                            separatorPadding: 24.h,
-                            data: List.generate(
-                              certificatesList.length,
-                              (index) => CertificateCardWidget(
-                                  certificate: certificatesList[index]),
-                            ),
+            ? const SizedBox.shrink()
+            : Container(
+                width: context.w,
+                decoration: BoxDecoration(
+                  color: context.color.surfaceContainer,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: context.color.outline),
+                ),
+                child: ExpansionTile(
+                  tilePadding: EdgeInsets.symmetric(horizontal: 16.w),
+                  expansionAnimationStyle: AnimationStyle(
+                    duration: const Duration(milliseconds: 400),
+                    curve: Curves.easeInOut,
+                  ),
+                  title: Text(
+                    allTranslations.text(LocaleKeys.certificates),
+                    style: context.textTheme.titleMedium,
+                  ),
+                  shape: const Border(),
+                  collapsedShape: const Border(),
+                  iconColor: context.color.secondary,
+                  collapsedIconColor: context.color.outlineVariant,
+                  collapsedTextColor: context.color.onSurface,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                      ).copyWith(bottom: 16.h),
+                      child: ListAnimator(
+                        separatorPadding: 24.h,
+                        data: List.generate(
+                          certificatesList.length,
+                          (index) => CertificateCardWidget(
+                            certificate: certificatesList[index],
                           ),
-                          // child: ListView.separated(
-                          //     shrinkWrap: true,
-                          //     physics: const NeverScrollableScrollPhysics(),
-                          //     itemBuilder: (context, index) =>
-                          //         CertificateCardWidget(
-                          //             certificate: certificatesList[index]),
-                          //     separatorBuilder: (context, index) => 24.sh,
-                          //     itemCount: certificatesList.length)
                         ),
-                      ],
+                      ),
+                      // child: ListView.separated(
+                      //     shrinkWrap: true,
+                      //     physics: const NeverScrollableScrollPhysics(),
+                      //     itemBuilder: (context, index) =>
+                      //         CertificateCardWidget(
+                      //             certificate: certificatesList[index]),
+                      //     separatorBuilder: (context, index) => 24.sh,
+                      //     itemCount: certificatesList.length)
                     ),
-                  );
+                  ],
+                ),
+              );
       },
     );
   }

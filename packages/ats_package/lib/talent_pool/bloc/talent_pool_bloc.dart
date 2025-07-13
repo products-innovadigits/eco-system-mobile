@@ -154,6 +154,7 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
         talentsList.addAll(talentModel.data!);
       }
 
+      if (sortingList.isEmpty) add(GetSort());
       if (talentsList.isNotEmpty) {
         emit(Done());
       } else {
@@ -163,7 +164,6 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
           emit(Empty(initial: false));
         }
       }
-      if (sortingList.isEmpty) add(GetSort());
     } catch (e) {
       AppCore.errorMessage(allTranslations.text('something_went_wrong'));
       emit(Error());

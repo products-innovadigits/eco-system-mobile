@@ -3,6 +3,7 @@ import 'package:core_package/core/utility/export.dart';
 
 class Tags extends StatelessWidget {
   final List<DropListModel> selectedTags;
+
   const Tags({super.key, required this.selectedTags});
 
   @override
@@ -10,13 +11,16 @@ class Tags extends StatelessWidget {
     return BlocBuilder<FiltrationBloc, AppState>(
       builder: (context, state) {
         final bloc = context.read<FiltrationBloc>();
-        final availableTags =
-            bloc.tagsList.where((s) => !selectedTags.contains(s)).toList();
+        final availableTags = bloc.tagsList
+            .where((s) => !selectedTags.contains(s))
+            .toList();
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(allTranslations.text(LocaleKeys.keyword),
-                style: context.textTheme.bodySmall),
+            Text(
+              allTranslations.text(LocaleKeys.keyword),
+              style: context.textTheme.bodySmall,
+            ),
             8.sh,
             CustomDropDownSkills(
               hint: allTranslations.text(LocaleKeys.select_keywords),
@@ -28,8 +32,11 @@ class Tags extends StatelessWidget {
               },
             ),
             bloc.filterModel.expandTags
-                ? _buildTagsList(context, availableTags,
-                    onPickItem: (item) => bloc.add(PickTag(arguments: item)))
+                ? _buildTagsList(
+                    context,
+                    availableTags,
+                    onPickItem: (item) => bloc.add(PickTag(arguments: item)),
+                  )
                 : const SizedBox.shrink(),
           ],
         );
@@ -38,8 +45,11 @@ class Tags extends StatelessWidget {
   }
 }
 
-Widget _buildTagsList(BuildContext context, List<DropListModel> list,
-    {required void Function(DropListModel item) onPickItem}) {
+Widget _buildTagsList(
+  BuildContext context,
+  List<DropListModel> list, {
+  required void Function(DropListModel item) onPickItem,
+}) {
   return Column(
     children: [
       Container(
@@ -57,28 +67,42 @@ Widget _buildTagsList(BuildContext context, List<DropListModel> list,
             right: BorderSide(color: context.color.outline),
           ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: List.generate(list.length, (index) {
-            final item = list[index];
-            return GestureDetector(
-              onTap: () => onPickItem(item),
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                decoration: BoxDecoration(
-                  border: index != list.length - 1
-                      ? Border(bottom: BorderSide(color: context.color.outline))
-                      : null,
-                ),
+        child: list.isNotEmpty
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: List.generate(list.length, (index) {
+                  final item = list[index];
+                  return GestureDetector(
+                    onTap: () => onPickItem(item),
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      decoration: BoxDecoration(
+                        border: index != list.length - 1
+                            ? Border(
+                                bottom: BorderSide(
+                                  color: context.color.outline,
+                                ),
+                              )
+                            : null,
+                      ),
+                      child: Text(
+                        item.name ?? "",
+                        style: context.textTheme.bodySmall,
+                      ),
+                    ),
+                  );
+                }),
+              )
+            : Padding(
+              padding: EdgeInsets.symmetric(vertical: 16.h),
+              child: Center(
                 child: Text(
-                  item.name ?? "",
-                  style: context.textTheme.bodySmall,
-                ),
+                    allTranslations.text(LocaleKeys.there_is_no_data),
+                    style: context.textTheme.labelMedium,
+                  ),
               ),
-            );
-          }),
-        ),
+            ),
       ),
     ],
   );

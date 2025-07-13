@@ -66,7 +66,7 @@ class TalentCardWidget extends StatelessWidget {
                     talent.name ?? '',
                     style: context.textTheme.labelSmall,
                   ),
-                  2.sh,
+                  6.sh,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [

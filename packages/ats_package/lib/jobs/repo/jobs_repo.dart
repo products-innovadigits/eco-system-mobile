@@ -8,7 +8,7 @@ abstract class JobsRepo {
       query: data.query,
       method: ServerMethods.GET,
       model: JobsModel(),
-      systemType: 'ats',
+      systemTypeEnum: ActiveSystemEnum.ats,
     );
   }
 }

@@ -11,38 +11,42 @@ abstract class TalentPoolRepo {
       query: data.query,
       method: ServerMethods.GET,
       model: TalentPoolModel(),
-      systemType: 'ats',
+      systemTypeEnum: ActiveSystemEnum.ats,
     );
   }
 
-  static Future<DefaultRequestModel> assignToJob(
-      {required List<int> selectedTalentsList,
-      required List<int> selectedJobsList}) async {
+  static Future<DefaultRequestModel> assignToJob({
+    required List<int> selectedTalentsList,
+    required List<int> selectedJobsList,
+  }) async {
     return await Network().request(
       ApiNames.assignCandidatesToJobs,
       method: ServerMethods.POST,
       body: {"chances": selectedJobsList, "candidates": selectedTalentsList},
       model: DefaultRequestModel(),
-      systemType: 'ats',
+      systemTypeEnum: ActiveSystemEnum.ats,
     );
   }
 
-  static Future<FileModel> exportFile(
-      {required List<int> selectedTalentsList,
-      required String fileName,
-      required bool isExcel}) async {
+  static Future<FileModel> exportFile({
+    required List<int> selectedTalentsList,
+    required String fileName,
+    required bool isExcel,
+  }) async {
     return await Network().request(
       isExcel ? ApiNames.exportExcelFile : ApiNames.exportZipFile,
       method: ServerMethods.POST,
       model: FileModel(),
-      systemType: 'ats',
+      systemTypeEnum: ActiveSystemEnum.ats,
       body: {"file_name": fileName, "candidate_ids": selectedTalentsList},
     );
   }
 
   static Future<Response> getSortTypes() async {
-    return await Network()
-        .request(ApiNames.sortingList, method: ServerMethods.GET,
-      systemType: 'ats',);
+    return await Network().request(
+      ApiNames.sortingList,
+      method: ServerMethods.GET,
+      systemTypeEnum: ActiveSystemEnum.ats,
+    );
   }
 }

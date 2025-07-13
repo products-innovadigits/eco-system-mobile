@@ -8,7 +8,7 @@ abstract class FiltrationRepo {
       ApiNames.tags,
       method: ServerMethods.GET,
       model: TagsModel(),
-      systemType: 'ats',
+      systemTypeEnum: ActiveSystemEnum.ats,
     );
   }
 }

@@ -2,7 +2,6 @@
 import 'dart:io';
 
 import 'package:dio/io.dart';
-import 'package:flutter/foundation.dart';
 
 import '../config/app_config.dart';
 import '../utility/export.dart';
@@ -23,16 +22,16 @@ class Network {
       _dio.options.connectTimeout = const Duration(seconds: 40);
       _dio.interceptors.add(NetworkLogger.logger);
 
-      if (kDebugMode) {
-      // 👇 Add this block to ignore SSL certificates
-      (_dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
-          (client) {
-            client.badCertificateCallback =
-                (X509Certificate cert, String host, int port) => true;
-            return client;
-          };
-      _instance = Network._private();
-      }
+      // if (kDebugMode) {
+        // 👇 Add this block to ignore SSL certificates
+        (_dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
+            (client) {
+              client.badCertificateCallback =
+                  (X509Certificate cert, String host, int port) => true;
+              return client;
+            };
+        _instance = Network._private();
+      // }
     }
 
     return _instance!;
@@ -42,7 +41,7 @@ class Network {
     String endpoint, {
     body,
     String? baseUrl,
-    String systemType = 'strategy',
+    ActiveSystemEnum systemTypeEnum = ActiveSystemEnum.strategy,
     Mapper? model,
     Map<String, dynamic>? query,
     Map<String, dynamic>? header,
@@ -52,7 +51,8 @@ class Network {
     String token = await SecureStorageHelper().getToken();
 
     _dio.options.headers = {
-      'Authorization': 'Bearer $token',
+      if (systemTypeEnum == ActiveSystemEnum.strategy)
+        'Authorization': 'Bearer $token',
       'Accept': 'application/json',
       "User-Agent": "Dart",
       'Lang': mainAppBloc.lang.value,
@@ -63,7 +63,7 @@ class Network {
     try {
       Response response = await _dio.request(
         (baseUrl ??
-                (systemType == 'strategy'
+                (systemTypeEnum == ActiveSystemEnum.strategy
                     ? AppConfig.strategyBaseUrl
                     : AppConfig.atsBaseUrl)) +
             endpoint,

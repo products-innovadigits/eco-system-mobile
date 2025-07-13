@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <debug-overrides>
+    <!-- Applies to ALL builds, debug or release -->
+    <base-config cleartextTrafficPermitted="true">
         <trust-anchors>
-            <certificates src="system" />
-            <certificates src="user" overridePins="true" />
+            <!-- System CAs -->
+            <certificates src="system"/>
+            <!-- Also trust any CA the user installs (e.g. Burp) -->
+            <certificates src="user" overridePins="true"/>
         </trust-anchors>
-    </debug-overrides>
+    </base-config>
 </network-security-config>
+
 
 <!--<?xml version="1.0" encoding="utf-8"?>-->
 <!--<network-security-config>-->
