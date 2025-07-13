@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:core_package/core/utility/export.dart';
 import 'package:eco_system/features/auth/login/repo/login_repo.dart';
@@ -34,7 +33,7 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
         username: mailTEC.text.trim(),
       );
       if (res.statusCode == 200) {
-        UserModel model = UserModel.fromJson(res.data);
+        UserModel model = UserModel.fromJson(res.data['data']);
         await SecureStorageHelper.secureStorageHelper!.saveUser(model).then((
           v,
         ) {

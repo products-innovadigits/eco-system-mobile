@@ -28,13 +28,17 @@ class WorkExperienceSection extends StatelessWidget {
                     ),
                     child: ExpansionTile(
                       tilePadding: EdgeInsets.symmetric(horizontal: 16.w),
+                      expansionAnimationStyle: AnimationStyle(
+                        duration: const Duration(milliseconds: 400),
+                        curve: Curves.easeInOut,
+                      ),
                       title: Text(
                           allTranslations.text(LocaleKeys.work_experience),
                           style: context.textTheme.titleMedium),
                       shape: const Border(),
                       collapsedShape: const Border(),
                       iconColor: context.color.secondary,
-                      collapsedIconColor: context.color.outline,
+                      collapsedIconColor: context.color.outlineVariant,
                       collapsedTextColor: context.color.onSurface,
                       children: <Widget>[
                         Padding(

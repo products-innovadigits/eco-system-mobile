@@ -27,12 +27,16 @@ class EducationSection extends StatelessWidget {
                         border: Border.all(color: context.color.outline)),
                     child: ExpansionTile(
                       tilePadding: EdgeInsets.symmetric(horizontal: 16.w),
+                      expansionAnimationStyle: AnimationStyle(
+                        duration: const Duration(milliseconds: 400),
+                        curve: Curves.easeInOut,
+                      ),
                       title: Text(allTranslations.text(LocaleKeys.education),
                           style: context.textTheme.titleMedium),
                       shape: const Border(),
                       collapsedShape: const Border(),
                       iconColor: context.color.secondary,
-                      collapsedIconColor: context.color.outline,
+                      collapsedIconColor: context.color.outlineVariant,
                       collapsedTextColor: context.color.onSurface,
                       children: <Widget>[
                         Padding(
