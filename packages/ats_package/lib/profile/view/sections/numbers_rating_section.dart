@@ -27,7 +27,7 @@ class NumbersRatingSection extends StatelessWidget {
                   border: Border.all(
                       color: selectedRating == index
                           ? Styles.PRIMARY_COLOR
-                          : Styles.BORDER),
+                          : context.color.outline),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Center(

@@ -30,7 +30,7 @@ class CandidateInfoCardWidget extends StatelessWidget {
             4.sh,
             Text(title,
                 style: context.textTheme.titleSmall
-                    ?.copyWith(fontSize: 10, color: context.color.outline)),
+                    ?.copyWith(fontSize: 10, color: context.color.outlineVariant)),
           ],
         ),
       ),

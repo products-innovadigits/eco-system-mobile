@@ -36,7 +36,7 @@ class _CustomDropListState extends State<CustomDropList> {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Styles.BORDER)),
+          border: Border.all(color: context.color.outline)),
       child: DropdownButton<DropListModel>(
         icon: Padding(
           padding: EdgeInsets.symmetric(horizontal: 10.w),

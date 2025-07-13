@@ -30,7 +30,7 @@ class CustomRatingSection extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Styles.BORDER),
+        border: Border.all(color: context.color.outline),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -28,7 +28,7 @@ class CustomDropDownSkills extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Styles.BORDER),
+              border: Border.all(color: context.color.outline),
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -39,7 +39,7 @@ class CustomDropDownSkills extends StatelessWidget {
                           hint ??
                               allTranslations.text(LocaleKeys.select_skills),
                           style: context.textTheme.bodySmall
-                              ?.copyWith(color: context.color.outline),
+                              ?.copyWith(color: context.color.outlineVariant),
                         )
                       : PickedChoicesList(
                           list: selectedList, onRemove: onRemove),

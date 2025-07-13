@@ -63,7 +63,7 @@ class _AssignToJobListState extends State<AssignToJobList> {
                         decoration: BoxDecoration(
                             color: context.color.surfaceContainer,
                             borderRadius: BorderRadius.circular(16),
-                            border: Border.all(color: Styles.BORDER)),
+                            border: Border.all(color: context.color.outline)),
                         child: Column(
                           children: [
                             if (job.status != null)
@@ -124,7 +124,7 @@ class _AssignToJobListState extends State<AssignToJobList> {
                 //         decoration: BoxDecoration(
                 //             color: context.color.surfaceContainer,
                 //             borderRadius: BorderRadius.circular(16),
-                //             border: Border.all(color: Styles.BORDER)),
+                //             border: Border.all(color: context.color.outline)),
                 //         child: Column(
                 //           children: [
                 //             if (job.status != null)

@@ -142,7 +142,7 @@ class _IntroViewState extends State<IntroView> {
                 if (selectPage == introItems.length - 1) {
                   CustomNavigator.push(Routes.MAIN_PAGE,
                       arguments: MainPageArgs(
-                          index: 3, systems: UserBloc.activeSystems));
+                          index: 3));
                 } else {
                   controller.nextPage(
                     duration: const Duration(milliseconds: 300),

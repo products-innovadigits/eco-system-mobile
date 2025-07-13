@@ -213,11 +213,11 @@ class _CustomAppBarState extends State<CustomAppBar> {
                               }
                             },
                             child: Container(
-                              padding: EdgeInsets.all(14),
+                              padding: EdgeInsets.all(12),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
                                 border: Border.all(
-                                  color: context.color.outlineVariant,
+                                  color: context.color.outline,
                                 ),
                               ),
                               child: Stack(
@@ -226,7 +226,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                                     padding: EdgeInsets.all(2),
                                     child: Images(
                                       image: Assets.svgs.sort.path,
-                                      color: context.color.outline,
+                                      color: context.color.outlineVariant,
                                       height: 20.h,
                                       width: 20.w,
                                     ),

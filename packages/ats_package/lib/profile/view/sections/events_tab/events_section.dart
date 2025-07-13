@@ -7,10 +7,12 @@ class EventsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) => EventDetailsCardWidget(),
-        separatorBuilder: (context, index) => 28.sh,
-        itemCount: 4);
+      padding: EdgeInsets.zero,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemBuilder: (context, index) => EventDetailsCardWidget(),
+      separatorBuilder: (context, index) => 28.sh,
+      itemCount: 4,
+    );
   }
 }

@@ -1,6 +1,8 @@
 abstract class ApiNames {
   static const login = "Auth/Login";
   // static const login = "login";
+  static const strategyLogin = "Auth/AuthenticateExternalUserAsync";
+  static const activeSystems = "Auth/ActiveSystems";
 
   static const objectActivePercentage = "Dashboard/ObjectActivePersantge";
   static const objectActiveCategorized = "ObjectActive/Categorized";

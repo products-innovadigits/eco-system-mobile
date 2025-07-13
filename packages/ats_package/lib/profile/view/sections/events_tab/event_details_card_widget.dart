@@ -16,32 +16,43 @@ class EventDetailsCardWidget extends StatelessWidget {
           width: context.w,
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
           decoration: BoxDecoration(
-              color: context.color.surfaceContainer,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Styles.BORDER)),
+            color: context.color.surfaceContainer,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: context.color.outline),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               RichText(
-                  text: TextSpan(children: [
-                TextSpan(
-                    text: 'هشام منصور الان في ',
-                    style: AppTextStyles.w400
-                        .copyWith(color: Color(0xff666666), fontSize: 10)),
-                TextSpan(
-                    text: 'مرحلة المقابلة الشخصية ',
-                    style: AppTextStyles.w400
-                        .copyWith(color: Color(0xff94B849), fontSize: 10)),
-                TextSpan(
-                    text: 'ينتظر تحديد موعد الاختبار',
-                    style: AppTextStyles.w400
-                        .copyWith(color: Color(0xff666666), fontSize: 10)),
-              ])),
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'هشام منصور الان في ',
+                      style: context.textTheme.bodySmall?.copyWith(
+                        color: context.color.outlineVariant,
+                      ),
+                    ),
+                    TextSpan(
+                      text: 'مرحلة المقابلة الشخصية ',
+                      style: context.textTheme.bodySmall?.copyWith(
+                        color: context.color.tertiary,
+                        fontWeight: FontWeight.w600
+                      ),
+                    ),
+                    TextSpan(
+                      text: 'ينتظر تحديد موعد الاختبار',
+                      style: context.textTheme.bodySmall?.copyWith(
+                        color: context.color.outlineVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               16.sh,
-              TestFileWidget()
+              TestFileWidget(),
             ],
           ),
-        )
+        ),
       ],
     );
   }

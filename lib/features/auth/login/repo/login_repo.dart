@@ -1,3 +1,4 @@
+import 'package:core_package/core/config/app_config.dart';
 import 'package:core_package/core/utility/export.dart';
 
 abstract class LoginRepo {
@@ -7,11 +8,20 @@ abstract class LoginRepo {
   }) async {
     return await Network().request(
       ApiNames.login,
+      // baseUrl: AppConfig.authBaseUrl,
       body: {
         "login": username,
         // "email": username,
         "password": password,
       },
+      method: ServerMethods.POST,
+    );
+  }
+
+  static Future<dynamic> strategyLogin({required String token}) async {
+    return await Network().request(
+      ApiNames.strategyLogin,
+      body: {"token": token},
       method: ServerMethods.POST,
     );
   }

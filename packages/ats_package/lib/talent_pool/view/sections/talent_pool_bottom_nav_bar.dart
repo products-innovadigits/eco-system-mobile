@@ -9,7 +9,7 @@ class TalentPoolBottomNav extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
       decoration: BoxDecoration(
-          border: Border.all(color: Styles.BORDER),
+          border: Border.all(color: context.color.outline),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(16),
             topRight: Radius.circular(16),

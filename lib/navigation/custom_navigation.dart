@@ -37,8 +37,7 @@ class AppRouter {
         final args = settings.arguments as MainPageArgs?;
         return MaterialPageRoute(
           builder: (_) => MainPage(
-            index: args?.index ?? 0,
-            systems: args?.systems ?? const [],
+            index: args?.index ?? 0
           ),
         );
 

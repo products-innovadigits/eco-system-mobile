@@ -26,3 +26,21 @@ class SearchEnum extends Enum<String> {
   static const List<SearchEnum> values = [talentPool, candidates, jobs];
 }
 
+class ActiveSystemEnum extends Enum<String> {
+  const ActiveSystemEnum(super.value);
+
+  static const ActiveSystemEnum pms = ActiveSystemEnum('pms');
+  static const ActiveSystemEnum strategy = ActiveSystemEnum('strategy');
+  static const ActiveSystemEnum ats = ActiveSystemEnum('ats');
+
+  static const List<ActiveSystemEnum> values = [pms, strategy, ats];
+
+  factory ActiveSystemEnum.fromString(String value) {
+    return values.firstWhere(
+          (e) => e.value == value,
+      orElse: () => values.first,
+    );
+  }
+}
+
+

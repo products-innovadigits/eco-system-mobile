@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:core_package/core/utility/export.dart';
 import 'package:eco_system/features/auth/login/repo/login_repo.dart';
 
@@ -32,19 +34,26 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
         username: mailTEC.text.trim(),
       );
       if (res.statusCode == 200) {
-        UserModel model = UserModel.fromJson(res.data['data']);
-        await SecureStorageHelper.secureStorageHelper!
-            .saveUser(model)
-            .then((v) {
+        UserModel model = UserModel.fromJson(res.data);
+        await SecureStorageHelper.secureStorageHelper!.saveUser(model).then((
+          v,
+        ) {
           UserBloc.instance.add(Click());
         });
         await SharedHelper.sharedHelper!.saveUser();
-        CustomNavigator.push(Routes.MAIN_PAGE,
+        // if (UserBloc.activeSystems.contains(ActiveSystemEnum.strategy)) {
+        //   log('Strategy system is active==================');
+        //   await LoginRepo.strategyLogin(token: model.accessToken.toString());
+        // }
+          CustomNavigator.push(
+            Routes.MAIN_PAGE,
             clean: true,
-            arguments:
-                MainPageArgs(index: 0, systems: UserBloc.activeSystems));
-        AppCore.successMessage(
-            allTranslations.text('you_logged_in_successfully'));
+            arguments: MainPageArgs(index: 0),
+          );
+          AppCore.successMessage(
+            allTranslations.text('you_logged_in_successfully'),
+          );
+
         emit(Done());
         Future.delayed(const Duration(seconds: 1), () => clear());
       } else {
@@ -60,7 +69,7 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
 
   Future<void> onRemember(Remember event, Emitter<AppState> emit) async {
     Map<String, dynamic>? data = await SharedHelper.sharedHelper!.remember();
-    if (data != '{}') {
+    if (data.isNotEmpty) {
       passwordTEC.text = data['password'] ?? '';
       mailTEC.text = data['email'] ?? '';
       updateRememberMe(data['email'] != '' && data['email'] != null);

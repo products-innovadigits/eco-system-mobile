@@ -5,9 +5,8 @@ import 'home/view/home_view.dart';
 
 class MainPage extends StatefulWidget {
   final int index;
-  final List<String> systems;
 
-  const MainPage({super.key, this.index = 0, required this.systems});
+  const MainPage({super.key, this.index = 0});
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -33,10 +32,10 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     super.initState();
   }
 
-  Widget fregmant(int index , {required List<String> systems}) {
+  Widget fregmant(int index) {
     switch (index) {
       case 0:
-        return HomeView(systems: systems);
+        return HomeView();
       case 1:
         return SizedBox();
       case 2:
@@ -61,7 +60,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
         }
       },
       child: Scaffold(
-        body: fregmant(_index , systems: widget.systems),
+        body: fregmant(_index),
         bottomNavigationBar: NavApp(
           index: _index,
           onSelect: (p0) {

@@ -5,12 +5,15 @@ class MoreDialogTileWidget extends StatelessWidget {
   final String title;
   final String iconPath;
   final VoidCallback onTap;
+  final Color? dividerColor;
 
-  const MoreDialogTileWidget(
-      {super.key,
-      required this.title,
-      required this.iconPath,
-      required this.onTap});
+  const MoreDialogTileWidget({
+    super.key,
+    required this.title,
+    required this.iconPath,
+    this.dividerColor,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +22,9 @@ class MoreDialogTileWidget extends StatelessWidget {
       child: InkWell(
         onTap: () {
           onTap();
-          Future.microtask(() {
-            context.read<ProfileBloc>().add(ShowDialog(arguments: false));
-          });
+          // Future.microtask(() {
+          context.read<ProfileBloc>().add(ShowDialog(arguments: false));
+          // });
         },
         child: Column(
           children: [
@@ -29,14 +32,16 @@ class MoreDialogTileWidget extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
               child: Row(
                 children: [
-                  Images(image: iconPath , color: context.color.secondary),
+                  Images(image: iconPath, color: context.color.secondary),
                   8.sw,
-                  Text(allTranslations.text(title),
-                      style: context.textTheme.bodySmall)
+                  Text(
+                    allTranslations.text(title),
+                    style: context.textTheme.bodySmall,
+                  ),
                 ],
               ),
             ),
-            Divider(color: context.color.outline, height: 2.h),
+            Divider(color: dividerColor ?? context.color.outline, height: 2.h),
           ],
         ),
       ),

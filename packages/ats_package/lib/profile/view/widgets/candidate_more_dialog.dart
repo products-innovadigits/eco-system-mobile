@@ -13,7 +13,7 @@ class CandidateMoreDialog extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.only(left: 16.w, top: 46.h),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.color.surfaceContainer,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Column(
@@ -22,6 +22,7 @@ class CandidateMoreDialog extends StatelessWidget {
             MoreDialogTileWidget(
               title: LocaleKeys.assign_to_job,
               iconPath: Assets.svgs.directboxSend.path,
+              dividerColor: Colors.transparent,
               onTap: () {
                 PopUpHelper.showBottomSheet(
                   height: context.h * 0.8,

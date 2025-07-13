@@ -19,18 +19,24 @@ class SortingBottomSheet extends StatelessWidget {
                 ListAnimator(
                   separatorPadding: 16.h,
                   data: List.generate(
-                      bloc.sortingList.length,
-                      (index) => CustomSortTileWidget(
-                          title: bloc.sortingList[index].name ?? '',
-                          isSelected: bloc.selectedSorting?.key ==
-                              bloc.sortingList[index].key,
-                          onSelect: () {
-                            bloc.add(SelectSorting(
-                                arguments: bloc.sortingList.firstWhere(
-                                    (element) =>
-                                        element.key ==
-                                        bloc.sortingList[index].key)));
-                          })),
+                    bloc.sortingList.length,
+                    (index) => CustomSortTileWidget(
+                      title: bloc.sortingList[index].name ?? '',
+                      isSelected:
+                          bloc.selectedSorting?.key ==
+                          bloc.sortingList[index].key,
+                      onSelect: () {
+                        bloc.add(
+                          SelectSorting(
+                            arguments: bloc.sortingList.firstWhere(
+                              (element) =>
+                                  element.key == bloc.sortingList[index].key,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 ),
                 // ListView.separated(
                 //     shrinkWrap: true,
@@ -59,24 +65,26 @@ class SortingBottomSheet extends StatelessWidget {
                 children: [
                   Expanded(
                     child: CustomBtn(
-                        text: allTranslations.text(LocaleKeys.show_all_results),
-                        active: bloc.selectedSorting != null,
-                        onPressed: () => bloc.add(ApplySorting())),
+                      text: allTranslations.text(LocaleKeys.show_all_results),
+                      active: bloc.selectedSorting != null,
+                      onPressed: () => bloc.add(ApplySorting()),
+                    ),
                   ),
                   if (bloc.appliedSorting != null) ...[
                     8.sw,
                     Expanded(
                       child: CustomBtn(
-                          text: allTranslations.text(LocaleKeys.reset),
-                          color: context.color.surfaceContainer,
-                          textColor: Styles.PRIMARY_COLOR,
-                          borderColor: Styles.PRIMARY_COLOR,
-                          onPressed: () => bloc.add(ResetSorting())),
+                        text: allTranslations.text(LocaleKeys.reset),
+                        color: context.color.surfaceContainer,
+                        textColor: context.color.primary,
+                        borderColor: context.color.primary,
+                        onPressed: () => bloc.add(ResetSorting()),
+                      ),
                     ),
                   ],
                 ],
               ),
-            )
+            ),
           ],
         );
       },

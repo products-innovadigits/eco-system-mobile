@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:dio/io.dart';
+import 'package:flutter/foundation.dart';
 
 import '../config/app_config.dart';
 import '../utility/export.dart';
@@ -22,16 +23,16 @@ class Network {
       _dio.options.connectTimeout = const Duration(seconds: 40);
       _dio.interceptors.add(NetworkLogger.logger);
 
-      // if (kDebugMode) {
-        // 👇 Add this block to ignore SSL certificates
-        (_dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
-            (client) {
-          client.badCertificateCallback =
-              (X509Certificate cert, String host, int port) => true;
-          return client;
-        };
-        _instance = Network._private();
-      // }
+      if (kDebugMode) {
+      // 👇 Add this block to ignore SSL certificates
+      (_dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
+          (client) {
+            client.badCertificateCallback =
+                (X509Certificate cert, String host, int port) => true;
+            return client;
+          };
+      _instance = Network._private();
+      }
     }
 
     return _instance!;
@@ -40,6 +41,7 @@ class Network {
   Future<dynamic> request(
     String endpoint, {
     body,
+    String? baseUrl,
     String systemType = 'strategy',
     Mapper? model,
     Map<String, dynamic>? query,
@@ -60,15 +62,14 @@ class Network {
     }
     try {
       Response response = await _dio.request(
-        (systemType == 'strategy'
-                ? AppConfig.strategyBaseUrl
-                : AppConfig.atsBaseUrl) +
+        (baseUrl ??
+                (systemType == 'strategy'
+                    ? AppConfig.strategyBaseUrl
+                    : AppConfig.atsBaseUrl)) +
             endpoint,
         data: body,
         queryParameters: query,
-        options: Options(
-          method: method.name,
-        ),
+        options: Options(method: method.name),
       );
       isActiveUser = true;
       if (model == null) {

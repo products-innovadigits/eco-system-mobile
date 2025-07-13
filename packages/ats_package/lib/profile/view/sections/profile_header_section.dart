@@ -1,43 +1,10 @@
 import 'package:ats_package/shared/ats_exports.dart';
 import 'package:core_package/core/utility/export.dart';
 
-class ProfileHeaderSection extends StatefulWidget {
+class ProfileHeaderSection extends StatelessWidget {
   final bool isTalent;
 
   const ProfileHeaderSection({super.key, required this.isTalent});
-
-  @override
-  State<ProfileHeaderSection> createState() => _ProfileHeaderSectionState();
-}
-
-class _ProfileHeaderSectionState extends State<ProfileHeaderSection>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _scale;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 300),
-    );
-    _scale = CurvedAnimation(parent: _controller, curve: Curves.easeOutBack);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  void _handleAnimation(bool show) {
-    if (show) {
-      _controller.forward();
-    } else {
-      _controller.reverse();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +12,6 @@ class _ProfileHeaderSectionState extends State<ProfileHeaderSection>
       buildWhen: (previous, current) => current is! Exporting,
       builder: (context, state) {
         final profileBloc = context.read<ProfileBloc>();
-        _handleAnimation(profileBloc.showMoreDialog);
         if (state is Done) {
           CandidateModel? candidateModel = profileBloc.candidateModel;
           return GestureDetector(
@@ -59,25 +25,29 @@ class _ProfileHeaderSectionState extends State<ProfileHeaderSection>
                 Container(
                   width: context.w,
                   // color: context.color.primary,
-                  decoration:  BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage(Assets.images.newHomeHeaderBg.path),
-                          fit: BoxFit.cover)
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(Assets.images.newHomeHeaderBg.path),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   child: SafeArea(
                     child: Padding(
                       padding: EdgeInsets.symmetric(
-                          horizontal: 16.w, vertical: 16.h),
+                        horizontal: 16.w,
+                        vertical: 16.h,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           10.sh,
                           ProfileCustomAppbarWidget(
-                              title: candidateModel?.jobTitle ?? ''),
+                            title: candidateModel?.jobTitle ?? '',
+                          ),
                           16.sh,
                           ProfileUserDataWidget(
                             cvUrl: candidateModel?.resume?.url ?? '',
-                            showAvatarPercentage: !widget.isTalent,
+                            showAvatarPercentage: !isTalent,
                             name: candidateModel?.name ?? '',
                             email: candidateModel?.email ?? '',
                           ),
@@ -97,7 +67,8 @@ class _ProfileHeaderSectionState extends State<ProfileHeaderSection>
                                   title: candidateModel!.phone!,
                                   icon: Assets.svgs.call.path,
                                   onTap: () => LauncherHelper.makePhoneCall(
-                                      candidateModel.phone ?? ''),
+                                    candidateModel.phone ?? '',
+                                  ),
                                 ),
                             ],
                           ),
@@ -106,32 +77,45 @@ class _ProfileHeaderSectionState extends State<ProfileHeaderSection>
                     ),
                   ),
                 ),
-                if (profileBloc.showMoreDialog || _controller.isAnimating)
-                  Positioned(
-                    left: 0.w,
-                    top: 0.h,
-                    child: ScaleTransition(
-                      scale: _scale,
-                      alignment: Alignment.topLeft,
-                      child: widget.isTalent
-                          ? CandidateMoreDialog(
-                              candidateId: profileBloc.candidateModel?.id ?? 0)
-                          : ApplicantMoreDialog(
-                              email: candidateModel?.email ?? ''),
-                    ),
+                // if (profileBloc.showMoreDialog || _controller.isAnimating)
+                Positioned(
+                  left: 0,
+                  top: 0,
+                  child: AnimatedCrossFade(
+                    firstChild: SizedBox.shrink(),
+                    secondChild: isTalent
+                        ? CandidateMoreDialog(
+                            candidateId: profileBloc.candidateModel?.id ?? 0,
+                          )
+                        : ApplicantMoreDialog(
+                            email: candidateModel?.email ?? '',
+                          ),
+                    crossFadeState: profileBloc.showMoreDialog
+                        ? CrossFadeState.showSecond
+                        : CrossFadeState.showFirst,
+                    duration: const Duration(milliseconds: 300),
                   ),
+                ),
+                // Positioned(
+                //   left: 0.w,
+                //   top: 0.h,
+                //   child: ScaleTransition(
+                //     scale: _scale,
+                //     alignment: Alignment.topLeft,
+                //     child: widget.isTalent
+                //         ? CandidateMoreDialog(
+                //         candidateId: profileBloc.candidateModel?.id ?? 0)
+                //         : ApplicantMoreDialog(
+                //         email: candidateModel?.email ?? ''),
+                //   ),
+                // )
               ],
             ),
           );
         }
         if (state is Loading) {
           return Column(
-            children: [
-              CustomShimmerContainer(
-                height: 320.h,
-                width: context.w,
-              ),
-            ],
+            children: [CustomShimmerContainer(height: 320.h, width: context.w)],
           );
         } else {
           return const SizedBox();
