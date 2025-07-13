@@ -40,7 +40,7 @@ class TalentCardWidget extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Styles.BORDER)),
+            border: Border.all(color: context.color.outline)),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -64,8 +64,7 @@ class TalentCardWidget extends StatelessWidget {
                 children: [
                   Text(
                     talent.name ?? '',
-                    style: AppTextStyles.w500
-                        .copyWith(color: Styles.TEXT_COLOR, fontSize: 12),
+                    style: context.textTheme.labelSmall,
                   ),
                   2.sh,
                   Row(
@@ -76,7 +75,7 @@ class TalentCardWidget extends StatelessWidget {
                           '${talent.jobTitle} . ',
                           style: context.textTheme.bodySmall?.copyWith(
                               fontSize: FontSizes.f10,
-                              color: context.color.outline),
+                              color: context.color.outlineVariant),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -120,7 +119,7 @@ Widget _profileDetails(ProfileModel? profile, BuildContext context) {
     children: [
       Padding(
         padding: EdgeInsets.all(12.h),
-        child: Divider(color: Styles.BORDER),
+        child: Divider(color: context.color.outline),
       ),
       Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -135,13 +134,13 @@ Widget _profileDetails(ProfileModel? profile, BuildContext context) {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.w),
               child: Icon(Icons.circle,
-                  color: Styles.SUB_TEXT_DARK_COLOR, size: 5),
+                  color: context.color.outlineVariant, size: 5),
             ),
           if (profile?.experience != null)
             Text(
               '${allTranslations.text(LocaleKeys.experience)} ${profile?.experience ?? ''} ${allTranslations.text(LocaleKeys.years)}',
               style: context.textTheme.titleSmall?.copyWith(
-                  fontSize: FontSizes.f10, color: context.color.outline),
+                  fontSize: FontSizes.f10, color: context.color.outlineVariant),
             ),
           const Spacer(),
           Row(

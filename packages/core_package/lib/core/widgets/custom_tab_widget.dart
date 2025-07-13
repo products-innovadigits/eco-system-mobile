@@ -1,4 +1,3 @@
-
 import 'package:core_package/core/utility/export.dart';
 
 class CustomTabWidget extends StatelessWidget {
@@ -6,11 +5,12 @@ class CustomTabWidget extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
 
-  const CustomTabWidget(
-      {super.key,
-      required this.title,
-      required this.isSelected,
-      required this.onTap});
+  const CustomTabWidget({
+    super.key,
+    required this.title,
+    required this.isSelected,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +22,14 @@ class CustomTabWidget extends StatelessWidget {
           curve: Curves.easeInOut,
           padding: EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: context.color.surface,
+            color: isSelected
+                ? context.color.secondary.withValues(alpha: 0.1)
+                : context.color.surfaceContainer,
             border: Border(
               bottom: BorderSide(
-                color: isSelected ? context.color.primary : context.color.outline,
+                color: isSelected
+                    ? context.color.secondary
+                    : context.color.outline,
                 width: isSelected ? 2 : 1,
               ),
             ),
@@ -36,8 +40,8 @@ class CustomTabWidget extends StatelessWidget {
             style: context.textTheme.bodyMedium!.copyWith(
               fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
               color: isSelected
-                  ? context.color.onSurface
-                  : context.color.outline,
+                  ? context.color.secondary
+                  : context.color.outlineVariant,
             ),
             child: Text(
               allTranslations.text(title),

@@ -13,10 +13,11 @@ class HomeHeader extends StatelessWidget {
           height: context.h * 0.30,
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           // color: context.color.primary,
-          decoration:  BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage(Assets.images.newHomeHeaderBg.path),
-                  fit: BoxFit.cover)
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(Assets.images.newHomeHeaderBg.path),
+              fit: BoxFit.cover,
+            ),
           ),
           child: SafeArea(
             child: Column(
@@ -49,16 +50,18 @@ class HomeHeader extends StatelessWidget {
                           //   ),
                           // ),
                           Text(
-                            " ${UserBloc.instance.user?.welcomeMessage ?? "صباح الخير "} ${DateTime.now().format("a") == "AM" ? "🌤" : "🌤"}",
-                            style: context.textTheme.displaySmall
-                                ?.copyWith(color: context.color.onPrimary),
+                            " ${UserBloc.instance.userModel?.user?.name ?? "صباح الخير "} ${DateTime.now().format("a") == "AM" ? "🌤" : "🌤"}",
+                            style: context.textTheme.displaySmall?.copyWith(
+                              color: context.color.onPrimary,
+                            ),
                           ),
                           4.sh,
                           Text(
                             allTranslations.text("home_welcome_message"),
-                            style: context.textTheme.bodyMedium
-                                ?.copyWith(color: context.color.onPrimary),
-                          )
+                            style: context.textTheme.bodyMedium?.copyWith(
+                              color: context.color.onPrimary,
+                            ),
+                          ),
                         ],
                       ),
                     ),

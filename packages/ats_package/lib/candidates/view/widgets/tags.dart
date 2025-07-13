@@ -50,11 +50,11 @@ Widget _buildTagsList(BuildContext context, List<DropListModel> list,
             bottomLeft: Radius.circular(8),
             bottomRight: Radius.circular(8),
           ),
-          color: Colors.white,
+          color: context.color.surfaceContainer,
           border: Border(
-            bottom: BorderSide(color: Styles.BORDER),
-            left: BorderSide(color: Styles.BORDER),
-            right: BorderSide(color: Styles.BORDER),
+            bottom: BorderSide(color: context.color.outline),
+            left: BorderSide(color: context.color.outline),
+            right: BorderSide(color: context.color.outline),
           ),
         ),
         child: Column(
@@ -68,7 +68,7 @@ Widget _buildTagsList(BuildContext context, List<DropListModel> list,
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
                   border: index != list.length - 1
-                      ? Border(bottom: BorderSide(color: Styles.BORDER))
+                      ? Border(bottom: BorderSide(color: context.color.outline))
                       : null,
                 ),
                 child: Text(

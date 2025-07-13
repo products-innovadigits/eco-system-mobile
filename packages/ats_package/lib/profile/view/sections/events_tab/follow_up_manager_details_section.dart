@@ -13,10 +13,11 @@ class FollowUpManagerDetailsSection extends StatelessWidget {
           height: 32.w,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(color: Styles.BORDER, width: 2),
+            border: Border.all(color: context.color.outline, width: 2),
             image: DecorationImage(
-                image: AssetImage(Assets.images.avatar.path),
-                fit: BoxFit.fill),
+              image: AssetImage(Assets.images.avatar.path),
+              fit: BoxFit.fill,
+            ),
           ),
         ),
         8.sw,
@@ -25,20 +26,27 @@ class FollowUpManagerDetailsSection extends StatelessWidget {
           children: [
             Text(
               'اسلام محمد',
-              style: AppTextStyles.w600
-                  .copyWith(color: Styles.TEXT_COLOR, fontSize: 12),
+              style: context.textTheme.labelSmall?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
             ),
             2.sh,
             Row(
               children: [
                 Text(
                   '1 August 2023 . ',
-                  style: AppTextStyles.w400.copyWith(
-                      color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 9),
+                  style: context.textTheme.bodySmall?.copyWith(
+                    fontSize: 10,
+                    color: context.color.outlineVariant,
+                  ),
                 ),
-                Text('12:00 Am',
-                    style: AppTextStyles.w400.copyWith(
-                        color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 9))
+                Text(
+                  '12:00 Am',
+                  style: context.textTheme.bodySmall?.copyWith(
+                    fontSize: 10,
+                    color: context.color.outlineVariant,
+                  ),
+                ),
               ],
             ),
           ],

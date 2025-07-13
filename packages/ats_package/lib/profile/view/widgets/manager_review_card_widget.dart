@@ -16,7 +16,7 @@ class ManagerReviewCardWidget extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Styles.BORDER)),
+              border: Border.all(color: context.color.outline)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -31,7 +31,7 @@ class ManagerReviewCardWidget extends StatelessWidget {
                       height: 32.w,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border.all(color: Styles.BORDER, width: 2),
+                        border: Border.all(color: context.color.outline, width: 2),
                         image: DecorationImage(
                             image: AssetImage(Assets.images.avatar.path),
                             fit: BoxFit.fill),

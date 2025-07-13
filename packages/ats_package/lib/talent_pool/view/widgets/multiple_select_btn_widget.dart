@@ -28,7 +28,7 @@ class MultipleSelectBtnWidget extends StatelessWidget {
                     onTap: () => bloc.add(Select(arguments: false)),
                     child: Text(
                       allTranslations.text(LocaleKeys.cancel),
-                      style: context.textTheme.bodySmall?.copyWith(color: context.color.outline, fontSize: FontSizes.f10),
+                      style: context.textTheme.bodySmall?.copyWith(color: context.color.outlineVariant, fontSize: FontSizes.f10),
                     ),
                   ),
                 ],

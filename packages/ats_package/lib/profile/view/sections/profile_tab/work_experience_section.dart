@@ -24,7 +24,7 @@ class WorkExperienceSection extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: context.color.surfaceContainer,
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Styles.BORDER),
+                      border: Border.all(color: context.color.outline),
                     ),
                     child: ExpansionTile(
                       tilePadding: EdgeInsets.symmetric(horizontal: 16.w),

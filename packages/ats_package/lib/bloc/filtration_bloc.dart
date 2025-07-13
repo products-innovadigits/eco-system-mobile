@@ -201,7 +201,7 @@ class FiltrationBloc extends Bloc<AppEvent, AppState> {
   }
 
   void _getTags(AppEvent event, Emitter<AppState> emit) async {
-    if (UserBloc.activeSystems.contains('ats') && tagsList.isEmpty) {
+    if (UserBloc.activeSystems.contains(ActiveSystemEnum.ats) && tagsList.isEmpty) {
       emit(Loading());
       try {
         final res = await FiltrationRepo.getTags();

@@ -10,7 +10,7 @@ class TestFileWidget extends StatelessWidget {
           horizontal: 16.w, vertical: 10.h),
       decoration: BoxDecoration(
           color: context.color.surfaceContainer,
-          border: Border.all(color: Styles.BORDER),
+          border: Border.all(color: context.color.outline),
           borderRadius: BorderRadius.circular(10)),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -18,12 +18,12 @@ class TestFileWidget extends StatelessWidget {
         children: [
           Images(
               image: Assets.svgs.file.path,
-              color: Styles.PRIMARY_COLOR),
+              color: context.color.primary),
           8.sw,
           Text(
             allTranslations.text(LocaleKeys.test_file),
             style: AppTextStyles.w500.copyWith(
-                color: Styles.PRIMARY_COLOR,
+                color: context.color.primary,
                 fontSize: 10),
           )
         ],

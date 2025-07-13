@@ -73,10 +73,10 @@ class ProfileViewArgs {
 
 class MainPageArgs {
   final int index;
-  final List<String> systems;
+  // final List<String> systems;
 
   MainPageArgs({
     required this.index,
-    required this.systems,
+    // required this.systems,
   });
 }

@@ -61,9 +61,9 @@ class SharedHelper {
     //     }));
   }
 
-  Future<UserModel> getUser() async {
-    UserModel _user;
-    _user = UserModel.fromJson(jsonDecode(box!.get(CachingKey.USER.value)!));
+  Future<UserData> getUser() async {
+    UserData _user;
+    _user = UserData.fromJson(jsonDecode(box!.get(CachingKey.USER.value)!));
     cprint('USER INFO >>> ${_user.toJson()}');
     return _user;
   }

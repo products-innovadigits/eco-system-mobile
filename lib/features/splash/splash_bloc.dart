@@ -20,7 +20,12 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
       // bool? skip = await helper.readBoolean(CachingKey.SKIP);
 
       ///Get Setting
-      UserBloc.activeSystems = ['pms', 'strategy' , 'ats'];
+      UserBloc.activeSystems = [
+        'strategy',
+        'ats',
+        'pms',
+      ].map((e) => ActiveSystemEnum.fromString(e)).toList();
+
       if (isLogin) {
         UserBloc.instance.add(Click());
       }
@@ -31,10 +36,11 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
       if (!isLogin) {
         CustomNavigator.push(Routes.LOGIN, clean: true);
       } else {
-        CustomNavigator.push(Routes.MAIN_PAGE,
-            clean: true,
-            arguments:
-                MainPageArgs(index: 0, systems: UserBloc.activeSystems));
+        CustomNavigator.push(
+          Routes.MAIN_PAGE,
+          clean: true,
+          arguments: MainPageArgs(index: 0),
+        );
       }
     });
   }
