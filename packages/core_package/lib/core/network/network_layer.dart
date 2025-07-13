@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:dio/io.dart';
+import 'package:flutter/foundation.dart';
 
 import '../config/app_config.dart';
 import '../utility/export.dart';
@@ -22,7 +23,7 @@ class Network {
       _dio.options.connectTimeout = const Duration(seconds: 40);
       _dio.interceptors.add(NetworkLogger.logger);
 
-      // if (kDebugMode) {
+      if (kDebugMode) {
         // 👇 Add this block to ignore SSL certificates
         (_dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
             (client) {
@@ -31,7 +32,7 @@ class Network {
               return client;
             };
         _instance = Network._private();
-      // }
+      }
     }
 
     return _instance!;

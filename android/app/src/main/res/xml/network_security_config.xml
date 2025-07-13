@@ -1,20 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<network-security-config>
-    <!-- Applies to ALL builds, debug or release -->
-    <base-config cleartextTrafficPermitted="true">
-        <trust-anchors>
-            <!-- System CAs -->
-            <certificates src="system"/>
-            <!-- Also trust any CA the user installs (e.g. Burp) -->
-            <certificates src="user" overridePins="true"/>
-        </trust-anchors>
-    </base-config>
-</network-security-config>
-
-
-<!--<?xml version="1.0" encoding="utf-8"?>-->
 <!--<network-security-config>-->
-<!--    <domain-config cleartextTrafficPermitted="true">-->
-<!--        <domain includeSubdomains="true">www.api.innova.com</domain>-->
-<!--    </domain-config>-->
+<!--    <debug-overrides>-->
+<!--        <trust-anchors>-->
+<!--            <certificates src="system" />-->
+<!--            <certificates src="user" overridePins="true" />-->
+<!--        </trust-anchors>-->
+<!--    </debug-overrides>-->
 <!--</network-security-config>-->
+
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">www.api.innova.com</domain>
+    </domain-config>
+</network-security-config>
