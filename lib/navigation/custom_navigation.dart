@@ -14,6 +14,7 @@ import 'package:pms_package/project_details/view/project_details_view.dart';
 import 'package:pms_package/projects/view/projects_view.dart';
 import 'package:strategy_package/objective_details/view/objective_details_view.dart';
 import 'package:strategy_package/objectives/view/objectives_view.dart';
+import 'package:strategy_package/bsc/view/bsc_view.dart';
 
 class AppRouter {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
@@ -36,20 +37,20 @@ class AppRouter {
       case Routes.MAIN_PAGE:
         final args = settings.arguments as MainPageArgs?;
         return MaterialPageRoute(
-          builder: (_) => MainPage(
-            index: args?.index ?? 0
-          ),
+          builder: (_) => MainPage(index: args?.index ?? 0),
         );
 
       /// Strategy Routes ===========================================
       case Routes.OBJECTIVES:
         return MaterialPageRoute(builder: (_) => const ObjectivesView());
 
+      case Routes.BSC:
+        return MaterialPageRoute(builder: (_) => const BscView());
+
       case Routes.OBJECTIVE_DETAILS:
         return MaterialPageRoute(
           builder: (_) => ObjectiveDetailsView(id: settings.arguments as int),
         );
-
 
       /// PMS Routes ===========================================
       case Routes.PROJECTS:
@@ -59,7 +60,6 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => ProjectDetailsView(id: settings.arguments as int),
         );
-
 
       /// ATS Routes ===========================================
       case Routes.JOBS:

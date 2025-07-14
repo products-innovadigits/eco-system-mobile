@@ -4,6 +4,7 @@ import 'package:core_package/core/config/providers.dart';
 import 'package:core_package/core/config/themes/themes.dart';
 import 'package:core_package/core/helpers/notification_helper/notification_helper.dart';
 import 'package:core_package/core/helpers/translation/translations.dart';
+import 'package:core_package/core/navigation/routes.dart';
 import 'package:core_package/core/services/connectivity_service.dart';
 import 'package:core_package/core/utility/export.dart' hide Routes;
 import 'package:core_package/core/utility/un_focus.dart';
@@ -18,7 +19,6 @@ import 'package:path_provider/path_provider.dart';
 // Local imports
 import 'firebase_options.dart';
 import 'navigation/custom_navigation.dart';
-import 'navigation/routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

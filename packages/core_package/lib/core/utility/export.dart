@@ -64,3 +64,4 @@ export 'package:image_picker/image_picker.dart';
 export 'package:readmore/readmore.dart';
 export 'package:rxdart/rxdart.dart';
 export 'package:shimmer/shimmer.dart';
+export 'package:core_package/core/config/colors/light_colors.dart';

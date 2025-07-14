@@ -1,6 +1,7 @@
 import 'package:core_package/core/helpers/font_sizes.dart';
 import 'package:core_package/core/utility/export.dart';
 import 'package:core_package/core/widgets/nav_app.dart';
+import 'package:strategy_package/bsc/view/bsc_view.dart';
 
 import 'home/view/home_view.dart';
 
@@ -38,7 +39,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
       case 0:
         return const HomeView();
       case 1:
-        return const Center(child: Text('التقارير' , style: TextStyle(fontSize: FontSizes.f32)),);
+        return const BscView();
       case 2:
         return const Center(child: Text('الإشعارات' , style: TextStyle(fontSize: FontSizes.f32)),);
       case 3:

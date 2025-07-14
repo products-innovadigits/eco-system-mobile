@@ -390,6 +390,12 @@ abstract class  LocaleKeys {
   static const experience = 'experience';
   static const certificates = 'certificates';
   static const years = 'years';
+  static const bsc = 'bsc';
+  static const vision = 'vision';
+  static const the_message = 'the_message';
+  static const values = 'values';
+  static const strategic_results = 'strategic_results';
+  static const perspectives = 'perspectives';
   static const try_again = 'try_again';
   static const no_internet_connection = 'no_internet_connection';
   static const press_again_to_exit = 'press_again_to_exit';

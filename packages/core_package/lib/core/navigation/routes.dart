@@ -18,6 +18,7 @@ class Routes {
   static const CANDIDATES = "CANDIDATES";
   static const OBJECTIVES = "OBJECTIVES";
   static const OBJECTIVE_DETAILS = "OBJECTIVE_DETAILS";
+  static const BSC = "Bsc";
   static const PROJECTS = "PROJECTS";
   static const PROJECT_DETAILS = "PROJECT_DETAILS";
   static const PDF = "PDF";}

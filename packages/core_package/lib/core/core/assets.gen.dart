@@ -292,6 +292,13 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/filter.svg
   SvgGenImage get filter => const SvgGenImage('assets/svgs/filter.svg');
 
+  /// File path: assets/svgs/focus-point.svg
+  SvgGenImage get focusPoint =>
+      const SvgGenImage('assets/svgs/focus-point.svg');
+
+  /// File path: assets/svgs/focus.svg
+  SvgGenImage get focus => const SvgGenImage('assets/svgs/focus.svg');
+
   /// File path: assets/svgs/hide.svg
   SvgGenImage get hide => const SvgGenImage('assets/svgs/hide.svg');
 
@@ -376,6 +383,10 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/more.svg
   SvgGenImage get more => const SvgGenImage('assets/svgs/more.svg');
 
+  /// File path: assets/svgs/multi-message.svg
+  SvgGenImage get multiMessage =>
+      const SvgGenImage('assets/svgs/multi-message.svg');
+
   /// File path: assets/svgs/multi-user.svg
   SvgGenImage get multiUser => const SvgGenImage('assets/svgs/multi-user.svg');
 
@@ -447,6 +458,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/right.svg
   SvgGenImage get right => const SvgGenImage('assets/svgs/right.svg');
 
+  /// File path: assets/svgs/rocket.svg
+  SvgGenImage get rocket => const SvgGenImage('assets/svgs/rocket.svg');
+
   /// File path: assets/svgs/search-normal.svg
   SvgGenImage get searchNormal =>
       const SvgGenImage('assets/svgs/search-normal.svg');
@@ -477,6 +491,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/sort.svg
   SvgGenImage get sort => const SvgGenImage('assets/svgs/sort.svg');
 
+  /// File path: assets/svgs/target.svg
+  SvgGenImage get target => const SvgGenImage('assets/svgs/target.svg');
+
   /// File path: assets/svgs/task.svg
   SvgGenImage get task => const SvgGenImage('assets/svgs/task.svg');
 
@@ -496,6 +513,13 @@ class $AssetsSvgsGen {
 
   /// File path: assets/svgs/user.svg
   SvgGenImage get user => const SvgGenImage('assets/svgs/user.svg');
+
+  /// File path: assets/svgs/values-icon.svg
+  SvgGenImage get valuesIcon =>
+      const SvgGenImage('assets/svgs/values-icon.svg');
+
+  /// File path: assets/svgs/vision.svg
+  SvgGenImage get vision => const SvgGenImage('assets/svgs/vision.svg');
 
   /// File path: assets/svgs/warning.svg
   SvgGenImage get warning => const SvgGenImage('assets/svgs/warning.svg');
@@ -559,6 +583,8 @@ class $AssetsSvgsGen {
     file,
     fillCloseCircle,
     filter,
+    focusPoint,
+    focus,
     hide,
     homeActive,
     home,
@@ -584,6 +610,7 @@ class $AssetsSvgsGen {
     moreCircle,
     moreCircle2,
     more,
+    multiMessage,
     multiUser,
     navbarArrow,
     note,
@@ -604,6 +631,7 @@ class $AssetsSvgsGen {
     refreshSquare,
     reports,
     right,
+    rocket,
     searchNormal,
     searchPlaceholder,
     search,
@@ -613,12 +641,15 @@ class $AssetsSvgsGen {
     sms,
     solana,
     sort,
+    target,
     task,
     tickCircle,
     tripleUser,
     unitIcon,
     up,
     user,
+    valuesIcon,
+    vision,
     warning,
     wrong,
   ];
