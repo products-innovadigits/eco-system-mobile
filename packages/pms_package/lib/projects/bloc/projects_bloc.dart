@@ -79,4 +79,11 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
       emit(Error());
     }
   }
+
+  @override
+  Future<void> close() {
+    scrollController.dispose();
+    searchTEC?.dispose();
+    return super.close();
+  }
 }

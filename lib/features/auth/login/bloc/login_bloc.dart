@@ -75,4 +75,12 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
       emit(Done());
     }
   }
+
+  @override
+  Future<void> close() {
+    mailTEC.dispose();
+    passwordTEC.dispose();
+    rememberMe.close();
+    return super.close();
+  }
 }

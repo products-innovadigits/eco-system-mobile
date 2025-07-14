@@ -98,6 +98,7 @@ class JobsBloc extends Bloc<AppEvent, AppState> {
     _expandedIndex.close();
     selectedJobsList.clear();
     jobsList.clear();
+    searchController.dispose();
     return super.close();
   }
 }

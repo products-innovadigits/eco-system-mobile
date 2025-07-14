@@ -35,6 +35,12 @@ class _IntroViewState extends State<IntroView> {
   ];
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(

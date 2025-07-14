@@ -1,3 +1,4 @@
+import 'package:core_package/core/helpers/font_sizes.dart';
 import 'package:core_package/core/utility/export.dart';
 import 'package:core_package/core/widgets/nav_app.dart';
 
@@ -35,13 +36,13 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   Widget fregmant(int index) {
     switch (index) {
       case 0:
-        return HomeView();
+        return const HomeView();
       case 1:
-        return SizedBox();
+        return const Center(child: Text('التقارير' , style: TextStyle(fontSize: FontSizes.f32)),);
       case 2:
-        return SizedBox();
+        return const Center(child: Text('الإشعارات' , style: TextStyle(fontSize: FontSizes.f32)),);
       case 3:
-        return SizedBox();
+        return const Center(child: Text('المزيد' , style: TextStyle(fontSize: FontSizes.f32)),);
       default:
         return SizedBox();
     }

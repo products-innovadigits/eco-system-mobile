@@ -80,4 +80,13 @@ class ObjectivesBloc extends Bloc<AppEvent, AppState> {
       emit(Error());
     }
   }
+
+  @override
+  Future<void> close() {
+    scrollController.dispose();
+    searchTEC?.dispose();
+    filter.close();
+    goingDown.close();
+    return super.close();
+  }
 }

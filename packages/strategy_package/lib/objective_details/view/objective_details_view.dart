@@ -2,6 +2,7 @@ import '../../shared/strategy_exports.dart';
 
 class ObjectiveDetailsView extends StatefulWidget {
   const ObjectiveDetailsView({super.key, required this.id});
+
   final int id;
 
   @override
@@ -9,8 +10,14 @@ class ObjectiveDetailsView extends StatefulWidget {
 }
 
 class _ObjectiveDetailsViewState extends State<ObjectiveDetailsView> {
-
   final ScrollController scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,24 +50,23 @@ class _ObjectiveDetailsViewState extends State<ObjectiveDetailsView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                  child: ListAnimator(
-                    controller: scrollController,
-                data: [
-                  ///Objective Details
-                  ObjectiveDetailsBody(),
+                child: ListAnimator(
+                  controller: scrollController,
+                  data: [
+                    ///Objective Details
+                    ObjectiveDetailsBody(),
 
-                  ///Objective Chart
-                  ObjectiveDetailsChart(scrollController: scrollController),
+                    ///Objective Chart
+                    ObjectiveDetailsChart(scrollController: scrollController),
 
-                  ///Objective indicators
-                  ObjectiveKPIS(),
+                    ///Objective indicators
+                    ObjectiveKPIS(),
 
-                  ///Objective indicators
-                  ObjectiveInitiatives(),
-
-
-                ],
-              ))
+                    ///Objective indicators
+                    ObjectiveInitiatives(),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
