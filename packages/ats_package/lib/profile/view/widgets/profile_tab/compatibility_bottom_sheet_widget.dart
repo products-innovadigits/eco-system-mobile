@@ -10,7 +10,7 @@ class CompatibilityBottomSheetWidget extends StatelessWidget {
     return Column(
       children: [
         BottomSheetHeader(
-          title: LocaleKeys.compatibility,
+          title: allTranslations.text(LocaleKeys.compatibility),
         ),
         24.sh,
         ListView.separated(

@@ -37,6 +37,7 @@ class SelectSorting extends AppEvent {
 class Sorting extends AppEvent {
   Sorting({Object? arguments}) : super(arguments);
 }
+
 class GetSort extends AppEvent {
   GetSort({Object? arguments}) : super(arguments);
 }
@@ -59,6 +60,14 @@ class Remember extends AppEvent {
 
 class Expand extends AppEvent {
   Expand({Object? arguments}) : super(arguments);
+}
+
+class ToggleKpis extends AppEvent {
+  ToggleKpis({Object? arguments}) : super(arguments);
+}
+
+class ToggleInitiatives extends AppEvent {
+  ToggleInitiatives({Object? arguments}) : super(arguments);
 }
 
 class ToggleExpand extends AppEvent {

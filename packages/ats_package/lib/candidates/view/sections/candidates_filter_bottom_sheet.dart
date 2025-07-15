@@ -18,7 +18,7 @@ class CandidatesFilterBottomSheet extends StatelessWidget {
                 children: [
                   Column(
                     children: [
-                      BottomSheetHeader(title: LocaleKeys.candidate),
+                      BottomSheetHeader(title: allTranslations.text(LocaleKeys.candidate)),
                       FilterBottomSheetBody(filterModel: filterModel),
                     ],
                   ),

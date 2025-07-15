@@ -10,7 +10,7 @@ class RatingReasonBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        BottomSheetHeader(title: LocaleKeys.add_comment),
+        BottomSheetHeader(title: allTranslations.text(LocaleKeys.add_comment)),
         24.sh,
         CustomTextField(
             hint:

@@ -29,7 +29,7 @@ class TalentPoolBottomNav extends StatelessWidget {
                   children: [
                     Column(
                       children: [
-                        BottomSheetHeader(title: LocaleKeys.assign_to_job),
+                        BottomSheetHeader(title: allTranslations.text(LocaleKeys.assign_to_job)),
                         24.sh,
                         AssignToJobList(
                             onSelectJob: (jobs) {
@@ -62,7 +62,7 @@ class TalentPoolBottomNav extends StatelessWidget {
                 final bloc = context.read<TalentPoolBloc>();
                 return Column(
                   children: [
-                    BottomSheetHeader(title: LocaleKeys.export_zip),
+                    BottomSheetHeader(title: allTranslations.text(LocaleKeys.export_zip)),
                     24.sh,
                     CustomTextField(
                       hint: allTranslations.text(LocaleKeys.enter_file_name),
@@ -89,7 +89,7 @@ class TalentPoolBottomNav extends StatelessWidget {
                 final bloc = context.read<TalentPoolBloc>();
                 return Column(
                   children: [
-                    BottomSheetHeader(title: LocaleKeys.export_excel),
+                    BottomSheetHeader(title: allTranslations.text(LocaleKeys.export_excel)),
                     24.sh,
                     CustomTextField(
                       hint: allTranslations.text(LocaleKeys.enter_file_name),

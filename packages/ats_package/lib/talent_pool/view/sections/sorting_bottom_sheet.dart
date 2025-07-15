@@ -14,7 +14,7 @@ class SortingBottomSheet extends StatelessWidget {
           children: [
             Column(
               children: [
-                BottomSheetHeader(title: LocaleKeys.sort),
+                BottomSheetHeader(title: allTranslations.text(LocaleKeys.sort)),
                 24.sh,
                 ListAnimator(
                   separatorPadding: 16.h,

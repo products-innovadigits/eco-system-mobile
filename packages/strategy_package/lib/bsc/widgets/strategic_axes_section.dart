@@ -43,7 +43,7 @@ class StrategicAxesSection extends StatelessWidget {
                 curve: Curves.easeInOut,
               ),
               title: Text(
-                bloc.axes[bloc.selectedAxes],
+                allTranslations.text(LocaleKeys.strategic_result),
                 style: context.textTheme.labelMedium,
               ),
               shape: RoundedRectangleBorder(

@@ -51,7 +51,7 @@ class ApplicantMoreDialog extends StatelessWidget {
                           Column(
                             children: [
                               BottomSheetHeader(
-                                  title: LocaleKeys.assign_to_job),
+                                  title: allTranslations.text(LocaleKeys.assign_to_job)),
                               24.sh,
                               AssignToJobList(
                                 onSelectJob: (jobs) {},

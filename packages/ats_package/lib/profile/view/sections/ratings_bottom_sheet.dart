@@ -16,7 +16,7 @@ class RatingsBottomSheet extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            BottomSheetHeader(title: LocaleKeys.rating),
+            BottomSheetHeader(title: allTranslations.text(LocaleKeys.rating)),
             24.sh,
             RatingTabsSection(),
             profileBloc.selectedRatingTabIndex == 0

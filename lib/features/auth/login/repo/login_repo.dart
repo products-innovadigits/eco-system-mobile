@@ -1,4 +1,3 @@
-import 'package:core_package/core/config/app_config.dart';
 import 'package:core_package/core/utility/export.dart';
 
 abstract class LoginRepo {

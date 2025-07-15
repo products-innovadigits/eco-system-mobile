@@ -1,6 +1,7 @@
 import 'package:core_package/core/utility/export.dart';
 import 'package:core_package/core/widgets/bottom_sheet_header.dart';
 import 'package:strategy_package/bsc/bloc/bsc_bloc.dart';
+import 'package:strategy_package/bsc/widgets/objectives_bottom_sheet.dart';
 
 import 'perspective_widget.dart';
 
@@ -35,16 +36,20 @@ class PerspectivesSection extends StatelessWidget {
               title: bloc.perspectives[index],
               onTap: () {
                 CustomBottomSheet.show(
-                  widget: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Column(
-                      children: [
-                        BottomSheetHeader(title: bloc.perspectives[index]),
-                        24.sh,
-                      ],
+                  height: context.h * 0.95,
+                  widget: BlocProvider.value(
+                    value: bloc,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: Column(
+                        children: [
+                          BottomSheetHeader(title: bloc.perspectives[index]),
+                          24.sh,
+                          ObjectivesBottomSheet(object: bloc.objectives),
+                        ],
+                      ),
                     ),
                   ),
-                  height: context.h * 0.95,
                 );
               },
             );

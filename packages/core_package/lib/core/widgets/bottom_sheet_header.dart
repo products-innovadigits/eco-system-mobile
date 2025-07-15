@@ -14,7 +14,7 @@ class BottomSheetHeader extends StatelessWidget {
     return Row(
       children: [
         Text(
-          allTranslations.text(title),
+          title,
           style: context.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
         ),
         const Spacer(),
