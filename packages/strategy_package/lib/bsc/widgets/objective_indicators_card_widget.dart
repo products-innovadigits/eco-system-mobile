@@ -27,13 +27,15 @@ class ObjectiveIndicatorsCardWidget extends StatelessWidget {
           decoration: BoxDecoration(
             color: context.color.surfaceContainer,
             border: Border.all(
-              color: context.color.outlineVariant.withValues(alpha: 0.3),
+              color: bscBloc.expandedObjectiveId == index
+                  ? context.color.secondary.withValues(alpha: 0.5)
+                  : context.color.outlineVariant.withValues(alpha: 0.3),
             ),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Column(
             children: [
-              GestureDetector(
+              InkWell(
                 onTap: () => bscBloc.add(Expand(arguments: index)),
                 child: Row(
                   children: [
@@ -42,7 +44,7 @@ class ObjectiveIndicatorsCardWidget extends StatelessWidget {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: bscBloc.expandedObjectiveId == index
-                            ? context.color.primary
+                            ? context.color.secondary
                             : context.color.secondary.withValues(alpha: 0.1),
                       ),
                       child: Images(
@@ -54,7 +56,17 @@ class ObjectiveIndicatorsCardWidget extends StatelessWidget {
                       ),
                     ),
                     8.sw,
-                    Text(objectiveTitle, style: context.textTheme.labelMedium),
+                    Text(
+                      objectiveTitle,
+                      style: context.textTheme.labelMedium?.copyWith(
+                        color: bscBloc.expandedObjectiveId == index
+                            ? context.color.secondary
+                            : context.color.primary,
+                        fontWeight: bscBloc.expandedObjectiveId == index
+                            ? FontWeight.w700
+                            : FontWeight.w500,
+                      ),
+                    ),
                     const Spacer(),
                     AnimatedExpansionArrowWidget(
                       isExpanded: bscBloc.expandedObjectiveId == index,

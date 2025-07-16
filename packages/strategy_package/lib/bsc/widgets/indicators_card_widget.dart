@@ -7,12 +7,20 @@ class IndicatorsCardWidget extends StatelessWidget {
   final VoidCallback onTap;
   final bool isExpanded;
   final String indicatorIcon;
-  const IndicatorsCardWidget({super.key, required this.objectiveTitle, required this.indicators, required this.onTap, required this.isExpanded, required this.indicatorIcon});
+
+  const IndicatorsCardWidget({
+    super.key,
+    required this.objectiveTitle,
+    required this.indicators,
+    required this.onTap,
+    required this.isExpanded,
+    required this.indicatorIcon,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(right: 16.w , left: 16.w , top: 16.h,),
+      padding: EdgeInsets.only(right: 16.w, left: 16.w, top: 16.h),
       decoration: BoxDecoration(
         color: context.color.surfaceContainer,
         border: Border.all(
@@ -22,7 +30,7 @@ class IndicatorsCardWidget extends StatelessWidget {
       ),
       child: Column(
         children: [
-          GestureDetector(
+          InkWell(
             onTap: onTap,
             child: Row(
               children: [
@@ -32,7 +40,7 @@ class IndicatorsCardWidget extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: context.color.secondary.withValues(alpha: 0.1),
                   ),
-                  child: Images(image: indicatorIcon , width: 14.w),
+                  child: Images(image: indicatorIcon, width: 14.w),
                 ),
                 8.sw,
                 Text(objectiveTitle, style: context.textTheme.labelMedium),
@@ -49,11 +57,16 @@ class IndicatorsCardWidget extends StatelessWidget {
               child: Column(
                 children: (indicators).map((indicator) {
                   return Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 8.w,
+                      vertical: 12.h,
+                    ),
                     margin: EdgeInsets.only(bottom: 12.h),
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: context.color.outlineVariant.withValues(alpha: 0.3),
+                        color: context.color.outlineVariant.withValues(
+                          alpha: 0.3,
+                        ),
                       ),
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -63,15 +76,17 @@ class IndicatorsCardWidget extends StatelessWidget {
                           padding: EdgeInsets.all(5),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: context.color.secondary.withValues(alpha: 0.1),
+                            color: context.color.secondary.withValues(
+                              alpha: 0.1,
+                            ),
                           ),
-                          child: Images(image: indicatorIcon , width: 14.w),
+                          child: Images(image: indicatorIcon, width: 14.w),
                         ),
                         8.sw,
                         Expanded(
                           child: Text(
                             indicator.indicatorTitle ?? '',
-                            style: context.textTheme.labelMedium,
+                            style: context.textTheme.bodyMedium,
                           ),
                         ),
                       ],
