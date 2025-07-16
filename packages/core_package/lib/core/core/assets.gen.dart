@@ -235,6 +235,9 @@ class $AssetsSvgsGen {
   SvgGenImage get directboxSend =>
       const SvgGenImage('assets/svgs/directbox-send.svg');
 
+  /// File path: assets/svgs/doc.svg
+  SvgGenImage get doc => const SvgGenImage('assets/svgs/doc.svg');
+
   /// File path: assets/svgs/document-download.svg
   SvgGenImage get documentDownload =>
       const SvgGenImage('assets/svgs/document-download.svg');
@@ -423,6 +426,9 @@ class $AssetsSvgsGen {
   SvgGenImage get percentageCircle =>
       const SvgGenImage('assets/svgs/percentage-circle.svg');
 
+  /// File path: assets/svgs/ppt.svg
+  SvgGenImage get ppt => const SvgGenImage('assets/svgs/ppt.svg');
+
   /// File path: assets/svgs/printer.svg
   SvgGenImage get printer => const SvgGenImage('assets/svgs/printer.svg');
 
@@ -570,6 +576,7 @@ class $AssetsSvgsGen {
     cube,
     danger,
     directboxSend,
+    doc,
     documentDownload,
     documentText,
     downloadBox,
@@ -624,6 +631,7 @@ class $AssetsSvgsGen {
     outlineMoneys,
     people,
     percentageCircle,
+    ppt,
     printer,
     profileCircle,
     profileMore,
