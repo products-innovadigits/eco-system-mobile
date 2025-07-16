@@ -23,7 +23,7 @@ class Network {
       _dio.options.connectTimeout = const Duration(seconds: 40);
       _dio.interceptors.add(NetworkLogger.logger);
 
-      if (kDebugMode) {
+      // if (kDebugMode) {
         // 👇 Add this block to ignore SSL certificates
         (_dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
             (client) {
@@ -32,7 +32,7 @@ class Network {
               return client;
             };
         _instance = Network._private();
-      }
+      // }
     }
 
     return _instance!;
