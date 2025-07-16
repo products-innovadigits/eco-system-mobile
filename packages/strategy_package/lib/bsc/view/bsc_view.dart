@@ -13,7 +13,7 @@ class BscView extends StatelessWidget {
     return BlocProvider(
       create: (context) => BscBloc(),
       child: Scaffold(
-        appBar: CustomAppBar(title: allTranslations.text(LocaleKeys.bsc)),
+        appBar: CustomAppBar(title: allTranslations.text(LocaleKeys.bsc) , withBackBtn: false),
         body: ListAnimator(
           customPadding: EdgeInsets.symmetric(horizontal: 16.w , vertical: 16.h),
           data: [

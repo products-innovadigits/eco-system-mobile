@@ -39,6 +39,7 @@ dependencies:
   flutter_debouncer: ^2.0.0
   open_file: ^3.5.10
   modal_bottom_sheet: ^3.0.0-pre
+  dotted_line: ^3.2.3
 #  liquid_glass_renderer: ^0.1.1-dev.6
 
 

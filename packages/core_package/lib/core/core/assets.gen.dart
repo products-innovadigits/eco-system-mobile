@@ -309,6 +309,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/home.svg
   SvgGenImage get home => const SvgGenImage('assets/svgs/home.svg');
 
+  /// File path: assets/svgs/increase.svg
+  SvgGenImage get increase => const SvgGenImage('assets/svgs/increase.svg');
+
   /// File path: assets/svgs/info-circle.svg
   SvgGenImage get infoCircle =>
       const SvgGenImage('assets/svgs/info-circle.svg');
@@ -588,6 +591,7 @@ class $AssetsSvgsGen {
     hide,
     homeActive,
     home,
+    increase,
     infoCircle,
     infoCircle64,
     invoices,
