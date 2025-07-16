@@ -254,6 +254,12 @@
       "languageVersion": "3.3"
     },
     {
+      "name": "dotted_line",
+      "rootUri": "file:///C:/Users/DELL/AppData/Local/Pub/Cache/hosted/pub.dev/dotted_line-3.2.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "easy_localization",
       "rootUri": "file:///C:/Users/DELL/AppData/Local/Pub/Cache/hosted/pub.dev/easy_localization-3.0.7+1",
       "packageUri": "lib/",
@@ -384,12 +390,6 @@
       "rootUri": "file:///C:/Flutter/flutter_windows_3.29.3-stable/flutter/packages/flutter",
       "packageUri": "lib/",
       "languageVersion": "3.7"
-    },
-    {
-      "name": "flutter_alice",
-      "rootUri": "file:///C:/Users/DELL/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_alice-2.0.1",
-      "packageUri": "lib/",
-      "languageVersion": "2.15"
     },
     {
       "name": "flutter_animate",
@@ -984,12 +984,6 @@
       "rootUri": "file:///C:/Users/DELL/AppData/Local/Pub/Cache/hosted/pub.dev/open_file_windows-0.0.3",
       "packageUri": "lib/",
       "languageVersion": "2.17"
-    },
-    {
-      "name": "overlay_support",
-      "rootUri": "file:///C:/Users/DELL/AppData/Local/Pub/Cache/hosted/pub.dev/overlay_support-2.1.0",
-      "packageUri": "lib/",
-      "languageVersion": "2.14"
     },
     {
       "name": "package_config",
