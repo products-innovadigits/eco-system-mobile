@@ -19,7 +19,7 @@ class WelcomeWidget extends StatelessWidget {
       Text(
         allTranslations.text("login_sub_header"),
         style: AppTextStyles.w400.copyWith(
-          color: context.color.outline,
+          color: context.color.outlineVariant,
           fontSize: FontSizes.f14,
         ),
       ),

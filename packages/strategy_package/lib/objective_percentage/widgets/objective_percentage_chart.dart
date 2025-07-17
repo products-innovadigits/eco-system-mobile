@@ -65,13 +65,13 @@ class _ObjectivePercentageChartState extends State<ObjectivePercentageChart> {
                             text: allTranslations.text("objective_percentage"),
                             style: context.textTheme.labelSmall,
                             children: [
-                              TextSpan(
-                                text: "\n${state.data ?? 0}",
-                                style: context.textTheme.titleLarge?.copyWith(
-                                    color: isEmpty
-                                        ? context.color.outline
-                                        : context.color.primary),
-                              )
+                              // TextSpan(
+                              //   text: "\n${state.data ?? 0}",
+                              //   style: context.textTheme.titleLarge?.copyWith(
+                              //       color: isEmpty
+                              //           ? context.color.outline
+                              //           : context.color.primary),
+                              // )
                             ],
                           ),
                         ),
