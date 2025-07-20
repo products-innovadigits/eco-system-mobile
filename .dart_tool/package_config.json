@@ -254,12 +254,6 @@
       "languageVersion": "3.3"
     },
     {
-      "name": "dotted_line",
-      "rootUri": "file:///C:/Users/DELL/AppData/Local/Pub/Cache/hosted/pub.dev/dotted_line-3.2.3",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
       "name": "easy_localization",
       "rootUri": "file:///C:/Users/DELL/AppData/Local/Pub/Cache/hosted/pub.dev/easy_localization-3.0.7+1",
       "packageUri": "lib/",

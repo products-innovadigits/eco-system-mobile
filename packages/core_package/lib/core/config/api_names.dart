@@ -7,11 +7,13 @@ abstract class ApiNames {
   static const objectActivePercentage = "Dashboard/ObjectActivePersantge";
   static const objectActiveCategorized = "ObjectActive/Categorized";
 
+  // Strategy APIs ====================
   static const objectives = "ObjectActive";
   static const strategicAxis = "ObjectActive/GetStrategicAxis";
   static String objectiveDetails(id) => "ObjectActive/$id";
   static const objectiveKPIS = "KPIS/GetKpiByObjectActive";
   static const objectiveInitiatives = "Initiatives/ByObjectActive";
+  static const bsc = "Dashboard";
   static String objectiveChartData(id, time) => "ObjectActive/$id/Chart/$time";
 
   static const ProjectProgress = "ObjectActive/Categorized";
@@ -29,7 +31,9 @@ abstract class ApiNames {
   static const exportExcelFile = "candidates/export-resumes-excel";
   static const assignCandidatesToJobs = "candidates/bulk-assign-to-job";
   static String candidateDetails(id) => "candidates/$id";
-  // Filters
+
+  // Filters ===================================
   static const tags = "tags/get-all";
   static const sortingList = "candidates/sorting-list";
+
 }

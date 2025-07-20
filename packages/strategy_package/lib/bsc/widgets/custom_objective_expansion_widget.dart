@@ -1,5 +1,5 @@
 import 'package:core_package/core/utility/export.dart';
-import 'package:strategy_package/bsc/model/objectives_model.dart';
+import 'package:strategy_package/bsc/model/bsc_model.dart';
 
 class CustomObjectiveExpansionWidget extends StatelessWidget {
   final String title;
@@ -75,7 +75,7 @@ class CustomObjectiveExpansionWidget extends StatelessWidget {
                     ),
                     8.sw,
                     Text(
-                      indicator.indicatorTitle ?? '',
+                      indicator.title ?? '',
                       style: context.textTheme.labelSmall,
                     ),
                   ],

@@ -28,7 +28,8 @@ class StrategicAxesSection extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return _strategicAxisChip(
                     context,
-                    title: bloc.axes[index],
+                    title: bloc.axes[index].title ?? '',
+                    color: bloc.axes[index].colorCode ?? '#175CD3',
                     isSelected: bloc.selectedAxes == index,
                     onTap: () => bloc.add(Select(arguments: index)),
                   );
@@ -69,7 +70,7 @@ class StrategicAxesSection extends StatelessWidget {
                   child: Align(
                     alignment: AlignmentDirectional.centerStart,
                     child: Text(
-                      bloc.results[bloc.selectedAxes],
+                      bloc.axes[bloc.selectedAxes].description ?? '',
                       style: context.textTheme.bodySmall?.copyWith(
                         color: context.color.outlineVariant,
                       ),
@@ -88,20 +89,24 @@ class StrategicAxesSection extends StatelessWidget {
 Widget _strategicAxisChip(
   BuildContext context, {
   required String title,
+  required String color,
   required bool isSelected,
   required VoidCallback onTap,
 }) {
+  final Color strategicColor = Color(
+    int.parse(color.replaceFirst('#', '0xff')),
+  );
   return InkWell(
     onTap: onTap,
     child: Container(
       decoration: BoxDecoration(
         color: isSelected
-            ? context.color.secondary
+            ? strategicColor // context.color.primaryContainer
             : context.color.surfaceContainer,
         borderRadius: BorderRadius.circular(50),
         border: Border.all(
           color: isSelected
-              ? context.color.secondary
+              ? strategicColor
               : context.color.outlineVariant.withValues(alpha: 0.3),
         ),
       ),
@@ -110,7 +115,7 @@ Widget _strategicAxisChip(
         child: Text(
           title,
           style: context.textTheme.labelSmall?.copyWith(
-            color: isSelected ? context.color.onPrimary : context.color.primary,
+            color: isSelected ? context.color.onPrimary : strategicColor,
           ),
         ),
       ),

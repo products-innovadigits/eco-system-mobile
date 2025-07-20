@@ -1,5 +1,5 @@
 import 'package:core_package/core/utility/export.dart';
-import 'package:strategy_package/bsc/model/objectives_model.dart';
+import 'package:strategy_package/bsc/model/bsc_model.dart';
 
 class IndicatorsCardWidget extends StatelessWidget {
   final String objectiveTitle;
@@ -85,7 +85,7 @@ class IndicatorsCardWidget extends StatelessWidget {
                         8.sw,
                         Expanded(
                           child: Text(
-                            indicator.indicatorTitle ?? '',
+                            indicator.title ?? '',
                             style: context.textTheme.bodyMedium,
                           ),
                         ),

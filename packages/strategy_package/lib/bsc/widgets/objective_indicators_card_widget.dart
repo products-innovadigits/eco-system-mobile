@@ -1,6 +1,6 @@
 import 'package:core_package/core/utility/export.dart';
 import 'package:strategy_package/bsc/bloc/bsc_bloc.dart';
-import 'package:strategy_package/bsc/model/objectives_model.dart';
+import 'package:strategy_package/bsc/model/bsc_model.dart';
 import 'package:strategy_package/bsc/widgets/indicators_card_widget.dart';
 
 class ObjectiveIndicatorsCardWidget extends StatelessWidget {

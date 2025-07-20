@@ -2,6 +2,7 @@ import 'package:core_package/core/helpers/font_sizes.dart';
 import 'package:core_package/core/utility/export.dart';
 import 'package:strategy_package/bsc/bloc/bsc_bloc.dart';
 import 'package:strategy_package/bsc/widgets/bsc_info_container.dart';
+import 'package:strategy_package/bsc/widgets/messages_list_section.dart';
 
 class VisionSection extends StatelessWidget {
   const VisionSection({super.key});
@@ -15,16 +16,14 @@ class VisionSection extends StatelessWidget {
           color: LightColor.chartPrimary,
           title: allTranslations.text(LocaleKeys.vision),
           icon: Assets.svgs.vision.path,
-          description:
-              'بناء مجتمع عصري من خلال توفير خدمات معلومات فائقة السرعة وسهولة الوصول إليها',
+          description: bloc.visionDesc,
         ),
         12.sh,
         BscInfoContainer(
           color: LightColor.chartTertiary,
           title: allTranslations.text(LocaleKeys.the_message),
           icon: Assets.svgs.multiMessage.path,
-          description:
-              'بناء مجتمع عصري من خلال توفير خدمات معلومات فائقة السرعة وسهولة الوصول إليها',
+          descriptionWidget: MessagesListSection(),
         ),
         12.sh,
         BscInfoContainer(
@@ -44,7 +43,7 @@ class VisionSection extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      bloc.values[index],
+                      bloc.values[index].name ?? '',
                       style: context.textTheme.bodySmall?.copyWith(
                         fontSize: FontSizes.f10,
                         color: Color(0xff4E1D00),

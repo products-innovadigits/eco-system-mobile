@@ -33,8 +33,9 @@ class PerspectivesSection extends StatelessWidget {
           itemCount: bloc.perspectives.length,
           itemBuilder: (context, index) {
             return PerspectiveWidget(
-              title: bloc.perspectives[index],
+              title: bloc.perspectives[index].title ?? '',
               onTap: () {
+                bloc.resetObjectivesExpansion();
                 CustomBottomSheet.show(
                   height: context.h * 0.95,
                   widget: BlocProvider.value(
@@ -43,9 +44,13 @@ class PerspectivesSection extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
                       child: Column(
                         children: [
-                          BottomSheetHeader(title: bloc.perspectives[index]),
+                          BottomSheetHeader(
+                            title: bloc.perspectives[index].title ?? '',
+                          ),
                           24.sh,
-                          ObjectivesBottomSheet(object: bloc.objectives),
+                          ObjectivesBottomSheet(
+                            objectivesList: bloc.perspectives[index].objectives ?? [],
+                          ),
                         ],
                       ),
                     ),

@@ -352,6 +352,8 @@ abstract class  LocaleKeys {
   static const education = 'education';
   static const read_more = 'read_more';
   static const read_less = 'read_less';
+  static const show_less = 'show_less';
+  static const show_more = 'show_more';
   static const test_file = 'test_file';
   static const career_objective = 'career_objective';
   static const candidate_source = 'candidate_source';

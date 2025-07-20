@@ -70,6 +70,10 @@ class ToggleInitiatives extends AppEvent {
   ToggleInitiatives({Object? arguments}) : super(arguments);
 }
 
+class ToggleMessages extends AppEvent {
+  ToggleMessages({Object? arguments}) : super(arguments);
+}
+
 class ToggleExpand extends AppEvent {
   ToggleExpand({Object? arguments}) : super(arguments);
 }

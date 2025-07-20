@@ -265,16 +265,16 @@ class _CustomTextFieldState extends State<CustomTextField> {
                             alignment: Alignment.center,
                             icon: _isHidden
                                 ? customImageIconSVG(
-                                    imageName: "hide",
-                                    height: 18.0,
-                                    width: 18.0,
-                                    color: context.color.primary,
-                                  )
-                                : customImageIconSVG(
                                     imageName: "show",
                                     height: 18.0,
                                     width: 18.0,
-                                    color: context.color.primary,
+                                    color: context.color.outlineVariant,
+                                  )
+                                : customImageIconSVG(
+                                    imageName: "hide",
+                                    height: 18.0,
+                                    width: 18.0,
+                                    color: context.color.outlineVariant,
                                   ),
                           )
                         : null),

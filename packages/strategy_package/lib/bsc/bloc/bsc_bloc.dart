@@ -1,80 +1,28 @@
 import 'package:core_package/core/utility/export.dart';
-import 'package:strategy_package/bsc/model/objectives_model.dart';
+import 'package:strategy_package/bsc/model/bsc_model.dart';
+import 'package:strategy_package/bsc/repo/bsc_repo.dart';
 
 class BscBloc extends Bloc<AppEvent, AppState> {
   BscBloc() : super(Start()) {
+    on<Click>(_getBscData);
     on<Select>(_onChangeSelectedAxes);
     on<Expand>(_onExpandObjective);
     on<ToggleKpis>(_onToggleKpis);
     on<ToggleInitiatives>(_onToggleInitiatives);
+    on<ToggleMessages>(_onToggleMessages);
   }
 
   int selectedAxes = 0;
-  final List<String> axes = [
-    'تقويم الانظمة الحكومية',
-    'تحسين نمط الحياة',
-    'تحقيق الاستدامة',
-  ];
-  final List<String> results = [
-    'نظام حكومي متكامل متوائم بكافة قطاعاته يحقق الأثر الاقتصادي والاجتماعي بأعلى المعايير والتطلعات',
-    'تحسين جودة الحياة للمواطنين والمقيمين',
-    'تحقيق الاستدامة في جميع القطاعات',
-  ];
-  final List<String> perspectives = [
-    'المنظور المالي',
-    'عمليات داخليه',
-    'المستفيدين',
-    'التعلم والنمو',
-  ];
-  final List<String> values = [
-    'الاحترافية',
-    'الابداع والابتكار',
-    'الاتقان',
-    'التحفيز',
-  ];
-  final List<ObjectiveDataModel> objectives = [
-    ObjectiveDataModel(
-      title: 'تحقيق التميز في تقديم الخدمات الحكومية',
-      kpis: [
-        IndicatorModel(indicatorTitle: 'معدل رضا المستفيدين'),
-        IndicatorModel(indicatorTitle: 'نسبة التحول الرقمي للخدمات'),
-        IndicatorModel(indicatorTitle: 'نسبة التحول الرقمي للخدمات'),
-        IndicatorModel(indicatorTitle: 'نسبة التحول الرقمي للخدمات'),
-        IndicatorModel(indicatorTitle: 'نسبة التحول الرقمي للخدمات'),
-        IndicatorModel(indicatorTitle: 'نسبة التحول الرقمي للخدمات'),
-        IndicatorModel(indicatorTitle: 'نسبة التحول الرقمي للخدمات'),
-        IndicatorModel(indicatorTitle: 'نسبة التحول الرقمي للخدمات'),
-        IndicatorModel(indicatorTitle: 'نسبة التحول الرقمي للخدمات'),
-      ],
-      initiatives: [
-        IndicatorModel(indicatorTitle: 'تطوير منصة الخدمات الحكومية'),
-        IndicatorModel(indicatorTitle: 'تحسين تجربة المستخدم'),
-        IndicatorModel(indicatorTitle: 'تحسين تجربة المستخدم'),
-        IndicatorModel(indicatorTitle: 'تحسين تجربة المستخدم'),
-        IndicatorModel(indicatorTitle: 'تحسين تجربة المستخدم'),
-        IndicatorModel(indicatorTitle: 'تحسين تجربة المستخدم'),
-        IndicatorModel(indicatorTitle: 'تحسين تجربة المستخدم'),
-        IndicatorModel(indicatorTitle: 'تحسين تجربة المستخدم'),
-        IndicatorModel(indicatorTitle: 'تحسين تجربة المستخدم'),
-        IndicatorModel(indicatorTitle: 'تحسين تجربة المستخدم'),
-      ],
-    ),
-    ObjectiveDataModel(
-      title: 'تعزيز الشفافية والمساءلة',
-      kpis: [
-        IndicatorModel(indicatorTitle: 'نسبة الشفافية في التقارير المالية'),
-        IndicatorModel(indicatorTitle: 'عدد الشكاوى المعالجة'),
-      ],
-      initiatives: [
-        IndicatorModel(indicatorTitle: 'تطوير نظام الشكاوى والمقترحات'),
-        IndicatorModel(indicatorTitle: 'تعزيز التواصل مع المجتمع'),
-      ],
-    ),
-  ];
+  String visionDesc = '';
+  List<StrategicAxisModel> axes = [];
+  List<ValueModel> values = [];
+  List<MissionModel> messages = [];
+  List<ManzorModel> perspectives = [];
 
   int expandedObjectiveId = -1;
   bool isKpisExpanded = false;
   bool isInitiativesExpanded = false;
+  bool isMessagesExpanded = false;
 
   void _onChangeSelectedAxes(AppEvent event, Emitter<AppState> emit) {
     int selectedAxesId = event.arguments as int;
@@ -105,6 +53,41 @@ class BscBloc extends Bloc<AppEvent, AppState> {
     if (expandedObjectiveId == event.arguments as int) {
       isInitiativesExpanded = !isInitiativesExpanded;
       emit(Done());
+    }
+  }
+
+  void _onToggleMessages(ToggleMessages event, Emitter<AppState> emit) {
+    isMessagesExpanded = !isMessagesExpanded;
+    emit(Done());
+  }
+
+  void resetObjectivesExpansion(){
+    expandedObjectiveId = -1;
+    isKpisExpanded = false;
+    isInitiativesExpanded = false;
+  }
+
+  ///APIs calls
+  Future<void> _getBscData(AppEvent event, Emitter<AppState> emit) async {
+    emit(Loading());
+    try {
+      final BscModel res = await BscRepo.getBscData();
+
+      if (res.data != null) {
+        visionDesc = res.data?.description ?? '';
+        axes = res.data?.strategicAxises ?? [];
+        messages = res.data?.missions ?? [];
+        values = res.data?.values ?? [];
+        perspectives = res.data?.manzors ?? [];
+        emit(Done());
+      } else {
+        emit(Error());
+      }
+    } catch (e) {
+      AppCore.errorMessage(
+        allTranslations.text(LocaleKeys.something_went_wrong),
+      );
+      emit(Error());
     }
   }
 }
