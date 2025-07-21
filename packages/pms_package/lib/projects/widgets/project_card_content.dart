@@ -2,7 +2,8 @@ import 'package:core_package/core/helpers/font_sizes.dart';
 import 'package:pms_package/shared/pms_exports.dart';
 
 class ProjectCardContent extends StatelessWidget {
-  const ProjectCardContent({super.key, required this.project , this.isDetails = false});
+  const ProjectCardContent(
+      {super.key, required this.project, this.isDetails = false});
 
   final ProjectDetailsModel project;
   final bool isDetails;
@@ -74,7 +75,8 @@ class ProjectCardContent extends StatelessWidget {
               ),
               if (project.status != null)
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
                   decoration: BoxDecoration(
                     color: Styles.statusColors(project.status ?? "",
                             isLineProgress: true)
@@ -94,7 +96,8 @@ class ProjectCardContent extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(100),
               child: LinearProgressIndicator(
-                value: getProgressBar() / 100,
+                // value: getProgressBar() / 100,
+                value: (project.progressRatio ?? 0.0).toDouble() / 100,
                 minHeight: 8.h,
                 color: Styles.statusColors(
                   project.status ?? '',
@@ -119,7 +122,8 @@ class ProjectCardContent extends StatelessWidget {
               ),
               SizedBox(width: 6.w),
               Text(
-                "${getProgressBar().toStringAsFixed(1)}%",
+                // "${getProgressBar().toStringAsFixed(1)}%",
+                "${((project.progressRatio ?? 0.0).toDouble()).toStringAsFixed(1)}%",
                 style: context.textTheme.labelSmall,
               ),
             ],

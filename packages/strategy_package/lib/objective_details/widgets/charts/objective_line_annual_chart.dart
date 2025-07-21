@@ -1,5 +1,3 @@
-
-
 import '../../../shared/strategy_exports.dart';
 
 class ObjectiveLineAnnualChart extends StatelessWidget {
@@ -14,7 +12,28 @@ class ObjectiveLineAnnualChart extends StatelessWidget {
               state.list as List<ObjectiveChartModel>;
           return Column(
             children: [
-              ObjectiveLineChart(data: list),
+              // ObjectiveLineChart(data: list),
+              // ObjectiveBarChartSyncfusion(data: list),
+              ObjectiveBarChartSyncfusion(data: [
+                ObjectiveChartModel(
+                  objectValue: 60,
+                  kpisValue: 30,
+                  initiativesValue: 30,
+                  year: 2025
+                ),
+                // ObjectiveChartModel(
+                //   objectValue: 80,
+                //   kpisValue: 50,
+                //   initiativesValue: 30,
+                //   year: 2026
+                // ),
+                // ObjectiveChartModel(
+                //   objectValue: 100,
+                //   kpisValue: 70,
+                //   initiativesValue: 30,
+                //   year: 2027
+                // ),
+              ]),
               Wrap(
                 alignment: WrapAlignment.start,
                 direction: Axis.horizontal,
@@ -26,15 +45,14 @@ class ObjectiveLineAnnualChart extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.circle,
-                        color: Styles.PRIMARY_COLOR,
-                        size: 16,
+                        color: context.color.secondary,
+                        size: 14,
                       ),
                       SizedBox(width: 4.w),
                       Flexible(
                         child: Text(
-                          allTranslations.text("kpis"),
-                          style: AppTextStyles.w400
-                              .copyWith(fontSize: 14, color: Styles.HEADER),
+                          allTranslations.text(LocaleKeys.objectives),
+                          style: context.textTheme.bodySmall,
                         ),
                       ),
                     ],
@@ -44,31 +62,46 @@ class ObjectiveLineAnnualChart extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.circle,
-                        color: Styles.SECONDARY_COLOR,
-                        size: 16,
+                        color: context.color.primary,
+                        size: 14,
                       ),
                       SizedBox(width: 4.w),
                       Flexible(
                         child: Text(
-                          allTranslations.text("initiatives"),
-                          style: AppTextStyles.w400
-                              .copyWith(fontSize: 14, color: Styles.HEADER),
+                          allTranslations.text(LocaleKeys.initiatives),
+                          style: context.textTheme.bodySmall,
                         ),
                       ),
                     ],
                   ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.circle,
+                        color: context.color.tertiary,
+                        size: 14,
+                      ),
+                      SizedBox(width: 4.w),
+                      Flexible(
+                        child: Text(
+                          allTranslations.text("kpis"),
+                          style: context.textTheme.bodySmall,
+                        ),
+                      ),
+                    ],
+                  ),
+
+
                 ],
-              )
+              ),
             ],
           );
         }
         if (state is Loading) {
           return Padding(
             padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
-            child: CustomShimmerContainer(
-              height: 200.h,
-              width: context.w,
-            ),
+            child: CustomShimmerContainer(height: 200.h, width: context.w),
           );
         } else {
           return const SizedBox();

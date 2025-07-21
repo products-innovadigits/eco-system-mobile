@@ -35,7 +35,14 @@ class ProjectDetailsBody extends StatelessWidget {
                             ?.map((e) => ProjectCategoriesProgressModel(
                                 name: e.title ?? "", progress: e.progress ?? 0))
                             .toList() ??
-                        []),
+                        []
+                  // data: [
+                  //   ProjectCategoriesProgressModel(name: "Stage 1", progress: 20),
+                  //   ProjectCategoriesProgressModel(name: "Stage 2", progress: 40),
+                  //   ProjectCategoriesProgressModel(name: "Stage 3", progress: 60),
+                  //   ProjectCategoriesProgressModel(name: "Stage 4", progress: 80),
+                  // ],
+                ),
               ),
 
               ///General Progress

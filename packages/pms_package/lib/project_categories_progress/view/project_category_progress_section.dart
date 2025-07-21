@@ -33,7 +33,7 @@ class ProjectCategoryProgressSection extends StatelessWidget {
                     onViewTap: () => CustomNavigator.push(Routes.PROJECTS),
                   ),
                   Divider(color: context.color.outline),
-                  ProjectCategoryHBarChart(data: projectCategoriesProgress),
+                  ProjectCategoryHBarChart(data: projectCategoriesProgress , isHome: true),
                 ],
               ),
             );

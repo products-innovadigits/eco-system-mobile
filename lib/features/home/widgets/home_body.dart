@@ -24,7 +24,7 @@ class HomeBody extends StatelessWidget {
               ObjectivePercentageSection(),
             if (UserBloc.activeSystems.contains(ActiveSystemEnum.pms)) ...[
               ProjectsProgressSection(),
-              ProjectCategoryProgressSection(),
+              // ProjectCategoryProgressSection(),
               if (UserBloc.activeSystems.contains(ActiveSystemEnum.ats)) ...[
                 AvailableJobsSection(),
                 TalentPoolSection(),

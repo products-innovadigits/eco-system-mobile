@@ -11,6 +11,7 @@ class ProjectDetailsModel extends SingleMapper {
   int? projectCategoryId;
   int? budget;
   double? weight;
+  num? progressRatio;
   List<String>? teamIds;
   SectionDepartmentModel? sectionDepartment;
   int? implementorDepartmentId;
@@ -45,6 +46,7 @@ class ProjectDetailsModel extends SingleMapper {
       this.implementorDepartmentName,
       this.managerId,
       this.status,
+      this.progressRatio,
       this.managerName,
       this.priorityLevelId,
       this.riskLevelId,
@@ -70,6 +72,7 @@ class ProjectDetailsModel extends SingleMapper {
     projectCategoryId = json['projectCategoryId'];
     weight = json['weight'];
     budget = json['budget'];
+    progressRatio = json['progressRation'];
     teamIds = json['teamIds'] != null ? json['teamIds'].cast<String>() : null;
     sectionDepartment = json['sectionDepartment'] != null
         ? SectionDepartmentModel.fromJson(json['sectionDepartment'])
@@ -89,34 +92,36 @@ class ProjectDetailsModel extends SingleMapper {
     updatedAt = json['updatedAt'];
   }
 
+  @override
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.title;
-    data['description'] = this.description;
-    data['startDate'] = this.startDate;
-    data['endDate'] = this.endDate;
-    data['lifeCycleId'] = this.lifeCycleId;
-    if (this.projectLifeCycle != null) {
-      data['projectLifeCycle'] = this.projectLifeCycle!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = title;
+    data['description'] = description;
+    data['startDate'] = startDate;
+    data['endDate'] = endDate;
+    data['lifeCycleId'] = lifeCycleId;
+    if (projectLifeCycle != null) {
+      data['projectLifeCycle'] = projectLifeCycle!.toJson();
     }
-    data['projectCategoryId'] = this.projectCategoryId;
-    data['weight'] = this.weight;
-    data['budget'] = this.budget;
-    data['teamIds'] = this.teamIds;
-    data['sectionDepartment'] = this.sectionDepartment?.toJson();
-    data['implementorDepartmentId'] = this.implementorDepartmentId;
-    data['implementorDepartmentName'] = this.implementorDepartmentName;
-    data['managerId'] = this.managerId;
-    data['status'] = this.status;
-    data['managerName'] = this.managerName;
-    data['periortyLevelId'] = this.priorityLevelId;
-    data['riskLevelId'] = this.riskLevelId;
-    data['outputCount'] = this.outputCount;
-    data['createdBy'] = this.createdBy;
-    data['createdAt'] = this.createdAt;
-    data['updatedBy'] = this.updatedBy;
-    data['updatedAt'] = this.updatedAt;
+    data['projectCategoryId'] = projectCategoryId;
+    data['weight'] = weight;
+    data['budget'] = budget;
+    data['teamIds'] = teamIds;
+    data['sectionDepartment'] = sectionDepartment?.toJson();
+    data['implementorDepartmentId'] = implementorDepartmentId;
+    data['implementorDepartmentName'] = implementorDepartmentName;
+    data['managerId'] = managerId;
+    data['status'] = status;
+    data['progressRation'] = progressRatio;
+    data['managerName'] = managerName;
+    data['periortyLevelId'] = priorityLevelId;
+    data['riskLevelId'] = riskLevelId;
+    data['outputCount'] = outputCount;
+    data['createdBy'] = createdBy;
+    data['createdAt'] = createdAt;
+    data['updatedBy'] = updatedBy;
+    data['updatedAt'] = updatedAt;
     return data;
   }
 
@@ -148,13 +153,13 @@ class ProjectLifeCycleModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['description'] = this.description;
-    if (this.projectStages != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['description'] = description;
+    if (projectStages != null) {
       data['projectStages'] =
-          this.projectStages!.map((v) => v.toJson()).toList();
+          projectStages!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -191,15 +196,15 @@ class ProjectStagesModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['description'] = this.description;
-    data['lifeCycleId'] = this.lifeCycleId;
-    data['progress'] = this.progress;
-    if (this.projectProcesses != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['description'] = description;
+    data['lifeCycleId'] = lifeCycleId;
+    data['progress'] = progress;
+    if (projectProcesses != null) {
       data['projectProcesses'] =
-          this.projectProcesses!.map((v) => v.toJson()).toList();
+          projectProcesses!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -252,20 +257,20 @@ class ProjectProcessModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['description'] = this.description;
-    data['stageId'] = this.stageId;
-    data['departmentId'] = this.departmentId;
-    data['workflowId'] = this.workflowId;
-    data['workflow'] = this.workflow;
-    data['viewOrder'] = this.viewOrder;
-    data['progress'] = this.progress;
-    data['isRunningWorkflow'] = this.isRunningWorkflow;
-    data['isCompletedWorkflow'] = this.isCompletedWorkflow;
-    data['runningWorkflowTime'] = this.runningWorkflowTime;
-    data['completedWorkflowTime'] = this.completedWorkflowTime;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['description'] = description;
+    data['stageId'] = stageId;
+    data['departmentId'] = departmentId;
+    data['workflowId'] = workflowId;
+    data['workflow'] = workflow;
+    data['viewOrder'] = viewOrder;
+    data['progress'] = progress;
+    data['isRunningWorkflow'] = isRunningWorkflow;
+    data['isCompletedWorkflow'] = isCompletedWorkflow;
+    data['runningWorkflowTime'] = runningWorkflowTime;
+    data['completedWorkflowTime'] = completedWorkflowTime;
     return data;
   }
 }
@@ -289,12 +294,12 @@ class SectionDepartmentModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['description'] = this.description;
-    data['manager'] = this.manager;
-    data['projectCount'] = this.projectCount;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['description'] = description;
+    data['manager'] = manager;
+    data['projectCount'] = projectCount;
     return data;
   }
 }

@@ -19,7 +19,7 @@ class ProjectDetailsDescription extends StatelessWidget {
           children: [
             Expanded(
               child: ProjectContentCard(
-                icon: "assets/svgs/calendar.svg",
+                icon: Assets.svgs.calendar.path,
                 title: allTranslations.text("start_date"),
                 desc: (model.startDate ?? DateTime.now()).format("d MMM yyyy"),
               ),
@@ -27,7 +27,7 @@ class ProjectDetailsDescription extends StatelessWidget {
             SizedBox(width: 8.h),
             Expanded(
               child: ProjectContentCard(
-                icon: "assets/svgs/calendar_tick.svg",
+                icon: Assets.svgs.calendarTick.path,
                 title: allTranslations.text("end_date"),
                 desc: (model.endDate ?? DateTime.now()).format("d MMM yyyy"),
               ),
@@ -40,7 +40,7 @@ class ProjectDetailsDescription extends StatelessWidget {
           children: [
             Expanded(
               child: ProjectContentCard(
-                icon: "assets/svgs/security-user.svg",
+                icon: Assets.svgs.securityUser.path,
                 title: allTranslations.text("the_owning_entity"),
                 desc: model.sectionDepartment?.name ?? "",
               ),
@@ -48,7 +48,7 @@ class ProjectDetailsDescription extends StatelessWidget {
             SizedBox(width: 8.h),
             Expanded(
               child: ProjectContentCard(
-                  icon: "assets/svgs/project_life_cycle.svg",
+                  icon: Assets.svgs.projectLifeCycle.path,
                   title: allTranslations.text("project_life_cycle"),
                   desc: projectStages.isNotEmpty
                       ? (projectStages[0].title ?? '')
@@ -67,7 +67,7 @@ class ProjectDetailsDescription extends StatelessWidget {
           children: [
             Expanded(
               child: ProjectContentCard(
-                icon: "assets/svgs/filter.svg",
+                icon: Assets.svgs.filter.path,
                 title: allTranslations.text("project_category"),
                 desc: model.title ?? "",
               ),
@@ -75,7 +75,7 @@ class ProjectDetailsDescription extends StatelessWidget {
             SizedBox(width: 8.h),
             Expanded(
               child: ProjectContentCard(
-                icon: "assets/svgs/user.svg",
+                icon: Assets.svgs.user.path,
                 title: allTranslations.text("project_manager"),
                 desc: model.managerName ?? "",
               ),
@@ -88,7 +88,7 @@ class ProjectDetailsDescription extends StatelessWidget {
           children: [
             Expanded(
               child: ProjectContentCard(
-                icon: "assets/svgs/people.svg",
+                icon: Assets.svgs.people.path,
                 title: allTranslations.text("project_team"),
                 desc: "${model.teamIds?.join(", ")}",
               ),
@@ -96,7 +96,7 @@ class ProjectDetailsDescription extends StatelessWidget {
             SizedBox(width: 8.h),
             Expanded(
               child: ProjectContentCard(
-                icon: "assets/svgs/warning.svg",
+                icon: Assets.svgs.warning.path,
                 title: allTranslations.text("risk_level"),
                 desc: "${model.riskLevelId ?? 0}",
               ),
@@ -109,7 +109,7 @@ class ProjectDetailsDescription extends StatelessWidget {
           children: [
             Expanded(
               child: ProjectContentCard(
-                icon: "assets/svgs/outline_moneys.svg",
+                icon: Assets.svgs.outlineMoneys.path,
                 title: allTranslations.text("budget"),
                 desc: "${model.budget ?? 0}",
               ),
@@ -117,7 +117,7 @@ class ProjectDetailsDescription extends StatelessWidget {
             SizedBox(width: 8.h),
             Expanded(
               child: ProjectContentCard(
-                icon: "assets/svgs/task.svg",
+                icon: Assets.svgs.task.path,
                 title: allTranslations.text("outputs_number"),
                 desc: "${model.outputCount ?? 0}",
               ),
@@ -126,9 +126,9 @@ class ProjectDetailsDescription extends StatelessWidget {
         ),
         SizedBox(height: 16.h),
         ProjectContentCard(
-          icon: "assets/svgs/building.svg",
+          icon: Assets.svgs.building.path,
           title: allTranslations.text("entity_name"),
-          desc: "${model.implementorDepartmentName ?? ""}",
+          desc: model.implementorDepartmentName ?? "",
         ),
       ],
     );

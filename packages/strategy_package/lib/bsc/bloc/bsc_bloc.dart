@@ -74,7 +74,7 @@ class BscBloc extends Bloc<AppEvent, AppState> {
       final BscModel res = await BscRepo.getBscData();
 
       if (res.data != null) {
-        visionDesc = res.data?.description ?? '';
+        visionDesc = res.data?.title ?? '';
         axes = res.data?.strategicAxises ?? [];
         messages = res.data?.missions ?? [];
         values = res.data?.values ?? [];

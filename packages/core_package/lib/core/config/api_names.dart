@@ -4,19 +4,19 @@ abstract class ApiNames {
   static const strategyLogin = "Auth/AuthenticateExternalUserAsync";
   static const activeSystems = "Auth/ActiveSystems";
 
-  static const objectActivePercentage = "Dashboard/ObjectActivePersantge";
-  static const objectActiveCategorized = "ObjectActive/Categorized";
 
   // Strategy APIs ====================
+  static const objectActivePercentage = "Dashboard/ObjectActivePersantge";
+  static const objectActiveCategorized = "ObjectActive/Categorized";
   static const objectives = "ObjectActive";
   static const strategicAxis = "ObjectActive/GetStrategicAxis";
   static String objectiveDetails(id) => "ObjectActive/$id";
   static const objectiveKPIS = "KPIS/GetKpiByObjectActive";
   static const objectiveInitiatives = "Initiatives/ByObjectActive";
-  static const bsc = "Dashboard";
+  static const bsc = "Dashboard/getDashboardBalance";
   static String objectiveChartData(id, time) => "ObjectActive/$id/Chart/$time";
 
-  static const ProjectProgress = "ObjectActive/Categorized";
+  static const ProjectProgress = "Project/ProjectChartCount";
   static const ProjectCategoriesProgress = "ProjectCategory/CategoriesProgress";
   static const projects = "Project";
   static const projectPriorityLevels = "Project/PeriortyLevels";

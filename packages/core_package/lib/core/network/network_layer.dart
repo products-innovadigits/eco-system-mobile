@@ -2,7 +2,6 @@
 import 'dart:io';
 
 import 'package:dio/io.dart';
-import 'package:flutter/foundation.dart';
 
 import '../config/app_config.dart';
 import '../utility/export.dart';

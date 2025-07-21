@@ -15,8 +15,8 @@ class BscView extends StatelessWidget {
       child: Scaffold(
         appBar: CustomAppBar(title: allTranslations.text(LocaleKeys.bsc)),
         body: BlocBuilder<BscBloc, AppState>(
+          buildWhen: (previous, current) => previous is! Done,
           builder: (context, state) {
-            cprint('BSC state: ================= $state');
             if (state is Loading || state is Start) {
               return ListAnimator(
                 customPadding: EdgeInsets.symmetric(

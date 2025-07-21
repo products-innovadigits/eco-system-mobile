@@ -12,6 +12,7 @@ dependencies:
     path: ../core_package
 
   fl_chart: ^1.0.0
+  syncfusion_flutter_charts: ^28.2.6
 
 
 dev_dependencies:
