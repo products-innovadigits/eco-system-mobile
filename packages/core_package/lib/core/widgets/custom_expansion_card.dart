@@ -51,15 +51,10 @@ class _CustomExpansionCardState extends State<CustomExpansionCard> {
               ),
               SizedBox(width: 12.w),
               widget.action ?? SizedBox(),
-              if (widget.withExpanded)
+              // if (widget.withExpanded)
                 InkWell(
                   onTap: () => setState(() => isExpanded = !isExpanded),
-                  child: AnimatedRotation(
-                    duration: const Duration(milliseconds: 450),
-                    turns: isExpanded ? 0.5 : 0,
-                    child: customImageIconSVG(
-                        imageName: 'up', color: Styles.PRIMARY_COLOR),
-                  ),
+                  child: AnimatedExpansionArrowWidget(isExpanded: isExpanded)
                 ),
             ],
           ),

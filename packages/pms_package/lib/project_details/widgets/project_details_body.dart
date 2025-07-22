@@ -26,7 +26,6 @@ class ProjectDetailsBody extends StatelessWidget {
               CustomExpansionCard(
                 title: allTranslations
                     .text("progress_at_each_stage_of_the_project"),
-                withExpanded: false,
                 child: ProjectCategoryHBarChart(
                     barColor: context.color.primary,
                     textColor: context.color.outlineVariant,

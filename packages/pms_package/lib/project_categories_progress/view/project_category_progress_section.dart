@@ -1,4 +1,3 @@
-
 import 'package:pms_package/shared/pms_exports.dart';
 
 class ProjectCategoryProgressSection extends StatelessWidget {
@@ -30,10 +29,16 @@ class ProjectCategoryProgressSection extends StatelessWidget {
                     title: allTranslations
                         .text("project_progress_rate_in_each_category"),
                     withView: false,
-                    onViewTap: () => CustomNavigator.push(Routes.PROJECTS),
                   ),
                   Divider(color: context.color.outline),
-                  ProjectCategoryHBarChart(data: projectCategoriesProgress , isHome: true),
+                  SizedBox(
+                    height: 220.h,
+                    child: SingleChildScrollView(
+                        child: SizedBox(
+                            height: projectCategoriesProgress.length * 40.h,
+                            child: ProjectCategoryHBarChart(
+                                data: projectCategoriesProgress))),
+                  ),
                 ],
               ),
             );
