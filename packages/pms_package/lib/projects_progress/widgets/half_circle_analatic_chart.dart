@@ -30,7 +30,7 @@ class HalfCircleAnalyticChart extends StatelessWidget {
                     if (d.value == 0) {
                       return '';
                     } else {
-                      return d.value.toString();
+                      return '${d.value.toString()}%';
                     }
                   },
                   // or d.value.toInt()

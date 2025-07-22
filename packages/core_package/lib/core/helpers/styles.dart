@@ -150,11 +150,11 @@ abstract class Styles {
         : LightColor.chartPrimary;
     switch (value) {
       case "مكتمل":
-        return LightColor.chartSecondary;
+        return LightColor.tertiary;
       case "متقدم":
         return primaryChart;
       case "متأخر":
-        return LightColor.chartTertiary;
+        return LightColor.chartSecondary;
       default:
         return primaryChart;
     }

@@ -23,17 +23,23 @@ class ProjectsProgressSection extends StatelessWidget {
                   categoryName: 'مكتمل',
                   color: '#B54708',
                   count: overviewData.completedPercentage!.toInt(),
-                  value: overviewData.completedPercentage!.toDouble()),
+                  value: (overviewData.completedPercentage!.toDouble() /
+                          overviewData.totalProjects!.toDouble()) *
+                      100),
               ProjectProgressModel(
                   categoryName: 'متقدم',
                   color: '#020F4C',
                   count: overviewData.onTrackPercentage!.toInt(),
-                  value: overviewData.onTrackPercentage!.toDouble()),
+                  value: (overviewData.onTrackPercentage!.toDouble() /
+                          overviewData.totalProjects!.toDouble()) *
+                      100),
               ProjectProgressModel(
                   categoryName: 'متأخر',
                   color: '#0C9A84',
                   count: overviewData.delayedPercentage!.toInt(),
-                  value: overviewData.delayedPercentage!.toDouble()),
+                  value: (overviewData.delayedPercentage!.toDouble() /
+                          overviewData.totalProjects!.toDouble()) *
+                      100),
             ];
             return Stack(
               children: [
@@ -51,8 +57,8 @@ class ProjectsProgressSection extends StatelessWidget {
                       child: Column(
                         children: [
                           SectionTitle(
-                            title:
-                                allTranslations.text("project_progress_rate"),
+                            title: allTranslations
+                                .text(LocaleKeys.project_progress_rate),
                             withView: true,
                             onViewTap: () =>
                                 CustomNavigator.push(Routes.PROJECTS),
@@ -94,6 +100,11 @@ class ProjectsProgressSection extends StatelessWidget {
                                             ),
                                           ),
                                         ),
+                                        SizedBox(width: 4.w),
+                                        Text(
+                                          '(${projects[i].count.toString()})',
+                                          style: context.textTheme.bodyMedium,
+                                        ),
                                       ],
                                     )),
                           ),
@@ -126,7 +137,7 @@ class ProjectsProgressSection extends StatelessWidget {
                           child: Column(
                             children: [
                               Text(
-                                allTranslations.text("total_projects"),
+                                allTranslations.text(LocaleKeys.total_projects),
                                 style: context.textTheme.labelSmall,
                               ),
                               Text(

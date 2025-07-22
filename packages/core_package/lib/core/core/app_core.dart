@@ -93,7 +93,7 @@ class AppCore {
   static warningExitMessage(message) => AppCore.showToastSnackBar(
     notification: AppNotification(
       message: message,
-      backgroundColor: LightColor.border,
+      backgroundColor: LightColor.primary,
       fontSize: 16,
     ),
   );

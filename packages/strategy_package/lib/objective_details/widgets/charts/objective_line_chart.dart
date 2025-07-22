@@ -10,7 +10,17 @@ class ObjectiveBarChartSyncfusion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tooltipBehavior = TooltipBehavior(enable: true);
+    final tooltipBehavior = TooltipBehavior(
+      enable: true,
+      header: '',
+      canShowMarker: false,
+      format: 'point.y',
+      textStyle: context.textTheme.labelMedium?.copyWith(
+        color: LightColor.white,
+        fontWeight: FontWeight.w600,
+      ),
+      color: context.color.primary,
+    );
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,

@@ -13,27 +13,15 @@ class ObjectiveLineAnnualChart extends StatelessWidget {
           return Column(
             children: [
               // ObjectiveLineChart(data: list),
-              // ObjectiveBarChartSyncfusion(data: list),
-              ObjectiveBarChartSyncfusion(data: [
-                ObjectiveChartModel(
-                  objectValue: 60,
-                  kpisValue: 30,
-                  initiativesValue: 30,
-                  year: 2025
-                ),
-                // ObjectiveChartModel(
-                //   objectValue: 80,
-                //   kpisValue: 50,
-                //   initiativesValue: 30,
-                //   year: 2026
-                // ),
-                // ObjectiveChartModel(
-                //   objectValue: 100,
-                //   kpisValue: 70,
-                //   initiativesValue: 30,
-                //   year: 2027
-                // ),
-              ]),
+              ObjectiveBarChartSyncfusion(data: list),
+              // ObjectiveBarChartSyncfusion(data: [
+              //   ObjectiveChartModel(
+              //     objectValue: 60,
+              //     kpisValue: 30,
+              //     initiativesValue: 30,
+              //     year: 2025
+              //   ),
+              // ]),
               Wrap(
                 alignment: WrapAlignment.start,
                 direction: Axis.horizontal,

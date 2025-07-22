@@ -51,7 +51,7 @@ class _ObjectiveDetailsChartState extends State<ObjectiveDetailsChart> {
                 (i) => InkWell(
                   onTap: () => setState(() {
                     currentTime = ChartTime.values[i];
-                    scrollToBottom();
+                    // scrollToBottom();
                   }),
                   child: Container(
                     padding:
