@@ -1,9 +1,9 @@
-
-
 import '../../shared/strategy_exports.dart';
 
 class ObjectivePercentageSection extends StatelessWidget {
-  const ObjectivePercentageSection({super.key});
+  final bool isStrategyHome;
+
+  const ObjectivePercentageSection({super.key, this.isStrategyHome = false});
 
   @override
   Widget build(BuildContext context) {
@@ -25,15 +25,22 @@ class ObjectivePercentageSection extends StatelessWidget {
               width: context.w,
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
               decoration: BoxDecoration(
-                  color: context.color.surfaceContainer,
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: context.color.outline)),
+                color: context.color.surfaceContainer,
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: context.color.outline),
+              ),
               child: Column(
                 children: [
                   SectionTitle(
-                    title: allTranslations.text(LocaleKeys.objective_percentage_rate),
+                    title: allTranslations.text(
+                      LocaleKeys.objective_percentage_rate,
+                    ),
                     withView: true,
-                    onViewTap: () => CustomNavigator.push(Routes.OBJECTIVES),
+                    onViewTap: () => CustomNavigator.push(
+                      isStrategyHome
+                          ? Routes.OBJECTIVES
+                          : Routes.STRATEGY_LAYOUT,
+                    ),
                   ),
                   Divider(color: context.color.outline),
                   SizedBox(height: 12.h),
@@ -45,37 +52,39 @@ class ObjectivePercentageSection extends StatelessWidget {
                     runSpacing: 8.w,
                     spacing: 24.h,
                     children: List.generate(
-                        objectives.length,
-                        (i) => Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.circle,
-                                  color: Styles.statusColors(
-                                      objectives[i].categoryName ?? ""),
-                                  size: 14,
-                                ),
-                                SizedBox(width: 4.w),
-                                Flexible(
-                                  child: RichText(
-                                    textAlign: TextAlign.center,
-                                    text: TextSpan(
-                                      text: objectives[i].categoryName,
-                                      style: context.textTheme.bodyMedium,
-                                      children: [
-                                        // TextSpan(
-                                        //   text: " ${78}",
-                                        //   style: AppTextStyles.w400.copyWith(
-                                        //       fontSize: 12,
-                                        //       color: Styles.DETAILS),
-                                        // )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )),
-                  )
+                      objectives.length,
+                      (i) => Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.circle,
+                            color: Styles.statusColors(
+                              objectives[i].categoryName ?? "",
+                            ),
+                            size: 14,
+                          ),
+                          SizedBox(width: 4.w),
+                          Flexible(
+                            child: RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                                text: objectives[i].categoryName,
+                                style: context.textTheme.bodyMedium,
+                                children: [
+                                  // TextSpan(
+                                  //   text: " ${78}",
+                                  //   style: AppTextStyles.w400.copyWith(
+                                  //       fontSize: 12,
+                                  //       color: Styles.DETAILS),
+                                  // )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             );

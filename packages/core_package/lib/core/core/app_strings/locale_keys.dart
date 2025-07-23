@@ -44,6 +44,7 @@ abstract class  LocaleKeys {
   static const morning = 'morning';
   static const evening = 'evening';
   static const objective_percentage_rate = 'objective_percentage_rate';
+  static const kpis_initiatives_objective = 'kpis_initiatives_objective';
   static const objective_percentage = 'objective_percentage';
   static const view_more = 'view_more';
   static const other_requests = 'other_requests';
@@ -392,6 +393,7 @@ abstract class  LocaleKeys {
   static const experience = 'experience';
   static const certificates = 'certificates';
   static const years = 'years';
+  static const strategic_axis = 'strategic_axis';
   static const bsc = 'bsc';
   static const vision = 'vision';
   static const the_message = 'the_message';

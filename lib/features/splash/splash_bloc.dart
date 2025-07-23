@@ -36,11 +36,7 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
       if (!isLogin) {
         CustomNavigator.push(Routes.LOGIN, clean: true);
       } else {
-        CustomNavigator.push(
-          Routes.MAIN_PAGE,
-          clean: true,
-          arguments: MainPageArgs(index: 0),
-        );
+        CustomNavigator.push(Routes.MAIN_PAGE, clean: true);
       }
     });
   }

@@ -302,11 +302,11 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/hide.svg
   SvgGenImage get hide => const SvgGenImage('assets/svgs/hide.svg');
 
-  /// File path: assets/svgs/home-active.svg
+  /// File path: assets/svgs/main_page-active.svg
   SvgGenImage get homeActive =>
       const SvgGenImage('assets/svgs/home-active.svg');
 
-  /// File path: assets/svgs/home.svg
+  /// File path: assets/svgs/main_page.svg
   SvgGenImage get home => const SvgGenImage('assets/svgs/home.svg');
 
   /// File path: assets/svgs/info-circle.svg

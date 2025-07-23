@@ -3,10 +3,10 @@ import 'package:intl/intl.dart';
 import 'package:strategy_package/objective_details/model/objective_chart_model.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class ObjectiveBarChartSyncfusion extends StatelessWidget {
+class ObjectiveLineChart extends StatelessWidget {
   final List<ObjectiveChartModel> data;
 
-  const ObjectiveBarChartSyncfusion({super.key, required this.data});
+  const ObjectiveLineChart({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {

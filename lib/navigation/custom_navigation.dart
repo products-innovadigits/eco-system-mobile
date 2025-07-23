@@ -8,13 +8,14 @@ import 'package:eco_system/features/auth/login/view/login.dart';
 import 'package:eco_system/features/auth/otp/view/otp_view.dart';
 import 'package:eco_system/features/intro/view/intro_view.dart';
 import 'package:eco_system/features/intro/view/onboarding.dart';
-import 'package:eco_system/features/main_page.dart';
+import 'package:eco_system/features/main_page/view/main_page.dart';
 import 'package:eco_system/features/splash/splash.dart';
 import 'package:pms_package/project_details/view/project_details_view.dart';
 import 'package:pms_package/projects/view/projects_view.dart';
 import 'package:strategy_package/bsc/view/bsc_view.dart';
 import 'package:strategy_package/objective_details/view/objective_details_view.dart';
 import 'package:strategy_package/objectives/view/objectives_view.dart';
+import 'package:strategy_package/strategy_layout.dart';
 
 class AppRouter {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
@@ -35,12 +36,15 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const OtpView());
 
       case Routes.MAIN_PAGE:
-        final args = settings.arguments as MainPageArgs?;
-        return MaterialPageRoute(
-          builder: (_) => MainPage(index: args?.index ?? 0),
-        );
+        return MaterialPageRoute(builder: (_) => const MainPage());
 
       /// Strategy Routes ===========================================
+      case Routes.STRATEGY_LAYOUT:
+        final args = settings.arguments as MainPageArgs?;
+        return MaterialPageRoute(
+          builder: (_) => StrategyLayout(index: args?.index ?? 0),
+        );
+
       case Routes.OBJECTIVES:
         return MaterialPageRoute(builder: (_) => const ObjectivesView());
 

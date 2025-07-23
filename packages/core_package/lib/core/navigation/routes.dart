@@ -9,6 +9,7 @@ class Routes {
   static const OTP = "OTP";
   static const SIGNUP = "SIGNUP";
   static const MAIN_PAGE = "MAIN_PAGE";
+  static const STRATEGY_LAYOUT = "STRATEGY_LAYOUT";
   static const EDIT_PASSWORD = "EDIT_PASSWORD";
 
   static const PROFILE = "PROFILE";

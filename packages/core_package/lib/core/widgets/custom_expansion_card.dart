@@ -7,12 +7,14 @@ class CustomExpansionCard extends StatefulWidget {
       required this.title,
       this.subTitle,
       this.withExpanded = true,
+      this.withMargin = true,
       this.action});
   final Widget child;
   final String title;
   final String? subTitle;
   final Widget? action;
   final bool withExpanded;
+  final bool withMargin;
   @override
   State<CustomExpansionCard> createState() => _CustomExpansionCardState();
 }
@@ -23,7 +25,7 @@ class _CustomExpansionCardState extends State<CustomExpansionCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
+      margin: widget.withMargin ? EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w) : null,
       padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
       decoration: BoxDecoration(
           color: context.color.surfaceContainer,
@@ -51,7 +53,7 @@ class _CustomExpansionCardState extends State<CustomExpansionCard> {
               ),
               SizedBox(width: 12.w),
               widget.action ?? SizedBox(),
-              // if (widget.withExpanded)
+              if (widget.withExpanded)
                 InkWell(
                   onTap: () => setState(() => isExpanded = !isExpanded),
                   child: AnimatedExpansionArrowWidget(isExpanded: isExpanded)

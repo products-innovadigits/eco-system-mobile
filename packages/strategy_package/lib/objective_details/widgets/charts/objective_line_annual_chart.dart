@@ -13,7 +13,7 @@ class ObjectiveLineAnnualChart extends StatelessWidget {
           return Column(
             children: [
               // ObjectiveLineChart(data: list),
-              ObjectiveBarChartSyncfusion(data: list),
+              ObjectiveLineChart(data: list),
               // ObjectiveBarChartSyncfusion(data: [
               //   ObjectiveChartModel(
               //     objectValue: 60,

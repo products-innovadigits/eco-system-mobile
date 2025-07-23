@@ -4,12 +4,11 @@ import 'package:core_package/core/bloc/user_bloc.dart';
 import 'package:core_package/core/core/enums.dart';
 import 'package:core_package/core/utility/extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:pms_package/project_categories_progress/view/project_category_progress_section.dart';
 import 'package:pms_package/projects_progress/view/projects_progress_section.dart';
 import 'package:strategy_package/objective_percentage/view/objective_percentage_section.dart';
 
-class HomeBody extends StatelessWidget {
-  const HomeBody({super.key});
+class MainBody extends StatelessWidget {
+  const MainBody({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +18,7 @@ class HomeBody extends StatelessWidget {
         child: Column(
           spacing: 16.h,
           children: [
-            115.sh,
+            130.sh,
             if (UserBloc.activeSystems.contains(ActiveSystemEnum.strategy))
               ObjectivePercentageSection(),
             if (UserBloc.activeSystems.contains(ActiveSystemEnum.pms)) ...[

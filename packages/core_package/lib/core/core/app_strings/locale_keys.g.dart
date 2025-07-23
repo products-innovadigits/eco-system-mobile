@@ -48,7 +48,7 @@ abstract class  LocaleKeys {
   static const view_more = 'view_more';
   static const other_requests = 'other_requests';
   static const group = 'group';
-  static const home = 'home';
+  static const home = 'main_page';
   static const reports = 'reports';
   static const notifications = 'notifications';
   static const menu = 'menu';

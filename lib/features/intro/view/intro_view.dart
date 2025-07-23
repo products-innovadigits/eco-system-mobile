@@ -15,22 +15,12 @@ class _IntroViewState extends State<IntroView> {
     IntroItem(
       title: "أراضي ومخططات",
       subTitle: "استثمر في المستقبل وامتلك الأرض \nالتي تحلم بها",
-      images: [
-        "",
-        "",
-        "",
-        "",
-      ],
+      images: ["", "", "", ""],
     ),
     IntroItem(
       title: "مشاريع سكنية",
       subTitle: "اجعل حلمك بالتملك العقاري حقيقة \nداخل تطبيقنا",
-      images: [
-        "",
-        "",
-        "",
-        "",
-      ],
+      images: ["", "", "", ""],
     ),
   ];
 
@@ -76,13 +66,13 @@ class _IntroViewState extends State<IntroView> {
                                 index2 == 0
                                     ? 50.w
                                     : index2 == 3
-                                        ? -50.w
-                                        : 0,
+                                    ? -50.w
+                                    : 0,
                                 index2 == 2
                                     ? -10
                                     : index2 == 1
-                                        ? 10
-                                        : 0,
+                                    ? 10
+                                    : 0,
                                 0,
                               ),
                               width: index2 == 0 || index2 == 3
@@ -127,10 +117,7 @@ class _IntroViewState extends State<IntroView> {
             SizedBox(height: 16.h),
             Text(
               introItems[selectPage].title,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 4.h),
             Text(
@@ -146,9 +133,7 @@ class _IntroViewState extends State<IntroView> {
             GestureDetector(
               onTap: () {
                 if (selectPage == introItems.length - 1) {
-                  CustomNavigator.push(Routes.MAIN_PAGE,
-                      arguments: MainPageArgs(
-                          index: 3));
+                  CustomNavigator.push(Routes.MAIN_PAGE);
                 } else {
                   controller.nextPage(
                     duration: const Duration(milliseconds: 300),
@@ -166,14 +151,15 @@ class _IntroViewState extends State<IntroView> {
                         width: 60,
                         child: TweenAnimationBuilder<double>(
                           tween: Tween<double>(
-                              begin: 0.0,
-                              end: (selectPage + 1) / introItems.length * 1),
+                            begin: 0.0,
+                            end: (selectPage + 1) / introItems.length * 1,
+                          ),
                           duration: const Duration(milliseconds: 300),
                           builder: (context, value, _) =>
                               CircularProgressIndicator(
-                            value: value,
-                            strokeCap: StrokeCap.round,
-                          ),
+                                value: value,
+                                strokeCap: StrokeCap.round,
+                              ),
                         ),
                       ),
                     ),
@@ -198,11 +184,11 @@ class _IntroViewState extends State<IntroView> {
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

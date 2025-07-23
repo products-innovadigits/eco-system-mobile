@@ -47,7 +47,6 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
           CustomNavigator.push(
             Routes.MAIN_PAGE,
             clean: true,
-            arguments: MainPageArgs(index: 0),
           );
           AppCore.successMessage(
             allTranslations.text('you_logged_in_successfully'),

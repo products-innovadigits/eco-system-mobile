@@ -1,8 +1,8 @@
 import 'package:core_package/core/utility/export.dart';
 import 'package:core_package/core/widgets/profile_image_widget.dart';
 
-class HomeHeader extends StatelessWidget {
-  const HomeHeader({super.key});
+class MainHeader extends StatelessWidget {
+  const MainHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +10,7 @@ class HomeHeader extends StatelessWidget {
       builder: (context, state) {
         return Container(
           width: context.w,
-          height: context.h * 0.30,
+          height: 210.h,
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           // color: context.color.primary,
           decoration: BoxDecoration(
@@ -23,7 +23,7 @@ class HomeHeader extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                45.sh,
+                50.sh,
                 Row(
                   children: [
                     Expanded(
@@ -66,7 +66,7 @@ class HomeHeader extends StatelessWidget {
                       ),
                     ),
                     8.sw,
-                    ProfileImageWidget(radius: 22.w),
+                    ProfileImageWidget(radius: 20.w),
                   ],
                 ),
               ],
