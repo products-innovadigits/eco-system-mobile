@@ -39,7 +39,7 @@ class _MainPageState extends State<MainPage> {
       child: Scaffold(
         body: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
-          child: Stack(children: [MainHeader(), MainBody()]),
+          child: Stack(children: [MainHeader(withBackButton: false), MainBody()]),
         ),
       ),
     );

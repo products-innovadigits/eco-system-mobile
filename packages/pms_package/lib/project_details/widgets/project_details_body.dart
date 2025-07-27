@@ -1,3 +1,5 @@
+
+import 'package:pms_package/project_details/widgets/project_stages_chart.dart';
 import 'package:pms_package/shared/pms_exports.dart';
 
 class ProjectDetailsBody extends StatelessWidget {
@@ -22,11 +24,16 @@ class ProjectDetailsBody extends StatelessWidget {
                 ),
               ),
 
+              CustomExpansionCard(
+                title: allTranslations.text(LocaleKeys.challenges_risks),
+                child: ProjectsChallengesRisks(),
+              ),
+
               ///Progress at each stage of the project
               CustomExpansionCard(
                 title: allTranslations
                     .text("progress_at_each_stage_of_the_project"),
-                child: ProjectCategoryHBarChart(
+                child: ProjectStagesChart(
                     barColor: context.color.primary,
                     textColor: context.color.outlineVariant,
                     withIntervals: false,

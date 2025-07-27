@@ -81,6 +81,14 @@ class ObjectivePercentageSection extends StatelessWidget {
                               ),
                             ),
                           ),
+                          SizedBox(width: 4.w),
+                          Text(
+                            '(${objectives[i].count})',
+                            style:
+                            context.textTheme.bodyMedium?.copyWith(
+                              color: context.color.outlineVariant,
+                            ),
+                          ),
                         ],
                       ),
                     ),

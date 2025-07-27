@@ -302,11 +302,11 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/hide.svg
   SvgGenImage get hide => const SvgGenImage('assets/svgs/hide.svg');
 
-  /// File path: assets/svgs/main_page-active.svg
+  /// File path: assets/svgs/home-active.svg
   SvgGenImage get homeActive =>
       const SvgGenImage('assets/svgs/home-active.svg');
 
-  /// File path: assets/svgs/main_page.svg
+  /// File path: assets/svgs/home.svg
   SvgGenImage get home => const SvgGenImage('assets/svgs/home.svg');
 
   /// File path: assets/svgs/info-circle.svg
@@ -454,6 +454,9 @@ class $AssetsSvgsGen {
 
   /// File path: assets/svgs/reports.svg
   SvgGenImage get reports => const SvgGenImage('assets/svgs/reports.svg');
+
+  /// File path: assets/svgs/request.svg
+  SvgGenImage get request => const SvgGenImage('assets/svgs/request.svg');
 
   /// File path: assets/svgs/right.svg
   SvgGenImage get right => const SvgGenImage('assets/svgs/right.svg');
@@ -630,6 +633,7 @@ class $AssetsSvgsGen {
     refreshCircle,
     refreshSquare,
     reports,
+    request,
     right,
     rocket,
     searchNormal,

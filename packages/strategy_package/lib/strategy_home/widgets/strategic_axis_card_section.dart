@@ -21,7 +21,7 @@ class StrategicAxisCardSection extends StatelessWidget {
         return CustomExpansionCard(
           title: allTranslations.text(LocaleKeys.strategic_axis),
           action: InkWell(
-            onTap: () => CustomNavigator.push(Routes.BSC),
+            onTap: () => CustomNavigator.push(Routes.BSC, arguments: true),
             child: Text(
               allTranslations.text(LocaleKeys.view_more),
               style: context.textTheme.labelSmall?.copyWith(
@@ -36,7 +36,7 @@ class StrategicAxisCardSection extends StatelessWidget {
               crossAxisCount: 2,
               mainAxisSpacing: 8.h,
               crossAxisSpacing: 8.w,
-              childAspectRatio: 6
+              childAspectRatio: 6,
             ),
             itemBuilder: (context, index) {
               return Row(

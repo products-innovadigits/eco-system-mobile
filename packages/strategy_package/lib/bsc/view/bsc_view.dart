@@ -1,19 +1,26 @@
 import 'package:core_package/core/utility/export.dart';
 import 'package:strategy_package/bsc/bloc/bsc_bloc.dart';
+import 'package:strategy_package/bsc/widgets/strategic_axis_objectives_section.dart';
 import 'package:strategy_package/bsc/widgets/vision_section.dart';
 
 import '../widgets/perspectives_section.dart';
 import '../widgets/strategic_axes_section.dart';
 
 class BscView extends StatelessWidget {
-  const BscView({super.key});
+  final bool isStrategicAxis;
+
+  const BscView({super.key, this.isStrategicAxis = false});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => BscBloc()..add(Click()),
       child: Scaffold(
-        appBar: CustomAppBar(title: allTranslations.text(LocaleKeys.bsc)),
+        appBar: CustomAppBar(
+          title: allTranslations.text(
+            isStrategicAxis ? LocaleKeys.strategic_axis : LocaleKeys.bsc,
+          ),
+        ),
         body: BlocBuilder<BscBloc, AppState>(
           buildWhen: (previous, current) => previous is! Done,
           builder: (context, state) {
@@ -27,7 +34,10 @@ class BscView extends StatelessWidget {
                   10,
                   (index) => Padding(
                     padding: const EdgeInsets.only(bottom: 16.0),
-                    child: CustomShimmerContainer(height: 100.h , width: context.w),
+                    child: CustomShimmerContainer(
+                      height: 100.h,
+                      width: context.w,
+                    ),
                   ),
                 ),
               );
@@ -44,11 +54,12 @@ class BscView extends StatelessWidget {
                   24.sh,
 
                   /// Strategic Axes Section
-                  const StrategicAxesSection(),
-                  24.sh,
+                  StrategicAxesSection(isStrategicAxis: isStrategicAxis),
+                  isStrategicAxis ? 8.sh : 24.sh,
 
                   /// Perspectives Section
-                  const PerspectivesSection(),
+                  if (!isStrategicAxis) const PerspectivesSection(),
+                  if (isStrategicAxis) const StrategicAxisObjectivesSection(),
                 ],
               );
             } else {

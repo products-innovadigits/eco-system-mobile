@@ -16,7 +16,7 @@ abstract class ApiNames {
   static const bsc = "Dashboard/getDashboardBalance";
   static String objectiveChartData(id, time) => "ObjectActive/$id/Chart/$time";
 
-  static const ProjectProgress = "Project/ProjectChartCount";
+  static const ProjectProgress = "Project/GetProgressCountPrestange";
   static const ProjectCategoriesProgress = "ProjectCategory/CategoriesProgress";
   static const projects = "Project";
   static const projectPriorityLevels = "Project/PeriortyLevels";

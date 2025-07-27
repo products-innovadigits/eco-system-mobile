@@ -16,6 +16,7 @@ import 'package:strategy_package/bsc/view/bsc_view.dart';
 import 'package:strategy_package/objective_details/view/objective_details_view.dart';
 import 'package:strategy_package/objectives/view/objectives_view.dart';
 import 'package:strategy_package/strategy_layout.dart';
+import 'package:pms_package/pms_layout.dart';
 
 class AppRouter {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
@@ -49,7 +50,10 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const ObjectivesView());
 
       case Routes.BSC:
-        return MaterialPageRoute(builder: (_) => const BscView());
+        return MaterialPageRoute(
+          builder: (_) =>
+              BscView(isStrategicAxis: settings.arguments as bool? ?? false),
+        );
 
       case Routes.OBJECTIVE_DETAILS:
         return MaterialPageRoute(
@@ -57,6 +61,12 @@ class AppRouter {
         );
 
       /// PMS Routes ===========================================
+      case Routes.PMS_LAYOUT:
+        final args = settings.arguments as MainPageArgs?;
+        return MaterialPageRoute(
+          builder: (_) => PmsLayout(index: args?.index ?? 0),
+        );
+
       case Routes.PROJECTS:
         return MaterialPageRoute(builder: (_) => const ProjectsView());
 

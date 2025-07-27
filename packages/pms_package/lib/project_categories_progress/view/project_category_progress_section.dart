@@ -1,7 +1,9 @@
 import 'package:pms_package/shared/pms_exports.dart';
 
 class ProjectCategoryProgressSection extends StatelessWidget {
-  const ProjectCategoryProgressSection({super.key});
+  final bool isPmsHome;
+
+  const ProjectCategoryProgressSection({super.key, this.isPmsHome = false});
 
   @override
   Widget build(BuildContext context) {
@@ -32,12 +34,16 @@ class ProjectCategoryProgressSection extends StatelessWidget {
                   ),
                   Divider(color: context.color.outline),
                   SizedBox(
-                    height: 220.h,
+                    height: isPmsHome ? projectCategoriesProgress.length * 30.h : 250.h,
                     child: SingleChildScrollView(
-                        child: SizedBox(
-                            height: projectCategoriesProgress.length * 40.h,
-                            child: ProjectCategoryHBarChart(
-                                data: projectCategoriesProgress))),
+                      child: SizedBox(
+                        height: isPmsHome ? projectCategoriesProgress.length * 60.h : 250.h,
+                        child: ProjectCategoriesChart(
+                          data: projectCategoriesProgress,
+                          isPmsHome: isPmsHome,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),

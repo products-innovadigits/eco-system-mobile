@@ -310,6 +310,8 @@ abstract class  LocaleKeys {
   static const total_candidates = 'total_candidates';
   static const total_projects = 'total_projects';
   static const project_progress_rate = 'project_progress_rate';
+  static const latest_requests = 'latest_requests';
+  static const challenges_risks = 'challenges_risks';
   static const project_progress_rate_in_each_category = 'project_progress_rate_in_each_category';
   static const the_owning_entity = 'the_owning_entity';
   static const project_life_cycle = 'project_life_cycle';

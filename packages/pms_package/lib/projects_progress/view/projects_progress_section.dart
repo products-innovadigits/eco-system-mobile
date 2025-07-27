@@ -4,10 +4,11 @@ import 'package:pms_package/project_categories_progress/view/project_category_pr
 import 'package:pms_package/projects_progress/widgets/half_circle_analatic_chart.dart';
 
 import '../bloc/projects_progress_bloc.dart';
-import '../model/project_progress_model.dart';
 
 class ProjectsProgressSection extends StatelessWidget {
-  const ProjectsProgressSection({super.key});
+  final bool isPmsHome;
+
+  const ProjectsProgressSection({super.key, this.isPmsHome = false});
 
   @override
   Widget build(BuildContext context) {
@@ -16,31 +17,9 @@ class ProjectsProgressSection extends StatelessWidget {
       child: BlocBuilder<ProjectsProgressBloc, AppState>(
         builder: (context, state) {
           if (state is Done) {
-            ProjectsOverviewData overviewData =
-                state.data as ProjectsOverviewData;
-            List<ProjectProgressModel> projects = [
-              ProjectProgressModel(
-                  categoryName: 'مكتمل',
-                  color: '#B54708',
-                  count: overviewData.completedPercentage!.toInt(),
-                  value: (overviewData.completedPercentage!.toDouble() /
-                          overviewData.totalProjects!.toDouble()) *
-                      100),
-              ProjectProgressModel(
-                  categoryName: 'متقدم',
-                  color: '#020F4C',
-                  count: overviewData.onTrackPercentage!.toInt(),
-                  value: (overviewData.onTrackPercentage!.toDouble() /
-                          overviewData.totalProjects!.toDouble()) *
-                      100),
-              ProjectProgressModel(
-                  categoryName: 'متأخر',
-                  color: '#0C9A84',
-                  count: overviewData.delayedPercentage!.toInt(),
-                  value: (overviewData.delayedPercentage!.toDouble() /
-                          overviewData.totalProjects!.toDouble()) *
-                      100),
-            ];
+            List<ProjectsOverviewData> projects = state.data ?? [];
+            final int totalProjects = projects.fold(
+                0, (sum, item) => sum + (item.count ?? 0).toInt());
             return Stack(
               children: [
                 Column(
@@ -60,8 +39,9 @@ class ProjectsProgressSection extends StatelessWidget {
                             title: allTranslations
                                 .text(LocaleKeys.project_progress_rate),
                             withView: true,
-                            onViewTap: () =>
-                                CustomNavigator.push(Routes.PROJECTS),
+                            onViewTap: () => CustomNavigator.push(isPmsHome
+                                ? Routes.PROJECTS
+                                : Routes.PMS_LAYOUT),
                           ),
                           Divider(color: context.color.outline),
                           16.sh,
@@ -70,43 +50,49 @@ class ProjectsProgressSection extends StatelessWidget {
                             direction: Axis.horizontal,
                             runSpacing: 8.w,
                             spacing: 24.h,
-                            children: List.generate(
-                                projects.length,
-                                (i) => Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(
-                                          Icons.circle,
-                                          color: Styles.statusColors(
-                                              projects[i].categoryName ?? ""),
-                                          size: 14,
-                                        ),
-                                        SizedBox(width: 4.w),
-                                        Flexible(
-                                          child: RichText(
-                                            textAlign: TextAlign.center,
-                                            text: TextSpan(
-                                              text: projects[i].categoryName,
-                                              style:
-                                                  context.textTheme.bodyMedium,
-                                              children: [
-                                                // TextSpan(
-                                                //   text: " ${78}",
-                                                //   style: AppTextStyles.w400.copyWith(
-                                                //       fontSize: 12,
-                                                //       color: Styles.DETAILS),
-                                                // )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(width: 4.w),
-                                        Text(
-                                          '(${projects[i].count.toString()})',
-                                          style: context.textTheme.bodyMedium,
-                                        ),
-                                      ],
-                                    )),
+                            children: List.generate(projects.length, (i) {
+                              final Color categoryColor = Color(int.parse(
+                                  projects[i]
+                                          .hexColor
+                                          ?.replaceAll('#', '0xff') ??
+                                      '0xff000000'));
+                              return Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.circle,
+                                    color: categoryColor,
+                                    size: 14,
+                                  ),
+                                  SizedBox(width: 4.w),
+                                  Flexible(
+                                    child: RichText(
+                                      textAlign: TextAlign.center,
+                                      text: TextSpan(
+                                        text: projects[i].name,
+                                        style: context.textTheme.bodyMedium,
+                                        children: [
+                                          // TextSpan(
+                                          //   text: " ${78}",
+                                          //   style: AppTextStyles.w400.copyWith(
+                                          //       fontSize: 12,
+                                          //       color: Styles.DETAILS),
+                                          // )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 4.w),
+                                  Text(
+                                    '(${projects[i].count.toString()})',
+                                    style:
+                                        context.textTheme.bodyMedium?.copyWith(
+                                      color: context.color.outlineVariant,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }),
                           ),
                           // 16.sh,
                           // ProjectsProgressChart(projects: projects),
@@ -119,7 +105,7 @@ class ProjectsProgressSection extends StatelessWidget {
                       ),
                     ),
                     16.sh,
-                    ProjectCategoryProgressSection(),
+                    ProjectCategoryProgressSection(isPmsHome: isPmsHome),
                   ],
                 ),
                 Positioned(
@@ -141,7 +127,7 @@ class ProjectsProgressSection extends StatelessWidget {
                                 style: context.textTheme.labelSmall,
                               ),
                               Text(
-                                overviewData.totalProjects.toString(),
+                                totalProjects.toString(),
                                 style: context.textTheme.labelLarge?.copyWith(
                                     fontWeight: FontWeight.w600,
                                     color: context.color.secondary),

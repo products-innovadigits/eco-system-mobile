@@ -2,7 +2,9 @@ import 'package:core_package/core/utility/export.dart';
 import 'package:core_package/core/widgets/profile_image_widget.dart';
 
 class MainHeader extends StatelessWidget {
-  const MainHeader({super.key});
+  final bool? withBackButton;
+
+  const MainHeader({super.key, this.withBackButton = true});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,23 @@ class MainHeader extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                50.sh,
+                withBackButton == true
+                    ? Padding(
+                        padding: const EdgeInsets.only(top: 10, bottom: 15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            InkWell(
+                              onTap: () => CustomNavigator.pop(),
+                              child: Images(
+                                image: Assets.svgs.arrowBack.path,
+                                color: LightColor.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : 50.sh,
                 Row(
                   children: [
                     Expanded(

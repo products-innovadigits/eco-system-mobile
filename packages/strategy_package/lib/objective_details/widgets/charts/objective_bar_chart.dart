@@ -22,7 +22,7 @@ class _ObjectiveBarChartState extends State<ObjectiveBarChart> {
   Widget build(BuildContext context) {
     final isArabic = mainAppBloc.lang.valueOrNull == 'ar';
     // Step 1: Reverse the list
-    final data =  widget.data.toList();
+    final data =  widget.data.reversed.toList();
 
     // Step 2: Prepare bottom titles
     final bottomTitlesData = data
@@ -64,7 +64,7 @@ class _ObjectiveBarChartState extends State<ObjectiveBarChart> {
       height: context.h * 0.45,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        reverse: true,
+        // reverse: true,
         padding: EdgeInsets.only(top: 12.h),
         child: AspectRatio(
           aspectRatio: 1.8,
@@ -80,7 +80,7 @@ class _ObjectiveBarChartState extends State<ObjectiveBarChart> {
               ),
               titlesData: FlTitlesData(
                 show: true,
-                leftTitles: AxisTitles(
+                rightTitles: AxisTitles(
                   sideTitles: SideTitles(
                     showTitles: true,
                     reservedSize: 50,
@@ -88,7 +88,7 @@ class _ObjectiveBarChartState extends State<ObjectiveBarChart> {
                     interval: interval,
                   ),
                 ),
-                rightTitles: AxisTitles(
+                leftTitles: AxisTitles(
                   sideTitles: SideTitles(showTitles: false),
                 ),
                 topTitles: AxisTitles(

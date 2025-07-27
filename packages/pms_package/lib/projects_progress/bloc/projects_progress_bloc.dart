@@ -27,24 +27,23 @@ class ProjectsProgressBloc extends Bloc<AppEvent, AppState> {
   //   }
   // }
   onClick(AppEvent event, Emitter<AppState> emit) async {
-    // try {
+    try {
       emit(Loading());
 
       Response res = await ProjectProgressRepo.getProjectProgress();
 
       if (res.statusCode == 200 && res.data != null) {
-        ProjectsOverviewData data =
-            ProjectsOverviewData.fromJson(res.data["data"]);
-        cprint('====================${data.toJson()}');
+        List<ProjectsOverviewData> data = List<ProjectsOverviewData>.from(
+            res.data["data"].map((e) => ProjectsOverviewData.fromJson(e)));
         emit(Done(data: data));
       } else {
         AppCore.errorMessage(allTranslations.text('something_went_wrong'));
         emit(Error());
       }
-    // } catch (e) {
-    //   AppCore.errorMessage(allTranslations.text('something_went_wrong'));
-    //
-    //   emit(Error());
-    // }
+    } catch (e) {
+      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+
+      emit(Error());
+    }
   }
 }

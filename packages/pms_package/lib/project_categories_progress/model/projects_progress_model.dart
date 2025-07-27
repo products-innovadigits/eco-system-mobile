@@ -2,7 +2,7 @@ import 'package:core_package/core/network/mapper.dart';
 
 class ProjectsOverviewModel extends SingleMapper {
   final bool? succeeded;
-  final ProjectsOverviewData? data;
+  final List<ProjectsOverviewData>? data;
   final List<String>? warningErrors;
   final List<String>? validationErrors;
 
@@ -16,9 +16,9 @@ class ProjectsOverviewModel extends SingleMapper {
   factory ProjectsOverviewModel.fromJson(Map<String, dynamic> json) =>
       ProjectsOverviewModel(
         succeeded: json['succeeded'] as bool?,
-        data: json['data'] != null
-            ? ProjectsOverviewData.fromJson(json['data'] as Map<String, dynamic>)
-            : null,
+        data: (json['data'] as List<dynamic>?)
+            ?.map((e) => ProjectsOverviewData.fromJson(e as Map<String, dynamic>))
+            .toList(),
         warningErrors: (json['warningErrors'] as List<dynamic>?)
             ?.map((e) => e as String)
             .toList(),
@@ -30,7 +30,7 @@ class ProjectsOverviewModel extends SingleMapper {
   @override
   Map<String, dynamic> toJson() => {
     'succeeded': succeeded,
-    'data': data?.toJson(),
+    'data': data?.map((e) => e.toJson()).toList(),
     'warningErrors': warningErrors,
     'validationErrors': validationErrors,
   };
@@ -41,32 +41,32 @@ class ProjectsOverviewModel extends SingleMapper {
 }
 
 class ProjectsOverviewData extends SingleMapper {
-  final num? totalProjects;
-  final num? onTrackPercentage;
-  final num? delayedPercentage;
-  final num? completedPercentage;
+  final String? name;
+  final String? hexColor;
+  final num? percentage;
+  final num? count;
 
   ProjectsOverviewData({
-    this.totalProjects,
-    this.onTrackPercentage,
-    this.delayedPercentage,
-    this.completedPercentage,
+    this.name,
+    this.hexColor,
+    this.percentage,
+    this.count,
   });
 
   factory ProjectsOverviewData.fromJson(Map<String, dynamic> json) =>
       ProjectsOverviewData(
-        totalProjects: json['totalProjects'] as num?,
-        onTrackPercentage: json['onTrackPercentage'] as num?,
-        delayedPercentage: json['delayedPercentage'] as num?,
-        completedPercentage: json['completedPercentage'] as num?,
+        name: json['name'] as String?,
+        hexColor: json['hexColor'] as String?,
+        percentage: json['percentage'] as num?,
+        count: json['count'] as num?,
       );
 
   @override
   Map<String, dynamic> toJson() => {
-    'totalProjects': totalProjects,
-    'onTrackPercentage': onTrackPercentage,
-    'delayedPercentage': delayedPercentage,
-    'completedPercentage': completedPercentage,
+    'name': name,
+    'hexColor': hexColor,
+    'percentage': percentage,
+    'count': count,
   };
 
   @override

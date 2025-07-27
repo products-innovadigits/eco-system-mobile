@@ -2,7 +2,9 @@ import 'package:core_package/core/utility/export.dart';
 import 'package:strategy_package/bsc/bloc/bsc_bloc.dart';
 
 class StrategicAxesSection extends StatelessWidget {
-  const StrategicAxesSection({super.key});
+  final bool isStrategicAxis;
+
+  const StrategicAxesSection({super.key, this.isStrategicAxis = false});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +15,11 @@ class StrategicAxesSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              allTranslations.text(LocaleKeys.strategic_results),
+              allTranslations.text(
+                isStrategicAxis
+                    ? LocaleKeys.strategic_axis
+                    : LocaleKeys.strategic_results,
+              ),
               style: context.textTheme.labelMedium?.copyWith(
                 fontWeight: FontWeight.w700,
               ),

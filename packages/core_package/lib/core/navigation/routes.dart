@@ -9,7 +9,6 @@ class Routes {
   static const OTP = "OTP";
   static const SIGNUP = "SIGNUP";
   static const MAIN_PAGE = "MAIN_PAGE";
-  static const STRATEGY_LAYOUT = "STRATEGY_LAYOUT";
   static const EDIT_PASSWORD = "EDIT_PASSWORD";
 
   static const PROFILE = "PROFILE";
@@ -17,9 +16,11 @@ class Routes {
   static const TALENT_POOL = "TALENT_POOL";
   static const JOBS = "JOBS";
   static const CANDIDATES = "CANDIDATES";
+  static const STRATEGY_LAYOUT = "STRATEGY_LAYOUT";
   static const OBJECTIVES = "OBJECTIVES";
   static const OBJECTIVE_DETAILS = "OBJECTIVE_DETAILS";
   static const BSC = "Bsc";
+  static const PMS_LAYOUT = "PMS_LAYOUT";
   static const PROJECTS = "PROJECTS";
   static const PROJECT_DETAILS = "PROJECT_DETAILS";
   static const PDF = "PDF";}

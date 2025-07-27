@@ -25,6 +25,7 @@ export 'package:strategy_package/objective_percentage/bloc/objective_categorized
 export 'package:strategy_package/objective_percentage/bloc/objective_percentage_bloc.dart';
 export 'package:strategy_package/objective_percentage/model/objective_percentage_model.dart';
 export 'package:strategy_package/objective_percentage/repo/objective_active_repo.dart';
+export 'package:strategy_package/objective_percentage/view/objective_percentage_section.dart';
 export 'package:strategy_package/objective_percentage/widgets/objective_percentage_chart.dart';
 export 'package:strategy_package/objectives/bloc/objectives_bloc.dart';
 export 'package:strategy_package/objectives/bloc/strategic_axis_bloc.dart';
@@ -34,9 +35,8 @@ export 'package:strategy_package/objectives/widgets/objective_card.dart';
 export 'package:strategy_package/objectives/widgets/objective_card_content.dart';
 export 'package:strategy_package/objectives/widgets/objectives_search_bar.dart';
 export 'package:strategy_package/objectives/widgets/strategic_axis_filter.dart';
-export 'package:strategy_package/objective_percentage/view/objective_percentage_section.dart';
 export 'package:strategy_package/strategy_home/bloc/strategy_bloc.dart';
 export 'package:strategy_package/strategy_home/widgets/bsc_card_section.dart';
 export 'package:strategy_package/strategy_home/widgets/kpi_initiatives_progress_section.dart';
-export 'package:strategy_package/strategy_home/widgets/strategic_axis_card_section.dart';
 export 'package:strategy_package/strategy_home/widgets/kpis_initiatives_progress_chart.dart';
+export 'package:strategy_package/strategy_home/widgets/strategic_axis_card_section.dart';
