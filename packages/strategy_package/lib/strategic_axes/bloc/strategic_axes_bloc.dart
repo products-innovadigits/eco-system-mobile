@@ -1,7 +1,9 @@
-import '../../shared/strategy_exports.dart';
+import 'package:core_package/core/utility/export.dart';
+import 'package:strategy_package/bsc/model/bsc_model.dart';
+import 'package:strategy_package/bsc/repo/bsc_repo.dart';
 
-class BscBloc extends Bloc<AppEvent, AppState> {
-  BscBloc() : super(Start()) {
+class StrategicAxesBloc extends Bloc<AppEvent, AppState> {
+  StrategicAxesBloc() : super(Start()) {
     on<Click>(_getBscData);
   }
 
@@ -14,7 +16,7 @@ class BscBloc extends Bloc<AppEvent, AppState> {
       final BscModel res = await BscRepo.getBscData();
 
       if (res.data != null) {
-        emit(Done(data: res.data!));
+        emit(Done(data: res.data));
       } else {
         emit(Error());
       }

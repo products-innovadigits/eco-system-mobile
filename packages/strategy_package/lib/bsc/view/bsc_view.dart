@@ -1,29 +1,19 @@
-import 'package:core_package/core/utility/export.dart';
-import 'package:strategy_package/bsc/bloc/bsc_bloc.dart';
-import 'package:strategy_package/bsc/widgets/strategic_axis_objectives_section.dart';
-import 'package:strategy_package/bsc/widgets/vision_section.dart';
-
-import '../widgets/perspectives_section.dart';
-import '../widgets/strategic_axes_section.dart';
+import '../../shared/strategy_exports.dart';
 
 class BscView extends StatelessWidget {
-  final bool isStrategicAxis;
-
-  const BscView({super.key, this.isStrategicAxis = false});
+  const BscView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => BscBloc()..add(Click()),
       child: Scaffold(
-        appBar: CustomAppBar(
-          title: allTranslations.text(
-            isStrategicAxis ? LocaleKeys.strategic_axis : LocaleKeys.bsc,
-          ),
-        ),
+        appBar: CustomAppBar(title: allTranslations.text(LocaleKeys.bsc)),
         body: BlocBuilder<BscBloc, AppState>(
-          buildWhen: (previous, current) => previous is! Done,
+          buildWhen: (previous, current) => previous != current,
           builder: (context, state) {
+            cprint('Ops! State Called ============');
+            final BscBloc bscBloc = context.read<BscBloc>();
             if (state is Loading || state is Start) {
               return ListAnimator(
                 customPadding: EdgeInsets.symmetric(
@@ -43,6 +33,7 @@ class BscView extends StatelessWidget {
               );
             }
             if (state is Done) {
+              final VisionDataModel visionData = state.data as VisionDataModel;
               return ListAnimator(
                 customPadding: EdgeInsets.symmetric(
                   horizontal: 16.w,
@@ -50,16 +41,23 @@ class BscView extends StatelessWidget {
                 ),
                 data: [
                   /// Vision, Mission, Values
-                  const VisionSection(),
+                  VisionSection(
+                    visionTitle: visionData.title ?? '',
+                    values: visionData.values ?? [],
+                    messages: visionData.missions ?? [],
+                  ),
                   24.sh,
 
                   /// Strategic Axes Section
-                  StrategicAxesSection(isStrategicAxis: isStrategicAxis),
-                  isStrategicAxis ? 8.sh : 24.sh,
+                  StrategicAxesSection(
+                    axes: visionData.strategicAxises ?? [],
+                    isStrategicAxes: false,
+                    selectedAxes: bscBloc.selectedAxes,
+                  ),
+                  24.sh,
 
                   /// Perspectives Section
-                  if (!isStrategicAxis) const PerspectivesSection(),
-                  if (isStrategicAxis) const StrategicAxisObjectivesSection(),
+                  PerspectivesSection(perspectives: visionData.manzors ?? []),
                 ],
               );
             } else {

@@ -21,7 +21,7 @@ class StrategicAxisCardSection extends StatelessWidget {
         return CustomExpansionCard(
           title: allTranslations.text(LocaleKeys.strategic_axis),
           action: InkWell(
-            onTap: () => CustomNavigator.push(Routes.BSC, arguments: true),
+            onTap: () => CustomNavigator.push(Routes.STRATEGIC_AXES, arguments: true),
             child: Text(
               allTranslations.text(LocaleKeys.view_more),
               style: context.textTheme.labelSmall?.copyWith(

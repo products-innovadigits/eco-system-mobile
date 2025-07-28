@@ -3,13 +3,13 @@ import 'package:strategy_package/bsc/model/bsc_model.dart';
 import 'package:strategy_package/bsc/widgets/indicators_card_widget.dart';
 import 'package:strategy_package/shared/bloc/bsc_objectives_bloc.dart';
 
-class ObjectiveIndicatorsCardWidget extends StatelessWidget {
+class StrategicObjectivesCard extends StatelessWidget {
   final String objectiveTitle;
   final List<IndicatorModel> initiatives;
   final List<IndicatorModel> kpis;
   final int index;
 
-  const ObjectiveIndicatorsCardWidget({
+  const StrategicObjectivesCard({
     super.key,
     required this.objectiveTitle,
     required this.initiatives,
@@ -21,13 +21,13 @@ class ObjectiveIndicatorsCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<BscObjectivesBloc, AppState>(
       builder: (context, state) {
-        final bscBloc = context.read<BscObjectivesBloc>();
+        final bloc = context.read<BscObjectivesBloc>();
         return Container(
           padding: EdgeInsets.only(right: 16.w, left: 16.w, top: 16.h),
           decoration: BoxDecoration(
             color: context.color.surfaceContainer,
             border: Border.all(
-              color: bscBloc.expandedObjectiveId == index
+              color: bloc.expandedObjectiveId == index
                   ? context.color.secondary.withValues(alpha: 0.5)
                   : context.color.outlineVariant.withValues(alpha: 0.3),
             ),
@@ -36,21 +36,21 @@ class ObjectiveIndicatorsCardWidget extends StatelessWidget {
           child: Column(
             children: [
               InkWell(
-                onTap: () => bscBloc.add(Expand(arguments: index)),
+                onTap: () => bloc.add(Expand(arguments: index)),
                 child: Row(
                   children: [
                     Container(
                       padding: EdgeInsets.all(5),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: bscBloc.expandedObjectiveId == index
+                        color: bloc.expandedObjectiveId == index
                             ? context.color.secondary
                             : context.color.secondary.withValues(alpha: 0.1),
                       ),
                       child: Images(
                         image: Assets.svgs.target.path,
                         width: 14.w,
-                        color: bscBloc.expandedObjectiveId == index
+                        color: bloc.expandedObjectiveId == index
                             ? context.color.onPrimary
                             : context.color.primary,
                       ),
@@ -59,17 +59,17 @@ class ObjectiveIndicatorsCardWidget extends StatelessWidget {
                     Text(
                       objectiveTitle,
                       style: context.textTheme.labelMedium?.copyWith(
-                        color: bscBloc.expandedObjectiveId == index
+                        color: bloc.expandedObjectiveId == index
                             ? context.color.secondary
                             : context.color.primary,
-                        fontWeight: bscBloc.expandedObjectiveId == index
+                        fontWeight: bloc.expandedObjectiveId == index
                             ? FontWeight.w700
                             : FontWeight.w500,
                       ),
                     ),
                     const Spacer(),
                     AnimatedExpansionArrowWidget(
-                      isExpanded: bscBloc.expandedObjectiveId == index,
+                      isExpanded: bloc.expandedObjectiveId == index,
                     ),
                   ],
                 ),
@@ -84,8 +84,8 @@ class ObjectiveIndicatorsCardWidget extends StatelessWidget {
                       IndicatorsCardWidget(
                         objectiveTitle: 'المؤشرات',
                         indicators: kpis,
-                        onTap: () => bscBloc.add(ToggleKpis(arguments: index)),
-                        isExpanded: bscBloc.isKpisExpanded,
+                        onTap: () => bloc.add(ToggleKpis(arguments: index)),
+                        isExpanded: bloc.isKpisExpanded,
                         indicatorIcon: Assets.svgs.focus.path,
                       ),
                       16.sh,
@@ -93,15 +93,15 @@ class ObjectiveIndicatorsCardWidget extends StatelessWidget {
                         objectiveTitle: 'المبادرات',
                         indicators: initiatives,
                         onTap: () =>
-                            bscBloc.add(ToggleInitiatives(arguments: index)),
-                        isExpanded: bscBloc.isInitiativesExpanded,
+                            bloc.add(ToggleInitiatives(arguments: index)),
+                        isExpanded: bloc.isInitiativesExpanded,
                         indicatorIcon: Assets.svgs.rocket.path,
                       ),
                       24.sh,
                     ],
                   ),
                 ),
-                crossFadeState: bscBloc.expandedObjectiveId == index
+                crossFadeState: bloc.expandedObjectiveId == index
                     ? CrossFadeState.showSecond
                     : CrossFadeState.showFirst,
                 duration: const Duration(milliseconds: 400),

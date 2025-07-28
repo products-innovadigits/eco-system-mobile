@@ -1,10 +1,14 @@
-import 'package:strategy_package/bsc/model/bsc_model.dart';
-import 'package:strategy_package/bsc/widgets/objectives_bottom_sheet.dart';
+import 'package:strategy_package/strategic_axes/widgets/strategic_objectives_bottomsheet.dart';
 
 import '../../shared/strategy_exports.dart';
 
 class StrategicAxisObjectivesSection extends StatelessWidget {
-  const StrategicAxisObjectivesSection({super.key});
+  final List<ObjectActiveModel> objectivesList;
+
+  const StrategicAxisObjectivesSection({
+    super.key,
+    required this.objectivesList,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,29 +39,10 @@ class StrategicAxisObjectivesSection extends StatelessWidget {
       collapsedTextColor: context.color.onSurface,
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w).copyWith(bottom: 16.h),
-          child: ObjectivesBottomSheet(
-            isStrategicAxis: true,
-            objectivesList: [
-              ObjectActiveModel(
-                title: 'Title 1',
-                description: 'Description 1',
-                initiatives: [
-                  IndicatorModel(
-                    title: 'Initiative 1',
-                    description: 'Description of Initiative 1',
-                  ),
-                ],
-                kpIs: [
-                  IndicatorModel(
-                    title: 'KPI 1',
-                    description: 'Description of KPI 1',
-                  ),
-                ],
-                id: 1,
-              ),
-            ],
-          ),
+          padding: EdgeInsets.symmetric(
+            horizontal: 16.w,
+          ).copyWith(bottom: 16.h),
+          child: StrategicObjectivesBottomSheet(objectivesList: objectivesList),
         ),
       ],
     );

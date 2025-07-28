@@ -1,130 +1,99 @@
 import 'package:core_package/core/utility/export.dart';
-import 'package:strategy_package/bsc/bloc/bsc_bloc.dart';
+import 'package:strategy_package/bsc/model/bsc_model.dart';
+import 'package:strategy_package/bsc/widgets/strategic_categories_list.dart';
 
-class StrategicAxesSection extends StatelessWidget {
-  final bool isStrategicAxis;
+class StrategicAxesSection extends StatefulWidget {
+  final bool isStrategicAxes;
+  final List<StrategicAxisModel> axes;
+  final int selectedAxes;
 
-  const StrategicAxesSection({super.key, this.isStrategicAxis = false});
+  const StrategicAxesSection({
+    super.key,
+    required this.axes,
+    required this.selectedAxes,
+    this.isStrategicAxes = false,
+  });
+
+  @override
+  State<StrategicAxesSection> createState() => _StrategicAxesSectionState();
+}
+
+class _StrategicAxesSectionState extends State<StrategicAxesSection> {
+  late int _selectedAxes;
+
+  @override
+  void initState() {
+    _selectedAxes = widget.selectedAxes;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BscBloc, AppState>(
-      builder: (context, state) {
-        final bloc = context.read<BscBloc>();
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              allTranslations.text(
-                isStrategicAxis
-                    ? LocaleKeys.strategic_axis
-                    : LocaleKeys.strategic_results,
-              ),
-              style: context.textTheme.labelMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            const SizedBox(height: 12),
-            SizedBox(
-              height: 35.h,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: bloc.axes.length,
-                separatorBuilder: (_, _) => const SizedBox(width: 8),
-                itemBuilder: (context, index) {
-                  return _strategicAxisChip(
-                    context,
-                    title: bloc.axes[index].title ?? '',
-                    color: bloc.axes[index].colorCode ?? '#175CD3',
-                    isSelected: bloc.selectedAxes == index,
-                    onTap: () => bloc.add(Select(arguments: index)),
-                  );
-                },
-              ),
-            ),
-            const SizedBox(height: 16),
-            ExpansionTile(
-              tilePadding: EdgeInsets.symmetric(horizontal: 16.w),
-              expansionAnimationStyle: AnimationStyle(
-                duration: const Duration(milliseconds: 400),
-                curve: Curves.easeInOut,
-              ),
-              title: Text(
-                allTranslations.text(LocaleKeys.strategic_result),
-                style: context.textTheme.labelMedium,
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-                side: BorderSide(
-                  color: context.color.outlineVariant.withValues(alpha: 0.3),
-                ),
-              ),
-              collapsedShape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-                side: BorderSide(
-                  color: context.color.outlineVariant.withValues(alpha: 0.3),
-                ),
-              ),
-              iconColor: context.color.secondary,
-              collapsedIconColor: context.color.outlineVariant,
-              collapsedTextColor: context.color.onSurface,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                  ).copyWith(bottom: 16.h),
-                  child: Align(
-                    alignment: AlignmentDirectional.centerStart,
-                    child: Text(
-                      bloc.axes[bloc.selectedAxes].description ?? '',
-                      style: context.textTheme.bodySmall?.copyWith(
-                        color: context.color.outlineVariant,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        );
-      },
-    );
-  }
-}
-
-Widget _strategicAxisChip(
-  BuildContext context, {
-  required String title,
-  required String color,
-  required bool isSelected,
-  required VoidCallback onTap,
-}) {
-  final Color strategicColor = Color(
-    int.parse(color.replaceFirst('#', '0xff')),
-  );
-  return InkWell(
-    onTap: onTap,
-    child: Container(
-      decoration: BoxDecoration(
-        color: isSelected
-            ? strategicColor // context.color.primaryContainer
-            : context.color.surfaceContainer,
-        borderRadius: BorderRadius.circular(50),
-        border: Border.all(
-          color: isSelected
-              ? strategicColor
-              : context.color.outlineVariant.withValues(alpha: 0.3),
-        ),
-      ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-        child: Text(
-          title,
-          style: context.textTheme.labelSmall?.copyWith(
-            color: isSelected ? context.color.onPrimary : strategicColor,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          widget.isStrategicAxes
+              ? allTranslations.text(LocaleKeys.strategic_axis)
+              : allTranslations.text(LocaleKeys.strategic_results),
+          style: context.textTheme.labelMedium?.copyWith(
+            fontWeight: FontWeight.w700,
           ),
         ),
-      ),
-    ),
-  );
+        const SizedBox(height: 12),
+        StrategicCategoriesList(
+          axes: widget.axes,
+          selectedAxes: _selectedAxes,
+          onSelectAxes: (index) {
+            setState(() {
+              _selectedAxes = index;
+            });
+          },
+        ),
+        const SizedBox(height: 16),
+        ExpansionTile(
+          tilePadding: EdgeInsets.symmetric(horizontal: 16.w),
+          expansionAnimationStyle: AnimationStyle(
+            duration: const Duration(milliseconds: 400),
+            curve: Curves.easeInOut,
+          ),
+          title: Text(
+            allTranslations.text(LocaleKeys.strategic_result),
+            style: context.textTheme.labelMedium,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+            side: BorderSide(
+              color: context.color.outlineVariant.withValues(alpha: 0.3),
+            ),
+          ),
+          collapsedShape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+            side: BorderSide(
+              color: context.color.outlineVariant.withValues(alpha: 0.3),
+            ),
+          ),
+          iconColor: context.color.secondary,
+          collapsedIconColor: context.color.outlineVariant,
+          collapsedTextColor: context.color.onSurface,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 16.w,
+              ).copyWith(bottom: 16.h),
+              child: Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: Text(
+                  widget.axes[_selectedAxes].description ?? '',
+                  style: context.textTheme.bodySmall?.copyWith(
+                    color: context.color.outlineVariant,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 }

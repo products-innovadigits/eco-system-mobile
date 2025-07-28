@@ -1,29 +1,31 @@
 import 'package:core_package/core/helpers/font_sizes.dart';
 import 'package:core_package/core/utility/export.dart';
-import 'package:strategy_package/bsc/bloc/bsc_bloc.dart';
+import 'package:strategy_package/bsc/model/bsc_model.dart';
 import 'package:strategy_package/bsc/widgets/bsc_info_container.dart';
 import 'package:strategy_package/bsc/widgets/messages_list_section.dart';
 
 class VisionSection extends StatelessWidget {
-  const VisionSection({super.key});
+  final String visionTitle;
+  final List<ValueModel> values;
+  final List<MissionModel> messages;
+  const VisionSection({super.key, required this.visionTitle, required this.values, required this.messages});
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<BscBloc>();
     return Column(
       children: [
         BscInfoContainer(
           color: LightColor.chartPrimary,
           title: allTranslations.text(LocaleKeys.vision),
           icon: Assets.svgs.vision.path,
-          description: bloc.visionDesc,
+          description: visionTitle,
         ),
         12.sh,
         BscInfoContainer(
           color: LightColor.chartTertiary,
           title: allTranslations.text(LocaleKeys.the_message),
           icon: Assets.svgs.multiMessage.path,
-          descriptionWidget: MessagesListSection(),
+          descriptionWidget: MessagesListSection(messages: messages),
         ),
         12.sh,
         BscInfoContainer(
@@ -43,7 +45,7 @@ class VisionSection extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      bloc.values[index].name ?? '',
+                      values[index].name ?? '',
                       style: context.textTheme.bodySmall?.copyWith(
                         fontSize: FontSizes.f10,
                         color: Color(0xff4E1D00),
@@ -53,7 +55,7 @@ class VisionSection extends StatelessWidget {
                 );
               },
               separatorBuilder: (_, _) => 8.sw,
-              itemCount: bloc.values.length,
+              itemCount: values.length,
             ),
           ),
         ),
