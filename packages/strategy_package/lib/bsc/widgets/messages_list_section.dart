@@ -29,7 +29,7 @@ class _MessagesListSectionState extends State<MessagesListSection> {
                 padding: const EdgeInsets.only(bottom: 8),
                 child: Row(
                   children: [
-                    Icon(Icons.circle, size: 8.w, color: context.color.primary),
+                    Icon(Icons.circle, size: 6.w, color: context.color.primary),
                     8.sw,
                     Expanded(
                       child: Text(

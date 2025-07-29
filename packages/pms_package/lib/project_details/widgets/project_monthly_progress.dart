@@ -19,6 +19,7 @@ class _ProjectMonthlyProgressState extends State<ProjectMonthlyProgress> {
 
   @override
   Widget build(BuildContext context) {
+    final List<ProjectCategoriesProgressModel> reversedData = widget.data.reversed.toList();
     return AspectRatio(
       aspectRatio: 1.3,
       child: Padding(
@@ -34,7 +35,7 @@ class _ProjectMonthlyProgressState extends State<ProjectMonthlyProgress> {
             maxY: 100,
             titlesData: FlTitlesData(
               show: true,
-              leftTitles: AxisTitles(
+              rightTitles: AxisTitles(
                 sideTitles: SideTitles(
                   maxIncluded: true,
                   minIncluded: true,
@@ -44,7 +45,7 @@ class _ProjectMonthlyProgressState extends State<ProjectMonthlyProgress> {
                   interval: interval,
                 ),
               ),
-              rightTitles: AxisTitles(
+              leftTitles: AxisTitles(
                 sideTitles: SideTitles(
                   maxIncluded: true,
                   minIncluded: true,
@@ -63,7 +64,7 @@ class _ProjectMonthlyProgressState extends State<ProjectMonthlyProgress> {
                   getTitlesWidget: (value, meta) => bottomTitles(
                     value,
                     meta,
-                    widget.data.map((e) => e.name ?? "").toList(),
+                    reversedData.map((e) => e.name ?? "").toList(),
                   ),
                   reservedSize: 30,
                   interval: 1,
@@ -72,12 +73,12 @@ class _ProjectMonthlyProgressState extends State<ProjectMonthlyProgress> {
             ),
             borderData: FlBorderData(show: false),
             lineBarsData: List.generate(
-              widget.data.length,
+              reversedData.length,
               (index) => LineChartBarData(
                 spots: List.generate(
-                    widget.data.length,
+                    reversedData.length,
                     (i) => FlSpot(double.parse(i.toString()),
-                        widget.data[i].progress ?? 0)),
+                        reversedData[i].progress ?? 0)),
                 isCurved: false,
                 gradient: LinearGradient(
                   colors: [context.color.primary, context.color.primary.withValues(alpha: 0.2)],

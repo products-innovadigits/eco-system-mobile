@@ -26,22 +26,32 @@ class BscInfoContainer extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Images(image: icon),
           const SizedBox(width: 12),
-          Text(
-            title,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: context.textTheme.labelMedium?.copyWith(color: color),
-          ),
-          const SizedBox(width: 22),
-
           Expanded(
-            child:
-                descriptionWidget ??
-                Text(description ?? '', style: context.textTheme.bodySmall),
-          ),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: context.textTheme.labelMedium?.copyWith(color: color),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child:
+                    descriptionWidget ??
+                        Text(description ?? '', style: context.textTheme.bodySmall),
+                  ),
+                ],
+              ),
+            ),
+          )
         ],
       ),
     );

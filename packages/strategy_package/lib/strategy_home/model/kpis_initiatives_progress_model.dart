@@ -4,6 +4,7 @@ class KpisInitiativesProgressModel extends SingleMapper {
   String? objective;
   double? kpisValue;
   double? initiativesValue;
+  double? objectiveValue;
   // int? year;
   // int? month;
 
@@ -11,6 +12,7 @@ class KpisInitiativesProgressModel extends SingleMapper {
     this.objective,
     this.kpisValue,
     this.initiativesValue,
+    this.objectiveValue,
     // this.year,
     // this.month,
   });
@@ -18,6 +20,7 @@ class KpisInitiativesProgressModel extends SingleMapper {
   KpisInitiativesProgressModel.fromJson(Map<String, dynamic> json) {
     objective = json['objectValue']?.toString();
     kpisValue = double.tryParse(json['kpisValue']?.toString() ?? "0");
+    objectiveValue = double.tryParse(json['objectiveValue']?.toString() ?? "0");
     initiativesValue = double.tryParse(
       json['initiativesValue']?.toString() ?? "0",
     );

@@ -1,4 +1,5 @@
 
+import 'package:pms_package/project_details/widgets/general_progress_section.dart';
 import 'package:pms_package/project_details/widgets/project_stages_chart.dart';
 import 'package:pms_package/shared/pms_exports.dart';
 
@@ -18,7 +19,7 @@ class ProjectDetailsBody extends StatelessWidget {
 
               ///Project Description
               CustomExpansionCard(
-                title: allTranslations.text(LocaleKeys.description),
+                title: allTranslations.text(LocaleKeys.main_data),
                 child: ProjectDetailsDescription(
                   model: model,
                 ),
@@ -52,36 +53,7 @@ class ProjectDetailsBody extends StatelessWidget {
               ),
 
               ///General Progress
-              CustomExpansionCard(
-                title: allTranslations.text("general_progress"),
-                withExpanded: false,
-                action: Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 24.w, vertical: 6.h),
-                  margin: EdgeInsets.symmetric(horizontal: 6.w),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: context.color.surfaceContainer,
-                    border: Border.all(color: context.color.outline),
-                  ),
-                  child: Center(
-                    child: Text(
-                      allTranslations.text("Month"),
-                      style: context.textTheme.labelMedium
-                          ?.copyWith(fontWeight: FontWeight.w600, height: 1.2),
-                    ),
-                  ),
-                ),
-                child: ProjectMonthlyProgress(
-                  data: [
-                    ProjectCategoriesProgressModel(name: "xxx", progress: 20),
-                    ProjectCategoriesProgressModel(name: "yyy", progress: 10),
-                    ProjectCategoriesProgressModel(name: "yyy", progress: 40),
-                    ProjectCategoriesProgressModel(name: "yyy", progress: 70),
-                    ProjectCategoriesProgressModel(name: "zzz", progress: 80),
-                  ],
-                ),
-              ),
+              GeneralProgressSection(),
             ],
           );
         }

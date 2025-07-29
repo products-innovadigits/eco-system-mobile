@@ -28,17 +28,49 @@ class KpiInitiativesProgressSection extends StatelessWidget {
               ),
               Divider(color: context.color.outline),
               SizedBox(height: 12.h),
-              KpisInitiativesProgressChart(
+              ObjectivesKpisInitiativesChart(
                 data: [
                   KpisInitiativesProgressModel(
                     objective: 'مركز اتصال وخدمة',
                     kpisValue: 60,
                     initiativesValue: 30,
+                    objectiveValue: 90,
                   ),
                   KpisInitiativesProgressModel(
                     objective: 'تطوير المنتجات',
                     kpisValue: 30,
                     initiativesValue: 35,
+                    objectiveValue: 65,
+                  ),
+                  KpisInitiativesProgressModel(
+                    objective: 'تحسين العمليات',
+                    kpisValue: 50,
+                    initiativesValue: 20,
+                    objectiveValue: 70,
+                  ),
+                  KpisInitiativesProgressModel(
+                    objective: 'توسيع السوق',
+                    kpisValue: 40,
+                    initiativesValue: 25,
+                    objectiveValue: 65,
+                  ),
+                  KpisInitiativesProgressModel(
+                    objective: 'تحسين تجربة العملاء',
+                    kpisValue: 70,
+                    initiativesValue: 30,
+                    objectiveValue: 100,
+                  ),
+                  KpisInitiativesProgressModel(
+                    objective: 'تطوير المهارات',
+                    kpisValue: 80,
+                    initiativesValue: 10,
+                    objectiveValue: 90,
+                  ),
+                  KpisInitiativesProgressModel(
+                    objective: 'المهارات',
+                    kpisValue: 80,
+                    initiativesValue: 10,
+                    objectiveValue: 90,
                   ),
                 ],
               ),

@@ -45,7 +45,7 @@ class ObjectiveCardContent extends StatelessWidget {
                     ),
                     SizedBox(height: 4.h),
                     RichText(
-                      textAlign: TextAlign.center,
+                      textAlign: TextAlign.start,
                       text: TextSpan(
                         text:
                             "${allTranslations.text("time_left")} ${(objective.endDate?.difference(DateTime.now()).inDays ?? 0) > 0 ? (objective.endDate?.difference(DateTime.now()).inDays ?? 0) : 0} ${allTranslations.text("days")}",
@@ -72,6 +72,22 @@ class ObjectiveCardContent extends StatelessWidget {
                   ],
                 ),
               ),
+              if (objective.strategicAxisType != null)
+                Container(
+                  padding:
+                  EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
+                  decoration: BoxDecoration(
+                    color: Styles.statusColors(objective.status ?? "",
+                        isLineProgress: true)
+                        .withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: Text(objective.strategicAxisType ?? "",
+                      style: AppTextStyles.w500.copyWith(
+                          fontSize: 12,
+                          color: Styles.statusColors(objective.status ?? "",
+                              isLineProgress: true))),
+                ),
             ],
           ),
           Padding(

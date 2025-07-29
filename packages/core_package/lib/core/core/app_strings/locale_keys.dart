@@ -45,6 +45,7 @@ abstract class  LocaleKeys {
   static const evening = 'evening';
   static const objective_percentage_rate = 'objective_percentage_rate';
   static const kpis_initiatives_objective = 'kpis_initiatives_objective';
+  static const kpis_initiatives_progress = 'kpis_initiatives_progress';
   static const objective_percentage = 'objective_percentage';
   static const view_more = 'view_more';
   static const other_requests = 'other_requests';
@@ -274,6 +275,9 @@ abstract class  LocaleKeys {
   static const fill_alert = 'fill_alert';
   static const strategic_performance_system = 'strategic_performance_system';
   static const objectives = 'objectives';
+  static const objective = 'objective';
+  static const initiative = 'initiative';
+  static const kpi = 'kpi';
   static const all_objectives = 'all_objectives';
   static const something_went_wrong = 'something_went_wrong';
   static const there_is_no_data = 'there_is_no_data';
@@ -312,6 +316,7 @@ abstract class  LocaleKeys {
   static const project_progress_rate = 'project_progress_rate';
   static const latest_requests = 'latest_requests';
   static const challenges_risks = 'challenges_risks';
+  static const main_data = 'main_data';
   static const project_progress_rate_in_each_category = 'project_progress_rate_in_each_category';
   static const the_owning_entity = 'the_owning_entity';
   static const project_life_cycle = 'project_life_cycle';

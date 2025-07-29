@@ -16,6 +16,7 @@ class ObjectiveDetailsModel extends SingleMapper {
   String? createdBy;
   int? relatedCountAll;
   String? status;
+  String? strategicAxisType;
 
   ObjectiveDetailsModel(
       {this.id,
@@ -32,6 +33,7 @@ class ObjectiveDetailsModel extends SingleMapper {
       this.isVisionActive,
       this.createdBy,
       this.relatedCountAll,
+      this.strategicAxisType,
       this.status});
 
   ObjectiveDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -51,25 +53,27 @@ class ObjectiveDetailsModel extends SingleMapper {
     createdBy = json['createdBy'];
     relatedCountAll = json['relatedCountAll'];
     status = json['status'];
+    strategicAxisType = json['strategicAxisType'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['description'] = this.description;
-    data['weightScaleLookUpId'] = this.weightScaleLookUpId;
-    data['weight'] = this.weight;
-    data['subObjectActives'] = this.subObjectActives;
-    data['startDate'] = this.startDate;
-    data['endDate'] = this.endDate;
-    data['strategicAxisId'] = this.strategicAxisId;
-    data['manzorId'] = this.manzorId;
-    data['visionId'] = this.visionId;
-    data['isVisionActive'] = this.isVisionActive;
-    data['createdBy'] = this.createdBy;
-    data['relatedCountAll'] = this.relatedCountAll;
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['description'] = description;
+    data['weightScaleLookUpId'] = weightScaleLookUpId;
+    data['weight'] = weight;
+    data['subObjectActives'] = subObjectActives;
+    data['startDate'] = startDate;
+    data['endDate'] = endDate;
+    data['strategicAxisId'] = strategicAxisId;
+    data['manzorId'] = manzorId;
+    data['visionId'] = visionId;
+    data['isVisionActive'] = isVisionActive;
+    data['createdBy'] = createdBy;
+    data['relatedCountAll'] = relatedCountAll;
+    data['status'] = status;
+    data['strategicAxisType'] = strategicAxisType;
     return data;
   }
 

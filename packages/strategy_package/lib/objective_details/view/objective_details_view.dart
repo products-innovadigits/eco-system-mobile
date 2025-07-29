@@ -1,3 +1,5 @@
+import 'package:strategy_package/objective_details/widgets/charts/kpis_initiatives_progress_chart.dart';
+
 import '../../shared/strategy_exports.dart';
 
 class ObjectiveDetailsView extends StatefulWidget {
@@ -58,6 +60,9 @@ class _ObjectiveDetailsViewState extends State<ObjectiveDetailsView> {
 
                     ///Objective Chart
                     ObjectiveDetailsChart(scrollController: scrollController),
+
+                    ///Objective KPIS and Initiatives Chart
+                    KpisInitiativesProgressChart(),
 
                     ///Objective indicators
                     ObjectiveKPIS(),

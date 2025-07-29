@@ -7,6 +7,7 @@ class ProjectsChallengesRisks extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.color;
     return GridView(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -21,18 +22,21 @@ class ProjectsChallengesRisks extends StatelessWidget {
         ChallengeRiskCardWidget(
             title: allTranslations.text(LocaleKeys.current_salary),
             value: '2000\$',
-            isPrimaryColor: true),
+            color: colors.error),
         ChallengeRiskCardWidget(
           title: allTranslations.text(LocaleKeys.current_salary),
           value: '3000\$',
+          color: colors.errorContainer,
         ),
         ChallengeRiskCardWidget(
             title: allTranslations.text(LocaleKeys.current_salary),
             value: '2000\$',
-            isPrimaryColor: true),
+            color: colors.tertiary),
         ChallengeRiskCardWidget(
-            title: allTranslations.text(LocaleKeys.current_salary),
-            value: '3000\$'),
+          title: allTranslations.text(LocaleKeys.current_salary),
+          value: '3000\$',
+          color: colors.secondary,
+        ),
       ],
     );
   }

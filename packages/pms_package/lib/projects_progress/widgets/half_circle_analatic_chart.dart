@@ -15,15 +15,14 @@ class HalfCircleAnalyticChart extends StatelessWidget {
         children: [
           Expanded(
             child: SfCircularChart(
-              // margin: EdgeInsets.zero,
-              // annotations: _buildCenterAnnotation(projects, context),
               series: [
                 DoughnutSeries<ProjectsOverviewData, String>(
                   dataSource: projects,
                   xValueMapper: (d, _) => d.name,
                   yValueMapper: (d, _) => d.count,
                   pointColorMapper: (d, _) => Color(
-                    int.parse(d.hexColor?.replaceAll('#', '0xff') ?? '0xff000000'),
+                    int.parse(
+                        d.hexColor?.replaceAll('#', '0xff') ?? '0xff000000'),
                   ),
                   startAngle: 270,
                   endAngle: 90,
@@ -34,22 +33,18 @@ class HalfCircleAnalyticChart extends StatelessWidget {
                       return '${d.percentage.toString()}%';
                     }
                   },
-                  // or d.value.toInt()
                   dataLabelSettings: DataLabelSettings(
                     isVisible: true,
                     labelPosition: ChartDataLabelPosition.inside,
-                    // put it in the slice
                     textStyle: context.textTheme.labelMedium?.copyWith(
                         fontWeight: FontWeight.w700, color: LightColor.white),
                   ),
                   innerRadius: '60%',
                   radius: '100%',
-                  // cornerStyle: CornerStyle.bothFlat,
-                  strokeColor: LightColor.white,
-                  strokeWidth: 3,
-                  emptyPointSettings: EmptyPointSettings(
-                    mode: EmptyPointMode.zero,
-                  ),
+                  // strokeColor: LightColor.white,
+                  // strokeWidth: 3,
+                  emptyPointSettings:
+                      EmptyPointSettings(mode: EmptyPointMode.zero),
                   animationDuration: 800,
                 ),
               ],

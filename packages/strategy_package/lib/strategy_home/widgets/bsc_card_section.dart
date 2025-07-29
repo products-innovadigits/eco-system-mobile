@@ -12,23 +12,23 @@ class BscCardSection extends StatelessWidget {
         final List<ObjectiveKPIModel> list = [
           ObjectiveKPIModel(
             kpiTitle: 'المنظور المالي',
-            color: '#FF5733',
+            color: '#175CD3',
             value: 80,
           ),
           ObjectiveKPIModel(
             kpiTitle: 'المنظور العملاء',
             value: 70,
-            color: '#33FF57',
+            color: '#079455',
           ),
           ObjectiveKPIModel(
             kpiTitle: 'المنظور العمليات الداخلية',
             value: 60,
-            color: '#3357FF',
+            color: '#DC6803',
           ),
           ObjectiveKPIModel(
             kpiTitle: 'المنظور التعلم والنمو',
             value: 90,
-            color: '#FF33A1',
+            color: '#175CD3',
           ),
         ];
         return CustomExpansionCard(
@@ -68,9 +68,9 @@ class BscCardSection extends StatelessWidget {
                             value: (list[i].value ?? 0) / 100,
                             minHeight: 6.h,
                             color: Color(int.parse(color ?? '0xFF000000')),
-                            backgroundColor: context.color.secondary.withValues(
-                              alpha: 0.1,
-                            ),
+                            backgroundColor: Color(
+                              int.parse(color ?? '0xFF000000'),
+                            ).withValues(alpha: 0.1),
                           ),
                         ),
                       ),
