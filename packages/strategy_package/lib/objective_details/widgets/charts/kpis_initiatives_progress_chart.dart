@@ -1,6 +1,8 @@
 import 'package:core_package/core/helpers/font_sizes.dart';
+import 'package:strategy_package/objective_details/widgets/chart_titles_widget.dart';
 
 import '../../../shared/strategy_exports.dart';
+import '../../../shared/widgets/monthly_annaul_chart_filter_widget.dart';
 
 class KpisInitiativesProgressChart extends StatefulWidget {
   const KpisInitiativesProgressChart({super.key});
@@ -37,49 +39,12 @@ class _KpisInitiativesProgressChartState
                 ),
               ),
               SizedBox(height: 12.h),
-              PopupMenuButton<ChartTime>(
-                initialValue: currentTime,
-                onSelected: (ChartTime time) {
-                  setState(() => currentTime = time);
+              MonthlyAnnualChartFilterWidget(
+                onSelect: (time) {
+                  setState(() {
+                    currentTime = time;
+                  });
                 },
-
-                itemBuilder: (BuildContext ctx) {
-                  return ChartTime.values.map((ChartTime time) {
-                    return PopupMenuItem<ChartTime>(
-                      value: time,
-                      child: Text(
-                        allTranslations.text(time.name),
-                        style: context.textTheme.labelSmall,
-                      ),
-                    );
-                  }).toList();
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                    vertical: 4.h,
-                  ),
-                  margin: EdgeInsets.symmetric(horizontal: 6.w),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: context.color.surfaceContainer,
-                    border: Border.all(color: context.color.outline),
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        allTranslations.text(currentTime.name),
-                        style: context.textTheme.bodySmall,
-                      ),
-                      8.sw,
-                      Images(
-                        image: Assets.svgs.arrowDown.path,
-                        width: 6,
-                        height: 6,
-                      ),
-                    ],
-                  ),
-                ),
               ),
             ],
           ),
@@ -152,53 +117,7 @@ class _KpisInitiativesProgressChartState
                     ),
                   ],
                 ),
-          Wrap(
-            alignment: WrapAlignment.start,
-            direction: Axis.horizontal,
-            runSpacing: 8.w,
-            spacing: 24.h,
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.circle, color: context.color.secondary, size: 14),
-                  SizedBox(width: 4.w),
-                  Flexible(
-                    child: Text(
-                      allTranslations.text(LocaleKeys.objectives),
-                      style: context.textTheme.bodySmall,
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.circle, color: context.color.primary, size: 14),
-                  SizedBox(width: 4.w),
-                  Flexible(
-                    child: Text(
-                      allTranslations.text(LocaleKeys.initiatives),
-                      style: context.textTheme.bodySmall,
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.circle, color: context.color.tertiary, size: 14),
-                  SizedBox(width: 4.w),
-                  Flexible(
-                    child: Text(
-                      allTranslations.text("kpis"),
-                      style: context.textTheme.bodySmall,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+          ChartTitlesWidget(),
         ],
       ),
     );
