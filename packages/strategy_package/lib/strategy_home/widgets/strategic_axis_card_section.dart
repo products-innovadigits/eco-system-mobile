@@ -10,7 +10,7 @@ class StrategicAxisCardSection extends StatelessWidget {
     return BlocBuilder<StrategyBloc, AppState>(
       builder: (context, state) {
         final List<String> list = [
-          'تقويم الانظمه الحكومية	',
+          'تقويم الانظمه الحكومية',
           'تطوير الأنظمة الحكومية',
           'تطوير الأنظمة الحكومية',
           'تطوير الأنظمة الحكومية',
@@ -21,7 +21,8 @@ class StrategicAxisCardSection extends StatelessWidget {
         return CustomExpansionCard(
           title: allTranslations.text(LocaleKeys.strategic_axis),
           action: InkWell(
-            onTap: () => CustomNavigator.push(Routes.STRATEGIC_AXES, arguments: true),
+            onTap: () =>
+                CustomNavigator.push(Routes.STRATEGIC_AXES, arguments: true),
             child: Text(
               allTranslations.text(LocaleKeys.view_more),
               style: context.textTheme.labelSmall?.copyWith(
@@ -35,18 +36,28 @@ class StrategicAxisCardSection extends StatelessWidget {
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               mainAxisSpacing: 8.h,
-              crossAxisSpacing: 8.w,
+              crossAxisSpacing: 6.w,
               childAspectRatio: 6,
             ),
             itemBuilder: (context, index) {
               return Row(
                 children: [
                   Icon(Icons.circle, color: context.color.secondary, size: 10),
-                  8.sw,
+                  2.sw,
                   Expanded(
-                    child: Text(
-                      list[index],
-                      style: context.textTheme.labelSmall,
+                    child: RichText(
+                      text: TextSpan(
+                        text: list[index],
+                        style: context.textTheme.labelSmall,
+                        children: [
+                          TextSpan(
+                            text: ' (5)',
+                            style: context.textTheme.labelMedium?.copyWith(
+                              color: context.color.secondary,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

@@ -405,9 +405,10 @@ abstract class  LocaleKeys {
   static const vision = 'vision';
   static const the_message = 'the_message';
   static const values = 'values';
+  static const okr = 'okr';
+  static const organizational_objectives = 'organizational_objectives';
   static const strategic_result = 'strategic_result';
   static const strategic_results = 'strategic_results';
-  static const perspectives = 'perspectives';
   static const try_again = 'try_again';
   static const no_internet_connection = 'no_internet_connection';
   static const press_again_to_exit = 'press_again_to_exit';
@@ -430,5 +431,20 @@ abstract class  LocaleKeys {
   static const most_experience = 'most_experience';
   static const least_experience = 'least_experience';
   static const search_job_title_or_name = 'search_job_title_or_name';
+  static const perspectives = 'perspectives';
+  static const select_perspective = 'select_perspective';
+  static const perspective = 'perspective';
+  static const axis = 'axis';
+  static const select_risk_level = 'select_risk_level';
+  static const objective_type = 'objective_type';
+  static const select_objective_type = 'select_objective_type';
+  static const select_status = 'select_status';
+  static const the_status = 'the_status';
+  static const priority = 'priority';
+  static const select_priority = 'select_priority';
+  static const category = 'category';
+  static const select_category = 'select_category';
+  static const organizational_objective = 'organizational_objective';
+  static const select_organizational_objective = 'select_organizational_objective';
 
 }

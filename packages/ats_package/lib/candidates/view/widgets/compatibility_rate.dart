@@ -14,7 +14,7 @@ class CompatibilityRate extends StatelessWidget {
         CustomTextField(
           hint: allTranslations.text(LocaleKeys.enter_compatibility_rate),
           controller:
-              context.read<FiltrationBloc>().compatibilityRateController,
+              context.read<AtsFiltrationBloc>().compatibilityRateController,
           type: TextInputType.number,
           suffixWidget: Padding(
             padding: EdgeInsetsDirectional.only(end: 12.w),

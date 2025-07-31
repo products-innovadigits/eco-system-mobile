@@ -14,11 +14,14 @@ class ProjectDetailsModel extends SingleMapper {
   num? progressRatio;
   List<String>? teamIds;
   SectionDepartmentModel? sectionDepartment;
+  TeamModel? teamName;
   int? implementorDepartmentId;
   String? implementorDepartmentName;
   String? managerId;
   String? status;
   String? managerName;
+  String? periortyLevelName;
+  String? projectCategoryName;
   int? priorityLevelId;
   int? riskLevelId;
   List<dynamic>? initiativeIds;
@@ -42,12 +45,15 @@ class ProjectDetailsModel extends SingleMapper {
       this.budget,
       this.teamIds,
       this.sectionDepartment,
+      this.teamName,
+      this.periortyLevelName,
       this.implementorDepartmentId,
       this.implementorDepartmentName,
       this.managerId,
       this.status,
       this.progressRatio,
       this.managerName,
+      this.projectCategoryName,
       this.priorityLevelId,
       this.riskLevelId,
       this.initiativeIds,
@@ -73,9 +79,12 @@ class ProjectDetailsModel extends SingleMapper {
     weight = json['weight'];
     budget = json['budget'];
     progressRatio = json['progressRation'];
-    teamIds = json['teamIds'] != null ? json['teamIds'].cast<String>() : null;
+    teamIds = json['teamIds']?.cast<String>();
     sectionDepartment = json['sectionDepartment'] != null
         ? SectionDepartmentModel.fromJson(json['sectionDepartment'])
+        : null;
+    teamName = json['teamName'] != null
+        ? TeamModel.fromJson(json['teamName'])
         : null;
     implementorDepartmentId = json['implementorDepartmentId'];
 
@@ -83,6 +92,8 @@ class ProjectDetailsModel extends SingleMapper {
     managerId = json['managerId'];
     status = json['status'];
     managerName = json['managerName'];
+    periortyLevelName = json['periortyLevelName'];
+    projectCategoryName = json['projectCategoryName'];
     priorityLevelId = json['periortyLevelId'];
     riskLevelId = json['riskLevelId'];
     outputCount = json['outputCount'];
@@ -109,12 +120,15 @@ class ProjectDetailsModel extends SingleMapper {
     data['budget'] = budget;
     data['teamIds'] = teamIds;
     data['sectionDepartment'] = sectionDepartment?.toJson();
+    data['teamName'] = teamName?.toJson();
     data['implementorDepartmentId'] = implementorDepartmentId;
     data['implementorDepartmentName'] = implementorDepartmentName;
     data['managerId'] = managerId;
     data['status'] = status;
     data['progressRation'] = progressRatio;
     data['managerName'] = managerName;
+    data['periortyLevelName'] = periortyLevelName;
+    data['projectCategoryName'] = projectCategoryName;
     data['periortyLevelId'] = priorityLevelId;
     data['riskLevelId'] = riskLevelId;
     data['outputCount'] = outputCount;
@@ -158,8 +172,7 @@ class ProjectLifeCycleModel {
     data['title'] = title;
     data['description'] = description;
     if (projectStages != null) {
-      data['projectStages'] =
-          projectStages!.map((v) => v.toJson()).toList();
+      data['projectStages'] = projectStages!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -300,6 +313,25 @@ class SectionDepartmentModel {
     data['description'] = description;
     data['manager'] = manager;
     data['projectCount'] = projectCount;
+    return data;
+  }
+}
+class TeamModel {
+  String? id;
+  String? name;
+
+  TeamModel(
+      {this.id, this.name,});
+
+  TeamModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
     return data;
   }
 }

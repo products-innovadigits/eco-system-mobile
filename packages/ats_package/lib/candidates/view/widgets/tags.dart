@@ -8,9 +8,9 @@ class Tags extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FiltrationBloc, AppState>(
+    return BlocBuilder<AtsFiltrationBloc, AppState>(
       builder: (context, state) {
-        final bloc = context.read<FiltrationBloc>();
+        final bloc = context.read<AtsFiltrationBloc>();
         final availableTags = bloc.tagsList
             .where((s) => !selectedTags.contains(s))
             .toList();

@@ -19,7 +19,8 @@ class Routes {
   static const STRATEGY_LAYOUT = "STRATEGY_LAYOUT";
   static const OBJECTIVES = "OBJECTIVES";
   static const OBJECTIVE_DETAILS = "OBJECTIVE_DETAILS";
-  static const BSC = "Bsc";
+  static const BSC = "BSC";
+  static const OKR = "OKR";
   static const STRATEGIC_AXES = "STRATEGIC_AXES";
   static const PMS_LAYOUT = "PMS_LAYOUT";
   static const PROJECTS = "PROJECTS";

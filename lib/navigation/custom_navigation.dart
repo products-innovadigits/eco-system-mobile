@@ -13,6 +13,7 @@ import 'package:eco_system/features/splash/splash.dart';
 import 'package:pms_package/project_details/view/project_details_view.dart';
 import 'package:pms_package/projects/view/projects_view.dart';
 import 'package:strategy_package/bsc/view/bsc_view.dart';
+import 'package:strategy_package/okr/view/okr_view.dart';
 import 'package:strategy_package/strategic_axes/view/strategic_axes_view.dart';
 import 'package:strategy_package/objective_details/view/objective_details_view.dart';
 import 'package:strategy_package/objectives/view/objectives_view.dart';
@@ -52,6 +53,9 @@ class AppRouter {
 
       case Routes.BSC:
         return MaterialPageRoute(builder: (_) => const BscView());
+
+        case Routes.OKR:
+        return MaterialPageRoute(builder: (_) => const OkrView());
 
       case Routes.STRATEGIC_AXES:
         return MaterialPageRoute(builder: (_) => const StrategicAxesView());

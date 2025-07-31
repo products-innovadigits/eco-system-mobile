@@ -6,7 +6,7 @@ class AddSkillFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<FiltrationBloc>();
+    final bloc = context.read<AtsFiltrationBloc>();
     return Container(
       width: 100.w,
       decoration: BoxDecoration(

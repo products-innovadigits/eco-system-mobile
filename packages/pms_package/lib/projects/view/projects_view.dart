@@ -1,27 +1,49 @@
-import 'package:core_package/core/utility/export.dart';
-
-import '../bloc/projects_bloc.dart';
-import '../widgets/project_search_bar.dart';
+import 'package:pms_package/projects/widgets/projects_filter/projects_filter_bottomsheet.dart';
+import 'package:pms_package/shared/pms_exports.dart';
 
 class ProjectsView extends StatelessWidget {
   const ProjectsView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        title: allTranslations.text("projects"),
-      ),
-      body: SafeArea(
-          child: BlocProvider(
-        create: (context) =>
-            ProjectsBloc()..add(Click(arguments: SearchEngine())),
-        child: BlocBuilder<ProjectsBloc, AppState>(
-          builder: (context, state) {
-            return Column(
-              children: [
-                ProjectsSearchBar(),
-                Expanded(child: BlocBuilder<ProjectsBloc, AppState>(
+    return BlocProvider(
+      create: (context) =>
+          ProjectsBloc()..add(Click(arguments: SearchEngine())),
+      child: BlocBuilder<ProjectsBloc, AppState>(
+        builder: (context, state) {
+          final bloc = context.read<ProjectsBloc>();
+          final projectsFiltrationBloc = context.read<ProjectsFiltrationBloc>();
+          return Scaffold(
+            appBar: CustomAppBar(
+              title: allTranslations.text(LocaleKeys.projects),
+              withSearch: true,
+              withFilter: true,
+              isFiltered: projectsFiltrationBloc.isFilterApplied,
+              // isSorted: bloc.appliedSorting != null,
+              withSorting: true,
+              withCancelBtn: true,
+              onSearching: (value) =>
+                  bloc.add(Click(arguments: SearchEngine())),
+              // onCanceling: () => bloc.onCancelSearch(),
+              searchController: bloc.searchTEC,
+              searchHintText: allTranslations.text(LocaleKeys.search_hint),
+              onFiltering: () {
+                PopUpHelper.showBottomSheet(
+                  child: BlocProvider.value(
+                      value: bloc, child: ProjectsFilterBottomSheet()),
+                );
+              },
+              onSorting: () {
+                //   PopUpHelper.showBottomSheet(
+                //   child: BlocProvider.value(
+                //     value: context.read<TalentPoolBloc>(),
+                //     child: const SortingBottomSheet(),
+                //   ),
+                // );
+              },
+            ),
+            body: SafeArea(
+                child: BlocBuilder<ProjectsBloc, AppState>(
                   builder: (context, state) {
                     if (state is Loading) {
                       return ListAnimator(
@@ -65,12 +87,10 @@ class ProjectsView extends StatelessWidget {
                       return SizedBox();
                     }
                   },
-                ))
-              ],
-            );
-          },
-        ),
-      )),
+                )),
+          );
+        },
+      ),
     );
   }
 }

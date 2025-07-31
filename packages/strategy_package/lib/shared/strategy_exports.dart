@@ -1,5 +1,7 @@
+export 'package:core_package/core/components/custom_filters_drop_list.dart';
 export 'package:core_package/core/model/custom_field_model.dart';
 export 'package:core_package/core/utility/export.dart';
+export 'package:core_package/core/widgets/bottom_sheet_header.dart';
 export 'package:fl_chart/fl_chart.dart';
 export 'package:flutter/rendering.dart';
 export 'package:strategy_package/bsc/bloc/bsc_bloc.dart';
@@ -34,9 +36,13 @@ export 'package:strategy_package/objective_percentage/repo/objective_active_repo
 export 'package:strategy_package/objective_percentage/view/objective_percentage_section.dart';
 export 'package:strategy_package/objective_percentage/widgets/objective_percentage_chart.dart';
 export 'package:strategy_package/objectives/bloc/objectives_bloc.dart';
+export 'package:strategy_package/objectives/bloc/objectives_filtration_bloc.dart';
 export 'package:strategy_package/objectives/bloc/strategic_axis_bloc.dart';
+export 'package:strategy_package/objectives/model/objectives_filter_model.dart';
 export 'package:strategy_package/objectives/model/objectives_model.dart';
 export 'package:strategy_package/objectives/repo/objectives_repo.dart';
+export 'package:strategy_package/objectives/widgets/filter/objectives_filter_bottom_sheet_body.dart';
+export 'package:strategy_package/objectives/widgets/filter/objectives_filter_buttons_section.dart';
 export 'package:strategy_package/objectives/widgets/objective_card.dart';
 export 'package:strategy_package/objectives/widgets/objective_card_content.dart';
 export 'package:strategy_package/objectives/widgets/objectives_search_bar.dart';

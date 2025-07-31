@@ -1,4 +1,4 @@
-import 'package:strategy_package/strategic_axes/widgets/strategic_objectives_bottomsheet.dart';
+import 'package:strategy_package/strategic_axes/widgets/strategic_objectives_section.dart';
 
 import '../../shared/strategy_exports.dart';
 
@@ -42,7 +42,7 @@ class StrategicAxisObjectivesSection extends StatelessWidget {
           padding: EdgeInsets.symmetric(
             horizontal: 16.w,
           ).copyWith(bottom: 16.h),
-          child: StrategicObjectivesBottomSheet(objectivesList: objectivesList),
+          child: StrategicObjectivesSection(objectivesList: objectivesList),
         ),
       ],
     );

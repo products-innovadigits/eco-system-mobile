@@ -1,3 +1,5 @@
+import 'package:strategy_package/strategy_home/widgets/okr_card_section.dart';
+
 import '../../shared/strategy_exports.dart';
 
 class StrategyHomeBody extends StatelessWidget {
@@ -15,8 +17,9 @@ class StrategyHomeBody extends StatelessWidget {
             children: [
               130.sh,
               ObjectivePercentageSection(isStrategyHome: true),
-              KpiInitiativesProgressSection(),
               BscCardSection(),
+              OkrCardSection(),
+              KpiInitiativesProgressSection(),
               StrategicAxisCardSection(),
               16.sh,
             ],

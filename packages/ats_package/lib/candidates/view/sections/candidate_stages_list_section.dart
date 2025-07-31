@@ -23,7 +23,7 @@ class CandidateStagesListSection extends StatelessWidget {
                   : context.color.primary;
               return InkWell(
                 onTap: () {
-                  context.read<FiltrationBloc>().reset();
+                  context.read<AtsFiltrationBloc>().reset();
                   CustomNavigator.push(
                     Routes.CANDIDATES,
                     arguments: InitCandidates(

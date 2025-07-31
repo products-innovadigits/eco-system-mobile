@@ -521,6 +521,10 @@ class $AssetsSvgsGen {
   SvgGenImage get valuesIcon =>
       const SvgGenImage('assets/svgs/values-icon.svg');
 
+  /// File path: assets/svgs/vision-square.svg
+  SvgGenImage get visionSquare =>
+      const SvgGenImage('assets/svgs/vision-square.svg');
+
   /// File path: assets/svgs/vision.svg
   SvgGenImage get vision => const SvgGenImage('assets/svgs/vision.svg');
 
@@ -653,6 +657,7 @@ class $AssetsSvgsGen {
     up,
     user,
     valuesIcon,
+    visionSquare,
     vision,
     warning,
     wrong,

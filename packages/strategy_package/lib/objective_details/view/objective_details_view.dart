@@ -1,4 +1,5 @@
-import 'package:strategy_package/objective_details/widgets/charts/kpis_initiatives_progress_chart.dart';
+import 'package:strategy_package/objective_details/widgets/general_progress.dart';
+import 'package:strategy_package/objective_details/widgets/kpis_initiatives_progress.dart';
 
 import '../../shared/strategy_exports.dart';
 
@@ -59,10 +60,13 @@ class _ObjectiveDetailsViewState extends State<ObjectiveDetailsView> {
                     ObjectiveDetailsBody(),
 
                     ///Objective Chart
-                    ObjectiveDetailsChart(scrollController: scrollController),
+                    // ObjectiveDetailsChart(scrollController: scrollController),
 
                     ///Objective KPIS and Initiatives Chart
-                    KpisInitiativesProgressChart(),
+                    KpisInitiativesProgress(),
+
+                    ///General Progress
+                    GeneralProgress(),
 
                     ///Objective indicators
                     ObjectiveKPIS(),

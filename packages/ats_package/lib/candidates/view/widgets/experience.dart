@@ -6,7 +6,7 @@ class Experience extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final filtrationBloc = context.read<FiltrationBloc>();
+    final filtrationBloc = context.read<AtsFiltrationBloc>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

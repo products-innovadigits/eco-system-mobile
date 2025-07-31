@@ -50,9 +50,7 @@ class ProjectDetailsDescription extends StatelessWidget {
               child: ProjectContentCard(
                   icon: Assets.svgs.projectLifeCycle.path,
                   title: allTranslations.text("project_life_cycle"),
-                  desc: projectStages.isNotEmpty
-                      ? (projectStages[0].title ?? '')
-                      : ''
+                  desc: model.projectLifeCycle?.title ?? ''
                   // model.projectLifeCycle?.projectStages
                   //         ?.firstWhere((e) => e.lifeCycleId == model.lifeCycleId)
                   //         .title ??
@@ -69,7 +67,7 @@ class ProjectDetailsDescription extends StatelessWidget {
               child: ProjectContentCard(
                 icon: Assets.svgs.filter.path,
                 title: allTranslations.text("project_category"),
-                desc: model.title ?? "",
+                desc: model.projectCategoryName ?? "",
               ),
             ),
             SizedBox(width: 8.h),
@@ -90,7 +88,7 @@ class ProjectDetailsDescription extends StatelessWidget {
               child: ProjectContentCard(
                 icon: Assets.svgs.people.path,
                 title: allTranslations.text("project_team"),
-                desc: "${model.teamIds?.join(", ")}",
+                desc: model.teamName?.name ?? '',
               ),
             ),
             SizedBox(width: 8.h),
@@ -98,7 +96,7 @@ class ProjectDetailsDescription extends StatelessWidget {
               child: ProjectContentCard(
                 icon: Assets.svgs.warning.path,
                 title: allTranslations.text("risk_level"),
-                desc: "${model.riskLevelId ?? 0}",
+                desc: "${model.periortyLevelName ?? 0}",
               ),
             ),
           ],

@@ -3,7 +3,7 @@ export 'package:core_package/core/model/meta.dart';
 export 'package:core_package/core/widgets/bottom_sheet_header.dart';
 export 'package:core_package/core/widgets/percentage_avatar.dart';
 
-export '../bloc/filtration_bloc.dart';
+export '../bloc/ats_filtration_bloc.dart';
 export '../candidates/bloc/candidates_bloc.dart';
 export '../candidates/view/sections/all_candidates_section.dart';
 export '../candidates/view/sections/candidate_stages_list_section.dart';

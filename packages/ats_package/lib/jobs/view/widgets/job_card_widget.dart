@@ -27,7 +27,7 @@ class JobCardWidget extends StatelessWidget {
         children: [
           InkWell(
               onTap: () {
-                context.read<FiltrationBloc>().reset();
+                context.read<AtsFiltrationBloc>().reset();
                 CustomNavigator.push(Routes.CANDIDATES,
                     arguments: InitCandidates(
                         stages: jobDataModel?.stages,

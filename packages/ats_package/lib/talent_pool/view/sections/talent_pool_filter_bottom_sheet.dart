@@ -7,9 +7,9 @@ class TalentPoolFilterBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FiltrationBloc, AppState>(
+    return BlocBuilder<AtsFiltrationBloc, AppState>(
       builder: (context, state) {
-        final filterBloc = context.read<FiltrationBloc>();
+        final filterBloc = context.read<AtsFiltrationBloc>();
         final talentBloc = context.read<TalentPoolBloc>();
         return StreamBuilder<CandidateFilterModel>(
             stream: filterBloc.filterStream,
@@ -20,7 +20,7 @@ class TalentPoolFilterBottomSheet extends StatelessWidget {
                   Column(
                     children: [
                       BottomSheetHeader(title: allTranslations.text(LocaleKeys.candidate)),
-                      FilterBottomSheetBody(filterModel: filterModel),
+                      AtsFilterBottomSheetBody(filterModel: filterModel),
                     ],
                   ),
                   FilterButtonsSection(

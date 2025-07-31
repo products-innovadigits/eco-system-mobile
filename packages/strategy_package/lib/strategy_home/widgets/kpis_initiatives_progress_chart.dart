@@ -27,7 +27,7 @@ class ObjectivesKpisInitiativesChart extends StatelessWidget {
           primaryXAxis: CategoryAxis(
             isInversed: true,
             autoScrollingDelta: 4,
-            autoScrollingMode: AutoScrollingMode.end,
+            autoScrollingMode: AutoScrollingMode.start,
             interval: 1,
             labelIntersectAction: AxisLabelIntersectAction.wrap,
             maximumLabelWidth: 200,

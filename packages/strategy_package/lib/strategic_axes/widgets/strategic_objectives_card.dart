@@ -88,15 +88,6 @@ class StrategicObjectivesCard extends StatelessWidget {
                         isExpanded: bloc.isKpisExpanded,
                         indicatorIcon: Assets.svgs.focus.path,
                       ),
-                      16.sh,
-                      IndicatorsCardWidget(
-                        objectiveTitle: 'المبادرات',
-                        indicators: initiatives,
-                        onTap: () =>
-                            bloc.add(ToggleInitiatives(arguments: index)),
-                        isExpanded: bloc.isInitiativesExpanded,
-                        indicatorIcon: Assets.svgs.rocket.path,
-                      ),
                       24.sh,
                     ],
                   ),

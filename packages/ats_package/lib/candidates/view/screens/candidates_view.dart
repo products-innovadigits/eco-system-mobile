@@ -16,7 +16,7 @@ class Candidates extends StatelessWidget {
               withFilter: true,
               isFiltered: bloc.isFiltered,
               onFiltering: () {
-                context.read<FiltrationBloc>().collapseExpandedLists();
+                context.read<AtsFiltrationBloc>().collapseExpandedLists();
                 PopUpHelper.showBottomSheet(
                     child: BlocProvider.value(
                       value: bloc,

@@ -6,9 +6,9 @@ import '../../../candidates/view/widgets/skills.dart';
 import '../../../candidates/view/widgets/tags.dart';
 import '../../model/candidate_filter_model.dart';
 
-class FilterBottomSheetBody extends StatelessWidget {
+class AtsFilterBottomSheetBody extends StatelessWidget {
   final CandidateFilterModel filterModel;
-  const FilterBottomSheetBody({super.key, required this.filterModel});
+  const AtsFilterBottomSheetBody({super.key, required this.filterModel});
 
   @override
   Widget build(BuildContext context) {

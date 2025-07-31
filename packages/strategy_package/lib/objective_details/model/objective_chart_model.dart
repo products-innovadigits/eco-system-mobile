@@ -32,11 +32,11 @@ class ObjectiveChartModel extends SingleMapper {
     data['month'] = this.month;
     return data;
   }
-
   @override
   Mapper fromJson(Map<String, dynamic> json) {
     return ObjectiveChartModel.fromJson(json);
   }
+
 }
 
 enum ChartTime { Year, Month }

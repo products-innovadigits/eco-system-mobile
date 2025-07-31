@@ -1,8 +1,8 @@
 import 'package:ats_package/shared/ats_exports.dart';
 import 'package:core_package/core/utility/export.dart';
 
-class FiltrationBloc extends Bloc<AppEvent, AppState> {
-  FiltrationBloc() : super(Start()) {
+class AtsFiltrationBloc extends Bloc<AppEvent, AppState> {
+  AtsFiltrationBloc() : super(Start()) {
     on<AddSkill>(_onAddSkill);
     on<Click>(_getTags);
     on<PickTag>(_onAddTag);

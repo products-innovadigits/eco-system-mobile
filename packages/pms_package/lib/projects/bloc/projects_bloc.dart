@@ -1,4 +1,3 @@
-
 import 'package:pms_package/shared/pms_exports.dart';
 
 class ProjectsBloc extends Bloc<AppEvent, AppState> {
@@ -16,12 +15,16 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
   TextEditingController? searchTEC;
 
   final filter = BehaviorSubject<CustomFieldModel?>();
+
   Function(CustomFieldModel?) get updateFilter => filter.sink.add;
+
   Stream<CustomFieldModel?> get filterStream =>
       filter.stream.asBroadcastStream();
 
   final goingDown = BehaviorSubject<bool>();
+
   Function(bool) get updateGoingDown => goingDown.sink.add;
+
   Stream<bool> get goingDownStream => goingDown.stream.asBroadcastStream();
 
   customScroll(ScrollController controller) {
@@ -56,11 +59,12 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
         "periortyLevelId": filter.valueOrNull?.id,
         "pageIndex": _engine.currentPage + 1,
         "pageSize": _engine.limit,
+        if (_engine.query != null) "status": _engine.query['status']
       };
 
       ProjectsModel res = await ProjectsRepo.getProjects(_engine);
 
-      if (res.data != null&&res.data!.isNotEmpty) {
+      if (res.data != null && res.data!.isNotEmpty) {
         for (var objective in res.data ?? []) {
           _cards.add(ProjectCard(project: objective));
         }

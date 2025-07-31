@@ -1,19 +1,19 @@
 import 'package:core_package/core/helpers/font_sizes.dart';
 import 'package:strategy_package/objective_details/widgets/chart_titles_widget.dart';
 
-import '../../../shared/strategy_exports.dart';
-import '../../../shared/widgets/monthly_annaul_chart_filter_widget.dart';
+import '../../shared/strategy_exports.dart';
+import '../../shared/widgets/monthly_annaul_chart_filter_widget.dart';
 
-class KpisInitiativesProgressChart extends StatefulWidget {
-  const KpisInitiativesProgressChart({super.key});
+class KpisInitiativesProgress extends StatefulWidget {
+  const KpisInitiativesProgress({super.key});
 
   @override
-  State<KpisInitiativesProgressChart> createState() =>
-      _KpisInitiativesProgressChartState();
+  State<KpisInitiativesProgress> createState() =>
+      _KpisInitiativesProgressState();
 }
 
-class _KpisInitiativesProgressChartState
-    extends State<KpisInitiativesProgressChart> {
+class _KpisInitiativesProgressState
+    extends State<KpisInitiativesProgress> {
   ChartTime currentTime = ChartTime.Month;
 
   @override
