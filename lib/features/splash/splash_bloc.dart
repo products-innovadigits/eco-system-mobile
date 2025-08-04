@@ -8,6 +8,7 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
   }
 
   Future<void> onClick(Click event, Emitter<AppState> emit) async {
+    /// Selected Systems from GitHub Actions
     const String selectedSystems = String.fromEnvironment(
       'ACTIVE_SYSTEMS',
       defaultValue: 'strategy,ats,pms',
@@ -16,6 +17,7 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
         .split(',')
         .map((s) => ActiveSystemEnum.fromString(s))
         .toList();
+    cprint('====Systems====:${activeSystems.map((e) => e.value).toList()}');
     Future.delayed(const Duration(milliseconds: 3000), () async {
       ///Ask Notification Permission
       PermissionHandler.checkNotificationsPermission();

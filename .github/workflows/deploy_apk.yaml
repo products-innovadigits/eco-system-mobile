@@ -31,12 +31,17 @@ jobs:
       - name: Set Gradle Heap Size
         run: echo "org.gradle.jvmargs=-Xmx4g" >> android/gradle.properties
 
+      - name: Debug systems input
+        run: echo "🚀 ACTIVE_SYSTEMS='${{ github.event.inputs.systems }}'"
+
       - name: Build APK
         run: |
+          flutter clean
+          flutter pub get
           flutter build apk \
             --release \
             --no-shrink \
-            --dart-define=ACTIVE_SYSTEMS="${{ github.event.inputs.systems }}"
+            --dart-define=ACTIVE_SYSTEMS=${{ github.event.inputs.systems }}
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
