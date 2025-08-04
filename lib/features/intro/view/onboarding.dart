@@ -1,4 +1,4 @@
-import 'package:core_package/core/utility/export.dart';
+import 'package:core_system/core/utility/export.dart';
 
 class OnBoarding extends StatefulWidget {
   const OnBoarding({super.key});

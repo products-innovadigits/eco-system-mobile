@@ -1,4 +1,4 @@
-import 'package:core_package/core/utility/export.dart';
+import 'package:core_system/core/utility/export.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class IntroView extends StatefulWidget {

@@ -1,4 +1,4 @@
-import 'package:core_package/core/utility/export.dart';
+import 'package:core_system/core/utility/export.dart';
 import 'package:eco_system/features/main_page/widgets/main_page_body.dart';
 
 class MainPage extends StatefulWidget {

@@ -1,4 +1,4 @@
-import 'package:core_package/core/utility/export.dart';
+import 'package:core_system/core/utility/export.dart';
 
 abstract class LoginRepo {
   static Future<dynamic> login({

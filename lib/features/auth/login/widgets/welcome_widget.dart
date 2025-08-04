@@ -1,5 +1,5 @@
-import 'package:core_package/core/helpers/font_sizes.dart';
-import 'package:core_package/core/utility/export.dart';
+import 'package:core_system/core/helpers/font_sizes.dart';
+import 'package:core_system/core/utility/export.dart';
 
 class WelcomeWidget extends StatelessWidget {
   const WelcomeWidget({super.key});
