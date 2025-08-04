@@ -10,7 +10,7 @@ on:
       systems:
         description: 'Comma-separated list of active systems'
         required: true
-        default: 'ex: strategy,ats,pms'
+        default: 'strategy,ats,pms'
 
 jobs:
   build:
