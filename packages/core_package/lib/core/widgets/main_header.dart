@@ -84,7 +84,11 @@ class MainHeader extends StatelessWidget {
                       ),
                     ),
                     8.sw,
-                    ProfileImageWidget(radius: 20.w),
+                    ProfileImageWidget(radius: 20)
+                    // InkWell(
+                    //   onTap: () => mainAppBloc.toggleLang(),
+                    //   child: Icon(Icons.language),
+                    // ),
                   ],
                 ),
               ],

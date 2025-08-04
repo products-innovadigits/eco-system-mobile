@@ -34,6 +34,19 @@ class MainAppBloc {
     connectivity.close();
   }
 
+  Future<void> toggleLang() async {
+    // Read current code from your translations helper
+    final current = allTranslations.currentLanguage as String;
+
+    // Decide the next one
+    final newLang = (current == 'en') ? 'ar' : 'en';
+
+    // Tell GlobalTranslations to switch (this also calls mainAppBloc.updateLang)
+    //    - saveInPrefs=true will write it to storage (if user is logged in)
+    //    - passing context lets you invoke App.setLocale if you need it
+    await allTranslations.setNewLanguage(newLang, true);
+  }
+
   Future<void> getShared() async {
     String lang = await allTranslations.getPreferredLanguage();
     //here we check the theme value if true, it's be dark

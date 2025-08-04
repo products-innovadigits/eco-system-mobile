@@ -6,7 +6,13 @@ import '../../../shared/strategy_exports.dart';
 
 class GeneralProgressChart extends StatefulWidget {
   final GeneralProgressChartModel data;
-  const GeneralProgressChart({super.key, required this.data});
+  final bool isMonthly;
+
+  const GeneralProgressChart({
+    super.key,
+    required this.data,
+    this.isMonthly = false,
+  });
 
   @override
   State<GeneralProgressChart> createState() => _GeneralProgressChartState();
@@ -26,14 +32,13 @@ class _GeneralProgressChartState extends State<GeneralProgressChart> {
     );
   }
 
-  /// Dark rounded-rect tooltip “60 %”
   Widget _customTooltipBuilder(
-      dynamic data,
-      dynamic point,
-      dynamic series,
-      int pointIndex,
-      int seriesIndex,
-      ) {
+    dynamic data,
+    dynamic point,
+    dynamic series,
+    int pointIndex,
+    int seriesIndex,
+  ) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
@@ -57,14 +62,15 @@ class _GeneralProgressChartState extends State<GeneralProgressChart> {
         enablePanning: true,
         zoomMode: ZoomMode.x,
       ),
-      /// X-axis (Months 1–12)
+
       primaryXAxis: NumericAxis(
-        isInversed: true,        // Dec on the left, Jan on the right
-        minimum: 1,
-        maximum: 12,
+        isInversed: true,
+        // minimum: 1,
+        // maximum: 12,
         interval: 1,
-        autoScrollingDelta: 8,
+        autoScrollingDelta: widget.isMonthly ? 8 : 10,
         autoScrollingMode: AutoScrollingMode.start,
+        numberFormat: NumberFormat("##"),
         labelIntersectAction: AxisLabelIntersectAction.wrap,
         axisLine: AxisLine(width: 1, color: context.color.outline),
         labelStyle: context.textTheme.bodySmall?.copyWith(
@@ -73,7 +79,6 @@ class _GeneralProgressChartState extends State<GeneralProgressChart> {
         ),
       ),
 
-      /// Y-axis (Percent)
       primaryYAxis: NumericAxis(
         opposedPosition: true,
         minimum: 0,
@@ -88,21 +93,28 @@ class _GeneralProgressChartState extends State<GeneralProgressChart> {
         ),
       ),
 
-      /// Two lines: actual (blue) & all (dark)
-      series: <SplineSeries<YearPercent, int>>[
-        // Upper blue line – actual
-        SplineSeries<YearPercent, int>(
+      series: <SplineSeries<YearPercent, num>>[
+        SplineSeries<YearPercent, num>(
           dataSource: widget.data.actual ?? [],
-          xValueMapper: (p, _) => p.month ?? 0,
+          xValueMapper: (p, _) {
+            if (widget.isMonthly) {
+              return p.month ?? 0;
+            }
+            return p.year;
+          },
           yValueMapper: (p, _) => p.value ?? 0,
           color: const Color(0xFF1F77FF),
           width: 4,
         ),
 
-        // Lower dark line – all
-        SplineSeries<YearPercent, int>(
+        SplineSeries<YearPercent, num>(
           dataSource: widget.data.all ?? [],
-          xValueMapper: (p, _) => p.month ?? 0,
+          xValueMapper: (p, _) {
+            if (widget.isMonthly) {
+              return p.month ?? 0;
+            }
+            return p.year;
+          },
           yValueMapper: (p, _) => p.value ?? 0,
           color: const Color(0xFF001244),
           width: 4,
