@@ -8,7 +8,7 @@ on:
         required: false
         default: 'Enter the client email...'
       systems:
-        description: 'Comma-separated list of active systems'
+        description: 'Comma-separated list of active systems (e.g. strategy,ats,pms)'
         required: true
         default: 'strategy,ats,pms'
 
@@ -41,7 +41,7 @@ jobs:
           flutter build apk \
             --release \
             --no-shrink \
-            --dart-define=ACTIVE_SYSTEMS=${{ github.event.inputs.systems }}
+            --dart-define=ACTIVE_SYSTEMS="${{ github.event.inputs.systems }}"
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -60,7 +60,8 @@ jobs:
 
       - name: Distribute via Firebase App Distribution
         working-directory: android
-        run: |
-          fastlane android distribute_ci test_email:${{ github.event.inputs.test_email }}
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          ACTIVE_SYSTEMS: ${{ github.event.inputs.systems }}
+        run: |
+          fastlane android distribute_ci test_email:${{ github.event.inputs.test_email }}
