@@ -56,8 +56,8 @@
       "languageVersion": "3.4"
     },
     {
-      "name": "ats_package",
-      "rootUri": "../packages/ats_package",
+      "name": "ats_system",
+      "rootUri": "../systems/ats_system",
       "packageUri": "lib/",
       "languageVersion": "3.8"
     },
@@ -200,8 +200,8 @@
       "languageVersion": "3.4"
     },
     {
-      "name": "core_package",
-      "rootUri": "../packages/core_package",
+      "name": "core_system",
+      "rootUri": "../systems/core_system",
       "packageUri": "lib/",
       "languageVersion": "3.8"
     },
@@ -1100,8 +1100,8 @@
       "languageVersion": "3.0"
     },
     {
-      "name": "pms_package",
-      "rootUri": "../packages/pms_package",
+      "name": "pms_system",
+      "rootUri": "../systems/pms_system",
       "packageUri": "lib/",
       "languageVersion": "2.19"
     },
@@ -1304,8 +1304,8 @@
       "languageVersion": "3.4"
     },
     {
-      "name": "strategy_package",
-      "rootUri": "../packages/strategy_package",
+      "name": "strategy_system",
+      "rootUri": "../systems/strategy_system",
       "packageUri": "lib/",
       "languageVersion": "3.8"
     },

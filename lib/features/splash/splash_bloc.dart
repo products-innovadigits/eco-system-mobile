@@ -8,6 +8,14 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
   }
 
   Future<void> onClick(Click event, Emitter<AppState> emit) async {
+    const String selectedSystems = String.fromEnvironment(
+      'ACTIVE_SYSTEMS',
+      defaultValue: 'strategy,ats,pms',
+    );
+    final List<ActiveSystemEnum> activeSystems = selectedSystems
+        .split(',')
+        .map((s) => ActiveSystemEnum.fromString(s))
+        .toList();
     Future.delayed(const Duration(milliseconds: 3000), () async {
       ///Ask Notification Permission
       PermissionHandler.checkNotificationsPermission();
@@ -20,11 +28,7 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
       // bool? skip = await helper.readBoolean(CachingKey.SKIP);
 
       ///Get Setting
-      UserBloc.activeSystems = [
-        'strategy',
-        'ats',
-        'pms',
-      ].map((e) => ActiveSystemEnum.fromString(e)).toList();
+      UserBloc.activeSystems = activeSystems;
 
       if (isLogin) {
         UserBloc.instance.add(Click());

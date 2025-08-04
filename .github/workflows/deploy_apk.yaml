@@ -7,6 +7,10 @@ on:
         description: 'Add new tester email (will also send to fixed list)'
         required: false
         default: 'Enter the client email...'
+      systems:
+        description: 'Comma-separated list of active systems'
+        required: true
+        default: 'ex: strategy,ats,pms'
 
 jobs:
   build:
@@ -28,7 +32,11 @@ jobs:
         run: echo "org.gradle.jvmargs=-Xmx4g" >> android/gradle.properties
 
       - name: Build APK
-        run: flutter build apk --release --no-shrink
+        run: |
+          flutter build apk \
+            --release \
+            --no-shrink \
+            --dart-define=ACTIVE_SYSTEMS="${{ github.event.inputs.systems }}"
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -41,9 +49,9 @@ jobs:
       - name: Install Bundler
         run: gem install bundler
 
-#      - name: Install Fastlane plugins
-#        working-directory: android
-#        run: bundle exec fastlane install_plugins
+      # - name: Install Fastlane plugins
+      #   working-directory: android
+      #   run: bundle exec fastlane install_plugins
 
       - name: Distribute via Firebase App Distribution
         working-directory: android
