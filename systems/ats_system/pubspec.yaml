@@ -1,0 +1,16 @@
+name: ats_system
+description: Nawah ATS module.
+version: 1.0.0
+
+environment:
+  sdk: '>=3.8.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  core_system:
+    path: ../core_system
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter

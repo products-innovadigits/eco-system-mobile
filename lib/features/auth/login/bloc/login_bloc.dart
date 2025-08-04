@@ -1,5 +1,5 @@
 
-import 'package:core_package/core/utility/export.dart';
+import 'package:core_system/core/utility/export.dart';
 import 'package:eco_system/features/auth/login/repo/login_repo.dart';
 
 class LoginBloc extends Bloc<AppEvent, AppState> {

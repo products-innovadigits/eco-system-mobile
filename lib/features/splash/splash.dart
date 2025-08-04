@@ -1,4 +1,4 @@
-import 'package:core_package/core/utility/export.dart';
+import 'package:core_system/core/utility/export.dart';
 import 'package:eco_system/features/splash/splash_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
