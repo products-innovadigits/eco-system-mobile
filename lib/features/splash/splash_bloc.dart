@@ -1,5 +1,5 @@
-import 'package:core_package/core/helpers/permissions.dart';
-import 'package:core_package/core/utility/export.dart';
+import 'package:core_system/core/helpers/permissions.dart';
+import 'package:core_system/core/utility/export.dart';
 import 'package:geolocator/geolocator.dart';
 
 class SplashBloc extends Bloc<AppEvent, AppState> {

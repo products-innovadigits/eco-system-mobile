@@ -1,11 +1,11 @@
-import 'package:ats_package/jobs/view/sections/available_jobs_section.dart';
-import 'package:ats_package/talent_pool/view/sections/talent_pool_section.dart';
-import 'package:core_package/core/bloc/user_bloc.dart';
-import 'package:core_package/core/core/enums.dart';
-import 'package:core_package/core/utility/extensions.dart';
+import 'package:ats_system/jobs/view/sections/available_jobs_section.dart';
+import 'package:ats_system/talent_pool/view/sections/talent_pool_section.dart';
+import 'package:core_system/core/bloc/user_bloc.dart';
+import 'package:core_system/core/core/enums.dart';
+import 'package:core_system/core/utility/extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:pms_package/projects_progress/view/projects_progress_section.dart';
-import 'package:strategy_package/objective_percentage/view/objective_percentage_section.dart';
+import 'package:pms_system/projects_progress/view/projects_progress_section.dart';
+import 'package:strategy_system/objective_percentage/view/objective_percentage_section.dart';
 
 class MainBody extends StatelessWidget {
   const MainBody({super.key});

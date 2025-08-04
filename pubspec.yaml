@@ -11,14 +11,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  core_package:
-    path: packages/core_package
-  ats_package:
-    path: packages/ats_package
-  strategy_package:
-    path: packages/strategy_package
-  pms_package:
-    path: packages/pms_package
+  core_system:
+    path: systems/core_system
+  ats_system:
+    path: systems/ats_system
+  strategy_system:
+    path: systems/strategy_system
+  pms_system:
+    path: systems/pms_system
 
   flutter_localizations:
     sdk: flutter
@@ -54,7 +54,7 @@ dev_dependencies:
   flutter_lints:
 
 flutter_gen:
-  output: packages/core_package/lib/core/core/
+  output: systems/core_system/lib/core/core/
   line_length: 80
   # Optional
   integrations:
