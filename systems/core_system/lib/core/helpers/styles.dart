@@ -159,6 +159,16 @@ abstract class Styles {
         return primaryChart;
     }
   }
+  static Color strategicTypeColors(String value) {
+    switch (value) {
+      case "تشغيلي":
+        return LightColor.chartTertiary;
+      case "خططى":
+        return LightColor.chartSecondary;
+      default:
+        return LightColor.chartTertiary;
+    }
+  }
 
   static const List<Color> projectCategoryColors = [
     RED_CHART_COLOR,

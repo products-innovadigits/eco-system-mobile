@@ -30,6 +30,8 @@ class PerspectiveWidget extends StatelessWidget {
             ),
             Text(
               title,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: context.textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w600),
             ),
           ],

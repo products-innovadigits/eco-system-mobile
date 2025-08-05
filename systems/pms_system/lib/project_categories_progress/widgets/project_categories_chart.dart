@@ -73,11 +73,9 @@ class _ProjectCategoriesChartState extends State<ProjectCategoriesChart> {
                 meta,
                 widget.data
                     .map((e) => e.progress.toString())
-                    .toList()
-                    .reversed
                     .toList(),
               ),
-              reservedSize: 35,
+              reservedSize: 40,
               interval: interval,
             ),
           ),
@@ -89,8 +87,6 @@ class _ProjectCategoriesChartState extends State<ProjectCategoriesChart> {
                   meta,
                   widget.data
                       .map((e) => e.name ?? "")
-                      .toList()
-                      .reversed
                       .toList(),
                   textColor: context.color.outlineVariant),
               reservedSize: 80,

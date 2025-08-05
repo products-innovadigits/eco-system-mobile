@@ -82,7 +82,7 @@ class ObjectiveIndicatorsCardWidget extends StatelessWidget {
                   child: Column(
                     children: [
                       IndicatorsCardWidget(
-                        objectiveTitle: 'المؤشرات',
+                        objectiveTitle: LocaleKeys.kpis,
                         indicators: kpis,
                         onTap: () => bscBloc.add(ToggleKpis(arguments: index)),
                         isExpanded: bscBloc.isKpisExpanded,
@@ -90,7 +90,7 @@ class ObjectiveIndicatorsCardWidget extends StatelessWidget {
                       ),
                       16.sh,
                       IndicatorsCardWidget(
-                        objectiveTitle: 'المبادرات',
+                        objectiveTitle: LocaleKeys.initiatives,
                         indicators: initiatives,
                         onTap: () =>
                             bscBloc.add(ToggleInitiatives(arguments: index)),

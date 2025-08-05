@@ -77,16 +77,14 @@ class ObjectiveCardContent extends StatelessWidget {
                   padding:
                   EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
                   decoration: BoxDecoration(
-                    color: Styles.statusColors(objective.status ?? "",
-                        isLineProgress: true)
+                    color: Styles.strategicTypeColors(objective.strategicAxisType ?? "")
                         .withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(100),
                   ),
                   child: Text(objective.strategicAxisType ?? "",
                       style: AppTextStyles.w500.copyWith(
                           fontSize: 12,
-                          color: Styles.statusColors(objective.status ?? "",
-                              isLineProgress: true))),
+                          color: Styles.strategicTypeColors(objective.strategicAxisType ?? ""))),
                 ),
             ],
           ),

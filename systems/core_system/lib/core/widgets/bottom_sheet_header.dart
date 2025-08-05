@@ -1,26 +1,29 @@
-
 import '../utility/export.dart';
 
 class BottomSheetHeader extends StatelessWidget {
   final String title;
 
-  const BottomSheetHeader({
-    super.key,
-    required this.title,
-  });
+  const BottomSheetHeader({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(
-          title,
-          style: context.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+        Expanded(
+          child: Text(
+            title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: context.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+          ),
         ),
-        const Spacer(),
+        8.sw,
         GestureDetector(
-            onTap: () => CustomNavigator.pop(),
-            child: Images(image: Assets.svgs.closeSquare.path)),
+          onTap: () => CustomNavigator.pop(),
+          child: Images(image: Assets.svgs.closeSquare.path),
+        ),
       ],
     );
   }

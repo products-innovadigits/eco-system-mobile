@@ -9,7 +9,7 @@ export 'package:pms_system/pms_home/widgets/latest_requests_section.dart';
 export 'package:pms_system/project_categories_progress/bloc/project_categories_progress_bloc.dart';
 export 'package:pms_system/project_categories_progress/model/project_categories_progress_model.dart';
 export 'package:pms_system/project_categories_progress/repo/project_categories_progress_repo.dart';
-export 'package:pms_system/project_categories_progress/widgets/project_category_h_bar_chart.dart';
+export 'package:pms_system/project_categories_progress/widgets/project_categories_chart.dart';
 export 'package:pms_system/project_details/bloc/project_details_bloc.dart';
 export 'package:pms_system/project_details/model/project_details_model.dart';
 export 'package:pms_system/project_details/repo/project_details_repo.dart';

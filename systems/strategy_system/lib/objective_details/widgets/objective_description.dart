@@ -19,7 +19,7 @@ class ObjectiveDetailsDescription extends StatelessWidget {
       children: [
         Text(
           description ?? "",
-          textAlign: TextAlign.center,
+          textAlign: TextAlign.start,
           style: context.textTheme.bodySmall,
         ),
         SizedBox(height: 16.h),
