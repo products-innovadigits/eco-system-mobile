@@ -7,8 +7,8 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
     on<Click>(onClick);
   }
 
-  Future<void> onClick(Click event, Emitter<AppState> emit) async {
-    /// Selected Systems from GitHub Actions
+  Future<void> getActiveSystem() async {
+    /// Selected Systems from CI/CD
     const String selectedSystems = String.fromEnvironment(
       'ACTIVE_SYSTEMS',
       defaultValue: 'strategy,ats,pms',
@@ -17,7 +17,12 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
         .split(',')
         .map((s) => ActiveSystemEnum.fromString(s))
         .toList();
-    print('====Systems====:${activeSystems.map((e) => e.value).toList()}');
+
+    UserBloc.activeSystems = activeSystems;
+  }
+
+  Future<void> onClick(Click event, Emitter<AppState> emit) async {
+
     Future.delayed(const Duration(milliseconds: 3000), () async {
       ///Ask Notification Permission
       PermissionHandler.checkNotificationsPermission();
@@ -29,8 +34,8 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
       bool? isLogin = await helper.readBoolean(CachingKey.IS_LOGIN);
       // bool? skip = await helper.readBoolean(CachingKey.SKIP);
 
-      ///Get Setting
-      UserBloc.activeSystems = activeSystems;
+      ///Get Selected Active System
+      getActiveSystem();
 
       if (isLogin) {
         UserBloc.instance.add(Click());
