@@ -11,15 +11,15 @@ class BscView extends StatelessWidget {
         appBar: CustomAppBar(title: allTranslations.text(LocaleKeys.bsc)),
         body: BlocBuilder<BscBloc, AppState>(
           builder: (context, state) {
-            switch (state) {
-              case Loading():
-                return _buildLoadingShimmer();
-              case Done():
-                return _buildBscBody(state.data as VisionDataModel);
-              case Empty():
-                return _buildEmptyDataContainer();
-              default:
-                return _buildErrorContainer();
+            if (state is Loading) {
+              return _buildLoadingShimmer();
+            } else if (state is Done) {
+              VisionDataModel visionData = state.list as VisionDataModel;
+              return _buildBscBody(visionData);
+            } else if (state is Error) {
+              return _buildErrorContainer();
+            } else {
+              return const EmptyContainer();
             }
           },
         ),
@@ -62,13 +62,6 @@ Widget _buildBscBody(VisionDataModel visionData) {
       /// Perspectives Section
       PerspectivesSection(perspectives: visionData.manzors ?? []),
     ],
-  );
-}
-
-Widget _buildEmptyDataContainer() {
-  return EmptyContainer(
-    txt: allTranslations.text(LocaleKeys.there_is_no_data),
-    img: Assets.svgs.emptyBox.path,
   );
 }
 

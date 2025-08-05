@@ -65,7 +65,7 @@ class StrategicAxisCardSection extends StatelessWidget {
             },
             itemCount: list.length,
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
           ),
         );
       },

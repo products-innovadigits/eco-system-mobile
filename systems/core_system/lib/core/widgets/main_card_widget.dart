@@ -1,0 +1,39 @@
+import 'package:core_system/core/utility/export.dart';
+
+class MainCardWidget extends StatelessWidget {
+  final Widget child;
+  final String title;
+  final VoidCallback? onViewMoreTap;
+
+  const MainCardWidget({
+    super.key,
+    required this.child,
+    required this.title,
+    this.onViewMoreTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: context.w,
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+      decoration: BoxDecoration(
+        color: context.color.surfaceContainer,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: context.color.outline),
+      ),
+      child: Column(
+        children: [
+          SectionTitle(
+            title: allTranslations.text(LocaleKeys.objective_percentage_rate),
+            withView: onViewMoreTap != null,
+            onViewTap: onViewMoreTap,
+          ),
+          Divider(color: context.color.outline),
+          const SizedBox(height: 12),
+          child,
+        ],
+      ),
+    );
+  }
+}

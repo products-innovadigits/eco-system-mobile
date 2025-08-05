@@ -1,5 +1,4 @@
-
-
+import 'package:core_system/core/widgets/main_card_widget.dart';
 import 'package:strategy_system/strategy_home/model/kpis_initiatives_progress_model.dart';
 
 import '../../shared/strategy_exports.dart';
@@ -11,23 +10,10 @@ class KpiInitiativesProgressSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<StrategyBloc, AppState>(
       builder: (context, state) {
-        return Container(
-          width: context.w,
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-          decoration: BoxDecoration(
-            color: context.color.surfaceContainer,
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: context.color.outline),
-          ),
+        return MainCardWidget(
+          title: allTranslations.text(LocaleKeys.kpis_initiatives_objective),
           child: Column(
             children: [
-              SectionTitle(
-                title: allTranslations.text(
-                    LocaleKeys.kpis_initiatives_objective
-                ),
-              ),
-              Divider(color: context.color.outline),
-              SizedBox(height: 12.h),
               ObjectivesKpisInitiativesChart(
                 data: [
                   KpisInitiativesProgressModel(
@@ -74,49 +60,8 @@ class KpiInitiativesProgressSection extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 12.h),
-              Wrap(
-                alignment: WrapAlignment.start,
-                direction: Axis.horizontal,
-                runSpacing: 8.w,
-                spacing: 24.h,
-                children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.circle,
-                        color: context.color.primary,
-                        size: 14,
-                      ),
-                      SizedBox(width: 4.w),
-                      Flexible(
-                        child: Text(
-                          allTranslations.text("kpis"),
-                          style: context.textTheme.bodySmall,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.circle,
-                        color: context.color.tertiary,
-                        size: 14,
-                      ),
-                      SizedBox(width: 4.w),
-                      Flexible(
-                        child: Text(
-                          allTranslations.text(LocaleKeys.initiatives),
-                          style: context.textTheme.bodySmall,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+              const SizedBox(height: 12),
+              _buildChartTitles(context),
             ],
           ),
         );
@@ -210,4 +155,41 @@ class KpiInitiativesProgressSection extends StatelessWidget {
       },
     );
   }
+}
+
+Widget _buildChartTitles(BuildContext context) {
+  return Wrap(
+    alignment: WrapAlignment.start,
+    direction: Axis.horizontal,
+    runSpacing: 8.w,
+    spacing: 24.h,
+    children: [
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.circle, color: context.color.primary, size: 14),
+          SizedBox(width: 4.w),
+          Flexible(
+            child: Text(
+              allTranslations.text("kpis"),
+              style: context.textTheme.bodySmall,
+            ),
+          ),
+        ],
+      ),
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.circle, color: context.color.tertiary, size: 14),
+          SizedBox(width: 4.w),
+          Flexible(
+            child: Text(
+              allTranslations.text(LocaleKeys.initiatives),
+              style: context.textTheme.bodySmall,
+            ),
+          ),
+        ],
+      ),
+    ],
+  );
 }

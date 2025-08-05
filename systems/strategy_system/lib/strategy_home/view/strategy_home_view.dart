@@ -8,8 +8,8 @@ class StrategyHomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Stack(children: [MainHeader(), StrategyHomeBody()]),
+        physics: const BouncingScrollPhysics(),
+        child: const Stack(children: [MainHeader(), StrategyHomeBody()]),
       ),
     );
   }

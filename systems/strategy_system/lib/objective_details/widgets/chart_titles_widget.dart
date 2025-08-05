@@ -44,7 +44,7 @@ class ChartTitlesWidget extends StatelessWidget {
             SizedBox(width: 4.w),
             Flexible(
               child: Text(
-                allTranslations.text("kpis"),
+                allTranslations.text(LocaleKeys.kpis),
                 style: context.textTheme.bodySmall,
               ),
             ),
