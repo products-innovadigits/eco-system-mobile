@@ -7,7 +7,7 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
     on<Click>(onClick);
   }
 
-  Future<void> getActiveSystem() async {
+  void getActiveSystem() async {
     /// Selected Systems from CI/CD
     const String selectedSystems = String.fromEnvironment(
       'ACTIVE_SYSTEMS',
