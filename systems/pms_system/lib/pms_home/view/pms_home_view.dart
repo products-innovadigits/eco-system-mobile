@@ -7,7 +7,7 @@ class PmsHomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Stack(children: [MainHeader(), PmsHomeBody()]),
       ),

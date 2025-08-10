@@ -7,6 +7,7 @@ class LightColor {
   static const Color primary = Color(0xff020F4C);
   static const Color secondary = Color(0xff175CD3);
   static const Color tertiary = Color(0xff097867);
+  static const Color tertiaryLight = Color(0xff079455);
   static const Color placeHolderText = Color(0xff9DA4AE);
   // static const Color textPrimary = Color(0xff020F4C);
   static const Color border = Color(0xffF3F4F6);

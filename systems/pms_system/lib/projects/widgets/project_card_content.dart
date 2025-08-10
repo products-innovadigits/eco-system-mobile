@@ -73,20 +73,20 @@ class ProjectCardContent extends StatelessWidget {
                   ),
                 ),
               ),
-              if (project.status != null)
+              if (project.projectCategoryName != null)
                 Container(
                   padding:
                       EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
                   decoration: BoxDecoration(
-                    color: Styles.statusColors(project.status ?? "",
+                    color: Styles.statusColors(project.projectCategoryName ?? "",
                             isLineProgress: true)
                         .withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(100),
                   ),
-                  child: Text(project.status ?? "",
+                  child: Text(project.projectCategoryName ?? "",
                       style: AppTextStyles.w500.copyWith(
                           fontSize: 12,
-                          color: Styles.statusColors(project.status ?? "",
+                          color: Styles.statusColors(project.projectCategoryName ?? "",
                               isLineProgress: true))),
                 ),
             ],

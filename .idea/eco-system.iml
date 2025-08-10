@@ -204,6 +204,9 @@
       <excludeFolder url="file://$MODULE_DIR$/packages/strategy_package/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/packages/strategy_package/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/packages/strategy_package/build" />
+      <excludeFolder url="file://$MODULE_DIR$/systems/pms_system/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/systems/pms_system/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/systems/pms_system/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

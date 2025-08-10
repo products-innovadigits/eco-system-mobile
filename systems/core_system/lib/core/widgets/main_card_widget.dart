@@ -3,18 +3,20 @@ import 'package:core_system/core/utility/export.dart';
 class MainCardWidget extends StatelessWidget {
   final Widget child;
   final String title;
+  final double? height;
   final VoidCallback? onViewMoreTap;
 
   const MainCardWidget({
     super.key,
     required this.child,
     required this.title,
-    this.onViewMoreTap,
+    this.onViewMoreTap, this.height,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: height,
       width: context.w,
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
       decoration: BoxDecoration(

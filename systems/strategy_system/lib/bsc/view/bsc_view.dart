@@ -14,7 +14,7 @@ class BscView extends StatelessWidget {
             if (state is Loading) {
               return _buildLoadingShimmer();
             } else if (state is Done) {
-              VisionDataModel visionData = state.list as VisionDataModel;
+              VisionDataModel visionData = state.data as VisionDataModel;
               return _buildBscBody(visionData);
             } else if (state is Error) {
               return _buildErrorContainer();

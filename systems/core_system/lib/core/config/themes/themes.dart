@@ -17,6 +17,7 @@ ThemeData _buildLightTheme() {
       primary: LightColor.primary,
       secondary: LightColor.secondary,
       tertiary: LightColor.tertiary,
+      tertiaryContainer: LightColor.tertiaryLight,
       onSurface: LightColor.primary,
       outline: LightColor.border,
       outlineVariant: LightColor.placeHolderText,
