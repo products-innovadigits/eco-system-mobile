@@ -54,7 +54,7 @@ class VisionSection extends StatelessWidget {
                   ),
                 );
               },
-              separatorBuilder: (_, _) => 8.sw,
+              separatorBuilder: (_, __) => 8.sw,
               itemCount: values.length,
             ),
           ),
