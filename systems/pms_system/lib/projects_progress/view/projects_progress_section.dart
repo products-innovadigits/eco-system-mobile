@@ -48,9 +48,15 @@ class ProjectsProgressSection extends StatelessWidget {
           } else if (state is Empty) {
             return EmptyContainer();
           } else {
-            return EmptyContainer(
-                txt: allTranslations.text(LocaleKeys.something_went_wrong),
-                img: Assets.svgs.error.path);
+            return MainCardWidget(
+                title: allTranslations.text(LocaleKeys.project_progress_rate),
+                child: TryAgainWidget(
+                  onTryAgain: () {
+                    context.read<ProjectsProgressBloc>().add(
+                          Click(),
+                        );
+                  },
+                ));
           }
         },
       ),

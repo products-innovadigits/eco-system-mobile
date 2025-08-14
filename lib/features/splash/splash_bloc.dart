@@ -1,3 +1,4 @@
+import 'package:core_system/core/bloc/theme_cubit.dart';
 import 'package:core_system/core/helpers/permissions.dart';
 import 'package:core_system/core/utility/export.dart';
 import 'package:geolocator/geolocator.dart';
@@ -21,8 +22,12 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
     UserBloc.activeSystems = activeSystems;
   }
 
-  Future<void> onClick(Click event, Emitter<AppState> emit) async {
+  Future<void> getColorScheme() async {
+    ThemeCubit.instance.applyModel(ColorSchemeModel());
+  }
 
+  Future<void> onClick(Click event, Emitter<AppState> emit) async {
+    await getColorScheme();
     Future.delayed(const Duration(milliseconds: 3000), () async {
       ///Ask Notification Permission
       PermissionHandler.checkNotificationsPermission();

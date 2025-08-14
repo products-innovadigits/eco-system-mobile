@@ -1,3 +1,4 @@
+import 'package:core_system/core/bloc/theme_cubit.dart';
 import 'package:core_system/core/utility/export.dart';
 import 'package:eco_system/features/splash/splash_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -30,42 +31,48 @@ class _SplashState extends State<Splash>
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SplashBloc()..add(Click()),
+      create: (context) =>
+      SplashBloc()
+        ..add(Click()),
       child: BlocBuilder<SplashBloc, AppState>(
         builder: (context, state) {
           return Scaffold(
-            body: Container(
-              width: context.w,
-              height: context.h,
-              color: context.color.primary,
-              // decoration: BoxDecoration(
-              //     image: DecorationImage(
-              //         image: AssetImage(Assets.images.newBrandingSplashBg.path),
-              //         fit: BoxFit.cover)),
-              child: Center(
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    // Icon(Icons.circle, color: Styles.WHITE_COLOR, size: 30.h),
-                    Styles.logo(height: 180.h, width: 180.w)
-                        .animate(
+            body: BlocBuilder<ThemeCubit, ThemeState>(
+              builder: (context, tState) {
+                return Container(
+                  width: context.w,
+                  height: context.h,
+                  color: tState.themeData.colorScheme.primary,
+                  // decoration: BoxDecoration(
+                  //     image: DecorationImage(
+                  //         image: AssetImage(Assets.images.newBrandingSplashBg.path),
+                  //         fit: BoxFit.cover)),
+                  child: Center(
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        // Icon(Icons.circle, color: Styles.WHITE_COLOR, size: 30.h),
+                        Styles.logo(height: 180.h, width: 180.w)
+                            .animate(
                             onComplete: (controller) => controller.repeat())
-                        .scale(
+                            .scale(
                           begin: const Offset(1.1, 1.1),
                           end: const Offset(1.0, 1.0),
                           duration: 500.ms,
                           curve: Curves.easeInOut,
                         )
-                        .then()
-                        .scale(
+                            .then()
+                            .scale(
                           begin: const Offset(1.0, 1.0),
                           end: const Offset(1.1, 1.1),
                           duration: 500.ms,
                           curve: Curves.easeInOut,
                         ),
-                  ],
-                ),
-              ),
+                      ],
+                    ),
+                  ),
+                );
+              },
             ),
           );
         },

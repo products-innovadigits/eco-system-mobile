@@ -33,7 +33,17 @@ class ObjectivePercentageSection extends StatelessWidget {
               isStrategyHome: isStrategyHome,
             );
           }
-          return const EmptyContainer();
+          if (state is Empty) {
+            return const EmptyContainer();
+          } else {
+            return MainCardWidget(
+              title: allTranslations.text(LocaleKeys.objective_percentage_rate),
+              child: TryAgainWidget(
+                onTryAgain: () =>
+                    context.read<ObjectiveCategorizedBloc>().add(Click()),
+              ),
+            );
+          }
         },
       ),
     );

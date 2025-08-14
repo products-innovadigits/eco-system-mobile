@@ -27,7 +27,7 @@ class MainCardWidget extends StatelessWidget {
       child: Column(
         children: [
           SectionTitle(
-            title: allTranslations.text(LocaleKeys.objective_percentage_rate),
+            title: title,
             withView: onViewMoreTap != null,
             onViewTap: onViewMoreTap,
           ),
