@@ -1,11 +1,4 @@
-import 'package:ats_system/jobs/view/sections/available_jobs_section.dart';
-import 'package:ats_system/talent_pool/view/sections/talent_pool_section.dart';
-import 'package:core_system/core/bloc/user_bloc.dart';
-import 'package:core_system/core/core/enums.dart';
-import 'package:core_system/core/utility/extensions.dart';
-import 'package:flutter/material.dart';
-import 'package:pms_system/projects_progress/view/projects_progress_section.dart';
-import 'package:strategy_system/objective_percentage/view/objective_percentage_section.dart';
+import 'package:core_system/core/utility/export.dart';
 
 class MainBody extends StatelessWidget {
   const MainBody({super.key});
@@ -22,7 +15,7 @@ class MainBody extends StatelessWidget {
             if (UserBloc.activeSystems.contains(ActiveSystemEnum.strategy))
               ObjectivePercentageSection(),
             if (UserBloc.activeSystems.contains(ActiveSystemEnum.pms)) ...[
-              ProjectsProgressSection(),
+              ProjectManagementSection(),
               // ProjectCategoryProgressSection(),
               if (UserBloc.activeSystems.contains(ActiveSystemEnum.ats)) ...[
                 AvailableJobsSection(),

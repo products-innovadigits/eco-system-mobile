@@ -18,7 +18,7 @@ class PmsHomeBody extends StatelessWidget {
             spacing: 16.h,
             children: [
               const SizedBox(height: 130),
-              ProjectsProgressSection(isPmsHome: true),
+              ProjectManagementSection(isPmsHome: true),
               const LatestRequestsSection(),
               ProjectTimeline(
                 // canvasHeight: 400,

@@ -1,15 +1,9 @@
-import 'package:core_system/core/utility/export.dart';
-import 'package:core_system/core/widgets/main_card_widget.dart';
-import 'package:pms_system/project_categories_progress/model/projects_progress_model.dart';
-import 'package:pms_system/project_categories_progress/view/project_category_progress_section.dart';
-import 'package:pms_system/projects_progress/widgets/half_circle_analatic_chart.dart';
+import '../../shared/pms_exports.dart';
 
-import '../bloc/projects_progress_bloc.dart';
-
-class ProjectsProgressSection extends StatelessWidget {
+class ProjectProgressSection extends StatelessWidget {
   final bool isPmsHome;
 
-  const ProjectsProgressSection({super.key, this.isPmsHome = false});
+  const ProjectProgressSection({super.key, required this.isPmsHome});
 
   @override
   Widget build(BuildContext context) {
@@ -29,19 +23,14 @@ class ProjectsProgressSection extends StatelessWidget {
             List<ProjectsOverviewData> projects = state.data ?? [];
             return Stack(
               children: [
-                Column(
-                  children: [
-                    MainCardWidget(
-                        height: 260.h,
-                        title: allTranslations
-                            .text(LocaleKeys.project_progress_rate),
-                        onViewMoreTap: () => CustomNavigator.push(
+                MainCardWidget(
+                    height: 260.h,
+                    title: allTranslations.text(
+                        LocaleKeys.project_progress_rate),
+                    onViewMoreTap: () =>
+                        CustomNavigator.push(
                             isPmsHome ? Routes.PROJECTS : Routes.PMS_LAYOUT),
-                        child: _chartDetails(context, projects)),
-                    16.sh,
-                    ProjectCategoryProgressSection(isPmsHome: isPmsHome),
-                  ],
-                ),
+                    child: _chartDetails(context, projects)),
                 _buildChart(context, projects),
               ],
             );
@@ -53,8 +42,8 @@ class ProjectsProgressSection extends StatelessWidget {
                 child: TryAgainWidget(
                   onTryAgain: () {
                     context.read<ProjectsProgressBloc>().add(
-                          Click(),
-                        );
+                      Click(),
+                    );
                   },
                 ));
           }
@@ -64,8 +53,8 @@ class ProjectsProgressSection extends StatelessWidget {
   }
 }
 
-Widget _chartDetails(
-    BuildContext context, List<ProjectsOverviewData> projects) {
+Widget _chartDetails(BuildContext context,
+    List<ProjectsOverviewData> projects) {
   return Wrap(
     alignment: WrapAlignment.start,
     direction: Axis.horizontal,
@@ -115,7 +104,7 @@ Widget _chartDetails(
 
 Widget _buildChart(BuildContext context, List<ProjectsOverviewData> projects) {
   final int totalProjects =
-      projects.fold(0, (sum, item) => sum + (item.count ?? 0).toInt());
+  projects.fold(0, (sum, item) => sum + (item.count ?? 0).toInt());
   return Positioned(
     top: 120.h,
     right: 20.w,

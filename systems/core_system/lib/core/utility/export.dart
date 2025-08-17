@@ -68,3 +68,7 @@ export 'package:rxdart/rxdart.dart';
 export 'package:shimmer/shimmer.dart';
 export 'package:core_system/core/model/color_scheme_model.dart';
 export 'package:core_system/core/config/themes/themes.dart';
+export 'package:ats_system/jobs/view/sections/available_jobs_section.dart';
+export 'package:ats_system/talent_pool/view/sections/talent_pool_section.dart';
+export 'package:pms_system/projects_progress/view/project_management_section.dart';
+export 'package:strategy_system/objective_percentage/view/objective_percentage_section.dart';
