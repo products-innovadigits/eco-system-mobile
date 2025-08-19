@@ -49,12 +49,7 @@ class ProjectsView extends StatelessWidget {
                 builder: (context, state) {
                   return switch (state) {
                     // Loading…
-                    Error() => EmptyContainer(
-                      img: Assets.svgs.error.path,
-                      txt: allTranslations.text(
-                        LocaleKeys.something_went_wrong,
-                      ),
-                    ),
+                    Loading() => const ShimmerCardsList(),
 
                     // Done
                     Done(:final cards, :final loading) => Column(
@@ -78,8 +73,11 @@ class ProjectsView extends StatelessWidget {
                     Empty() => EmptyContainer(),
 
                     // Fallback (in case error occurs or something else)
-                    _ => SystemsSwitcher(
-                      systemRoute: Routes.PROJECTS,
+                    _ => EmptyContainer(
+                      img: Assets.svgs.error.path,
+                      txt: allTranslations.text(
+                        LocaleKeys.something_went_wrong,
+                      ),
                     ),
                   };
                 },

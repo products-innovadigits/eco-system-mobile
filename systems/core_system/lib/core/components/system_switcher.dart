@@ -1,9 +1,9 @@
 import 'package:core_system/core/utility/export.dart';
 
 class SystemsSwitcher extends StatefulWidget {
-  final String systemRoute;
+  final ActiveSystemEnum? systemEnum;
 
-  const SystemsSwitcher({super.key, required this.systemRoute});
+  const SystemsSwitcher({super.key,  this.systemEnum});
 
   @override
   State<SystemsSwitcher> createState() => _SystemsSwitcherState();
