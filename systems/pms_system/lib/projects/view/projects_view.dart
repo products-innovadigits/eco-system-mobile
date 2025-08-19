@@ -79,8 +79,6 @@ class ProjectsView extends StatelessWidget {
 
                     // Fallback (in case error occurs or something else)
                     _ => SystemsSwitcher(
-                      title: 'title',
-                      subtitle: 'subtitle',
                       systemRoute: Routes.PROJECTS,
                     ),
                   };
