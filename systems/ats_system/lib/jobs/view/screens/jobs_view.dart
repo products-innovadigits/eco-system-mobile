@@ -37,30 +37,34 @@ class JobsView extends StatelessWidget {
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
           child: BlocBuilder<JobsBloc, AppState>(
-            builder: (context, state) {
-              if (state is Loading) return LoadingShimmerList();
-              if (state is Done) {
-                return Column(
-                  children: [
-                    Expanded(child: JobsListSection()),
-                    CustomLoading(isTextLoading: true, loading: state.loading)
-                  ],
-                );
+              builder: (context, state) {
+                return switch (state) {
+                // ── Loading ─────────────────────────
+                  Loading() => const ShimmerCardsList(),
+
+                // ── Done ────────────────────────────
+                  Done(:final loading) => Column(
+                    children: [
+                      const Expanded(child: JobsListSection()),
+                      CustomLoading(isTextLoading: true, loading: loading),
+                    ],
+                  ),
+
+                // ── Empty ───────────────────────────
+                  Empty(:final initial) => EmptyContainer(
+                    desc: initial == true
+                        ? allTranslations.text(LocaleKeys.no_data_desc)
+                        : allTranslations.text(LocaleKeys.there_is_no_data),
+                  ),
+
+                // ── Fallback (Error / unexpected) ───
+                  _ => EmptyContainer(
+                    img: Assets.svgs.error.path,
+                    txt: allTranslations.text(LocaleKeys.page_not_found),
+                    desc: allTranslations.text(LocaleKeys.page_not_found_desc),
+                  ),
+                };
               }
-              if (state is Empty) {
-                return EmptyContainer(
-                  desc: state.initial == true
-                      ? allTranslations.text(LocaleKeys.no_data_desc)
-                      : allTranslations.text(LocaleKeys.there_is_no_data),
-                );
-              } else {
-                return EmptyContainer(
-                  img: Assets.svgs.error.path,
-                  txt: allTranslations.text(LocaleKeys.page_not_found),
-                  desc: allTranslations.text(LocaleKeys.page_not_found_desc),
-                );
-              }
-            },
           ),
         ),
       ),

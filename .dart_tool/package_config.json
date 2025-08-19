@@ -410,12 +410,6 @@
       "languageVersion": "2.12"
     },
     {
-      "name": "flutter_gantt",
-      "rootUri": "file:///C:/Users/DELL/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_gantt-0.10.0",
-      "packageUri": "lib/",
-      "languageVersion": "3.7"
-    },
-    {
       "name": "flutter_gen_core",
       "rootUri": "file:///C:/Users/DELL/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_gen_core-5.10.0",
       "packageUri": "lib/",
@@ -866,12 +860,6 @@
       "languageVersion": "3.2"
     },
     {
-      "name": "linked_scroll_controller",
-      "rootUri": "file:///C:/Users/DELL/AppData/Local/Pub/Cache/hosted/pub.dev/linked_scroll_controller-0.2.0",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
       "name": "lints",
       "rootUri": "file:///C:/Users/DELL/AppData/Local/Pub/Cache/hosted/pub.dev/lints-6.0.0",
       "packageUri": "lib/",
@@ -1103,7 +1091,7 @@
       "name": "pms_system",
       "rootUri": "../systems/pms_system",
       "packageUri": "lib/",
-      "languageVersion": "2.19"
+      "languageVersion": "3.8"
     },
     {
       "name": "pool",
@@ -1328,12 +1316,6 @@
       "languageVersion": "3.1"
     },
     {
-      "name": "syncfusion_flutter_calendar",
-      "rootUri": "file:///C:/Users/DELL/AppData/Local/Pub/Cache/hosted/pub.dev/syncfusion_flutter_calendar-28.2.12",
-      "packageUri": "lib/",
-      "languageVersion": "3.4"
-    },
-    {
       "name": "syncfusion_flutter_charts",
       "rootUri": "file:///C:/Users/DELL/AppData/Local/Pub/Cache/hosted/pub.dev/syncfusion_flutter_charts-28.2.12",
       "packageUri": "lib/",
@@ -1342,12 +1324,6 @@
     {
       "name": "syncfusion_flutter_core",
       "rootUri": "file:///C:/Users/DELL/AppData/Local/Pub/Cache/hosted/pub.dev/syncfusion_flutter_core-28.2.12",
-      "packageUri": "lib/",
-      "languageVersion": "3.4"
-    },
-    {
-      "name": "syncfusion_flutter_datepicker",
-      "rootUri": "file:///C:/Users/DELL/AppData/Local/Pub/Cache/hosted/pub.dev/syncfusion_flutter_datepicker-28.2.12",
       "packageUri": "lib/",
       "languageVersion": "3.4"
     },

@@ -35,3 +35,4 @@ export 'package:pms_system/projects_progress/bloc/projects_progress_bloc.dart';
 export 'package:pms_system/projects_progress/widgets/half_circle_analatic_chart.dart';
 export 'package:pms_system/project_categories_progress/view/project_category_progress_section.dart';
 export 'package:pms_system/projects_progress/widgets/project_progress_section.dart';
+export 'package:pms_system/projects/widgets/projects_filter/projects_filter_bottomsheet.dart';

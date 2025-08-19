@@ -9,79 +9,66 @@ class TalentPoolListSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<TalentPoolBloc, AppState>(
       buildWhen: (previous, current) => current is! Exporting,
-      builder: (context, state) {
-        final bloc = context.read<TalentPoolBloc>();
-        final talentsList = bloc.talentsList;
-        if (state is Loading) return LoadingShimmerList();
-        if (state is Done) {
-          return Column(
-            children: [
-              Expanded(
-                child: RefreshIndicator(
-                  onRefresh: () async {
-                    bloc.add(Click(arguments: SearchEngine()));
-                  },
-                  child: ListAnimator(
-                    controller: bloc.scrollController,
-                    separatorPadding: 16.h,
-                    data: List.generate(
-                      talentsList.length,
-                      (index) => TalentCardWidget(
-                        onSelectTalent: () => bloc.add(
-                          SelectTalent(
-                            arguments: {"talentId": talentsList[index].id},
+        builder: (context, state) {
+          final bloc = context.read<TalentPoolBloc>();
+          final talentsList = bloc.talentsList;
+
+          return switch (state) {
+          // ── Loading ────────────────────────────
+            Loading() => const ShimmerCardsList(),
+
+          // ── Done ───────────────────────────────
+            Done(:final loading) => Column(
+              children: [
+                Expanded(
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      bloc.add(Click(arguments: SearchEngine()));
+                    },
+                    child: ListAnimator(
+                      controller: bloc.scrollController,
+                      separatorPadding: 16.h,
+                      data: List.generate(
+                        talentsList.length,
+                            (index) => TalentCardWidget(
+                          onSelectTalent: () => bloc.add(
+                            SelectTalent(arguments: {"talentId": talentsList[index].id}),
                           ),
+                          isTalentSelected: bloc.selectedTalentsList.contains(
+                            talentsList[index].id,
+                          ),
+                          isSelectionActive: bloc.activeSelection,
+                          talent: talentsList[index],
                         ),
-                        isTalentSelected: bloc.selectedTalentsList.contains(
-                          talentsList[index].id,
-                        ),
-                        isSelectionActive: bloc.activeSelection,
-                        talent: talentsList[index],
                       ),
                     ),
                   ),
-                  // ListView.separated(
-                  //   physics: const BouncingScrollPhysics(),
-                  //   itemCount: talentsList.length,
-                  //   controller: bloc.scrollController,
-                  //   itemBuilder: (context, index) {
-                  //     return TalentCardWidget(
-                  //       onSelectTalent: () => bloc.add(SelectTalent(
-                  //           arguments: {"talentId": talentsList[index].id})),
-                  //       isTalentSelected: bloc.selectedTalentsList
-                  //           .contains(talentsList[index].id),
-                  //       isSelectionActive: bloc.activeSelection,
-                  //       talent: talentsList[index],
-                  //     );
-                  //   },
-                  //   separatorBuilder: (context, index) => 16.sh,
-                  // ),
                 ),
-              ),
-              CustomLoading(isTextLoading: true, loading: state.loading),
-            ],
-          );
+                CustomLoading(isTextLoading: true, loading: loading),
+              ],
+            ),
+
+          // ── Empty ──────────────────────────────
+            Empty(:final initial) => EmptyContainer(
+              img: initial == true
+                  ? Assets.svgs.emptyCandidates.path
+                  : Assets.svgs.emptyBox.path,
+              txt: initial == true
+                  ? allTranslations.text(LocaleKeys.no_talents)
+                  : allTranslations.text(LocaleKeys.there_is_no_data),
+              desc: initial == true
+                  ? allTranslations.text(LocaleKeys.no_talents_desc)
+                  : allTranslations.text(LocaleKeys.no_data_desc),
+            ),
+
+          // ── Error / fallback ───────────────────
+            _ => EmptyContainer(
+              img: Assets.svgs.error.path,
+              txt: allTranslations.text(LocaleKeys.page_not_found),
+              desc: allTranslations.text(LocaleKeys.page_not_found_desc),
+            ),
+          };
         }
-        if (state is Empty) {
-          return EmptyContainer(
-            img: state.initial == true
-                ? Assets.svgs.emptyCandidates.path
-                : Assets.svgs.emptyBox.path,
-            txt: state.initial == true
-                ? allTranslations.text(LocaleKeys.no_talents)
-                : allTranslations.text(LocaleKeys.there_is_no_data),
-            desc: state.initial == true
-                ? allTranslations.text(LocaleKeys.no_talents_desc)
-                : allTranslations.text(LocaleKeys.no_data_desc),
-          );
-        } else {
-          return EmptyContainer(
-            img: Assets.svgs.error.path,
-            txt: allTranslations.text(LocaleKeys.page_not_found),
-            desc: allTranslations.text(LocaleKeys.page_not_found_desc),
-          );
-        }
-      },
     );
   }
 }

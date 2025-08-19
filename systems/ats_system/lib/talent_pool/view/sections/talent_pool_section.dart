@@ -12,69 +12,79 @@ class TalentPoolSection extends StatelessWidget {
           TalentPoolBloc()..add(Click(arguments: SearchEngine())),
       child: BlocBuilder<TalentPoolBloc, AppState>(
         builder: (context, state) {
-          if (state is Empty) {
-            return Padding(
-              padding: EdgeInsets.only(top: 24.h),
-              child: EmptyContainer(
-                txt: allTranslations.text(LocaleKeys.there_is_no_data),
-              ),
-            );
-          }
-          if (state is Loading) {
-            return Padding(
+          final talentPoolBloc = context.read<TalentPoolBloc>();
+
+          return switch (state) {
+            // ── Loading ──────────────────────────────────────────────
+            Loading() => CustomShimmerContainer(
+              height: context.h * 0.2,
+              width: context.w,
               padding: EdgeInsets.only(top: 12.h),
-              child: CustomShimmerContainer(
-                height: context.h * 0.2,
-                width: context.w,
+            ),
+
+            // ── Error ────────────────────────────────────────────────
+            Done() => _TalentPoolCard(
+              child: TotalCandidatesSection(
+                talentsList: talentPoolBloc.talentsList,
+                candidatesCount: talentPoolBloc.candidatesCount ?? 0,
               ),
-            );
-          } else {
-            TalentPoolBloc talentPoolBloc = context.read<TalentPoolBloc>();
-            return InkWell(
-              onTap: () {
-                context.read<AtsFiltrationBloc>().reset();
-                context.read<AtsFiltrationBloc>().add(Click());
-                CustomNavigator.push(Routes.TALENT_POOL);
-              },
-              child: Container(
-                width: context.w,
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                decoration: BoxDecoration(
-                  color: context.color.surfaceContainer,
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: context.color.outline),
-                ),
-                child: Column(
-                  children: [
-                    SectionTitle(
-                      title: allTranslations.text(LocaleKeys.talent_pool),
-                      subText: allTranslations.text(
-                        LocaleKeys.candidate_with_future_potential,
-                      ),
-                      icon: Assets.svgs.tripleUser.path,
-                      onViewTap: () {},
-                    ),
-                    Divider(color: context.color.outline),
-                    12.sh,
-                    state is Error
-                        ? TryAgainWidget(
-                            onTryAgain: () {
-                              context.read<TalentPoolBloc>().add(
-                                Click(arguments: SearchEngine()),
-                              );
-                            },
-                          )
-                        : TotalCandidatesSection(
-                            talentsList: talentPoolBloc.talentsList,
-                            candidatesCount:
-                                talentPoolBloc.candidatesCount ?? 0,
-                          ),
-                  ],
-                ),
+            ),
+
+            // ── Empty ────────────────────────────────────────────────
+            Empty() => EmptyContainer(),
+            // ── Default (error / other states) ─────────────────────
+            _ => _TalentPoolCard(
+              child: TryAgainWidget(
+                onTryAgain: () {
+                  context.read<TalentPoolBloc>().add(
+                    Click(arguments: SearchEngine()),
+                  );
+                },
               ),
-            );
-          }
+            ),
+          };
         },
+      ),
+    );
+  }
+}
+
+class _TalentPoolCard extends StatelessWidget {
+  final Widget child;
+
+  const _TalentPoolCard({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        context.read<AtsFiltrationBloc>().reset();
+        context.read<AtsFiltrationBloc>().add(Click());
+        CustomNavigator.push(Routes.TALENT_POOL);
+      },
+      child: Container(
+        width: context.w,
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+        decoration: BoxDecoration(
+          color: context.color.surfaceContainer,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: context.color.outline),
+        ),
+        child: Column(
+          children: [
+            SectionTitle(
+              title: allTranslations.text(LocaleKeys.talent_pool),
+              subText: allTranslations.text(
+                LocaleKeys.candidate_with_future_potential,
+              ),
+              icon: Assets.svgs.tripleUser.path,
+              onViewTap: () {}, // kept as-is
+            ),
+            Divider(color: context.color.outline),
+            12.sh,
+            child,
+          ],
+        ),
       ),
     );
   }

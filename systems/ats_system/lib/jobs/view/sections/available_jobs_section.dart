@@ -8,51 +8,64 @@ class AvailableJobsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<JobsBloc, AppState>(
       builder: (context, state) {
-        if (state is Empty) {
-          return EmptyContainer();
-        }
-        if (state is Loading) {
-          return Padding(
-            padding: EdgeInsets.only(top: 24.h),
-            child: CustomShimmerContainer(height: context.h * 0.2, width: context.w),
-          );
-        } else {
-          return Container(
+        return switch (state) {
+          // ── Loading ─────────────────────────
+          Loading() => CustomShimmerContainer(
+            height: context.h * 0.2,
             width: context.w,
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-            decoration: BoxDecoration(
-              color: context.color.surfaceContainer,
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: context.color.outline),
+            padding: EdgeInsets.only(top: 24.h),
+          ),
+
+          // ── Done ───────────────────────────
+          Done() => _JobsCard(child: const JobsListSection(isHome: true)),
+
+          // ── Empty ───────────────────────────
+          Empty() => const EmptyContainer(),
+
+          // ── Default (error / other states) ─
+          _ => _JobsCard(
+            child: TryAgainWidget(
+              onTryAgain: () {
+                context.read<JobsBloc>().add(Click(arguments: SearchEngine()));
+              },
             ),
-            child: Column(
-              children: [
-                SectionTitle(
-                  title: allTranslations.text(LocaleKeys.available_jobs),
-                  withView: true,
-                  onViewTap: () {
-                    context.read<JobsBloc>().add(
-                      Click(arguments: SearchEngine()),
-                    );
-                    CustomNavigator.push(Routes.JOBS);
-                  },
-                ),
-                Divider(color: context.color.outline),
-                12.sh,
-                state is Error
-                    ? TryAgainWidget(
-                        onTryAgain: () {
-                          context.read<JobsBloc>().add(
-                            Click(arguments: SearchEngine()),
-                          );
-                        },
-                      )
-                    : JobsListSection(isHome: true),
-              ],
-            ),
-          );
-        }
+          ),
+        };
       },
+    );
+  }
+}
+
+class _JobsCard extends StatelessWidget {
+  final Widget child;
+
+  const _JobsCard({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: context.w,
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+      decoration: BoxDecoration(
+        color: context.color.surfaceContainer,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: context.color.outline),
+      ),
+      child: Column(
+        children: [
+          SectionTitle(
+            title: allTranslations.text(LocaleKeys.available_jobs),
+            withView: true,
+            onViewTap: () {
+              context.read<JobsBloc>().add(Click(arguments: SearchEngine()));
+              CustomNavigator.push(Routes.JOBS);
+            },
+          ),
+          Divider(color: context.color.outline),
+          12.sh,
+          child,
+        ],
+      ),
     );
   }
 }

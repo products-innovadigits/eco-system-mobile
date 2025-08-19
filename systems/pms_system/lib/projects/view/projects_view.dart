@@ -1,5 +1,5 @@
-import 'package:pms_system/projects/widgets/projects_filter/projects_filter_bottomsheet.dart';
 import 'package:pms_system/shared/pms_exports.dart';
+import 'package:core_system/core/components/system_switcher.dart';
 
 class ProjectsView extends StatelessWidget {
   const ProjectsView({super.key});
@@ -30,7 +30,9 @@ class ProjectsView extends StatelessWidget {
               onFiltering: () {
                 PopUpHelper.showBottomSheet(
                   child: BlocProvider.value(
-                      value: bloc, child: ProjectsFilterBottomSheet()),
+                    value: bloc,
+                    child: ProjectsFilterBottomSheet(),
+                  ),
                 );
               },
               onSorting: () {
@@ -43,51 +45,48 @@ class ProjectsView extends StatelessWidget {
               },
             ),
             body: SafeArea(
-                child: BlocBuilder<ProjectsBloc, AppState>(
-                  builder: (context, state) {
-                    if (state is Loading) {
-                      return ListAnimator(
-                        customPadding: EdgeInsets.symmetric(horizontal: 16.w),
-                        data: List.generate(
-                            10,
-                            (index) => Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 8.h),
-                                  child: CustomShimmerContainer(
-                                    height: 125.h,
-                                    width: context.w,
-                                  ),
-                                )),
-                      );
-                    }
-                    if (state is Done) {
-                      return Column(
-                        children: [
-                          Expanded(
-                            child: ListAnimator(
-                              customPadding:
-                                  EdgeInsets.symmetric(horizontal: 16.w),
-                              controller:
-                                  context.read<ProjectsBloc>().scrollController,
-                              data: state.cards,
+              child: BlocBuilder<ProjectsBloc, AppState>(
+                builder: (context, state) {
+                  return switch (state) {
+                    // Loading…
+                    Error() => EmptyContainer(
+                      img: Assets.svgs.error.path,
+                      txt: allTranslations.text(
+                        LocaleKeys.something_went_wrong,
+                      ),
+                    ),
+
+                    // Done
+                    Done(:final cards, :final loading) => Column(
+                      children: [
+                        Expanded(
+                          child: ListAnimator(
+                            customPadding: EdgeInsets.symmetric(
+                              horizontal: 16.w,
                             ),
+                            controller: context
+                                .read<ProjectsBloc>()
+                                .scrollController,
+                            data: cards,
                           ),
-                          CustomLoading(
-                              isTextLoading: true, loading: state.loading)
-                        ],
-                      );
-                    }
-                    if (state is Empty || state is Error) {
-                      return EmptyContainer(
-                        txt: allTranslations.text("oops"),
-                        desc: allTranslations.text(state is Error
-                            ? "something_went_wrong"
-                            : "there_is_no_data"),
-                      );
-                    } else {
-                      return SizedBox();
-                    }
-                  },
-                )),
+                        ),
+                        CustomLoading(isTextLoading: true, loading: loading),
+                      ],
+                    ),
+
+                    // Empty
+                    Empty() => EmptyContainer(),
+
+                    // Fallback (in case error occurs or something else)
+                    _ => SystemsSwitcher(
+                      title: 'title',
+                      subtitle: 'subtitle',
+                      systemRoute: Routes.PROJECTS,
+                    ),
+                  };
+                },
+              ),
+            ),
           );
         },
       ),

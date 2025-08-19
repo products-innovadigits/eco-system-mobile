@@ -37,7 +37,7 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
 
       SharedHelper helper = SharedHelper();
       bool? isLogin = await helper.readBoolean(CachingKey.IS_LOGIN);
-      // bool? skip = await helper.readBoolean(CachingKey.SKIP);
+      bool? skip = await helper.readBoolean(CachingKey.SKIP_BOARDING);
 
       ///Get Selected Active System
       getActiveSystem();
@@ -46,10 +46,9 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
         UserBloc.instance.add(Click());
       }
 
-      // if (!skip && !isLogin) {
-      //   CustomNavigator.push(Routes.BOARDING, clean: true);
-      // } else
-      if (!isLogin) {
+      if (!skip) {
+        CustomNavigator.push(Routes.INTRO, clean: true);
+      } else if (!isLogin) {
         CustomNavigator.push(Routes.LOGIN, clean: true);
       } else {
         CustomNavigator.push(Routes.MAIN_PAGE, clean: true);

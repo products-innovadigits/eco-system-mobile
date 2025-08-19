@@ -10,130 +10,140 @@ class ProjectProgressSection extends StatelessWidget {
     return BlocProvider(
       create: (context) => ProjectsProgressBloc()..add(Click()),
       child: BlocBuilder<ProjectsProgressBloc, AppState>(
-        builder: (context, state) {
-          if (state is Loading || state is Start) {
-            return Padding(
-              padding: EdgeInsets.symmetric(vertical: 12.h),
-              child: CustomShimmerContainer(
+          builder: (context, state) {
+            return switch (state) {
+            // ── Loading ─────────────────────────
+              Loading() => CustomShimmerContainer(
                 height: context.h * 0.2,
                 width: context.w,
+                padding: const EdgeInsets.symmetric(vertical: 12),
               ),
-            );
-          } else if (state is Done) {
-            List<ProjectsOverviewData> projects = state.data ?? [];
-            return Stack(
-              children: [
-                MainCardWidget(
+
+            // ── Done ────────────────────────────
+              Done(:final data) => Stack(
+                children: [
+                  MainCardWidget(
                     height: 260.h,
-                    title: allTranslations.text(
-                        LocaleKeys.project_progress_rate),
-                    onViewMoreTap: () =>
-                        CustomNavigator.push(
-                            isPmsHome ? Routes.PROJECTS : Routes.PMS_LAYOUT),
-                    child: _chartDetails(context, projects)),
-                _buildChart(context, projects),
-              ],
-            );
-          } else if (state is Empty) {
-            return EmptyContainer();
-          } else {
-            return MainCardWidget(
+                    title: allTranslations.text(LocaleKeys.project_progress_rate),
+                    onViewMoreTap: () => CustomNavigator.push(
+                      isPmsHome ? Routes.PROJECTS : Routes.PMS_LAYOUT,
+                    ),
+                    child: _ChartDetails(projects: data ?? <ProjectsOverviewData>[]),
+                  ),
+                  _ProgressHalfPie(projects: data ?? <ProjectsOverviewData>[]),
+                ],
+              ),
+
+            // ── Empty ───────────────────────────
+              Empty() => const EmptyContainer(),
+
+            // ── Default (error/unknown) ─────────
+              _ => MainCardWidget(
                 title: allTranslations.text(LocaleKeys.project_progress_rate),
                 child: TryAgainWidget(
                   onTryAgain: () {
-                    context.read<ProjectsProgressBloc>().add(
-                      Click(),
-                    );
+                    context.read<ProjectsProgressBloc>().add(Click());
                   },
-                ));
+                ),
+              ),
+            };
           }
-        },
       ),
     );
   }
 }
 
-Widget _chartDetails(BuildContext context,
-    List<ProjectsOverviewData> projects) {
-  return Wrap(
-    alignment: WrapAlignment.start,
-    direction: Axis.horizontal,
-    runSpacing: 8.w,
-    spacing: 24.h,
-    children: List.generate(projects.length, (i) {
-      final Color categoryColor = Color(int.parse(
-          projects[i].hexColor?.replaceAll('#', '0xff') ?? '0xff000000'));
-      return Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.circle,
-            color: categoryColor,
-            size: 14,
-          ),
-          SizedBox(width: 4.w),
-          Flexible(
-            child: RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                text: projects[i].name,
-                style: context.textTheme.bodyMedium,
-                children: [
-                  // TextSpan(
-                  //   text: " ${78}",
-                  //   style: AppTextStyles.w400.copyWith(
-                  //       fontSize: 12,
-                  //       color: Styles.DETAILS),
-                  // )
-                ],
+class _ChartDetails extends StatelessWidget {
+  final List<ProjectsOverviewData> projects;
+
+  const _ChartDetails({required this.projects});
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      alignment: WrapAlignment.start,
+      direction: Axis.horizontal,
+      runSpacing: 8.w,
+      spacing: 24.h,
+      children: List.generate(projects.length, (i) {
+        final p = projects[i];
+        final color = Color(
+          int.parse((p.hexColor ?? '#000000').replaceAll('#', '0xff')),
+        );
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.circle, color: color, size: 14),
+            SizedBox(width: 4.w),
+            Flexible(
+              child: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  text: p.name,
+                  style: context.textTheme.bodyMedium,
+                ),
               ),
             ),
-          ),
-          SizedBox(width: 4.w),
-          Text(
-            '(${projects[i].count.toString()})',
-            style: context.textTheme.bodyMedium?.copyWith(
-              color: context.color.outlineVariant,
+            SizedBox(width: 4.w),
+            Text(
+              '(${(p.count ?? 0).toString()})',
+              style: context.textTheme.bodyMedium?.copyWith(
+                color: context.color.outlineVariant,
+              ),
             ),
-          ),
-        ],
-      );
-    }),
-  );
+          ],
+        );
+      }),
+    );
+  }
 }
 
-Widget _buildChart(BuildContext context, List<ProjectsOverviewData> projects) {
-  final int totalProjects =
-  projects.fold(0, (sum, item) => sum + (item.count ?? 0).toInt());
-  return Positioned(
-    top: 120.h,
-    right: 20.w,
-    child: Stack(
-      children: [
-        HalfCircleAnalyticChart(projects),
-        Positioned(
-          top: 100.h,
-          left: 0,
-          right: 0,
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: Column(
-              children: [
-                Text(
-                  allTranslations.text(LocaleKeys.total_projects),
-                  style: context.textTheme.labelSmall,
+class _ProgressHalfPie extends StatelessWidget {
+  final List<ProjectsOverviewData> projects;
+
+  const _ProgressHalfPie({required this.projects});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<ProjectsProgressBloc, AppState,
+        List<ProjectsOverviewData>>(
+      selector: (state) =>
+          state is Done ? (state.data ?? <ProjectsOverviewData>[]) : projects,
+      builder: (context, projs) {
+        final total = projs.fold<int>(0, (s, i) => s + (i.count ?? 0).toInt());
+        return Positioned(
+          top: 120.h,
+          right: 20.w,
+          child: Stack(
+            children: [
+              HalfCircleAnalyticChart(projs),
+              Positioned(
+                top: 100.h,
+                left: 0,
+                right: 0,
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Column(
+                    children: [
+                      Text(
+                        allTranslations.text(LocaleKeys.total_projects),
+                        style: context.textTheme.labelSmall,
+                      ),
+                      Text(
+                        total.toString(),
+                        style: context.textTheme.labelLarge?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: context.color.secondary,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                Text(
-                  totalProjects.toString(),
-                  style: context.textTheme.labelLarge?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: context.color.secondary),
-                )
-              ],
-            ),
+              ),
+            ],
           ),
-        ),
-      ],
-    ),
-  );
+        );
+      },
+    );
+  }
 }

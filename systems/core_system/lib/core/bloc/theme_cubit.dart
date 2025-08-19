@@ -2,7 +2,9 @@ import 'package:core_system/core/utility/export.dart';
 
 ThemeData buildLightThemeFromModel({ColorSchemeModel? m}) {
   // 1) start from your current theme (keeps typography, components, etc.)
-  final base = Themes.lightTheme().themeData;
+  // final base = Themes.lightTheme().themeData;
+  LightColor.update(m);
+  final base = buildLightTheme();
   final cs0 = base.colorScheme;
 
   // 2) if model is null or empty, just return base
@@ -53,6 +55,7 @@ class ThemeCubit extends Cubit<ThemeState> {
       BlocProvider.of(CustomNavigator.navigatorState.currentContext!);
 
   void applyModel(ColorSchemeModel? model) {
+    LightColor.update(model);
     final theme = buildLightThemeFromModel(m: model);
     emit(ThemeState(themeData: theme, model: model));
   }

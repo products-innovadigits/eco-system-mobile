@@ -65,10 +65,11 @@ class CustomShimmerContainer extends StatelessWidget {
   final double? height;
   final double? width;
   final double? borderRadius;
+  final EdgeInsetsGeometry? padding;
   const CustomShimmerContainer({
     super.key,
     this.height,
-    this.width, this.borderRadius,
+    this.width, this.borderRadius, this.padding,
   });
 
   @override
@@ -77,6 +78,7 @@ class CustomShimmerContainer extends StatelessWidget {
       child: Container(
         height: height,
         width: width ?? MediaQueryHelper.width,
+        padding: padding,
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(borderRadius ?? 15.0)),
       ),
