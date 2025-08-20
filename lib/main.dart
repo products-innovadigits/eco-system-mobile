@@ -2,7 +2,6 @@
 // Third-party imports
 import 'package:core_system/core/bloc/theme_cubit.dart';
 import 'package:core_system/core/config/providers.dart';
-import 'package:core_system/core/config/themes/themes.dart';
 import 'package:core_system/core/helpers/notification_helper/notification_helper.dart';
 import 'package:core_system/core/helpers/translation/translations.dart';
 import 'package:core_system/core/navigation/routes.dart';

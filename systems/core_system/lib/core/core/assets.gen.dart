@@ -346,6 +346,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/lock.svg
   SvgGenImage get lock => const SvgGenImage('assets/svgs/lock.svg');
 
+  /// File path: assets/svgs/logo.svg
+  SvgGenImage get logo => const SvgGenImage('assets/svgs/logo.svg');
+
   /// File path: assets/svgs/logout.svg
   SvgGenImage get logout => const SvgGenImage('assets/svgs/logout.svg');
 
@@ -606,6 +609,7 @@ class $AssetsSvgsGen {
     left,
     location,
     lock,
+    logo,
     logout,
     map,
     messageNotif,

@@ -1,5 +1,4 @@
 import 'package:pms_system/shared/pms_exports.dart';
-import 'package:core_system/core/components/system_switcher.dart';
 
 class ProjectsView extends StatelessWidget {
   const ProjectsView({super.key});

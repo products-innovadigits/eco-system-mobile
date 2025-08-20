@@ -1,10 +1,8 @@
 import 'dart:math' as math;
 
-import 'package:core_system/core/helpers/font_sizes.dart';
 import 'package:pms_system/pms_home/model/timeline_project_model.dart';
 import 'package:pms_system/pms_home/widgets/timeline/timeline_grid_body.dart';
 import 'package:pms_system/pms_home/widgets/timeline/timeline_month_header.dart';
-import 'package:pms_system/pms_home/widgets/timeline/project_lane.dart';
 import 'package:pms_system/pms_home/widgets/timeline/timeline_project_lanes.dart';
 import 'package:pms_system/pms_home/widgets/timeline/timeline_weeks_header.dart';
 import 'package:pms_system/shared/pms_exports.dart';

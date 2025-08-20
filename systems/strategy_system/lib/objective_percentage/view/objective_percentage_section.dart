@@ -1,6 +1,6 @@
-import 'package:core_system/core/components/system_switcher.dart';
 import 'package:core_system/core/widgets/main_card_widget.dart';
 import 'package:strategy_system/objective_percentage/widgets/chart_categories_section.dart';
+
 import '../../shared/strategy_exports.dart';
 
 class ObjectivePercentageSection extends StatelessWidget {
@@ -23,14 +23,11 @@ class ObjectivePercentageSection extends StatelessWidget {
         builder: (context, state) {
           return switch (state) {
             // ── Loading ───────────────────────
-            Loading() =>
-              isStrategyHome
-                  ? CustomShimmerContainer(
-                      height: context.h * 0.2,
-                      width: context.w,
-                      padding: EdgeInsets.symmetric(vertical: 12.h),
-                    )
-                  : SystemsSwitcher(),
+            Loading() => CustomShimmerContainer(
+              height: context.h * 0.2,
+              width: context.w,
+              padding: EdgeInsets.symmetric(vertical: 12.h),
+            ),
 
             // ── Done ──────────────────────────
             Done(:final list) => _PercentageChartSection(
@@ -70,9 +67,14 @@ class _PercentageChartSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return MainCardWidget(
       title: allTranslations.text(LocaleKeys.objective_percentage_rate),
-      onViewMoreTap: () => CustomNavigator.push(
-        isStrategyHome ? Routes.OBJECTIVES : Routes.STRATEGY_LAYOUT,
-      ),
+      onViewMoreTap: () {
+        isStrategyHome
+            ? CustomNavigator.push(Routes.OBJECTIVES)
+            : CustomNavigator.push(
+                Routes.SYSTEM_SWITCHER,
+                arguments: ActiveSystemEnum.strategy,
+              );
+      },
       child: Column(
         children: [
           ObjectivePercentageChart(objectives: objectives),
