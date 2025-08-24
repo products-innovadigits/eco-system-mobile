@@ -10,44 +10,42 @@ class ProjectProgressSection extends StatelessWidget {
     return BlocProvider(
       create: (context) => ProjectsProgressBloc()..add(Click()),
       child: BlocBuilder<ProjectsProgressBloc, AppState>(
-          builder: (context, state) {
-            return switch (state) {
+        builder: (context, state) {
+          return switch (state) {
             // ── Loading ─────────────────────────
-              Loading() => CustomShimmerContainer(
-                height: context.h * 0.2,
-                width: context.w,
-                padding: const EdgeInsets.symmetric(vertical: 12),
-              ),
+            Loading() => const CustomShimmerContainer(),
 
             // ── Done ────────────────────────────
-              Done(:final data) => Stack(
-                children: [
-                  MainCardWidget(
-                    height: 260.h,
-                    title: allTranslations.text(LocaleKeys.project_progress_rate),
-                    onViewMoreTap: () => CustomNavigator.push(
-                      isPmsHome ? Routes.PROJECTS : Routes.PMS_LAYOUT,
-                    ),
-                    child: _ChartDetails(projects: data ?? <ProjectsOverviewData>[]),
+            Done(:final data) => Stack(
+              children: [
+                MainCardWidget(
+                  height: 260.h,
+                  title: allTranslations.text(LocaleKeys.project_progress_rate),
+                  onViewMoreTap: () => CustomNavigator.push(
+                    isPmsHome ? Routes.PROJECTS : Routes.PMS_LAYOUT,
                   ),
-                  _ProgressHalfPie(projects: data ?? <ProjectsOverviewData>[]),
-                ],
-              ),
+                  child: _ChartDetails(
+                    projects: data ?? <ProjectsOverviewData>[],
+                  ),
+                ),
+                _ProgressHalfPie(projects: data ?? <ProjectsOverviewData>[]),
+              ],
+            ),
 
             // ── Empty ───────────────────────────
-              Empty() => const EmptyContainer(),
+            Empty() => const EmptyContainer(),
 
             // ── Default (error/unknown) ─────────
-              _ => MainCardWidget(
-                title: allTranslations.text(LocaleKeys.project_progress_rate),
-                child: TryAgainWidget(
-                  onTryAgain: () {
-                    context.read<ProjectsProgressBloc>().add(Click());
-                  },
-                ),
+            _ => MainCardWidget(
+              title: allTranslations.text(LocaleKeys.project_progress_rate),
+              child: TryAgainWidget(
+                onTryAgain: () {
+                  context.read<ProjectsProgressBloc>().add(Click());
+                },
               ),
-            };
-          }
+            ),
+          };
+        },
       ),
     );
   }
@@ -105,8 +103,11 @@ class _ProgressHalfPie extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<ProjectsProgressBloc, AppState,
-        List<ProjectsOverviewData>>(
+    return BlocSelector<
+      ProjectsProgressBloc,
+      AppState,
+      List<ProjectsOverviewData>
+    >(
       selector: (state) =>
           state is Done ? (state.data ?? <ProjectsOverviewData>[]) : projects,
       builder: (context, projs) {

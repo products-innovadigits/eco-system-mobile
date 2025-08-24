@@ -14,10 +14,7 @@ class ShimmerCardsList extends StatelessWidget {
         itemCount ?? 10,
         (index) => Padding(
           padding: EdgeInsets.symmetric(vertical: 8.h),
-          child: CustomShimmerContainer(
-            height: cardHeight ?? 125.h,
-            width: context.w,
-          ),
+          child: CustomShimmerContainer(height: cardHeight ?? 125.h),
         ),
       ),
     );

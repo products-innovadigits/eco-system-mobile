@@ -11,8 +11,6 @@ class AvailableJobsSection extends StatelessWidget {
         return switch (state) {
           // ── Loading ─────────────────────────
           Loading() => CustomShimmerContainer(
-            height: context.h * 0.2,
-            width: context.w,
             padding: EdgeInsets.only(top: 24.h),
           ),
 

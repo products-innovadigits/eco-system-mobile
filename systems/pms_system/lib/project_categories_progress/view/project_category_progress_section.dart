@@ -13,11 +13,7 @@ class ProjectCategoryProgressSection extends StatelessWidget {
         builder: (context, state) {
           return switch (state) {
             // ── Loading ─────────────────────────
-            Loading() => CustomShimmerContainer(
-              height: context.h * 0.2,
-              width: context.w,
-              padding: EdgeInsets.symmetric(vertical: 12.h),
-            ),
+            Loading() => const CustomShimmerContainer(),
 
             // ── Done ────────────────────────────
             Done(:final list) => _CategoriesChart(

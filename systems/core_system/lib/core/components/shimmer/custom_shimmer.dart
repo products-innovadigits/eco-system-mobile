@@ -1,16 +1,11 @@
-
 import 'package:core_system/core/utility/export.dart';
 
 class CustomShimmer extends StatelessWidget {
   final Widget? child;
   final Color? color;
   final Color? subColor;
-  const CustomShimmer({
-    super.key,
-    this.child,
-    this.color,
-    this.subColor,
-  });
+
+  const CustomShimmer({super.key, this.child, this.color, this.subColor});
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +19,8 @@ class CustomShimmer extends StatelessWidget {
 
 class CustomShimmerText extends StatelessWidget {
   final double? width;
-  const CustomShimmerText({
-    super.key,
-    this.width,
-  });
+
+  const CustomShimmerText({super.key, this.width});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +29,9 @@ class CustomShimmerText extends StatelessWidget {
         height: 10,
         width: width,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5), color: Colors.white),
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.white,
+        ),
       ),
     );
   }
@@ -44,6 +39,7 @@ class CustomShimmerText extends StatelessWidget {
 
 class CustomShimmerCircleImage extends StatelessWidget {
   final double? radius;
+
   const CustomShimmerCircleImage({super.key, this.radius});
 
   @override
@@ -66,21 +62,26 @@ class CustomShimmerContainer extends StatelessWidget {
   final double? width;
   final double? borderRadius;
   final EdgeInsetsGeometry? padding;
+
   const CustomShimmerContainer({
     super.key,
     this.height,
-    this.width, this.borderRadius, this.padding,
+    this.width,
+    this.borderRadius,
+    this.padding,
   });
 
   @override
   Widget build(BuildContext context) {
     return CustomShimmer(
       child: Container(
-        height: height,
-        width: width ?? MediaQueryHelper.width,
-        padding: padding,
+        height: height ?? context.h * 0.2,
+        width: width ?? context.w,
+        padding: padding ?? EdgeInsets.symmetric(vertical: 12.h),
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(borderRadius ?? 15.0)),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(borderRadius ?? 15.0),
+        ),
       ),
     );
   }

@@ -114,9 +114,7 @@ class ProfileHeaderSection extends StatelessWidget {
           );
         }
         if (state is Loading) {
-          return Column(
-            children: [CustomShimmerContainer(height: 320.h, width: context.w)],
-          );
+          return Column(children: [CustomShimmerContainer(height: 320.h)]);
         } else {
           return const SizedBox();
         }

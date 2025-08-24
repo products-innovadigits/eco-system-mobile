@@ -23,11 +23,7 @@ class ObjectivePercentageSection extends StatelessWidget {
         builder: (context, state) {
           return switch (state) {
             // ── Loading ───────────────────────
-            Loading() => CustomShimmerContainer(
-              height: context.h * 0.2,
-              width: context.w,
-              padding: EdgeInsets.symmetric(vertical: 12.h),
-            ),
+            Loading() => _buildShimmerLoading(context),
 
             // ── Done ──────────────────────────
             Done(:final list) => _PercentageChartSection(
@@ -53,6 +49,12 @@ class ObjectivePercentageSection extends StatelessWidget {
     );
   }
 }
+
+Widget _buildShimmerLoading(BuildContext context) => CustomShimmerContainer(
+  height: context.h * 0.2,
+  width: context.w,
+  padding: EdgeInsets.symmetric(vertical: 12.h),
+);
 
 class _PercentageChartSection extends StatelessWidget {
   final bool isStrategyHome;
