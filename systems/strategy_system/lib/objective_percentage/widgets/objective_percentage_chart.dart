@@ -97,7 +97,7 @@ class _ObjectivePercentageChartState extends State<ObjectivePercentageChart> {
       final isTouched = i == touchedIndex;
       final radius = isTouched ? 60.w : 50.w;
       return PieChartSectionData(
-        color: Styles.statusColors(widget.objectives[i].categoryName ?? ""),
+        color: LightColor.statusColors(widget.objectives[i].categoryName ?? ""),
         // title: '${widget.objectives[i].value?.toStringAsFixed(2)}%',
         title: "",
         value: widget.objectives[i].value ?? 0,

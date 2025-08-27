@@ -52,7 +52,7 @@ class KeyResultsListWidget extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
-                  color: Styles.statusColors(
+                  color: LightColor.statusColors(
                     kr.status ?? '',
                     isLineProgress: true,
                   ).withValues(alpha: 0.1),
@@ -64,7 +64,7 @@ class KeyResultsListWidget extends StatelessWidget {
                   child: Text(
                     '(${kr.percentage}%)',
                     style: context.textTheme.labelSmall?.copyWith(
-                      color: Styles.statusColors(kr.status ?? '' , isLineProgress: true),
+                      color: LightColor.statusColors(kr.status ?? '' , isLineProgress: true),
                       fontSize: FontSizes.f10,
                     ),
                   ),

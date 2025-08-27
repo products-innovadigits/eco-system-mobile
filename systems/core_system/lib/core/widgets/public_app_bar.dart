@@ -40,7 +40,7 @@ class _PublicAppbarState extends State<PublicAppbar> {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQueryHelper.topPadding + 70,
-      color: Styles.PRIMARY_COLOR,
+      color: context.color.primary,
       child: Padding(
         padding: EdgeInsets.only(
             top: MediaQueryHelper.topPadding, right: 24, left: 24),

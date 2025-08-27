@@ -12,7 +12,7 @@ class CompatibilityPercentageWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
       decoration: BoxDecoration(
-          color: Styles.PRIMARY_COLOR.withValues(alpha: 0.1),
+          color: context.color.primary.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(8)),
       child: Row(
         children: [
@@ -23,7 +23,7 @@ class CompatibilityPercentageWidget extends StatelessWidget {
               style: AppTextStyles.w400.copyWith(color: Styles.TEXT_COLOR)),
           2.sw,
           Text('%${percentage.toInt()}',
-              style: AppTextStyles.w800.copyWith(color: Styles.PRIMARY_COLOR)),
+              style: AppTextStyles.w800.copyWith(color: context.color.primary)),
         ],
       ),
     );

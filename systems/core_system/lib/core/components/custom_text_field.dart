@@ -289,7 +289,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                         borderSide: BorderSide(
                           color: widget.borderColor ?? context.color.outline,
                           // (widget.controller?.text.isNotEmpty ?? false)
-                          //     ? Styles.PRIMARY_COLOR
+                          //     ? context.color.primary
                           //     : Styles.HINT_COLOR,
                           width: 1,
                           style: widget.borderWidth == 0

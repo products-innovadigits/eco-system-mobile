@@ -46,7 +46,7 @@ class TabWidget extends StatelessWidget {
               height: 5,
               margin: const EdgeInsets.only(top: 10),
               decoration: BoxDecoration(
-                color: isSelected ? Styles.PRIMARY_COLOR : Colors.transparent,
+                color: isSelected ? context.color.primary : Colors.transparent,
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(15),
                 ),

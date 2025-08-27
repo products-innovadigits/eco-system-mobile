@@ -120,7 +120,7 @@ class _ProjectCategoriesChartState extends State<ProjectCategoriesChart> {
                   toY: widget.data[index].progress ?? 0,
                   width: 20.w,
                   color:
-                      widget.barColor ?? Styles.projectCategoryColors[index],
+                      widget.barColor ?? LightColor.projectCategoryColors[index],
                   backDrawRodData: BackgroundBarChartRodData(
                       show: true,
                       color: context.color.secondary.withValues(alpha: 0.1),
@@ -141,7 +141,7 @@ Widget bottomTitles(double value, TitleMeta meta, List<String> bottomTilesData,
   final Widget text = Text(bottomTilesData[value.toInt()],
       textAlign: TextAlign.center,
       style: context?.textTheme.bodySmall?.copyWith(
-          color: textColor ?? Styles.projectCategoryColors[value.toInt()],
+          color: textColor ?? LightColor.projectCategoryColors[value.toInt()],
           fontSize: 11));
 
   return SideTitleWidget(

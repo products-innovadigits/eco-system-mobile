@@ -194,7 +194,7 @@ class _CustomSelectDateState extends State<CustomSelectDate> {
             border: Border.all(color: Styles.FIELD_BORDER),
             // border: Border.all(
             //     color:
-            //         date != null ? Styles.PRIMARY_COLOR : Styles.FIELD_BORDER),
+            //         date != null ? context.color.primary : Styles.FIELD_BORDER),
             borderRadius: BorderRadius.circular(10.0)),
         height: widget.isNotEmptyValue!
             ? 69

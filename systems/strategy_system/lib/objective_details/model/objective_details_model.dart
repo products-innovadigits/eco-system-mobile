@@ -18,23 +18,24 @@ class ObjectiveDetailsModel extends SingleMapper {
   String? status;
   String? strategicAxisType;
 
-  ObjectiveDetailsModel(
-      {this.id,
-      this.title,
-      this.description,
-      this.weightScaleLookUpId,
-      this.weight,
-      this.subObjectActives,
-      this.startDate,
-      this.endDate,
-      this.strategicAxisId,
-      this.manzorId,
-      this.visionId,
-      this.isVisionActive,
-      this.createdBy,
-      this.relatedCountAll,
-      this.strategicAxisType,
-      this.status});
+  ObjectiveDetailsModel({
+    this.id,
+    this.title,
+    this.description,
+    this.weightScaleLookUpId,
+    this.weight,
+    this.subObjectActives,
+    this.startDate,
+    this.endDate,
+    this.strategicAxisId,
+    this.manzorId,
+    this.visionId,
+    this.isVisionActive,
+    this.createdBy,
+    this.relatedCountAll,
+    this.strategicAxisType,
+    this.status,
+  });
 
   ObjectiveDetailsModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -42,9 +43,12 @@ class ObjectiveDetailsModel extends SingleMapper {
     description = json['description'];
     weightScaleLookUpId = json['weightScaleLookUpId'];
     weight = json['weight'];
-    subObjectActives = json['subObjectActives'].cast<String>();
-    startDate =
-        json['startDate'] != null ? DateTime.parse(json['startDate']) : null;
+    subObjectActives = json['subObjectActives'] != null
+        ? List<String>.from(json['subObjectActives'])
+        : null;
+    startDate = json['startDate'] != null
+        ? DateTime.parse(json['startDate'])
+        : null;
     endDate = json['endDate'] != null ? DateTime.parse(json['endDate']) : null;
     strategicAxisId = json['strategicAxisId'];
     manzorId = json['manzorId'];

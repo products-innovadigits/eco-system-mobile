@@ -17,7 +17,7 @@ class AddCommentSection extends StatelessWidget {
             children: [
               Text('${allTranslations.text(LocaleKeys.comment)}:',
                   style: AppTextStyles.w600
-                      .copyWith(fontSize: 10, color: Styles.PRIMARY_COLOR)),
+                      .copyWith(fontSize: 10, color: context.color.primary)),
               Text(commentController.text,
                   style: AppTextStyles.w400.copyWith(
                       fontSize: 10, color: Styles.SUB_TEXT_DARK_COLOR))
@@ -40,7 +40,7 @@ class AddCommentSection extends StatelessWidget {
                     8.sw,
                     Text(allTranslations.text(LocaleKeys.add_comment),
                         style: AppTextStyles.w400.copyWith(
-                            fontSize: 12, color: Styles.PRIMARY_COLOR)),
+                            fontSize: 12, color: context.color.primary)),
                   ],
                 ),
               );

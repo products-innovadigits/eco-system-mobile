@@ -35,6 +35,45 @@ class LightColor {
   static const Color chartSecondary = Color(0xffDC6803);
   static const Color chartTertiary = Color(0xff097867);
 
+  static Color statusColors(String value, {bool isLineProgress = false}) {
+    final primaryChart = isLineProgress
+        ? LightColor.secondary
+        : LightColor.chartPrimary;
+    switch (value) {
+      case "مكتمل":
+        return LightColor.tertiary;
+      case "متقدم":
+        return primaryChart;
+      case "متأخر":
+        return LightColor.chartSecondary;
+      default:
+        return primaryChart;
+    }
+  }
+
+  static Color strategicTypeColors(String value) {
+    switch (value) {
+      case "تشغيلي":
+        return LightColor.chartTertiary;
+      case "خططى":
+        return LightColor.chartSecondary;
+      default:
+        return LightColor.chartTertiary;
+    }
+  }
+
+  static const List<Color> projectCategoryColors = [
+    Color(0xffD92D20),
+    Color(0xff020F4C),
+    Color(0xffF39C12),
+    Color(0xFF2FAB86),
+    Color(0xff615E83),
+    Color(0xFFDB5353),
+    Color(0xFF3051CE),
+    Color(0xffE68D24),
+    Color(0xffFE9365),
+  ];
+
   static void update(ColorSchemeModel? m) {
     if (m == null) return;
     primary = m.primary ?? primary;

@@ -78,7 +78,7 @@ class ProjectCardContent extends StatelessWidget {
                   padding:
                       EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
                   decoration: BoxDecoration(
-                    color: Styles.statusColors(project.projectCategoryName ?? "",
+                    color: LightColor.statusColors(project.projectCategoryName ?? "",
                             isLineProgress: true)
                         .withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(100),
@@ -86,7 +86,7 @@ class ProjectCardContent extends StatelessWidget {
                   child: Text(project.projectCategoryName ?? "",
                       style: AppTextStyles.w500.copyWith(
                           fontSize: 12,
-                          color: Styles.statusColors(project.projectCategoryName ?? "",
+                          color: LightColor.statusColors(project.projectCategoryName ?? "",
                               isLineProgress: true))),
                 ),
             ],
@@ -99,11 +99,11 @@ class ProjectCardContent extends StatelessWidget {
                 // value: getProgressBar() / 100,
                 value: (project.progressRatio ?? 0.0).toDouble() / 100,
                 minHeight: 8.h,
-                color: Styles.statusColors(
+                color: LightColor.statusColors(
                   project.status ?? '',
                   isLineProgress: true,
                 ),
-                backgroundColor: Styles.statusColors(
+                backgroundColor: LightColor.statusColors(
                   project.status ?? '',
                   isLineProgress: true,
                 ).withValues(alpha: 0.1),

@@ -23,7 +23,7 @@ Widget customCircleSvgIcon(
     required String? imageName,
     String? imagePath,
     Function? onTap,
-    Color color = Styles.PRIMARY_COLOR,
+    Color? color,
     Color backgroundColor = Styles.WHITE_COLOR,
     width,
     height,
@@ -54,8 +54,8 @@ Widget customCircleSvgIcon(
               ),
               Text(
                 title ?? "",
-                style: const TextStyle(
-                    color: Styles.PRIMARY_COLOR,
+                style:  TextStyle(
+                    color: LightColor.primary,
                     fontWeight: FontWeight.w600,
                     fontSize: 10),
                 overflow: TextOverflow.ellipsis,

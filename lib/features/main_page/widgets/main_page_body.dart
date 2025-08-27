@@ -11,7 +11,7 @@ class MainBody extends StatelessWidget {
         child: Column(
           spacing: 16.h,
           children: [
-            130.sh,
+            100.sh,
             if (UserBloc.activeSystems.contains(ActiveSystemEnum.strategy))
               ObjectivePercentageSection(),
             if (UserBloc.activeSystems.contains(ActiveSystemEnum.pms)) ...[

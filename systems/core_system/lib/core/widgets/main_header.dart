@@ -1,5 +1,4 @@
 import 'package:core_system/core/utility/export.dart';
-import 'package:core_system/core/widgets/profile_image_widget.dart';
 
 class MainHeader extends StatelessWidget {
   final bool? withBackButton;
@@ -12,7 +11,7 @@ class MainHeader extends StatelessWidget {
       builder: (context, state) {
         return Container(
           width: context.w,
-          height: 210.h,
+          height: 180.h,
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           // color: context.color.primary,
           decoration: BoxDecoration(
@@ -41,7 +40,7 @@ class MainHeader extends StatelessWidget {
                           ],
                         ),
                       )
-                    : 50.sh,
+                    : 35.sh,
                 Row(
                   children: [
                     Expanded(
@@ -73,18 +72,18 @@ class MainHeader extends StatelessWidget {
                               color: context.color.onPrimary,
                             ),
                           ),
-                          4.sh,
-                          Text(
-                            allTranslations.text("home_welcome_message"),
-                            style: context.textTheme.bodyMedium?.copyWith(
-                              color: context.color.onPrimary,
-                            ),
-                          ),
+                          // 4.sh,
+                          // Text(
+                          //   allTranslations.text("home_welcome_message"),
+                          //   style: context.textTheme.bodyMedium?.copyWith(
+                          //     color: context.color.onPrimary,
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
-                    8.sw,
-                    ProfileImageWidget(radius: 20)
+                    // 8.sw,
+                    // ProfileImageWidget(radius: 20)
                     // InkWell(
                     //   onTap: () => mainAppBloc.toggleLang(),
                     //   child: Icon(Icons.language),

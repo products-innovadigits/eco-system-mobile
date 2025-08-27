@@ -22,11 +22,11 @@ class NumbersRatingSection extends StatelessWidget {
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: selectedRating == index
-                      ? Styles.PRIMARY_COLOR.withValues(alpha: 0.1)
+                      ? context.color.primary.withValues(alpha: 0.1)
                       : Colors.transparent,
                   border: Border.all(
                       color: selectedRating == index
-                          ? Styles.PRIMARY_COLOR
+                          ? context.color.primary
                           : context.color.outline),
                   borderRadius: BorderRadius.circular(4),
                 ),
@@ -35,7 +35,7 @@ class NumbersRatingSection extends StatelessWidget {
                     index.toString(),
                     style: AppTextStyles.w400.copyWith(
                         color: selectedRating == index
-                            ? Styles.PRIMARY_COLOR
+                            ? context.color.primary
                             : Styles.DETAILS),
                   ),
                 )),

@@ -50,7 +50,7 @@ class ManagerReviewCardWidget extends StatelessWidget {
                         Text(
                           '4.5/5 ${allTranslations.text(LocaleKeys.degree)}',
                           style: AppTextStyles.w400
-                              .copyWith(color: Styles.PRIMARY_COLOR,
+                              .copyWith(color: context.color.primary,
                               fontSize: 9),
                         ),
                       ],

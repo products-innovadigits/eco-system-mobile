@@ -65,11 +65,11 @@ class ExperienceCardWidget extends StatelessWidget {
         //   'قمت بقيادة دورة حياة تطوير منتجات B2B و SaaS، مع ضمان التوافق مع الأهداف.قمت بقيادة دورة حياة تطوير قمت بقيادة دورة حياة تطوير منتجات B2B و SaaS، مع ضمان التوافق مع الأهداف.قمت بقيادة دورة حياة تطوير',
         //   trimMode: TrimMode.Line,
         //   trimLines: 2,
-        //   colorClickableText: Styles.PRIMARY_COLOR,
+        //   colorClickableText: context.color.primary,
         //   trimExpandedText: allTranslations.text(LocaleKeys.read_less),
         //   trimCollapsedText: allTranslations.text(LocaleKeys.read_more),
         //   moreStyle: AppTextStyles.w400
-        //       .copyWith(color: Styles.PRIMARY_COLOR, fontSize: 8),
+        //       .copyWith(color: context.color.primary, fontSize: 8),
         //   style: AppTextStyles.w400
         //       .copyWith(color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 8),
         // )

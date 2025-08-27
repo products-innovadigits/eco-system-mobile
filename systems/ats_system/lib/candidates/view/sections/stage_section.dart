@@ -10,7 +10,7 @@ class StageSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color stageColor = stage.color != null
         ? Color(int.parse('0xFF${stage.color!.substring(1)}'))
-        : Styles.PRIMARY_COLOR;
+        : context.color.primary;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: Column(

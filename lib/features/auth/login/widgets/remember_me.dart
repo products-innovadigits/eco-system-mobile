@@ -26,9 +26,9 @@ class RememberMe extends StatelessWidget {
               height: 18.h,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  color: check ? Styles.PRIMARY_COLOR : context.color.surfaceContainer,
+                  color: check ? context.color.primary : context.color.surfaceContainer,
                   border: Border.all(
-                      color: check ? Styles.PRIMARY_COLOR : Styles.DETAILS,
+                      color: check ? context.color.primary : Styles.DETAILS,
                       width: 1)),
               child: check
                   ?  Icon(
@@ -46,7 +46,7 @@ class RememberMe extends StatelessWidget {
                 style: AppTextStyles.w500.copyWith(
                     fontSize: 13,
                     overflow: TextOverflow.ellipsis,
-                    color: check ? Styles.PRIMARY_COLOR : Styles.TITLE),
+                    color: check ? context.color.primary : Styles.TITLE),
               ),
             ),
           ],
