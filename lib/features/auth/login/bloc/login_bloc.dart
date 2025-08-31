@@ -1,5 +1,4 @@
-
-import 'package:core_package/core/utility/export.dart';
+import 'package:core_system/core/utility/export.dart';
 import 'package:eco_system/features/auth/login/repo/login_repo.dart';
 
 class LoginBloc extends Bloc<AppEvent, AppState> {
@@ -44,17 +43,13 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
         //   log('Strategy system is active==================');
         //   await LoginRepo.strategyLogin(token: model.accessToken.toString());
         // }
-          CustomNavigator.push(
-            Routes.MAIN_PAGE,
-            clean: true,
-            arguments: MainPageArgs(index: 0),
-          );
-          AppCore.successMessage(
-            allTranslations.text('you_logged_in_successfully'),
-          );
-
+        CustomNavigator.push(Routes.MAIN_PAGE, clean: true);
+        AppCore.successMessage(
+          allTranslations.text('you_logged_in_successfully'),
+        );
+        clear();
         emit(Done());
-        Future.delayed(const Duration(seconds: 1), () => clear());
+        // Future.delayed(const Duration(seconds: 1), () => clear());
       } else {
         AppCore.errorMessage(allTranslations.text('invalid_credentials'));
         emit(Start());

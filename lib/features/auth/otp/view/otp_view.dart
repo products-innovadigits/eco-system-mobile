@@ -1,5 +1,5 @@
-import 'package:core_package/core/utility/export.dart';
-import 'package:core_package/core/widgets/pin_code.dart';
+import 'package:core_system/core/utility/export.dart';
+import 'package:core_system/core/widgets/pin_code.dart';
 
 class OtpView extends StatefulWidget {
   const OtpView({super.key});

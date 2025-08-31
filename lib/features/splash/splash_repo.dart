@@ -1,17 +1,11 @@
-import 'package:core_package/core/utility/export.dart';
+import 'package:core_system/core/utility/export.dart';
 
 abstract class SplashRepo {
-  static Future<List<String>> fetchSystems() async {
-    final res = await Network().request(
-      ApiNames.activeSystems,
+  static Future<ColorSchemeModel> fetchColorScheme() async {
+    return await Network().request(
+      ApiNames.colorScheme,
       method: ServerMethods.GET,
+      model: ColorSchemeModel(),
     );
-    if (res is Response && res.data != null) {
-      final data = res.data['data'];
-      if (data is List) {
-        return List<String>.from(data);
-      }
-    }
-    return [];
   }
 }

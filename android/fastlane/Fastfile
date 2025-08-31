@@ -1,12 +1,17 @@
 default_platform(:android)
 
 platform :android do
-  desc "Build APK and Distribute to Firebase"
+  desc "Distribute existing CI-built APK"
   lane :distribute_ci do |options|
     test_email = options[:test_email]
 
     # Build the APK
-    sh("flutter", "build", "apk", "--release")
+    sh(
+      "flutter", "build", "apk",
+      "--release",
+      "--no-shrink",
+      "--dart-define=ACTIVE_SYSTEMS=#{ENV['ACTIVE_SYSTEMS']}"
+    )
 
 
     firebase_args = {

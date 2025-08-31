@@ -1,14 +1,14 @@
 // Flutter core imports
 // Third-party imports
-import 'package:core_package/core/config/providers.dart';
-import 'package:core_package/core/config/themes/themes.dart';
-import 'package:core_package/core/helpers/notification_helper/notification_helper.dart';
-import 'package:core_package/core/helpers/translation/translations.dart';
-import 'package:core_package/core/navigation/routes.dart';
-import 'package:core_package/core/services/connectivity_service.dart';
-import 'package:core_package/core/utility/export.dart' hide Routes;
-import 'package:core_package/core/utility/un_focus.dart';
-import 'package:core_package/core/widgets/connectivity_wrapper.dart';
+import 'package:core_system/core/bloc/theme_cubit.dart';
+import 'package:core_system/core/config/providers.dart';
+import 'package:core_system/core/helpers/notification_helper/notification_helper.dart';
+import 'package:core_system/core/helpers/translation/translations.dart';
+import 'package:core_system/core/navigation/routes.dart';
+import 'package:core_system/core/services/connectivity_service.dart';
+import 'package:core_system/core/utility/export.dart' hide Routes;
+import 'package:core_system/core/utility/un_focus.dart';
+import 'package:core_system/core/widgets/connectivity_wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -82,69 +82,74 @@ class _MyAppState extends State<MyApp> {
         builder: (context, lang) {
           return lang.hasData
               ? ConnectivityWrapper(
-                  child: MaterialApp(
-                      builder: (context, child) {
-                        return MediaQuery(
-                          data: MediaQuery.of(context).copyWith(
-                            textScaler: const TextScaler.linear(1),
-                          ),
-                          child:
-                              Unfocus(child: child ?? const SizedBox.shrink()),
-                        );
-                      },
-                      initialRoute: Routes.SPLASH,
-                      onGenerateRoute: AppRouter.onGenerateRoute,
-                      navigatorKey: CustomNavigator.navigatorState,
-                      navigatorObservers: [CustomNavigator.routeObserver],
-                      debugShowCheckedModeBanner: false,
-                      scaffoldMessengerKey: CustomNavigator.scaffoldState,
-                      locale: Locale(lang.data!, ''),
-                      supportedLocales: allTranslations.supportedLocales(),
-                      localizationsDelegates: const [
-                        TranslationsDelegate(),
-                        GlobalMaterialLocalizations.delegate,
-                        GlobalWidgetsLocalizations.delegate,
-                        GlobalCupertinoLocalizations.delegate,
-                      ],
-                      title: "Nawah",
-                      themeMode: ThemeMode.light,
-                      theme: Themes.lightTheme().themeData
-                      // .copyWith(
-                      //   appBarTheme: Themes.lightTheme()
-                      //       .themeData
-                      //       .appBarTheme
-                      //       .copyWith(
-                      //           iconTheme: const IconThemeData(
-                      //             color: LightColor.black,
-                      //           ),
-                      //           titleTextStyle: TextStyle(
-                      //             color: context.color.primary,
-                      //             fontSize: FontSizes.f16,
-                      //             fontWeight: FontWeight.w600,
-                      //             fontFamily: lang.data == 'en'
-                      //                 ? Styles.FONT_EN
-                      //                 : Styles.FONT_AR,
-                      //           ),
-                      //           systemOverlayStyle: SystemUiOverlayStyle(
-                      //             statusBarColor: Colors.transparent,
-                      //             statusBarBrightness: Brightness.dark,
-                      //             statusBarIconBrightness: Brightness.dark,
-                      //             systemNavigationBarColor:
-                      //                 Colors.transparent,
-                      //             systemNavigationBarIconBrightness:
-                      //                 Brightness.dark,
-                      //           )),
-                      //   highlightColor: Colors.transparent,
-                      //   splashColor: Colors.transparent,
-                      //   textTheme:
-                      //       Themes.lightTheme().themeData.textTheme.apply(
-                      //             fontFamily: lang.data == 'en'
-                      //                 ? Styles.FONT_EN
-                      //                 : Styles.FONT_AR,
-                      //           ),
-                      // ),
-                      ),
-                )
+            child: BlocBuilder<ThemeCubit, ThemeState>(
+              builder: (context, state) {
+                return MaterialApp(
+                    builder: (context, child) {
+                      return MediaQuery(
+                        data: MediaQuery.of(context).copyWith(
+                          textScaler: const TextScaler.linear(1),
+                        ),
+                        child:
+                        Unfocus(child: child ?? const SizedBox.shrink()),
+                      );
+                    },
+                    initialRoute: Routes.SPLASH,
+                    onGenerateRoute: AppRouter.onGenerateRoute,
+                    navigatorKey: CustomNavigator.navigatorState,
+                    navigatorObservers: [CustomNavigator.routeObserver],
+                    debugShowCheckedModeBanner: false,
+                    scaffoldMessengerKey: CustomNavigator.scaffoldState,
+                    locale: Locale(lang.data!, ''),
+                    supportedLocales: allTranslations.supportedLocales(),
+                    localizationsDelegates: const [
+                      TranslationsDelegate(),
+                      GlobalMaterialLocalizations.delegate,
+                      GlobalWidgetsLocalizations.delegate,
+                      GlobalCupertinoLocalizations.delegate,
+                    ],
+                    title: "Nawah",
+                    themeMode: ThemeMode.light,
+                    // theme: Themes.lightTheme().themeData
+                    theme: state.themeData
+                  // .copyWith(
+                  //   appBarTheme: Themes.lightTheme()
+                  //       .themeData
+                  //       .appBarTheme
+                  //       .copyWith(
+                  //           iconTheme: const IconThemeData(
+                  //             color: LightColor.black,
+                  //           ),
+                  //           titleTextStyle: TextStyle(
+                  //             color: context.color.primary,
+                  //             fontSize: FontSizes.f16,
+                  //             fontWeight: FontWeight.w600,
+                  //             fontFamily: lang.data == 'en'
+                  //                 ? Styles.FONT_EN
+                  //                 : Styles.FONT_AR,
+                  //           ),
+                  //           systemOverlayStyle: SystemUiOverlayStyle(
+                  //             statusBarColor: Colors.transparent,
+                  //             statusBarBrightness: Brightness.dark,
+                  //             statusBarIconBrightness: Brightness.dark,
+                  //             systemNavigationBarColor:
+                  //                 Colors.transparent,
+                  //             systemNavigationBarIconBrightness:
+                  //                 Brightness.dark,
+                  //           )),
+                  //   highlightColor: Colors.transparent,
+                  //   splashColor: Colors.transparent,
+                  //   textTheme:
+                  //       Themes.lightTheme().themeData.textTheme.apply(
+                  //             fontFamily: lang.data == 'en'
+                  //                 ? Styles.FONT_EN
+                  //                 : Styles.FONT_AR,
+                  //           ),
+                  // ),
+                );
+              },
+            ),
+          )
               : Container();
         },
       ),
