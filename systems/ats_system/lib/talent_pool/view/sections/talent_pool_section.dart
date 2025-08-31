@@ -31,14 +31,13 @@ class TalentPoolSection extends StatelessWidget {
             ),
 
             // ── Empty ────────────────────────────────────────────────
-            Empty() => EmptyContainer(),
-            // ── Default (error / other states) ─────────────────────
+            Empty() => const EmptyContainer(),
+
+            // ── Default (error/unknown) ─────────────────────────────
             _ => _TalentPoolCard(
               child: TryAgainWidget(
                 onTryAgain: () {
-                  context.read<TalentPoolBloc>().add(
-                    Click(arguments: SearchEngine()),
-                  );
+                  talentPoolBloc.add(Click(arguments: SearchEngine()));
                 },
               ),
             ),

@@ -1,7 +1,7 @@
 import 'package:core_system/core/utility/export.dart';
 
-class MainBody extends StatelessWidget {
-  const MainBody({super.key});
+class MainBodyMobilePortraitView extends StatelessWidget {
+  const MainBodyMobilePortraitView({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -64,6 +64,9 @@ dependencies:
   # Configuration
   flutter_dotenv: ^5.2.1
 
+  # Responsive
+  responsive_builder: ^0.7.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
