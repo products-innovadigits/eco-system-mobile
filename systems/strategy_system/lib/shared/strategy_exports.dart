@@ -34,7 +34,7 @@ export 'package:strategy_system/objective_percentage/bloc/objective_percentage_b
 export 'package:strategy_system/objective_percentage/model/objective_percentage_model.dart';
 export 'package:strategy_system/objective_percentage/repo/objective_active_repo.dart';
 export 'package:strategy_system/objective_percentage/view/objective_percentage_section.dart';
-export 'package:strategy_system/objective_percentage/widgets/objective_percentage_chart.dart';
+export 'package:strategy_system/objective_percentage/widgets/objective_percentage_chart_mobile_portrait.dart';
 export 'package:strategy_system/objectives/bloc/objectives_bloc.dart';
 export 'package:strategy_system/objectives/bloc/objectives_filtration_bloc.dart';
 export 'package:strategy_system/objectives/bloc/strategic_axis_bloc.dart';

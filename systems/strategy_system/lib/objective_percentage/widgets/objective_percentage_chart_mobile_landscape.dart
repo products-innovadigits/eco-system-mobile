@@ -1,16 +1,16 @@
 import '../../shared/strategy_exports.dart';
 
-class ObjectivePercentageChart extends StatefulWidget {
-  const ObjectivePercentageChart({super.key, required this.objectives});
+class ObjectivePercentageChartMobileLandscape extends StatefulWidget {
+  const ObjectivePercentageChartMobileLandscape({super.key, required this.objectives});
 
   final List<ObjectivePercentageModel> objectives;
 
   @override
-  State<ObjectivePercentageChart> createState() =>
-      _ObjectivePercentageChartState();
+  State<ObjectivePercentageChartMobileLandscape> createState() =>
+      _ObjectivePercentageChartMobileLandscapeState();
 }
 
-class _ObjectivePercentageChartState extends State<ObjectivePercentageChart> {
+class _ObjectivePercentageChartMobileLandscapeState extends State<ObjectivePercentageChartMobileLandscape> {
   int touchedIndex = -1;
   bool isEmpty = true;
 
@@ -22,8 +22,8 @@ class _ObjectivePercentageChartState extends State<ObjectivePercentageChart> {
           isEmpty =
               double.parse((state.data as String).replaceAll('%', '')) <= 0;
         }
-        return AspectRatio(
-          aspectRatio: 1.4,
+        return SizedBox(
+          height: 220,
           child: Stack(
             alignment: Alignment.center,
             children: [
@@ -47,7 +47,7 @@ class _ObjectivePercentageChartState extends State<ObjectivePercentageChart> {
                       show: false,
                       border: Border.all(color: context.color.outline)),
                   sectionsSpace: 5.w,
-                  centerSpaceRadius: 50.w,
+                  centerSpaceRadius: 25.w,
                   sections: isEmpty || showingSections().isEmpty
                       ? emptyState()
                       : showingSections(),
@@ -56,24 +56,21 @@ class _ObjectivePercentageChartState extends State<ObjectivePercentageChart> {
               BlocBuilder<ObjectivePercentageBloc, AppState>(
                 builder: (context, state) {
                   if (state is Done) {
-                    return SizedBox(
-                      width: 80.w,
-                      child: FittedBox(
-                        child: RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            text: allTranslations.text("objective_percentage"),
-                            style: context.textTheme.labelSmall,
-                            children: [
-                              // TextSpan(
-                              //   text: "\n${state.data ?? 0}",
-                              //   style: context.textTheme.titleLarge?.copyWith(
-                              //       color: isEmpty
-                              //           ? context.color.outline
-                              //           : context.color.primary),
-                              // )
-                            ],
-                          ),
+                    return FittedBox(
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          text: allTranslations.text("objective_percentage"),
+                          style: context.textTheme.labelSmall,
+                          children: [
+                            // TextSpan(
+                            //   text: "\n${state.data ?? 0}",
+                            //   style: context.textTheme.titleLarge?.copyWith(
+                            //       color: isEmpty
+                            //           ? context.color.outline
+                            //           : context.color.primary),
+                            // )
+                          ],
                         ),
                       ),
                     );
@@ -95,7 +92,7 @@ class _ObjectivePercentageChartState extends State<ObjectivePercentageChart> {
   List<PieChartSectionData> showingSections() {
     return List.generate(widget.objectives.length, (i) {
       final isTouched = i == touchedIndex;
-      final radius = isTouched ? 60.w : 50.w;
+      final double radius = isTouched ? 60 : 50;
       return PieChartSectionData(
         color: LightColor.statusColors(widget.objectives[i].categoryName ?? ""),
         // title: '${widget.objectives[i].value?.toStringAsFixed(2)}%',

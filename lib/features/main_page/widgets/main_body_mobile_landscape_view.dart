@@ -7,21 +7,21 @@ class MainBodyMobileLandscapeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.w),
+        padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           spacing: 16.h,
           children: [
-            100.sh,
+            SizedBox(height: 70),
             Row(
               children: [
                 if (UserBloc.activeSystems.contains(ActiveSystemEnum.strategy))
                   Expanded(child: ObjectivePercentageSection()),
-                16.sw,
+                const SizedBox(width: 16),
                 if (UserBloc.activeSystems.contains(ActiveSystemEnum.pms))
                   Expanded(child: ProjectProgressSection(isPmsHome: false)),
               ],
             ),
-            24.sh,
+            const SizedBox(height: 24),
             Row(
               children: [
                 if (UserBloc.activeSystems.contains(ActiveSystemEnum.pms))

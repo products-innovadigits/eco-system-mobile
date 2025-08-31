@@ -11,7 +11,7 @@ class MainBodyMobilePortraitView extends StatelessWidget {
         child: Column(
           spacing: 16.h,
           children: [
-            100.sh,
+            SizedBox(height: 70),
             if (UserBloc.activeSystems.contains(ActiveSystemEnum.strategy))
               ObjectivePercentageSection(),
             if (UserBloc.activeSystems.contains(ActiveSystemEnum.pms)) ...[
