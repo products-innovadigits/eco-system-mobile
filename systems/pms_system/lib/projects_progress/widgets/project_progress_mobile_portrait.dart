@@ -3,7 +3,12 @@ import '../../shared/pms_exports.dart';
 class ProjectProgressMobilePortrait extends StatelessWidget {
   final bool isPmsHome;
   final List<ProjectsOverviewData> data;
-  const ProjectProgressMobilePortrait({super.key, required this.isPmsHome, required this.data});
+
+  const ProjectProgressMobilePortrait({
+    super.key,
+    required this.isPmsHome,
+    required this.data,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -12,20 +17,24 @@ class ProjectProgressMobilePortrait extends StatelessWidget {
         MainCardWidget(
           height: 260.h,
           title: allTranslations.text(LocaleKeys.project_progress_rate),
-          onViewMoreTap: () => CustomNavigator.push(
-            isPmsHome ? Routes.PROJECTS : Routes.PMS_LAYOUT,
-          ),
-          child: _ChartDetails(
-            projects: data ?? <ProjectsOverviewData>[],
-          ),
+          onViewMoreTap: () {
+            if (!isPmsHome) {
+              UserBloc.currentActiveSystem = ActiveSystemEnum.pms;
+            }
+            isPmsHome
+                ? CustomNavigator.push(Routes.PROJECTS)
+                : CustomNavigator.push(
+                    Routes.SYSTEM_SWITCHER,
+                    arguments: ActiveSystemEnum.pms,
+                  );
+          },
+          child: _ChartDetails(projects: data ?? <ProjectsOverviewData>[]),
         ),
         _ProgressHalfPie(projects: data ?? <ProjectsOverviewData>[]),
       ],
     );
   }
 }
-
-
 
 class _ChartDetails extends StatelessWidget {
   final List<ProjectsOverviewData> projects;
@@ -80,12 +89,12 @@ class _ProgressHalfPie extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocSelector<
-        ProjectsProgressBloc,
-        AppState,
-        List<ProjectsOverviewData>
+      ProjectsProgressBloc,
+      AppState,
+      List<ProjectsOverviewData>
     >(
       selector: (state) =>
-      state is Done ? (state.data ?? <ProjectsOverviewData>[]) : projects,
+          state is Done ? (state.data ?? <ProjectsOverviewData>[]) : projects,
       builder: (context, projs) {
         final total = projs.fold<int>(0, (s, i) => s + (i.count ?? 0).toInt());
         return Positioned(

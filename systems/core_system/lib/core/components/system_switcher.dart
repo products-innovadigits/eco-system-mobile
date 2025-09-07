@@ -27,6 +27,7 @@ class _SystemsSwitcherState extends State<SystemsSwitcher> {
               : widget.systemEnum == ActiveSystemEnum.pms
               ? Routes.PMS_LAYOUT
               : Routes.STRATEGY_LAYOUT,
+          clean: true,
         );
       }
     });
@@ -35,6 +36,8 @@ class _SystemsSwitcherState extends State<SystemsSwitcher> {
   @override
   void initState() {
     super.initState();
+    // Set the current active system
+    UserBloc.currentActiveSystem = widget.systemEnum;
     _loadingSystem();
   }
 
@@ -59,7 +62,7 @@ class _SystemsSwitcherState extends State<SystemsSwitcher> {
                       shape: BoxShape.circle,
                       color: context.color.secondary.withValues(alpha: 0.1),
                     ),
-                    child: Images(image: Assets.svgs.logo.path,),
+                    child: Images(image: Assets.svgs.logo.path),
                   ),
                   CircularProgressIndicator(
                     value: progress,
@@ -70,20 +73,22 @@ class _SystemsSwitcherState extends State<SystemsSwitcher> {
                     ),
                     strokeCap: StrokeCap.round,
                     color: Theme.of(context).colorScheme.primary,
-                    backgroundColor: context.color.secondary.withValues(alpha: 0.2),
+                    backgroundColor: context.color.secondary.withValues(
+                      alpha: 0.2,
+                    ),
                   ),
                 ],
               ),
               const SizedBox(height: 24),
               Text(
-                'الانتقال الي نظام ${widget.systemEnum?.value ?? 'غير محدد'}',
+                'الانتقال الي ${SystemHelper.getSystemName(widget.systemEnum)}',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 8),
               Text(
-                'أنت الآن تنتقل  إلى نظام ${widget.systemEnum?.value ?? 'غير محدد'}  — لتجربة أكثر تركيزًا وسلاسة في التخطيط والمتابعة وإنجاز المشاريع.',
+                'أنت الآن تنتقل  إلى ${SystemHelper.getSystemName(widget.systemEnum)}  — لتجربة أكثر تركيزًا وسلاسة في التخطيط والمتابعة وإنجاز المشاريع.',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: context.color.outlineVariant
+                  color: context.color.outlineVariant,
                 ),
                 textAlign: TextAlign.center,
               ),

@@ -1,5 +1,4 @@
 import 'package:core_system/core/utility/export.dart';
-import 'package:core_system/core/widgets/bottom_sheet_header.dart';
 import 'package:strategy_system/bsc/model/bsc_model.dart';
 import 'package:strategy_system/bsc/widgets/objectives_bottom_sheet.dart';
 import 'package:strategy_system/shared/bloc/bsc_objectives_bloc.dart';

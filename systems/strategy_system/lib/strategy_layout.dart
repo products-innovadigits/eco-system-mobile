@@ -12,9 +12,9 @@ class StrategyLayout extends StatefulWidget {
   State<StrategyLayout> createState() => _StrategyLayoutState();
 }
 
-class _StrategyLayoutState extends State<StrategyLayout> with WidgetsBindingObserver {
+class _StrategyLayoutState extends State<StrategyLayout>
+    with WidgetsBindingObserver {
   int _index = 0;
-
 
   @override
   void initState() {
@@ -27,11 +27,17 @@ class _StrategyLayoutState extends State<StrategyLayout> with WidgetsBindingObse
       case 0:
         return const StrategyHomeView();
       case 1:
-        return const Center(child: Text('التقارير' , style: TextStyle(fontSize: FontSizes.f32)),);
+        return const Center(
+          child: Text('التقارير', style: TextStyle(fontSize: FontSizes.f32)),
+        );
       case 2:
-        return const Center(child: Text('الإشعارات' , style: TextStyle(fontSize: FontSizes.f32)),);
+        return const Center(
+          child: Text('الإشعارات', style: TextStyle(fontSize: FontSizes.f32)),
+        );
       case 3:
-        return const Center(child: Text('المزيد' , style: TextStyle(fontSize: FontSizes.f32)),);
+        return const Center(
+          child: Text('المزيد', style: TextStyle(fontSize: FontSizes.f32)),
+        );
       default:
         return SizedBox();
     }
@@ -39,14 +45,17 @@ class _StrategyLayoutState extends State<StrategyLayout> with WidgetsBindingObse
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: fregmant(_index),
-      bottomNavigationBar: NavApp(
-        index: _index,
-        onSelect: (p0) {
-          _index = p0;
-          setState(() {});
-        },
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        body: fregmant(_index),
+        bottomNavigationBar: NavApp(
+          index: _index,
+          onSelect: (p0) {
+            _index = p0;
+            setState(() {});
+          },
+        ),
       ),
     );
   }

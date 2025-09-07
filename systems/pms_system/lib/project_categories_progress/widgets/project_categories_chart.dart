@@ -120,7 +120,7 @@ class _ProjectCategoriesChartState extends State<ProjectCategoriesChart> {
                   toY: widget.data[index].progress ?? 0,
                   width: 20.w,
                   color:
-                      widget.barColor ?? LightColor.projectCategoryColors[index],
+                      widget.barColor ?? LightColor.projectCategoryColors[0],
                   backDrawRodData: BackgroundBarChartRodData(
                       show: true,
                       color: context.color.secondary.withValues(alpha: 0.1),

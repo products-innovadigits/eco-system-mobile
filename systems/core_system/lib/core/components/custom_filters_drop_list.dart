@@ -1,4 +1,3 @@
-
 import 'package:core_system/core/utility/export.dart';
 
 class CustomFiltersDropList extends StatefulWidget {
@@ -6,7 +5,8 @@ class CustomFiltersDropList extends StatefulWidget {
   final ValueChanged<DropListModel> onSelect;
   final DropListModel? initial;
   final String hintText;
-  final String labelText;
+  final String? labelText;
+  final double? radius;
 
   const CustomFiltersDropList({
     super.key,
@@ -14,7 +14,7 @@ class CustomFiltersDropList extends StatefulWidget {
     required this.onSelect,
     this.initial,
     required this.hintText,
-    required this.labelText,
+    this.labelText, this.radius,
   });
 
   @override
@@ -35,11 +35,13 @@ class _CustomFiltersDropListState extends State<CustomFiltersDropList> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          allTranslations.text(widget.labelText),
-          style: context.textTheme.bodySmall,
-        ),
-        8.sh,
+        if (widget.labelText != null) ...[
+          Text(
+            allTranslations.text(widget.labelText ?? ''),
+            style: context.textTheme.bodySmall,
+          ),
+          8.sh,
+        ],
         Theme(
           data: Theme.of(context).copyWith(
             highlightColor: context.color.secondary.withValues(alpha: 0.2),
@@ -63,7 +65,7 @@ class _CustomFiltersDropListState extends State<CustomFiltersDropList> {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(widget.radius ?? 8),
                 color: context.color.surfaceContainer,
                 border: Border.all(color: context.color.outline),
               ),

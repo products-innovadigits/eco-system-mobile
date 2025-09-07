@@ -52,23 +52,24 @@ class MainHeader extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            withBackButton == true
-                ? Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        InkWell(
-                          onTap: () => CustomNavigator.pop(),
-                          child: Images(
-                            image: Assets.svgs.arrowBack.path,
-                            color: LightColor.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                : const SizedBox(height: 25),
+            const SizedBox(height: 30),
+            // withBackButton == true
+            //     ? Padding(
+            //         padding: const EdgeInsets.only(top: 10, bottom: 15),
+            //         child: Row(
+            //           mainAxisAlignment: MainAxisAlignment.start,
+            //           children: [
+            //             InkWell(
+            //               onTap: () => CustomNavigator.pop(),
+            //               child: Images(
+            //                 image: Assets.svgs.arrowBack.path,
+            //                 color: LightColor.white,
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //       )
+            //     : const SizedBox(height: 25),
             Row(
               children: [
                 Expanded(
@@ -78,13 +79,15 @@ class MainHeader extends StatelessWidget {
                       Text(
                         " ${UserBloc.instance.userModel?.welcomeMessage ?? "صباح الخير "} "
                         "${DateTime.now().format("a") == "AM" ? "🌤" : "🌤"}",
-                        style: context.textTheme.displaySmall?.copyWith(
+                        style: context.textTheme.headlineSmall?.copyWith(
                           color: context.color.onPrimary,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                     ],
                   ),
                 ),
+                SystemSelectionWidget(),
               ],
             ),
           ],
