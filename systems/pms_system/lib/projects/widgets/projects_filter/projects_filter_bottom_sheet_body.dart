@@ -7,9 +7,44 @@ class ProjectsFilterBottomSheetBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = context.read<ProjectsFiltrationBloc>();
     return SizedBox(
-      height: context.h * 0.52,
+      height: context.h * 0.62,
       child: ListAnimator(
         data: [
+          16.sh,
+          Text(allTranslations.text(LocaleKeys.start_date)),
+          Row(
+            children: [
+              Expanded(
+                child: CustomTextField(
+                  hint: allTranslations.text(LocaleKeys.from),
+                  controller: bloc.pickedStartCtrl,
+                  textStyle: context.textTheme.bodySmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                  suffixWidget: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Images(image: Assets.svgs.calendarFrom.path),
+                  ),
+                  onTap: () => bloc.showStartDatePicker(context),
+                ),
+              ),
+              16.sw,
+              Expanded(
+                child: CustomTextField(
+                  hint: allTranslations.text(LocaleKeys.to),
+                  controller: bloc.pickedEndCtrl,
+                  textStyle: context.textTheme.bodySmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                  suffixWidget: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Images(image: Assets.svgs.calendarTo.path),
+                  ),
+                  onTap: () => bloc.showEndDatePicker(context),
+                ),
+              ),
+            ],
+          ),
           16.sh,
           CustomFiltersDropList(
             labelText: LocaleKeys.category,

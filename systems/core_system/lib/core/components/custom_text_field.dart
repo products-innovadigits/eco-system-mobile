@@ -27,7 +27,7 @@ class CustomTextField extends StatefulWidget {
   final Color? color, hintColor, borderColor;
   final Widget? suffixWidget, prefixWidget;
   final String? init;
-  final TextStyle? headStyle;
+  final TextStyle? headStyle , textStyle;
   final bool headStart;
   final double headSpace;
   final double? maxSuffixIconHeight;
@@ -80,7 +80,7 @@ class CustomTextField extends StatefulWidget {
     this.headSpace = 4,
     this.borderColor,
     this.contentPadding,
-    this.maxSuffixIconHeight,
+    this.maxSuffixIconHeight, this.textStyle,
   }) : super(key: key);
 
   @override
@@ -199,7 +199,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                       // LengthLimitingTextInputFormatter(11),
                     ]
                   : widget.inputFormatters,
-              style: context.textTheme.labelLarge,
+              style: widget.textStyle ??  context.textTheme.labelLarge,
               decoration: InputDecoration(
                 fillColor: widget.color ?? context.color.surfaceContainer,
                 errorStyle: TextStyle(color: context.color.error),
@@ -283,7 +283,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 // fillColor: color,
                 enabledBorder: !widget.addBorder
                     ? _enabledBorders.copyWith(
-                        borderSide: BorderSide(color: context.color.surfaceContainer),
+                        borderSide: BorderSide(color: context.color.outline),
                       )
                     : _enabledBorders.copyWith(
                         borderSide: BorderSide(
@@ -302,7 +302,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     : _borders.copyWith(
                         borderSide: BorderSide(
                           width: widget.borderWidth ?? 1,
-                          color: widget.borderColor ?? context.color.outlineVariant,
+                          color: widget.borderColor ?? context.color.outline,
                         ),
                       ),
                 focusedBorder: _borders.copyWith(

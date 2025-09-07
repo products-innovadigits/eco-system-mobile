@@ -87,8 +87,8 @@ class ProjectDetailsDescription extends StatelessWidget {
             Expanded(
               child: ProjectContentCard(
                 icon: Assets.svgs.people.path,
-                title: allTranslations.text("project_team"),
-                desc: model.teamName?.name ?? '',
+                title: allTranslations.text(LocaleKeys.project_team),
+                desc: model.teamName?[0].name ?? '',
               ),
             ),
             SizedBox(width: 8.h),

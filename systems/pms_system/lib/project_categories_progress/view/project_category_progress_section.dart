@@ -52,33 +52,27 @@ class _CategoriesChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: context.w,
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-      decoration: BoxDecoration(
-        color: context.color.surfaceContainer,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: context.color.outline),
-      ),
-      child: Column(
-        children: [
-          SectionTitle(
-            title: allTranslations.text(
-              LocaleKeys.project_progress_rate_in_each_category,
-            ),
-            withView: false,
+    return MainCardWidget(
+      title: allTranslations.text(LocaleKeys.project_progress_rate_in_each_category),
+      onViewMoreTap: () {
+        if (!isPmsHome) {
+          UserBloc.currentActiveSystem = ActiveSystemEnum.pms;
+        }
+        isPmsHome
+            ? CustomNavigator.push(Routes.PROJECTS)
+            : CustomNavigator.push(
+                Routes.SYSTEM_SWITCHER,
+                arguments: ActiveSystemEnum.pms,
+              );
+      },
+      child: SizedBox(
+        height: isPmsHome ? data.length * 18.h : 250.h,
+        child: SingleChildScrollView(
+          child: SizedBox(
+            height: isPmsHome ? data.length * 50.h : 250.h,
+            child: ProjectCategoriesChart(data: data, isPmsHome: isPmsHome),
           ),
-          Divider(color: context.color.outline),
-          SizedBox(
-            height: isPmsHome ? data.length * 30.h : 250.h,
-            child: SingleChildScrollView(
-              child: SizedBox(
-                height: isPmsHome ? data.length * 60.h : 250.h,
-                child: ProjectCategoriesChart(data: data, isPmsHome: isPmsHome),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

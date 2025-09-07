@@ -104,7 +104,7 @@ class _ProgressHalfPie extends StatelessWidget {
             children: [
               HalfCircleAnalyticChart(projs),
               Positioned(
-                top: 100.h,
+                top: 90.h,
                 left: 0,
                 right: 0,
                 child: Align(

@@ -22,33 +22,23 @@ class _StrategyLayoutState extends State<StrategyLayout>
     super.initState();
   }
 
-  Widget fregmant(int index) {
-    switch (index) {
-      case 0:
-        return const StrategyHomeView();
-      case 1:
-        return const Center(
-          child: Text('التقارير', style: TextStyle(fontSize: FontSizes.f32)),
-        );
-      case 2:
-        return const Center(
-          child: Text('الإشعارات', style: TextStyle(fontSize: FontSizes.f32)),
-        );
-      case 3:
-        return const Center(
-          child: Text('المزيد', style: TextStyle(fontSize: FontSizes.f32)),
-        );
-      default:
-        return SizedBox();
-    }
-  }
+  Widget layout(int index) => switch (index) {
+    0 => const StrategyHomeView(),
+    1 => const Center(
+      child: Text('التقارير', style: TextStyle(fontSize: FontSizes.f32)),
+    ),
+    2 => const Center(
+      child: Text('الإشعارات', style: TextStyle(fontSize: FontSizes.f32)),
+    ),
+    _ => SizedBox(),
+  };
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        body: fregmant(_index),
+        body: layout(_index),
         bottomNavigationBar: NavApp(
           index: _index,
           onSelect: (p0) {

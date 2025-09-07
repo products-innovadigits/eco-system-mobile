@@ -162,9 +162,17 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/calendar.svg
   SvgGenImage get calendar => const SvgGenImage('assets/svgs/calendar.svg');
 
+  /// File path: assets/svgs/calendar_from.svg
+  SvgGenImage get calendarFrom =>
+      const SvgGenImage('assets/svgs/calendar_from.svg');
+
   /// File path: assets/svgs/calendar_tick.svg
   SvgGenImage get calendarTick =>
       const SvgGenImage('assets/svgs/calendar_tick.svg');
+
+  /// File path: assets/svgs/calendar_to.svg
+  SvgGenImage get calendarTo =>
+      const SvgGenImage('assets/svgs/calendar_to.svg');
 
   /// File path: assets/svgs/call.svg
   SvgGenImage get call => const SvgGenImage('assets/svgs/call.svg');
@@ -565,7 +573,9 @@ class $AssetsSvgsGen {
     buildings,
     buliding,
     calendar,
+    calendarFrom,
     calendarTick,
+    calendarTo,
     call,
     camera,
     cardTick,

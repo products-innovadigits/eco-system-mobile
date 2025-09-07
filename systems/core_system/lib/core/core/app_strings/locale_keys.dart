@@ -281,10 +281,15 @@ abstract class  LocaleKeys {
   static const all_objectives = 'all_objectives';
   static const something_went_wrong = 'something_went_wrong';
   static const there_is_no_data = 'there_is_no_data';
+  static const no_projects_match_your_filters = 'no_projects_match_your_filters';
   static const oops = 'oops';
   static const deliver_date = 'deliver_date';
   static const time_left = 'time_left';
   static const progress = 'progress';
+  static const delivered = 'delivered';
+  static const delivered_from = 'delivered_from';
+  static const outputs = 'outputs';
+  static const activities_progress = 'activities_progress';
   static const general_progress = 'general_progress';
   static const kpis_general_progress = 'kpis_general_progress';
   static const description = 'description';
@@ -446,5 +451,13 @@ abstract class  LocaleKeys {
   static const select_category = 'select_category';
   static const organizational_objective = 'organizational_objective';
   static const select_organizational_objective = 'select_organizational_objective';
+  static const newest_to_oldest_creation = 'newest_to_oldest_creation';
+  static const oldest_to_newest_creation = 'oldest_to_newest_creation';
+  static const nearest_to_farthest_delivery = 'nearest_to_farthest_delivery';
+  static const farthest_to_nearest_delivery = 'farthest_to_nearest_delivery';
+  static const most_advanced_to_least = 'most_advanced_to_least';
+  static const least_advanced_to_most = 'least_advanced_to_most';
+  static const date_range_validation_error = 'date_range_validation_error';
+  static const please_select_at_least_one_filter = 'please_select_at_least_one_filter';
 
 }

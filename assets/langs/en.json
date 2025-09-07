@@ -281,8 +281,13 @@
   "something_went_wrong": "Something went wrong!",
   "oops": "Oops!",
   "there_is_no_data": "There's no data",
+  "no_projects_match_your_filters": "No projects match your filters",
   "deliver_date": "Deliver Date",
   "progress": "Progress",
+  "delivered": "Delivered",
+  "delivered_from": "from",
+  "outputs": "outputs",
+  "activities_progress": "activities progress",
   "general_progress": "General Progress",
   "description": "Description",
   "kpis": "KPIS",
@@ -442,5 +447,13 @@
   "category": "Category",
   "select_category": "select category...",
   "organizational_objective": "Organizational Objective",
-  "select_organizational_objective": "select organizational objective..."
+  "select_organizational_objective": "select organizational objective...",
+  "newest_to_oldest_creation": "Newest to oldest by creation date",
+  "oldest_to_newest_creation": "Oldest to newest by creation date",
+  "nearest_to_farthest_delivery": "Nearest to farthest by delivery date",
+  "farthest_to_nearest_delivery": "Farthest to nearest by delivery date",
+  "most_advanced_to_least": "Most advanced to least advanced",
+  "least_advanced_to_most": "Least advanced to most advanced",
+  "date_range_validation_error": "End date must be greater than start date",
+  "please_select_at_least_one_filter": "Please select at least one filter"
 }

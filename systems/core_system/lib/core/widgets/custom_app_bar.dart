@@ -100,14 +100,16 @@ class _CustomAppBarState extends State<CustomAppBar> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                if(widget.withBackBtn == true)...[
+                if (widget.withBackBtn == true) ...[
                   InkWell(
                     onTap: () {
                       widget.onBackBtn?.call();
                       CustomNavigator.pop();
                     },
                     child: RotatedBox(
-                      quarterTurns: mainAppBloc.lang.valueOrNull == "en" ? 2 : 0,
+                      quarterTurns: mainAppBloc.lang.valueOrNull == "en"
+                          ? 2
+                          : 0,
                       child: Images(
                         image: Assets.svgs.arrowBack.path,
                         color: context.color.primary,
@@ -158,10 +160,21 @@ class _CustomAppBarState extends State<CustomAppBar> {
                           suffixIcon: _isSearchFocused
                               ? GestureDetector(
                                   onTap: () {
-                                    if (widget.onCanceling != null) {
+                                    // Check if search controller has text before clearing
+                                    bool hasText =
+                                        widget
+                                            .searchController
+                                            ?.text
+                                            .isNotEmpty ==
+                                        true;
+
+                                    // Always clear and unfocus
+                                    widget.searchController?.clear();
+                                    _focusNode.unfocus();
+
+                                    // Only call the canceling function if the search controller had text
+                                    if (hasText && widget.onCanceling != null) {
                                       widget.onCanceling!();
-                                      widget.searchController?.clear();
-                                      _focusNode.unfocus();
                                     }
                                   },
                                   child: Padding(
