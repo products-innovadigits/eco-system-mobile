@@ -7,60 +7,72 @@ class ProjectCategoryProgressSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => ProjectCategoriesProgressBloc()..add(Click()),
-        ),
-      ],
+    return BlocProvider(
+      create: (context) => ProjectCategoriesProgressBloc()..add(Click()),
       child: BlocBuilder<ProjectCategoriesProgressBloc, AppState>(
         builder: (context, state) {
-          if (state is Done) {
-            List<ProjectCategoriesProgressModel> projectCategoriesProgress =
-                state.list as List<ProjectCategoriesProgressModel>;
-            return Container(
-              width: context.w,
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-              decoration: BoxDecoration(
-                  color: context.color.surfaceContainer,
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: context.color.outline)),
-              child: Column(
-                children: [
-                  SectionTitle(
-                    title: allTranslations
-                        .text("project_progress_rate_in_each_category"),
-                    withView: false,
-                  ),
-                  Divider(color: context.color.outline),
-                  SizedBox(
-                    height: isPmsHome ? projectCategoriesProgress.length * 30.h : 250.h,
-                    child: SingleChildScrollView(
-                      child: SizedBox(
-                        height: isPmsHome ? projectCategoriesProgress.length * 60.h : 250.h,
-                        child: ProjectCategoriesChart(
-                          data: projectCategoriesProgress,
-                          isPmsHome: isPmsHome,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+          return switch (state) {
+            // ── Loading ─────────────────────────
+            Loading() => const CustomShimmerContainer(),
+
+            // ── Done ────────────────────────────
+            Done(:final list) => _CategoriesChart(
+              data:
+                  list as List<ProjectCategoriesProgressModel>? ??
+                  <ProjectCategoriesProgressModel>[],
+              isPmsHome: isPmsHome,
+            ),
+
+            // ── Empty ───────────────────────────
+            Empty() => const EmptyContainer(),
+
+            // ── Error / fallback ────────────────
+            _ => MainCardWidget(
+              title: allTranslations.text(
+                LocaleKeys.project_progress_rate_in_each_category,
               ),
-            );
-          }
-          if (state is Loading) {
-            return Padding(
-              padding: EdgeInsets.symmetric(vertical: 12.h),
-              child: CustomShimmerContainer(
-                height: context.h * 0.2,
-                width: context.w,
+              child: TryAgainWidget(
+                onTryAgain: () {
+                  context.read<ProjectCategoriesProgressBloc>().add(Click());
+                },
               ),
-            );
-          } else {
-            return SizedBox();
-          }
+            ),
+          };
         },
+      ),
+    );
+  }
+}
+
+class _CategoriesChart extends StatelessWidget {
+  final List<ProjectCategoriesProgressModel> data;
+  final bool isPmsHome;
+
+  const _CategoriesChart({required this.data, required this.isPmsHome});
+
+  @override
+  Widget build(BuildContext context) {
+    return MainCardWidget(
+      title: allTranslations.text(LocaleKeys.project_progress_rate_in_each_category),
+      onViewMoreTap: () {
+        if (!isPmsHome) {
+          UserBloc.currentActiveSystem = ActiveSystemEnum.pms;
+        }
+        isPmsHome
+            ? CustomNavigator.push(Routes.PROJECTS)
+            : CustomNavigator.push(
+                Routes.SYSTEM_SWITCHER,
+                arguments: ActiveSystemEnum.pms,
+              );
+      },
+      child: SizedBox(
+        height: isPmsHome ? data.length * 18.h : 250.h,
+        child: SingleChildScrollView(
+          child: SizedBox(
+            height: isPmsHome ? data.length * 50.h : 250.h,
+            child: ProjectCategoriesChart(data: data, isPmsHome: isPmsHome),
+          ),
+        ),
       ),
     );
   }

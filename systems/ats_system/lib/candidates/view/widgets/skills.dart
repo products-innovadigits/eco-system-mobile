@@ -94,7 +94,7 @@ class Skills extends StatelessWidget {
             //             padding:
             //                 EdgeInsetsDirectional.symmetric(horizontal: 8.w),
             //             child: Icon(Icons.add,
-            //                 color: Styles.PRIMARY_COLOR, size: 20),
+            //                 color: context.color.primary, size: 20),
             //           ),
             //         ),
             //       ),

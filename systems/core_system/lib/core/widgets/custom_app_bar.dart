@@ -18,6 +18,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final ValueChanged? onSearching;
   final VoidCallback? onTapSearch;
   final VoidCallback? onBackBtn;
+  final bool? withBackBtn;
 
   const CustomAppBar({
     super.key,
@@ -38,6 +39,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.searchController,
     this.isFiltered = false,
     this.isSorted = false,
+    this.withBackBtn = true,
   });
 
   @override
@@ -98,22 +100,26 @@ class _CustomAppBarState extends State<CustomAppBar> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                InkWell(
-                  onTap: () {
-                    widget.onBackBtn?.call();
-                    CustomNavigator.pop();
-                  },
-                  child: RotatedBox(
-                    quarterTurns: mainAppBloc.lang.valueOrNull == "en" ? 2 : 0,
-                    child: Images(
-                      image: Assets.svgs.arrowBack.path,
-                      color: context.color.primary,
-                      width: 20.w,
-                      height: 20.h,
+                if (widget.withBackBtn == true) ...[
+                  InkWell(
+                    onTap: () {
+                      widget.onBackBtn?.call();
+                      CustomNavigator.pop();
+                    },
+                    child: RotatedBox(
+                      quarterTurns: mainAppBloc.lang.valueOrNull == "en"
+                          ? 2
+                          : 0,
+                      child: Images(
+                        image: Assets.svgs.arrowBack.path,
+                        color: context.color.primary,
+                        width: 20.w,
+                        height: 20.h,
+                      ),
                     ),
                   ),
-                ),
-                8.sw,
+                  8.sw,
+                ],
                 Text(
                   widget.title ?? "",
                   style: context.textTheme.titleLarge,
@@ -154,10 +160,21 @@ class _CustomAppBarState extends State<CustomAppBar> {
                           suffixIcon: _isSearchFocused
                               ? GestureDetector(
                                   onTap: () {
-                                    if (widget.onCanceling != null) {
+                                    // Check if search controller has text before clearing
+                                    bool hasText =
+                                        widget
+                                            .searchController
+                                            ?.text
+                                            .isNotEmpty ==
+                                        true;
+
+                                    // Always clear and unfocus
+                                    widget.searchController?.clear();
+                                    _focusNode.unfocus();
+
+                                    // Only call the canceling function if the search controller had text
+                                    if (hasText && widget.onCanceling != null) {
                                       widget.onCanceling!();
-                                      widget.searchController?.clear();
-                                      _focusNode.unfocus();
                                     }
                                   },
                                   child: Padding(

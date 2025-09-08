@@ -5,13 +5,13 @@ import 'package:flutter/services.dart';
 import '../colors/dark_colors.dart';
 import '../colors/light_colors.dart';
 
-final ThemeData _lightTheme = _buildLightTheme();
+// final ThemeData _lightTheme = buildLightTheme();
 final ThemeData _darkTheme = _buildDarkTheme();
 
-ThemeData _buildLightTheme() {
+ThemeData buildLightTheme() {
   final base = ThemeData.light();
   return base.copyWith(
-    colorScheme: const ColorScheme.light(
+    colorScheme: ColorScheme.light(
       surface: LightColor.scaffoldBg,
       surfaceContainer: LightColor.cardBg,
       primary: LightColor.primary,
@@ -42,7 +42,7 @@ ThemeData _buildLightTheme() {
     splashColor: LightColor.white,
     unselectedWidgetColor: LightColor.white,
     disabledColor: LightColor.primary.withOpacity(0.3),
-    toggleButtonsTheme: const ToggleButtonsThemeData(
+    toggleButtonsTheme:  ToggleButtonsThemeData(
       color: LightColor.secondary,
     ),
     dialogBackgroundColor: LightColor.white,
@@ -71,7 +71,7 @@ ThemeData _buildLightTheme() {
       labelMedium: AppTypography.labelMedium,
       labelSmall: AppTypography.labelSmall,
     ),
-    primaryIconTheme: const IconThemeData(
+    primaryIconTheme:  IconThemeData(
       color: LightColor.primary,
     ),
     buttonTheme: base.buttonTheme.copyWith(
@@ -91,7 +91,7 @@ ThemeData _buildLightTheme() {
       backgroundColor: LightColor.white,
       foregroundColor: LightColor.white,
       surfaceTintColor: LightColor.white,
-      titleTextStyle: const TextStyle(
+      titleTextStyle:  TextStyle(
         fontSize: 16,
         color: LightColor.primary,
         fontWeight: FontWeight.w700,
@@ -137,7 +137,7 @@ ThemeData _buildLightTheme() {
       headingRowColor: MaterialStateProperty.all(
         LightColor.white,
       ),
-      headingTextStyle: const TextStyle(
+      headingTextStyle:  TextStyle(
         color: LightColor.error,
       ),
     ),
@@ -263,7 +263,7 @@ ThemeData _buildDarkTheme() {
 class Themes {
   final ThemeData themeData;
   Themes({required this.themeData});
-  factory Themes.lightTheme() => Themes(themeData: _lightTheme);
+  factory Themes.lightTheme() => Themes(themeData: buildLightTheme());
 
   factory Themes.darkTheme() => Themes(themeData: _darkTheme);
 }

@@ -9,33 +9,34 @@ class AllCandidatesSection extends StatelessWidget {
     return BlocBuilder<CandidatesBloc, AppState>(
       builder: (context, state) {
         final bloc = context.read<CandidatesBloc>();
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text(bloc.jobTitle,
-                    style: context.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
-                8.sw,
-                Text('(${bloc.candidateCount})',
-                    style: context.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600)),
-              ],
-            ),
-            8.sh,
-            ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: bloc.stages.length,
-              itemBuilder: (context, index) {
-                final stage = bloc.stages[index];
-                return StageSection(
-                  key: bloc.keys[stage],
-                  stage: stage,
-                );
-              },
-              separatorBuilder: (context, index) => 16.sh,
-            ),
-          ],
+        return ListView.separated(
+          controller: bloc.scrollController,
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+          itemCount: 1 + bloc.stages.length,
+          separatorBuilder: (context, index) => index == 0 ? 8.sh : 16.sh,
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              return Row(
+                children: [
+                  Text(
+                    bloc.jobTitle,
+                    style: context.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  8.sw,
+                  Text(
+                    '(${bloc.candidateCount})',
+                    style: context.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              );
+            }
+            final stage = bloc.stages[index - 1];
+            return StageSection(key: bloc.keys[stage], stage: stage);
+          },
         );
       },
     );

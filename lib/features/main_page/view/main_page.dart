@@ -1,5 +1,7 @@
+import 'package:core_system/core/components/custom_screen_type_layout_widget.dart';
 import 'package:core_system/core/utility/export.dart';
-import 'package:eco_system/features/main_page/widgets/main_page_body.dart';
+import 'package:eco_system/features/main_page/widgets/main_body_mobile_landscape_view.dart';
+import 'package:eco_system/features/main_page/widgets/main_body_mobile_portrait_view.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -39,7 +41,15 @@ class _MainPageState extends State<MainPage> {
       child: Scaffold(
         body: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
-          child: Stack(children: [MainHeader(withBackButton: false), MainBody()]),
+          child: Stack(
+            children: [
+              MainHeader(withBackButton: false),
+              CustomScreenTypeLayoutWidget(
+                mobilePortrait: (ctx) => MainBodyMobilePortraitView(),
+                mobileLandscape: (ctx) => MainBodyMobileLandscapeView(),
+              ),
+            ],
+          ),
         ),
       ),
     );

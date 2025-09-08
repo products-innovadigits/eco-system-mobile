@@ -28,11 +28,11 @@ class CareerDetailsCardWidget extends StatelessWidget {
               height: 32.w,
               padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
-                  color: Styles.PRIMARY_COLOR.withValues(alpha: 0.1),
+                  color: context.color.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8)),
               child: Images(
                   image: Assets.svgs.building.path,
-                  color: Styles.PRIMARY_COLOR),
+                  color: context.color.primary),
             ),
             8.sw,
             Column(
@@ -49,7 +49,7 @@ class CareerDetailsCardWidget extends StatelessWidget {
                     Text(
                       jobTitle,
                       style: AppTextStyles.w400
-                          .copyWith(color: Styles.PRIMARY_COLOR, fontSize: 10),
+                          .copyWith(color: context.color.primary, fontSize: 10),
                     ),
                     4.sw,
                     Text(

@@ -82,7 +82,7 @@ class ProfileImageWidget extends StatelessWidget {
                             borderRadius: BorderRadius.circular(100)),
                         child: customImageIconSVG(
                           imageName: "camera",
-                          color: Styles.PRIMARY_COLOR,
+                          color: context.color.primary,
                         )),
                   ),
                 ),

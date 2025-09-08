@@ -50,7 +50,7 @@ class CustomLoading extends StatelessWidget {
                 height: height ?? MediaQueryHelper.height - remain!,
                 child: Center(
                   child: CircularProgressIndicator(
-                    color: color ?? Styles.PRIMARY_COLOR,
+                    color: color ?? context.color.primary,
                   ),
                 ),
               ),

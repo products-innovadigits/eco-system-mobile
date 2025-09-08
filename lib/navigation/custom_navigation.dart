@@ -3,6 +3,7 @@ import 'package:ats_system/candidates/view/screens/candidates_view.dart';
 import 'package:ats_system/jobs/view/screens/jobs_view.dart';
 import 'package:ats_system/profile/view/screens/profile_view.dart';
 import 'package:ats_system/talent_pool/view/screens/talent_pool_view.dart';
+import 'package:core_system/core/components/system_switcher.dart';
 import 'package:core_system/core/utility/export.dart';
 import 'package:eco_system/features/auth/login/view/login.dart';
 import 'package:eco_system/features/auth/otp/view/otp_view.dart';
@@ -10,15 +11,15 @@ import 'package:eco_system/features/intro/view/intro_view.dart';
 import 'package:eco_system/features/intro/view/onboarding.dart';
 import 'package:eco_system/features/main_page/view/main_page.dart';
 import 'package:eco_system/features/splash/splash.dart';
+import 'package:pms_system/pms_layout.dart';
 import 'package:pms_system/project_details/view/project_details_view.dart';
 import 'package:pms_system/projects/view/projects_view.dart';
 import 'package:strategy_system/bsc/view/bsc_view.dart';
-import 'package:strategy_system/okr/view/okr_view.dart';
-import 'package:strategy_system/strategic_axes/view/strategic_axes_view.dart';
 import 'package:strategy_system/objective_details/view/objective_details_view.dart';
 import 'package:strategy_system/objectives/view/objectives_view.dart';
+import 'package:strategy_system/okr/view/okr_view.dart';
+import 'package:strategy_system/strategic_axes/view/strategic_axes_view.dart';
 import 'package:strategy_system/strategy_layout.dart';
-import 'package:pms_system/pms_layout.dart';
 
 class AppRouter {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
@@ -41,6 +42,15 @@ class AppRouter {
       case Routes.MAIN_PAGE:
         return MaterialPageRoute(builder: (_) => const MainPage());
 
+      case Routes.SYSTEM_SWITCHER:
+        return MaterialPageRoute(
+          builder: (_) => SystemsSwitcher(
+            systemEnum:
+                settings.arguments as ActiveSystemEnum? ??
+                ActiveSystemEnum.strategy,
+          ),
+        );
+
       /// Strategy Routes ===========================================
       case Routes.STRATEGY_LAYOUT:
         final args = settings.arguments as MainPageArgs?;
@@ -54,7 +64,7 @@ class AppRouter {
       case Routes.BSC:
         return MaterialPageRoute(builder: (_) => const BscView());
 
-        case Routes.OKR:
+      case Routes.OKR:
         return MaterialPageRoute(builder: (_) => const OkrView());
 
       case Routes.STRATEGIC_AXES:

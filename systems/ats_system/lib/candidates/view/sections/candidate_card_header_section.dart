@@ -24,8 +24,7 @@ class CandidateCardHeaderSection extends StatelessWidget {
           children: [
             Text(
               'هشام منصور',
-              style: AppTextStyles.w500
-                  .copyWith(color: Styles.TEXT_COLOR, fontSize: 12),
+              style: context.textTheme.labelSmall,
             ),
             2.sh,
             Row(
@@ -37,7 +36,7 @@ class CandidateCardHeaderSection extends StatelessWidget {
                 ),
                 Text('5 من الوظائف',
                     style: AppTextStyles.w400.copyWith(
-                        color: Styles.PRIMARY_COLOR, fontSize: 10))
+                        color: context.color.primary, fontSize: 10))
               ],
             ),
           ],

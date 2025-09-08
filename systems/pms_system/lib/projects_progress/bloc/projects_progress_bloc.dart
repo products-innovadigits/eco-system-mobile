@@ -1,4 +1,3 @@
-import 'package:pms_system/project_categories_progress/model/projects_progress_model.dart';
 import 'package:pms_system/shared/pms_exports.dart';
 
 class ProjectsProgressBloc extends Bloc<AppEvent, AppState> {

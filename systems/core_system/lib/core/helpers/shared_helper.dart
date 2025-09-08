@@ -10,7 +10,7 @@ class CachingKey extends Enum<String> {
   static const CachingKey TOKEN = CachingKey('REAL_TOKEN');
   static const CachingKey DEVICE_TOKEN = CachingKey('DEVICE_TOKEN');
   static const CachingKey IS_LOGIN = CachingKey('IS_LOGIN');
-  static const CachingKey SKIP = CachingKey('SKIP');
+  static const CachingKey SKIP_BOARDING = CachingKey('SKIP_BOARDING');
   static const CachingKey PERSONAL_ID = CachingKey('PERSONAL_ID');
   static const CachingKey SITE_ID = CachingKey('SITE_ID');
   static const CachingKey URL_CODE = CachingKey('URL_CODE');
@@ -48,7 +48,7 @@ class SharedHelper {
       // {bool remember = false, String? password}
       ) async {
     // writeData(CachingKey.TOKEN, model.accessToken);
-    writeData(CachingKey.SKIP, true);
+    writeData(CachingKey.SKIP_BOARDING, true);
     writeData(CachingKey.IS_LOGIN, true);
     // writeData(CachingKey.USER, json.encode(model.toJson()));
     // log('SAVE USER INFO >>> ${json.encode(model.toJson())}');
@@ -77,7 +77,7 @@ class SharedHelper {
     box!.clear();
     CustomNavigator.push(Routes.SPLASH, clean: true);
 
-    SharedHelper.sharedHelper!.writeData(CachingKey.SKIP, true);
+    SharedHelper.sharedHelper!.writeData(CachingKey.SKIP_BOARDING, true);
     allTranslations.setNewLanguage(currentLang, true);
     allTranslations.setPreferredLanguage(currentLang);
   }

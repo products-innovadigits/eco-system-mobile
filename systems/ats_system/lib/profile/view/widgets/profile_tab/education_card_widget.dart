@@ -18,7 +18,7 @@ class EducationCardWidget extends StatelessWidget {
               height: 32.w,
               padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
-                  color: Styles.PRIMARY_COLOR.withValues(alpha: 0.1),
+                  color: context.color.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8)),
               child: Images(
                   image: Assets.svgs.building.path,

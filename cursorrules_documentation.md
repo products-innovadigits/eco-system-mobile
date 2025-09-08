@@ -1,0 +1,92 @@
+# Nawah + Flutter Expert CursorRules (Documentation)
+
+This file documents the coding rules and best practices used in the Nawah project.
+Use `.cursorrules` in the project root for Cursor AI, and use this `.md` file for team documentation.
+
+---
+
+## 📂 Project Structure
+Every new feature must follow this structure:
+
+```
+features/
+  feature_name/
+    bloc/
+      feature_name_bloc.dart
+    model/
+      feature_name_model.dart
+    repo/
+      feature_name_repo.dart
+    view/
+      feature_name_view.dart
+    widgets/
+      *.dart   # feature-specific widgets
+```
+
+---
+
+## 🧩 Bloc Guidelines
+- Bloc files must be named `<feature>_bloc.dart`
+- Events and States follow `<Feature>Event`, `<Feature>State` naming
+- Keep Bloc lean: logic only, no UI code
+- Use sealed classes for states when possible
+
+---
+
+## 📦 Model Guidelines
+- Each model must include:
+  - `fromJson(Map<String, dynamic> json)`
+  - `toJson()`
+  - `Mapper fromJson()` if required
+- Naming convention: `<Feature>Model`
+- Keep models immutable (`final` fields)
+
+---
+
+## 🗂️ Repository Guidelines
+- Repos named `<Feature>Repo`
+- Responsibilities:
+  - Fetch data (API, DB, etc.)
+  - Return Models / Entities
+  - Abstract data layer from Bloc
+- Use dependency injection for repos (e.g. GetIt)
+
+---
+
+## 🎨 View Guidelines
+- Main page UI in `<feature>_view.dart`
+- Connect to Bloc via `BlocProvider` / `BlocBuilder`
+- Keep view file clean, delegate UI parts to widgets
+
+---
+
+## 🧱 Widget Guidelines
+- Each widget in its own file under `widgets/`
+- File name: snake_case
+- Class name: PascalCase
+- Prefer `StatelessWidget` unless stateful logic is required
+- Use `const` constructors where possible
+- Optimize rebuilds (Keys, const, memoization)
+
+---
+
+## 🌟 Best Practices (from Flutter Expert)
+- Enable null safety everywhere
+- Handle errors gracefully (Either / Result patterns if applicable)
+- Use clear naming (camelCase variables, PascalCase classes)
+- Optimize performance:
+  - Cache images where possible
+  - Optimize ListViews and scrolling
+  - Minimize unnecessary rebuilds
+- Accessibility:
+  - Add `Semantics` labels where relevant
+- Localization:
+  - Store translations in `l10n/`
+- Routing:
+  - Use GoRouter (or your chosen approach) consistently
+- Dependency Injection:
+  - Use GetIt (or similar) for services/repos
+- Testing:
+  - Write unit tests for bloc logic
+  - Widget tests for views
+  - Integration tests for flows

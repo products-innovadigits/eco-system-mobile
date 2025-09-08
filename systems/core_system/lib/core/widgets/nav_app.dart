@@ -64,15 +64,15 @@ class _NavAppState extends State<NavApp> {
               color: _selectedColor(2)),
           label: '',
         ),
-        BottomNavigationBarItem(
-          icon: NavAppItem(
-              title: LocaleKeys.menu,
-              isSelected: widget.index == 3,
-              icon: Assets.svgs.more.path,
-              activeIcon: Assets.svgs.more.path,
-              color: _selectedColor(3)),
-          label: '',
-        ),
+        // BottomNavigationBarItem(
+        //   icon: NavAppItem(
+        //       title: LocaleKeys.menu,
+        //       isSelected: widget.index == 3,
+        //       icon: Assets.svgs.more.path,
+        //       activeIcon: Assets.svgs.more.path,
+        //       color: _selectedColor(3)),
+        //   label: '',
+        // ),
       ],
     );
   }

@@ -18,7 +18,7 @@ class ChartCategoriesSection extends StatelessWidget {
           children: [
             Icon(
               Icons.circle,
-              color: Styles.statusColors(objectives[i].categoryName ?? ""),
+              color: LightColor.statusColors(objectives[i].categoryName ?? ""),
               size: 14,
             ),
             SizedBox(width: 4.w),

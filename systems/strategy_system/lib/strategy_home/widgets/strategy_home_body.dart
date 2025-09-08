@@ -22,7 +22,7 @@ class StrategyHomeBody extends StatelessWidget {
     return const Column(
       spacing: 16,
       children: [
-        SizedBox(height: 130),
+        SizedBox(height: 80),
         ObjectivePercentageSection(isStrategyHome: true),
         BscCardSection(),
         OkrCardSection(),

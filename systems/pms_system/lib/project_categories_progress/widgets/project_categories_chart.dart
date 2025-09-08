@@ -120,10 +120,10 @@ class _ProjectCategoriesChartState extends State<ProjectCategoriesChart> {
                   toY: widget.data[index].progress ?? 0,
                   width: 20.w,
                   color:
-                      widget.barColor ?? Styles.projectCategoryColors[index],
+                      widget.barColor ?? LightColor.projectCategoryColors[0],
                   backDrawRodData: BackgroundBarChartRodData(
                       show: true,
-                      color: context.color.secondary.withValues(alpha: 0.1),
+                      color: context.color.surfaceContainer,
                       fromY: widget.data[index].progress ?? 0,
                       toY: 100),
                   borderRadius: BorderRadius.circular(2)),
@@ -139,14 +139,14 @@ Widget bottomTitles(double value, TitleMeta meta, List<String> bottomTilesData,
     {Color? textColor}) {
   final context = CustomNavigator.navigatorState.currentContext;
   final Widget text = Text(bottomTilesData[value.toInt()],
-      textAlign: TextAlign.center,
+      textAlign: TextAlign.start,
       style: context?.textTheme.bodySmall?.copyWith(
-          color: textColor ?? Styles.projectCategoryColors[value.toInt()],
+          color: textColor ?? LightColor.projectCategoryColors[value.toInt()],
           fontSize: 11));
 
   return SideTitleWidget(
     // axisSide: meta.axisSide,
-    space: 10,
+    space: 8,
     meta: meta,
     child: text,
   );

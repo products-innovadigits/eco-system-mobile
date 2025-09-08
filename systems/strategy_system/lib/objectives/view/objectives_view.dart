@@ -1,4 +1,3 @@
-
 import 'package:strategy_system/objectives/widgets/filter/objectives_filter_bottomsheet.dart';
 
 import '../../shared/strategy_exports.dart';
@@ -14,7 +13,8 @@ class ObjectivesView extends StatelessWidget {
       child: BlocBuilder<ObjectivesBloc, AppState>(
         builder: (context, state) {
           final bloc = context.read<ObjectivesBloc>();
-          final objectivesFiltrationBloc = context.read<ObjectivesFiltrationBloc>();
+          final objectivesFiltrationBloc = context
+              .read<ObjectivesFiltrationBloc>();
           return Scaffold(
             appBar: CustomAppBar(
               title: allTranslations.text(LocaleKeys.objectives),
@@ -32,7 +32,9 @@ class ObjectivesView extends StatelessWidget {
               onFiltering: () {
                 PopUpHelper.showBottomSheet(
                   child: BlocProvider.value(
-                      value: bloc, child: ObjectivesFilterBottomSheet()),
+                    value: bloc,
+                    child: ObjectivesFilterBottomSheet(),
+                  ),
                 );
               },
               onSorting: () {
@@ -45,58 +47,35 @@ class ObjectivesView extends StatelessWidget {
               },
             ),
             body: SafeArea(
-              child: BlocBuilder<ObjectivesBloc, AppState>(
-                builder: (context, state) {
-                  if (state is Loading) {
-                    return ListAnimator(
-                      customPadding: EdgeInsets.symmetric(horizontal: 16.w),
-                      data: List.generate(
-                        10,
-                        (index) => Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8.h),
-                          child: CustomShimmerContainer(
-                            height: 125.h,
-                            width: context.w,
-                          ),
-                        ),
+              child: switch (state) {
+                // ── Loading ─────────────────────────────
+                Loading() => const ShimmerCardsList(),
+
+                // ── Done ────────────────────────────────
+                Done(:final cards, :final loading) => Column(
+                  children: [
+                    Expanded(
+                      child: ListAnimator(
+                        customPadding: EdgeInsets.symmetric(horizontal: 16.w),
+                        controller: context
+                            .read<ObjectivesBloc>()
+                            .scrollController,
+                        data: cards,
                       ),
-                    );
-                  }
-                  if (state is Done) {
-                    return Column(
-                      children: [
-                        Expanded(
-                          child: ListAnimator(
-                            customPadding: EdgeInsets.symmetric(
-                              horizontal: 16.w,
-                            ),
-                            controller: context
-                                .read<ObjectivesBloc>()
-                                .scrollController,
-                            data: state.cards,
-                          ),
-                        ),
-                        CustomLoading(
-                          isTextLoading: true,
-                          loading: state.loading,
-                        ),
-                      ],
-                    );
-                  }
-                  if (state is Empty || state is Error) {
-                    return EmptyContainer(
-                      txt: allTranslations.text("oops"),
-                      desc: allTranslations.text(
-                        state is Error
-                            ? "something_went_wrong"
-                            : "there_is_no_data",
-                      ),
-                    );
-                  } else {
-                    return SizedBox();
-                  }
-                },
-              ),
+                    ),
+                    CustomLoading(isTextLoading: true, loading: loading),
+                  ],
+                ),
+
+                // ── Empty  ──────────────────────
+                Empty() => EmptyContainer(),
+
+                // ── Fallback ────────────────────────────
+                _ => EmptyContainer(
+                  txt: allTranslations.text(LocaleKeys.oops),
+                  desc: allTranslations.text(LocaleKeys.something_went_wrong),
+                ),
+              },
             ),
           );
         },

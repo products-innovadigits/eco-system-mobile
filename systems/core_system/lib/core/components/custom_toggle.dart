@@ -21,7 +21,7 @@ class _CustomToggleState extends State<CustomToggle> {
     return Row(
       children: [
         CupertinoSwitch(
-          activeColor: Styles.PRIMARY_COLOR,
+          activeColor: context.color.primary,
           onChanged: (v) {
             setState(() => value = v);
             widget.onTap?.call(v);

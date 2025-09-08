@@ -6,6 +6,9 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
     searchTEC = TextEditingController();
     customScroll(scrollController);
     on<Click>(_getObjectives);
+    on<SelectSorting>(_onSelectSorting);
+    on<ApplySorting>(_onApplySorting);
+    on<ResetSorting>(_onResetSorting);
   }
 
   late SearchEngine _engine;
@@ -13,6 +16,36 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
 
   late ScrollController scrollController;
   TextEditingController? searchTEC;
+
+  // Sorting properties
+  List<DropListModel> sortingList = [
+    DropListModel(
+      key: 'newest_creation',
+      name: allTranslations.text(LocaleKeys.newest_to_oldest_creation),
+    ),
+    DropListModel(
+      key: 'oldest_creation',
+      name: allTranslations.text(LocaleKeys.oldest_to_newest_creation),
+    ),
+    DropListModel(
+      key: 'nearest_delivery',
+      name: allTranslations.text(LocaleKeys.nearest_to_farthest_delivery),
+    ),
+    DropListModel(
+      key: 'farthest_delivery',
+      name: allTranslations.text(LocaleKeys.farthest_to_nearest_delivery),
+    ),
+    DropListModel(
+      key: 'most_advanced',
+      name: allTranslations.text(LocaleKeys.most_advanced_to_least),
+    ),
+    DropListModel(
+      key: 'least_advanced',
+      name: allTranslations.text(LocaleKeys.least_advanced_to_most),
+    ),
+  ];
+  DropListModel? appliedSorting;
+  DropListModel? selectedSorting;
 
   final filter = BehaviorSubject<CustomFieldModel?>();
 
@@ -35,12 +68,39 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
         updateGoingDown(true);
       }
       bool scroll = AppCore.scrollListener(
-          controller, _engine.maxPages, _engine.currentPage);
+        controller,
+        _engine.maxPages,
+        _engine.currentPage,
+      );
       if (scroll) {
         _engine.updateCurrentPage(_engine.currentPage);
         add(Click(arguments: _engine));
       }
     });
+  }
+
+  // Sorting event handlers
+  Future<void> _onSelectSorting(
+    SelectSorting event,
+    Emitter<AppState> emit,
+  ) async {
+    selectedSorting = event.arguments as DropListModel?;
+    emit(Done(cards: _cards));
+  }
+
+  void _onApplySorting(ApplySorting event, Emitter<AppState> emit) {
+    appliedSorting = selectedSorting;
+    CustomNavigator.pop();
+    _engine = SearchEngine();
+    add(Click(arguments: _engine));
+  }
+
+  void _onResetSorting(ResetSorting event, Emitter<AppState> emit) {
+    appliedSorting = null;
+    selectedSorting = null;
+    CustomNavigator.pop();
+    _engine = SearchEngine();
+    add(Click(arguments: _engine));
   }
 
   _getObjectives(AppEvent event, Emitter<AppState> emit) async {
@@ -59,7 +119,10 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
         "periortyLevelId": filter.valueOrNull?.id,
         "pageIndex": _engine.currentPage + 1,
         "pageSize": _engine.limit,
-        if (_engine.query != null) "status": _engine.query['status']
+        if (appliedSorting?.key != null) "sorting_key": appliedSorting!.key,
+        if (_engine.query != null)
+          /// Add query parameters
+          "status": _engine.query['status'],
       };
 
       ProjectsModel res = await ProjectsRepo.getProjects(_engine);

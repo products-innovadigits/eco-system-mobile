@@ -7,7 +7,7 @@ abstract class Styles {
   static const Color RED_CHART_COLOR = Color(0xffE24F4F);
 
   // static const Color PRIMARY_COLOR = Color(0xff2b6c9f);
-  static const Color PRIMARY_COLOR = Color(0xff009990);
+  // static const Color PRIMARY_COLOR = Color(0xff009990);
   static const Color SECONDARY_COLOR = Color(0xffF39C12);
   static const Color ACCENT_PRIMARY_COLOR = Color(0xff615E83);
   static const Color FIELD_BORDER = Color(0xFFF9F9FA);
@@ -85,8 +85,8 @@ abstract class Styles {
     fontSize: 13,
     fontWeight: FontWeight.w600,
   );
-  static const TextStyle SELECTED_TAB = TextStyle(
-    color: Styles.PRIMARY_COLOR,
+  static  TextStyle SELECTED_TAB = TextStyle(
+    color: LightColor.primary,
     fontSize: 13,
     fontWeight: FontWeight.w800,
   );
@@ -144,43 +144,6 @@ abstract class Styles {
     child: Divider(color: Styles.HINT, thickness: 1.0),
   );
 
-  static Color statusColors(String value, {bool isLineProgress = false}) {
-    final primaryChart = isLineProgress
-        ? LightColor.secondary
-        : LightColor.chartPrimary;
-    switch (value) {
-      case "مكتمل":
-        return LightColor.tertiary;
-      case "متقدم":
-        return primaryChart;
-      case "متأخر":
-        return LightColor.chartSecondary;
-      default:
-        return primaryChart;
-    }
-  }
-  static Color strategicTypeColors(String value) {
-    switch (value) {
-      case "تشغيلي":
-        return LightColor.chartTertiary;
-      case "خططى":
-        return LightColor.chartSecondary;
-      default:
-        return LightColor.chartTertiary;
-    }
-  }
-
-  static const List<Color> projectCategoryColors = [
-    RED_CHART_COLOR,
-    PRIMARY_COLOR,
-    SECONDARY_COLOR,
-    ACTIVE,
-    ACCENT_PRIMARY_COLOR,
-    IN_ACTIVE,
-    FEED_COLOR2,
-    ORANGE2,
-    ORANGE3,
-  ];
 
   static const Color ERROR_COLOR = Color(0xFFE53935);
 }

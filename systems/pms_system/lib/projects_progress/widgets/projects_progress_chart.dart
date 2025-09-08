@@ -51,7 +51,7 @@ class _ProjectsProgressChartState extends State<ProjectsProgressChart> {
       final isTouched = i == touchedIndex;
       final radius = isTouched ? 110.w : 100.w;
       return PieChartSectionData(
-        color: Styles.statusColors(widget.projects[i].categoryName ?? ""),
+        color: LightColor.statusColors(widget.projects[i].categoryName ?? ""),
         // title: '${widget.objectives[i].value?.toStringAsFixed(2)}%',
         title: "",
         value: widget.projects[i].value ?? 0,

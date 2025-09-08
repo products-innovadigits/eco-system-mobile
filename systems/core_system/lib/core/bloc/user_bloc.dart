@@ -15,6 +15,7 @@ class UserBloc extends Bloc<AppEvent, AppState> {
 
   // static List<String> activeSystems = [];
   static List<ActiveSystemEnum> activeSystems = [];
+  static ActiveSystemEnum? currentActiveSystem;
 
   Future<void> onClick(AppEvent event, Emitter emit) async {
     emit(Loading());

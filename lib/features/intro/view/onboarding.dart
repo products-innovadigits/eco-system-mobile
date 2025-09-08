@@ -30,14 +30,14 @@ class _OnBoardingState extends State<OnBoarding> {
                       height: 100,
                       width: 100,
                       decoration: BoxDecoration(
-                        color: Styles.PRIMARY_COLOR.withOpacity(0.05),
+                        color: context.color.primary.withOpacity(0.05),
                         borderRadius: BorderRadius.circular(100),
                       ),
-                      child: const Center(
+                      child:  Center(
                         child: Text(
                           "LOGO",
                           style: TextStyle(
-                            color: Styles.PRIMARY_COLOR,
+                            color: context.color.primary,
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
                           ),
@@ -65,7 +65,7 @@ class _OnBoardingState extends State<OnBoarding> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16,
-                  color: Styles.PRIMARY_COLOR.withOpacity(0.5),
+                  color: context.color.primary.withOpacity(0.5),
                 ),
               ),
             ),

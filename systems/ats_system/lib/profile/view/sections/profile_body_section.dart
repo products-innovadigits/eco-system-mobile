@@ -13,8 +13,9 @@ class ProfileBodySection extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileBloc, AppState>(
       builder: (context, state) {
-        final selectedTab =
-            context.select((ProfileBloc bloc) => bloc.selectedTab);
+        final selectedTab = context.select(
+          (ProfileBloc bloc) => bloc.selectedTab,
+        );
         if (state is Error) {
           return EmptyContainer(
             img: Assets.svgs.error.path,
@@ -42,14 +43,10 @@ class ProfileBodySection extends StatelessWidget {
   }
 
   Widget _getTabSection(ProfileEnum selectedTab, bool isTalent) {
-    switch (selectedTab) {
-      case ProfileEnum.answers:
-        return AnswersSection();
-      case ProfileEnum.events:
-        return EventsSection();
-      case ProfileEnum.profile:
-      default:
-        return ProfileSection(isTalent: isTalent);
-    }
+    return switch (selectedTab) {
+      ProfileEnum.answers => const AnswersSection(),
+      ProfileEnum.events => const EventsSection(),
+      _ => ProfileSection(isTalent: isTalent),
+    };
   }
 }

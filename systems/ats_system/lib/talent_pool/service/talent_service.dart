@@ -1,6 +1,6 @@
 import 'package:core_system/core/utility/export.dart';
 
-import '../../shared/ats_exports.dart' hide TalentPoolRepo;
+import '../../shared/ats_exports.dart';
 import '../repo/talent_pool_repo.dart';
 
 class TalentPoolService {

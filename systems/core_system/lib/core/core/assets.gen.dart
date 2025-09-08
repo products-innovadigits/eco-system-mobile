@@ -162,9 +162,17 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/calendar.svg
   SvgGenImage get calendar => const SvgGenImage('assets/svgs/calendar.svg');
 
+  /// File path: assets/svgs/calendar_from.svg
+  SvgGenImage get calendarFrom =>
+      const SvgGenImage('assets/svgs/calendar_from.svg');
+
   /// File path: assets/svgs/calendar_tick.svg
   SvgGenImage get calendarTick =>
       const SvgGenImage('assets/svgs/calendar_tick.svg');
+
+  /// File path: assets/svgs/calendar_to.svg
+  SvgGenImage get calendarTo =>
+      const SvgGenImage('assets/svgs/calendar_to.svg');
 
   /// File path: assets/svgs/call.svg
   SvgGenImage get call => const SvgGenImage('assets/svgs/call.svg');
@@ -234,6 +242,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/directbox-send.svg
   SvgGenImage get directboxSend =>
       const SvgGenImage('assets/svgs/directbox-send.svg');
+
+  /// File path: assets/svgs/doc.svg
+  SvgGenImage get doc => const SvgGenImage('assets/svgs/doc.svg');
 
   /// File path: assets/svgs/document-download.svg
   SvgGenImage get documentDownload =>
@@ -309,6 +320,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/home.svg
   SvgGenImage get home => const SvgGenImage('assets/svgs/home.svg');
 
+  /// File path: assets/svgs/increase.svg
+  SvgGenImage get increase => const SvgGenImage('assets/svgs/increase.svg');
+
   /// File path: assets/svgs/info-circle.svg
   SvgGenImage get infoCircle =>
       const SvgGenImage('assets/svgs/info-circle.svg');
@@ -345,6 +359,9 @@ class $AssetsSvgsGen {
 
   /// File path: assets/svgs/lock.svg
   SvgGenImage get lock => const SvgGenImage('assets/svgs/lock.svg');
+
+  /// File path: assets/svgs/logo.svg
+  SvgGenImage get logo => const SvgGenImage('assets/svgs/logo.svg');
 
   /// File path: assets/svgs/logout.svg
   SvgGenImage get logout => const SvgGenImage('assets/svgs/logout.svg');
@@ -419,6 +436,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/percentage-circle.svg
   SvgGenImage get percentageCircle =>
       const SvgGenImage('assets/svgs/percentage-circle.svg');
+
+  /// File path: assets/svgs/ppt.svg
+  SvgGenImage get ppt => const SvgGenImage('assets/svgs/ppt.svg');
 
   /// File path: assets/svgs/printer.svg
   SvgGenImage get printer => const SvgGenImage('assets/svgs/printer.svg');
@@ -553,7 +573,9 @@ class $AssetsSvgsGen {
     buildings,
     buliding,
     calendar,
+    calendarFrom,
     calendarTick,
+    calendarTo,
     call,
     camera,
     cardTick,
@@ -574,6 +596,7 @@ class $AssetsSvgsGen {
     cube,
     danger,
     directboxSend,
+    doc,
     documentDownload,
     documentText,
     downloadBox,
@@ -595,6 +618,7 @@ class $AssetsSvgsGen {
     hide,
     homeActive,
     home,
+    increase,
     infoCircle,
     infoCircle64,
     invoices,
@@ -606,6 +630,7 @@ class $AssetsSvgsGen {
     left,
     location,
     lock,
+    logo,
     logout,
     map,
     messageNotif,
@@ -627,6 +652,7 @@ class $AssetsSvgsGen {
     outlineMoneys,
     people,
     percentageCircle,
+    ppt,
     printer,
     profileCircle,
     profileMore,

@@ -7,7 +7,7 @@ class ProjectDetailsBloc extends Bloc<AppEvent, AppState> {
   }
 
   onClick(AppEvent event, Emitter<AppState> emit) async {
-    try {
+    // try {
       emit(Loading());
 
       Response res =
@@ -23,10 +23,10 @@ class ProjectDetailsBloc extends Bloc<AppEvent, AppState> {
         AppCore.errorMessage(allTranslations.text('something_went_wrong'));
         emit(Error());
       }
-    } catch (e) {
-      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
-
-      emit(Error());
-    }
+    // } catch (e) {
+    //   AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+    //
+    //   emit(Error());
+    // }
   }
 }

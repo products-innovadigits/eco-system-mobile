@@ -47,7 +47,7 @@ class _CustomExpansionCardState extends State<CustomExpansionCard> {
                         TextSpan(
                           text: "  ${widget.subTitle}",
                           style: AppTextStyles.w400.copyWith(
-                              fontSize: 12, color: Styles.PRIMARY_COLOR),
+                              fontSize: 12, color: context.color.primary),
                         )
                     ])),
               ),

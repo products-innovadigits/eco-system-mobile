@@ -46,7 +46,7 @@ class _UploadImageState extends State<UploadImage> {
             height: image != null ? 192 : 140,
             width: MediaQueryHelper.width,
             decoration: BoxDecoration(
-              color: Styles.PRIMARY_COLOR.withOpacity(.1),
+              color: context.color.primary.withOpacity(.1),
               borderRadius: BorderRadius.circular(15.0),
               image: DecorationImage(
                 image: Image.asset(
@@ -146,7 +146,7 @@ class _UploadImageState extends State<UploadImage> {
                                 widget.updateFile?.call(image);
                               });
                             },
-                            color: Styles.PRIMARY_COLOR,
+                            color: context.color.primary,
                           ),
                           const SizedBox(width: 8.0),
                           CustomBtn(

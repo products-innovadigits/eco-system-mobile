@@ -1,4 +1,3 @@
-import 'package:ats_system/shared/ats_exports.dart';
 import 'package:core_system/core/utility/export.dart';
 
 class RatingReasonBottomSheet extends StatelessWidget {
