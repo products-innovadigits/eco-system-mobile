@@ -1,5 +1,5 @@
-import 'package:pms_system/project_details/widgets/general_progress_section.dart';
-import 'package:pms_system/project_details/widgets/project_stages_chart.dart';
+import 'package:pms_system/project_details/widgets/project_details_tabs_section.dart';
+import 'package:pms_system/project_details/widgets/project_main_info_section.dart';
 import 'package:pms_system/shared/pms_exports.dart';
 
 class ProjectDetailsBody extends StatelessWidget {
@@ -9,12 +9,18 @@ class ProjectDetailsBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProjectDetailsBloc, AppState>(
       builder: (context, state) {
+        final selectedTab = context.select(
+          (ProjectDetailsBloc bloc) => bloc.selectedTab,
+        );
         return switch (state) {
           // ── Loading ─────────────────────────
           Loading() => _buildShimmerLoading(context),
 
           // ── Done ────────────────────────────
-          Done(:final ProjectDetailsModel model) => _ProjectBody(model: model),
+          Done(:final ProjectDetailsModel model) => _ProjectBody(
+            model: model,
+            selectedTab: selectedTab,
+          ),
 
           // ── Empty ───────────────────────────
           Empty() => const EmptyContainer(),
@@ -32,55 +38,28 @@ class ProjectDetailsBody extends StatelessWidget {
 
 class _ProjectBody extends StatelessWidget {
   final ProjectDetailsModel model;
+  final ProjectDetailsEnum selectedTab;
 
-  const _ProjectBody({super.key, required this.model});
+  const _ProjectBody({required this.model, required this.selectedTab});
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
+        // Fixed header content
         ProjectCardContent(project: model, isDetails: true),
         SizedBox(height: 12.h),
-
-        ///Project Description
-        CustomExpansionCard(
-          title: allTranslations.text(LocaleKeys.main_data),
-          child: ProjectDetailsDescription(model: model),
-        ),
-
-        CustomExpansionCard(
-          title: allTranslations.text(LocaleKeys.challenges_risks),
-          child: ProjectsChallengesRisks(),
-        ),
-
-        ///Progress at each stage of the project
-        CustomExpansionCard(
-          title: allTranslations.text("progress_at_each_stage_of_the_project"),
-          child: ProjectStagesChart(
-            barColor: context.color.primary,
-            textColor: context.color.outlineVariant,
-            withIntervals: false,
-            data:
-                model.projectLifeCycle?.projectStages
-                    ?.map(
-                      (e) => ProjectCategoriesProgressModel(
-                        name: e.title ?? "",
-                        progress: e.progress ?? 0,
-                      ),
-                    )
-                    .toList() ??
-                [],
-            // data: [
-            //   ProjectCategoriesProgressModel(name: "Stage 1", progress: 20),
-            //   ProjectCategoriesProgressModel(name: "Stage 2", progress: 40),
-            //   ProjectCategoriesProgressModel(name: "Stage 3", progress: 60),
-            //   ProjectCategoriesProgressModel(name: "Stage 4", progress: 80),
-            // ],
+        ProjectDetailsTabsSection(),
+        SizedBox(height: 16.h),
+        // Scrollable content
+        Flexible(
+          fit: FlexFit.loose,
+          child: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: _getTabSection(selectedTab, model),
           ),
         ),
-
-        ///General Progress
-        GeneralProgressSection(),
       ],
     );
   }
@@ -104,3 +83,14 @@ Widget _buildShimmerLoading(BuildContext context) => Column(
     ),
   ],
 );
+
+Widget _getTabSection(
+  ProjectDetailsEnum selectedTab,
+  ProjectDetailsModel model,
+) {
+  return switch (selectedTab) {
+    ProjectDetailsEnum.mainInfo => ProjectMainInfoSection(model: model),
+    ProjectDetailsEnum.workflow => Container(),
+    _ => Container(),
+  };
+}

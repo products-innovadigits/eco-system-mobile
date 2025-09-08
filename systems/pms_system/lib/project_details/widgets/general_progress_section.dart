@@ -16,8 +16,9 @@ class _GeneralProgressSectionState extends State<GeneralProgressSection> {
   @override
   Widget build(BuildContext context) {
     return CustomExpansionCard(
-      title: allTranslations.text("general_progress"),
+      title: allTranslations.text(LocaleKeys.general_progress),
       withExpanded: false,
+      withMargin: false,
       action: Row(
           children: List.generate(
         ChartTime.values.length,

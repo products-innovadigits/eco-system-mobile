@@ -215,6 +215,7 @@ abstract class  LocaleKeys {
   static const search = 'search';
   static const cancel = 'cancel';
   static const property_details = 'property_details';
+  static const project_details = 'project_details';
   static const total_units = 'total_units';
   static const occupied = 'occupied';
   static const vacant = 'vacant';
@@ -289,6 +290,7 @@ abstract class  LocaleKeys {
   static const delivered = 'delivered';
   static const delivered_from = 'delivered_from';
   static const outputs = 'outputs';
+  static const output = 'output';
   static const activities_progress = 'activities_progress';
   static const general_progress = 'general_progress';
   static const kpis_general_progress = 'kpis_general_progress';
@@ -459,5 +461,29 @@ abstract class  LocaleKeys {
   static const least_advanced_to_most = 'least_advanced_to_most';
   static const date_range_validation_error = 'date_range_validation_error';
   static const please_select_at_least_one_filter = 'please_select_at_least_one_filter';
+  static const main_info = 'main_info';
+  static const workflow = 'workflow';
+  static const timeline = 'timeline';
+  static const the_outputs = 'the_outputs';
+  static const project_financing = 'project_financing';
+  static const the_challenges = 'the_challenges';
+  static const challenge = 'challenge';
+  static const Average_progress_rate = 'Average_progress_rate';
+  static const risks = 'risks';
+  static const low_effect = 'low_effect';
+  static const average_effect = 'average_effect';
+  static const high_effect = 'high_effect';
+  static const have_been_processing = 'have_been_processing';
+  static const challenges = 'challenges';
+  static const total = 'total';
+  static const completed_outputs = 'completed_outputs';
+  static const in_progress_outputs = 'in_progress_outputs';
+  static const not_started_outputs = 'not_started_outputs';
+  static const overall_progress = 'overall_progress';
+  static const average_progress_percentage = 'average_progress_percentage';
+  static const total_delivery = 'total_delivery';
+  static const financing = 'financing';
+  static const activities = 'activities';
+  static const outputs_progress = 'outputs_progress';
 
 }

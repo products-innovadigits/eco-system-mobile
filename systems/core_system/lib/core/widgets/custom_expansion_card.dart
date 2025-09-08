@@ -1,20 +1,25 @@
 import 'package:core_system/core/utility/export.dart';
 
 class CustomExpansionCard extends StatefulWidget {
-  const CustomExpansionCard(
-      {super.key,
-      required this.child,
-      required this.title,
-      this.subTitle,
-      this.withExpanded = true,
-      this.withMargin = true,
-      this.action});
+  const CustomExpansionCard({
+    super.key,
+    required this.child,
+    required this.title,
+    this.subTitle,
+    this.withExpanded = true,
+    this.withMargin = true,
+    this.action,
+    this.subTitleStyle,
+  });
+
   final Widget child;
   final String title;
   final String? subTitle;
   final Widget? action;
   final bool withExpanded;
   final bool withMargin;
+  final TextStyle? subTitleStyle;
+
   @override
   State<CustomExpansionCard> createState() => _CustomExpansionCardState();
 }
@@ -25,12 +30,15 @@ class _CustomExpansionCardState extends State<CustomExpansionCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: widget.withMargin ? EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w) : null,
+      margin: widget.withMargin
+          ? EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w)
+          : null,
       padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
       decoration: BoxDecoration(
-          color: context.color.surfaceContainer,
-          border: Border.all(color: context.color.outline),
-          borderRadius: BorderRadius.circular(12)),
+        color: context.color.surfaceContainer,
+        border: Border.all(color: context.color.outline),
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -38,25 +46,33 @@ class _CustomExpansionCardState extends State<CustomExpansionCard> {
             children: [
               Expanded(
                 child: RichText(
-                    text: TextSpan(
-                        text: widget.title,
-                        style: AppTextStyles.w600
-                            .copyWith(fontSize: 14, color: Styles.HEADER),
-                        children: [
+                  text: TextSpan(
+                    text: widget.title,
+                    style: AppTextStyles.w600.copyWith(
+                      fontSize: 14,
+                      color: Styles.HEADER,
+                    ),
+                    children: [
                       if (widget.subTitle != null)
                         TextSpan(
-                          text: "  ${widget.subTitle}",
-                          style: AppTextStyles.w400.copyWith(
-                              fontSize: 12, color: context.color.primary),
-                        )
-                    ])),
+                          text: " ${widget.subTitle}",
+                          style:
+                              widget.subTitleStyle ??
+                              AppTextStyles.w400.copyWith(
+                                fontSize: 12,
+                                color: context.color.primary,
+                              ),
+                        ),
+                    ],
+                  ),
+                ),
               ),
               SizedBox(width: 12.w),
               widget.action ?? SizedBox(),
               if (widget.withExpanded)
                 InkWell(
                   onTap: () => setState(() => isExpanded = !isExpanded),
-                  child: AnimatedExpansionArrowWidget(isExpanded: isExpanded)
+                  child: AnimatedExpansionArrowWidget(isExpanded: isExpanded),
                 ),
             ],
           ),
@@ -72,7 +88,7 @@ class _CustomExpansionCardState extends State<CustomExpansionCard> {
                   padding: EdgeInsets.symmetric(vertical: 12.h),
                   child: Divider(color: context.color.outline),
                 ),
-                widget.child
+                widget.child,
               ],
             ),
           ),

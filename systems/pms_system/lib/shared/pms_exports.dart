@@ -16,11 +16,14 @@ export 'package:pms_system/project_categories_progress/widgets/project_categorie
 export 'package:pms_system/project_details/bloc/project_details_bloc.dart';
 export 'package:pms_system/project_details/model/project_details_model.dart';
 export 'package:pms_system/project_details/repo/project_details_repo.dart';
+export 'package:pms_system/project_details/widgets/general_progress_section.dart';
 export 'package:pms_system/project_details/widgets/project_content_card.dart';
 export 'package:pms_system/project_details/widgets/project_details_body.dart';
 export 'package:pms_system/project_details/widgets/project_details_description.dart';
 export 'package:pms_system/project_details/widgets/project_monthly_progress.dart';
-export 'package:pms_system/project_details/widgets/projects_challenges_risks.dart';
+export 'package:pms_system/project_details/widgets/project_outputs_chart.dart';
+export 'package:pms_system/project_details/widgets/project_progress_chart.dart';
+export 'package:pms_system/project_details/widgets/project_risks.dart';
 export 'package:pms_system/projects/bloc/project_priority_level_bloc.dart';
 export 'package:pms_system/projects/bloc/projects_bloc.dart';
 export 'package:pms_system/projects/bloc/projects_filtration_bloc.dart';

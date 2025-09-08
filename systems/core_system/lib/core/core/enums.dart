@@ -16,6 +16,17 @@ class ProfileEnum extends Enum<String> {
   static const List<ProfileEnum> values = [profile, events, answers];
 }
 
+
+class ProjectDetailsEnum extends Enum<String> {
+  const ProjectDetailsEnum(super.value);
+
+  static const ProjectDetailsEnum mainInfo = ProjectDetailsEnum('mainInfo');
+  static const ProjectDetailsEnum workflow = ProjectDetailsEnum('workflow');
+  static const ProjectDetailsEnum timeline = ProjectDetailsEnum('timeline');
+
+  static const List<ProjectDetailsEnum> values = [mainInfo, workflow, timeline];
+}
+
 class SearchEnum extends Enum<String> {
   const SearchEnum(super.value);
 
