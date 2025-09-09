@@ -22,7 +22,6 @@ export 'package:pms_system/project_details/widgets/project_details_body.dart';
 export 'package:pms_system/project_details/widgets/project_details_description.dart';
 export 'package:pms_system/project_details/widgets/project_monthly_progress.dart';
 export 'package:pms_system/project_details/widgets/project_outputs_chart.dart';
-export 'package:pms_system/project_details/widgets/project_progress_chart.dart';
 export 'package:pms_system/project_details/widgets/project_risks.dart';
 export 'package:pms_system/projects/bloc/project_priority_level_bloc.dart';
 export 'package:pms_system/projects/bloc/projects_bloc.dart';

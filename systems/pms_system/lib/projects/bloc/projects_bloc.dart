@@ -105,7 +105,7 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
 
   _getObjectives(AppEvent event, Emitter<AppState> emit) async {
     emit(Loading());
-    try {
+    // try {
       _engine = event.arguments as SearchEngine;
       if (_engine.currentPage == 0) {
         _cards.clear();
@@ -140,11 +140,11 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
       } else {
         emit(Empty());
       }
-    } catch (e) {
-      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
-
-      emit(Error());
-    }
+    // } catch (e) {
+    //   AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+    //
+    //   emit(Error());
+    // }
   }
 
   @override

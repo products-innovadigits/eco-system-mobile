@@ -87,9 +87,12 @@ class _ProjectsViewState extends State<ProjectsView> {
                     Empty(:final initial) => EmptyContainer(
                       txt: initial == true
                           ? null
-                          : allTranslations.text(
+                          : (bloc.searchTEC != null &&
+                                bloc.searchTEC!.text.isEmpty)
+                          ? allTranslations.text(
                               LocaleKeys.no_projects_match_your_filters,
-                            ),
+                            )
+                          : '${allTranslations.text(LocaleKeys.no_projects_match)} \' ${bloc.searchTEC!.text} \'',
                     ),
 
                     // Fallback (in case error occurs or something else)

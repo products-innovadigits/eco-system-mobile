@@ -283,6 +283,7 @@ abstract class  LocaleKeys {
   static const something_went_wrong = 'something_went_wrong';
   static const there_is_no_data = 'there_is_no_data';
   static const no_projects_match_your_filters = 'no_projects_match_your_filters';
+  static const no_projects_match = 'no_projects_match';
   static const oops = 'oops';
   static const deliver_date = 'deliver_date';
   static const time_left = 'time_left';
@@ -485,5 +486,7 @@ abstract class  LocaleKeys {
   static const financing = 'financing';
   static const activities = 'activities';
   static const outputs_progress = 'outputs_progress';
+  static const the_budget = 'the_budget';
+  static const project_funding = 'project_funding';
 
 }

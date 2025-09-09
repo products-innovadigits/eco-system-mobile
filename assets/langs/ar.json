@@ -282,6 +282,7 @@
   "something_went_wrong": "حدث خطأ ما!",
   "there_is_no_data": "لا يوجد بيانات الان!",
   "no_projects_match_your_filters": "لا توجد مشاريع مطابقة لعوامل التصفية",
+  "no_projects_match": "لا توجد مشاريع مطابقة ل",
   "oops": "عفوًا!",
   "deliver_date": "موعد التسليم",
   "time_left": "باقي من الزمن",
@@ -474,15 +475,16 @@
   "high_effect": "عالي التأثير",
   "have_been_processing": "لقد تم معالجة",
   "challenges": "تحديات",
-  "show_more": "عرض المزيد",
   "total": "الكلي",
   "completed_outputs": "تم التسليم",
   "in_progress_outputs": "جاري التسليم",
   "not_started_outputs": "لم يتم التسليم",
   "overall_progress": "التقدم العام",
-  "average_progress_percentage": "متوسط نسبة التقدم(%50)",
+  "average_progress_percentage": "متوسط نسبة التقدم",
   "total_delivery": "التحصيل الكلي",
   "financing": "التمويلية",
   "activities": "الأنشطة",
-  "outputs_progress": "المخرجات"
+  "outputs_progress": "المخرجات",
+  "the_budget": "الميزانية",
+  "project_funding": "ميزانية المشروع"
 }

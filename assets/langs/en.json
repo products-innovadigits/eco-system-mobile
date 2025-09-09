@@ -283,6 +283,7 @@
   "oops": "Oops!",
   "there_is_no_data": "There's no data",
   "no_projects_match_your_filters": "No projects match your filters",
+  "no_projects_match": "No projects match",
   "deliver_date": "Deliver Date",
   "progress": "Progress",
   "delivered": "Delivered",
@@ -472,7 +473,6 @@
   "high_effect": "High Effect",
   "have_been_processing": "Have been processing",
   "challenges": "challenges",
-  "show_more": "Show More",
   "total": "Total",
   "completed_outputs": "Completed",
   "in_progress_outputs": "In Progress",
@@ -482,5 +482,6 @@
   "total_delivery": "Total Delivery",
   "financing": "Financing",
   "activities": "Activities",
-  "outputs_progress": "Outputs"
+  "outputs_progress": "Outputs",
+  "project_funding": "Project Funding"
 }

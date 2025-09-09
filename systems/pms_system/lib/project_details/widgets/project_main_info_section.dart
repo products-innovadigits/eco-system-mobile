@@ -1,4 +1,6 @@
 import 'package:pms_system/project_details/widgets/project_challenges.dart';
+import 'package:pms_system/project_details/widgets/project_details_funding_chart.dart';
+import 'package:pms_system/project_details/widgets/project_details_general_progress_chart.dart';
 import 'package:pms_system/shared/pms_exports.dart';
 
 class ProjectMainInfoSection extends StatelessWidget {
@@ -33,9 +35,59 @@ class ProjectMainInfoSection extends StatelessWidget {
         CustomExpansionCard(
           title: allTranslations.text(LocaleKeys.overall_progress),
           withMargin: false,
-          child: ProjectProgressChart(
+          action: Container(
+            margin: EdgeInsets.only(bottom: 16.h),
+            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
+            decoration: BoxDecoration(
+              color: context.color.secondary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  '${allTranslations.text(LocaleKeys.average_progress_percentage)} (50%)',
+                  style: context.textTheme.labelSmall?.copyWith(
+                    color: context.color.secondary,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                SizedBox(width: 8.w),
+                Icon(
+                  Icons.info_outline,
+                  color: context.color.secondary,
+                  size: 18,
+                ),
+              ],
+            ),
+          ),
+          withExpanded: false,
+          child: ProjectDetailsGeneralProgressChart(
             data: _generateSampleProgressData(),
           ),
+        ),
+
+        ProjectDetailsFundingChart(
+          data: [
+            ProjectsOverviewData(
+              name: 'المتبقي',
+              count: 100000,
+              hexColor: '#175CD3',
+              percentage: 10,
+            ),
+            ProjectsOverviewData(
+              name: 'الغرامات',
+              count: 600000,
+              hexColor: '#020F4C',
+              percentage: 60,
+            ),
+            ProjectsOverviewData(
+              name: 'المنصرف',
+              count: 400000,
+              hexColor: '#DC6803',
+              percentage: 40,
+            ),
+          ],
         ),
 
         ///Challenges
@@ -89,32 +141,31 @@ class ProjectMainInfoSection extends StatelessWidget {
   }
 
   // TODO: Replace this with actual data from the ProjectDetailsModel
-  List<ProjectProgressItemModel> _generateSampleProgressData() {
+  List<ProjectCategoriesProgressModel> _generateSampleProgressData() {
     return [
-      ProjectProgressItemModel(
-        type: ProjectProgressType.totalDelivery,
-        titleKey: LocaleKeys.total_delivery,
-        percentage: 100,
+      ProjectCategoriesProgressModel(
+        name: "الجدول الزمني",
+        progress: 28,
+        color: LightColor.tertiaryLight,
       ),
-      ProjectProgressItemModel(
-        type: ProjectProgressType.financing,
-        titleKey: LocaleKeys.financing,
-        percentage: 62,
+      ProjectCategoriesProgressModel(
+        name: "الميزانية",
+        progress: 55,
+        color: LightColor.secondary,
       ),
-      ProjectProgressItemModel(
-        type: ProjectProgressType.activities,
-        titleKey: LocaleKeys.activities,
-        percentage: 25,
+      ProjectCategoriesProgressModel(
+        name: "الأنشطة",
+        progress: 72,
+        color: LightColor.error,
       ),
-      ProjectProgressItemModel(
-        type: ProjectProgressType.outputs,
-        titleKey: LocaleKeys.outputs_progress,
-        percentage: 45,
+      ProjectCategoriesProgressModel(
+        name: "المخرجات",
+        progress: 100,
+        color: LightColor.warning,
       ),
     ];
   }
 }
-
 
 // ///Progress at each stage of the project
 // CustomExpansionCard(

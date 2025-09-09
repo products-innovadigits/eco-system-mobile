@@ -18,6 +18,7 @@ abstract class ApiNames {
 
   static const ProjectProgress = "Project/GetProgressCountPrestange";
   static const ProjectCategoriesProgress = "ProjectCategory/CategoriesProgress";
+  // static const projects = "Project/GetFilteredProjects";
   static const projects = "Project";
   static const projectPriorityLevels = "Project/PeriortyLevels";
   static String projectDetails(id) => "Project/$id";
