@@ -1,6 +1,7 @@
 import 'package:pms_system/project_details/widgets/project_challenges.dart';
 import 'package:pms_system/project_details/widgets/project_details_funding_chart.dart';
 import 'package:pms_system/project_details/widgets/project_details_general_progress_chart.dart';
+import 'package:pms_system/project_details/widgets/project_outputs_bottom_sheet.dart';
 import 'package:pms_system/shared/pms_exports.dart';
 
 class ProjectMainInfoSection extends StatelessWidget {
@@ -13,7 +14,7 @@ class ProjectMainInfoSection extends StatelessWidget {
     return Column(
       spacing: 16,
       children: [
-        ///Project Description
+        ///Description
         CustomExpansionCard(
           title: allTranslations.text(LocaleKeys.project_details),
           withMargin: false,
@@ -23,72 +24,28 @@ class ProjectMainInfoSection extends StatelessWidget {
         ///General Progress
         GeneralProgressSection(),
 
-        ///Project Outputs
-        CustomExpansionCard(
-          title: allTranslations.text(LocaleKeys.the_outputs),
-          withMargin: false,
-          // Replace with actual data from model
-          child: ProjectOutputsChart(data: _generateSampleOutputsData()),
-        ),
-
-        ///Project Progress
+        ///General Progress
         CustomExpansionCard(
           title: allTranslations.text(LocaleKeys.overall_progress),
           withMargin: false,
-          action: Container(
-            margin: EdgeInsets.only(bottom: 16.h),
-            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
-            decoration: BoxDecoration(
-              color: context.color.secondary.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  '${allTranslations.text(LocaleKeys.average_progress_percentage)} (50%)',
-                  style: context.textTheme.labelSmall?.copyWith(
-                    color: context.color.secondary,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(width: 8.w),
-                Icon(
-                  Icons.info_outline,
-                  color: context.color.secondary,
-                  size: 18,
-                ),
-              ],
-            ),
-          ),
           withExpanded: false,
+          action: _averageProgressWidget(context, progress: '50'),
           child: ProjectDetailsGeneralProgressChart(
             data: _generateSampleProgressData(),
           ),
         ),
 
-        ProjectDetailsFundingChart(
-          data: [
-            ProjectsOverviewData(
-              name: 'المتبقي',
-              count: 100000,
-              hexColor: '#175CD3',
-              percentage: 10,
-            ),
-            ProjectsOverviewData(
-              name: 'الغرامات',
-              count: 600000,
-              hexColor: '#020F4C',
-              percentage: 60,
-            ),
-            ProjectsOverviewData(
-              name: 'المنصرف',
-              count: 400000,
-              hexColor: '#DC6803',
-              percentage: 40,
-            ),
-          ],
+        ///Outputs
+        CustomExpansionCard(
+          title: allTranslations.text(LocaleKeys.the_outputs),
+          withMargin: false,
+          withExpanded: false,
+          action: _outputsBottomSheetBtn(context),
+          child: ProjectOutputsChart(data: _generateSampleOutputsData()),
         ),
+
+        ///Project Funding
+        ProjectDetailsFundingChart(data: _generateSampleFundingData()),
 
         ///Challenges
         CustomExpansionCard(
@@ -165,6 +122,71 @@ class ProjectMainInfoSection extends StatelessWidget {
       ),
     ];
   }
+
+  // TODO: Replace this with actual data from the ProjectDetailsModel
+  List<ProjectsOverviewData> _generateSampleFundingData() {
+    return [
+      ProjectsOverviewData(
+        name: 'المتبقي',
+        count: 100000,
+        hexColor: '#175CD3',
+        percentage: 10,
+      ),
+      ProjectsOverviewData(
+        name: 'الغرامات',
+        count: 600000,
+        hexColor: '#020F4C',
+        percentage: 60,
+      ),
+      ProjectsOverviewData(
+        name: 'المنصرف',
+        count: 400000,
+        hexColor: '#DC6803',
+        percentage: 40,
+      ),
+    ];
+  }
+}
+
+Widget _averageProgressWidget(
+  BuildContext context, {
+  required String progress,
+}) {
+  return Container(
+    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
+    decoration: BoxDecoration(
+      color: context.color.secondary.withValues(alpha: 0.1),
+      borderRadius: BorderRadius.circular(20),
+    ),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          '${allTranslations.text(LocaleKeys.average_progress_percentage)} ($progress%)',
+          style: context.textTheme.labelSmall?.copyWith(
+            color: context.color.secondary,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        SizedBox(width: 8.w),
+        Icon(Icons.info_outline, color: context.color.secondary, size: 18),
+      ],
+    ),
+  );
+}
+
+Widget _outputsBottomSheetBtn(BuildContext context) {
+  return InkWell(
+    onTap: () {
+      PopUpHelper.showBottomSheet(child: ProjectOutputsBottomSheet());
+    },
+    child: Text(
+      allTranslations.text(LocaleKeys.view_more),
+      style: context.textTheme.labelSmall?.copyWith(
+        color: context.color.secondary,
+      ),
+    ),
+  );
 }
 
 // ///Progress at each stage of the project

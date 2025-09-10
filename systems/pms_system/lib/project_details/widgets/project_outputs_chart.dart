@@ -41,6 +41,9 @@ class _ProjectOutputsChartState extends State<ProjectOutputsChart> {
                 minY: 0,
                 maxY: _getMaxValue() + 20,
                 alignment: BarChartAlignment.spaceAround,
+                barTouchData: BarTouchData(
+                  enabled: false
+                ),
                 titlesData: FlTitlesData(
                   show: true,
                   rightTitles: AxisTitles(
