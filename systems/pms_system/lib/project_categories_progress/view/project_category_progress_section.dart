@@ -31,6 +31,7 @@ class ProjectCategoryProgressSection extends StatelessWidget {
               title: allTranslations.text(
                 LocaleKeys.project_progress_rate_in_each_category,
               ),
+              moreBtnTxt: allTranslations.text(LocaleKeys.view_projects),
               child: TryAgainWidget(
                 onTryAgain: () {
                   context.read<ProjectCategoriesProgressBloc>().add(Click());
@@ -53,7 +54,12 @@ class _CategoriesChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MainCardWidget(
-      title: allTranslations.text(LocaleKeys.project_progress_rate_in_each_category),
+      title: allTranslations.text(
+        LocaleKeys.project_progress_rate_in_each_category,
+      ),
+      moreBtnTxt: isPmsHome
+          ? allTranslations.text(LocaleKeys.view_projects)
+          : null,
       onViewMoreTap: () {
         if (!isPmsHome) {
           UserBloc.currentActiveSystem = ActiveSystemEnum.pms;
@@ -65,15 +71,16 @@ class _CategoriesChart extends StatelessWidget {
                 arguments: ActiveSystemEnum.pms,
               );
       },
-      child: SizedBox(
-        height: isPmsHome ? data.length * 18.h : 250.h,
-        child: SingleChildScrollView(
-          child: SizedBox(
-            height: isPmsHome ? data.length * 50.h : 250.h,
-            child: ProjectCategoriesChart(data: data, isPmsHome: isPmsHome),
-          ),
-        ),
-      ),
+      // child: SizedBox(
+      //   height: isPmsHome ? data.length * 18.h : 250.h,
+      //   child: SingleChildScrollView(
+      //     child: SizedBox(
+      //       height: isPmsHome ? data.length * 50.h : 250.h,
+      //       child: ProjectCategoriesChart(data: data, isPmsHome: isPmsHome),
+      //     ),
+      //   ),
+      // ),
+      child: ProjectCategoriesChart(data: data, isPmsHome: isPmsHome),
     );
   }
 }

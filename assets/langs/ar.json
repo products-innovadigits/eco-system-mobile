@@ -46,6 +46,7 @@
   "kpis_initiatives_progress": "تقدم المبادرات والمؤشرات",
   "objective_percentage": "تقدم الاهداف",
   "view_more": "عرض المزيد",
+  "view_projects": "عرض المشاريع",
   "other_requests": "الطلبات الاخرى",
   "group": "الفرق",
   "home": "الرئيسية",
@@ -484,6 +485,7 @@
   "total_delivery": "التحصيل الكلي",
   "financing": "التمويلية",
   "activities": "الأنشطة",
+  "go_to_system": "الدخول الي النظام",
   "outputs_progress": "المخرجات",
   "the_budget": "الميزانية",
   "project_funding": "ميزانية المشروع"

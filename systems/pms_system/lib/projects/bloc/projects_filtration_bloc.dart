@@ -50,9 +50,9 @@ class ProjectsFiltrationBloc extends Bloc<AppEvent, AppState> {
             'risk': selectedRisk?.name ?? '',
             'priority': selectedPriority?.name ?? '',
             // if (pickedStartCtrl.text.isNotEmpty)
-            'start_date': pickedStartCtrl.text,
+            'startDate': pickedStartCtrl.text,
             // if (pickedEndCtrl.text.isNotEmpty)
-            'end_date': pickedEndCtrl.text,
+            'endDate': pickedEndCtrl.text,
           },
         ),
       ),

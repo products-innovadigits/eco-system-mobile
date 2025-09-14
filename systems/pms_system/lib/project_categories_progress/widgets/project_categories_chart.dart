@@ -1,13 +1,14 @@
 import 'package:pms_system/shared/pms_exports.dart';
 
-class ProjectCategoriesChart extends StatefulWidget {
-  const ProjectCategoriesChart(
-      {super.key,
-      this.withIntervals = true,
-      required this.data,
-      this.isPmsHome = false,
-      this.textColor,
-      this.barColor});
+class ProjectCategoriesChart extends StatelessWidget {
+  const ProjectCategoriesChart({
+    super.key,
+    this.withIntervals = true,
+    required this.data,
+    this.isPmsHome = false,
+    this.textColor,
+    this.barColor,
+  });
 
   final List<ProjectCategoriesProgressModel> data;
   final Color? textColor, barColor;
@@ -15,171 +16,158 @@ class ProjectCategoriesChart extends StatefulWidget {
   final bool isPmsHome;
 
   @override
-  State<ProjectCategoriesChart> createState() =>
-      _ProjectCategoriesChartState();
-}
-
-class _ProjectCategoriesChartState extends State<ProjectCategoriesChart> {
-  double? interval;
-
-  @override
-  void initState() {
-    super.initState();
-    interval = 20;
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return BarChart(
-      BarChartData(
-        minY: 0,
-        maxY: 100,
-        barTouchData: BarTouchData(
-          handleBuiltInTouches: true,
-          touchTooltipData: BarTouchTooltipData(
-              getTooltipColor: (touchedSpot) =>
-                  context.color.secondary.withValues(alpha: 0.1)),
-        ),
-        rotationQuarterTurns: 3,
-        titlesData: FlTitlesData(
-          show: true,
-          leftTitles: AxisTitles(
-            sideTitles: SideTitles(
-              maxIncluded: true,
-              minIncluded: true,
-              showTitles: false,
-              reservedSize: 35,
-              getTitlesWidget: leftTitles,
-              interval: interval,
+    return SizedBox(
+      height: 220,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(
+            child: ListView.separated(
+              shrinkWrap: true,
+              itemCount: isPmsHome
+                  ? data.length
+                  : data.length > 4
+                  ? 4
+                  : data.length,
+              separatorBuilder: (_, _) => const SizedBox(height: 18),
+              itemBuilder: (context, index) {
+                final item = data[index];
+                final progress = (item.progress ?? 0).clamp(0, 100);
+
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Title (fixed width column)
+                    Expanded(
+                      child: Text(
+                        item.name ?? "",
+                        style: context.textTheme.bodySmall?.copyWith(
+                          color: textColor ?? context.color.outlineVariant,
+                        ),
+                      ),
+                    ),
+                    // Progress container
+                    Expanded(
+                      flex: 3,
+                      child: Stack(
+                        children: [
+                          // Background
+                          Container(
+                            height: 22,
+                            margin: const EdgeInsets.symmetric(horizontal: 9),
+                            padding: const EdgeInsetsDirectional.only(end: 6),
+                            decoration: BoxDecoration(
+                              color: context.color.outline,
+                              borderRadius: BorderRadius.circular(2),
+                            ),
+                            alignment: AlignmentDirectional.centerEnd,
+                            child: progress.toInt() < 82
+                                ? Text(
+                                    "$progress%",
+                                    style: context.textTheme.labelSmall
+                                        ?.copyWith(
+                                          fontSize: 10,
+                                          color:
+                                              barColor ??
+                                              item.color ??
+                                              LightColor
+                                                  .projectCategoryColors[0],
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                  )
+                                : const SizedBox(),
+                          ),
+                          FractionallySizedBox(
+                            alignment: AlignmentDirectional.centerStart,
+                            widthFactor: progress / 100,
+                            child: Container(
+                              height: 22,
+                              padding: const EdgeInsetsDirectional.only(end: 6),
+                              margin: const EdgeInsets.symmetric(horizontal: 9),
+                              decoration: BoxDecoration(
+                                color:
+                                    barColor ??
+                                    item.color ??
+                                    LightColor.projectCategoryColors[0],
+                                borderRadius: BorderRadius.circular(2),
+                              ),
+                              alignment: AlignmentDirectional.centerEnd,
+                              child: progress.toInt() >= 82
+                                  ? Text(
+                                      "$progress%",
+                                      style: context.textTheme.labelSmall
+                                          ?.copyWith(
+                                            color: context.color.onPrimary,
+                                            fontSize: 10,
+                                          ),
+                                    )
+                                  : const SizedBox(),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
           ),
-          rightTitles: AxisTitles(
-            sideTitles: SideTitles(
-              maxIncluded: true,
-              minIncluded: true,
-              showTitles: false,
-              reservedSize: 50,
-              getTitlesWidget: leftTitles,
-              interval: interval,
+          if (withIntervals) ...[
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(child: Container()),
+                Expanded(
+                  flex: 3,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "0%",
+                        style: context.textTheme.bodySmall?.copyWith(
+                          color: context.color.outlineVariant,
+                        ),
+                      ),
+                      Text(
+                        "20%",
+                        style: context.textTheme.bodySmall?.copyWith(
+                          color: context.color.outlineVariant,
+                        ),
+                      ),
+                      Text(
+                        "40%",
+                        style: context.textTheme.bodySmall?.copyWith(
+                          color: context.color.outlineVariant,
+                        ),
+                      ),
+                      Text(
+                        "60%",
+                        style: context.textTheme.bodySmall?.copyWith(
+                          color: context.color.outlineVariant,
+                        ),
+                      ),
+                      Text(
+                        "80%",
+                        style: context.textTheme.bodySmall?.copyWith(
+                          color: context.color.outlineVariant,
+                        ),
+                      ),
+                      Text(
+                        "100%",
+                        style: context.textTheme.bodySmall?.copyWith(
+                          color: context.color.outlineVariant,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ),
-          topTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles:  true,
-              maxIncluded: true,
-              minIncluded: true,
-              getTitlesWidget: (value, meta) => topTitles(
-                value,
-                meta,
-                widget.data
-                    .map((e) => e.progress.toString())
-                    .toList(),
-              ),
-              reservedSize: 40,
-              interval: interval,
-            ),
-          ),
-          bottomTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              getTitlesWidget: (value, meta) => bottomTitles(
-                  value,
-                  meta,
-                  widget.data
-                      .map((e) => e.name ?? "")
-                      .toList(),
-                  textColor: context.color.outlineVariant),
-              reservedSize: 80,
-              interval: interval,
-            ),
-          ),
-        ),
-        borderData: FlBorderData(
-          border: Border.all(color: Colors.transparent),
-        ),
-        gridData: FlGridData(
-            horizontalInterval: interval,
-            show: widget.withIntervals,
-            drawVerticalLine: false,
-            getDrawingHorizontalLine: (value) => FlLine(
-                color: context.color.outline,
-                strokeWidth: 0.8,
-                dashArray: const [4, 4]),
-            drawHorizontalLine: true),
-        barGroups: List.generate(
-          widget.data.length > 4
-              ? widget.isPmsHome
-                  ? widget.data.length
-                  : 4
-              : widget.data.length,
-          (index) => BarChartGroupData(
-            x: index,
-            barRods: [
-              BarChartRodData(
-                  fromY: 0,
-                  toY: widget.data[index].progress ?? 0,
-                  width: 20.w,
-                  color:
-                      widget.barColor ?? LightColor.projectCategoryColors[0],
-                  backDrawRodData: BackgroundBarChartRodData(
-                      show: true,
-                      color: context.color.surfaceContainer,
-                      fromY: widget.data[index].progress ?? 0,
-                      toY: 100),
-                  borderRadius: BorderRadius.circular(2)),
-            ],
-          ),
-        ).toList(),
+          ],
+        ],
       ),
     );
   }
-}
-
-Widget bottomTitles(double value, TitleMeta meta, List<String> bottomTilesData,
-    {Color? textColor}) {
-  final context = CustomNavigator.navigatorState.currentContext;
-  final Widget text = Text(bottomTilesData[value.toInt()],
-      textAlign: TextAlign.start,
-      style: context?.textTheme.bodySmall?.copyWith(
-          color: textColor ?? LightColor.projectCategoryColors[value.toInt()],
-          fontSize: 11));
-
-  return SideTitleWidget(
-    // axisSide: meta.axisSide,
-    space: 8,
-    meta: meta,
-    child: text,
-  );
-}
-
-Widget leftTitles(double value, TitleMeta meta) {
-  final context = CustomNavigator.navigatorState.currentContext;
-  final formattedValue = (value).toStringAsFixed(0);
-  final Widget text = Text(
-    "$formattedValue%",
-    style: context?.textTheme.bodySmall
-        ?.copyWith(color: context.color.outlineVariant),
-  );
-
-  return SideTitleWidget(
-    space: 10,
-    meta: meta,
-    child: text,
-  );
-}
-
-Widget topTitles(double value, TitleMeta meta, List<String> progressTilesData) {
-  final context = CustomNavigator.navigatorState.currentContext;
-  final Widget text = Text('${progressTilesData[value.toInt()]}%',
-      textAlign: TextAlign.center,
-      maxLines: 2,
-      overflow: TextOverflow.ellipsis,
-      style: context?.textTheme.bodySmall
-          ?.copyWith(color: context.color.outlineVariant, fontSize: 11));
-
-  return SideTitleWidget(
-    space: 5,
-    meta: meta,
-    child: text,
-  );
 }

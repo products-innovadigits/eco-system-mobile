@@ -9,10 +9,12 @@ class SectionTitle extends StatelessWidget {
     this.subText,
     this.onViewTap,
     this.icon,
+    this.moreBtnTxt,
   });
 
   final String title;
   final String? subText;
+  final String? moreBtnTxt;
   final String? icon;
   final bool withView;
   final Function()? onViewTap;
@@ -56,7 +58,7 @@ class SectionTitle extends StatelessWidget {
               child: Row(
                 children: [
                   Text(
-                    "${allTranslations.text("view_more")}  ",
+                    moreBtnTxt ?? allTranslations.text(LocaleKeys.go_to_system),
                     style: context.textTheme.labelSmall?.copyWith(
                       color: context.color.secondary,
                     ),

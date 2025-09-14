@@ -17,6 +17,9 @@ class ProjectProgressMobilePortrait extends StatelessWidget {
         MainCardWidget(
           height: 260.h,
           title: allTranslations.text(LocaleKeys.project_progress_rate),
+          moreBtnTxt: isPmsHome
+              ? allTranslations.text(LocaleKeys.view_projects)
+              : null,
           onViewMoreTap: () {
             if (!isPmsHome) {
               UserBloc.currentActiveSystem = ActiveSystemEnum.pms;

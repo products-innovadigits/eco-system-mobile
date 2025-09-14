@@ -52,6 +52,7 @@
   "kpis_initiatives_progress": "Kpis and Initiatives Progress",
   "objective_percentage": "Objective Percentage",
   "view_more": "View More",
+  "view_projects": "View Projects",
   "group": "Teams",
   "notification": "Notification",
   "hello": "Hello",
@@ -482,6 +483,7 @@
   "total_delivery": "Total Delivery",
   "financing": "Financing",
   "activities": "Activities",
+  "go_to_system": "Go to System",
   "outputs_progress": "Outputs",
   "project_funding": "Project Funding"
 }

@@ -6,10 +6,13 @@ class ProjectsModel extends SingleMapper {
   int? statusCode;
   String? message;
   Meta? meta;
+
   ProjectsModel({this.data, this.statusCode, this.meta, this.message});
 
   ProjectsModel.fromJson(Map<String, dynamic> json) {
-    if (json['data'] != null &&json['data'] is! String && json['data']["items"] != null) {
+    if (json['data'] != null &&
+        json['data'] is! String &&
+        json['data']["items"] != null) {
       data = [];
       json['data']["items"].forEach((v) {
         data!.add(ProjectDetailsModel.fromJson(v));
@@ -20,6 +23,7 @@ class ProjectsModel extends SingleMapper {
     message = json['message'];
   }
 
+  @override
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {

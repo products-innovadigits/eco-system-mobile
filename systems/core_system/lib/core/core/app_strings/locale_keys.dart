@@ -48,6 +48,7 @@ abstract class  LocaleKeys {
   static const kpis_initiatives_progress = 'kpis_initiatives_progress';
   static const objective_percentage = 'objective_percentage';
   static const view_more = 'view_more';
+  static const view_projects = 'view_projects';
   static const other_requests = 'other_requests';
   static const group = 'group';
   static const home = 'home';
@@ -485,6 +486,7 @@ abstract class  LocaleKeys {
   static const total_delivery = 'total_delivery';
   static const financing = 'financing';
   static const activities = 'activities';
+  static const go_to_system = 'go_to_system';
   static const outputs_progress = 'outputs_progress';
   static const the_budget = 'the_budget';
   static const project_funding = 'project_funding';

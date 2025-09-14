@@ -105,7 +105,7 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
 
   _getObjectives(AppEvent event, Emitter<AppState> emit) async {
     emit(Loading());
-    // try {
+    try {
       _engine = event.arguments as SearchEngine;
       if (_engine.currentPage == 0) {
         _cards.clear();
@@ -120,9 +120,9 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
         "pageIndex": _engine.currentPage + 1,
         "pageSize": _engine.limit,
         if (appliedSorting?.key != null) "sorting_key": appliedSorting!.key,
-        if (_engine.query != null)
-          /// Add query parameters
-          "status": _engine.query['status'],
+        if (_engine.query != null) "status": _engine.query['status'],
+        if (_engine.query != null) "startDate": _engine.query['startDate'],
+        if (_engine.query != null) "endDate": _engine.query['endDate'],
       };
 
       ProjectsModel res = await ProjectsRepo.getProjects(_engine);
@@ -140,11 +140,11 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
       } else {
         emit(Empty());
       }
-    // } catch (e) {
-    //   AppCore.errorMessage(allTranslations.text('something_went_wrong'));
-    //
-    //   emit(Error());
-    // }
+    } catch (e) {
+      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+
+      emit(Error());
+    }
   }
 
   @override

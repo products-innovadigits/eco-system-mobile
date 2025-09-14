@@ -102,7 +102,7 @@ class ProjectMainInfoSection extends StatelessWidget {
     return [
       ProjectCategoriesProgressModel(
         name: "الجدول الزمني",
-        progress: 28,
+        progress: 20.5,
         color: LightColor.tertiaryLight,
       ),
       ProjectCategoriesProgressModel(
@@ -117,7 +117,7 @@ class ProjectMainInfoSection extends StatelessWidget {
       ),
       ProjectCategoriesProgressModel(
         name: "المخرجات",
-        progress: 100,
+        progress: 90,
         color: LightColor.warning,
       ),
     ];

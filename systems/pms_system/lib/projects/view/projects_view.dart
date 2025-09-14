@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:core_system/core/widgets/nav_app.dart';
 import 'package:pms_system/projects/widgets/projects_sorting_bottom_sheet.dart';
 import 'package:pms_system/shared/pms_exports.dart';
@@ -61,6 +63,7 @@ class _ProjectsViewState extends State<ProjectsView> {
             body: SafeArea(
               child: BlocBuilder<ProjectsBloc, AppState>(
                 builder: (context, state) {
+                  log('state: $state');
                   return switch (state) {
                     // Loading…
                     Loading() => const ShimmerCardsList(),

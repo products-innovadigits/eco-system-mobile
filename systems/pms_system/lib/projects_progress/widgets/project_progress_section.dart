@@ -31,6 +31,9 @@ class ProjectProgressSection extends StatelessWidget {
             // ── Default (error/unknown) ─────────
             _ => MainCardWidget(
               title: allTranslations.text(LocaleKeys.project_progress_rate),
+              moreBtnTxt: isPmsHome
+                  ? allTranslations.text(LocaleKeys.view_projects)
+                  : null,
               child: TryAgainWidget(
                 onTryAgain: () {
                   context.read<ProjectsProgressBloc>().add(Click());
