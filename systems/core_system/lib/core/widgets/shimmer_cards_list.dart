@@ -3,13 +3,14 @@ import '../utility/export.dart';
 class ShimmerCardsList extends StatelessWidget {
   final int? itemCount;
   final double? cardHeight;
+  final double? listPadding;
 
-  const ShimmerCardsList({super.key, this.itemCount, this.cardHeight});
+  const ShimmerCardsList({super.key, this.itemCount, this.cardHeight, this.listPadding});
 
   @override
   Widget build(BuildContext context) {
     return ListAnimator(
-      customPadding: EdgeInsets.symmetric(horizontal: 16.w),
+      customPadding: EdgeInsets.symmetric(horizontal: listPadding ?? 16.w),
       data: List.generate(
         itemCount ?? 10,
         (index) => Padding(

@@ -50,7 +50,7 @@ class _ProjectStagesChartState extends State<ProjectStagesChart> {
                 minIncluded: true,
                 showTitles: false,
                 reservedSize: 35,
-                getTitlesWidget: leftTitles,
+                getTitlesWidget: (value, meta) => leftTitles(value, meta, context: context),
                 interval: interval,
               ),
             ),
@@ -60,7 +60,7 @@ class _ProjectStagesChartState extends State<ProjectStagesChart> {
                 minIncluded: true,
                 showTitles: false,
                 reservedSize: 50,
-                getTitlesWidget: leftTitles,
+                getTitlesWidget: (value, meta) => leftTitles(value, meta, context: context),
                 interval: interval,
               ),
             ),
@@ -77,6 +77,7 @@ class _ProjectStagesChartState extends State<ProjectStagesChart> {
                       .toList()
                       .reversed
                       .toList(),
+                  context: context,
                 ),
                 reservedSize: 35,
                 interval: interval,
@@ -93,7 +94,8 @@ class _ProjectStagesChartState extends State<ProjectStagesChart> {
                         .toList()
                         .reversed
                         .toList(),
-                    textColor: context.color.outlineVariant),
+                    textColor: context.color.outlineVariant,
+                    context: context),
                 reservedSize: 80,
                 interval: interval,
               ),
@@ -138,8 +140,7 @@ class _ProjectStagesChartState extends State<ProjectStagesChart> {
 }
 
 Widget bottomTitles(double value, TitleMeta meta, List<String> bottomTilesData,
-    {Color? textColor}) {
-  final context = CustomNavigator.navigatorState.currentContext;
+    {Color? textColor, BuildContext? context}) {
   final Widget text = Text(bottomTilesData[value.toInt()],
       textAlign: TextAlign.center,
       style: context?.textTheme.bodySmall?.copyWith(
@@ -154,8 +155,7 @@ Widget bottomTitles(double value, TitleMeta meta, List<String> bottomTilesData,
   );
 }
 
-Widget leftTitles(double value, TitleMeta meta) {
-  final context = CustomNavigator.navigatorState.currentContext;
+Widget leftTitles(double value, TitleMeta meta, {BuildContext? context}) {
   final formattedValue = (value).toStringAsFixed(0);
   final Widget text = Text(
     "$formattedValue%",
@@ -170,8 +170,7 @@ Widget leftTitles(double value, TitleMeta meta) {
   );
 }
 
-Widget topTitles(double value, TitleMeta meta, List<String> progressTilesData) {
-  final context = CustomNavigator.navigatorState.currentContext;
+Widget topTitles(double value, TitleMeta meta, List<String> progressTilesData, {BuildContext? context}) {
   final Widget text = Text('${progressTilesData[value.toInt()]}%',
       textAlign: TextAlign.center,
       maxLines: 2,

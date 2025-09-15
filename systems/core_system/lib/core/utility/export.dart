@@ -54,6 +54,7 @@ export 'package:core_system/core/widgets/animated_expansion_arrow_widget.dart';
 export 'package:core_system/core/widgets/app_loading.dart';
 export 'package:core_system/core/widgets/bottom_sheet_header.dart';
 export 'package:core_system/core/widgets/custom_app_bar.dart';
+export 'package:core_system/core/widgets/custom_bar_chart.dart';
 export 'package:core_system/core/widgets/custom_tab_widget.dart';
 export 'package:core_system/core/widgets/images.dart';
 export 'package:core_system/core/widgets/main_header.dart';

@@ -116,13 +116,15 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
 
       _engine.query = {
         "searchKeyword": searchTEC?.text.trim(),
-        "periortyLevelId": filter.valueOrNull?.id,
         "pageIndex": _engine.currentPage + 1,
         "pageSize": _engine.limit,
         if (appliedSorting?.key != null) "sorting_key": appliedSorting!.key,
-        if (_engine.query != null) "status": _engine.query['status'],
-        if (_engine.query != null) "startDate": _engine.query['startDate'],
-        if (_engine.query != null) "endDate": _engine.query['endDate'],
+        ...?(_engine.query as Map<String, dynamic>?)?.entries
+            .where((e) => e.value != null)
+            .fold<Map<String, dynamic>>(
+              {},
+              (acc, e) => {...acc, e.key: e.value},
+            ),
       };
 
       ProjectsModel res = await ProjectsRepo.getProjects(_engine);

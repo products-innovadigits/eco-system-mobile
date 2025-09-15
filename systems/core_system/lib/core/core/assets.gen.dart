@@ -183,6 +183,10 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/card-tick.svg
   SvgGenImage get cardTick => const SvgGenImage('assets/svgs/card-tick.svg');
 
+  /// File path: assets/svgs/chart-report.svg
+  SvgGenImage get chartReport =>
+      const SvgGenImage('assets/svgs/chart-report.svg');
+
   /// File path: assets/svgs/chart.svg
   SvgGenImage get chart => const SvgGenImage('assets/svgs/chart.svg');
 
@@ -579,6 +583,7 @@ class $AssetsSvgsGen {
     call,
     camera,
     cardTick,
+    chartReport,
     chart,
     checkCircle,
     checkCircle24,

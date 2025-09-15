@@ -45,7 +45,7 @@ class HalfCircleAnalyticChart extends StatelessWidget {
                   // strokeWidth: 3,
                   emptyPointSettings:
                       EmptyPointSettings(mode: EmptyPointMode.zero),
-                  animationDuration: 800,
+                  animationDuration: 300,
                 ),
               ],
             ),

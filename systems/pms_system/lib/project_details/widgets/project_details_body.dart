@@ -67,23 +67,17 @@ class _ProjectBody extends StatelessWidget {
   }
 }
 
-Widget _buildShimmerLoading(BuildContext context) => Column(
-  children: [
-    CustomShimmerContainer(
-      height: 130.h,
-      padding: EdgeInsets.symmetric(horizontal: 16.h),
-    ),
-    SizedBox(height: 12.h),
-    Divider(color: context.color.outline, thickness: 1.0),
-    Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
-      child: CustomShimmerContainer(height: context.h * 0.3, width: context.w),
-    ),
-    Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
-      child: CustomShimmerContainer(height: context.h * 0.3, width: context.w),
-    ),
-  ],
+Widget _buildShimmerLoading(BuildContext context) => Padding(
+  padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
+  child: Column(
+    children: [
+      CustomShimmerContainer(height: 130.h),
+      SizedBox(height: 12.h),
+      Divider(color: context.color.outline, thickness: 1.0),
+      CustomShimmerContainer(height: context.h * 0.3, width: context.w),
+      CustomShimmerContainer(height: context.h * 0.3, width: context.w),
+    ],
+  ),
 );
 
 Widget _getTabSection(

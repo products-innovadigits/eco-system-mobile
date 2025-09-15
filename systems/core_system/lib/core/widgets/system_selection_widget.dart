@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:core_system/core/utility/export.dart';
 
 class SystemSelectionWidget extends StatelessWidget {

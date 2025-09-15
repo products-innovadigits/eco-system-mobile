@@ -75,13 +75,15 @@ class ProjectDetailsModel extends SingleMapper {
     endDate = json['endDate'] != null ? DateTime.parse(json['endDate']) : null;
     lifeCycleId = json['lifeCycleId'];
     projectLifeCycle = json['projectLifeCycle'] != null
-        ? new ProjectLifeCycleModel.fromJson(json['projectLifeCycle'])
+        ? ProjectLifeCycleModel.fromJson(json['projectLifeCycle'])
         : null;
     projectCategoryId = json['projectCategoryId'];
     weight = json['weight'];
     budget = json['budget'];
     progressRatio = json['progressRation'];
-    teamIds = json['teamIds']?.cast<String>();
+    teamIds = json['teamIds'] != null
+        ? List<String>.from(json['teamIds'])
+        : null;
     sectionDepartment = json['sectionDepartment'] != null
         ? SectionDepartmentModel.fromJson(json['sectionDepartment'])
         : null;
@@ -176,7 +178,7 @@ class ProjectLifeCycleModel {
     if (json['projectStages'] != null) {
       projectStages = <ProjectStagesModel>[];
       json['projectStages'].forEach((v) {
-        projectStages!.add(new ProjectStagesModel.fromJson(v));
+        projectStages!.add(ProjectStagesModel.fromJson(v));
       });
     }
   }
@@ -219,7 +221,7 @@ class ProjectStagesModel {
     if (json['projectProcesses'] != null) {
       projectProcesses = <ProjectProcessModel>[];
       json['projectProcesses'].forEach((v) {
-        projectProcesses!.add(new ProjectProcessModel.fromJson(v));
+        projectProcesses!.add(ProjectProcessModel.fromJson(v));
       });
     }
   }

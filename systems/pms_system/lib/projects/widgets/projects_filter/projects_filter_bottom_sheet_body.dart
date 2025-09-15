@@ -7,7 +7,7 @@ class ProjectsFilterBottomSheetBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = context.read<ProjectsFiltrationBloc>();
     return SizedBox(
-      height: context.h * 0.62,
+      height: context.h * 0.65,
       child: ListAnimator(
         data: [
           16.sh,
@@ -85,7 +85,6 @@ class ProjectsFilterBottomSheetBody extends StatelessWidget {
               bloc.selectedPriority = s;
             },
           ),
-          16.sh,
         ],
       ),
     );

@@ -41,6 +41,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                 if (!projectsFiltrationBloc.isFilterApplied) {
                   projectsFiltrationBloc.resetFilters(projectsBloc: bloc);
                 }
+                projectsFiltrationBloc.loadFilterOptions();
                 PopUpHelper.showBottomSheet(
                   child: BlocProvider.value(
                     value: bloc,

@@ -1,30 +1,15 @@
+import 'package:pms_system/projects/model/projects_filters_model.dart';
 import 'package:pms_system/shared/pms_exports.dart';
 
 class ProjectsFiltrationBloc extends Bloc<AppEvent, AppState> {
-  ProjectsFiltrationBloc() : super(Start()) {}
+  ProjectsFiltrationBloc() : super(Start()) {
+    on<Click>(_onClick);
+  }
 
-  final List<DropListModel> statusList = [
-    DropListModel(id: 1, name: 'مكتمل'),
-    DropListModel(id: 2, name: 'متأخر'),
-    DropListModel(id: 3, name: 'متقدم'),
-  ];
-  final List<DropListModel> categoriesList = [
-    DropListModel(id: 1, name: 'اجتماعي'),
-    DropListModel(id: 2, name: 'استراتيجي'),
-    DropListModel(id: 3, name: 'تقني'),
-    DropListModel(id: 4, name: 'تجاري'),
-    DropListModel(id: 5, name: 'اداري'),
-  ];
-  final List<DropListModel> riskList = [
-    DropListModel(id: 1, name: 'المنظور المالي'),
-    DropListModel(id: 2, name: 'التعلم والنمو'),
-  ];
-  final List<DropListModel> priorityList = [
-    DropListModel(id: 1, name: 'اجتماعي'),
-    DropListModel(id: 2, name: 'استراتيجي'),
-    DropListModel(id: 3, name: 'تقني'),
-    DropListModel(id: 4, name: 'تجاري'),
-  ];
+  List<DropListModel> statusList = [];
+  List<DropListModel> categoriesList = [];
+  List<DropListModel> riskList = [];
+  List<DropListModel> priorityList = [];
   bool isFilterApplied = false;
   DropListModel? selectedStatus;
   DropListModel? selectedCategory;
@@ -32,6 +17,70 @@ class ProjectsFiltrationBloc extends Bloc<AppEvent, AppState> {
   DropListModel? selectedPriority;
   TextEditingController pickedStartCtrl = TextEditingController();
   TextEditingController pickedEndCtrl = TextEditingController();
+
+  _onClick(AppEvent event, Emitter<AppState> emit) async {
+    try {
+      emit(Loading());
+
+      ProjectsFiltersModel model = await ProjectsRepo.getProjectFilterOptions();
+
+      if (model.succeeded == true && model.data != null) {
+        // Update categories list
+        if (model.data!.categories != null) {
+          categoriesList = model.data!.categories!
+              .map(
+                (category) =>
+                    DropListModel(id: category.id, name: category.name ?? ''),
+              )
+              .toList();
+        }
+
+        // Update priorities list
+        if (model.data!.priorities != null) {
+          priorityList = model.data!.priorities!
+              .map(
+                (priority) =>
+                    DropListModel(id: priority.id, name: priority.name ?? ''),
+              )
+              .toList();
+        }
+
+        // Update risks list
+        if (model.data!.risks != null) {
+          riskList = model.data!.risks!
+              .map((risk) => DropListModel(id: risk.id, name: risk.name ?? ''))
+              .toList();
+        }
+
+        // Update statuses list
+        if (model.data!.statuses != null) {
+          statusList = model.data!.statuses!
+              .map(
+                (status) =>
+                    DropListModel(id: status.item3, name: status.item1 ?? ''),
+              )
+              .toList();
+        }
+
+        emit(Done());
+      } else {
+        AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+        emit(Error());
+      }
+    } catch (e) {
+      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+      emit(Error());
+    }
+  }
+
+  void loadFilterOptions() {
+    if (statusList.isEmpty ||
+        priorityList.isEmpty ||
+        riskList.isEmpty ||
+        categoriesList.isEmpty) {
+      add(Click());
+    }
+  }
 
   void applyFilters({required ProjectsBloc projectsBloc}) {
     // Validate that at least one filter is selected
@@ -46,12 +95,10 @@ class ProjectsFiltrationBloc extends Bloc<AppEvent, AppState> {
         arguments: SearchEngine(
           query: {
             'status': selectedStatus?.name ?? '',
-            'category': selectedCategory?.name ?? '',
-            'risk': selectedRisk?.name ?? '',
-            'priority': selectedPriority?.name ?? '',
-            // if (pickedStartCtrl.text.isNotEmpty)
+            'projectCategoryId': selectedCategory?.id ?? '',
+            'riskLevelId': selectedRisk?.id ?? '',
+            'periortyLevelId': selectedPriority?.id ?? '',
             'startDate': pickedStartCtrl.text,
-            // if (pickedEndCtrl.text.isNotEmpty)
             'endDate': pickedEndCtrl.text,
           },
         ),

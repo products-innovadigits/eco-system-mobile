@@ -1,6 +1,5 @@
 import 'package:pms_system/project_details/widgets/project_challenges.dart';
 import 'package:pms_system/project_details/widgets/project_details_funding_chart.dart';
-import 'package:pms_system/project_details/widgets/project_details_general_progress_chart.dart';
 import 'package:pms_system/project_details/widgets/project_outputs_bottom_sheet.dart';
 import 'package:pms_system/shared/pms_exports.dart';
 
@@ -30,9 +29,7 @@ class ProjectMainInfoSection extends StatelessWidget {
           withMargin: false,
           withExpanded: false,
           action: _averageProgressWidget(context, progress: '50'),
-          child: ProjectDetailsGeneralProgressChart(
-            data: _generateSampleProgressData(),
-          ),
+          child: CustomBarChart(data: _generateSampleProgressData()),
         ),
 
         ///Outputs
@@ -49,7 +46,7 @@ class ProjectMainInfoSection extends StatelessWidget {
 
         ///Challenges
         CustomExpansionCard(
-          title: allTranslations.text(LocaleKeys.challenges),
+          title: allTranslations.text(LocaleKeys.the_challenges),
           subTitle: '(70 ${allTranslations.text(LocaleKeys.challenge)})',
           subTitleStyle: context.textTheme.labelMedium?.copyWith(
             fontWeight: FontWeight.w700,

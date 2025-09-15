@@ -18,16 +18,19 @@ class ProjectsFilterBottomSheet extends StatelessWidget {
                 BottomSheetHeader(
                   title: allTranslations.text(LocaleKeys.candidate),
                 ),
-                ProjectsFilterBottomSheetBody(),
+                state is Loading
+                    ? ShimmerCardsList(itemCount: 4, cardHeight: 50 , listPadding: 0)
+                    : ProjectsFilterBottomSheetBody(),
               ],
             ),
-            ProjectsFilterButtonsSection(
-              onApplyFilters: () =>
-                  filterBloc.applyFilters(projectsBloc: projectsBloc),
-              onResetFilters: () =>
-                  filterBloc.resetFilters(projectsBloc: projectsBloc),
-              isFiltered: filterBloc.isFilterApplied,
-            ),
+            if (state is Done)
+              ProjectsFilterButtonsSection(
+                onApplyFilters: () =>
+                    filterBloc.applyFilters(projectsBloc: projectsBloc),
+                onResetFilters: () =>
+                    filterBloc.resetFilters(projectsBloc: projectsBloc),
+                isFiltered: filterBloc.isFilterApplied,
+              ),
           ],
         );
       },
