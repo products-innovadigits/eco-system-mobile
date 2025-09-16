@@ -35,7 +35,7 @@ class ProjectCard extends StatelessWidget {
                 ),
               ),
               child: Text(
-                "${allTranslations.text(LocaleKeys.delivered)} مخرج ${allTranslations.text(LocaleKeys.delivered_from)} ${project.outputCount ?? 10} ${allTranslations.text(LocaleKeys.outputs)}",
+                "${allTranslations.text(LocaleKeys.delivered)} ${project.deliveredOutputs ?? 0} ${allTranslations.text(LocaleKeys.outputs)} ${allTranslations.text(LocaleKeys.delivered_from)} ${project.outputCount ?? 10} ${allTranslations.text(LocaleKeys.outputs)}",
                 style: context.textTheme.labelSmall?.copyWith(
                   color: context.color.secondary,
                   fontWeight: FontWeight.w600,

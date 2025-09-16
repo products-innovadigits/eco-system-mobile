@@ -6,6 +6,9 @@ class ProjectsFiltrationBloc extends Bloc<AppEvent, AppState> {
     on<Click>(_onClick);
   }
 
+  static ProjectsFiltrationBloc get instance =>
+      BlocProvider.of(CustomNavigator.navigatorState.currentContext!);
+
   List<DropListModel> statusList = [];
   List<DropListModel> categoriesList = [];
   List<DropListModel> riskList = [];
@@ -209,5 +212,15 @@ class ProjectsFiltrationBloc extends Bloc<AppEvent, AppState> {
       projectsBloc.add(Click(arguments: SearchEngine()));
       CustomNavigator.pop();
     }
+  }
+
+  void clearFilters() {
+    selectedStatus = null;
+    selectedPriority = null;
+    selectedCategory = null;
+    selectedRisk = null;
+    pickedStartCtrl.clear();
+    pickedEndCtrl.clear();
+    isFilterApplied = false;
   }
 }

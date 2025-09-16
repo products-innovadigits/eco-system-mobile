@@ -55,7 +55,7 @@ class ProjectCardContent extends StatelessWidget {
 
                         text: TextSpan(
                           text:
-                              "${allTranslations.text("time_left")} ${(project.endDate?.difference(DateTime.now()).inDays ?? 0) > 0 ? (project.endDate?.difference(DateTime.now()).inDays ?? 0) : 0} ${allTranslations.text("days")}",
+                              "${allTranslations.text(LocaleKeys.time_left)} ${(project.endDate?.difference(DateTime.now()).inDays ?? 0) > 0 ? (project.endDate?.difference(DateTime.now()).inDays ?? 0) : 0} ${allTranslations.text(LocaleKeys.days)}",
                           style: context.textTheme.bodySmall?.copyWith(
                             color: context.color.error,
                           ),
@@ -107,30 +107,35 @@ class ProjectCardContent extends StatelessWidget {
             ],
           ),
 
-          if(!isDetails)...[
+          if (!isDetails &&
+              (project.riskLevel != null || project.priorityLevel != null)) ...[
             const SizedBox(height: 16),
+
             /// Risk and Priority levels
             Row(
               children: [
                 // Risk Level
-                _RiskPriorityWidget(
-                  title: allTranslations.text(LocaleKeys.risk_level),
-                  level: 'عالي',
-                  color: context.color.error,
-                ),
+                if (project.riskLevel != null)
+                  _RiskPriorityWidget(
+                    title: allTranslations.text(LocaleKeys.risk_level),
+                    level: project.riskLevel ?? "",
+                    color: context.color.error,
+                  ),
 
                 SizedBox(width: 16.w),
 
                 // Priority Level
-                _RiskPriorityWidget(
-                  title: allTranslations.text(LocaleKeys.priority),
-                  level: 'منخفض',
-                  color: context.color.tertiaryContainer,
-                ),
+                if (project.priorityLevel != null)
+                  _RiskPriorityWidget(
+                    title: allTranslations.text(LocaleKeys.priority),
+                    level: project.priorityLevel ?? "",
+                    color: context.color.tertiaryContainer,
+                  ),
               ],
             ),
             const SizedBox(height: 10),
           ],
+
           /// Activities Progress
           _ActivitiesProgressSection(project: project),
         ],

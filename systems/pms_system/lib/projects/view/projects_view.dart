@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:core_system/core/widgets/nav_app.dart';
 import 'package:pms_system/projects/widgets/projects_sorting_bottom_sheet.dart';
 import 'package:pms_system/shared/pms_exports.dart';
@@ -15,14 +13,26 @@ class _ProjectsViewState extends State<ProjectsView> {
   int _selectedIndex = 0;
 
   @override
+  void initState() {
+    super.initState();
+    // Clear filters when entering the view
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        ProjectsFiltrationBloc.instance.clearFilters();
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
           ProjectsBloc()..add(Click(arguments: SearchEngine())),
+
       child: BlocBuilder<ProjectsBloc, AppState>(
         builder: (context, state) {
           final bloc = context.read<ProjectsBloc>();
-          final projectsFiltrationBloc = context.read<ProjectsFiltrationBloc>();
+          final projectsFiltrationBloc = ProjectsFiltrationBloc.instance;
           return Scaffold(
             appBar: CustomAppBar(
               title: allTranslations.text(LocaleKeys.projects),
@@ -64,7 +74,6 @@ class _ProjectsViewState extends State<ProjectsView> {
             body: SafeArea(
               child: BlocBuilder<ProjectsBloc, AppState>(
                 builder: (context, state) {
-                  log('state: $state');
                   return switch (state) {
                     // Loading…
                     Loading() => const ShimmerCardsList(),

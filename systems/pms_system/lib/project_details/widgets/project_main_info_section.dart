@@ -29,7 +29,10 @@ class ProjectMainInfoSection extends StatelessWidget {
           withMargin: false,
           withExpanded: false,
           action: _averageProgressWidget(context, progress: '50'),
-          child: CustomBarChart(data: _generateSampleProgressData()),
+          child: CustomBarChart(
+            data: _generateSampleProgressData(),
+            chartHeight: 180,
+          ),
         ),
 
         ///Outputs
