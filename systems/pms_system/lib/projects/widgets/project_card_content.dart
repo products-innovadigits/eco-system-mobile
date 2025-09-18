@@ -108,27 +108,28 @@ class ProjectCardContent extends StatelessWidget {
           ),
 
           if (!isDetails &&
-              (project.riskLevel != null || project.priorityLevel != null)) ...[
-            const SizedBox(height: 16),
+              (project.riskLevelName != null ||
+                  project.periortyLevelName != null)) ...[
+            const SizedBox(height: 12),
 
             /// Risk and Priority levels
             Row(
               children: [
                 // Risk Level
-                if (project.riskLevel != null)
+                if (project.riskLevelName != null)
                   _RiskPriorityWidget(
                     title: allTranslations.text(LocaleKeys.risk_level),
-                    level: project.riskLevel ?? "",
+                    level: project.riskLevelName ?? "",
                     color: context.color.error,
                   ),
 
                 SizedBox(width: 16.w),
 
                 // Priority Level
-                if (project.priorityLevel != null)
+                if (project.periortyLevelName != null)
                   _RiskPriorityWidget(
                     title: allTranslations.text(LocaleKeys.priority),
-                    level: project.priorityLevel ?? "",
+                    level: project.periortyLevelName ?? "",
                     color: context.color.tertiaryContainer,
                   ),
               ],
@@ -168,7 +169,10 @@ class _RiskPriorityWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Row(
+      child: Wrap(
+        runSpacing: 4.h,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        alignment: WrapAlignment.center,
         children: [
           Text("$title:", style: context.textTheme.bodySmall),
           const SizedBox(width: 8),

@@ -3,8 +3,7 @@ import 'package:core_system/core/utility/export.dart';
 class ProjectDetailsModel extends SingleMapper {
   int? id;
   String? title;
-  String? priorityLevel;
-  String? riskLevel;
+  String? riskLevelName;
   num? deliveredOutputs;
   String? description;
   DateTime? startDate;
@@ -40,8 +39,7 @@ class ProjectDetailsModel extends SingleMapper {
     this.title,
     this.description,
     this.startDate,
-    this.priorityLevel,
-    this.riskLevel,
+    this.riskLevelName,
     this.deliveredOutputs,
     this.endDate,
     this.weight,
@@ -75,8 +73,7 @@ class ProjectDetailsModel extends SingleMapper {
     id = json['id'];
     title = json['title'] ?? json['name'];
     description = json['description'];
-    priorityLevel = json['priorityLevel'];
-    riskLevel = json['riskLevel'];
+    riskLevelName = json['riskLevelName'];
     deliveredOutputs = json['deliveredOutputs'];
     startDate = json['startDate'] != null
         ? DateTime.parse(json['startDate'])
@@ -127,8 +124,7 @@ class ProjectDetailsModel extends SingleMapper {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = title;
-    data['priorityLevel'] = priorityLevel;
-    data['riskLevel'] = riskLevel;
+    data['riskLevelName'] = riskLevelName;
     data['deliveredOutputs'] = deliveredOutputs;
     data['description'] = description;
     data['startDate'] = startDate;
