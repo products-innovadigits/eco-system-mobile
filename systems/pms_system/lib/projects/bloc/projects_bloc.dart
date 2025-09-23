@@ -6,6 +6,7 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
     searchTEC = TextEditingController();
     customScroll(scrollController);
     on<Click>(_getObjectives);
+    on<Get>(_getSortingOptions);
     on<SelectSorting>(_onSelectSorting);
     on<ApplySorting>(_onApplySorting);
     on<ResetSorting>(_onResetSorting);
@@ -18,32 +19,7 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
   TextEditingController? searchTEC;
 
   // Sorting properties
-  List<DropListModel> sortingList = [
-    DropListModel(
-      key: 'newest_creation',
-      name: allTranslations.text(LocaleKeys.newest_to_oldest_creation),
-    ),
-    DropListModel(
-      key: 'oldest_creation',
-      name: allTranslations.text(LocaleKeys.oldest_to_newest_creation),
-    ),
-    DropListModel(
-      key: 'nearest_delivery',
-      name: allTranslations.text(LocaleKeys.nearest_to_farthest_delivery),
-    ),
-    DropListModel(
-      key: 'farthest_delivery',
-      name: allTranslations.text(LocaleKeys.farthest_to_nearest_delivery),
-    ),
-    DropListModel(
-      key: 'most_advanced',
-      name: allTranslations.text(LocaleKeys.most_advanced_to_least),
-    ),
-    DropListModel(
-      key: 'least_advanced',
-      name: allTranslations.text(LocaleKeys.least_advanced_to_most),
-    ),
-  ];
+  List<DropListModel> sortingList = [];
   DropListModel? appliedSorting;
   DropListModel? selectedSorting;
 
@@ -118,7 +94,7 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
         "searchKeyword": searchTEC?.text.trim(),
         "pageIndex": _engine.currentPage + 1,
         "pageSize": _engine.limit,
-        if (appliedSorting?.key != null) "sorting_key": appliedSorting!.key,
+        if (appliedSorting?.key != null) "sortOptionId": appliedSorting!.key,
         ...?(_engine.query as Map<String, dynamic>?)?.entries
             .where((e) => e.value != null)
             .fold<Map<String, dynamic>>(
@@ -145,6 +121,34 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
     } catch (e) {
       AppCore.errorMessage(allTranslations.text('something_went_wrong'));
 
+      emit(Error());
+    }
+  }
+
+  _getSortingOptions(AppEvent event, Emitter<AppState> emit) async {
+    if (sortingList.isNotEmpty) return;
+    try {
+      emit(Getting());
+
+      Response model = await ProjectsRepo.getProjectSortingOptions();
+
+      if (model.statusCode == 200 && model.data != null) {
+        sortingList = (model.data['data'] as List)
+            .map(
+              (item) => DropListModel(
+                id: item['id'],
+                name: item['nameAr'],
+                key: item['key'] ?? item['id'].toString(),
+              ),
+            )
+            .toList();
+        emit(Done(cards: _cards));
+      } else {
+        AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+        emit(Error());
+      }
+    } catch (e) {
+      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
       emit(Error());
     }
   }

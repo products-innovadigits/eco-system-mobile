@@ -28,7 +28,6 @@ class _ProjectsViewState extends State<ProjectsView> {
     return BlocProvider(
       create: (context) =>
           ProjectsBloc()..add(Click(arguments: SearchEngine())),
-
       child: BlocBuilder<ProjectsBloc, AppState>(
         builder: (context, state) {
           final bloc = context.read<ProjectsBloc>();
@@ -65,7 +64,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                 }
                 PopUpHelper.showBottomSheet(
                   child: BlocProvider.value(
-                    value: bloc,
+                    value: bloc..add(Get()),
                     child: const ProjectsSortingBottomSheet(),
                   ),
                 );
@@ -73,6 +72,7 @@ class _ProjectsViewState extends State<ProjectsView> {
             ),
             body: SafeArea(
               child: BlocBuilder<ProjectsBloc, AppState>(
+                buildWhen: (previous, current) => current is !Getting,
                 builder: (context, state) {
                   return switch (state) {
                     // Loading…

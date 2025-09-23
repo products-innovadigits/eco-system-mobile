@@ -22,6 +22,7 @@ abstract class ApiNames {
   // static const projects = "Project";
   static const projectPriorityLevels = "Project/PeriortyLevels";
   static const projectFilterOptions = "Project/filter-options";
+  static const projectSortingOptions = "Project/GetProjectSortOptionsAsync";
   static String projectDetails(id) => "Project/$id";
 
   // Jobs APIs ====================

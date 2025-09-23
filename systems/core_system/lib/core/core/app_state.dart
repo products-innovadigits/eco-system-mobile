@@ -58,6 +58,11 @@ class Loading extends AppState {
   Map<String, dynamic> toJson() => {"state": "Loading"};
 }
 
+class Getting extends AppState {
+  @override
+  Map<String, dynamic> toJson() => {"state": "Getting"};
+}
+
 class Exporting extends AppState {
   @override
   Map<String, dynamic> toJson() => {"state": "Exporting"};

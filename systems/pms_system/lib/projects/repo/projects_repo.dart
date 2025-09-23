@@ -1,4 +1,3 @@
-import 'package:pms_system/projects/model/projects_filters_model.dart';
 import 'package:pms_system/shared/pms_exports.dart';
 
 abstract class ProjectsRepo {
@@ -23,6 +22,12 @@ abstract class ProjectsRepo {
     return await Network().request(
       ApiNames.projectFilterOptions,
       model: ProjectsFiltersModel(),
+      method: ServerMethods.GET,
+    );
+  }
+  static Future<Response> getProjectSortingOptions() async {
+    return await Network().request(
+      ApiNames.projectSortingOptions,
       method: ServerMethods.GET,
     );
   }
