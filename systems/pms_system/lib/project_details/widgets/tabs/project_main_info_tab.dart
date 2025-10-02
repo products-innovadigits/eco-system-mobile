@@ -3,10 +3,10 @@ import 'package:pms_system/project_details/widgets/project_details_funding_chart
 import 'package:pms_system/project_details/widgets/project_outputs_bottom_sheet.dart';
 import 'package:pms_system/shared/pms_exports.dart';
 
-class ProjectMainInfoSection extends StatelessWidget {
+class ProjectMainInfoTab extends StatelessWidget {
   final ProjectDetailsModel model;
 
-  const ProjectMainInfoSection({super.key, required this.model});
+  const ProjectMainInfoTab({super.key, required this.model});
 
   @override
   Widget build(BuildContext context) {

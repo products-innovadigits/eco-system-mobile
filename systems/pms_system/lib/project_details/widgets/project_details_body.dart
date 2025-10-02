@@ -1,7 +1,8 @@
 import 'package:pms_system/pms_home/model/timeline_project_model.dart';
 import 'package:pms_system/pms_home/widgets/timeline/timeline_widget.dart';
-import 'package:pms_system/project_details/widgets/project_details_tabs_section.dart';
-import 'package:pms_system/project_details/widgets/project_main_info_section.dart';
+import 'package:pms_system/project_details/widgets/tabs/project_details_tabs_section.dart';
+import 'package:pms_system/project_details/widgets/tabs/project_main_info_tab.dart';
+import 'package:pms_system/project_details/widgets/tabs/project_workflow_tab.dart';
 import 'package:pms_system/shared/pms_exports.dart';
 
 class ProjectDetailsBody extends StatelessWidget {
@@ -47,19 +48,27 @@ class _ProjectBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisSize: MainAxisSize.min,
       children: [
         // Fixed header content
         ProjectCardContent(project: model, isDetails: true),
         SizedBox(height: 12.h),
         ProjectDetailsTabsSection(),
         SizedBox(height: 16.h),
-        // Scrollable content
-        Flexible(
-          fit: FlexFit.loose,
+        Expanded(
           child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
-            child: _getTabSection(selectedTab, model),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Scrollable content
+                Flexible(
+                  fit: FlexFit.loose,
+                  child: SingleChildScrollView(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: _getTabSection(selectedTab, model),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],
@@ -72,8 +81,10 @@ Widget _buildShimmerLoading(BuildContext context) => Padding(
   child: Column(
     children: [
       CustomShimmerContainer(height: 130.h),
-      SizedBox(height: 12.h),
-      Divider(color: context.color.outline, thickness: 1.0),
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        child: Divider(color: context.color.outline, thickness: 1.0),
+      ),
       CustomShimmerContainer(height: context.h * 0.3, width: context.w),
       CustomShimmerContainer(height: context.h * 0.3, width: context.w),
     ],
@@ -85,8 +96,10 @@ Widget _getTabSection(
   ProjectDetailsModel model,
 ) {
   return switch (selectedTab) {
-    ProjectDetailsEnum.mainInfo => ProjectMainInfoSection(model: model),
-    ProjectDetailsEnum.workflow => Container(),
+    ProjectDetailsEnum.mainInfo => ProjectMainInfoTab(model: model),
+    ProjectDetailsEnum.workflow => ProjectWorkflowTab(
+      stagesList: model.projectLifeCycle?.projectStages ?? [],
+    ),
     _ => ProjectTimeline(
       // canvasHeight: 400,
       // keep true since your layout is RTL

@@ -485,5 +485,13 @@
   "activities": "Activities",
   "go_to_system": "Go to System",
   "outputs_progress": "Outputs",
-  "project_funding": "Project Funding"
+  "project_funding": "Project Funding",
+  "actions": "Actions",
+  "history": "History",
+  "fields": "Fields",
+  "stageDocs": "Stage Docs",
+  "followProcess": "Follow Process",
+  "start_time": "Start Time",
+  "end_time": "End Time",
+  "project_fund": "Project Fund"
 }

@@ -484,11 +484,18 @@ abstract class  LocaleKeys {
   static const overall_progress = 'overall_progress';
   static const average_progress_percentage = 'average_progress_percentage';
   static const total_delivery = 'total_delivery';
-  static const financing = 'financing';
   static const activities = 'activities';
   static const go_to_system = 'go_to_system';
   static const outputs_progress = 'outputs_progress';
   static const the_budget = 'the_budget';
   static const project_funding = 'project_funding';
+  static const actions = 'actions';
+  static const history = 'history';
+  static const fields = 'fields';
+  static const stageDocs = 'stageDocs';
+  static const followProcess = 'followProcess';
+  static const start_time = 'start_time';
+  static const end_time = 'end_time';
+  static const project_fund = 'project_fund';
 
 }

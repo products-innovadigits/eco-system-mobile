@@ -1,4 +1,3 @@
-import 'package:pms_system/projects/model/projects_filters_model.dart';
 import 'package:pms_system/shared/pms_exports.dart';
 
 class ProjectsFiltrationBloc extends Bloc<AppEvent, AppState> {

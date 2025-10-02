@@ -10,14 +10,18 @@ class CustomExpansionCard extends StatefulWidget {
     this.withMargin = true,
     this.action,
     this.subTitleStyle,
+    this.leadingWidget,
+    this.initialExpanded,
   });
 
   final Widget child;
+  final Widget? leadingWidget;
   final String title;
   final String? subTitle;
   final Widget? action;
   final bool withExpanded;
   final bool withMargin;
+  final bool? initialExpanded;
   final TextStyle? subTitleStyle;
 
   @override
@@ -26,6 +30,12 @@ class CustomExpansionCard extends StatefulWidget {
 
 class _CustomExpansionCardState extends State<CustomExpansionCard> {
   bool isExpanded = true;
+
+  @override
+  void initState() {
+    isExpanded = widget.initialExpanded ?? true;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +54,10 @@ class _CustomExpansionCardState extends State<CustomExpansionCard> {
         children: [
           Row(
             children: [
+              if (widget.leadingWidget != null) ...[
+                widget.leadingWidget!,
+                const SizedBox(width: 8),
+              ],
               Expanded(
                 child: RichText(
                   text: TextSpan(

@@ -483,10 +483,17 @@
   "overall_progress": "التقدم العام",
   "average_progress_percentage": "متوسط نسبة التقدم",
   "total_delivery": "التحصيل الكلي",
-  "financing": "التمويلية",
   "activities": "الأنشطة",
   "go_to_system": "الدخول الي النظام",
   "outputs_progress": "المخرجات",
   "the_budget": "الميزانية",
-  "project_funding": "ميزانية المشروع"
+  "project_funding": "ميزانية المشروع",
+  "actions": "إجراءات",
+  "history": "السجل الفني",
+  "fields": "الحقول",
+  "stageDocs": "وثائق المرحلة",
+  "followProcess": "تتبع التقدم",
+  "start_time": "موعد البدء",
+  "end_time": "موعد الإنتهاء",
+  "project_fund": "ميزانيه المشروع"
 }

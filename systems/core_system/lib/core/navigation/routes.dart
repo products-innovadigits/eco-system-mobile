@@ -26,4 +26,5 @@ class Routes {
   static const PMS_LAYOUT = "PMS_LAYOUT";
   static const PROJECTS = "PROJECTS";
   static const PROJECT_DETAILS = "PROJECT_DETAILS";
+  static const WORKFLOW_PROCESS_DETAILS = "WORKFLOW_PROCESS_DETAILS";
   static const PDF = "PDF";}

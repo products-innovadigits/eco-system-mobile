@@ -12,28 +12,18 @@ class ProjectDetailsView extends StatelessWidget {
       body: SafeArea(
         child: BlocProvider(
           create: (context) => ProjectDetailsBloc()..add(Click(arguments: id)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: ListAnimator(
-                  data: [
-                    ///Objective Details
-                    ProjectDetailsBody(),
-                  ],
-                ),
-              ),
-            ],
-          ),
+          child: ProjectDetailsBody(),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         backgroundColor: context.color.primary,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(50),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+        child: Images(
+          image: Assets.svgs.chartReport.path,
+          width: 20.w,
+          height: 20.h,
         ),
-        child: Images(image: Assets.svgs.chartReport.path , width: 20.w, height: 20.h,),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     );
