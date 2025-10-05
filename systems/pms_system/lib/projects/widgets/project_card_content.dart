@@ -1,4 +1,3 @@
-import 'package:core_system/core/helpers/font_sizes.dart';
 import 'package:pms_system/shared/pms_exports.dart';
 
 class ProjectCardContent extends StatelessWidget {

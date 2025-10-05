@@ -1,9 +1,11 @@
-import 'package:pms_system/project_details/widgets/tabs/project_main_info_tab.dart';
-import 'package:pms_system/project_details/widgets/tabs/project_workflow_tab.dart';
 import 'package:pms_system/shared/pms_exports.dart';
-import 'package:pms_system/workflow_process_details/bloc/workflow_process_details_bloc.dart';
 import 'package:pms_system/workflow_process_details/widgets/process_header_card.dart';
+import 'package:pms_system/workflow_process_details/widgets/tabs/actions_tab/actions_tab.dart';
+import 'package:pms_system/workflow_process_details/widgets/tabs/fields_tab/fields_tab.dart';
+import 'package:pms_system/workflow_process_details/widgets/tabs/follow_process_tab/follow_process_tab.dart';
+import 'package:pms_system/workflow_process_details/widgets/tabs/history_tab/history_tab.dart';
 import 'package:pms_system/workflow_process_details/widgets/tabs/process_details_tabs_section.dart';
+import 'package:pms_system/workflow_process_details/widgets/tabs/stage_docs_tab/stage_docs_tab.dart';
 
 class ProcessDetailsBody extends StatelessWidget {
   const ProcessDetailsBody({super.key});
@@ -54,23 +56,23 @@ class _ProcessBody extends StatelessWidget {
         SizedBox(height: 12.h),
         ProcessDetailsTabsSection(),
         SizedBox(height: 16.h),
-        // Expanded(
-        //   child: SingleChildScrollView(
-        //     child: Column(
-        //       mainAxisSize: MainAxisSize.min,
-        //       children: [
-        //         // Scrollable content
-        //         Flexible(
-        //           fit: FlexFit.loose,
-        //           child: SingleChildScrollView(
-        //             padding: EdgeInsets.symmetric(horizontal: 16.w),
-        //             child: _getTabSection(selectedTab, model),
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Scrollable content
+                Flexible(
+                  fit: FlexFit.loose,
+                  child: SingleChildScrollView(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: _getTabSection(selectedTab, model),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -86,20 +88,20 @@ Widget _buildShimmerLoading(BuildContext context) => Padding(
         child: Divider(color: context.color.outline, thickness: 1.0),
       ),
       CustomShimmerContainer(height: context.h * 0.3, width: context.w),
+      SizedBox(height: 16),
       CustomShimmerContainer(height: context.h * 0.3, width: context.w),
     ],
   ),
 );
 
-Widget _getTabSection(
-  ProcessTabsEnum selectedTab,
-  ProjectDetailsModel model,
-) {
+Widget _getTabSection(ProcessTabsEnum selectedTab, ProjectDetailsModel model) {
   return switch (selectedTab) {
-    ProcessTabsEnum.followProcess => ProjectMainInfoTab(model: model),
-    ProcessTabsEnum.stageDocs => ProjectWorkflowTab(
-      stagesList: model.projectLifeCycle?.projectStages ?? [],
+    ProcessTabsEnum.followProcess => FollowProcessTab(
+      processList: [ProjectProcessModel(title: 'الادارة / مركز')],
     ),
-    _ => Container(),
+    ProcessTabsEnum.stageDocs => StageDocsTab(),
+    ProcessTabsEnum.fields => FieldsTab(),
+    ProcessTabsEnum.history => HistoryTab(),
+    _ => ActionsTab(),
   };
 }

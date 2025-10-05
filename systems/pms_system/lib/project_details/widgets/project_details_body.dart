@@ -2,7 +2,7 @@ import 'package:pms_system/pms_home/model/timeline_project_model.dart';
 import 'package:pms_system/pms_home/widgets/timeline/timeline_widget.dart';
 import 'package:pms_system/project_details/widgets/tabs/project_details_tabs_section.dart';
 import 'package:pms_system/project_details/widgets/tabs/project_main_info_tab.dart';
-import 'package:pms_system/project_details/widgets/tabs/project_workflow_tab.dart';
+import 'package:pms_system/project_details/widgets/tabs/workflow_tab/project_workflow_tab.dart';
 import 'package:pms_system/shared/pms_exports.dart';
 
 class ProjectDetailsBody extends StatelessWidget {
@@ -86,6 +86,7 @@ Widget _buildShimmerLoading(BuildContext context) => Padding(
         child: Divider(color: context.color.outline, thickness: 1.0),
       ),
       CustomShimmerContainer(height: context.h * 0.3, width: context.w),
+      SizedBox(height: 16),
       CustomShimmerContainer(height: context.h * 0.3, width: context.w),
     ],
   ),

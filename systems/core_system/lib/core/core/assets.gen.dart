@@ -269,6 +269,10 @@ class $AssetsSvgsGen {
   SvgGenImage get editOutline =>
       const SvgGenImage('assets/svgs/edit-outline.svg');
 
+  /// File path: assets/svgs/edit-square.svg
+  SvgGenImage get editSquare =>
+      const SvgGenImage('assets/svgs/edit-square.svg');
+
   /// File path: assets/svgs/edit.svg
   SvgGenImage get edit => const SvgGenImage('assets/svgs/edit.svg');
 
@@ -296,6 +300,9 @@ class $AssetsSvgsGen {
 
   /// File path: assets/svgs/export.svg
   SvgGenImage get export => const SvgGenImage('assets/svgs/export.svg');
+
+  /// File path: assets/svgs/eye.svg
+  SvgGenImage get eye => const SvgGenImage('assets/svgs/eye.svg');
 
   /// File path: assets/svgs/file.svg
   SvgGenImage get file => const SvgGenImage('assets/svgs/file.svg');
@@ -506,6 +513,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/send.svg
   SvgGenImage get send => const SvgGenImage('assets/svgs/send.svg');
 
+  /// File path: assets/svgs/setting.svg
+  SvgGenImage get setting => const SvgGenImage('assets/svgs/setting.svg');
+
   /// File path: assets/svgs/show.svg
   SvgGenImage get show => const SvgGenImage('assets/svgs/show.svg');
 
@@ -527,6 +537,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/tick-circle.svg
   SvgGenImage get tickCircle =>
       const SvgGenImage('assets/svgs/tick-circle.svg');
+
+  /// File path: assets/svgs/trash.svg
+  SvgGenImage get trash => const SvgGenImage('assets/svgs/trash.svg');
 
   /// File path: assets/svgs/triple-user.svg
   SvgGenImage get tripleUser =>
@@ -607,6 +620,7 @@ class $AssetsSvgsGen {
     downloadBox,
     edit2,
     editOutline,
+    editSquare,
     edit,
     emptyImage,
     emptyWalletTick,
@@ -615,6 +629,7 @@ class $AssetsSvgsGen {
     emptyCandidates,
     error,
     export,
+    eye,
     file,
     fillCloseCircle,
     filter,
@@ -676,6 +691,7 @@ class $AssetsSvgsGen {
     search,
     securityUser,
     send,
+    setting,
     show,
     sms,
     solana,
@@ -683,6 +699,7 @@ class $AssetsSvgsGen {
     target,
     task,
     tickCircle,
+    trash,
     tripleUser,
     unitIcon,
     up,

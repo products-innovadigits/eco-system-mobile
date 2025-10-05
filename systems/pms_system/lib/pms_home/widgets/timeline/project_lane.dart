@@ -1,4 +1,3 @@
-import 'package:core_system/core/helpers/font_sizes.dart';
 import 'package:pms_system/pms_home/model/timeline_project_model.dart';
 
 import '../../../shared/pms_exports.dart';

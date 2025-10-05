@@ -1,6 +1,4 @@
-import 'package:core_system/core/helpers/font_sizes.dart';
 import 'package:pms_system/shared/pms_exports.dart';
-import 'package:pms_system/workflow_process_details/bloc/workflow_process_details_bloc.dart';
 
 class ProcessDetailsTabsSection extends StatelessWidget {
   const ProcessDetailsTabsSection({super.key});

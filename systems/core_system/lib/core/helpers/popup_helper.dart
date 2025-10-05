@@ -60,7 +60,7 @@ abstract class PopUpHelper {
           topLeft: Radius.circular(15),
         ),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: LightColor.scaffoldBg,
       // isScrollControlled: true,
       builder: (context) {
         return Padding(

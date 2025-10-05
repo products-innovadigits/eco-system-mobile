@@ -4,6 +4,7 @@
 
 abstract class  LocaleKeys {
   static const unit_name = 'unit_name';
+  static const operation_name = 'operation_name';
   static const username = 'username';
   static const welcome_back = 'welcome_back';
   static const new_password = 'new_password';
@@ -48,6 +49,7 @@ abstract class  LocaleKeys {
   static const kpis_initiatives_progress = 'kpis_initiatives_progress';
   static const objective_percentage = 'objective_percentage';
   static const view_more = 'view_more';
+  static const view_comments = 'view_comments';
   static const view_projects = 'view_projects';
   static const other_requests = 'other_requests';
   static const group = 'group';
@@ -315,6 +317,7 @@ abstract class  LocaleKeys {
   static const select_priority_level = 'select_priority_level';
   static const there_is_priority_levels = 'there_is_priority_levels';
   static const completed = 'completed';
+  static const not_completed = 'not_completed';
   static const advanced = 'advanced';
   static const late = 'late';
   static const available_jobs = 'available_jobs';
@@ -331,6 +334,10 @@ abstract class  LocaleKeys {
   static const project_life_cycle = 'project_life_cycle';
   static const project_category = 'project_category';
   static const project_manager = 'project_manager';
+  static const project_name = 'project_name';
+  static const enter_project_name = 'enter_project_name';
+  static const enter_employees_number = 'enter_employees_number';
+  static const employees_number = 'employees_number';
   static const project_team = 'project_team';
   static const risk_level = 'risk_level';
   static const budget = 'budget';

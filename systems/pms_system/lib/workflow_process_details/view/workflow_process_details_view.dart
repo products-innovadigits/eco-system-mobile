@@ -1,6 +1,4 @@
-import 'package:core_system/core/helpers/font_sizes.dart';
 import 'package:pms_system/shared/pms_exports.dart';
-import 'package:pms_system/workflow_process_details/bloc/workflow_process_details_bloc.dart';
 import 'package:pms_system/workflow_process_details/widgets/process_details_body.dart';
 
 class WorkflowProcessDetailsView extends StatelessWidget {

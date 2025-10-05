@@ -264,6 +264,7 @@ class ProjectProcessModel {
   bool? isCompletedWorkflow;
   String? runningWorkflowTime;
   String? completedWorkflowTime;
+  List<ProcessStepsModel>? processSteps;
 
   ProjectProcessModel({
     this.id,
@@ -279,6 +280,7 @@ class ProjectProcessModel {
     this.isCompletedWorkflow,
     this.runningWorkflowTime,
     this.completedWorkflowTime,
+    this.processSteps,
   });
 
   ProjectProcessModel.fromJson(Map<String, dynamic> json) {
@@ -295,6 +297,12 @@ class ProjectProcessModel {
     isCompletedWorkflow = json['isCompletedWorkflow'];
     runningWorkflowTime = json['runningWorkflowTime'];
     completedWorkflowTime = json['completedWorkflowTime'];
+    if (json['processSteps'] != null) {
+      processSteps = <ProcessStepsModel>[];
+      json['processSteps'].forEach((v) {
+        processSteps?.add(ProcessStepsModel.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -312,6 +320,9 @@ class ProjectProcessModel {
     data['isCompletedWorkflow'] = isCompletedWorkflow;
     data['runningWorkflowTime'] = runningWorkflowTime;
     data['completedWorkflowTime'] = completedWorkflowTime;
+    if (processSteps != null) {
+      data['processSteps'] = processSteps?.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
@@ -365,6 +376,28 @@ class TeamModel {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
+    return data;
+  }
+}
+
+class ProcessStepsModel {
+  int? id;
+  String? title;
+  bool? isCompleted;
+
+  ProcessStepsModel({this.id, this.title, this.isCompleted});
+
+  ProcessStepsModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+    isCompleted = json['isCompleted'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['isCompleted'] = isCompleted;
     return data;
   }
 }

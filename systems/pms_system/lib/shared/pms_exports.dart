@@ -1,4 +1,5 @@
 export 'package:core_system/core/components/custom_filters_drop_list.dart';
+export 'package:core_system/core/helpers/font_sizes.dart';
 export 'package:core_system/core/model/custom_field_model.dart';
 export 'package:core_system/core/utility/export.dart';
 export 'package:core_system/core/widgets/custom_expansion_card.dart';
@@ -23,6 +24,7 @@ export 'package:pms_system/project_details/widgets/project_details_description.d
 export 'package:pms_system/project_details/widgets/project_monthly_progress.dart';
 export 'package:pms_system/project_details/widgets/project_outputs_chart.dart';
 export 'package:pms_system/project_details/widgets/project_risks.dart';
+export 'package:pms_system/project_details/widgets/tabs/workflow_tab/stage_expansion_card_widget.dart';
 export 'package:pms_system/projects/bloc/project_priority_level_bloc.dart';
 export 'package:pms_system/projects/bloc/projects_bloc.dart';
 export 'package:pms_system/projects/bloc/projects_filtration_bloc.dart';
@@ -39,3 +41,5 @@ export 'package:pms_system/projects_progress/repo/projects_progress_repo.dart';
 export 'package:pms_system/projects_progress/view/project_management_section.dart';
 export 'package:pms_system/projects_progress/widgets/half_circle_analatic_chart.dart';
 export 'package:pms_system/projects_progress/widgets/project_progress_section.dart';
+export 'package:pms_system/workflow_process_details/bloc/workflow_process_details_bloc.dart';
+export 'package:pms_system/workflow_process_details/widgets/tabs/follow_process_tab/process_expansion_card_widget.dart';

@@ -13,7 +13,7 @@ class CustomBtn extends StatelessWidget {
     this.loading = false,
     this.active = true,
     this.borderColor = Colors.transparent,
-    this.fontSize = FontSizes.f16,
+    this.fontSize = FontSizes.f16, this.borderRadius,
   });
   final String text;
   final Color? color;
@@ -25,6 +25,7 @@ class CustomBtn extends StatelessWidget {
   final bool loading;
   final bool active;
   final double fontSize;
+  final double? borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,7 @@ class CustomBtn extends StatelessWidget {
           width: width,
           decoration: BoxDecoration(
             color: color ?? context.color.primary,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(borderRadius ?? 12),
             border: Border.all(
               color: borderColor,
             ),

@@ -1,5 +1,3 @@
-import 'package:core_system/core/helpers/font_sizes.dart';
-
 import '../../shared/pms_exports.dart';
 
 class ProcessHeaderCard extends StatelessWidget {
