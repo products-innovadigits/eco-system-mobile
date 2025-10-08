@@ -1,3 +1,4 @@
+import 'package:pms_system/project_details/bloc/project_general_progress_summary_bloc.dart';
 import 'package:pms_system/shared/pms_exports.dart';
 
 class ProjectDetailsView extends StatelessWidget {
@@ -10,8 +11,18 @@ class ProjectDetailsView extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(title: "", withBottomBorder: false),
       body: SafeArea(
-        child: BlocProvider(
-          create: (context) => ProjectDetailsBloc()..add(Click(arguments: id)),
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) =>
+                  ProjectDetailsBloc()..add(Click(arguments: id)),
+            ),
+            BlocProvider(
+              create: (context) =>
+                  ProjectGeneralProgressSummaryBloc()
+                    ..add(Click(arguments: id)),
+            ),
+          ],
           child: ProjectDetailsBody(),
         ),
       ),

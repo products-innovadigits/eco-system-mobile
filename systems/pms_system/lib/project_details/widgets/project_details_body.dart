@@ -56,19 +56,8 @@ class _ProjectBody extends StatelessWidget {
         SizedBox(height: 16.h),
         Expanded(
           child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Scrollable content
-                Flexible(
-                  fit: FlexFit.loose,
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: _getTabSection(selectedTab, model),
-                  ),
-                ),
-              ],
-            ),
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: _getTabSection(selectedTab, model),
           ),
         ),
       ],
@@ -80,13 +69,13 @@ Widget _buildShimmerLoading(BuildContext context) => Padding(
   padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
   child: Column(
     children: [
-      CustomShimmerContainer(height: 130.h),
+      CustomShimmerContainer(height: 120.h),
       Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
+        padding: const EdgeInsets.symmetric(vertical: 10),
         child: Divider(color: context.color.outline, thickness: 1.0),
       ),
       CustomShimmerContainer(height: context.h * 0.3, width: context.w),
-      SizedBox(height: 16),
+      SizedBox(height: 8),
       CustomShimmerContainer(height: context.h * 0.3, width: context.w),
     ],
   ),
@@ -97,9 +86,11 @@ Widget _getTabSection(
   ProjectDetailsModel model,
 ) {
   return switch (selectedTab) {
-    ProjectDetailsEnum.mainInfo => ProjectMainInfoTab(model: model),
+    ProjectDetailsEnum.mainInfo => ProjectMainInfoTab(
+      projectDetailsModel: model,
+    ),
     ProjectDetailsEnum.workflow => ProjectWorkflowTab(
-      stagesList: model.projectLifeCycle?.projectStages ?? [],
+      projectDetailsModel: model,
     ),
     _ => ProjectTimeline(
       // canvasHeight: 400,

@@ -10,7 +10,7 @@ class ProjectDetailsBloc extends Bloc<AppEvent, AppState> {
   ProjectDetailsModel? _cachedModel;
 
   _onClick(AppEvent event, Emitter<AppState> emit) async {
-    // try {
+    try {
     emit(Loading());
 
     Response res = await ProjectDetailsRepo.getProjectDetails(
@@ -27,11 +27,11 @@ class ProjectDetailsBloc extends Bloc<AppEvent, AppState> {
       AppCore.errorMessage(allTranslations.text('something_went_wrong'));
       emit(Error());
     }
-    // } catch (e) {
-    //   AppCore.errorMessage(allTranslations.text('something_went_wrong'));
-    //
-    //   emit(Error());
-    // }
+    } catch (e) {
+      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+
+      emit(Error());
+    }
   }
 
   Future<void> _onSelectTab(Select event, Emitter<AppState> emit) async {

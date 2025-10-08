@@ -11,9 +11,9 @@ class ProjectDetailsModel extends SingleMapper {
   int? lifeCycleId;
   ProjectLifeCycleModel? projectLifeCycle;
   int? projectCategoryId;
-  int? budget;
+  num? budget;
   double? weight;
-  num? progressRatio;
+  double? progressRatio; // changed to double?
   List<String>? teamIds;
   SectionDepartmentModel? sectionDepartment;
   List<TeamModel>? teamName;
@@ -33,6 +33,7 @@ class ProjectDetailsModel extends SingleMapper {
   String? createdAt;
   String? updatedBy;
   String? updatedAt;
+  MobileDetailsModel? mobileDetails;
 
   ProjectDetailsModel({
     this.id,
@@ -67,6 +68,7 @@ class ProjectDetailsModel extends SingleMapper {
     this.createdAt,
     this.updatedBy,
     this.updatedAt,
+    this.mobileDetails,
   });
 
   ProjectDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -75,35 +77,29 @@ class ProjectDetailsModel extends SingleMapper {
     description = json['description'];
     riskLevelName = json['riskLevelName'];
     deliveredOutputs = json['deliveredOutputs'];
-    startDate = json['startDate'] != null
-        ? DateTime.parse(json['startDate'])
-        : null;
+    startDate = json['startDate'] != null ? DateTime.parse(json['startDate']) : null;
     endDate = json['endDate'] != null ? DateTime.parse(json['endDate']) : null;
     lifeCycleId = json['lifeCycleId'];
     projectLifeCycle = json['projectLifeCycle'] != null
         ? ProjectLifeCycleModel.fromJson(json['projectLifeCycle'])
         : null;
     projectCategoryId = json['projectCategoryId'];
-    weight = json['weight'];
+    weight = (json['weight'] as num?)?.toDouble();
     budget = json['budget'];
-    progressRatio = json['progressRation'];
-    teamIds = json['teamIds'] != null
-        ? List<String>.from(json['teamIds'])
-        : null;
+    progressRatio = (json['progressRation'] as num?)?.toDouble(); // safe cast
+    teamIds = json['teamIds'] != null ? List<String>.from(json['teamIds']) : null;
     sectionDepartment = json['sectionDepartment'] != null
         ? SectionDepartmentModel.fromJson(json['sectionDepartment'])
         : null;
-    // teamName = json['teamName'] != null
-    //     ? TeamModel.fromJson(json['teamName'])
-    //     : null;
+
     if (json['teamName'] != null) {
       teamName = <TeamModel>[];
       json['teamName'].forEach((v) {
         teamName!.add(TeamModel.fromJson(v));
       });
     }
-    implementorDepartmentId = json['implementorDepartmentId'];
 
+    implementorDepartmentId = json['implementorDepartmentId'];
     implementorDepartmentName = json['implementorDepartmentName'];
     managerId = json['managerId'];
     status = json['status'];
@@ -117,6 +113,9 @@ class ProjectDetailsModel extends SingleMapper {
     createdAt = json['createdAt'];
     updatedBy = json['updatedBy'];
     updatedAt = json['updatedAt'];
+    mobileDetails = json['mobileDetails'] != null
+        ? MobileDetailsModel.fromJson(json['mobileDetails'])
+        : null;
   }
 
   @override
@@ -138,7 +137,6 @@ class ProjectDetailsModel extends SingleMapper {
     data['budget'] = budget;
     data['teamIds'] = teamIds;
     data['sectionDepartment'] = sectionDepartment?.toJson();
-    // data['teamName'] = teamName?.toJson();
     if (teamName != null) {
       data['teamName'] = teamName!.map((v) => v.toJson()).toList();
     }
@@ -157,6 +155,7 @@ class ProjectDetailsModel extends SingleMapper {
     data['createdAt'] = createdAt;
     data['updatedBy'] = updatedBy;
     data['updatedAt'] = updatedAt;
+    data['mobileDetails'] = mobileDetails?.toJson();
     return data;
   }
 
@@ -225,7 +224,7 @@ class ProjectStagesModel {
     title = json['title'] ?? json['name'];
     description = json['description'];
     lifeCycleId = json['lifeCycleId'];
-    progress = double.tryParse(json['progress']?.toString() ?? "0");
+    progress = double.tryParse((json['progress']?.toString() ?? "0"));
     if (json['projectProcesses'] != null) {
       projectProcesses = <ProjectProcessModel>[];
       json['projectProcesses'].forEach((v) {
@@ -242,9 +241,7 @@ class ProjectStagesModel {
     data['lifeCycleId'] = lifeCycleId;
     data['progress'] = progress;
     if (projectProcesses != null) {
-      data['projectProcesses'] = projectProcesses!
-          .map((v) => v.toJson())
-          .toList();
+      data['projectProcesses'] = projectProcesses!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -264,6 +261,7 @@ class ProjectProcessModel {
   bool? isCompletedWorkflow;
   String? runningWorkflowTime;
   String? completedWorkflowTime;
+  String? workFlowStatus;
   List<ProcessStepsModel>? processSteps;
 
   ProjectProcessModel({
@@ -280,6 +278,7 @@ class ProjectProcessModel {
     this.isCompletedWorkflow,
     this.runningWorkflowTime,
     this.completedWorkflowTime,
+    this.workFlowStatus,
     this.processSteps,
   });
 
@@ -292,11 +291,12 @@ class ProjectProcessModel {
     workflowId = json['workflowId'];
     workflow = json['workflow'];
     viewOrder = json['viewOrder'];
-    progress = double.tryParse(json['progress']?.toString() ?? "0");
+    progress = double.tryParse((json['progress']?.toString() ?? "0"));
     isRunningWorkflow = json['isRunningWorkflow'];
     isCompletedWorkflow = json['isCompletedWorkflow'];
     runningWorkflowTime = json['runningWorkflowTime'];
     completedWorkflowTime = json['completedWorkflowTime'];
+    workFlowStatus = json['workFlowStatus'];
     if (json['processSteps'] != null) {
       processSteps = <ProcessStepsModel>[];
       json['processSteps'].forEach((v) {
@@ -320,6 +320,7 @@ class ProjectProcessModel {
     data['isCompletedWorkflow'] = isCompletedWorkflow;
     data['runningWorkflowTime'] = runningWorkflowTime;
     data['completedWorkflowTime'] = completedWorkflowTime;
+    data['workFlowStatus'] = workFlowStatus;
     if (processSteps != null) {
       data['processSteps'] = processSteps?.map((v) => v.toJson()).toList();
     }
@@ -398,6 +399,409 @@ class ProcessStepsModel {
     data['id'] = id;
     data['title'] = title;
     data['isCompleted'] = isCompleted;
+    return data;
+  }
+}
+
+// Mobile Details Models
+class MobileDetailsModel {
+  List<MobileBudgetModel>? budget;
+  List<MobileBudgetTotalsModel>? budgetTotals;
+  List<MobileOutputsSummaryModel>? outputsSummary;
+  MobileProgressModel? progress;
+  String? status;
+  MobileChallengesModel? challenges;
+  List<MobileRiskModel>? risks;
+
+  // newly wired: workflow block from JSON
+  MobileWorkflowModel? workflow;
+
+  MobileDetailsModel({
+    this.budget,
+    this.budgetTotals,
+    this.outputsSummary,
+    this.progress,
+    this.status,
+    this.challenges,
+    this.risks,
+    this.workflow,
+  });
+
+  MobileDetailsModel.fromJson(Map<String, dynamic> json) {
+    if (json['budget'] != null) {
+      budget = <MobileBudgetModel>[];
+      json['budget'].forEach((v) {
+        budget!.add(MobileBudgetModel.fromJson(v));
+      });
+    }
+    if (json['budgetTotals'] != null) {
+      budgetTotals = <MobileBudgetTotalsModel>[];
+      json['budgetTotals'].forEach((v) {
+        budgetTotals!.add(MobileBudgetTotalsModel.fromJson(v));
+      });
+    }
+    if (json['outputsSummary'] != null) {
+      outputsSummary = <MobileOutputsSummaryModel>[];
+      json['outputsSummary'].forEach((v) {
+        outputsSummary!.add(MobileOutputsSummaryModel.fromJson(v));
+      });
+    }
+    progress = json['progress'] != null ? MobileProgressModel.fromJson(json['progress']) : null;
+    status = json['status'];
+    challenges = json['challenges'] != null ? MobileChallengesModel.fromJson(json['challenges']) : null;
+    if (json['risks'] != null) {
+      risks = <MobileRiskModel>[];
+      json['risks'].forEach((v) {
+        risks!.add(MobileRiskModel.fromJson(v));
+      });
+    }
+    workflow = json['workflow'] != null ? MobileWorkflowModel.fromJson(json['workflow']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (budget != null) {
+      data['budget'] = budget!.map((v) => v.toJson()).toList();
+    }
+    if (budgetTotals != null) {
+      data['budgetTotals'] = budgetTotals!.map((v) => v.toJson()).toList();
+    }
+    if (outputsSummary != null) {
+      data['outputsSummary'] = outputsSummary!.map((v) => v.toJson()).toList();
+    }
+    data['progress'] = progress?.toJson();
+    data['status'] = status;
+    data['challenges'] = challenges?.toJson();
+    if (risks != null) {
+      data['risks'] = risks!.map((v) => v.toJson()).toList();
+    }
+    data['workflow'] = workflow?.toJson();
+    return data;
+  }
+}
+
+class MobileBudgetModel {
+  String? key;
+  String? label;
+  double? amount; // double
+  double? percent; // double
+  String? background;
+
+  MobileBudgetModel({
+    this.key,
+    this.label,
+    this.amount,
+    this.percent,
+    this.background,
+  });
+
+  MobileBudgetModel.fromJson(Map<String, dynamic> json) {
+    key = json['key'];
+    label = json['label'];
+    amount = (json['amount'] as num?)?.toDouble();   // safe cast
+    percent = (json['percent'] as num?)?.toDouble(); // safe cast
+    background = json['background'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['key'] = key;
+    data['label'] = label;
+    data['amount'] = amount;
+    data['percent'] = percent;
+    data['background'] = background;
+    return data;
+  }
+}
+
+class MobileBudgetTotalsModel {
+  double? approved;
+  double? spent;
+  double? remaining;
+  double? variance;
+
+  MobileBudgetTotalsModel({
+    this.approved,
+    this.spent,
+    this.remaining,
+    this.variance,
+  });
+
+  MobileBudgetTotalsModel.fromJson(Map<String, dynamic> json) {
+    approved = (json['approved'] as num?)?.toDouble();
+    spent = (json['spent'] as num?)?.toDouble();
+    remaining = (json['remaining'] as num?)?.toDouble();
+    variance = (json['variance'] as num?)?.toDouble();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['approved'] = approved;
+    data['spent'] = spent;
+    data['remaining'] = remaining;
+    data['variance'] = variance;
+    return data;
+  }
+}
+
+class MobileOutputsSummaryModel {
+  String? key;
+  String? label;
+  num? value;
+  String? background;
+
+  MobileOutputsSummaryModel({
+    this.key,
+    this.label,
+    this.value,
+    this.background,
+  });
+
+  MobileOutputsSummaryModel.fromJson(Map<String, dynamic> json) {
+    key = json['key'];
+    label = json['label'];
+    value = json['value'];
+    background = json['background'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['key'] = key;
+    data['label'] = label;
+    data['value'] = value;
+    data['background'] = background;
+    return data;
+  }
+}
+
+class MobileProgressModel {
+  double? averageProgress;
+  List<MobileProgressBarModel>? bars;
+
+  MobileProgressModel({this.averageProgress, this.bars});
+
+  MobileProgressModel.fromJson(Map<String, dynamic> json) {
+    averageProgress = (json['averageProgress'] as num?)?.toDouble(); // safer
+    if (json['bars'] != null) {
+      bars = <MobileProgressBarModel>[];
+      json['bars'].forEach((v) {
+        bars!.add(MobileProgressBarModel.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['averageProgress'] = averageProgress;
+    if (bars != null) {
+      data['bars'] = bars!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class MobileProgressBarModel {
+  String? key;
+  String? label;
+  String? background;
+  double? value;
+
+  MobileProgressBarModel({this.key, this.label, this.background, this.value});
+
+  MobileProgressBarModel.fromJson(Map<String, dynamic> json) {
+    key = json['key'];
+    label = json['label'];
+    background = json['background'];
+    value = (json['value'] as num?)?.toDouble();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['key'] = key;
+    data['label'] = label;
+    data['background'] = background;
+    data['value'] = value;
+    return data;
+  }
+}
+
+class MobileWorkflowModel {
+  num? workflowId;
+  num? processId;
+  num? groupsCount;
+  List<MobileWorkflowGroupModel>? groups;
+
+  MobileWorkflowModel({
+    this.workflowId,
+    this.processId,
+    this.groupsCount,
+    this.groups,
+  });
+
+  MobileWorkflowModel.fromJson(Map<String, dynamic> json) {
+    workflowId = json['workflowId'];
+    processId = json['processId'];
+    groupsCount = json['groupsCount'];
+    if (json['groups'] != null) {
+      groups = <MobileWorkflowGroupModel>[];
+      json['groups'].forEach((v) {
+        groups!.add(MobileWorkflowGroupModel.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['workflowId'] = workflowId;
+    data['processId'] = processId;
+    data['groupsCount'] = groupsCount;
+    if (groups != null) {
+      data['groups'] = groups!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class MobileWorkflowGroupModel {
+  num? groupId;
+  String? groupName;
+  double? progress; // changed to double?
+  List<MobileWorkflowStepModel>? steps;
+
+  MobileWorkflowGroupModel({
+    this.groupId,
+    this.groupName,
+    this.progress,
+    this.steps,
+  });
+
+  MobileWorkflowGroupModel.fromJson(Map<String, dynamic> json) {
+    groupId = json['groupId'];
+    groupName = json['groupName'];
+    progress = (json['progress'] as num?)?.toDouble(); // safe cast
+    if (json['steps'] != null) {
+      steps = <MobileWorkflowStepModel>[];
+      json['steps'].forEach((v) {
+        steps!.add(MobileWorkflowStepModel.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['groupId'] = groupId;
+    data['groupName'] = groupName;
+    data['progress'] = progress;
+    if (steps != null) {
+      data['steps'] = steps!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class MobileWorkflowStepModel {
+  num? id;
+  String? stepName;
+  num? status;
+
+  MobileWorkflowStepModel({this.id, this.stepName, this.status});
+
+  MobileWorkflowStepModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    stepName = json['stepName'];
+    status = json['status'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['stepName'] = stepName;
+    data['status'] = status;
+    return data;
+  }
+}
+
+class MobileChallengesModel {
+  num? total;
+  List<MobileChallengeItemModel>? items;
+
+  MobileChallengesModel({this.total, this.items});
+
+  MobileChallengesModel.fromJson(Map<String, dynamic> json) {
+    total = json['total'];
+    if (json['items'] != null) {
+      items = <MobileChallengeItemModel>[];
+      json['items'].forEach((v) {
+        items!.add(MobileChallengeItemModel.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['total'] = total;
+    if (items != null) {
+      data['items'] = items!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class MobileChallengeItemModel {
+  String? key;
+  String? label;
+  num? total;
+  num? processed;
+  String? background;
+
+  MobileChallengeItemModel({
+    this.key,
+    this.label,
+    this.total,
+    this.processed,
+    this.background,
+  });
+
+  MobileChallengeItemModel.fromJson(Map<String, dynamic> json) {
+    key = json['key'];
+    label = json['label'];
+    total = json['total'];
+    processed = json['processed'];
+    background = json['background'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['key'] = key;
+    data['label'] = label;
+    data['total'] = total;
+    data['processed'] = processed;
+    data['background'] = background;
+    return data;
+  }
+}
+
+class MobileRiskModel {
+  String? key;
+  String? label;
+  num? value;
+  String? background;
+
+  MobileRiskModel({this.key, this.label, this.value, this.background});
+
+  MobileRiskModel.fromJson(Map<String, dynamic> json) {
+    key = json['key'];
+    label = json['label'];
+    value = json['value'];
+    background = json['background'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['key'] = key;
+    data['label'] = label;
+    data['value'] = value;
+    data['background'] = background;
     return data;
   }
 }

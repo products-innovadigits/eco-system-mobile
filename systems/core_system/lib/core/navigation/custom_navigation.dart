@@ -14,19 +14,11 @@ abstract class CustomNavigator {
       GlobalKey<ScaffoldMessengerState>();
 
   static pageRouteBuilder(Widget child) => PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => child,
-        transitionsBuilder: (
-          context,
-          animation,
-          secondaryAnimation,
-          child,
-        ) {
-          return SlideTransition(
-            position: animation.drive(tween),
-            child: child,
-          );
-        },
-      );
+    pageBuilder: (context, animation, secondaryAnimation) => child,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return SlideTransition(position: animation.drive(tween), child: child);
+    },
+  );
 
   static pop({dynamic result}) {
     if (navigatorState.currentState?.canPop() == true) {
@@ -65,14 +57,37 @@ class ProfileViewArgs {
   final bool isTalent;
   final int candidateId;
 
-  ProfileViewArgs({
-    required this.isTalent,
-    required this.candidateId,
+  ProfileViewArgs({required this.isTalent, required this.candidateId});
+}
+
+// Workflow Process Details Args
+class WorkflowProcessDetailsArgs {
+  final int processId;
+  final int projectId;
+  final String processName;
+  final String projectName;
+  final String projectManagerName;
+  final String projectWorkFlowStatus;
+  final num projectBudget;
+  final DateTime? projectStartDate;
+  final DateTime? projectEndDate;
+
+  WorkflowProcessDetailsArgs({
+    required this.projectManagerName,
+    required this.projectBudget,
+    required this.projectWorkFlowStatus,
+    required this.processId,
+    required this.projectId,
+    required this.processName,
+    required this.projectName,
+    required this.projectStartDate,
+    required this.projectEndDate,
   });
 }
 
 class MainPageArgs {
   final int index;
+
   // final List<String> systems;
 
   MainPageArgs({

@@ -317,6 +317,7 @@ abstract class  LocaleKeys {
   static const select_priority_level = 'select_priority_level';
   static const there_is_priority_levels = 'there_is_priority_levels';
   static const completed = 'completed';
+  static const start = 'start';
   static const not_completed = 'not_completed';
   static const advanced = 'advanced';
   static const late = 'late';

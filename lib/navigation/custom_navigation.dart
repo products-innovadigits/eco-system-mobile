@@ -92,9 +92,19 @@ class AppRouter {
         );
 
       case Routes.WORKFLOW_PROCESS_DETAILS:
+        final args = settings.arguments as WorkflowProcessDetailsArgs?;
         return MaterialPageRoute(
-          builder: (_) =>
-              WorkflowProcessDetailsView(id: settings.arguments as int),
+          builder: (_) => WorkflowProcessDetailsView(
+            processId: args?.processId ?? 0,
+            projectId: args?.projectId ?? 0,
+            workflowStatus: args?.projectWorkFlowStatus ?? '',
+            processName: args?.processName ?? '',
+            projectName: args?.projectName ?? '',
+            projectManagerName: args?.projectManagerName ?? '',
+            projectBudget: args?.projectBudget.toDouble() ?? 0,
+            projectStartDate: args?.projectStartDate ?? DateTime.now(),
+            projectEndDate: args?.projectEndDate ?? DateTime.now(),
+          ),
         );
 
       /// ATS Routes ===========================================

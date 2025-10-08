@@ -16,6 +16,7 @@ abstract class ApiNames {
   static const bsc = "Dashboard/getDashboardBalance";
   static String objectiveChartData(id, time) => "ObjectActive/$id/Chart/$time";
 
+  // Project Management APIs ====================
   static const ProjectProgress = "Project/GetProgressCountPrestange";
   static const ProjectCategoriesProgress = "ProjectCategory/CategoriesProgress";
   static const projects = "Project/GetFilteredProjects";
@@ -24,6 +25,8 @@ abstract class ApiNames {
   static const projectFilterOptions = "Project/filter-options";
   static const projectSortingOptions = "Project/GetProjectSortOptionsAsync";
   static String projectDetails(id) => "Project/$id";
+  static String projectGeneralProgressSummary(id) => "Project/$id/progress-summary";
+  static String workflowProcessDetails = "WorkFlow/GroupSteps";
 
   // Jobs APIs ====================
   static const jobs = "chances";

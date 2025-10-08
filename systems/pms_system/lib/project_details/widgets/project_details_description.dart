@@ -11,8 +11,11 @@ class ProjectDetailsDescription extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(model.description ?? "",
-            textAlign: TextAlign.start, style: context.textTheme.bodySmall),
+        Text(
+          model.description ?? "",
+          textAlign: TextAlign.start,
+          style: context.textTheme.bodySmall,
+        ),
         SizedBox(height: 16.h),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -20,7 +23,7 @@ class ProjectDetailsDescription extends StatelessWidget {
             Expanded(
               child: ProjectContentCard(
                 icon: Assets.svgs.calendar.path,
-                title: allTranslations.text("start_date"),
+                title: allTranslations.text(LocaleKeys.start_date),
                 desc: (model.startDate ?? DateTime.now()).format("d MMM yyyy"),
               ),
             ),
@@ -28,10 +31,10 @@ class ProjectDetailsDescription extends StatelessWidget {
             Expanded(
               child: ProjectContentCard(
                 icon: Assets.svgs.calendarTick.path,
-                title: allTranslations.text("end_date"),
+                title: allTranslations.text(LocaleKeys.end_date),
                 desc: (model.endDate ?? DateTime.now()).format("d MMM yyyy"),
               ),
-            )
+            ),
           ],
         ),
         SizedBox(height: 16.h),
@@ -41,22 +44,22 @@ class ProjectDetailsDescription extends StatelessWidget {
             Expanded(
               child: ProjectContentCard(
                 icon: Assets.svgs.securityUser.path,
-                title: allTranslations.text("the_owning_entity"),
+                title: allTranslations.text(LocaleKeys.the_owning_entity),
                 desc: model.sectionDepartment?.name ?? "",
               ),
             ),
             SizedBox(width: 8.h),
             Expanded(
               child: ProjectContentCard(
-                  icon: Assets.svgs.projectLifeCycle.path,
-                  title: allTranslations.text("project_life_cycle"),
-                  desc: model.projectLifeCycle?.title ?? ''
-                  // model.projectLifeCycle?.projectStages
-                  //         ?.firstWhere((e) => e.lifeCycleId == model.lifeCycleId)
-                  //         .title ??
-                  //     "",
-                  ),
-            )
+                icon: Assets.svgs.projectLifeCycle.path,
+                title: allTranslations.text(LocaleKeys.project_life_cycle),
+                desc: model.projectLifeCycle?.title ?? '',
+                // model.projectLifeCycle?.projectStages
+                //         ?.firstWhere((e) => e.lifeCycleId == model.lifeCycleId)
+                //         .title ??
+                //     "",
+              ),
+            ),
           ],
         ),
         SizedBox(height: 16.h),
@@ -66,7 +69,7 @@ class ProjectDetailsDescription extends StatelessWidget {
             Expanded(
               child: ProjectContentCard(
                 icon: Assets.svgs.filter.path,
-                title: allTranslations.text("project_category"),
+                title: allTranslations.text(LocaleKeys.project_category),
                 desc: model.projectCategoryName ?? "",
               ),
             ),
@@ -74,60 +77,60 @@ class ProjectDetailsDescription extends StatelessWidget {
             Expanded(
               child: ProjectContentCard(
                 icon: Assets.svgs.user.path,
-                title: allTranslations.text("project_manager"),
+                title: allTranslations.text(LocaleKeys.project_manager),
                 desc: model.managerName ?? "",
               ),
-            )
-          ],
-        ),
-        SizedBox(height: 16.h),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Expanded(
-              child: ProjectContentCard(
-                icon: Assets.svgs.people.path,
-                title: allTranslations.text(LocaleKeys.project_team),
-                desc: model.teamName?[0].name ?? '',
-              ),
-            ),
-            SizedBox(width: 8.h),
-            Expanded(
-              child: ProjectContentCard(
-                icon: Assets.svgs.warning.path,
-                title: allTranslations.text("risk_level"),
-                desc: "${model.periortyLevelName ?? 0}",
-              ),
             ),
           ],
         ),
-        SizedBox(height: 16.h),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Expanded(
-              child: ProjectContentCard(
-                icon: Assets.svgs.outlineMoneys.path,
-                title: allTranslations.text("budget"),
-                desc: "${model.budget ?? 0}",
-              ),
-            ),
-            SizedBox(width: 8.h),
-            Expanded(
-              child: ProjectContentCard(
-                icon: Assets.svgs.task.path,
-                title: allTranslations.text("outputs_number"),
-                desc: "${model.outputCount ?? 0}",
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 16.h),
-        ProjectContentCard(
-          icon: Assets.svgs.building.path,
-          title: allTranslations.text("entity_name"),
-          desc: model.implementorDepartmentName ?? "",
-        ),
+        // SizedBox(height: 16.h),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.start,
+        //   children: [
+        //     Expanded(
+        //       child: ProjectContentCard(
+        //         icon: Assets.svgs.people.path,
+        //         title: allTranslations.text(LocaleKeys.project_team),
+        //         desc: model.teamName?[0].name ?? '',
+        //       ),
+        //     ),
+        //     SizedBox(width: 8.h),
+        //     Expanded(
+        //       child: ProjectContentCard(
+        //         icon: Assets.svgs.warning.path,
+        //         title: allTranslations.text("risk_level"),
+        //         desc: "${model.periortyLevelName ?? 0}",
+        //       ),
+        //     ),
+        //   ],
+        // ),
+        // SizedBox(height: 16.h),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.start,
+        //   children: [
+        //     Expanded(
+        //       child: ProjectContentCard(
+        //         icon: Assets.svgs.outlineMoneys.path,
+        //         title: allTranslations.text("budget"),
+        //         desc: "${model.budget ?? 0}",
+        //       ),
+        //     ),
+        //     SizedBox(width: 8.h),
+        //     Expanded(
+        //       child: ProjectContentCard(
+        //         icon: Assets.svgs.task.path,
+        //         title: allTranslations.text("outputs_number"),
+        //         desc: "${model.outputCount ?? 0}",
+        //       ),
+        //     ),
+        //   ],
+        // ),
+        // SizedBox(height: 16.h),
+        // ProjectContentCard(
+        //   icon: Assets.svgs.building.path,
+        //   title: allTranslations.text("entity_name"),
+        //   desc: model.implementorDepartmentName ?? "",
+        // ),
       ],
     );
   }

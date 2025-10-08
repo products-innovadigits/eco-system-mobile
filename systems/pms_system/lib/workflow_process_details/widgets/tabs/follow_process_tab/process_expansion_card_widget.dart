@@ -1,7 +1,9 @@
+import 'package:pms_system/workflow_process_details/model/workflow_process_details_model.dart';
+
 import '../../../../shared/pms_exports.dart';
 
 class ProcessExpansionCardWidget extends StatelessWidget {
-  final List<ProjectProcessModel> processList;
+  final List<WorkflowProcessGroupModel> processList;
   final int index;
 
   const ProcessExpansionCardWidget({
@@ -12,29 +14,24 @@ class ProcessExpansionCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final processSteps =
-        processList[index].processSteps ??
-        [
-          ProcessStepsModel(title: 'عملية طلب مشروع جديد ', isCompleted: true),
-          ProcessStepsModel(title: 'اعداد طلب المشروع', isCompleted: false),
-        ];
+    final processSteps = processList[index].steps;
     return CustomExpansionCard(
-      title: processList[index].title ?? '',
+      title: processList[index].groupName ?? '',
       initialExpanded: index == 0,
       leadingWidget: _ProcessProgressWidget(
-        // progress: processList[index].progress ?? 0,
-        progress: 100,
+        progress: processList[index].progress ?? 0,
+        // progress: 100,
       ),
       withMargin: false,
       child: Column(
-        children: List.generate(processSteps.length, (idx) {
-          final process = processSteps[idx];
+        children: List.generate((processSteps ?? []).length, (idx) {
+          final process = processSteps?[idx];
           return _ProcessStepRowWidget(
-            title: process.title ?? '',
-            status: (process.isCompleted ?? false)
+            title: process?.stepName ?? '',
+            status: (process?.status == 0 ? false : true)
                 ? allTranslations.text(LocaleKeys.completed)
                 : allTranslations.text(LocaleKeys.not_completed),
-            isCompleted: process.isCompleted ?? false,
+            isCompleted: process?.status == 0 ? false : true,
           );
         }),
       ),

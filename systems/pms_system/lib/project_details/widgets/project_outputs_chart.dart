@@ -7,7 +7,7 @@ class ProjectOutputsChart extends StatefulWidget {
     this.showMoreButton = true,
   });
 
-  final List<ProjectOutputModel> data;
+  final List<MobileOutputsSummaryModel> data;
 
   final bool showMoreButton;
 
@@ -27,9 +27,9 @@ class _ProjectOutputsChartState extends State<ProjectOutputsChart> {
   @override
   Widget build(BuildContext context) {
     if (widget.data.isEmpty) {
-      return const EmptyContainer();
+      return const SizedBox();
     }
-
+    final reversedData = widget.data.reversed.toList();
     return Column(
       children: [
         AspectRatio(
@@ -41,9 +41,7 @@ class _ProjectOutputsChartState extends State<ProjectOutputsChart> {
                 minY: 0,
                 maxY: _getMaxValue() + 20,
                 alignment: BarChartAlignment.spaceAround,
-                barTouchData: BarTouchData(
-                  enabled: false
-                ),
+                barTouchData: BarTouchData(enabled: false),
                 titlesData: FlTitlesData(
                   show: true,
                   rightTitles: AxisTitles(
@@ -70,7 +68,7 @@ class _ProjectOutputsChartState extends State<ProjectOutputsChart> {
                       getTitlesWidget: (value, meta) => outputsBottomTitles(
                         value,
                         meta,
-                        widget.data,
+                        reversedData,
                         textColor: context.color.outlineVariant,
                       ),
                       reservedSize: 50,
@@ -98,9 +96,14 @@ class _ProjectOutputsChartState extends State<ProjectOutputsChart> {
                     barRods: [
                       BarChartRodData(
                         fromY: 0,
-                        toY: widget.data[index].count.toDouble(),
+                        toY: (reversedData[index].value ?? 0).toDouble(),
                         width: 35.w,
-                        color: _getBarColor(widget.data[index].type),
+                        color: Color(
+                          int.parse(
+                            (reversedData[index].background ?? '#000000')
+                                .replaceFirst('#', '0xff'),
+                          ),
+                        ),
                         borderRadius: BorderRadius.circular(4),
                       ),
                     ],
@@ -117,21 +120,8 @@ class _ProjectOutputsChartState extends State<ProjectOutputsChart> {
   double _getMaxValue() {
     if (widget.data.isEmpty) return 100;
     return widget.data
-        .map((e) => e.count.toDouble())
+        .map((e) => (e.value ?? 0).toDouble())
         .reduce((a, b) => a > b ? a : b);
-  }
-
-  Color _getBarColor(ProjectOutputType type) {
-    switch (type) {
-      case ProjectOutputType.total:
-        return const Color(0xFF1B2951); // Dark blue
-      case ProjectOutputType.completed:
-        return const Color(0xFF2E7D32); // Green
-      case ProjectOutputType.inProgress:
-        return const Color(0xFF1976D2); // Blue
-      case ProjectOutputType.notStarted:
-        return const Color(0xFFFF8F00); // Orange
-    }
   }
 }
 
@@ -151,7 +141,7 @@ Widget outputsRightTitles(double value, TitleMeta meta, {Color? textColor}) {
 Widget outputsBottomTitles(
   double value,
   TitleMeta meta,
-  List<ProjectOutputModel> data, {
+  List<MobileOutputsSummaryModel> data, {
   Color? textColor,
 }) {
   if (value.toInt() >= data.length) return Container();
@@ -164,7 +154,7 @@ Widget outputsBottomTitles(
       children: [
         8.sh,
         Text(
-          allTranslations.text(outputData.titleKey),
+          outputData.label ?? '',
           style: TextStyle(
             color: textColor,
             fontWeight: FontWeight.w400,
@@ -178,18 +168,3 @@ Widget outputsBottomTitles(
     ),
   );
 }
-
-// Model classes for the chart data
-class ProjectOutputModel {
-  final ProjectOutputType type;
-  final String titleKey;
-  final int count;
-
-  ProjectOutputModel({
-    required this.type,
-    required this.titleKey,
-    required this.count,
-  });
-}
-
-enum ProjectOutputType { total, completed, inProgress, notStarted }

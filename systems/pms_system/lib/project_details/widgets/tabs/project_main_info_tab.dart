@@ -4,9 +4,9 @@ import 'package:pms_system/project_details/widgets/project_outputs_bottom_sheet.
 import 'package:pms_system/shared/pms_exports.dart';
 
 class ProjectMainInfoTab extends StatelessWidget {
-  final ProjectDetailsModel model;
+  final ProjectDetailsModel projectDetailsModel;
 
-  const ProjectMainInfoTab({super.key, required this.model});
+  const ProjectMainInfoTab({super.key, required this.projectDetailsModel});
 
   @override
   Widget build(BuildContext context) {
@@ -17,23 +17,35 @@ class ProjectMainInfoTab extends StatelessWidget {
         CustomExpansionCard(
           title: allTranslations.text(LocaleKeys.project_details),
           withMargin: false,
-          child: ProjectDetailsDescription(model: model),
+          child: ProjectDetailsDescription(model: projectDetailsModel),
         ),
 
         ///General Progress
-        GeneralProgressSection(),
+        GeneralProgressSection(projectId: projectDetailsModel.id ?? 0),
 
         ///General Progress
-        CustomExpansionCard(
-          title: allTranslations.text(LocaleKeys.overall_progress),
-          withMargin: false,
-          withExpanded: false,
-          action: _averageProgressWidget(context, progress: '50'),
-          child: CustomBarChart(
-            data: _generateSampleProgressData(),
-            chartHeight: 180,
+        if (projectDetailsModel.mobileDetails?.progress != null)
+          CustomExpansionCard(
+            title: allTranslations.text(LocaleKeys.overall_progress),
+            withMargin: false,
+            withExpanded: false,
+            action: _averageProgressWidget(
+              context,
+              progress:
+                  (projectDetailsModel
+                              .mobileDetails
+                              ?.progress
+                              ?.averageProgress ??
+                          0)
+                      .toString(),
+            ),
+            child: CustomBarChart(
+              data: _generateSampleProgressData(
+                projectDetailsModel.mobileDetails!.progress!,
+              ),
+              chartHeight: 180,
+            ),
           ),
-        ),
 
         ///Outputs
         CustomExpansionCard(
@@ -41,29 +53,41 @@ class ProjectMainInfoTab extends StatelessWidget {
           withMargin: false,
           withExpanded: false,
           action: _outputsBottomSheetBtn(context),
-          child: ProjectOutputsChart(data: _generateSampleOutputsData()),
+          child: ProjectOutputsChart(
+            data: projectDetailsModel.mobileDetails?.outputsSummary ?? [],
+          ),
         ),
 
         ///Project Funding
-        ProjectDetailsFundingChart(data: _generateSampleFundingData()),
+        ProjectDetailsFundingChart(
+          data: _generateSampleFundingData(
+            projectDetailsModel.mobileDetails?.budget ?? [],
+          ),
+        ),
 
         ///Challenges
         CustomExpansionCard(
           title: allTranslations.text(LocaleKeys.the_challenges),
-          subTitle: '(70 ${allTranslations.text(LocaleKeys.challenge)})',
+          subTitle:
+              '(${projectDetailsModel.mobileDetails?.challenges?.total} ${allTranslations.text(LocaleKeys.challenge)})',
           subTitleStyle: context.textTheme.labelMedium?.copyWith(
             fontWeight: FontWeight.w700,
             color: context.color.secondary,
           ),
           withMargin: false,
-          child: ProjectChallenges(),
+          child: ProjectChallenges(
+            challenges:
+                projectDetailsModel.mobileDetails?.challenges?.items ?? [],
+          ),
         ),
 
         ///Risks
         CustomExpansionCard(
           title: allTranslations.text(LocaleKeys.risks),
           withMargin: false,
-          child: ProjectRisks(),
+          child: ProjectRisks(
+            risksList: projectDetailsModel.mobileDetails?.risks ?? [],
+          ),
         ),
 
         16.sh,
@@ -71,80 +95,79 @@ class ProjectMainInfoTab extends StatelessWidget {
     );
   }
 
-  // TODO: Replace this with actual data from the ProjectDetailsModel
-  List<ProjectOutputModel> _generateSampleOutputsData() {
-    return [
-      ProjectOutputModel(
-        type: ProjectOutputType.notStarted,
-        titleKey: LocaleKeys.not_started_outputs,
-        count: 95,
-      ),
-      ProjectOutputModel(
-        type: ProjectOutputType.inProgress,
-        titleKey: LocaleKeys.in_progress_outputs,
-        count: 75,
-      ),
-      ProjectOutputModel(
-        type: ProjectOutputType.completed,
-        titleKey: LocaleKeys.completed_outputs,
-        count: 80,
-      ),
-      ProjectOutputModel(
-        type: ProjectOutputType.total,
-        titleKey: LocaleKeys.total,
-        count: 120,
-      ),
-    ];
+  List<ProjectCategoriesProgressModel> _generateSampleProgressData(
+    MobileProgressModel progressModel,
+  ) {
+    return progressModel.bars
+            ?.map(
+              (bar) => ProjectCategoriesProgressModel(
+                name: bar.label ?? "",
+                progress: bar.value ?? 0,
+                color: Color(
+                  int.parse(bar.background!.replaceFirst('#', '0xff')),
+                ),
+              ),
+            )
+            .toList() ??
+        [];
+    // return [
+    //   ProjectCategoriesProgressModel(
+    //     name: "الجدول الزمني",
+    //     progress: 20.5,
+    //     color: LightColor.tertiaryLight,
+    //   ),
+    //   ProjectCategoriesProgressModel(
+    //     name: "الميزانية",
+    //     progress: 55,
+    //     color: LightColor.secondary,
+    //   ),
+    //   ProjectCategoriesProgressModel(
+    //     name: "الأنشطة",
+    //     progress: 72,
+    //     color: LightColor.error,
+    //   ),
+    //   ProjectCategoriesProgressModel(
+    //     name: "المخرجات",
+    //     progress: 90,
+    //     color: LightColor.warning,
+    //   ),
+    // ];
   }
 
   // TODO: Replace this with actual data from the ProjectDetailsModel
-  List<ProjectCategoriesProgressModel> _generateSampleProgressData() {
-    return [
-      ProjectCategoriesProgressModel(
-        name: "الجدول الزمني",
-        progress: 20.5,
-        color: LightColor.tertiaryLight,
-      ),
-      ProjectCategoriesProgressModel(
-        name: "الميزانية",
-        progress: 55,
-        color: LightColor.secondary,
-      ),
-      ProjectCategoriesProgressModel(
-        name: "الأنشطة",
-        progress: 72,
-        color: LightColor.error,
-      ),
-      ProjectCategoriesProgressModel(
-        name: "المخرجات",
-        progress: 90,
-        color: LightColor.warning,
-      ),
-    ];
-  }
-
-  // TODO: Replace this with actual data from the ProjectDetailsModel
-  List<ProjectsOverviewData> _generateSampleFundingData() {
-    return [
-      ProjectsOverviewData(
-        name: 'المتبقي',
-        count: 100000,
-        hexColor: '#175CD3',
-        percentage: 10,
-      ),
-      ProjectsOverviewData(
-        name: 'الغرامات',
-        count: 600000,
-        hexColor: '#020F4C',
-        percentage: 60,
-      ),
-      ProjectsOverviewData(
-        name: 'المنصرف',
-        count: 400000,
-        hexColor: '#DC6803',
-        percentage: 40,
-      ),
-    ];
+  List<ProjectsOverviewData> _generateSampleFundingData(
+    List<MobileBudgetModel> budgeList,
+  ) {
+    return budgeList
+        .map(
+          (budget) => ProjectsOverviewData(
+            name: budget.label ?? '',
+            count: budget.amount ?? 0,
+            hexColor: budget.background ?? '#000000',
+            percentage: budget.percent ?? 0,
+          ),
+        )
+        .toList();
+    // return [
+    //   ProjectsOverviewData(
+    //     name: 'المتبقي',
+    //     count: 100000,
+    //     hexColor: '#175CD3',
+    //     percentage: 10,
+    //   ),
+    //   ProjectsOverviewData(
+    //     name: 'الغرامات',
+    //     count: 600000,
+    //     hexColor: '#020F4C',
+    //     percentage: 60,
+    //   ),
+    //   ProjectsOverviewData(
+    //     name: 'المنصرف',
+    //     count: 400000,
+    //     hexColor: '#DC6803',
+    //     percentage: 40,
+    //   ),
+    // ];
   }
 }
 

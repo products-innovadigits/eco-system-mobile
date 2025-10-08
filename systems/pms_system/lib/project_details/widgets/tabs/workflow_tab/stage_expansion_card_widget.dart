@@ -1,17 +1,19 @@
 import '../../../../shared/pms_exports.dart';
 
 class StageExpansionCardWidget extends StatelessWidget {
-  final List<ProjectStagesModel> stagesList;
+  final ProjectDetailsModel projectDetailsModel;
   final int index;
 
   const StageExpansionCardWidget({
     super.key,
-    required this.stagesList,
     required this.index,
+    required this.projectDetailsModel,
   });
 
   @override
   Widget build(BuildContext context) {
+    final stagesList =
+        projectDetailsModel.projectLifeCycle?.projectStages ?? [];
     final stage = stagesList[index];
     return CustomExpansionCard(
       title: stage.title ?? '',
@@ -25,8 +27,18 @@ class StageExpansionCardWidget extends StatelessWidget {
           stage.projectProcesses?.length ?? 0,
           (idx) => _StageProcessCardWidget(
             title: stage.projectProcesses?[idx].title ?? '',
+            processId: stage.projectProcesses?[idx].id ?? 0,
+            projectId: projectDetailsModel.id ?? 0,
+            workFlowStatus: stage.projectProcesses?[idx].workFlowStatus ?? '',
+            projectName: projectDetailsModel.title ?? '',
+            projectManagerName: projectDetailsModel.managerName ?? '',
+            projectBudget: (projectDetailsModel.budget ?? 0).toDouble(),
+            projectStartDate: (projectDetailsModel.startDate ?? DateTime.now()),
+            projectEndDate: (projectDetailsModel.endDate ?? DateTime.now()),
             status: 'في تقدم',
-            color: context.color.secondary,
+            color: getStatusColor(
+              stage.projectProcesses?[idx].workFlowStatus ?? '',
+            ),
           ),
         ),
       ),
@@ -60,12 +72,28 @@ class _StageCountWidget extends StatelessWidget {
 class _StageProcessCardWidget extends StatelessWidget {
   final String title;
   final String status;
+  final int processId;
+  final int projectId;
+  final String projectName;
+  final String workFlowStatus;
+  final String projectManagerName;
+  final double projectBudget;
+  final DateTime? projectStartDate;
+  final DateTime? projectEndDate;
   final Color color;
 
   const _StageProcessCardWidget({
     required this.title,
     required this.status,
     required this.color,
+    required this.processId,
+    required this.projectId,
+    required this.projectName,
+    required this.projectStartDate,
+    required this.projectEndDate,
+    required this.projectManagerName,
+    required this.projectBudget,
+    required this.workFlowStatus,
   });
 
   @override
@@ -74,7 +102,17 @@ class _StageProcessCardWidget extends StatelessWidget {
       onTap: () {
         CustomNavigator.push(
           Routes.WORKFLOW_PROCESS_DETAILS,
-          arguments: 21,
+          arguments: WorkflowProcessDetailsArgs(
+            processId: processId,
+            projectId: projectId,
+            projectWorkFlowStatus: getStatusName(workFlowStatus),
+            processName: title,
+            projectName: projectName,
+            projectManagerName: projectManagerName,
+            projectBudget: projectBudget,
+            projectStartDate: projectStartDate,
+            projectEndDate: projectEndDate,
+          ),
         );
       },
       child: Container(
@@ -123,3 +161,15 @@ class _StageProcessCardWidget extends StatelessWidget {
     );
   }
 }
+
+Color getStatusColor(String workflowStatus) => switch (workflowStatus) {
+  'start' => LightColor.placeHolderText,
+  'inProgress' => LightColor.secondary,
+  _ => LightColor.tertiary,
+};
+
+String getStatusName(String workflowStatus) => switch (workflowStatus) {
+  'start' => allTranslations.text(LocaleKeys.start),
+  'inProgress' => allTranslations.text(LocaleKeys.in_progress),
+  _ => allTranslations.text(LocaleKeys.done),
+};

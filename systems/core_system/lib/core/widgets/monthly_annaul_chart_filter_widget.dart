@@ -1,20 +1,15 @@
-
 import 'package:core_system/core/utility/export.dart';
 import 'package:pms_system/pms_home/model/kpis_initiatives_progress_model.dart';
 
-class MonthlyAnnualChartFilterWidget extends StatefulWidget {
+class MonthlyAnnualChartFilterWidget extends StatelessWidget {
   final Function(ChartTime time) onSelect;
+  final ChartTime selectedTime;
 
-  const MonthlyAnnualChartFilterWidget({super.key, required this.onSelect});
-
-  @override
-  State<MonthlyAnnualChartFilterWidget> createState() =>
-      _MonthlyAnnualChartFilterWidgetState();
-}
-
-class _MonthlyAnnualChartFilterWidgetState
-    extends State<MonthlyAnnualChartFilterWidget> {
-  ChartTime currentTime = ChartTime.Month;
+  const MonthlyAnnualChartFilterWidget({
+    super.key,
+    required this.onSelect,
+    this.selectedTime = ChartTime.Month,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +18,10 @@ class _MonthlyAnnualChartFilterWidgetState
         highlightColor: context.color.secondary.withValues(alpha: 0.2),
       ),
       child: PopupMenuButton<ChartTime>(
-        initialValue: currentTime,
+        initialValue: selectedTime,
         onSelected: (ChartTime time) {
-          setState(() => currentTime = time);
-          widget.onSelect(time).call;
+          onSelect(time);
         },
-
         itemBuilder: (BuildContext ctx) {
           return ChartTime.values.map((ChartTime time) {
             return PopupMenuItem<ChartTime>(
@@ -51,7 +44,7 @@ class _MonthlyAnnualChartFilterWidgetState
           child: Row(
             children: [
               Text(
-                allTranslations.text(currentTime.name),
+                allTranslations.text(selectedTime.name),
                 style: context.textTheme.bodySmall,
               ),
               8.sw,

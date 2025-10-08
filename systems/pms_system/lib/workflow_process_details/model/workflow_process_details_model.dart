@@ -1,162 +1,60 @@
-import 'package:core_system/core/utility/export.dart';
+import 'package:core_system/core/model/meta.dart';
+import 'package:pms_system/shared/pms_exports.dart';
 
 class WorkflowProcessDetailsModel extends SingleMapper {
-  int? id;
-  String? title;
-  String? riskLevelName;
-  num? deliveredOutputs;
-  String? description;
-  DateTime? startDate;
-  DateTime? endDate;
-  int? lifeCycleId;
-  ProjectLifeCycleModel? projectLifeCycle;
-  int? projectCategoryId;
-  int? budget;
-  double? weight;
-  num? progressRatio;
-  List<String>? teamIds;
-  SectionDepartmentModel? sectionDepartment;
-  List<TeamModel>? teamName;
-  int? implementorDepartmentId;
-  String? implementorDepartmentName;
-  String? managerId;
-  String? status;
-  String? managerName;
-  String? periortyLevelName;
-  String? projectCategoryName;
-  int? priorityLevelId;
-  int? riskLevelId;
-  List<dynamic>? initiativeIds;
-  List<dynamic>? kpiIds;
-  int? outputCount;
-  String? createdBy;
-  String? createdAt;
-  String? updatedBy;
-  String? updatedAt;
+  List<WorkflowProcessGroupModel>? data;
+  bool? succeeded;
+  String? message;
+  Meta? meta;
+  dynamic warningErrors;
+  List<dynamic>? validationErrors;
 
   WorkflowProcessDetailsModel({
-    this.id,
-    this.title,
-    this.description,
-    this.startDate,
-    this.riskLevelName,
-    this.deliveredOutputs,
-    this.endDate,
-    this.weight,
-    this.lifeCycleId,
-    this.projectLifeCycle,
-    this.projectCategoryId,
-    this.budget,
-    this.teamIds,
-    this.sectionDepartment,
-    this.teamName,
-    this.periortyLevelName,
-    this.implementorDepartmentId,
-    this.implementorDepartmentName,
-    this.managerId,
-    this.status,
-    this.progressRatio,
-    this.managerName,
-    this.projectCategoryName,
-    this.priorityLevelId,
-    this.riskLevelId,
-    this.initiativeIds,
-    this.kpiIds,
-    this.outputCount,
-    this.createdBy,
-    this.createdAt,
-    this.updatedBy,
-    this.updatedAt,
+    this.data,
+    this.succeeded,
+    this.meta,
+    this.message,
+    this.warningErrors,
+    this.validationErrors,
   });
 
   WorkflowProcessDetailsModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    title = json['title'] ?? json['name'];
-    description = json['description'];
-    riskLevelName = json['riskLevelName'];
-    deliveredOutputs = json['deliveredOutputs'];
-    startDate = json['startDate'] != null
-        ? DateTime.parse(json['startDate'])
-        : null;
-    endDate = json['endDate'] != null ? DateTime.parse(json['endDate']) : null;
-    lifeCycleId = json['lifeCycleId'];
-    projectLifeCycle = json['projectLifeCycle'] != null
-        ? ProjectLifeCycleModel.fromJson(json['projectLifeCycle'])
-        : null;
-    projectCategoryId = json['projectCategoryId'];
-    weight = json['weight'];
-    budget = json['budget'];
-    progressRatio = json['progressRation'];
-    teamIds = json['teamIds'] != null
-        ? List<String>.from(json['teamIds'])
-        : null;
-    sectionDepartment = json['sectionDepartment'] != null
-        ? SectionDepartmentModel.fromJson(json['sectionDepartment'])
-        : null;
-    // teamName = json['teamName'] != null
-    //     ? TeamModel.fromJson(json['teamName'])
-    //     : null;
-    if (json['teamName'] != null) {
-      teamName = <TeamModel>[];
-      json['teamName'].forEach((v) {
-        teamName!.add(TeamModel.fromJson(v));
+    succeeded = json['succeeded'];
+    // data is a direct List of groups
+    if (json['data'] != null && json['data'] is List) {
+      data = <WorkflowProcessGroupModel>[];
+      (json['data'] as List).forEach((v) {
+        data!.add(WorkflowProcessGroupModel.fromJson(v));
       });
     }
-    implementorDepartmentId = json['implementorDepartmentId'];
-
-    implementorDepartmentName = json['implementorDepartmentName'];
-    managerId = json['managerId'];
-    status = json['status'];
-    managerName = json['managerName'];
-    periortyLevelName = json['periortyLevelName'];
-    projectCategoryName = json['projectCategoryName'];
-    priorityLevelId = json['periortyLevelId'];
-    riskLevelId = json['riskLevelId'];
-    outputCount = json['outputCount'];
-    createdBy = json['createdBy'];
-    createdAt = json['createdAt'];
-    updatedBy = json['updatedBy'];
-    updatedAt = json['updatedAt'];
+    meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
+    message = json['message'];
+    warningErrors = json['warningErrors'];
+    if (json['validationErrors'] != null) {
+      validationErrors = <dynamic>[];
+      (json['validationErrors'] as List).forEach((v) {
+        validationErrors!.add(v);
+      });
+    }
   }
 
   @override
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = title;
-    data['riskLevelName'] = riskLevelName;
-    data['deliveredOutputs'] = deliveredOutputs;
-    data['description'] = description;
-    data['startDate'] = startDate;
-    data['endDate'] = endDate;
-    data['lifeCycleId'] = lifeCycleId;
-    if (projectLifeCycle != null) {
-      data['projectLifeCycle'] = projectLifeCycle!.toJson();
+    data['succeeded'] = succeeded;
+    if (this.data != null) {
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    data['projectCategoryId'] = projectCategoryId;
-    data['weight'] = weight;
-    data['budget'] = budget;
-    data['teamIds'] = teamIds;
-    data['sectionDepartment'] = sectionDepartment?.toJson();
-    // data['teamName'] = teamName?.toJson();
-    if (teamName != null) {
-      data['teamName'] = teamName!.map((v) => v.toJson()).toList();
+    if (meta != null) {
+      data['meta'] = meta!.toJson();
     }
-    data['implementorDepartmentId'] = implementorDepartmentId;
-    data['implementorDepartmentName'] = implementorDepartmentName;
-    data['managerId'] = managerId;
-    data['status'] = status;
-    data['progressRation'] = progressRatio;
-    data['managerName'] = managerName;
-    data['periortyLevelName'] = periortyLevelName;
-    data['projectCategoryName'] = projectCategoryName;
-    data['periortyLevelId'] = priorityLevelId;
-    data['riskLevelId'] = riskLevelId;
-    data['outputCount'] = outputCount;
-    data['createdBy'] = createdBy;
-    data['createdAt'] = createdAt;
-    data['updatedBy'] = updatedBy;
-    data['updatedAt'] = updatedAt;
+    if (message != null) {
+      data['message'] = message;
+    }
+    data['warningErrors'] = warningErrors;
+    if (validationErrors != null) {
+      data['validationErrors'] = validationErrors!.map((v) => v).toList();
+    }
     return data;
   }
 
@@ -166,205 +64,73 @@ class WorkflowProcessDetailsModel extends SingleMapper {
   }
 }
 
-class ProjectLifeCycleModel {
-  int? id;
-  String? title;
-  String? description;
-  List<ProjectStagesModel>? projectStages;
+class WorkflowProcessGroupModel extends SingleMapper {
+  int? groupId;
+  String? groupName;
+  double? progress;
+  List<WorkflowProcessStepModel>? steps;
 
-  ProjectLifeCycleModel({
-    this.id,
-    this.title,
-    this.description,
-    this.projectStages,
+  WorkflowProcessGroupModel({
+    this.groupId,
+    this.groupName,
+    this.progress,
+    this.steps,
   });
 
-  ProjectLifeCycleModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    title = json['title'] ?? json['name'];
-    description = json['description'];
-    if (json['projectStages'] != null) {
-      projectStages = <ProjectStagesModel>[];
-      json['projectStages'].forEach((v) {
-        projectStages!.add(ProjectStagesModel.fromJson(v));
+  WorkflowProcessGroupModel.fromJson(Map<String, dynamic> json) {
+    groupId = json['groupId'];
+    groupName = json['groupName'];
+    progress = double.tryParse(json['progress']?.toString() ?? '0');
+    if (json['steps'] != null) {
+      steps = <WorkflowProcessStepModel>[];
+      (json['steps'] as List).forEach((v) {
+        steps!.add(WorkflowProcessStepModel.fromJson(v));
       });
     }
   }
 
+  @override
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['title'] = title;
-    data['description'] = description;
-    if (projectStages != null) {
-      data['projectStages'] = projectStages!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class ProjectStagesModel {
-  int? id;
-  String? title;
-  String? description;
-  int? lifeCycleId;
-  double? progress;
-  List<ProjectProcessModel>? projectProcesses;
-
-  ProjectStagesModel({
-    this.id,
-    this.title,
-    this.description,
-    this.lifeCycleId,
-    this.progress,
-    this.projectProcesses,
-  });
-
-  ProjectStagesModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    title = json['title'] ?? json['name'];
-    description = json['description'];
-    lifeCycleId = json['lifeCycleId'];
-    progress = double.tryParse(json['progress']?.toString() ?? "0");
-    if (json['projectProcesses'] != null) {
-      projectProcesses = <ProjectProcessModel>[];
-      json['projectProcesses'].forEach((v) {
-        projectProcesses!.add(ProjectProcessModel.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['title'] = title;
-    data['description'] = description;
-    data['lifeCycleId'] = lifeCycleId;
+    data['groupId'] = groupId;
+    data['groupName'] = groupName;
     data['progress'] = progress;
-    if (projectProcesses != null) {
-      data['projectProcesses'] = projectProcesses!
-          .map((v) => v.toJson())
-          .toList();
+    if (steps != null) {
+      data['steps'] = steps!.map((e) => e.toJson()).toList();
     }
     return data;
   }
+
+  @override
+  Mapper fromJson(Map<String, dynamic> json) {
+    return WorkflowProcessGroupModel.fromJson(json);
+  }
 }
 
-class ProjectProcessModel {
+class WorkflowProcessStepModel extends SingleMapper {
   int? id;
-  String? title;
-  String? description;
-  int? stageId;
-  int? departmentId;
-  int? workflowId;
-  dynamic workflow;
-  int? viewOrder;
-  double? progress;
-  bool? isRunningWorkflow;
-  bool? isCompletedWorkflow;
-  String? runningWorkflowTime;
-  String? completedWorkflowTime;
+  String? stepName;
+  int? status;
 
-  ProjectProcessModel({
-    this.id,
-    this.title,
-    this.description,
-    this.stageId,
-    this.departmentId,
-    this.workflowId,
-    this.workflow,
-    this.viewOrder,
-    this.progress,
-    this.isRunningWorkflow,
-    this.isCompletedWorkflow,
-    this.runningWorkflowTime,
-    this.completedWorkflowTime,
-  });
+  WorkflowProcessStepModel({this.id, this.stepName, this.status});
 
-  ProjectProcessModel.fromJson(Map<String, dynamic> json) {
+  WorkflowProcessStepModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    title = json['title'] ?? json['name'];
-    description = json['description'];
-    stageId = json['stageId'];
-    departmentId = json['departmentId'];
-    workflowId = json['workflowId'];
-    workflow = json['workflow'];
-    viewOrder = json['viewOrder'];
-    progress = double.tryParse(json['progress']?.toString() ?? "0");
-    isRunningWorkflow = json['isRunningWorkflow'];
-    isCompletedWorkflow = json['isCompletedWorkflow'];
-    runningWorkflowTime = json['runningWorkflowTime'];
-    completedWorkflowTime = json['completedWorkflowTime'];
+    stepName = json['stepName'];
+    status = json['status'];
   }
 
+  @override
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
-    data['title'] = title;
-    data['description'] = description;
-    data['stageId'] = stageId;
-    data['departmentId'] = departmentId;
-    data['workflowId'] = workflowId;
-    data['workflow'] = workflow;
-    data['viewOrder'] = viewOrder;
-    data['progress'] = progress;
-    data['isRunningWorkflow'] = isRunningWorkflow;
-    data['isCompletedWorkflow'] = isCompletedWorkflow;
-    data['runningWorkflowTime'] = runningWorkflowTime;
-    data['completedWorkflowTime'] = completedWorkflowTime;
+    data['stepName'] = stepName;
+    data['status'] = status;
     return data;
   }
-}
 
-class SectionDepartmentModel {
-  int? id;
-  String? name;
-  String? description;
-  String? manager;
-  int? projectCount;
-
-  SectionDepartmentModel({
-    this.id,
-    this.name,
-    this.description,
-    this.manager,
-    this.projectCount,
-  });
-
-  SectionDepartmentModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    description = json['description'];
-    manager = json['manager'];
-    projectCount = json['projectCount'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['description'] = description;
-    data['manager'] = manager;
-    data['projectCount'] = projectCount;
-    return data;
-  }
-}
-
-class TeamModel {
-  String? id;
-  String? name;
-
-  TeamModel({this.id, this.name});
-
-  TeamModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    return data;
+  @override
+  Mapper fromJson(Map<String, dynamic> json) {
+    return WorkflowProcessStepModel.fromJson(json);
   }
 }

@@ -86,6 +86,7 @@ class ProcessHeaderCard extends StatelessWidget {
                       ),
                       SizedBox(height: 8.h),
                       Wrap(
+                        runSpacing: 8,
                         children: [
                           Container(
                             padding: EdgeInsets.symmetric(
@@ -99,7 +100,7 @@ class ProcessHeaderCard extends StatelessWidget {
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
-                              '${allTranslations.text(LocaleKeys.project_fund)}: 200.0000 ريال',
+                              '${allTranslations.text(LocaleKeys.project_fund)}: ${project.budget}',
                               style: context.textTheme.bodySmall?.copyWith(
                                 color: context.color.tertiary,
                                 fontSize: FontSizes.f10,
@@ -119,7 +120,7 @@ class ProcessHeaderCard extends StatelessWidget {
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
-                              '${allTranslations.text(LocaleKeys.project_manager)}:  محمد عزيز',
+                              '${allTranslations.text(LocaleKeys.project_manager)}:  ${project.managerName}',
                               style: context.textTheme.bodySmall?.copyWith(
                                 color: context.color.tertiary,
                                 fontSize: FontSizes.f10,

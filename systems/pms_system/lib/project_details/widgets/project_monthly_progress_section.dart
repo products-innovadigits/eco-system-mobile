@@ -1,18 +1,29 @@
+import 'package:pms_system/project_details/model/general_progress_chart_model.dart';
+
 import '../../shared/pms_exports.dart';
 
 class ProjectMonthlyProgressSection extends StatelessWidget {
-  const ProjectMonthlyProgressSection({super.key});
+  final List<ProgressSeriesItem> chartSeries;
+  final bool isMonthly;
+
+  const ProjectMonthlyProgressSection({
+    super.key,
+    required this.chartSeries,
+    this.isMonthly = true,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ProjectMonthlyProgress(
-      data: [
-        ProjectCategoriesProgressModel(name: "xxx", progress: 20),
-        ProjectCategoriesProgressModel(name: "yyy", progress: 10),
-        ProjectCategoriesProgressModel(name: "yyy", progress: 40),
-        ProjectCategoriesProgressModel(name: "yyy", progress: 70),
-        ProjectCategoriesProgressModel(name: "zzz", progress: 80),
-      ],
+      data: List.generate(
+        chartSeries.length,
+        (index) => ProjectCategoriesProgressModel(
+          name: isMonthly
+              ? chartSeries[index].period?.substring(5)
+              : chartSeries[index].period ?? '',
+          progress: chartSeries[index].percent?.toDouble(),
+        ),
+      ),
     );
   }
 }

@@ -1,35 +1,53 @@
 import '../../shared/pms_exports.dart';
 
 class ProjectChallenges extends StatelessWidget {
-  const ProjectChallenges({super.key});
+  final List<MobileChallengeItemModel> challenges;
+
+  const ProjectChallenges({super.key, required this.challenges});
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.color;
     return ListView(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       padding: EdgeInsets.zero,
-      children: [
-        _ChallengeCardWidget(
-          effect: allTranslations.text(LocaleKeys.low_effect),
-          processedChallengeNumber: '5',
-          challengeNumberToProcess: '20',
-          color: colors.primary,
+      children: List.generate(
+        challenges.length,
+        (index) => _ChallengeCardWidget(
+          effect: challenges[index].label ?? '',
+          processedChallengeNumber: challenges[index].processed.toString(),
+          challengeNumberToProcess: challenges[index].total.toString(),
+          color: Color(
+            int.parse(
+              (challenges[index].background ?? '#000000').replaceFirst(
+                '#',
+                '0xff',
+              ),
+            ),
+          ),
         ),
-        _ChallengeCardWidget(
-          effect: allTranslations.text(LocaleKeys.average_effect),
-          processedChallengeNumber: '20',
-          challengeNumberToProcess: '40',
-          color: colors.secondary,
-        ),
-        _ChallengeCardWidget(
-          effect: allTranslations.text(LocaleKeys.high_effect),
-          processedChallengeNumber: '60',
-          challengeNumberToProcess: '120',
-          color: colors.errorContainer,
-        ),
-      ],
+      ),
+
+      // [
+      //   _ChallengeCardWidget(
+      //     effect: allTranslations.text(LocaleKeys.low_effect),
+      //     processedChallengeNumber: '5',
+      //     challengeNumberToProcess: '20',
+      //     color: colors.primary,
+      //   ),
+      //   _ChallengeCardWidget(
+      //     effect: allTranslations.text(LocaleKeys.average_effect),
+      //     processedChallengeNumber: '20',
+      //     challengeNumberToProcess: '40',
+      //     color: colors.secondary,
+      //   ),
+      //   _ChallengeCardWidget(
+      //     effect: allTranslations.text(LocaleKeys.high_effect),
+      //     processedChallengeNumber: '60',
+      //     challengeNumberToProcess: '120',
+      //     color: colors.errorContainer,
+      //   ),
+      // ],
     );
   }
 }

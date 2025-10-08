@@ -1,4 +1,6 @@
 import 'package:pms_system/shared/pms_exports.dart';
+import 'package:pms_system/workflow_process_details/model/workflow_process_details_model.dart';
+import 'package:pms_system/workflow_process_details/repo/workflow_process_details_repo.dart';
 
 class WorkflowProcessDetailsBloc extends Bloc<AppEvent, AppState> {
   WorkflowProcessDetailsBloc() : super(Start()) {
@@ -7,31 +9,29 @@ class WorkflowProcessDetailsBloc extends Bloc<AppEvent, AppState> {
   }
 
   ProcessTabsEnum selectedTab = ProcessTabsEnum.followProcess;
-  ProjectDetailsModel? _cachedModel;
+  WorkflowProcessDetailsModel? _cachedModel;
 
   _onClick(AppEvent event, Emitter<AppState> emit) async {
-    // try {
+    Map<String, dynamic> args = event.arguments as Map<String, dynamic>;
     emit(Loading());
+    try {
+      WorkflowProcessDetailsModel res =
+          await WorkflowProcessDetailsRepo.getWorkflowProcessDetails(
+            processId: args['processId'],
+            projectId: args['projectId'],
+          );
 
-    Response res = await ProjectDetailsRepo.getProjectDetails(
-      event.arguments as int,
-    );
-
-    if (res.statusCode == 200 && res.data != null && res.data["data"] != null) {
-      ProjectDetailsModel model = ProjectDetailsModel.fromJson(
-        res.data["data"],
-      );
-      _cachedModel = model; // Cache the model
-      emit(Done(model: model));
-    } else {
+      if (res.data != null && res.data!.isNotEmpty) {
+        _cachedModel = res;
+        emit(Done(model: _cachedModel));
+      } else {
+        emit(Empty());
+      }
+    } catch (e) {
       AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+
       emit(Error());
     }
-    // } catch (e) {
-    //   AppCore.errorMessage(allTranslations.text('something_went_wrong'));
-    //
-    //   emit(Error());
-    // }
   }
 
   Future<void> _onSelectTab(Select event, Emitter<AppState> emit) async {
@@ -39,10 +39,10 @@ class WorkflowProcessDetailsBloc extends Bloc<AppEvent, AppState> {
     if (selectedTab != tab) {
       selectedTab = tab;
     }
-    
+
     // Emit Done with the cached model
     if (_cachedModel != null) {
-      emit(Done(model: _cachedModel!));
+      emit(Done(model: _cachedModel));
     } else {
       // If no cached model, emit error or handle appropriately
       emit(Error());
