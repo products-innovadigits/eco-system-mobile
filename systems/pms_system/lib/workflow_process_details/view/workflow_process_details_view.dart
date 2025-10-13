@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:pms_system/shared/pms_exports.dart';
 import 'package:pms_system/workflow_process_details/widgets/process_details_body.dart';
 
@@ -40,7 +42,7 @@ class WorkflowProcessDetailsView extends StatelessWidget {
           child: Row(
             children: [
               Text(
-                workflowStatus,
+                getStatusName(workflowStatus),
                 style: context.textTheme.bodySmall?.copyWith(
                   color: getStatusColor(workflowStatus),
                   fontSize: FontSizes.f10,
@@ -79,4 +81,10 @@ Color getStatusColor(String workflowStatus) => switch (workflowStatus) {
   'start' => LightColor.placeHolderText,
   'inProgress' => LightColor.secondary,
   _ => LightColor.tertiary,
+};
+
+String getStatusName(String workflowStatus) => switch (workflowStatus) {
+  'start' => allTranslations.text(LocaleKeys.start),
+  'inProgress' => allTranslations.text(LocaleKeys.in_progress),
+  _ => allTranslations.text(LocaleKeys.done),
 };

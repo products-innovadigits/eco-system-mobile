@@ -77,7 +77,9 @@ class ProjectDetailsModel extends SingleMapper {
     description = json['description'];
     riskLevelName = json['riskLevelName'];
     deliveredOutputs = json['deliveredOutputs'];
-    startDate = json['startDate'] != null ? DateTime.parse(json['startDate']) : null;
+    startDate = json['startDate'] != null
+        ? DateTime.parse(json['startDate'])
+        : null;
     endDate = json['endDate'] != null ? DateTime.parse(json['endDate']) : null;
     lifeCycleId = json['lifeCycleId'];
     projectLifeCycle = json['projectLifeCycle'] != null
@@ -87,7 +89,9 @@ class ProjectDetailsModel extends SingleMapper {
     weight = (json['weight'] as num?)?.toDouble();
     budget = json['budget'];
     progressRatio = (json['progressRation'] as num?)?.toDouble(); // safe cast
-    teamIds = json['teamIds'] != null ? List<String>.from(json['teamIds']) : null;
+    teamIds = json['teamIds'] != null
+        ? List<String>.from(json['teamIds'])
+        : null;
     sectionDepartment = json['sectionDepartment'] != null
         ? SectionDepartmentModel.fromJson(json['sectionDepartment'])
         : null;
@@ -241,7 +245,9 @@ class ProjectStagesModel {
     data['lifeCycleId'] = lifeCycleId;
     data['progress'] = progress;
     if (projectProcesses != null) {
-      data['projectProcesses'] = projectProcesses!.map((v) => v.toJson()).toList();
+      data['projectProcesses'] = projectProcesses!
+          .map((v) => v.toJson())
+          .toList();
     }
     return data;
   }
@@ -446,16 +452,22 @@ class MobileDetailsModel {
         outputsSummary!.add(MobileOutputsSummaryModel.fromJson(v));
       });
     }
-    progress = json['progress'] != null ? MobileProgressModel.fromJson(json['progress']) : null;
+    progress = json['progress'] != null
+        ? MobileProgressModel.fromJson(json['progress'])
+        : null;
     status = json['status'];
-    challenges = json['challenges'] != null ? MobileChallengesModel.fromJson(json['challenges']) : null;
+    challenges = json['challenges'] != null
+        ? MobileChallengesModel.fromJson(json['challenges'])
+        : null;
     if (json['risks'] != null) {
       risks = <MobileRiskModel>[];
       json['risks'].forEach((v) {
         risks!.add(MobileRiskModel.fromJson(v));
       });
     }
-    workflow = json['workflow'] != null ? MobileWorkflowModel.fromJson(json['workflow']) : null;
+    workflow = json['workflow'] != null
+        ? MobileWorkflowModel.fromJson(json['workflow'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -498,7 +510,7 @@ class MobileBudgetModel {
   MobileBudgetModel.fromJson(Map<String, dynamic> json) {
     key = json['key'];
     label = json['label'];
-    amount = (json['amount'] as num?)?.toDouble();   // safe cast
+    amount = (json['amount'] as num?)?.toDouble(); // safe cast
     percent = (json['percent'] as num?)?.toDouble(); // safe cast
     background = json['background'];
   }
@@ -549,12 +561,14 @@ class MobileOutputsSummaryModel {
   String? label;
   num? value;
   String? background;
+  List<String>? titles;
 
   MobileOutputsSummaryModel({
     this.key,
     this.label,
     this.value,
     this.background,
+    this.titles,
   });
 
   MobileOutputsSummaryModel.fromJson(Map<String, dynamic> json) {
@@ -562,6 +576,12 @@ class MobileOutputsSummaryModel {
     label = json['label'];
     value = json['value'];
     background = json['background'];
+    if (json['titles'] != null) {
+      titles = <String>[];
+      json['titles'].forEach((v) {
+        titles!.add(v);
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -570,6 +590,9 @@ class MobileOutputsSummaryModel {
     data['label'] = label;
     data['value'] = value;
     data['background'] = background;
+    if (titles != null) {
+      data['titles'] = titles!.map((v) => v).toList();
+    }
     return data;
   }
 }

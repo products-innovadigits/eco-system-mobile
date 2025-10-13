@@ -1,7 +1,9 @@
 import 'package:pms_system/shared/pms_exports.dart';
 
 class ProjectOutputsBottomSheet extends StatelessWidget {
-  const ProjectOutputsBottomSheet({super.key});
+  final List<MobileOutputsSummaryModel> outputsSummary;
+
+  const ProjectOutputsBottomSheet({super.key, required this.outputsSummary});
 
   @override
   Widget build(BuildContext context) {
@@ -10,34 +12,13 @@ class ProjectOutputsBottomSheet extends StatelessWidget {
         BottomSheetHeader(title: allTranslations.text(LocaleKeys.outputs)),
         const SizedBox(height: 24),
         ListAnimator(
-          data: [
-            _OutputCardWidget(
-              outputStatus: 'تم التسليم',
-              color: context.color.tertiary,
-              outputsList: [
-                'ميثاق المشروع (من ٢٢ ابريل ٢٠٢٤ الي ٢٢ يونيو ٢٠٢٢ )',
-                'ميثاق المشروع (من ٢٢ ابريل ٢٠٢٤ الي ٢٢ يونيو ٢٠٢٢ )',
-                'ميثاق المشروع (من ٢٢ ابريل ٢٠٢٤ الي ٢٢ يونيو ٢٠٢٢ )',
-              ],
-            ),
-            const SizedBox(height: 12),
-            _OutputCardWidget(
-              outputStatus: 'جاري التسليم',
-              color: context.color.secondary,
-              outputsList: [
-                'ميثاق المشروع (من ٢٢ ابريل ٢٠٢٤ الي ٢٢ يونيو ٢٠٢٢ )',
-                'وثيقه متطلبات الأعمال Business Requirement Document     (BRD)(من ٢٢ ابريل ٢٠٢٤ الي ٢٢ يونيو ٢٠٢٢ )',
-              ],
-            ),
-            const SizedBox(height: 12),
-            _OutputCardWidget(
-              outputStatus: 'لم يتم التسليم',
-              color: context.color.error,
-              outputsList: [
-                'وثيقه متطلبات الأعمال Business Requirement Document     (BRD)(من ٢٢ ابريل ٢٠٢٤ الي ٢٢ يونيو ٢٠٢٢ ) وثيقه متطلبات الأعمال Business Requirement Document',
-              ],
-            ),
-          ],
+          data: outputsSummary
+              .map(
+                (output) => output.key != 'total'
+                    ? _OutputCardWidget(output: output)
+                    : const SizedBox.shrink(),
+              )
+              .toList(),
         ),
       ],
     );
@@ -45,20 +26,18 @@ class ProjectOutputsBottomSheet extends StatelessWidget {
 }
 
 class _OutputCardWidget extends StatelessWidget {
-  final String outputStatus;
-  final Color color;
-  final List<String> outputsList;
+  final MobileOutputsSummaryModel output;
 
-  const _OutputCardWidget({
-    required this.outputStatus,
-    required this.color,
-    required this.outputsList,
-  });
+  const _OutputCardWidget({required this.output});
 
   @override
   Widget build(BuildContext context) {
+    final color = Color(
+      int.parse((output.background ?? '#000000').replaceFirst('#', '0xff')),
+    );
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 12.w),
+      margin: EdgeInsetsDirectional.only(bottom: 12),
       decoration: BoxDecoration(
         color: context.color.surfaceContainer,
         border: Border.all(color: context.color.outline),
@@ -71,7 +50,7 @@ class _OutputCardWidget extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  outputStatus,
+                  output.label ?? '',
                   style: context.textTheme.labelMedium?.copyWith(color: color),
                 ),
               ),
@@ -82,34 +61,38 @@ class _OutputCardWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  '${outputsList.length} ${allTranslations.text(LocaleKeys.outputs)}',
+                  '${(output.value ?? 0)} ${allTranslations.text(LocaleKeys.outputs)}',
                   style: context.textTheme.labelSmall?.copyWith(color: color),
                 ),
               ),
             ],
           ),
-          Padding(
-            padding: EdgeInsetsGeometry.symmetric(vertical: 8.h),
-            child: Divider(color: color.withValues(alpha: 0.1)),
-          ),
-          ListAnimator(
-            data: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.circle,
-                    size: 12,
-                    color: color.withValues(alpha: 0.1),
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    'ميثاق المشروع (من ٢٢ ابريل ٢٠٢٤ الي ٢٢ يونيو ٢٠٢٢ )',
-                    style: context.textTheme.bodySmall,
-                  ),
-                ],
-              ),
-            ],
-          ),
+          if ((output.titles ?? []).isNotEmpty) ...[
+            Padding(
+              padding: EdgeInsetsGeometry.symmetric(vertical: 8.h),
+              child: Divider(color: color.withValues(alpha: 0.1)),
+            ),
+            ListAnimator(
+              data: (output.titles ?? [])
+                  .map(
+                    (output) => Padding(
+                      padding: const EdgeInsetsDirectional.only(bottom: 8),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.circle,
+                            size: 12,
+                            color: color.withValues(alpha: 0.1),
+                          ),
+                          const SizedBox(width: 4),
+                          Text(output, style: context.textTheme.bodySmall),
+                        ],
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+          ],
         ],
       ),
     );

@@ -52,7 +52,11 @@ class ProjectMainInfoTab extends StatelessWidget {
           title: allTranslations.text(LocaleKeys.the_outputs),
           withMargin: false,
           withExpanded: false,
-          action: _outputsBottomSheetBtn(context),
+          action: _outputsBottomSheetBtn(
+            context,
+            outputsSummary:
+                projectDetailsModel.mobileDetails?.outputsSummary ?? [],
+          ),
           child: ProjectOutputsChart(
             data: projectDetailsModel.mobileDetails?.outputsSummary ?? [],
           ),
@@ -198,10 +202,15 @@ Widget _averageProgressWidget(
   );
 }
 
-Widget _outputsBottomSheetBtn(BuildContext context) {
+Widget _outputsBottomSheetBtn(
+  BuildContext context, {
+  required List<MobileOutputsSummaryModel> outputsSummary,
+}) {
   return InkWell(
     onTap: () {
-      PopUpHelper.showBottomSheet(child: ProjectOutputsBottomSheet());
+      PopUpHelper.showBottomSheet(
+        child: ProjectOutputsBottomSheet(outputsSummary: outputsSummary),
+      );
     },
     child: Text(
       allTranslations.text(LocaleKeys.view_more),

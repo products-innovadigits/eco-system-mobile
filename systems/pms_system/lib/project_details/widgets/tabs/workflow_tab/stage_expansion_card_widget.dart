@@ -105,7 +105,7 @@ class _StageProcessCardWidget extends StatelessWidget {
           arguments: WorkflowProcessDetailsArgs(
             processId: processId,
             projectId: projectId,
-            projectWorkFlowStatus: getStatusName(workFlowStatus),
+            projectWorkFlowStatus: workFlowStatus,
             processName: title,
             projectName: projectName,
             projectManagerName: projectManagerName,
@@ -166,10 +166,4 @@ Color getStatusColor(String workflowStatus) => switch (workflowStatus) {
   'start' => LightColor.placeHolderText,
   'inProgress' => LightColor.secondary,
   _ => LightColor.tertiary,
-};
-
-String getStatusName(String workflowStatus) => switch (workflowStatus) {
-  'start' => allTranslations.text(LocaleKeys.start),
-  'inProgress' => allTranslations.text(LocaleKeys.in_progress),
-  _ => allTranslations.text(LocaleKeys.done),
 };

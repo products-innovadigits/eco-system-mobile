@@ -98,7 +98,8 @@ Widget _getTabSection(
 ) {
   return switch (selectedTab) {
     ProcessTabsEnum.followProcess => FollowProcessTab(processList: processList),
-    ProcessTabsEnum.stageDocs => StageDocsTab(),
+    ProcessTabsEnum.stageDocs => Container(),
+    // ProcessTabsEnum.stageDocs => StageDocsTab(),
     ProcessTabsEnum.fields => FieldsTab(),
     ProcessTabsEnum.history => HistoryTab(),
     _ => ActionsTab(),
