@@ -1,17 +1,15 @@
 import 'package:pms_system/shared/pms_exports.dart';
-import 'package:pms_system/workflow_process_details/model/workflow_process_details_model.dart';
-import 'package:pms_system/workflow_process_details/widgets/process_header_card.dart';
-import 'package:pms_system/workflow_process_details/widgets/tabs/actions_tab/actions_tab.dart';
-import 'package:pms_system/workflow_process_details/widgets/tabs/fields_tab/fields_tab.dart';
-import 'package:pms_system/workflow_process_details/widgets/tabs/follow_process_tab/follow_process_tab.dart';
-import 'package:pms_system/workflow_process_details/widgets/tabs/history_tab/history_tab.dart';
-import 'package:pms_system/workflow_process_details/widgets/tabs/process_details_tabs_section.dart';
 import 'package:pms_system/workflow_process_details/widgets/tabs/stage_docs_tab/stage_docs_tab.dart';
 
 class ProcessDetailsBody extends StatelessWidget {
   final ProjectDetailsModel projectDetailsModel;
+  final int processId;
 
-  const ProcessDetailsBody({super.key, required this.projectDetailsModel});
+  const ProcessDetailsBody({
+    super.key,
+    required this.projectDetailsModel,
+    required this.processId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +27,7 @@ class ProcessDetailsBody extends StatelessWidget {
             processList: model.data ?? [],
             projectDetailsModel: projectDetailsModel,
             selectedTab: selectedTab,
+            processId: processId,
           ),
 
           // ── Empty ───────────────────────────
@@ -49,11 +48,13 @@ class _ProcessBody extends StatelessWidget {
   final List<WorkflowProcessGroupModel> processList;
   final ProjectDetailsModel projectDetailsModel;
   final ProcessTabsEnum selectedTab;
+  final int processId;
 
   const _ProcessBody({
     required this.processList,
     required this.selectedTab,
     required this.projectDetailsModel,
+    required this.processId,
   });
 
   @override
@@ -68,7 +69,12 @@ class _ProcessBody extends StatelessWidget {
         Expanded(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
-            child: _getTabSection(selectedTab, processList),
+            child: _getTabSection(
+              selectedTab,
+              processList,
+              projectDetailsModel.id!,
+              processId,
+            ),
           ),
         ),
       ],
@@ -95,11 +101,16 @@ Widget _buildShimmerLoading(BuildContext context) => Padding(
 Widget _getTabSection(
   ProcessTabsEnum selectedTab,
   List<WorkflowProcessGroupModel> processList,
+  int processId,
+  int projectId,
 ) {
   return switch (selectedTab) {
     ProcessTabsEnum.followProcess => FollowProcessTab(processList: processList),
-    ProcessTabsEnum.stageDocs => Container(),
-    // ProcessTabsEnum.stageDocs => StageDocsTab(),
+    // ProcessTabsEnum.stageDocs => Container(),
+    ProcessTabsEnum.stageDocs => StageDocsTab(
+      projectId: projectId,
+      processId: processId,
+    ),
     ProcessTabsEnum.fields => FieldsTab(),
     ProcessTabsEnum.history => HistoryTab(),
     _ => ActionsTab(),

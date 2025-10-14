@@ -67,6 +67,7 @@ class ProjectMainInfoTab extends StatelessWidget {
           data: _generateSampleFundingData(
             projectDetailsModel.mobileDetails?.budget ?? [],
           ),
+          projectBudget: (projectDetailsModel.budget ?? 0.0).toDouble(),
         ),
 
         ///Challenges

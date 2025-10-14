@@ -33,7 +33,7 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
       PermissionHandler.checkNotificationsPermission();
 
       ///Ask Location Permission
-      Geolocator.requestPermission();
+      // Geolocator.requestPermission();
 
       SharedHelper helper = SharedHelper();
       bool? isLogin = await helper.readBoolean(CachingKey.IS_LOGIN);

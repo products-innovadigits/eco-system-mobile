@@ -42,4 +42,11 @@ export 'package:pms_system/projects_progress/view/project_management_section.dar
 export 'package:pms_system/projects_progress/widgets/half_circle_analatic_chart.dart';
 export 'package:pms_system/projects_progress/widgets/project_progress_section.dart';
 export 'package:pms_system/workflow_process_details/bloc/workflow_process_details_bloc.dart';
+export 'package:pms_system/workflow_process_details/model/workflow_process_details_model.dart';
+export 'package:pms_system/workflow_process_details/widgets/process_header_card.dart';
+export 'package:pms_system/workflow_process_details/widgets/tabs/actions_tab/actions_tab.dart';
+export 'package:pms_system/workflow_process_details/widgets/tabs/fields_tab/fields_tab.dart';
+export 'package:pms_system/workflow_process_details/widgets/tabs/follow_process_tab/follow_process_tab.dart';
 export 'package:pms_system/workflow_process_details/widgets/tabs/follow_process_tab/process_expansion_card_widget.dart';
+export 'package:pms_system/workflow_process_details/widgets/tabs/history_tab/history_tab.dart';
+export 'package:pms_system/workflow_process_details/widgets/tabs/process_details_tabs_section.dart';

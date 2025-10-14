@@ -32,13 +32,15 @@ class ApiErrorHandler {
                   errorDescription = error.response!.data["message"];
                   break;
                 case 401:
-                  if (await SharedHelper.sharedHelper
-                          ?.readBoolean(CachingKey.IS_LOGIN) ==
+                  if (await SharedHelper.sharedHelper?.readBoolean(
+                        CachingKey.IS_LOGIN,
+                      ) ==
                       true) {
                     SharedHelper.sharedHelper?.logout();
                   }
-                  errorDescription =
-                      allTranslations.text("your_session_has_been_expired");
+                  errorDescription = allTranslations.text(
+                    "your_session_has_been_expired",
+                  );
                   break;
                 case 500:
                   errorDescription = error.response!.data["message"];

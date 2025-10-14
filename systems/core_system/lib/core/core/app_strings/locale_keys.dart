@@ -285,6 +285,8 @@ abstract class  LocaleKeys {
   static const all_objectives = 'all_objectives';
   static const something_went_wrong = 'something_went_wrong';
   static const there_is_no_data = 'there_is_no_data';
+  static const no_comments = 'no_comments';
+  static const no_docs = 'no_docs';
   static const no_projects_match_your_filters = 'no_projects_match_your_filters';
   static const no_projects_match = 'no_projects_match';
   static const oops = 'oops';
@@ -402,6 +404,7 @@ abstract class  LocaleKeys {
   static const enter_qualification = 'enter_qualification';
   static const final_evaluation = 'final_evaluation';
   static const add_comment = 'add_comment';
+  static const comment_added_successfully = 'comment_added_successfully';
   static const add_reason = 'add_reason';
   static const communications = 'communications';
   static const knowledge = 'knowledge';

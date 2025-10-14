@@ -27,6 +27,9 @@ abstract class ApiNames {
   static String projectDetails(id) => "Project/$id";
   static String projectGeneralProgressSummary(id) => "Project/$id/progress-summary";
   static String workflowProcessDetails = "WorkFlow/GroupSteps";
+  static String stageDocsData = "WorkFlow/CurrentAndNext";
+  // static String stageDocsData = "DocumentData";
+  static String documentComment = "DocumentComment";
 
   // Jobs APIs ====================
   static const jobs = "chances";

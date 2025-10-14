@@ -1,5 +1,4 @@
 import 'package:pms_system/shared/pms_exports.dart';
-import 'package:pms_system/workflow_process_details/model/workflow_process_details_model.dart';
 
 class FollowProcessTab extends StatelessWidget {
   final List<WorkflowProcessGroupModel> processList;

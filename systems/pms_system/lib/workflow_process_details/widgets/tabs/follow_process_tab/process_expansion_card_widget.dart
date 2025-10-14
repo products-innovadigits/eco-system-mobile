@@ -1,5 +1,3 @@
-import 'package:pms_system/workflow_process_details/model/workflow_process_details_model.dart';
-
 import '../../../../shared/pms_exports.dart';
 
 class ProcessExpansionCardWidget extends StatelessWidget {

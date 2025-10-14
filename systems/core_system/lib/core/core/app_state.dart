@@ -42,6 +42,36 @@ class Done extends AppState {
     "loading": jsonEncode(loading),
   };
 }
+class GettingDone extends AppState {
+  Mapper? model;
+  List<Widget>? cards;
+  List<Mapper>? list;
+  bool? reload;
+  bool? loading;
+  dynamic data;
+
+  GettingDone({
+    this.model,
+    this.data,
+    this.cards,
+    this.list,
+    this.reload = true,
+    this.loading = false,
+  });
+
+  @override
+  Map<String, dynamic> toJson() => {
+    "state": "GettingDone",
+    "model": jsonEncode(model?.toJson()),
+    "list": jsonEncode(list?.map((e) => e.toJson()).toList()),
+    "data": data is List<dynamic>
+        ? jsonEncode(data?.map((e) => e.toJson()).toList())
+        : jsonEncode(model?.toJson()),
+    "cards": jsonEncode(cards),
+    "reload": jsonEncode(reload),
+    "loading": jsonEncode(loading),
+  };
+}
 
 class Error extends AppState {
   @override

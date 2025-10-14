@@ -2,8 +2,9 @@ import '../../shared/pms_exports.dart';
 
 class ProjectDetailsFundingChart extends StatelessWidget {
   final List<ProjectsOverviewData> data;
+  final double projectBudget;
 
-  const ProjectDetailsFundingChart({super.key, required this.data});
+  const ProjectDetailsFundingChart({super.key, required this.data, required this.projectBudget});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class ProjectDetailsFundingChart extends StatelessWidget {
           title: allTranslations.text(LocaleKeys.project_financing),
           child: _ChartDetails(projects: data),
         ),
-        _ProgressHalfPie(projects: data),
+        _ProgressHalfPie(projects: data , projectBudget: projectBudget),
       ],
     );
   }
@@ -67,12 +68,12 @@ class _ChartDetails extends StatelessWidget {
 
 class _ProgressHalfPie extends StatelessWidget {
   final List<ProjectsOverviewData> projects;
+  final double projectBudget;
 
-  const _ProgressHalfPie({required this.projects});
+  const _ProgressHalfPie({required this.projects, required this.projectBudget});
 
   @override
   Widget build(BuildContext context) {
-    final total = projects.fold<int>(0, (s, i) => s + (i.count ?? 0).toInt());
     return Positioned(
       top: 140.h,
       right: 20.w,
@@ -88,7 +89,7 @@ class _ProgressHalfPie extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    total.toString(),
+                    projectBudget.toString(),
                     style: context.textTheme.labelLarge?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: context.color.secondary,

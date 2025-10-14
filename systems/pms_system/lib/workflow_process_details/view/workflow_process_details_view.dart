@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:pms_system/shared/pms_exports.dart';
 import 'package:pms_system/workflow_process_details/widgets/process_details_body.dart';
 
@@ -70,6 +68,7 @@ class WorkflowProcessDetailsView extends StatelessWidget {
               startDate: projectStartDate,
               endDate: projectEndDate,
             ),
+            processId: processId,
           ),
         ),
       ),
