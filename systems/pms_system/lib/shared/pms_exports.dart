@@ -50,3 +50,10 @@ export 'package:pms_system/workflow_process_details/widgets/tabs/follow_process_
 export 'package:pms_system/workflow_process_details/widgets/tabs/follow_process_tab/process_expansion_card_widget.dart';
 export 'package:pms_system/workflow_process_details/widgets/tabs/history_tab/history_tab.dart';
 export 'package:pms_system/workflow_process_details/widgets/tabs/process_details_tabs_section.dart';
+export 'package:pms_system/workflow_process_details/bloc/doc_comments_bloc.dart';
+export 'package:pms_system/workflow_process_details/bloc/stage_docs_bloc.dart';
+export 'package:pms_system/workflow_process_details/helpers/html_table_helper.dart';
+export 'package:pms_system/workflow_process_details/model/stage_doc_model.dart';
+export 'package:pms_system/workflow_process_details/widgets/tabs/stage_docs_tab/html_content_dialog.dart';
+export 'package:pms_system/workflow_process_details/widgets/tabs/stage_docs_tab/stage_docs_tab.dart';
+export 'package:pms_system/workflow_process_details/widgets/tabs/stage_docs_tab/view_comments_bottom_sheet.dart';

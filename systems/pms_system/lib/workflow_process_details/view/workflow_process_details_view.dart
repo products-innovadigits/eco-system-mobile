@@ -1,4 +1,5 @@
 import 'package:pms_system/shared/pms_exports.dart';
+import 'package:pms_system/workflow_process_details/bloc/stage_docs_bloc.dart';
 import 'package:pms_system/workflow_process_details/widgets/process_details_body.dart';
 
 class WorkflowProcessDetailsView extends StatelessWidget {
@@ -8,6 +9,7 @@ class WorkflowProcessDetailsView extends StatelessWidget {
     required this.projectId,
     required this.processName,
     required this.projectName,
+    required this.stageName,
     required this.projectStartDate,
     required this.projectEndDate,
     required this.projectManagerName,
@@ -20,6 +22,7 @@ class WorkflowProcessDetailsView extends StatelessWidget {
   final String workflowStatus;
   final String processName;
   final String projectName;
+  final String stageName;
   final String projectManagerName;
   final double projectBudget;
   final DateTime? projectStartDate;
@@ -51,14 +54,28 @@ class WorkflowProcessDetailsView extends StatelessWidget {
         ),
       ),
       body: SafeArea(
-        child: BlocProvider(
-          create: (context) => WorkflowProcessDetailsBloc()
-            ..add(
-              Click(
-                arguments: {'processId': processId, 'projectId': projectId},
-              ),
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => StageDocsBloc()
+                ..add(
+                  Click(
+                    arguments: {'processId': 146, 'projectId': 51},
+                    // arguments: {'processId': processId, 'projectId': projectId},
+                  ),
+                ),
             ),
-          // create: (context) => WorkflowProcessDetailsBloc(),
+            BlocProvider(
+              create: (context) =>
+              WorkflowProcessDetailsBloc()
+                ..add(
+                  Click(
+                    arguments: {'processId': processId, 'projectId': projectId},
+                  ),
+                ),
+              // create: (context) => WorkflowProcessDetailsBloc(),
+            ),
+          ],
           child: ProcessDetailsBody(
             projectDetailsModel: ProjectDetailsModel(
               id: projectId,
@@ -69,6 +86,7 @@ class WorkflowProcessDetailsView extends StatelessWidget {
               endDate: projectEndDate,
             ),
             processId: processId,
+            stageName: stageName,
           ),
         ),
       ),
@@ -76,14 +94,16 @@ class WorkflowProcessDetailsView extends StatelessWidget {
   }
 }
 
-Color getStatusColor(String workflowStatus) => switch (workflowStatus) {
-  'start' => LightColor.placeHolderText,
-  'inProgress' => LightColor.secondary,
-  _ => LightColor.tertiary,
-};
+Color getStatusColor(String workflowStatus) =>
+    switch (workflowStatus) {
+      'start' => LightColor.placeHolderText,
+      'inProgress' => LightColor.secondary,
+      _ => LightColor.tertiary,
+    };
 
-String getStatusName(String workflowStatus) => switch (workflowStatus) {
-  'start' => allTranslations.text(LocaleKeys.start),
-  'inProgress' => allTranslations.text(LocaleKeys.in_progress),
-  _ => allTranslations.text(LocaleKeys.done),
-};
+String getStatusName(String workflowStatus) =>
+    switch (workflowStatus) {
+      'start' => allTranslations.text(LocaleKeys.start),
+      'inProgress' => allTranslations.text(LocaleKeys.in_progress),
+      _ => allTranslations.text(LocaleKeys.done),
+    };

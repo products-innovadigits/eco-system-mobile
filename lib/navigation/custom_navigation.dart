@@ -100,6 +100,7 @@ class AppRouter {
             workflowStatus: args?.projectWorkFlowStatus ?? '',
             processName: args?.processName ?? '',
             projectName: args?.projectName ?? '',
+            stageName: args?.stageName ?? '',
             projectManagerName: args?.projectManagerName ?? '',
             projectBudget: args?.projectBudget.toDouble() ?? 0,
             projectStartDate: args?.projectStartDate ?? DateTime.now(),

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:pms_system/shared/pms_exports.dart';
 import 'package:pms_system/workflow_process_details/model/stage_doc_model.dart';
 import 'package:pms_system/workflow_process_details/repo/workflow_process_details_repo.dart';
@@ -10,6 +12,7 @@ class StageDocsBloc extends Bloc<AppEvent, AppState> {
 
   // Map to store TextEditingController for each document
   final Map<int, TextEditingController> _commentControllers = {};
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   StageDocData? stageDocsData;
 
   _onClick(AppEvent event, Emitter<AppState> emit) async {
@@ -45,8 +48,9 @@ class StageDocsBloc extends Bloc<AppEvent, AppState> {
     AddDocumentComment event,
     Emitter<AppState> emit,
   ) async {
+    if(!formKey.currentState!.validate()) return;
     emit(Getting());
-    // try {
+    try {
     // Add comment using the document ID
     Response response = await WorkflowProcessDetailsRepo.addDocComment(
       documentId: event.documentId,
@@ -65,10 +69,10 @@ class StageDocsBloc extends Bloc<AppEvent, AppState> {
       AppCore.errorMessage(allTranslations.text('something_went_wrong'));
       emit(Error());
     }
-    // } catch (e) {
-    //   AppCore.errorMessage(allTranslations.text('something_went_wrong'));
-    //   emit(Error());
-    // }
+    } catch (e) {
+      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+      emit(Error());
+    }
   }
 
   /// Initialize TextEditingController for each document

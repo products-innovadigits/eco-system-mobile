@@ -31,11 +31,11 @@ class StageExpansionCardWidget extends StatelessWidget {
             projectId: projectDetailsModel.id ?? 0,
             workFlowStatus: stage.projectProcesses?[idx].workFlowStatus ?? '',
             projectName: projectDetailsModel.title ?? '',
+            stageName: stage.title ?? '',
             projectManagerName: projectDetailsModel.managerName ?? '',
             projectBudget: (projectDetailsModel.budget ?? 0).toDouble(),
             projectStartDate: (projectDetailsModel.startDate ?? DateTime.now()),
             projectEndDate: (projectDetailsModel.endDate ?? DateTime.now()),
-            status: 'في تقدم',
             color: getStatusColor(
               stage.projectProcesses?[idx].workFlowStatus ?? '',
             ),
@@ -71,10 +71,10 @@ class _StageCountWidget extends StatelessWidget {
 
 class _StageProcessCardWidget extends StatelessWidget {
   final String title;
-  final String status;
   final int processId;
   final int projectId;
   final String projectName;
+  final String stageName;
   final String workFlowStatus;
   final String projectManagerName;
   final double projectBudget;
@@ -84,11 +84,11 @@ class _StageProcessCardWidget extends StatelessWidget {
 
   const _StageProcessCardWidget({
     required this.title,
-    required this.status,
     required this.color,
     required this.processId,
     required this.projectId,
     required this.projectName,
+    required this.stageName,
     required this.projectStartDate,
     required this.projectEndDate,
     required this.projectManagerName,
@@ -108,6 +108,7 @@ class _StageProcessCardWidget extends StatelessWidget {
             projectWorkFlowStatus: workFlowStatus,
             processName: title,
             projectName: projectName,
+            stageName: stageName,
             projectManagerName: projectManagerName,
             projectBudget: projectBudget,
             projectStartDate: projectStartDate,

@@ -85,7 +85,7 @@ class _OutputCardWidget extends StatelessWidget {
                             color: color.withValues(alpha: 0.1),
                           ),
                           const SizedBox(width: 4),
-                          Text(output, style: context.textTheme.bodySmall),
+                          Expanded(child: Text(output, style: context.textTheme.bodySmall)),
                         ],
                       ),
                     ),

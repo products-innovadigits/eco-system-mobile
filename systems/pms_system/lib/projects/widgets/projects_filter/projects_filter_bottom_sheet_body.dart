@@ -9,43 +9,48 @@ class ProjectsFilterBottomSheetBody extends StatelessWidget {
     return SizedBox(
       height: context.h * 0.65,
       child: ListAnimator(
+        separatorPadding: 16.h,
         data: [
           16.sh,
-          Text(allTranslations.text(LocaleKeys.start_date)),
-          Row(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: CustomTextField(
-                  hint: allTranslations.text(LocaleKeys.from),
-                  controller: bloc.pickedStartCtrl,
-                  textStyle: context.textTheme.bodySmall?.copyWith(
-                    fontWeight: FontWeight.w600,
+              Text(allTranslations.text(LocaleKeys.start_date)),
+              Row(
+                children: [
+                  Expanded(
+                    child: CustomTextField(
+                      hint: allTranslations.text(LocaleKeys.from),
+                      controller: bloc.pickedStartCtrl,
+                      textStyle: context.textTheme.bodySmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                      suffixWidget: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Images(image: Assets.svgs.calendarFrom.path),
+                      ),
+                      onTap: () => bloc.showStartDatePicker(context),
+                    ),
                   ),
-                  suffixWidget: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Images(image: Assets.svgs.calendarFrom.path),
+                  16.sw,
+                  Expanded(
+                    child: CustomTextField(
+                      hint: allTranslations.text(LocaleKeys.to),
+                      controller: bloc.pickedEndCtrl,
+                      textStyle: context.textTheme.bodySmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                      suffixWidget: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Images(image: Assets.svgs.calendarTo.path),
+                      ),
+                      onTap: () => bloc.showEndDatePicker(context),
+                    ),
                   ),
-                  onTap: () => bloc.showStartDatePicker(context),
-                ),
-              ),
-              16.sw,
-              Expanded(
-                child: CustomTextField(
-                  hint: allTranslations.text(LocaleKeys.to),
-                  controller: bloc.pickedEndCtrl,
-                  textStyle: context.textTheme.bodySmall?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                  suffixWidget: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Images(image: Assets.svgs.calendarTo.path),
-                  ),
-                  onTap: () => bloc.showEndDatePicker(context),
-                ),
+                ],
               ),
             ],
           ),
-          16.sh,
           CustomFiltersDropList(
             labelText: LocaleKeys.category,
             hintText: LocaleKeys.select_category,
@@ -55,7 +60,6 @@ class ProjectsFilterBottomSheetBody extends StatelessWidget {
               bloc.selectedCategory = s;
             },
           ),
-          16.sh,
           CustomFiltersDropList(
             labelText: LocaleKeys.status,
             hintText: LocaleKeys.select_status,
@@ -65,7 +69,6 @@ class ProjectsFilterBottomSheetBody extends StatelessWidget {
               bloc.selectedStatus = s;
             },
           ),
-          16.sh,
           CustomFiltersDropList(
             labelText: LocaleKeys.risk_level,
             hintText: LocaleKeys.select_risk_level,
@@ -75,7 +78,6 @@ class ProjectsFilterBottomSheetBody extends StatelessWidget {
               bloc.selectedRisk = s;
             },
           ),
-          16.sh,
           CustomFiltersDropList(
             labelText: LocaleKeys.priority,
             hintText: LocaleKeys.select_priority,

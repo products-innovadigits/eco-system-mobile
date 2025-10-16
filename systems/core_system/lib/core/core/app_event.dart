@@ -10,6 +10,25 @@ class Click extends AppEvent {
   Click({Object? arguments}) : super(arguments);
 }
 
+class Toggle extends AppEvent {
+  Toggle({Object? arguments}) : super(arguments);
+}
+
+class Delete extends AppEvent {
+  final int documentId;
+  final int commentId;
+
+  Delete({required this.documentId, required this.commentId}) : super(null);
+}
+
+class Edit extends AppEvent {
+  final int documentDataId;
+  final int documentId;
+  final String comment;
+
+  Edit({required this.documentDataId, required this.documentId, required this.comment}) : super(null);
+}
+
 class Get extends AppEvent {
   Get({Object? arguments}) : super(arguments);
 }

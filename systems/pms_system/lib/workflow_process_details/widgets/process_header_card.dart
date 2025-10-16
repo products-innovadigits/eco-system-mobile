@@ -1,26 +1,26 @@
+import 'dart:developer';
+
+import 'package:pms_system/workflow_process_details/bloc/stage_docs_bloc.dart';
+
 import '../../shared/pms_exports.dart';
 
 class ProcessHeaderCard extends StatelessWidget {
   const ProcessHeaderCard({
     super.key,
     required this.project,
-    required this.isDetails,
+    required this.stageName,
   });
 
   final ProjectDetailsModel project;
-  final bool isDetails;
+  final String stageName;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: isDetails ? EdgeInsets.all(16.w) : EdgeInsets.zero,
+      padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
         color: context.color.surfaceContainer,
-        border: Border(
-          bottom: BorderSide(
-            color: context.color.outline,
-          )
-        )
+        border: Border(bottom: BorderSide(color: context.color.outline)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,15 +47,49 @@ class ProcessHeaderCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        project.title ?? "",
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: context.textTheme.displaySmall?.copyWith(
-                          fontSize: FontSizes.f14,
+                      RichText(
+                        text: TextSpan(
+                          text: project.title ?? "",
+                          style: context.textTheme.displaySmall?.copyWith(
+                            fontSize: FontSizes.f14,
+                          ),
+                          // children: [
+                          //   TextSpan(text: ' '),
+                          //   TextSpan(
+                          //     text:
+                          //         "(${(project.startDate ?? DateTime.now()).format("d/M/yyyy")} : ${(project.endDate ?? DateTime.now()).format("d/M/yyyy")})",
+                          //     style: context.textTheme.labelSmall?.copyWith(
+                          //       fontSize: FontSizes.f10,
+                          //       color: context.color.outlineVariant,
+                          //     ),
+                          //   ),
+                          // ],
                         ),
                       ),
+                      // Text(
+                      //   project.title ?? "",
+                      //   maxLines: 2,
+                      //   overflow: TextOverflow.ellipsis,
+                      //   style: context.textTheme.displaySmall?.copyWith(
+                      //     fontSize: FontSizes.f14,
+                      //   ),
+                      // ),
                       SizedBox(height: 4.h),
+                      Text(
+                        '${allTranslations.text(LocaleKeys.stage_name)} : $stageName',
+                        style: context.textTheme.labelSmall?.copyWith(
+                          fontSize: FontSizes.f10,
+                          color: context.color.secondary,
+                        ),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        '${allTranslations.text(LocaleKeys.current_step)} : ${context.read<StageDocsBloc>().stageDocsData?.currentStep?.text ?? ''}',
+                        style: context.textTheme.labelSmall?.copyWith(
+                          fontSize: FontSizes.f10,
+                          color: context.color.secondary,
+                        ),
+                      ),
                       RichText(
                         textAlign: TextAlign.start,
 

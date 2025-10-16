@@ -1,8 +1,3 @@
-import 'package:pms_system/workflow_process_details/bloc/doc_comments_bloc.dart';
-import 'package:pms_system/workflow_process_details/bloc/stage_docs_bloc.dart';
-import 'package:pms_system/workflow_process_details/model/stage_doc_model.dart';
-import 'package:pms_system/workflow_process_details/widgets/tabs/stage_docs_tab/view_comments_bottom_sheet.dart';
-
 import '../../../../shared/pms_exports.dart';
 
 class StageDocsTab extends StatelessWidget {
@@ -15,19 +10,17 @@ class StageDocsTab extends StatelessWidget {
     required this.projectId,
   });
 
+  void _showHtmlContent(BuildContext context, StageDocument document) {
+    showDialog(
+      context: context,
+      builder: (context) => HtmlContentDialog(document: document),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => StageDocsBloc()
-            ..add(
-              Click(arguments: {'processId': 146, 'projectId': 51}),
-              // Click(arguments: {'processId': processId, 'projectId': projectId}),
-            ),
-        ),
-        BlocProvider(create: (context) => DocCommentsBloc()),
-      ],
+    return BlocProvider(
+      create: (context) => DocCommentsBloc(),
       child: BlocBuilder<StageDocsBloc, AppState>(
         buildWhen: (previous, current) => current is! Getting,
         builder: (context, state) {
@@ -63,8 +56,8 @@ class StageDocsTab extends StatelessWidget {
                               ),
                             ),
                             _DocActionCardWidget(
-                              icon: Assets.svgs.copy.path,
-                              onTap: () {},
+                              icon: Assets.svgs.exporting.path,
+                              onTap: () => _showHtmlContent(context, document),
                             ),
                             SizedBox(width: 4),
                             _DocActionCardWidget(
@@ -128,65 +121,60 @@ class StageDocsTab extends StatelessWidget {
                         BlocBuilder<StageDocsBloc, AppState>(
                           builder: (context, state) {
                             final bloc = context.read<StageDocsBloc>();
-                            return CustomTextField(
-                              verticalPadding: 0,
-                              isReadOnly: state is Getting,
-                              color: state is Getting
-                                  ? context.color.outline
-                                  : null,
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: 16.w,
-                                vertical: 8.h,
-                              ),
-                              controller: bloc.getCommentController(
-                                document.id ?? 0,
-                              ),
-                              suffixWidget: InkWell(
-                                onTap: () {
-                                  bloc.add(
-                                    AddDocumentComment(
-                                      documentId: document.id ?? 0,
-                                      text:
-                                          bloc
-                                              .getCommentController(
-                                                document.id ?? 0,
-                                              )
-                                              ?.text ??
-                                          '',
-                                      // processId: processId,
-                                      // projectId: projectId,
-                                      // stepId:
-                                      //     (bloc
-                                      //                 .stageDocsData
-                                      //                 ?.currentStep
-                                      //                 ?.id ??
-                                      //             0)
-                                      //         .toInt(),
+                            return Form(
+                              key: bloc.formKey,
+                              child: CustomTextField(
+                                verticalPadding: 0,
+                                isReadOnly: state is Getting,
+                                color: state is Getting
+                                    ? context.color.outline
+                                    : null,
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 16.w,
+                                  vertical: 8.h,
+                                ),
+                                controller: bloc.getCommentController(
+                                  document.id ?? 0,
+                                ),
+                                validation: NotEmptyValidator.notEmptyValidator,
+                                suffixWidget: InkWell(
+                                  onTap: () {
+                                    bloc.add(
+                                      AddDocumentComment(
+                                        documentId: document.id ?? 0,
+                                        text:
+                                            bloc
+                                                .getCommentController(
+                                                  document.id ?? 0,
+                                                )
+                                                ?.text ??
+                                            '',
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 6,
                                     ),
-                                  );
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 6,
-                                  ),
-                                  child: state is Getting
-                                      ? SizedBox(
-                                          width: 20,
-                                          height: 20,
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 3,
+                                    child: state is Getting
+                                        ? SizedBox(
+                                            width: 20,
+                                            height: 20,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 3,
+                                              color: context.color.secondary,
+                                            ),
+                                          )
+                                        : Images(
+                                            image: Assets.svgs.send.path,
                                             color: context.color.secondary,
                                           ),
-                                        )
-                                      : Images(
-                                          image: Assets.svgs.send.path,
-                                          color: context.color.secondary,
-                                        ),
+                                  ),
                                 ),
+                                textStyle: context.textTheme.labelSmall,
+                                hint:
+                                    '${allTranslations.text(LocaleKeys.add_comment)}...',
                               ),
-                              textStyle: context.textTheme.labelSmall,
-                              hint:
-                                  '${allTranslations.text(LocaleKeys.add_comment)}...',
                             );
                           },
                         ),

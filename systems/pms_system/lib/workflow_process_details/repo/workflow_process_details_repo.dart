@@ -47,22 +47,34 @@ abstract class WorkflowProcessDetailsRepo {
   }
 
   static Future<dynamic> addDocComment({
-    // required int projectId,
-    // required int processId,
-    // required int stepId,
     required int documentId,
     required String text,
   }) async {
     return await Network().request(
       ApiNames.documentComment,
       method: ServerMethods.POST,
-      body: {
-        // 'projectId': projectId,
-        // 'processId': processId,
-        // 'stepId': stepId,
-        'documentDataId': documentId,
-        'text': text,
-      },
+      body: {'documentDataId': documentId, 'text': text},
+    );
+  }
+
+  static Future<dynamic> deleteDocComment({
+    required int documentId,
+  }) async {
+    return await Network().request(
+      ApiNames.documentCommentActions(documentId),
+      method: ServerMethods.DELETE,
+    );
+  }
+
+  static Future<dynamic> editDocComment({
+    required int documentId,
+    required int documentDataId,
+    required String text,
+  }) async {
+    return await Network().request(
+      ApiNames.documentCommentActions(documentId),
+      method: ServerMethods.PUT,
+      body: {'documentDataId': documentDataId, 'text': text},
     );
   }
 }

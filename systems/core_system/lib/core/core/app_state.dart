@@ -42,6 +42,7 @@ class Done extends AppState {
     "loading": jsonEncode(loading),
   };
 }
+
 class GettingDone extends AppState {
   Mapper? model;
   List<Widget>? cards;
@@ -76,6 +77,31 @@ class GettingDone extends AppState {
 class Error extends AppState {
   @override
   Map<String, dynamic> toJson() => {"state": "Error"};
+}
+
+class DeletingError extends AppState {
+  @override
+  Map<String, dynamic> toJson() => {"state": "DeletingError"};
+}
+
+class Deleting extends AppState {
+  @override
+  Map<String, dynamic> toJson() => {"state": "Deleting"};
+}
+
+class Editing extends AppState {
+  @override
+  Map<String, dynamic> toJson() => {"state": "Editing"};
+}
+
+class EditingDone extends AppState {
+  @override
+  Map<String, dynamic> toJson() => {"state": "EditingDone"};
+}
+
+class EditingError extends AppState {
+  @override
+  Map<String, dynamic> toJson() => {"state": "EditingError"};
 }
 
 class Loading extends AppState {

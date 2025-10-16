@@ -2,8 +2,10 @@ import 'package:core_system/core/utility/export.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 abstract class PopUpHelper {
-  static showTopSheet(
-      {@required BuildContext? context, @required Widget? child}) {
+  static showTopSheet({
+    @required BuildContext? context,
+    @required Widget? child,
+  }) {
     return showGeneralDialog(
       context: context!,
       barrierDismissible: true,
@@ -18,9 +20,11 @@ abstract class PopUpHelper {
               child: child,
               elevation: 2,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(15),
-                      bottomRight: Radius.circular(15))),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(15),
+                  bottomRight: Radius.circular(15),
+                ),
+              ),
             ),
           ],
         );
@@ -30,22 +34,14 @@ abstract class PopUpHelper {
           position: CurvedAnimation(
             parent: animation,
             curve: Curves.easeOut,
-          ).drive(
-            Tween<Offset>(
-              begin: Offset(0, -1.0),
-              end: Offset.zero,
-            ),
-          ),
+          ).drive(Tween<Offset>(begin: Offset(0, -1.0), end: Offset.zero)),
           child: child,
         );
       },
     );
   }
 
-  static showBottomSheet({
-    @required Widget? child,
-    double? height,
-  }) {
+  static showBottomSheet({@required Widget? child, double? height}) {
     return showMaterialModalBottomSheet(
       elevation: 2,
       enableDrag: true,
@@ -63,33 +59,38 @@ abstract class PopUpHelper {
       backgroundColor: LightColor.scaffoldBg,
       // isScrollControlled: true,
       builder: (context) {
+        final mediaQuery = MediaQuery.of(context);
+        final safeAreaBottom = mediaQuery.padding.bottom;
+        final viewInsetsBottom = mediaQuery.viewInsets.bottom;
+
         return Padding(
-          padding: MediaQuery.of(CustomNavigator.navigatorState.currentContext!)
-              .viewInsets,
+          padding: EdgeInsets.only(bottom: safeAreaBottom + viewInsetsBottom),
           child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-              constraints:
-                  height != null ? BoxConstraints(maxHeight: height) : null,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: context.w * 0.2,
-                    height: 5.h,
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(50),
-                    ),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+            constraints: height != null
+                ? BoxConstraints(maxHeight: height)
+                : null,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: context.w * 0.2,
+                  height: 5.h,
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(50),
                   ),
-                  24.sh,
-                  Flexible(
-                    child: ListAnimator(
-                      controller: ScrollController(),
-                      data: [child!],
-                    ),
+                ),
+                24.sh,
+                Flexible(
+                  child: ListAnimator(
+                    controller: ScrollController(),
+                    data: [child!],
                   ),
-                ],
-              )),
+                ),
+              ],
+            ),
+          ),
         );
       },
     );

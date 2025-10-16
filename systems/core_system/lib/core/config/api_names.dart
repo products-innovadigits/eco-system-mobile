@@ -30,6 +30,7 @@ abstract class ApiNames {
   static String stageDocsData = "WorkFlow/CurrentAndNext";
   // static String stageDocsData = "DocumentData";
   static String documentComment = "DocumentComment";
+  static String documentCommentActions(id) => "DocumentComment/$id";
 
   // Jobs APIs ====================
   static const jobs = "chances";

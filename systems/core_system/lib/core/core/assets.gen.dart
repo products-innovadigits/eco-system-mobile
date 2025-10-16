@@ -301,6 +301,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/export.svg
   SvgGenImage get export => const SvgGenImage('assets/svgs/export.svg');
 
+  /// File path: assets/svgs/exporting.svg
+  SvgGenImage get exporting => const SvgGenImage('assets/svgs/exporting.svg');
+
   /// File path: assets/svgs/eye.svg
   SvgGenImage get eye => const SvgGenImage('assets/svgs/eye.svg');
 
@@ -629,6 +632,7 @@ class $AssetsSvgsGen {
     emptyCandidates,
     error,
     export,
+    exporting,
     eye,
     file,
     fillCloseCircle,

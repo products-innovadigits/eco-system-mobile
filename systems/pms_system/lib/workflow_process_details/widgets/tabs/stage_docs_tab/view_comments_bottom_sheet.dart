@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:pms_system/shared/pms_exports.dart';
 import 'package:pms_system/workflow_process_details/bloc/doc_comments_bloc.dart';
 import 'package:pms_system/workflow_process_details/model/document_comments_model.dart';
+import 'package:pms_system/workflow_process_details/widgets/tabs/stage_docs_tab/edit_comment_section.dart';
+import 'package:pms_system/workflow_process_details/widgets/tabs/stage_docs_tab/view_comment_section.dart';
 
 class ViewCommentsBottomSheet extends StatelessWidget {
   const ViewCommentsBottomSheet({super.key});
@@ -14,7 +18,10 @@ class ViewCommentsBottomSheet extends StatelessWidget {
         ),
         const SizedBox(height: 24),
         BlocBuilder<DocCommentsBloc, AppState>(
+          buildWhen: (previous, current) =>
+              current is! Deleting && current is! Editing,
           builder: (context, state) {
+            final bloc = context.read<DocCommentsBloc>();
             return switch (state) {
               // ── Loading ─────────────────────────
               Loading() => _buildingShimmerList(),
@@ -22,51 +29,39 @@ class ViewCommentsBottomSheet extends StatelessWidget {
               // ── Done ────────────────────────────
               Done(:final data) => Stack(
                 children: [
-                  ListAnimator(
-                    separatorPadding: 12,
-                    data: List.generate(
-                      ((data as CommentsData?)?.items ?? []).length,
-                      (index) {
-                        final DocumentComment documentComment =
-                            (data as CommentsData).items?[index] ??
-                            DocumentComment();
-                        return Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 16,
-                          ),
-                          decoration: BoxDecoration(
-                            color: context.color.surfaceContainer,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: context.color.outline),
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  documentComment.text ?? '',
-                                  style: context.textTheme.labelSmall,
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {},
-                                child: Images(
-                                  image: Assets.svgs.trash.path,
-                                  width: 15,
-                                ),
-                              ),
-                              const SizedBox(width: 6),
-                              InkWell(
-                                onTap: () {},
-                                child: Images(
-                                  image: Assets.svgs.editSquare.path,
-                                  width: 15,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: ListAnimator(
+                      separatorPadding: 12,
+                      data: List.generate(
+                        ((data as CommentsData?)?.items ?? []).length,
+                        (index) {
+                          final DocumentComment documentComment =
+                              (data as CommentsData).items?[index] ??
+                              DocumentComment();
+                          return Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 16,
+                            ),
+                            decoration: BoxDecoration(
+                              color: context.color.surfaceContainer,
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: context.color.outline),
+                            ),
+                            child:
+                                bloc.isCommentBeingEdited(
+                                  documentComment.id ?? 0,
+                                )
+                                ? EditCommentSection(
+                                    documentComment: documentComment,
+                                  )
+                                : ViewCommentSection(
+                                    documentComment: documentComment,
+                                  ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                   // Positioned(

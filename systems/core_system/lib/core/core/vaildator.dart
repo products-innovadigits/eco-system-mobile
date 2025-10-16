@@ -1,14 +1,17 @@
+import 'dart:developer';
+
 import 'package:core_system/core/utility/export.dart';
 
 class Validator {
-  var emailValidator =
-      StreamTransformer<String, String>.fromHandlers(handleData: (email, sink) {
-    if (email.contains('@')) {
-      sink.add(email);
-    } else {
-      sink.addError('ادخل البريد الإكتروني بشكل صحيح');
-    }
-  });
+  var emailValidator = StreamTransformer<String, String>.fromHandlers(
+    handleData: (email, sink) {
+      if (email.contains('@')) {
+        sink.add(email);
+      } else {
+        sink.addError('ادخل البريد الإكتروني بشكل صحيح');
+      }
+    },
+  );
   var nameValidator = StreamTransformer<String, String>.fromHandlers(
     handleData: (name, sink) {
       if (name.length > 2) {
@@ -20,13 +23,14 @@ class Validator {
   );
 
   var number = StreamTransformer<String, String>.fromHandlers(
-      handleData: (dynamic num, sink) {
-    if (num.length > 9) {
-      sink.add(num);
-    } else {
-      sink.addError('يجب ان يكون رقم الجوال من 10 خانات');
-    }
-  });
+    handleData: (dynamic num, sink) {
+      if (num.length > 9) {
+        sink.add(num);
+      } else {
+        sink.addError('يجب ان يكون رقم الجوال من 10 خانات');
+      }
+    },
+  );
 
   var passwordValidator = StreamTransformer<String, String>.fromHandlers(
     handleData: (password, sink) {
@@ -113,6 +117,15 @@ class NameValidator {
   }
 }
 
+class NotEmptyValidator {
+  static String? notEmptyValidator(String? text) {
+    if (text!.isEmpty) {
+      return allTranslations.text(LocaleKeys.field_required);
+    }
+    return null;
+  }
+}
+
 class TitleValidator {
   static String? nameValidator(String? name) {
     if (name!.length < 2) {
@@ -156,8 +169,9 @@ class DescriptionValidator {
         name.contains('010') ||
         name.contains('http://') ||
         name.contains('https://')) {
-      return allTranslations
-          .text("please_enter_valid_description_without_phone");
+      return allTranslations.text(
+        "please_enter_valid_description_without_phone",
+      );
     }
     return null;
   }
@@ -184,7 +198,10 @@ class PriceValidator {
 
 class PriceToValidator {
   static String? priceValidator(
-      String? price, String? stringPriceFrom, BuildContext context) {
+    String? price,
+    String? stringPriceFrom,
+    BuildContext context,
+  ) {
     double priceTo = double.parse(price!);
     if (priceTo > 1) {
       double priceFrom = double.parse(stringPriceFrom!);

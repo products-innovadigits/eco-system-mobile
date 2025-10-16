@@ -405,6 +405,8 @@ abstract class  LocaleKeys {
   static const final_evaluation = 'final_evaluation';
   static const add_comment = 'add_comment';
   static const comment_added_successfully = 'comment_added_successfully';
+  static const comment_deleted_successfully = 'comment_deleted_successfully';
+  static const comment_updated_successfully = 'comment_updated_successfully';
   static const add_reason = 'add_reason';
   static const communications = 'communications';
   static const knowledge = 'knowledge';
@@ -436,6 +438,7 @@ abstract class  LocaleKeys {
   static const salary_range_validation = 'salary_range_validation';
   static const experience_validation = 'experience_validation';
   static const currency_required = 'currency_required';
+  static const field_required = 'field_required';
   static const no_candidates = 'no_candidates';
   static const no_candidates_desc = 'no_candidates_desc';
   static const no_talents = 'no_talents';
@@ -503,10 +506,19 @@ abstract class  LocaleKeys {
   static const actions = 'actions';
   static const history = 'history';
   static const fields = 'fields';
-  static const stageDocs = 'stageDocs';
-  static const followProcess = 'followProcess';
+  static const stage_name = 'stage_name';
+  static const current_step = 'current_step';
+  static const current_step_docs = 'current_step_docs';
+  static const follow_process = 'follow_process';
   static const start_time = 'start_time';
   static const end_time = 'end_time';
   static const project_fund = 'project_fund';
+  static const no_content_available = 'no_content_available';
+  static const document_content = 'document_content';
+  static const download = 'download';
+  static const file_downloaded_successfully = 'file_downloaded_successfully';
+  static const file_saved_to = 'file_saved_to';
+  static const could_not_open_file = 'could_not_open_file';
+  static const download_failed = 'download_failed';
 
 }

@@ -132,12 +132,10 @@ class _ProjectMonthlyProgressState extends State<ProjectMonthlyProgress> {
                     touchTooltipData: LineTouchTooltipData(
                       getTooltipItems: (touchedSpots) {
                         return touchedSpots.map((spot) {
-                          if (spot.barIndex == spot.spotIndex) {
-                            return LineTooltipItem(
-                              '${spot.y.toInt()}%',
-                              TextStyle(color: Colors.white, fontSize: 14),
-                            );
-                          }
+                          return LineTooltipItem(
+                            '${spot.y.toInt()}%',
+                            TextStyle(color: Colors.white, fontSize: 14),
+                          );
                         }).toList();
                       },
                     ),

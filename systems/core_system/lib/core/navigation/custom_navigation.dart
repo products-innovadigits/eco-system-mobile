@@ -66,6 +66,7 @@ class WorkflowProcessDetailsArgs {
   final int projectId;
   final String processName;
   final String projectName;
+  final String stageName;
   final String projectManagerName;
   final String projectWorkFlowStatus;
   final num projectBudget;
@@ -80,6 +81,7 @@ class WorkflowProcessDetailsArgs {
     required this.projectId,
     required this.processName,
     required this.projectName,
+    required this.stageName,
     required this.projectStartDate,
     required this.projectEndDate,
   });
