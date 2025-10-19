@@ -16,97 +16,63 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      ACTIVE_SYSTEMS: ${{ github.event.inputs.systems }}
-      # Keep only the Firebase token secret (needed to upload to App Distribution)
-      FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Java 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
-          cache: gradle
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.32.2'
-          channel: stable
-          cache: true
 
-      - name: Flutter Doctor
-        run: flutter doctor -v
-
-      - name: Cache Pub
-        uses: actions/cache@v4
-        with:
-          path: ~/.pub-cache
-          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
-          restore-keys: ${{ runner.os }}-pub-
+      - name: Create .env file
+        run: echo "# Environment variables" > .env
 
       - name: Install Dependencies
         run: flutter pub get
 
-      # OPTIONAL sanity checks (won't fail the job)
-      - name: Static checks
-        run: |
-          dart analyze || true
-          flutter test --no-pub || true
+      - name: Set Gradle Heap Size
+        run: echo "org.gradle.jvmargs=-Xmx4g" >> android/gradle.properties
 
-      - name: Gradle props (more RAM + AndroidX)
-        run: |
-          {
-            echo "org.gradle.jvmargs=-Xmx6g -Dfile.encoding=UTF-8";
-            echo "android.useAndroidX=true";
-            echo "android.enableJetifier=true";
-          } >> android/gradle.properties
-          cat android/gradle.properties
+      - name: Debug systems input
+        run: echo "🚀 ACTIVE_SYSTEMS='${{ github.event.inputs.systems }}'"
 
-      # 🔐 Generate a temporary keystore & key.properties (NO secrets needed)
-      - name: Generate CI debug-style keystore
-        working-directory: android
+      - name: Clean and get dependencies
         run: |
-          mkdir -p app
-          keytool -genkey -v -keystore app/keystore.jks \
-            -storepass android -alias androiddebugkey -keypass android \
-            -keyalg RSA -keysize 2048 -validity 10000 \
-            -dname "CN=Android Debug,O=Android,C=US"
-          cat > key.properties <<EOF
-          storeFile=app/keystore.jks
-          storePassword=android
-          keyAlias=androiddebugkey
-          keyPassword=android
-          EOF
-          echo "✓ Generated temp keystore & key.properties"
-
-      - name: Build APK (verbose; capture logs)
-        run: |
-          set -o pipefail
           flutter clean
           flutter pub get
+          flutter pub deps
+
+      - name: Check Flutter doctor
+        run: flutter doctor -v
+
+      - name: Build APK
+        run: |
           flutter build apk \
             --release \
             --no-shrink \
-            --dart-define=ACTIVE_SYSTEMS="${ACTIVE_SYSTEMS}" \
-            -v | tee build_logs.txt
+            --dart-define=ACTIVE_SYSTEMS="${{ github.event.inputs.systems }}" \
+            --verbose
 
-      - name: Upload build logs
-        if: always()
-        uses: actions/upload-artifact@v4
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
         with:
-          name: build-logs
-          path: build_logs.txt
+          ruby-version: 3.1
 
-      # Fastlane lane should pick up app/build/outputs/flutter-apk/app-release.apk
+      - name: Install Fastlane
+        run: gem install fastlane
+
+      - name: Install Bundler
+        run: gem install bundler
+
+      # - name: Install Fastlane plugins
+      #   working-directory: android
+      #   run: bundle exec fastlane install_plugins
+
       - name: Distribute via Firebase App Distribution
         working-directory: android
         env:
-          FIREBASE_TOKEN: ${{ env.FIREBASE_TOKEN }}
-          ACTIVE_SYSTEMS: ${{ env.ACTIVE_SYSTEMS }}
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          ACTIVE_SYSTEMS: ${{ github.event.inputs.systems }}
         run: |
           fastlane android distribute_ci test_email:${{ github.event.inputs.test_email }}
