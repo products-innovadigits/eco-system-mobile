@@ -60,14 +60,13 @@ class WorkflowProcessDetailsView extends StatelessWidget {
               create: (context) => StageDocsBloc()
                 ..add(
                   Click(
-                    arguments: {'processId': 146, 'projectId': 51},
-                    // arguments: {'processId': processId, 'projectId': projectId},
+                    // arguments: {'processId': 146, 'projectId': 51},
+                    arguments: {'processId': processId, 'projectId': projectId},
                   ),
                 ),
             ),
             BlocProvider(
-              create: (context) =>
-              WorkflowProcessDetailsBloc()
+              create: (context) => WorkflowProcessDetailsBloc()
                 ..add(
                   Click(
                     arguments: {'processId': processId, 'projectId': projectId},
@@ -94,16 +93,14 @@ class WorkflowProcessDetailsView extends StatelessWidget {
   }
 }
 
-Color getStatusColor(String workflowStatus) =>
-    switch (workflowStatus) {
-      'start' => LightColor.placeHolderText,
-      'inProgress' => LightColor.secondary,
-      _ => LightColor.tertiary,
-    };
+Color getStatusColor(String workflowStatus) => switch (workflowStatus) {
+  'start' => LightColor.placeHolderText,
+  'inProgress' => LightColor.secondary,
+  _ => LightColor.tertiary,
+};
 
-String getStatusName(String workflowStatus) =>
-    switch (workflowStatus) {
-      'start' => allTranslations.text(LocaleKeys.start),
-      'inProgress' => allTranslations.text(LocaleKeys.in_progress),
-      _ => allTranslations.text(LocaleKeys.done),
-    };
+String getStatusName(String workflowStatus) => switch (workflowStatus) {
+  'start' => allTranslations.text(LocaleKeys.start),
+  'inProgress' => allTranslations.text(LocaleKeys.in_progress),
+  _ => allTranslations.text(LocaleKeys.done),
+};
