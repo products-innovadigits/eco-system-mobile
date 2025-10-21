@@ -135,7 +135,7 @@ Widget _getTabSection(
       projectId: projectId,
       processId: processId,
     ),
-    ProcessTabsEnum.fields => FieldsTab(),
+    // ProcessTabsEnum.fields => FieldsTab(),
     ProcessTabsEnum.history => HistoryTab(),
     _ => ActionsTab(),
   };

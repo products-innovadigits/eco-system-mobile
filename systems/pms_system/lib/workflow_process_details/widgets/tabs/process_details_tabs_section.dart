@@ -6,7 +6,7 @@ class ProcessDetailsTabsSection extends StatelessWidget {
   static Map<ProcessTabsEnum, String> tabs = {
     ProcessTabsEnum.followProcess: LocaleKeys.follow_process,
     ProcessTabsEnum.stageDocs: LocaleKeys.current_step_docs,
-    ProcessTabsEnum.fields: LocaleKeys.fields,
+    // ProcessTabsEnum.fields: LocaleKeys.fields,
     ProcessTabsEnum.history: LocaleKeys.history,
     ProcessTabsEnum.actions: LocaleKeys.actions,
   };
