@@ -100,8 +100,8 @@ android {
 
     namespace = "com.innova_product.eco_system"
     testNamespace = "com.innova_product.eco_system.test"
-    compileSdk = 34
-    ndkVersion = "26.1.10909125"
+    compileSdk = 35
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         coreLibraryDesugaringEnabled true
@@ -120,7 +120,7 @@ android {
     defaultConfig {
         applicationId = "com.innova_product.eco_system"
         minSdk = 23
-        targetSdk = 34
+        targetSdk = 35
         versionCode = flutterVersionCode.toInteger()
         versionName =  flutterVersionName
         multiDexEnabled = true

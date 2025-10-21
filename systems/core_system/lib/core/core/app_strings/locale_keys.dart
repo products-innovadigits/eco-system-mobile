@@ -323,6 +323,7 @@ abstract class  LocaleKeys {
   static const not_completed = 'not_completed';
   static const advanced = 'advanced';
   static const late = 'late';
+  static const filtration = 'filtration';
   static const available_jobs = 'available_jobs';
   static const talent_pool = 'talent_pool';
   static const candidate_with_future_potential = 'candidate_with_future_potential';
@@ -518,7 +519,6 @@ abstract class  LocaleKeys {
   static const download = 'download';
   static const file_downloaded_successfully = 'file_downloaded_successfully';
   static const file_saved_to = 'file_saved_to';
-  static const could_not_open_file = 'could_not_open_file';
   static const download_failed = 'download_failed';
 
 }

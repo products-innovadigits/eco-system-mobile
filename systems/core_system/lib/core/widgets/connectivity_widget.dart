@@ -11,56 +11,58 @@ class ConnectivityWidget extends StatelessWidget {
       builder: (context, langSnapshot) {
         final isRTL = langSnapshot.data == 'ar';
 
-        return Directionality(
-          textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
-          child: StreamBuilder<bool?>(
-            stream: mainAppBloc.connectivityStream,
-            builder: (context, connectivitySnapshot) {
-              final isConnected = connectivitySnapshot.data ?? true;
+        return SafeArea(
+          child: Directionality(
+            textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
+            child: StreamBuilder<bool?>(
+              stream: mainAppBloc.connectivityStream,
+              builder: (context, connectivitySnapshot) {
+                final isConnected = connectivitySnapshot.data ?? true;
 
-              if (isConnected) return const SizedBox.shrink();
+                if (isConnected) return const SizedBox.shrink();
 
-              return AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
-                height: isConnected ? 0 : 40,
-                color: Styles.ERROR_COLOR,
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.wifi_off_rounded,
-                        color: context.color.surfaceContainer,
-                        size: 20,
-                      ),
-                      8.sw,
-                      Text(
-                        allTranslations.text(LocaleKeys.no_internet_connection),
-                        style: AppTextStyles.w500.copyWith(
+                return AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                  height: isConnected ? 0 : 40,
+                  color: Styles.ERROR_COLOR,
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.wifi_off_rounded,
                           color: context.color.surfaceContainer,
-                          fontSize: 14,
+                          size: 20,
                         ),
-                      ),
-                      if (!isConnected) ...[
                         8.sw,
-                        IconButton(
-                          icon: Icon(
-                            Icons.refresh_rounded,
+                        Text(
+                          allTranslations.text(LocaleKeys.no_internet_connection),
+                          style: AppTextStyles.w500.copyWith(
                             color: context.color.surfaceContainer,
-                            size: 20,
+                            fontSize: 14,
                           ),
-                          onPressed: () async {
-                            final connectivityService = ConnectivityService();
-                            await connectivityService.checkConnection();
-                          },
                         ),
+                        if (!isConnected) ...[
+                          8.sw,
+                          IconButton(
+                            icon: Icon(
+                              Icons.refresh_rounded,
+                              color: context.color.surfaceContainer,
+                              size: 20,
+                            ),
+                            onPressed: () async {
+                              final connectivityService = ConnectivityService();
+                              await connectivityService.checkConnection();
+                            },
+                          ),
+                        ],
                       ],
-                    ],
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         );
       },

@@ -26,7 +26,11 @@ class Edit extends AppEvent {
   final int documentId;
   final String comment;
 
-  Edit({required this.documentDataId, required this.documentId, required this.comment}) : super(null);
+  Edit({
+    required this.documentDataId,
+    required this.documentId,
+    required this.comment,
+  }) : super(null);
 }
 
 class Get extends AppEvent {
@@ -332,4 +336,8 @@ class Assign extends AppEvent {
 
 class UpdateGender extends AppEvent {
   UpdateGender({Object? arguments}) : super(arguments);
+}
+
+class Refresh extends AppEvent {
+  Refresh({Object? arguments}) : super(arguments);
 }

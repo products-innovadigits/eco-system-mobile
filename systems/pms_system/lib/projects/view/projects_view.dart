@@ -1,4 +1,6 @@
 import 'package:core_system/core/widgets/nav_app.dart';
+import 'package:pms_system/projects/bloc/projects_sorting_bloc.dart';
+import 'package:pms_system/projects/bloc/projects_sorting_events.dart';
 import 'package:pms_system/projects/widgets/projects_sorting_bottom_sheet.dart';
 import 'package:pms_system/shared/pms_exports.dart';
 
@@ -25,12 +27,23 @@ class _ProjectsViewState extends State<ProjectsView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          ProjectsBloc()..add(Click(arguments: SearchEngine())),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ProjectsSortingBloc>(
+          create: (context) => ProjectsSortingBloc(),
+        ),
+        BlocProvider<ProjectsBloc>(
+          create: (context) {
+            final sortingBloc = context.read<ProjectsSortingBloc>();
+            return ProjectsBloc(sortingBloc: sortingBloc)
+              ..add(Click(arguments: SearchEngine()));
+          },
+        ),
+      ],
       child: BlocBuilder<ProjectsBloc, AppState>(
         builder: (context, state) {
           final bloc = context.read<ProjectsBloc>();
+          final sortingBloc = context.read<ProjectsSortingBloc>();
           final projectsFiltrationBloc = ProjectsFiltrationBloc.instance;
           return Scaffold(
             appBar: CustomAppBar(
@@ -38,7 +51,7 @@ class _ProjectsViewState extends State<ProjectsView> {
               withSearch: true,
               withFilter: true,
               isFiltered: projectsFiltrationBloc.isFilterApplied,
-              isSorted: bloc.appliedSorting != null,
+              isSorted: sortingBloc.hasAppliedSorting,
               withSorting: true,
               withCancelBtn: true,
               onSearching: (value) =>
@@ -59,12 +72,15 @@ class _ProjectsViewState extends State<ProjectsView> {
                 );
               },
               onSorting: () {
-                if (bloc.appliedSorting == null) {
-                  bloc.selectedSorting = null;
+                // Clear selection if no applied sorting
+                if (!sortingBloc.hasAppliedSorting) {
+                  sortingBloc.add(ClearSortingSelection());
                 }
+                // Load sorting options
+                sortingBloc.add(LoadSortingOptions());
                 PopUpHelper.showBottomSheet(
                   child: BlocProvider.value(
-                    value: bloc..add(Get()),
+                    value: sortingBloc,
                     child: const ProjectsSortingBottomSheet(),
                   ),
                 );
@@ -72,14 +88,13 @@ class _ProjectsViewState extends State<ProjectsView> {
             ),
             body: SafeArea(
               child: BlocBuilder<ProjectsBloc, AppState>(
-                buildWhen: (previous, current) => current is !Getting,
                 builder: (context, state) {
                   return switch (state) {
                     // Loading…
                     Loading() => const ShimmerCardsList(),
 
-                    // Done
-                    Done(:final cards, :final loading) => Column(
+                    // SOLUTION 1: Handle Done state with data models instead of widgets
+                    Done(:final list, :final loading) when list != null => Column(
                       children: [
                         Expanded(
                           child: ListAnimator(
@@ -89,30 +104,67 @@ class _ProjectsViewState extends State<ProjectsView> {
                             controller: context
                                 .read<ProjectsBloc>()
                                 .scrollController,
-                            data: cards,
+                            // SOLUTION 1: Build widgets from data models in the UI layer
+                            // This allows Flutter to optimize widget rebuilding
+                            data: (list as List<ProjectDetailsModel>)
+                                .map((project) => ProjectCard(project: project))
+                                .toList(),
                           ),
                         ),
                         CustomLoading(isTextLoading: true, loading: loading),
                       ],
                     ),
 
+                    // Fallback for old Done state with cards (for backward compatibility)
+                    Done(:final cards, :final loading) when cards != null =>
+                      Column(
+                        children: [
+                          Expanded(
+                            child: ListAnimator(
+                              customPadding: EdgeInsets.symmetric(
+                                horizontal: 16.w,
+                              ),
+                              controller: context
+                                  .read<ProjectsBloc>()
+                                  .scrollController,
+                              data: cards,
+                            ),
+                          ),
+                          CustomLoading(isTextLoading: true, loading: loading),
+                        ],
+                      ),
+
                     // Empty
-                    Empty(:final initial) => EmptyContainer(
-                      txt: initial == true
-                          ? null
-                          : (bloc.searchTEC != null &&
-                                bloc.searchTEC!.text.isEmpty)
-                          ? allTranslations.text(
-                              LocaleKeys.no_projects_match_your_filters,
-                            )
-                          : '${allTranslations.text(LocaleKeys.no_projects_match)} \' ${bloc.searchTEC!.text} \'',
+                    Empty(:final initial) => SizedBox(
+                      height: context.h * 0.6,
+                      child: EmptyContainer(
+                        txt: initial == true
+                            ? null
+                            : (bloc.searchTEC != null &&
+                                  bloc.searchTEC!.text.isEmpty)
+                            ? allTranslations.text(
+                                LocaleKeys.no_projects_match_your_filters,
+                              )
+                            : '${allTranslations.text(LocaleKeys.no_projects_match)} \' ${bloc.searchTEC!.text} \'',
+                      ),
                     ),
 
                     // Fallback (in case error occurs or something else)
-                    _ => EmptyContainer(
-                      img: Assets.svgs.error.path,
-                      txt: allTranslations.text(
-                        LocaleKeys.something_went_wrong,
+                    _ => RefreshIndicator(
+                      onRefresh: () async {
+                        context.read<ProjectsBloc>().add(Refresh());
+                      },
+                      child: SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: SizedBox(
+                          height: context.h * 0.6,
+                          child: EmptyContainer(
+                            img: Assets.svgs.error.path,
+                            txt: allTranslations.text(
+                              LocaleKeys.something_went_wrong,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   };

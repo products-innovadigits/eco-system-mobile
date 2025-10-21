@@ -60,8 +60,8 @@ class WorkflowProcessDetailsView extends StatelessWidget {
               create: (context) => StageDocsBloc()
                 ..add(
                   Click(
-                    // arguments: {'processId': 146, 'projectId': 51},
-                    arguments: {'processId': processId, 'projectId': projectId},
+                    arguments: {'processId': 146, 'projectId': 51},
+                    // arguments: {'processId': processId, 'projectId': projectId},
                   ),
                 ),
             ),

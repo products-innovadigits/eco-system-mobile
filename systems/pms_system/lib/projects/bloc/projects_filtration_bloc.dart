@@ -1,3 +1,4 @@
+import 'package:pms_system/projects/bloc/projects_sorting_bloc.dart';
 import 'package:pms_system/shared/pms_exports.dart';
 
 class ProjectsFiltrationBloc extends Bloc<AppEvent, AppState> {
@@ -91,6 +92,9 @@ class ProjectsFiltrationBloc extends Bloc<AppEvent, AppState> {
       return;
     }
 
+    // Get current sorting parameters to preserve them
+    final sortingParams = _getCurrentSortingParams();
+
     /// Add the parameters to the project bloc
     projectsBloc.add(
       Click(
@@ -102,6 +106,7 @@ class ProjectsFiltrationBloc extends Bloc<AppEvent, AppState> {
             'periortyLevelId': selectedPriority?.id ?? '',
             'startDate': pickedStartCtrl.text,
             'endDate': pickedEndCtrl.text,
+            ...sortingParams, // Preserve sorting parameters
           },
         ),
       ),
@@ -208,7 +213,9 @@ class ProjectsFiltrationBloc extends Bloc<AppEvent, AppState> {
     pickedEndCtrl.clear();
     if (isFilterApplied) {
       isFilterApplied = false;
-      projectsBloc.add(Click(arguments: SearchEngine()));
+      // Preserve sorting parameters when resetting filters
+      final sortingParams = _getCurrentSortingParams();
+      projectsBloc.add(Click(arguments: SearchEngine(query: sortingParams)));
       CustomNavigator.pop();
     }
   }
@@ -221,5 +228,19 @@ class ProjectsFiltrationBloc extends Bloc<AppEvent, AppState> {
     pickedStartCtrl.clear();
     pickedEndCtrl.clear();
     isFilterApplied = false;
+  }
+
+  // Helper method to get current sorting parameters from sorting bloc
+  Map<String, dynamic> _getCurrentSortingParams() {
+    try {
+      // Try to get the sorting bloc from the current context
+      final sortingBloc = BlocProvider.of<ProjectsSortingBloc>(
+        CustomNavigator.navigatorState.currentContext!,
+      );
+      return sortingBloc.getSortingParams() ?? {};
+    } catch (e) {
+      // If sorting bloc is not available, return empty params
+      return {};
+    }
   }
 }

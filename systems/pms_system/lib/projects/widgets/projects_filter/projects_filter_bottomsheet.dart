@@ -16,7 +16,7 @@ class ProjectsFilterBottomSheet extends StatelessWidget {
             Column(
               children: [
                 BottomSheetHeader(
-                  title: allTranslations.text(LocaleKeys.candidate),
+                  title: allTranslations.text(LocaleKeys.filtration),
                 ),
                 state is Loading
                     ? ShimmerCardsList(itemCount: 4, cardHeight: 50 , listPadding: 0)

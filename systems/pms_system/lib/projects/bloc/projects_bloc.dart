@@ -1,27 +1,40 @@
+import 'package:pms_system/projects/bloc/projects_sorting_bloc.dart';
+import 'package:pms_system/projects/bloc/projects_sorting_states.dart';
 import 'package:pms_system/shared/pms_exports.dart';
 
 class ProjectsBloc extends Bloc<AppEvent, AppState> {
-  ProjectsBloc() : super(Start()) {
+  ProjectsBloc({ProjectsSortingBloc? sortingBloc}) : super(Start()) {
     scrollController = ScrollController();
     searchTEC = TextEditingController();
     customScroll(scrollController);
     on<Click>(_getObjectives);
-    on<Get>(_getSortingOptions);
-    on<SelectSorting>(_onSelectSorting);
-    on<ApplySorting>(_onApplySorting);
-    on<ResetSorting>(_onResetSorting);
+    on<Refresh>(_onRefresh);
+
+    // Listen to sorting changes
+    _sortingBloc = sortingBloc;
+    if (_sortingBloc != null) {
+      _sortingBloc!.stream.listen((sortingState) {
+        if (sortingState is SortingApplied || sortingState is SortingReset) {
+          // Refresh projects when sorting is applied or reset
+          // Preserve existing filter parameters when resetting sorting
+          _engine = SearchEngine(query: _getCurrentFilterParams());
+          _projects.clear(); // Clear data models instead of widgets
+          add(Click(arguments: _engine));
+        }
+      });
+    }
   }
 
   late SearchEngine _engine;
-  final List<Widget> _cards = [];
+
+
+  final List<ProjectDetailsModel> _projects = [];
 
   late ScrollController scrollController;
   TextEditingController? searchTEC;
 
-  // Sorting properties
-  List<DropListModel> sortingList = [];
-  DropListModel? appliedSorting;
-  DropListModel? selectedSorting;
+  // Reference to sorting bloc
+  ProjectsSortingBloc? _sortingBloc;
 
   final filter = BehaviorSubject<CustomFieldModel?>();
 
@@ -55,46 +68,34 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
     });
   }
 
-  // Sorting event handlers
-  Future<void> _onSelectSorting(
-    SelectSorting event,
-    Emitter<AppState> emit,
-  ) async {
-    selectedSorting = event.arguments as DropListModel?;
-    emit(Done(cards: _cards));
-  }
-
-  void _onApplySorting(ApplySorting event, Emitter<AppState> emit) {
-    appliedSorting = selectedSorting;
-    CustomNavigator.pop();
-    _engine = SearchEngine();
-    add(Click(arguments: _engine));
-  }
-
-  void _onResetSorting(ResetSorting event, Emitter<AppState> emit) {
-    appliedSorting = null;
-    selectedSorting = null;
-    CustomNavigator.pop();
-    _engine = SearchEngine();
-    add(Click(arguments: _engine));
-  }
-
   _getObjectives(AppEvent event, Emitter<AppState> emit) async {
     emit(Loading());
     try {
       _engine = event.arguments as SearchEngine;
+
+      // SOLUTION 1: Handle pagination with data models instead of widgets
       if (_engine.currentPage == 0) {
-        _cards.clear();
+        _projects.clear(); // Clear data models instead of widgets
         emit(Loading());
       } else {
-        emit(Done(cards: _cards, loading: true));
+        // Emit loading state with current projects for pagination using Done state
+        emit(
+          Done(
+            list: _projects, // Use 'list' property to store data models
+            loading: true,
+            reload: true,
+          ),
+        );
       }
+
+      // Get sorting parameters from sorting bloc
+      final sortingParams = _sortingBloc?.getSortingParams() ?? {};
 
       _engine.query = {
         "searchKeyword": searchTEC?.text.trim(),
         "pageIndex": _engine.currentPage + 1,
         "pageSize": _engine.limit,
-        if (appliedSorting?.key != null) "sortOptionId": appliedSorting!.key,
+        ...sortingParams,
         ...?(_engine.query as Map<String, dynamic>?)?.entries
             .where((e) => e.value != null)
             .fold<Map<String, dynamic>>(
@@ -106,51 +107,76 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
       ProjectsModel res = await ProjectsRepo.getProjects(_engine);
 
       if (res.data != null && res.data!.isNotEmpty) {
-        for (var objective in res.data ?? []) {
-          _cards.add(ProjectCard(project: objective));
-        }
+        // SOLUTION 1: Add data models instead of creating widgets
+        // This prevents widget recreation on every state emission
+        _projects.addAll(res.data!);
         _engine.currentPage += 1;
         _engine.maxPages += 1;
-        // _engine.updateCurrentPage(res.meta!.currPage!);
-      }
-      if (_cards.isNotEmpty) {
-        emit(Done(cards: _cards));
+
+        // Emit the new state with data models using Done state
+        emit(
+          Done(
+            list: _projects, // Use 'list' property to store data models
+            loading: false,
+            reload: true,
+          ),
+        );
       } else {
-        emit(Empty());
+        // Emit empty state if no projects found
+        if (_projects.isEmpty) {
+          emit(Empty());
+        } else {
+          // If we have projects but no new ones, just update the loading state
+          emit(
+            Done(
+              list: _projects, // Use 'list' property to store data models
+              loading: false,
+              reload: true,
+            ),
+          );
+        }
       }
     } catch (e) {
       AppCore.errorMessage(allTranslations.text('something_went_wrong'));
-
       emit(Error());
     }
   }
 
-  _getSortingOptions(AppEvent event, Emitter<AppState> emit) async {
-    if (sortingList.isNotEmpty) return;
-    try {
-      emit(Getting());
+  _onRefresh(AppEvent event, Emitter<AppState> emit) async {
+    final filterParams = _getCurrentFilterParams();
+    final sortingParams = _sortingBloc?.getSortingParams() ?? {};
+    _engine = SearchEngine(query: {...filterParams, ...sortingParams});
+    _projects.clear();
 
-      Response model = await ProjectsRepo.getProjectSortingOptions();
 
-      if (model.statusCode == 200 && model.data != null) {
-        sortingList = (model.data['data'] as List)
-            .map(
-              (item) => DropListModel(
-                id: item['id'],
-                name: item['nameAr'],
-                key: item['key'] ?? item['id'].toString(),
-              ),
-            )
-            .toList();
-        emit(Done(cards: _cards));
-      } else {
-        AppCore.errorMessage(allTranslations.text('something_went_wrong'));
-        emit(Error());
-      }
-    } catch (e) {
-      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
-      emit(Error());
+    add(Click(arguments: _engine));
+  }
+
+  // Helper method to get current filter parameters from filtration bloc
+  Map<String, dynamic> _getCurrentFilterParams() {
+    final filtrationBloc = ProjectsFiltrationBloc.instance;
+    final params = <String, dynamic>{};
+
+    if (filtrationBloc.selectedStatus != null) {
+      params['status'] = filtrationBloc.selectedStatus!.name;
     }
+    if (filtrationBloc.selectedCategory != null) {
+      params['projectCategoryId'] = filtrationBloc.selectedCategory!.id;
+    }
+    if (filtrationBloc.selectedRisk != null) {
+      params['riskLevelId'] = filtrationBloc.selectedRisk!.id;
+    }
+    if (filtrationBloc.selectedPriority != null) {
+      params['periortyLevelId'] = filtrationBloc.selectedPriority!.id;
+    }
+    if (filtrationBloc.pickedStartCtrl.text.isNotEmpty) {
+      params['startDate'] = filtrationBloc.pickedStartCtrl.text;
+    }
+    if (filtrationBloc.pickedEndCtrl.text.isNotEmpty) {
+      params['endDate'] = filtrationBloc.pickedEndCtrl.text;
+    }
+
+    return params;
   }
 
   @override
