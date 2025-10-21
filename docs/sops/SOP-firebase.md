@@ -51,3 +51,4 @@ Runtime initialization in `lib/main.dart`, options in `lib/firebase_options.dart
 - 1.0 — 2025-10-20 — Initial document
 
 
+

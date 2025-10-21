@@ -57,3 +57,4 @@ Document Android build setup, signing, and required manifest permissions/configs
 - 1.0 — 2025-10-20 — Initial document
 
 
+

@@ -520,5 +520,9 @@ abstract class  LocaleKeys {
   static const file_downloaded_successfully = 'file_downloaded_successfully';
   static const file_saved_to = 'file_saved_to';
   static const download_failed = 'download_failed';
+  static const internal_comments = 'internal_comments';
+  static const enter_internal_comments = 'enter_internal_comments';
+  static const upload_additional_file = 'upload_additional_file';
+  static const ensure_compliance_with_pmo_standards = 'ensure_compliance_with_pmo_standards';
 
 }

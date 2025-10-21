@@ -27,7 +27,7 @@ class CustomTextField extends StatefulWidget {
   final Color? color, hintColor, borderColor;
   final Widget? suffixWidget, prefixWidget;
   final String? init;
-  final TextStyle? headStyle , textStyle;
+  final TextStyle? headStyle, textStyle, hintStyle;
   final bool headStart;
   final double headSpace;
   final double? maxSuffixIconHeight;
@@ -80,7 +80,9 @@ class CustomTextField extends StatefulWidget {
     this.headSpace = 4,
     this.borderColor,
     this.contentPadding,
-    this.maxSuffixIconHeight, this.textStyle,
+    this.maxSuffixIconHeight,
+    this.textStyle,
+    this.hintStyle,
   }) : super(key: key);
 
   @override
@@ -118,10 +120,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
     _enabledBorders = OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide(
-        style: BorderStyle.solid,
-        color: outlineColor,
-      ),
+      borderSide: BorderSide(style: BorderStyle.solid, color: outlineColor),
     );
   }
 
@@ -199,7 +198,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                       // LengthLimitingTextInputFormatter(11),
                     ]
                   : widget.inputFormatters,
-              style: widget.textStyle ??  context.textTheme.labelLarge,
+              style: widget.textStyle ?? context.textTheme.labelLarge,
               decoration: InputDecoration(
                 fillColor: widget.color ?? context.color.surfaceContainer,
                 errorStyle: TextStyle(color: context.color.error),
@@ -239,9 +238,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 //   color: widget.hintColor ?? Styles.HINT,
                 //   fontWeight: FontWeight.w400,
                 // ),
-                hintStyle: context.textTheme.bodyMedium?.copyWith(
-                  color: widget.hintColor ?? context.color.outlineVariant,
-                ),
+                hintStyle:
+                    widget.hintStyle?.copyWith(
+                      color: widget.hintColor ?? context.color.outlineVariant,
+                    ) ??
+                    context.textTheme.bodyMedium?.copyWith(
+                      color: widget.hintColor ?? context.color.outlineVariant,
+                    ),
                 suffixIcon:
                     widget.suffixWidget ??
                     (widget.suffixIcon != null

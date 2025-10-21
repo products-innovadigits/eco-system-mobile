@@ -50,3 +50,4 @@ Applies to main app under `lib/` and the systems: `systems/core_system`, `system
 - 1.0 — 2025-10-20 — Initial document
 
 
+

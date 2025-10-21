@@ -42,3 +42,4 @@ Applies to `lib/main.dart`, `systems/core_system/lib/core/navigation/routes.dart
 - 1.0 — 2025-10-20 — Initial document
 
 
+

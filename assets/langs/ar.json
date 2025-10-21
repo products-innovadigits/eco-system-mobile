@@ -518,5 +518,9 @@
   "download": "تحميل",
   "file_downloaded_successfully": "تم تحميل الملف بنجاح",
   "file_saved_to": "تم حفظ الملف في",
-  "download_failed": "فشل في التحميل"
+  "download_failed": "فشل في التحميل",
+  "internal_comments": "تعليقات داخلية",
+  "enter_internal_comments": "ادخل تعليقات داخلية...",
+  "upload_additional_file": "رفع ملف اضافي",
+  "ensure_compliance_with_pmo_standards": "التاكد من التوافق مع معايير مكتب ادارة المشاريع"
 }

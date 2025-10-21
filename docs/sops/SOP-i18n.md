@@ -42,3 +42,4 @@ Custom i18n using JSON assets under `assets/langs/` and a `LocalizationsDelegate
 - 1.0 — 2025-10-20 — Initial document
 
 
+

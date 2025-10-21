@@ -231,6 +231,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/coin.svg
   SvgGenImage get coin => const SvgGenImage('assets/svgs/coin.svg');
 
+  /// File path: assets/svgs/comment.svg
+  SvgGenImage get comment => const SvgGenImage('assets/svgs/comment.svg');
+
   /// File path: assets/svgs/copy.svg
   SvgGenImage get copy => const SvgGenImage('assets/svgs/copy.svg');
 
@@ -475,6 +478,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/properties.svg
   SvgGenImage get properties => const SvgGenImage('assets/svgs/properties.svg');
 
+  /// File path: assets/svgs/reader.svg
+  SvgGenImage get reader => const SvgGenImage('assets/svgs/reader.svg');
+
   /// File path: assets/svgs/receipt.svg
   SvgGenImage get receipt => const SvgGenImage('assets/svgs/receipt.svg');
 
@@ -554,6 +560,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/up.svg
   SvgGenImage get up => const SvgGenImage('assets/svgs/up.svg');
 
+  /// File path: assets/svgs/upload.svg
+  SvgGenImage get upload => const SvgGenImage('assets/svgs/upload.svg');
+
   /// File path: assets/svgs/user.svg
   SvgGenImage get user => const SvgGenImage('assets/svgs/user.svg');
 
@@ -612,6 +621,7 @@ class $AssetsSvgsGen {
     closeCircle24,
     closeCircle32,
     coin,
+    comment,
     copy,
     correct,
     cube,
@@ -683,6 +693,7 @@ class $AssetsSvgsGen {
     profile2,
     projectLifeCycle,
     properties,
+    reader,
     receipt,
     refreshCircle,
     refreshSquare,
@@ -707,6 +718,7 @@ class $AssetsSvgsGen {
     tripleUser,
     unitIcon,
     up,
+    upload,
     user,
     valuesIcon,
     visionSquare,

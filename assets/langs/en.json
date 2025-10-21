@@ -516,5 +516,9 @@
   "download": "Download",
   "file_downloaded_successfully": "File downloaded successfully",
   "file_saved_to": "File saved to",
-  "download_failed": "Download failed"
+  "download_failed": "Download failed",
+  "internal_comments": "Internal Comments",
+  "enter_internal_comments": "Enter internal comments...",
+  "upload_additional_file": "Upload additional file",
+  "ensure_compliance_with_pmo_standards": "Ensure compliance with project management office standards"
 }

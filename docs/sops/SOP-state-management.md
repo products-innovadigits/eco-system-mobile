@@ -41,3 +41,4 @@ Global app bootstrap in `lib/main.dart` and provider wiring in `systems/core_sys
 ## Changelog
 - 1.0 — 2025-10-20 — Initial document
 
+
