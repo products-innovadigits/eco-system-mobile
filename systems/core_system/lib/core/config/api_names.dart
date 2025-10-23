@@ -4,7 +4,6 @@ abstract class ApiNames {
   static const strategyLogin = "Auth/AuthenticateExternalUserAsync";
   static const colorScheme = "";
 
-
   // Strategy APIs ====================
   static const objectActivePercentage = "Dashboard/ObjectActivePersantge";
   static const objectActiveCategorized = "ObjectActive/Categorized";
@@ -25,12 +24,16 @@ abstract class ApiNames {
   static const projectFilterOptions = "Project/filter-options";
   static const projectSortingOptions = "Project/GetProjectSortOptionsAsync";
   static String projectDetails(id) => "Project/$id";
-  static String projectGeneralProgressSummary(id) => "Project/$id/progress-summary";
+  static String projectGeneralProgressSummary(id) =>
+      "Project/$id/progress-summary";
   static String workflowProcessDetails = "WorkFlow/GroupSteps";
   static String stageDocsData = "WorkFlow/CurrentAndNext";
   // static String stageDocsData = "DocumentData";
   static String documentComment = "DocumentComment";
   static String documentCommentActions(id) => "DocumentComment/$id";
+  static String projectProcessTechnicalLog = "ProjectProcess/TechnicalLog";
+  static String projectStepComment = "ProjectStepComment";
+  static String projectProcessNext = "ProjectProcess/next";
 
   // Jobs APIs ====================
   static const jobs = "chances";
@@ -45,5 +48,4 @@ abstract class ApiNames {
   // Filters ===================================
   static const tags = "tags/get-all";
   static const sortingList = "candidates/sorting-list";
-
 }

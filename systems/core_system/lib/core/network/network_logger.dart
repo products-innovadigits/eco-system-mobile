@@ -15,10 +15,20 @@ class NetworkLogger {
 
       // For Print Body
       if (options.data.runtimeType == FormData) {
-        for (var i = 0; i < (options.data as FormData).fields.length; i++) {
-          (options.data as FormData).fields[i];
-          body +=
-              '${(options.data as FormData).fields[i].key}: ${(options.data as FormData).fields[i].value} | ';
+        FormData formData = options.data as FormData;
+
+        // Log regular fields
+        for (var i = 0; i < formData.fields.length; i++) {
+          body += '${formData.fields[i].key}: ${formData.fields[i].value} | ';
+        }
+
+        // Log files if they exist
+        if (formData.files.isNotEmpty) {
+          for (var i = 0; i < formData.files.length; i++) {
+            MapEntry<String, MultipartFile> fileEntry = formData.files[i];
+            body +=
+                '${fileEntry.key}: [FILE] ${fileEntry.value.filename ?? 'unnamed'} (${fileEntry.value.length} bytes) | ';
+          }
         }
       } else if (options.data.runtimeType is Map) {
         (options.data as Map).forEach((key, value) => body += "$key: $value |");
@@ -26,22 +36,49 @@ class NetworkLogger {
         body = "${options.data}";
       }
       // For Print queryParameters
-      options.queryParameters
-          .forEach((key, value) => queryParameters += "$key: $value |");
+      options.queryParameters.forEach(
+        (key, value) => queryParameters += "$key: $value |",
+      );
       cprint(
-          "┌------------------------------------------------------------------------------");
+        "┌------------------------------------------------------------------------------",
+      );
       cprint('''| Request: ${options.method} ${options.uri}''');
       cprint(
-          "├------------------------------------------------------------------------------");
+        "├------------------------------------------------------------------------------",
+      );
       cprint('''| Headers: $headers''');
       cprint(
-          "├------------------------------------------------------------------------------");
+        "├------------------------------------------------------------------------------",
+      );
       cprint('''| Body: $body''');
+
+      // Add detailed file information if FormData contains files
+      if (options.data.runtimeType == FormData) {
+        FormData formData = options.data as FormData;
+        if (formData.files.isNotEmpty) {
+          cprint(
+            "├------------------------------------------------------------------------------",
+          );
+          cprint('''| File Details:''');
+          for (var i = 0; i < formData.files.length; i++) {
+            MapEntry<String, MultipartFile> fileEntry = formData.files[i];
+            cprint('''|   - Field: ${fileEntry.key}''');
+            cprint('''|     File: ${fileEntry.value.filename ?? 'unnamed'}''');
+            cprint('''|     Size: ${fileEntry.value.length} bytes''');
+            cprint(
+              '''|     ContentType: ${fileEntry.value.contentType ?? 'unknown'}''',
+            );
+          }
+        }
+      }
+
       cprint(
-          "├------------------------------------------------------------------------------");
+        "├------------------------------------------------------------------------------",
+      );
       cprint('''| QueryParameters: $queryParameters''');
       cprint(
-          "├------------------------------------------------------------------------------");
+        "├------------------------------------------------------------------------------",
+      );
       handler.next(options);
     },
     onResponse: (Response response, handler) async {
@@ -49,12 +86,15 @@ class NetworkLogger {
       String prettyprint = encoder.convert(response.data);
       cprint("| Status code: ${response.statusCode}");
       cprint(
-          "├------------------------------------------------------------------------------");
+        "├------------------------------------------------------------------------------",
+      );
       cprint("| Response: $prettyprint");
       cprint(
-          "└------------------------------------------------------------------------------");
+        "└------------------------------------------------------------------------------",
+      );
       cprint(
-          "================================================================================");
+        "================================================================================",
+      );
       handler.next(response);
     },
     onError: (DioException error, handler) async {

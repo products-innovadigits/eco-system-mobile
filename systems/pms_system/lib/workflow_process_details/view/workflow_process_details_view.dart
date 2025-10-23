@@ -30,26 +30,41 @@ class WorkflowProcessDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isStart = workflowStatus == 'start';
     return Scaffold(
       appBar: CustomAppBar(
         title: processName,
         withBottomBorder: false,
-        action: Container(
-          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          decoration: BoxDecoration(
-            color: getStatusColor(workflowStatus).withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(25),
-          ),
-          child: Row(
-            children: [
-              Text(
-                getStatusName(workflowStatus),
-                style: context.textTheme.bodySmall?.copyWith(
-                  color: getStatusColor(workflowStatus),
-                  fontSize: FontSizes.f10,
+        action: InkWell(
+          onTap: isStart
+              ? () {
+                  YesNoDialogHelper.showStartProcessConfirmationDialog(
+                    context: context,
+                    onStartPressed: () {},
+                  );
+                }
+              : null,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: getStatusColor(
+                workflowStatus,
+              ).withValues(alpha: isStart ? null : 0.1),
+              borderRadius: BorderRadius.circular(isStart ? 8 : 25),
+            ),
+            child: Row(
+              children: [
+                Text(
+                  getStatusName(workflowStatus),
+                  style: context.textTheme.bodySmall?.copyWith(
+                    color: isStart
+                        ? context.color.onPrimary
+                        : getStatusColor(workflowStatus),
+                    fontSize: FontSizes.f10,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -60,8 +75,8 @@ class WorkflowProcessDetailsView extends StatelessWidget {
               create: (context) => StageDocsBloc()
                 ..add(
                   Click(
-                    arguments: {'processId': 146, 'projectId': 51},
-                    // arguments: {'processId': processId, 'projectId': projectId},
+                    // arguments: {'processId': 146, 'projectId': 51},
+                    arguments: {'processId': processId, 'projectId': projectId},
                   ),
                 ),
             ),
@@ -94,13 +109,13 @@ class WorkflowProcessDetailsView extends StatelessWidget {
 }
 
 Color getStatusColor(String workflowStatus) => switch (workflowStatus) {
-  'start' => LightColor.placeHolderText,
+  'start' => LightColor.primary,
   'inProgress' => LightColor.secondary,
   _ => LightColor.tertiary,
 };
 
 String getStatusName(String workflowStatus) => switch (workflowStatus) {
-  'start' => allTranslations.text(LocaleKeys.start),
+  'start' => allTranslations.text(LocaleKeys.start_process),
   'inProgress' => allTranslations.text(LocaleKeys.in_progress),
   _ => allTranslations.text(LocaleKeys.done),
 };

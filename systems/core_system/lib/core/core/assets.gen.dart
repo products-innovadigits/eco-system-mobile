@@ -501,6 +501,10 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/right.svg
   SvgGenImage get right => const SvgGenImage('assets/svgs/right.svg');
 
+  /// File path: assets/svgs/rocket-circle.svg
+  SvgGenImage get rocketCircle =>
+      const SvgGenImage('assets/svgs/rocket-circle.svg');
+
   /// File path: assets/svgs/rocket.svg
   SvgGenImage get rocket => const SvgGenImage('assets/svgs/rocket.svg');
 
@@ -700,6 +704,7 @@ class $AssetsSvgsGen {
     reports,
     request,
     right,
+    rocketCircle,
     rocket,
     searchNormal,
     searchPlaceholder,

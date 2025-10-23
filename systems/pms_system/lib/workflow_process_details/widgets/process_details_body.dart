@@ -47,6 +47,20 @@ class ProcessDetailsBody extends StatelessWidget {
                 projectDetailsModel: projectDetailsModel,
                 selectedTab: selectedTab,
                 processId: processId,
+                projectStepId:
+                    context
+                        .read<StageDocsBloc>()
+                        .stageDocsData
+                        ?.currentStep
+                        ?.id ??
+                    0,
+                nextStepId:
+                    context
+                        .read<StageDocsBloc>()
+                        .stageDocsData
+                        ?.nextStep?[0]
+                        .id ??
+                    0,
                 stageName: stageName,
               ),
 
@@ -71,6 +85,8 @@ class _ProcessBody extends StatelessWidget {
   final ProjectDetailsModel projectDetailsModel;
   final ProcessTabsEnum selectedTab;
   final int processId;
+  final int nextStepId;
+  final int projectStepId;
   final String stageName;
 
   const _ProcessBody({
@@ -78,7 +94,9 @@ class _ProcessBody extends StatelessWidget {
     required this.selectedTab,
     required this.projectDetailsModel,
     required this.processId,
+    required this.nextStepId,
     required this.stageName,
+    required this.projectStepId,
   });
 
   @override
@@ -97,6 +115,8 @@ class _ProcessBody extends StatelessWidget {
                 processList,
                 projectDetailsModel.id!,
                 processId,
+                projectStepId,
+                nextStepId,
               ),
             ),
           ),
@@ -127,6 +147,8 @@ Widget _getTabSection(
   List<WorkflowProcessGroupModel> processList,
   int processId,
   int projectId,
+  int projectStepId,
+  int nextStepId,
 ) {
   return switch (selectedTab) {
     ProcessTabsEnum.followProcess => FollowProcessTab(processList: processList),
@@ -136,7 +158,15 @@ Widget _getTabSection(
       processId: processId,
     ),
     // ProcessTabsEnum.fields => FieldsTab(),
-    ProcessTabsEnum.history => HistoryTab(),
-    _ => ActionsTab(),
+    ProcessTabsEnum.history => HistoryTab(
+      processId: processId,
+      projectId: projectId,
+    ),
+    _ => ActionsTab(
+      processId: processId,
+      projectId: projectId,
+      projectStepId: projectStepId,
+      nextStepId: nextStepId,
+    ),
   };
 }

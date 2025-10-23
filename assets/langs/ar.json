@@ -319,6 +319,7 @@
   "there_is_priority_levels": "لا توجد مستويات أولوية",
   "completed": "مكتمل",
   "start": "ابدا",
+  "start_process": "ابدا العملية",
   "not_completed": "غير مكتمل",
   "advanced": "متقدم",
   "late": "متأخر",
@@ -522,5 +523,17 @@
   "internal_comments": "تعليقات داخلية",
   "enter_internal_comments": "ادخل تعليقات داخلية...",
   "upload_additional_file": "رفع ملف اضافي",
-  "ensure_compliance_with_pmo_standards": "التاكد من التوافق مع معايير مكتب ادارة المشاريع"
+  "ensure_compliance_with_pmo_standards": "التاكد من التوافق مع معايير مكتب ادارة المشاريع",
+  "no_comments_available": "لا توجد تعليقات",
+  "no_attachments_available": "لا توجد مرفقات",
+  "stage_name_label": "اسم المرحلة",
+  "process_group_label": "مجموعة العملية",
+  "employee_label": "موظف",
+  "comments_count": "التعليقات",
+  "attachments_count": "المرفقات",
+  "unknown": "مجهول",
+  "confirm_start_process": "هل انت متاكد من انك تريد بدء العملية؟",
+  "start_process_warning": "عند البدء سيبدأ المؤقّت وتُسجَّل نقطة الانطلاق. قد لا يمكن تعديل وقت البدء لاحقًا حسب الصلاحيات.",
+  "yes_start_process": "نعم ، ابدا العملية",
+  "no_later": "لا ، فيما بعد"
 }

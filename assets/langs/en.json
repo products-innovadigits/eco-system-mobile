@@ -203,6 +203,7 @@
   "invoices": "Invoices",
   "add": "Add",
   "start": "Start",
+  "start_process": "Start Process",
   "properties": "Properties",
   "boarding_btn_text": "Let’s Get Started",
   "welcome_login_title": "Welcome Dear,",
@@ -520,5 +521,17 @@
   "internal_comments": "Internal Comments",
   "enter_internal_comments": "Enter internal comments...",
   "upload_additional_file": "Upload additional file",
-  "ensure_compliance_with_pmo_standards": "Ensure compliance with project management office standards"
+  "ensure_compliance_with_pmo_standards": "Ensure compliance with project management office standards",
+  "no_comments_available": "No comments available",
+  "no_attachments_available": "No attachments available",
+  "stage_name_label": "Stage Name",
+  "process_group_label": "Process Group",
+  "employee_label": "Employee",
+  "comments_count": "Comments",
+  "attachments_count": "Attachments",
+  "unknown": "Unknown",
+  "confirm_start_process": "Are you sure you want to start the process?",
+  "start_process_warning": "When starting, the timer will begin and the starting point will be recorded. The start time may not be editable later depending on permissions.",
+  "yes_start_process": "Yes, start the process",
+  "no_later": "No, later"
 }

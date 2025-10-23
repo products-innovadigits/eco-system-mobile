@@ -1,26 +1,161 @@
 import 'package:pms_system/shared/pms_exports.dart';
+import 'package:pms_system/workflow_process_details/bloc/history_tab_bloc.dart';
+import 'package:pms_system/workflow_process_details/model/history_model.dart';
 
 class HistoryTab extends StatelessWidget {
-  const HistoryTab({super.key});
+  final int processId;
+  final int projectId;
+
+  const HistoryTab({
+    super.key,
+    required this.processId,
+    required this.projectId,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => HistoryTabBloc(),
+      child: _HistoryTabContent(processId: processId, projectId: projectId),
+    );
+  }
+}
+
+class _HistoryTabContent extends StatefulWidget {
+  final int processId;
+  final int projectId;
+
+  const _HistoryTabContent({required this.processId, required this.projectId});
+
+  @override
+  State<_HistoryTabContent> createState() => _HistoryTabContentState();
+}
+
+class _HistoryTabContentState extends State<_HistoryTabContent> {
+  late HistoryTabBloc _bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _bloc = context.read<HistoryTabBloc>();
+
+    // Load initial data
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _bloc.add(
+        Click(
+          arguments: {
+            'processId': 146,
+            // 'processId': widget.processId,
+            'projectId': 51,
+            // 'projectId': widget.projectId,
+          },
+        ),
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HistoryTabBloc, AppState>(
+      builder: (context, state) {
+        return switch (state) {
+          // ── Loading ─────────────────────────
+          Loading() ||
+          Start() => ShimmerCardsList(itemCount: 3, cardHeight: 200),
+
+          // ── Done ────────────────────────────
+          Done(:final model) => _HistoryContent(
+            historyModel: model as HistoryResponseModel,
+          ),
+
+          // ── Empty ───────────────────────────
+          Empty() => const EmptyContainer(),
+
+          // ── Error / fallback ────────────────
+          _ => EmptyContainer(
+            txt: allTranslations.text(LocaleKeys.something_went_wrong),
+            img: Assets.svgs.error.path,
+          ),
+        };
+      },
+    );
+  }
+}
+
+class _HistoryContent extends StatelessWidget {
+  final HistoryResponseModel historyModel;
+
+  const _HistoryContent({required this.historyModel});
 
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      itemCount: 4,
-      itemBuilder: (context, index) => _HistoryTimelineCard(
-        processGroup: "Application Review",
-        stageName: "طلب نموذج تغيير",
-        employee: "سعد ضرغام",
-        time: "10:00 AM",
-        commenter: "محمود",
-        comment: "التاكد من التوافق مع معايير مكتب ادارة المشاريع",
-        hasAttachments: true,
-        hasFields: true,
-        date: "17",
-        month: "ابريل",
-      ),
+      itemCount: historyModel.data!.length,
+      itemBuilder: (context, index) {
+        final historyItem = historyModel.data![index];
+        return _HistoryTimelineCard(
+          processGroup: historyItem.stepGroup?.groupName ?? "مرحلة التحضير",
+          stageName: historyItem.name ?? "إنشاء طلب المشروع",
+          employee:
+              historyItem.responsibleUser?.fullName ?? "سعد بن محمد الشهري",
+          time: _formatTime(historyItem.lastChangeTime),
+          commenter:
+              historyItem.responsibleUser?.fullName ?? "سعد بن محمد الشهري",
+          comments: historyItem.stepComments ?? [],
+          attachments: historyItem.slicesData ?? [],
+          date: _formatDate(historyItem.lastChangeTime, isDate: true),
+          month: _formatDate(historyItem.lastChangeTime, isMonth: true),
+        );
+      },
       separatorBuilder: (context, index) => _TimelineConnector(),
     );
+  }
+
+  String _formatTime(String? lastChangeTime) {
+    if (lastChangeTime == null) return "10:00 AM";
+    try {
+      final dateTime = DateTime.parse(lastChangeTime);
+      final hour = dateTime.hour;
+      final minute = dateTime.minute.toString().padLeft(2, '0');
+      final period = hour >= 12 ? 'PM' : 'AM';
+      final displayHour = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
+      return "$displayHour:$minute $period";
+    } catch (e) {
+      return "10:00 AM";
+    }
+  }
+
+  String _formatDate(
+    String? lastChangeTime, {
+    bool isDate = false,
+    bool isMonth = false,
+  }) {
+    if (lastChangeTime == null) return isDate ? "17" : "ابريل";
+    try {
+      final dateTime = DateTime.parse(lastChangeTime);
+      if (isDate) {
+        return dateTime.day.toString();
+      } else if (isMonth) {
+        const months = [
+          "يناير",
+          "فبراير",
+          "مارس",
+          "ابريل",
+          "مايو",
+          "يونيو",
+          "يوليو",
+          "أغسطس",
+          "سبتمبر",
+          "أكتوبر",
+          "نوفمبر",
+          "ديسمبر",
+        ];
+        return months[dateTime.month - 1];
+      }
+      return dateTime.day.toString();
+    } catch (e) {
+      return isDate ? "17" : "ابريل";
+    }
   }
 }
 
@@ -30,9 +165,8 @@ class _HistoryTimelineCard extends StatelessWidget {
   final String employee;
   final String time;
   final String commenter;
-  final String comment;
-  final bool hasAttachments;
-  final bool hasFields;
+  final List<StepCommentModel> comments;
+  final List<AttachmentModel> attachments;
   final String date;
   final String month;
 
@@ -42,9 +176,8 @@ class _HistoryTimelineCard extends StatelessWidget {
     required this.employee,
     required this.time,
     required this.commenter,
-    required this.comment,
-    required this.hasAttachments,
-    required this.hasFields,
+    required this.comments,
+    required this.attachments,
     required this.date,
     required this.month,
   });
@@ -74,14 +207,18 @@ class _HistoryTimelineCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: _InfoSection(
-                        label: "اسم المرحلة",
+                        label: allTranslations.text(
+                          LocaleKeys.stage_name_label,
+                        ),
                         value: stageName,
                       ),
                     ),
                     SizedBox(width: 8.w),
                     Expanded(
                       child: _InfoSection(
-                        label: "مجموعة العملية",
+                        label: allTranslations.text(
+                          LocaleKeys.process_group_label,
+                        ),
                         value: processGroup,
                       ),
                     ),
@@ -89,35 +226,19 @@ class _HistoryTimelineCard extends StatelessWidget {
                 ),
                 SizedBox(height: 12.h),
                 // Employee info
-                _InfoSection(label: "موظف", value: employee),
+                _InfoSection(
+                  label: allTranslations.text(LocaleKeys.employee_label),
+                  value: employee,
+                ),
                 SizedBox(height: 8.h),
                 // Divider
                 Container(height: 1, color: context.color.outline),
                 SizedBox(height: 12.h),
-                // Comment section
-                _CommentSection(
-                  time: time,
-                  commenter: commenter,
-                  comment: comment,
-                ),
+                // Comments section
+                _CommentsSection(comments: comments),
                 SizedBox(height: 12.h),
-                // Attachments and fields
-                Row(
-                  children: [
-                    if (hasFields)
-                      _AttachmentItem(
-                        label: "الحقول المرتبطة",
-                        icon: "reader", // TODO: Replace with actual icon
-                      ),
-                    SizedBox(width: 16.w),
-                    if (hasAttachments) ...[
-                      _AttachmentItem(
-                        label: "المستندات المرتبطة",
-                        icon: "reader", // TODO: Replace with actual icon
-                      ),
-                    ],
-                  ],
-                ),
+                // Attachments section
+                _AttachmentsSection(attachments: attachments),
               ],
             ),
           ),
@@ -173,82 +294,187 @@ class _InfoSection extends StatelessWidget {
   }
 }
 
-class _CommentSection extends StatelessWidget {
-  final String time;
-  final String commenter;
-  final String comment;
+class _CommentsSection extends StatelessWidget {
+  final List<StepCommentModel> comments;
 
-  const _CommentSection({
-    required this.time,
-    required this.commenter,
-    required this.comment,
-  });
+  const _CommentsSection({required this.comments});
 
   @override
   Widget build(BuildContext context) {
+    if (comments.isEmpty) {
+      return Container(
+        height: 60.h,
+        decoration: BoxDecoration(
+          color: context.color.surfaceContainer.withValues(alpha: 0.3),
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(
+            color: context.color.outline.withValues(alpha: 0.2),
+          ),
+        ),
+        child: Center(
+          child: Text(
+            allTranslations.text(LocaleKeys.no_comments_available),
+            style: context.textTheme.labelSmall?.copyWith(
+              color: context.color.outlineVariant,
+            ),
+          ),
+        ),
+      );
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Row(
-              children: [
-                Images(image: Assets.svgs.comment.path),
-                SizedBox(width: 4.w),
-                Text(commenter, style: context.textTheme.bodySmall),
-              ],
-            ),
-            Spacer(),
-            Text(
-              time,
-              textDirection: TextDirection.ltr,
-              style: context.textTheme.bodySmall?.copyWith(
-                color: context.color.secondary,
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 4.h),
-        Text(
-          '\"$comment\"',
-          style: context.textTheme.bodySmall?.copyWith(fontSize: FontSizes.f10),
+        ...comments.map(
+          (comment) => Padding(
+            padding: EdgeInsets.only(bottom: 8.h),
+            child: _CommentItem(comment: comment),
+          ),
         ),
       ],
     );
   }
 }
 
-class _AttachmentItem extends StatelessWidget {
-  final String label;
-  final String icon;
+class _CommentItem extends StatelessWidget {
+  final StepCommentModel comment;
 
-  const _AttachmentItem({required this.label, required this.icon});
+  const _CommentItem({required this.comment});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          width: 24.w,
-          height: 24.h,
-          padding: EdgeInsets.all(4),
-          decoration: BoxDecoration(
-            color: context.color.surfaceContainer,
-            border: Border.all(color: context.color.outline),
-            borderRadius: BorderRadius.circular(4),
+    return Container(
+      padding: EdgeInsets.all(8.w),
+      decoration: BoxDecoration(
+        color: context.color.surfaceContainer.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: context.color.outline.withValues(alpha: 0.3)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Images(image: Assets.svgs.comment.path),
+              SizedBox(width: 4.w),
+              Text(
+                comment.commenter?.fullName ??
+                    allTranslations.text(LocaleKeys.unknown),
+                style: context.textTheme.bodySmall?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Spacer(),
+              Text(
+                _formatCommentTime(comment.createdAt),
+                textDirection: TextDirection.ltr,
+                style: context.textTheme.bodySmall?.copyWith(
+                  color: context.color.secondary,
+                  fontSize: FontSizes.f10,
+                ),
+              ),
+            ],
           ),
-          child: Images(image: Assets.svgs.reader.path),
-        ),
-        SizedBox(width: 4.w),
-        Text(
-          label,
-          style: context.textTheme.bodySmall?.copyWith(
+          SizedBox(height: 4.h),
+          Text(
+            comment.text ?? '',
+            style: context.textTheme.bodySmall?.copyWith(
+              fontSize: FontSizes.f10,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _formatCommentTime(String? createdAt) {
+    if (createdAt == null) return "10:00 AM";
+    try {
+      final dateTime = DateTime.parse(createdAt);
+      final hour = dateTime.hour;
+      final minute = dateTime.minute.toString().padLeft(2, '0');
+      final period = hour >= 12 ? 'PM' : 'AM';
+      final displayHour = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
+      return "$displayHour:$minute $period";
+    } catch (e) {
+      return "10:00 AM";
+    }
+  }
+}
+
+class _AttachmentsSection extends StatelessWidget {
+  final List<AttachmentModel> attachments;
+
+  const _AttachmentsSection({required this.attachments});
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 8.w,
+      runSpacing: 8.h,
+      children: attachments
+          .map((attachment) => _AttachmentItem(attachment: attachment))
+          .toList(),
+    );
+  }
+}
+
+class _AttachmentItem extends StatelessWidget {
+  final AttachmentModel attachment;
+
+  const _AttachmentItem({required this.attachment});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+      decoration: BoxDecoration(
+        color: context.color.surfaceContainer,
+        border: Border.all(color: context.color.outline),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            _getFileIcon(attachment.type),
+            size: 16,
             color: context.color.secondary,
           ),
-        ),
-      ],
+          SizedBox(width: 4.w),
+          Text(
+            attachment.name ??
+                allTranslations.text(LocaleKeys.attachments_count),
+            style: context.textTheme.bodySmall?.copyWith(
+              color: context.color.secondary,
+            ),
+          ),
+        ],
+      ),
     );
+  }
+
+  IconData _getFileIcon(String? type) {
+    switch (type?.toLowerCase()) {
+      case 'pdf':
+        return Icons.picture_as_pdf;
+      case 'doc':
+      case 'docx':
+        return Icons.description;
+      case 'jpg':
+      case 'jpeg':
+      case 'png':
+      case 'gif':
+        return Icons.image;
+      case 'xls':
+      case 'xlsx':
+        return Icons.table_chart;
+      case 'ppt':
+      case 'pptx':
+        return Icons.slideshow;
+      default:
+        return Icons.attach_file;
+    }
   }
 }
 
@@ -312,7 +538,7 @@ class _TimelineConnector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsetsDirectional.only(top: 12, bottom: 12, start: 42),
+      margin: const EdgeInsetsDirectional.only(top: 4, bottom: 14, start: 42),
       height: 1,
       color: context.color.outline,
     );

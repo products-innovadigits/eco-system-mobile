@@ -16,10 +16,7 @@ abstract class LauncherHelper {
     // Remove any non-digit characters from the phone number
     final cleanNumber = phoneNumber.replaceAll(RegExp(r'[^\d+]'), '');
 
-    final Uri uri = Uri(
-      scheme: 'tel',
-      path: cleanNumber,
-    );
+    final Uri uri = Uri(scheme: 'tel', path: cleanNumber);
 
     if (!await launchUrl(uri)) {
       throw Exception('Could not launch phone call to $phoneNumber');
@@ -29,10 +26,7 @@ abstract class LauncherHelper {
   static Future<void> sendEmail(String email) async {
     if (email.isEmpty) return;
 
-    final Uri uri = Uri(
-      scheme: 'mailto',
-      path: email,
-    );
+    final Uri uri = Uri(scheme: 'mailto', path: email);
 
     if (!await launchUrl(uri)) {
       throw Exception('Could not launch email to $email');
