@@ -14,12 +14,10 @@ class WorkflowProcessDetailsView extends StatelessWidget {
     required this.projectEndDate,
     required this.projectManagerName,
     required this.projectBudget,
-    required this.workflowStatus,
   });
 
   final int processId;
   final int projectId;
-  final String workflowStatus;
   final String processName;
   final String projectName;
   final String stageName;
@@ -30,66 +28,99 @@ class WorkflowProcessDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isStart = workflowStatus == 'start';
-    return Scaffold(
-      appBar: CustomAppBar(
-        title: processName,
-        withBottomBorder: false,
-        action: InkWell(
-          onTap: isStart
-              ? () {
-                  YesNoDialogHelper.showStartProcessConfirmationDialog(
-                    context: context,
-                    onStartPressed: () {},
-                  );
-                }
-              : null,
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: getStatusColor(
-                workflowStatus,
-              ).withValues(alpha: isStart ? null : 0.1),
-              borderRadius: BorderRadius.circular(isStart ? 8 : 25),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => StageDocsBloc()
+            ..add(
+              Click(
+                // arguments: {'processId': 146, 'projectId': 51},
+                arguments: {'processId': processId, 'projectId': projectId},
+              ),
             ),
-            child: Row(
-              children: [
-                Text(
-                  getStatusName(workflowStatus),
-                  style: context.textTheme.bodySmall?.copyWith(
-                    color: isStart
-                        ? context.color.onPrimary
-                        : getStatusColor(workflowStatus),
-                    fontSize: FontSizes.f10,
-                  ),
+        ),
+        BlocProvider(
+          create: (context) =>
+              WorkflowProcessDetailsBloc(
+                stageDocsBloc: context.read<StageDocsBloc>(),
+              )..add(
+                Click(
+                  arguments: {'processId': processId, 'projectId': projectId},
                 ),
-              ],
-            ),
+              ),
+          // create: (context) => WorkflowProcessDetailsBloc(),
+        ),
+      ],
+      child: Scaffold(
+        appBar: CustomAppBar(
+          title: processName,
+          withBottomBorder: false,
+          action: BlocBuilder<StageDocsBloc, AppState>(
+            builder: (context, stageDocsState) {
+              // Only show button if data is loaded
+              if (stageDocsState is Done &&
+                  stageDocsState.data is StageDocData) {
+                final stageDocData = stageDocsState.data as StageDocData;
+                final workflowStatus = stageDocData.workFlowStatus ?? '';
+                final isStart = workflowStatus == 'start';
+
+                return BlocBuilder<WorkflowProcessDetailsBloc, AppState>(
+                  builder: (context, state) {
+                    final bloc = context.read<WorkflowProcessDetailsBloc>();
+                    return InkWell(
+                      onTap: isStart && state is! Loading
+                          ? () {
+                              YesNoDialogHelper.showStartProcessConfirmationDialog(
+                                context: context,
+                                onStartPressed: () {
+                                  bloc.add(
+                                    Get(
+                                      arguments: {
+                                        'processId': processId,
+                                        'projectId': projectId,
+                                      },
+                                    ),
+                                  );
+                                },
+                              );
+                            }
+                          : null,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: getStatusColor(
+                            workflowStatus,
+                          ).withValues(alpha: isStart ? null : 0.1),
+                          borderRadius: BorderRadius.circular(isStart ? 8 : 25),
+                        ),
+                        child: Row(
+                          children: [
+                            Text(
+                              getStatusName(workflowStatus),
+                              style: context.textTheme.bodySmall?.copyWith(
+                                color: isStart
+                                    ? context.color.onPrimary
+                                    : getStatusColor(workflowStatus),
+                                fontSize: FontSizes.f10,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }
+
+              // Return empty widget while loading
+              return SizedBox.shrink();
+            },
           ),
         ),
-      ),
-      body: SafeArea(
-        child: MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (context) => StageDocsBloc()
-                ..add(
-                  Click(
-                    // arguments: {'processId': 146, 'projectId': 51},
-                    arguments: {'processId': processId, 'projectId': projectId},
-                  ),
-                ),
-            ),
-            BlocProvider(
-              create: (context) => WorkflowProcessDetailsBloc()
-                ..add(
-                  Click(
-                    arguments: {'processId': processId, 'projectId': projectId},
-                  ),
-                ),
-              // create: (context) => WorkflowProcessDetailsBloc(),
-            ),
-          ],
+        body: SafeArea(
           child: ProcessDetailsBody(
             projectDetailsModel: ProjectDetailsModel(
               id: projectId,
@@ -110,12 +141,12 @@ class WorkflowProcessDetailsView extends StatelessWidget {
 
 Color getStatusColor(String workflowStatus) => switch (workflowStatus) {
   'start' => LightColor.primary,
-  'inProgress' => LightColor.secondary,
+  'InProgress' => LightColor.secondary,
   _ => LightColor.tertiary,
 };
 
 String getStatusName(String workflowStatus) => switch (workflowStatus) {
   'start' => allTranslations.text(LocaleKeys.start_process),
-  'inProgress' => allTranslations.text(LocaleKeys.in_progress),
+  'InProgress' => allTranslations.text(LocaleKeys.in_progress),
   _ => allTranslations.text(LocaleKeys.done),
 };

@@ -44,10 +44,10 @@ class _HistoryTabContentState extends State<_HistoryTabContent> {
       _bloc.add(
         Click(
           arguments: {
-            'processId': 146,
-            // 'processId': widget.processId,
-            'projectId': 51,
-            // 'projectId': widget.projectId,
+            // 'processId': 146,
+            'processId': widget.processId,
+            // 'projectId': 51,
+            'projectId': widget.projectId,
           },
         ),
       );

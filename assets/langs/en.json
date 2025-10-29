@@ -533,5 +533,7 @@
   "confirm_start_process": "Are you sure you want to start the process?",
   "start_process_warning": "When starting, the timer will begin and the starting point will be recorded. The start time may not be editable later depending on permissions.",
   "yes_start_process": "Yes, start the process",
-  "no_later": "No, later"
+  "no_later": "No, later",
+  "process_started_successfully": "Process started successfully",
+  "process_done_successfully": "Process done successfully"
 }

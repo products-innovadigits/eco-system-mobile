@@ -16,7 +16,7 @@ class StageDocsBloc extends Bloc<AppEvent, AppState> {
     Map<String, dynamic> args = event.arguments as Map<String, dynamic>;
     emit(Loading());
     try {
-      StageDocResponseModel res = await WorkflowProcessDetailsRepo.getStageDocs(
+      StageDocResponseModel res = await WorkflowProcessDetailsRepo.getCurrentNextSteps(
         processId: args['processId'],
         projectId: args['projectId'],
       );

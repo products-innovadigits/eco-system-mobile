@@ -6,14 +6,12 @@ class ActionsTab extends StatelessWidget {
   final int processId;
   final int projectId;
   final int projectStepId;
-  final int nextStepId;
 
   const ActionsTab({
     super.key,
     required this.processId,
     required this.projectId,
     required this.projectStepId,
-    required this.nextStepId,
   });
 
   @override
@@ -24,7 +22,6 @@ class ActionsTab extends StatelessWidget {
         processId: processId,
         projectId: projectId,
         projectStepId: projectStepId,
-        nextStepId: nextStepId,
       ),
     );
   }
@@ -34,53 +31,76 @@ class _ActionsTabContent extends StatelessWidget {
   final int processId;
   final int projectId;
   final int projectStepId;
-  final int nextStepId;
 
   const _ActionsTabContent({
     required this.processId,
     required this.projectId,
     required this.projectStepId,
-    required this.nextStepId,
   });
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ActionsTabBloc, AppState>(
-      builder: (context, state) {
-        final bloc = context.read<ActionsTabBloc>();
-
-        return Form(
-          key: bloc.formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              // Internal Comments Section
-              _InternalCommentsSection(
-                controller: bloc.commentController,
-                validation: NotEmptyValidator.notEmptyValidator,
-              ),
-
-              // File Upload Section
-              _FileUploadSection(
-                selectedFile: bloc.selectedFile,
-                fileName: bloc.fileName,
-                fileSize: bloc.fileSize,
-                onPickFile: () => bloc.add(PickFile()),
-                onRemoveFile: () => bloc.add(RemoveFile()),
-              ),
-
-              SizedBox(height: 16.h),
-
-              // Action Buttons Section
-              _ActionButtonsSection(
-                onSave: () => _onSave(context),
-                onCompliance: () => _onCompliance(context),
-                isLoading: state is Loading,
-              ),
-            ],
-          ),
-        );
+    return BlocListener<ActionsTabBloc, AppState>(
+      listener: (context, state) {
+        // When compliance is successful, refresh the StageDocsBloc to update nextStep
+        if (state is Done && state.data == null) {
+          // This is a compliance success
+          final stageDocsBloc = context.read<StageDocsBloc>();
+          stageDocsBloc.add(
+            Click(arguments: {'projectId': projectId, 'processId': processId}),
+          );
+        }
       },
+      child: BlocBuilder<ActionsTabBloc, AppState>(
+        builder: (context, state) {
+          final bloc = context.read<ActionsTabBloc>();
+
+          return Form(
+            key: bloc.formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                // Internal Comments Section
+                _InternalCommentsSection(
+                  controller: bloc.commentController,
+                  validation: NotEmptyValidator.notEmptyValidator,
+                ),
+
+                // File Upload Section
+                _FileUploadSection(
+                  selectedFile: bloc.selectedFile,
+                  fileName: bloc.fileName,
+                  fileSize: bloc.fileSize,
+                  onPickFile: () => bloc.add(PickFile()),
+                  onRemoveFile: () => bloc.add(RemoveFile()),
+                ),
+
+                SizedBox(height: 16.h),
+
+                // Action Buttons Section
+                BlocBuilder<StageDocsBloc, AppState>(
+                  builder: (ctx, stageState) {
+                    final nextStep = ctx
+                        .read<StageDocsBloc>()
+                        .stageDocsData
+                        ?.nextStep;
+                    final nextStepText =
+                        (nextStep != null && nextStep.isNotEmpty)
+                        ? (nextStep[0].text ?? '')
+                        : '';
+                    return _ActionButtonsSection(
+                      onSave: () => _onSave(context),
+                      onCompliance: () => _onCompliance(context),
+                      isLoading: stageState is Loading,
+                      nextStepText: nextStepText,
+                    );
+                  },
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -98,6 +118,13 @@ class _ActionsTabContent extends StatelessWidget {
   }
 
   void _onCompliance(BuildContext context) {
+    // Read the nextStepId from StageDocsBloc to get the most current value
+    final stageDocsBloc = context.read<StageDocsBloc>();
+    final nextStep = stageDocsBloc.stageDocsData?.nextStep;
+    final nextStepId = (nextStep != null && nextStep.isNotEmpty)
+        ? nextStep[0].id
+        : 0;
+
     final bloc = context.read<ActionsTabBloc>();
     bloc.add(
       ComplianceClick(
@@ -235,11 +262,13 @@ class _ActionButtonsSection extends StatelessWidget {
   final VoidCallback onSave;
   final VoidCallback onCompliance;
   final bool isLoading;
+  final String nextStepText;
 
   const _ActionButtonsSection({
     required this.onSave,
     required this.onCompliance,
     required this.isLoading,
+    required this.nextStepText,
   });
 
   @override
@@ -252,6 +281,7 @@ class _ActionButtonsSection extends StatelessWidget {
           color: Colors.transparent,
           textColor: context.color.primary,
           borderColor: context.color.primary,
+          loadingColor: context.color.primary,
           height: 34,
           fontSize: 12,
           borderRadius: 8,
@@ -259,24 +289,25 @@ class _ActionButtonsSection extends StatelessWidget {
           onPressed: isLoading ? null : onSave,
         ),
 
-        SizedBox(height: 16.h),
+        // Only show Next Step button if there's a next step available
+        if (nextStepText.isNotEmpty) ...[
+          SizedBox(height: 16.h),
 
-        // Primary Action Button
-        SizedBox(
-          width: double.infinity,
-          child: CustomBtn(
-            text: allTranslations.text(
-              LocaleKeys.ensure_compliance_with_pmo_standards,
+          // Primary Action Button
+          SizedBox(
+            width: double.infinity,
+            child: CustomBtn(
+              text: nextStepText,
+              color: context.color.primary,
+              textColor: context.color.onPrimary,
+              height: 34,
+              fontSize: 12,
+              borderRadius: 8,
+              loading: isLoading,
+              onPressed: isLoading ? null : onCompliance,
             ),
-            color: context.color.primary,
-            textColor: context.color.onPrimary,
-            height: 34,
-            fontSize: 12,
-            borderRadius: 8,
-            loading: isLoading,
-            onPressed: isLoading ? null : onCompliance,
           ),
-        ),
+        ],
       ],
     );
   }

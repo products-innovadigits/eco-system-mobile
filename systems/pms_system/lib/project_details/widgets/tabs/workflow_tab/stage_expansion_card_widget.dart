@@ -105,7 +105,6 @@ class _StageProcessCardWidget extends StatelessWidget {
           arguments: WorkflowProcessDetailsArgs(
             processId: processId,
             projectId: projectId,
-            projectWorkFlowStatus: workFlowStatus,
             processName: title,
             projectName: projectName,
             stageName: stageName,

@@ -1,7 +1,6 @@
 import 'package:core_system/core/bloc/theme_cubit.dart';
 import 'package:core_system/core/helpers/permissions.dart';
 import 'package:core_system/core/utility/export.dart';
-import 'package:geolocator/geolocator.dart';
 
 class SplashBloc extends Bloc<AppEvent, AppState> {
   SplashBloc() : super(Start()) {

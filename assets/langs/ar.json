@@ -535,5 +535,7 @@
   "confirm_start_process": "هل انت متاكد من انك تريد بدء العملية؟",
   "start_process_warning": "عند البدء سيبدأ المؤقّت وتُسجَّل نقطة الانطلاق. قد لا يمكن تعديل وقت البدء لاحقًا حسب الصلاحيات.",
   "yes_start_process": "نعم ، ابدا العملية",
-  "no_later": "لا ، فيما بعد"
+  "no_later": "لا ، فيما بعد",
+  "process_started_successfully": "تم بدأ العملية بنجاح",
+  "process_done_successfully": "تمت العملية بنجاح"
 }

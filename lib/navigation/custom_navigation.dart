@@ -13,8 +13,8 @@ import 'package:eco_system/features/main_page/view/main_page.dart';
 import 'package:eco_system/features/splash/splash.dart';
 import 'package:pms_system/pms_layout.dart';
 import 'package:pms_system/project_details/view/project_details_view.dart';
-import 'package:pms_system/workflow_process_details/view/workflow_process_details_view.dart';
 import 'package:pms_system/projects/view/projects_view.dart';
+import 'package:pms_system/workflow_process_details/view/workflow_process_details_view.dart';
 import 'package:strategy_system/bsc/view/bsc_view.dart';
 import 'package:strategy_system/objective_details/view/objective_details_view.dart';
 import 'package:strategy_system/objectives/view/objectives_view.dart';
@@ -97,7 +97,6 @@ class AppRouter {
           builder: (_) => WorkflowProcessDetailsView(
             processId: args?.processId ?? 0,
             projectId: args?.projectId ?? 0,
-            workflowStatus: args?.projectWorkFlowStatus ?? '',
             processName: args?.processName ?? '',
             projectName: args?.projectName ?? '',
             stageName: args?.stageName ?? '',

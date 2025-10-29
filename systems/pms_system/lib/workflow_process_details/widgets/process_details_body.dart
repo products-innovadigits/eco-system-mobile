@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:pms_system/shared/pms_exports.dart';
 
 class ProcessDetailsBody extends StatelessWidget {
@@ -42,27 +40,15 @@ class ProcessDetailsBody extends StatelessWidget {
               Loading() => _buildShimmerLoading(context),
 
               // ── Done ────────────────────────────
-              Done(:final WorkflowProcessDetailsModel model) => _ProcessBody(
-                processList: model.data ?? [],
-                projectDetailsModel: projectDetailsModel,
-                selectedTab: selectedTab,
-                processId: processId,
-                projectStepId:
-                    context
-                        .read<StageDocsBloc>()
-                        .stageDocsData
-                        ?.currentStep
-                        ?.id ??
-                    0,
-                nextStepId:
-                    context
-                        .read<StageDocsBloc>()
-                        .stageDocsData
-                        ?.nextStep?[0]
-                        .id ??
-                    0,
-                stageName: stageName,
-              ),
+              Done(:final WorkflowProcessDetailsModel model) =>
+                _buildProcessBody(
+                  context: context,
+                  model: model,
+                  selectedTab: selectedTab,
+                  processId: processId,
+                  projectDetailsModel: projectDetailsModel,
+                  stageName: stageName,
+                ),
 
               // ── Empty ───────────────────────────
               Empty() => const EmptyContainer(),
@@ -85,7 +71,6 @@ class _ProcessBody extends StatelessWidget {
   final ProjectDetailsModel projectDetailsModel;
   final ProcessTabsEnum selectedTab;
   final int processId;
-  final int nextStepId;
   final int projectStepId;
   final String stageName;
 
@@ -94,7 +79,6 @@ class _ProcessBody extends StatelessWidget {
     required this.selectedTab,
     required this.projectDetailsModel,
     required this.processId,
-    required this.nextStepId,
     required this.stageName,
     required this.projectStepId,
   });
@@ -111,12 +95,11 @@ class _ProcessBody extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: _getTabSection(
-                selectedTab,
-                processList,
-                projectDetailsModel.id!,
-                processId,
-                projectStepId,
-                nextStepId,
+                selectedTab: selectedTab,
+                projectId: projectDetailsModel.id!,
+                processId: processId,
+                projectStepId: projectStepId,
+                processList: processList,
               ),
             ),
           ),
@@ -124,6 +107,27 @@ class _ProcessBody extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _buildProcessBody({
+  required BuildContext context,
+  required WorkflowProcessDetailsModel model,
+  required ProcessTabsEnum selectedTab,
+  required int processId,
+  required ProjectDetailsModel projectDetailsModel,
+  required String stageName,
+}) {
+  final stageDocsBloc = context.read<StageDocsBloc>();
+  final stageDocsData = stageDocsBloc.stageDocsData;
+
+  return _ProcessBody(
+    processList: model.data ?? [],
+    projectDetailsModel: projectDetailsModel,
+    selectedTab: selectedTab,
+    processId: processId,
+    projectStepId: stageDocsData?.currentStep?.id ?? 0,
+    stageName: stageName,
+  );
 }
 
 Widget _buildShimmerLoading(BuildContext context) => Padding(
@@ -142,14 +146,13 @@ Widget _buildShimmerLoading(BuildContext context) => Padding(
   ),
 );
 
-Widget _getTabSection(
-  ProcessTabsEnum selectedTab,
-  List<WorkflowProcessGroupModel> processList,
-  int processId,
-  int projectId,
-  int projectStepId,
-  int nextStepId,
-) {
+Widget _getTabSection({
+  required ProcessTabsEnum selectedTab,
+  required List<WorkflowProcessGroupModel> processList,
+  required int processId,
+  required int projectId,
+  required int projectStepId,
+}) {
   return switch (selectedTab) {
     ProcessTabsEnum.followProcess => FollowProcessTab(processList: processList),
     // ProcessTabsEnum.stageDocs => Container(),
@@ -166,7 +169,6 @@ Widget _getTabSection(
       processId: processId,
       projectId: projectId,
       projectStepId: projectStepId,
-      nextStepId: nextStepId,
     ),
   };
 }

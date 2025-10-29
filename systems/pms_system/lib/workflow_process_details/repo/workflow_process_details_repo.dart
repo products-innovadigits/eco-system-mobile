@@ -19,14 +19,14 @@ abstract class WorkflowProcessDetailsRepo {
     );
   }
 
-  static Future<StageDocResponseModel> getStageDocs({
+  static Future<StageDocResponseModel> getCurrentNextSteps({
     required int processId,
     required int projectId,
     int pageIndex = 1,
     int pageSize = 10,
   }) async {
     return await Network().request(
-      ApiNames.stageDocsData,
+      ApiNames.currentNextSteps,
       query: {
         // 'processId': 146,
         'processId': processId,
@@ -129,7 +129,22 @@ abstract class WorkflowProcessDetailsRepo {
     );
   }
 
-  // Project Process Next Step method
+  // Starting Project Process
+  static Future<dynamic> startProcess({
+    required int processId,
+    required int projectId,
+  }) async {
+    return await Network().request(
+      ApiNames.projectProcessStart,
+      method: ServerMethods.POST,
+      body: {
+        'projectId': projectId,
+        'processId': processId,
+      },
+    );
+  }
+
+  // Project Process Next Step
   static Future<dynamic> moveToNextStep({
     required int processId,
     required int projectId,

@@ -29,6 +29,7 @@ class StageDocResponseModel extends SingleMapper {
 class StageDocData {
   WorkflowStep? currentStep;
   List<WorkflowStep>? nextStep;
+  String? workFlowStatus;
 
   StageDocData({this.currentStep, this.nextStep});
 
@@ -48,13 +49,16 @@ class StageDocData {
         }
       }
     }
+    workFlowStatus = json['workFlowStatus']?.toString();
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> map = <String, dynamic>{};
     if (currentStep != null) map['currentStep'] = currentStep!.toJson();
-    if (nextStep != null)
+    if (nextStep != null) {
       map['nextStep'] = nextStep!.map((e) => e.toJson()).toList();
+    }
+    map['workFlowStatus'] = workFlowStatus;
     return map;
   }
 }
@@ -205,10 +209,12 @@ class WorkflowStep extends SingleMapper {
     if (stepDocuments != null) {
       map['stepDocuments'] = stepDocuments!.map((e) => e?.toJson()).toList();
     }
-    if (complaintFollowerIds != null)
+    if (complaintFollowerIds != null) {
       map['complaintFollowerIds'] = complaintFollowerIds;
-    if (complaintTopLevelIds != null)
+    }
+    if (complaintTopLevelIds != null) {
       map['complaintTopLevelIds'] = complaintTopLevelIds;
+    }
     map['isActive'] = isActive;
     map['category'] = category;
     map['loc'] = loc;

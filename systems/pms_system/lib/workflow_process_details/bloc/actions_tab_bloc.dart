@@ -89,7 +89,7 @@ class ActionsTabBloc extends Bloc<AppEvent, AppState> {
       );
 
       if (response.statusCode == 200) {
-        AppCore.successMessage(response.data['data'] as String);
+        AppCore.successMessage(allTranslations.text(LocaleKeys.process_done_successfully));
         emit(Done());
       } else {
         AppCore.errorMessage(

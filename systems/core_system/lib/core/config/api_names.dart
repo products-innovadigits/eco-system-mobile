@@ -27,13 +27,14 @@ abstract class ApiNames {
   static String projectGeneralProgressSummary(id) =>
       "Project/$id/progress-summary";
   static String workflowProcessDetails = "WorkFlow/GroupSteps";
-  static String stageDocsData = "WorkFlow/CurrentAndNext";
+  static String currentNextSteps = "WorkFlow/CurrentAndNext";
   // static String stageDocsData = "DocumentData";
   static String documentComment = "DocumentComment";
   static String documentCommentActions(id) => "DocumentComment/$id";
   static String projectProcessTechnicalLog = "ProjectProcess/TechnicalLog";
   static String projectStepComment = "ProjectStepComment";
   static String projectProcessNext = "ProjectProcess/next";
+  static String projectProcessStart = "WorkFlow/Run";
 
   // Jobs APIs ====================
   static const jobs = "chances";

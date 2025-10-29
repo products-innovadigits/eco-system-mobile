@@ -2,13 +2,16 @@ import 'package:pms_system/shared/pms_exports.dart';
 import 'package:pms_system/workflow_process_details/repo/workflow_process_details_repo.dart';
 
 class WorkflowProcessDetailsBloc extends Bloc<AppEvent, AppState> {
-  WorkflowProcessDetailsBloc() : super(Start()) {
+  WorkflowProcessDetailsBloc({StageDocsBloc? stageDocsBloc}) : super(Start()) {
     on<Click>(_onClick);
+    on<Get>(_onStartProcess);
     on<Select>(_onSelectTab);
+    _stageDocsBloc = stageDocsBloc;
   }
 
   ProcessTabsEnum selectedTab = ProcessTabsEnum.followProcess;
   WorkflowProcessDetailsModel? _cachedModel;
+  StageDocsBloc? _stageDocsBloc;
 
   _onClick(AppEvent event, Emitter<AppState> emit) async {
     Map<String, dynamic> args = event.arguments as Map<String, dynamic>;
@@ -29,6 +32,41 @@ class WorkflowProcessDetailsBloc extends Bloc<AppEvent, AppState> {
     } catch (e) {
       AppCore.errorMessage(allTranslations.text('something_went_wrong'));
 
+      emit(Error());
+    }
+  }
+
+  Future<void> _onStartProcess(Get event, Emitter<AppState> emit) async {
+    try {
+      emit(Loading());
+
+      final arguments = event.arguments as Map<String, dynamic>;
+      final projectId = arguments['projectId'] as int;
+      final processId = arguments['processId'] as int;
+
+      final Response response = await WorkflowProcessDetailsRepo.startProcess(
+        processId: processId,
+        projectId: projectId,
+      );
+
+      if (response.statusCode == 200) {
+        AppCore.successMessage(
+          allTranslations.text(LocaleKeys.process_started_successfully),
+        );
+        _stageDocsBloc?.add(
+          Click(arguments: {'projectId': projectId, 'processId': processId}),
+        );
+        add(Click(arguments: {'projectId': projectId, 'processId': processId}));
+      } else {
+        AppCore.errorMessage(
+          allTranslations.text(LocaleKeys.something_went_wrong),
+        );
+        emit(Error());
+      }
+    } catch (e) {
+      AppCore.errorMessage(
+        allTranslations.text(LocaleKeys.something_went_wrong),
+      );
       emit(Error());
     }
   }

@@ -11,6 +11,7 @@ class CustomBtn extends StatelessWidget {
     this.width,
     this.height = 56,
     this.loading = false,
+    this.loadingColor,
     this.active = true,
     this.borderColor = Colors.transparent,
     this.fontSize = FontSizes.f16, this.borderRadius,
@@ -23,6 +24,7 @@ class CustomBtn extends StatelessWidget {
   final double? width;
   final double height;
   final bool loading;
+  final Color? loadingColor;
   final bool active;
   final double fontSize;
   final double? borderRadius;
@@ -49,7 +51,7 @@ class CustomBtn extends StatelessWidget {
           child: Center(
             child: loading
                 ? SpinKitThreeBounce(
-                    color: context.theme.cardColor,
+                    color: loadingColor ?? context.theme.cardColor,
                     size: 25,
                   )
                 : Text(
