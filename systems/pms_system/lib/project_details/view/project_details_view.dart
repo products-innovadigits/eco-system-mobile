@@ -27,7 +27,8 @@ class ProjectDetailsView extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () =>
+            CustomNavigator.push(Routes.PROJECT_REPORT, arguments: id),
         backgroundColor: context.color.primary,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
         child: Images(

@@ -25,6 +25,15 @@ export 'package:pms_system/project_details/widgets/project_monthly_progress.dart
 export 'package:pms_system/project_details/widgets/project_outputs_chart.dart';
 export 'package:pms_system/project_details/widgets/project_risks.dart';
 export 'package:pms_system/project_details/widgets/tabs/workflow_tab/stage_expansion_card_widget.dart';
+export 'package:pms_system/project_report/bloc/project_report_bloc.dart';
+export 'package:pms_system/project_report/model/project_report_model.dart';
+export 'package:pms_system/project_report/model/report_objective_percentage_model.dart';
+export 'package:pms_system/project_report/repo/project_report_repo.dart';
+export 'package:pms_system/project_report/view/project_report_view.dart';
+export 'package:pms_system/project_report/widgets/custom_info_container_widget.dart';
+export 'package:pms_system/project_report/widgets/project_report_body.dart';
+export 'package:pms_system/project_report/widgets/report_chart_categories_section.dart';
+export 'package:pms_system/project_report/widgets/report_objective_percentage_chart_mobile_portrait.dart';
 export 'package:pms_system/projects/bloc/project_priority_level_bloc.dart';
 export 'package:pms_system/projects/bloc/projects_bloc.dart';
 export 'package:pms_system/projects/bloc/projects_filtration_bloc.dart';

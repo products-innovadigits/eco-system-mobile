@@ -80,7 +80,7 @@ class _CategoriesChart extends StatelessWidget {
       //     ),
       //   ),
       // ),
-      child: CustomBarChart(data: data, showAll: isPmsHome, chartHeight: 220),
+      child: CustomBarChart(data: data, showAll: isPmsHome),
     );
   }
 }

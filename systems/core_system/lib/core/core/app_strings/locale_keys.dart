@@ -55,6 +55,7 @@ abstract class  LocaleKeys {
   static const group = 'group';
   static const home = 'home';
   static const reports = 'reports';
+  static const project_report = 'project_report';
   static const notifications = 'notifications';
   static const menu = 'menu';
   static const notification = 'notification';
@@ -219,6 +220,7 @@ abstract class  LocaleKeys {
   static const cancel = 'cancel';
   static const property_details = 'property_details';
   static const project_details = 'project_details';
+  static const project_description = 'project_description';
   static const total_units = 'total_units';
   static const occupied = 'occupied';
   static const vacant = 'vacant';
@@ -298,6 +300,9 @@ abstract class  LocaleKeys {
   static const outputs = 'outputs';
   static const output = 'output';
   static const activities_progress = 'activities_progress';
+  static const activities_number = 'activities_number';
+  static const activity = 'activity';
+  static const the_activities = 'the_activities';
   static const general_progress = 'general_progress';
   static const kpis_general_progress = 'kpis_general_progress';
   static const description = 'description';
@@ -333,6 +338,7 @@ abstract class  LocaleKeys {
   static const project_progress_rate = 'project_progress_rate';
   static const latest_requests = 'latest_requests';
   static const challenges_risks = 'challenges_risks';
+  static const risk = 'risk';
   static const main_data = 'main_data';
   static const project_progress_rate_in_each_category = 'project_progress_rate_in_each_category';
   static const the_owning_entity = 'the_owning_entity';
@@ -539,5 +545,9 @@ abstract class  LocaleKeys {
   static const no_later = 'no_later';
   static const process_started_successfully = 'process_started_successfully';
   static const process_done_successfully = 'process_done_successfully';
+  static const the_project = 'the_project';
+  static const specialized_section = 'specialized_section';
+  static const specialized_kpi = 'specialized_kpi';
+  static const specialized_initiative = 'specialized_initiative';
 
 }

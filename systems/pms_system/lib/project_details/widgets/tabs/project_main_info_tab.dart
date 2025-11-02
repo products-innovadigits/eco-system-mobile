@@ -43,7 +43,7 @@ class ProjectMainInfoTab extends StatelessWidget {
               data: _generateSampleProgressData(
                 projectDetailsModel.mobileDetails!.progress!,
               ),
-              chartHeight: 180,
+              // chartHeight: 180,
             ),
           ),
 

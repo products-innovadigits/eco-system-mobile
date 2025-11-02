@@ -5,12 +5,14 @@ class CustomBarChart extends StatelessWidget {
   final List<ProjectCategoriesProgressModel> data;
   final double? chartHeight;
   final bool? showAll;
+  final bool? showPercentageAxis;
 
   const CustomBarChart({
     super.key,
     required this.data,
     this.chartHeight,
     this.showAll,
+    this.showPercentageAxis = true,
   });
 
   @override
@@ -21,31 +23,32 @@ class CustomBarChart extends StatelessWidget {
         ? 4
         : data.length;
 
-    return SizedBox(
-      height: chartHeight ?? 260.h,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Expanded(
-            child: showAll == true
-                ? ListView.separated(
-                    itemCount: itemCount,
-                    separatorBuilder: (_, _) => const SizedBox(height: 18),
-                    itemBuilder: (context, index) {
-                      return _buildBarItem(context, data[index], index);
-                    },
-                  )
-                : ListView.separated(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: itemCount,
-                    separatorBuilder: (_, _) => const SizedBox(height: 18),
-                    itemBuilder: (context, index) {
-                      return _buildBarItem(context, data[index], index);
-                    },
-                  ),
-          ),
-          const SizedBox(height: 16),
+    Widget chartContent = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        showAll == true
+            ? ConstrainedBox(
+                constraints: BoxConstraints(maxHeight: chartHeight ?? 260.h),
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  itemCount: itemCount,
+                  separatorBuilder: (_, _) => const SizedBox(height: 18),
+                  itemBuilder: (context, index) {
+                    return _buildBarItem(context, data[index], index);
+                  },
+                ),
+              )
+            : ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: itemCount,
+                separatorBuilder: (_, _) => const SizedBox(height: 18),
+                itemBuilder: (context, index) {
+                  return _buildBarItem(context, data[index], index);
+                },
+              ),
+        if (showPercentageAxis == true) ...[
+          const SizedBox(height: 24),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -97,8 +100,10 @@ class CustomBarChart extends StatelessWidget {
             ],
           ),
         ],
-      ),
+      ],
     );
+
+    return chartContent;
   }
 
   Widget _buildBarItem(

@@ -7,8 +7,9 @@ import '../../shared/pms_exports.dart';
 
 class GeneralProgressSection extends StatelessWidget {
   final int projectId;
+  final bool? withFiltration;
 
-  const GeneralProgressSection({super.key, required this.projectId});
+  const GeneralProgressSection({super.key, required this.projectId , this.withFiltration = true});
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +23,12 @@ class GeneralProgressSection extends StatelessWidget {
                 title: allTranslations.text(LocaleKeys.general_progress),
                 withExpanded: false,
                 withMargin: false,
-                action: MonthlyAnnualChartFilterWidget(
+                action: withFiltration == true ? MonthlyAnnualChartFilterWidget(
                   selectedTime: bloc.selectedChartType,
                   onSelect: (time) {
                     bloc.updateChartType(chartType: time, projectId: projectId);
                   },
-                ),
+                ) : null,
                 child: bloc.selectedChartType == ChartTime.Month
                     ? ProjectMonthlyProgressSection(
                         chartSeries: bloc.chartModel?.series ?? [],

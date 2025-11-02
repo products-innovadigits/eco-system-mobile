@@ -159,6 +159,14 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/buliding.svg
   SvgGenImage get buliding => const SvgGenImage('assets/svgs/buliding.svg');
 
+  /// File path: assets/svgs/calendar-end.svg
+  SvgGenImage get calendarEnd =>
+      const SvgGenImage('assets/svgs/calendar-end.svg');
+
+  /// File path: assets/svgs/calendar-start.svg
+  SvgGenImage get calendarStart =>
+      const SvgGenImage('assets/svgs/calendar-start.svg');
+
   /// File path: assets/svgs/calendar.svg
   SvgGenImage get calendar => const SvgGenImage('assets/svgs/calendar.svg');
 
@@ -371,6 +379,9 @@ class $AssetsSvgsGen {
   /// File path: assets/svgs/left.svg
   SvgGenImage get left => const SvgGenImage('assets/svgs/left.svg');
 
+  /// File path: assets/svgs/list.svg
+  SvgGenImage get list => const SvgGenImage('assets/svgs/list.svg');
+
   /// File path: assets/svgs/location.svg
   SvgGenImage get location => const SvgGenImage('assets/svgs/location.svg');
 
@@ -416,6 +427,9 @@ class $AssetsSvgsGen {
 
   /// File path: assets/svgs/more.svg
   SvgGenImage get more => const SvgGenImage('assets/svgs/more.svg');
+
+  /// File path: assets/svgs/multi-card.svg
+  SvgGenImage get multiCard => const SvgGenImage('assets/svgs/multi-card.svg');
 
   /// File path: assets/svgs/multi-message.svg
   SvgGenImage get multiMessage =>
@@ -470,6 +484,9 @@ class $AssetsSvgsGen {
 
   /// File path: assets/svgs/profile2.svg
   SvgGenImage get profile2 => const SvgGenImage('assets/svgs/profile2.svg');
+
+  /// File path: assets/svgs/project.svg
+  SvgGenImage get project => const SvgGenImage('assets/svgs/project.svg');
 
   /// File path: assets/svgs/project_life_cycle.svg
   SvgGenImage get projectLifeCycle =>
@@ -528,6 +545,9 @@ class $AssetsSvgsGen {
 
   /// File path: assets/svgs/setting.svg
   SvgGenImage get setting => const SvgGenImage('assets/svgs/setting.svg');
+
+  /// File path: assets/svgs/sheild.svg
+  SvgGenImage get sheild => const SvgGenImage('assets/svgs/sheild.svg');
 
   /// File path: assets/svgs/show.svg
   SvgGenImage get show => const SvgGenImage('assets/svgs/show.svg');
@@ -605,6 +625,8 @@ class $AssetsSvgsGen {
     building2,
     buildings,
     buliding,
+    calendarEnd,
+    calendarStart,
     calendar,
     calendarFrom,
     calendarTick,
@@ -666,6 +688,7 @@ class $AssetsSvgsGen {
     languageCircle,
     layers,
     left,
+    list,
     location,
     lock,
     logo,
@@ -680,6 +703,7 @@ class $AssetsSvgsGen {
     moreCircle,
     moreCircle2,
     more,
+    multiCard,
     multiMessage,
     multiUser,
     navbarArrow,
@@ -695,6 +719,7 @@ class $AssetsSvgsGen {
     profileCircle,
     profileMore,
     profile2,
+    project,
     projectLifeCycle,
     properties,
     reader,
@@ -712,6 +737,7 @@ class $AssetsSvgsGen {
     securityUser,
     send,
     setting,
+    sheild,
     show,
     sms,
     solana,

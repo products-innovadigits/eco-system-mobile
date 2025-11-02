@@ -1,3 +1,5 @@
+import 'package:pms_system/project_details/widgets/risk_challenge_card_widget.dart';
+
 import '../../shared/pms_exports.dart';
 
 class ProjectRisks extends StatelessWidget {
@@ -19,7 +21,7 @@ class ProjectRisks extends StatelessWidget {
       ),
       children: List.generate(risksList.length, (index) {
         final risk = risksList[index];
-        return _RiskCardWidget(
+        return RiskChallengeCardWidget(
           title: risk.label ?? '',
           value: risk.value.toString(),
           color: Color(
@@ -47,51 +49,6 @@ class ProjectRisks extends StatelessWidget {
       //     color: colors.tertiary,
       //   ),
       // ],
-    );
-  }
-}
-
-class _RiskCardWidget extends StatelessWidget {
-  final String title, value;
-  final Color color;
-
-  const _RiskCardWidget({
-    super.key,
-    required this.title,
-    required this.value,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              value,
-              style: context.textTheme.labelLarge?.copyWith(
-                fontWeight: FontWeight.w700,
-                color: color,
-              ),
-            ),
-            4.sh,
-            Text(
-              title,
-              style: context.textTheme.bodySmall?.copyWith(
-                fontSize: 10,
-                color: color,
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
