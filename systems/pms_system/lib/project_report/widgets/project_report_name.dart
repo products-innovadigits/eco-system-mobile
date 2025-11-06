@@ -39,20 +39,20 @@ class ProjectReportName extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: context.color.errorContainer.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(25),
+              color: context.color.secondary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(8),
             ),
             child: Row(
               children: [
                 Text(
                   status,
                   style: context.textTheme.bodySmall?.copyWith(
-                    color: context.color.errorContainer,
+                    color: context.color.primary,
                   ),
                 ),
               ],
             ),
-          ),
+          )
         ],
       ),
     );

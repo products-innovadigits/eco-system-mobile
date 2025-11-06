@@ -1,9 +1,9 @@
 import 'package:pms_system/shared/pms_exports.dart';
 
 class ProjectReportSummary extends StatelessWidget {
-  const ProjectReportSummary({super.key, required this.model});
+  const ProjectReportSummary({super.key, required this.reportDetails});
 
-  final ProjectReportItemModel model;
+  final ProjectReportDetailsModel reportDetails;
 
   @override
   Widget build(BuildContext context) {
@@ -20,19 +20,19 @@ class ProjectReportSummary extends StatelessWidget {
             children: [
               Expanded(
                 child: ProjectContentCard(
-                  icon: Assets.svgs.project.path,
-                  title: allTranslations.text(LocaleKeys.the_project),
-                  desc: model.name ?? '',
-                  // desc: (model.startDate ?? DateTime.now()).format("d MMM yyyy"),
+                  icon: Assets.svgs.user.path,
+                  title: allTranslations.text(LocaleKeys.project_owner),
+                  desc: reportDetails.managerName ?? '',
+                  // desc: (model.endDate ?? DateTime.now()).format("d MMM yyyy"),
                 ),
               ),
               SizedBox(width: 8.h),
               Expanded(
                 child: ProjectContentCard(
                   icon: Assets.svgs.user.path,
-                  title: allTranslations.text(LocaleKeys.project_manager),
-                  desc: model.managerName ?? '',
-                  // desc: (model.endDate ?? DateTime.now()).format("d MMM yyyy"),
+                  title: allTranslations.text(LocaleKeys.implement_department),
+                  desc: reportDetails.departmentName ?? '',
+                  // desc: (model.startDate ?? DateTime.now()).format("d MMM yyyy"),
                 ),
               ),
             ],
@@ -45,7 +45,7 @@ class ProjectReportSummary extends StatelessWidget {
                 child: ProjectContentCard(
                   icon: Assets.svgs.calendarStart.path,
                   title: allTranslations.text(LocaleKeys.start_date),
-                  desc: (model.startDate ?? DateTime.now()).format(
+                  desc: (reportDetails.startDate ?? DateTime.now()).format(
                     "d MMM yyyy",
                   ),
                 ),
@@ -55,7 +55,9 @@ class ProjectReportSummary extends StatelessWidget {
                 child: ProjectContentCard(
                   icon: Assets.svgs.calendarEnd.path,
                   title: allTranslations.text(LocaleKeys.end_date),
-                  desc: (model.endDate ?? DateTime.now()).format("d MMM yyyy"),
+                  desc: (reportDetails.endDate ?? DateTime.now()).format(
+                    "d MMM yyyy",
+                  ),
                 ),
               ),
             ],
@@ -68,42 +70,42 @@ class ProjectReportSummary extends StatelessWidget {
                 child: ProjectContentCard(
                   icon: Assets.svgs.sheild.path,
                   title: allTranslations.text(LocaleKeys.project_funding),
-                  desc: model.budget.toString(),
+                  desc: reportDetails.approvedBudget.toString(),
                 ),
               ),
-              SizedBox(width: 8.h),
-              Expanded(
-                child: ProjectContentCard(
-                  icon: Assets.svgs.multiCard.path,
-                  title: allTranslations.text(
-                    LocaleKeys.specialized_initiative,
-                  ),
-                  desc: 'المبادرة المختصة',
-                ),
-              ),
+              // SizedBox(width: 8.h),
+              // Expanded(
+              //   child: ProjectContentCard(
+              //     icon: Assets.svgs.multiCard.path,
+              //     title: allTranslations.text(
+              //       LocaleKeys.specialized_initiative,
+              //     ),
+              //     desc: 'المبادرة المختصة',
+              //   ),
+              // ),
             ],
           ),
-          SizedBox(height: 16.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Expanded(
-                child: ProjectContentCard(
-                  icon: Assets.svgs.filter.path,
-                  title: allTranslations.text(LocaleKeys.specialized_kpi),
-                  desc: 'الموشر المختص',
-                ),
-              ),
-              SizedBox(width: 8.h),
-              Expanded(
-                child: ProjectContentCard(
-                  icon: Assets.svgs.building.path,
-                  title: allTranslations.text(LocaleKeys.specialized_section),
-                  desc: model.sectionDepartment?.name ?? '',
-                ),
-              ),
-            ],
-          ),
+          // SizedBox(height: 16.h),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.start,
+          //   children: [
+          //     Expanded(
+          //       child: ProjectContentCard(
+          //         icon: Assets.svgs.filter.path,
+          //         title: allTranslations.text(LocaleKeys.specialized_kpi),
+          //         desc: 'الموشر المختص',
+          //       ),
+          //     ),
+          //     SizedBox(width: 8.h),
+          //     Expanded(
+          //       child: ProjectContentCard(
+          //         icon: Assets.svgs.building.path,
+          //         title: allTranslations.text(LocaleKeys.specialized_section),
+          //         desc: reportDetails.sectionDepartment?.name ?? '',
+          //       ),
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );

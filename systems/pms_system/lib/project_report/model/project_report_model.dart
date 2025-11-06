@@ -44,597 +44,358 @@ class ProjectReportModel extends SingleMapper {
   }
 }
 
-/// Data wrapper containing totalCount and items array
+/// Main data model for project report
 class ProjectReportDataModel {
-  int? totalCount;
-  List<ProjectReportItemModel>? items;
+  ProjectReportDetailsModel? details;
+  String? description;
+  String? descriptionStageAr;
+  List<BudgetItemModel>? budget;
+  BudgetTotalsModel? budgetTotals;
+  OutputsModel? outputs;
+  ActivitiesModel? activities;
+  ActivitiesPercentModel? activitiesPercent;
+  ProgressModel? progress;
+  String? statusAr;
+  String? statusEn;
+  int? statusEnum;
+  int? challengesCount;
+  // MobileChallengesModel? challenges;
+  List<MobileRiskModel>? risks;
+  int? risksCount;
+  int? activitiesCount;
+  int? outputsCount;
+  int? daysLeft;
+  List<RelatedItemModel>? relatedItems;
 
-  ProjectReportDataModel({this.totalCount, this.items});
+  ProjectReportDataModel({
+    this.details,
+    this.description,
+    this.descriptionStageAr,
+    this.budget,
+    this.budgetTotals,
+    this.outputs,
+    this.activities,
+    this.activitiesPercent,
+    this.progress,
+    this.statusAr,
+    this.statusEn,
+    this.statusEnum,
+    // this.challenges,
+    this.challengesCount,
+    this.risks,
+    this.risksCount,
+    this.activitiesCount,
+    this.outputsCount,
+    this.daysLeft,
+    this.relatedItems,
+  });
 
   ProjectReportDataModel.fromJson(Map<String, dynamic> json) {
-    totalCount = json['totalCount'];
-    if (json['items'] != null) {
-      items = <ProjectReportItemModel>[];
-      json['items'].forEach((v) {
-        items!.add(ProjectReportItemModel.fromJson(v));
+    details = json['details'] != null
+        ? ProjectReportDetailsModel.fromJson(json['details'])
+        : null;
+    description = json['description'];
+    descriptionStageAr = json['descriptionStageAr'];
+    if (json['budget'] != null) {
+      budget = <BudgetItemModel>[];
+      json['budget'].forEach((v) {
+        budget!.add(BudgetItemModel.fromJson(v));
+      });
+    }
+    budgetTotals = json['budgetTotals'] != null
+        ? BudgetTotalsModel.fromJson(json['budgetTotals'])
+        : null;
+    outputs = json['outputs'] != null
+        ? OutputsModel.fromJson(json['outputs'])
+        : null;
+    activities = json['activities'] != null
+        ? ActivitiesModel.fromJson(json['activities'])
+        : null;
+    activitiesPercent = json['activitiesPercent'] != null
+        ? ActivitiesPercentModel.fromJson(json['activitiesPercent'])
+        : null;
+    progress = json['progress'] != null
+        ? ProgressModel.fromJson(json['progress'])
+        : null;
+    statusAr = json['statusAr'];
+    statusEn = json['statusEn'];
+    statusEnum = json['statusEnum'];
+    // challenges = json['challengesCards'] != null
+    //     ? MobileChallengesModel.fromJson(json['challengesCards'])
+    //     : null;
+    if (json['risks'] != null) {
+      risks = <MobileRiskModel>[];
+      json['risks'].forEach((v) {
+        risks!.add(MobileRiskModel.fromJson(v));
+      });
+    }
+    challengesCount = json['challengesCount'];
+    risksCount = json['risksCount'];
+    activitiesCount = json['activitiesCount'];
+    outputsCount = json['outputsCount'];
+    daysLeft = json['daysLeft'];
+    if (json['relatedItems'] != null) {
+      relatedItems = <RelatedItemModel>[];
+      json['relatedItems'].forEach((v) {
+        relatedItems!.add(RelatedItemModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> map = {};
-    if (totalCount != null) map['totalCount'] = totalCount;
-    if (items != null) {
-      map['items'] = items!.map((v) => v.toJson()).toList();
+    if (details != null) map['details'] = details!.toJson();
+    if (description != null) map['description'] = description;
+    if (descriptionStageAr != null) {
+      map['descriptionStageAr'] = descriptionStageAr;
+    }
+    if (budget != null) {
+      map['budget'] = budget!.map((v) => v.toJson()).toList();
+    }
+    if (budgetTotals != null) map['budgetTotals'] = budgetTotals!.toJson();
+    if (outputs != null) map['outputs'] = outputs!.toJson();
+    if (activities != null) map['activities'] = activities!.toJson();
+    if (activitiesPercent != null) {
+      map['activitiesPercent'] = activitiesPercent!.toJson();
+    }
+    if (progress != null) map['progress'] = progress!.toJson();
+    if (statusAr != null) map['statusAr'] = statusAr;
+    if (statusEn != null) map['statusEn'] = statusEn;
+    if (statusEnum != null) map['statusEnum'] = statusEnum;
+    // challenges = map['challengesCards'] != null
+    //     ? MobileChallengesModel.fromJson(map['challengesCards'])
+    //     : null;
+    if (map['risks'] != null) {
+      risks = <MobileRiskModel>[];
+      map['risks'].forEach((v) {
+        risks!.add(MobileRiskModel.fromJson(v));
+      });
+    }
+    if (challengesCount != null) map['challengesCount'] = challengesCount;
+    if (risksCount != null) map['risksCount'] = risksCount;
+    if (activitiesCount != null) map['activitiesCount'] = activitiesCount;
+    if (outputsCount != null) map['outputsCount'] = outputsCount;
+    if (daysLeft != null) map['daysLeft'] = daysLeft;
+    if (relatedItems != null) {
+      map['relatedItems'] = relatedItems!.map((v) => v.toJson()).toList();
     }
     return map;
   }
 }
 
-/// Individual project item in the report
-class ProjectReportItemModel {
-  int? id;
-  String? name;
-  String? statusAr;
-  String? statusEn;
-  String? description;
+/// Project details model
+class ProjectReportDetailsModel {
+  String? projectName;
+  String? managerName;
   DateTime? startDate;
   DateTime? endDate;
-  int? lifeCycleId;
-  dynamic projectLifeCycle;
-  int? projectCategoryId;
-  String? projectCategoryName;
-  num? budget;
-  String? archivedBy;
-  DateTime? dateArchiving;
-  List<String>? teamIds;
-  dynamic mobileDetails;
-  int? sectionDepartmentId;
-  SectionDepartmentModel? sectionDepartment;
-  int? implementorDepartmentId;
-  String? implementorDepartmentName;
-  String? managerId;
-  String? status;
-  double? progressRation;
-  int? deliveredOutputs;
-  String? priorityLevelName;
-  String? managerName;
-  int? periortyLevelId;
-  int? riskLevelId;
-  List<dynamic>? initiativeIds;
-  List<dynamic>? kpiIds;
-  int? outputCount;
-  List<dynamic>? projectComments;
-  List<dynamic>? savedDocuments;
-  List<ProjectReportRiskModel>? risks;
-  List<ProjectReportChallengeModel>? challenges;
-  List<ProjectReportOutputModel>? outputs;
-  String? periortyLevelName;
-  String? riskLevelName;
-  dynamic teamName;
-  dynamic sortOption;
-  String? createdBy;
-  DateTime? createdAt;
-  String? updatedBy;
-  DateTime? updatedAt;
+  num? approvedBudget;
+  String? initiativeCode;
+  String? departmentName;
+  String? category;
 
-  ProjectReportItemModel({
-    this.id,
-    this.name,
-    this.statusAr,
-    this.statusEn,
-    this.description,
+  ProjectReportDetailsModel({
+    this.projectName,
+    this.managerName,
     this.startDate,
     this.endDate,
-    this.lifeCycleId,
-    this.projectLifeCycle,
-    this.projectCategoryId,
-    this.projectCategoryName,
-    this.budget,
-    this.archivedBy,
-    this.dateArchiving,
-    this.teamIds,
-    this.mobileDetails,
-    this.sectionDepartmentId,
-    this.sectionDepartment,
-    this.implementorDepartmentId,
-    this.implementorDepartmentName,
-    this.managerId,
-    this.status,
-    this.progressRation,
-    this.deliveredOutputs,
-    this.priorityLevelName,
-    this.managerName,
-    this.periortyLevelId,
-    this.riskLevelId,
-    this.initiativeIds,
-    this.kpiIds,
-    this.outputCount,
-    this.projectComments,
-    this.savedDocuments,
-    this.risks,
-    this.challenges,
-    this.outputs,
-    this.periortyLevelName,
-    this.riskLevelName,
-    this.teamName,
-    this.sortOption,
-    this.createdBy,
-    this.createdAt,
-    this.updatedBy,
-    this.updatedAt,
+    this.approvedBudget,
+    this.initiativeCode,
+    this.departmentName,
+    this.category,
   });
 
-  ProjectReportItemModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    statusAr = json['statusAr'];
-    statusEn = json['statusEn'];
-    description = json['description'];
+  ProjectReportDetailsModel.fromJson(Map<String, dynamic> json) {
+    projectName = json['projectName'];
+    managerName = json['managerName'];
     startDate = json['startDate'] != null
         ? DateTime.parse(json['startDate'])
         : null;
     endDate = json['endDate'] != null ? DateTime.parse(json['endDate']) : null;
-    lifeCycleId = json['lifeCycleId'];
-    projectLifeCycle = json['projectLifeCycle'];
-    projectCategoryId = json['projectCategoryId'];
-    projectCategoryName = json['projectCategoryName'];
-    budget = json['budget'];
-    archivedBy = json['archivedBy'];
-    dateArchiving = json['dateArchiving'] != null
-        ? DateTime.parse(json['dateArchiving'])
-        : null;
-    teamIds = json['teamIds'] != null
-        ? List<String>.from(json['teamIds'])
-        : null;
-    mobileDetails = json['mobileDetails'];
-    sectionDepartmentId = json['sectionDepartmentId'];
-    sectionDepartment = json['sectionDepartment'] != null
-        ? SectionDepartmentModel.fromJson(json['sectionDepartment'])
-        : null;
-    implementorDepartmentId = json['implementorDepartmentId'];
-    implementorDepartmentName = json['implementorDepartmentName'];
-    managerId = json['managerId'];
-    status = json['status'];
-    progressRation = (json['progressRation'] as num?)?.toDouble();
-    deliveredOutputs = json['deliveredOutputs'];
-    priorityLevelName = json['priorityLevelName'];
-    managerName = json['managerName'];
-    periortyLevelId = json['periortyLevelId'];
-    riskLevelId = json['riskLevelId'];
-    initiativeIds = json['initiativeIds'] != null
-        ? List<dynamic>.from(json['initiativeIds'])
-        : null;
-    kpiIds = json['kpiIds'] != null ? List<dynamic>.from(json['kpiIds']) : null;
-    outputCount = json['outputCount'];
-    projectComments = json['projectComments'] != null
-        ? List<dynamic>.from(json['projectComments'])
-        : null;
-    savedDocuments = json['savedDocuments'] != null
-        ? List<dynamic>.from(json['savedDocuments'])
-        : null;
-
-    if (json['risks'] != null) {
-      risks = <ProjectReportRiskModel>[];
-      json['risks'].forEach((v) {
-        risks!.add(ProjectReportRiskModel.fromJson(v));
-      });
-    }
-
-    if (json['challenges'] != null) {
-      challenges = <ProjectReportChallengeModel>[];
-      json['challenges'].forEach((v) {
-        challenges!.add(ProjectReportChallengeModel.fromJson(v));
-      });
-    }
-
-    if (json['outputs'] != null) {
-      outputs = <ProjectReportOutputModel>[];
-      json['outputs'].forEach((v) {
-        outputs!.add(ProjectReportOutputModel.fromJson(v));
-      });
-    }
-
-    periortyLevelName = json['periortyLevelName'];
-    riskLevelName = json['riskLevelName'];
-    teamName = json['teamName'];
-    sortOption = json['sortOption'];
-    createdBy = json['createdBy'];
-    createdAt = json['createdAt'] != null
-        ? DateTime.parse(json['createdAt'])
-        : null;
-    updatedBy = json['updatedBy'];
-    updatedAt = json['updatedAt'] != null
-        ? DateTime.parse(json['updatedAt'])
-        : null;
+    approvedBudget = json['approvedBudget'];
+    initiativeCode = json['initiativeCode'];
+    departmentName = json['departmentName'];
+    category = json['category'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> map = {};
-    if (id != null) map['id'] = id;
-    if (name != null) map['name'] = name;
-    if (statusAr != null) map['statusAr'] = statusAr;
-    if (statusEn != null) map['statusEn'] = statusEn;
-    if (description != null) map['description'] = description;
+    if (projectName != null) map['projectName'] = projectName;
+    if (managerName != null) map['managerName'] = managerName;
     if (startDate != null) map['startDate'] = startDate!.toIso8601String();
     if (endDate != null) map['endDate'] = endDate!.toIso8601String();
-    if (lifeCycleId != null) map['lifeCycleId'] = lifeCycleId;
-    if (projectLifeCycle != null) map['projectLifeCycle'] = projectLifeCycle;
-    if (projectCategoryId != null) map['projectCategoryId'] = projectCategoryId;
-    if (projectCategoryName != null)
-      map['projectCategoryName'] = projectCategoryName;
-    if (budget != null) map['budget'] = budget;
-    if (archivedBy != null) map['archivedBy'] = archivedBy;
-    if (dateArchiving != null)
-      map['dateArchiving'] = dateArchiving!.toIso8601String();
-    if (teamIds != null) map['teamIds'] = teamIds;
-    if (mobileDetails != null) map['mobileDetails'] = mobileDetails;
-    if (sectionDepartmentId != null)
-      map['sectionDepartmentId'] = sectionDepartmentId;
-    if (sectionDepartment != null)
-      map['sectionDepartment'] = sectionDepartment!.toJson();
-    if (implementorDepartmentId != null) {
-      map['implementorDepartmentId'] = implementorDepartmentId;
-    }
-    if (implementorDepartmentName != null) {
-      map['implementorDepartmentName'] = implementorDepartmentName;
-    }
-    if (managerId != null) map['managerId'] = managerId;
-    if (status != null) map['status'] = status;
-    if (progressRation != null) map['progressRation'] = progressRation;
-    if (deliveredOutputs != null) map['deliveredOutputs'] = deliveredOutputs;
-    if (priorityLevelName != null) map['priorityLevelName'] = priorityLevelName;
-    if (managerName != null) map['managerName'] = managerName;
-    if (periortyLevelId != null) map['periortyLevelId'] = periortyLevelId;
-    if (riskLevelId != null) map['riskLevelId'] = riskLevelId;
-    if (initiativeIds != null) map['initiativeIds'] = initiativeIds;
-    if (kpiIds != null) map['kpiIds'] = kpiIds;
-    if (outputCount != null) map['outputCount'] = outputCount;
-    if (projectComments != null) map['projectComments'] = projectComments;
-    if (savedDocuments != null) map['savedDocuments'] = savedDocuments;
-    if (risks != null) map['risks'] = risks!.map((v) => v.toJson()).toList();
-    if (challenges != null) {
-      map['challenges'] = challenges!.map((v) => v.toJson()).toList();
-    }
-    if (outputs != null)
-      map['outputs'] = outputs!.map((v) => v.toJson()).toList();
-    if (periortyLevelName != null) map['periortyLevelName'] = periortyLevelName;
-    if (riskLevelName != null) map['riskLevelName'] = riskLevelName;
-    if (teamName != null) map['teamName'] = teamName;
-    if (sortOption != null) map['sortOption'] = sortOption;
-    if (createdBy != null) map['createdBy'] = createdBy;
-    if (createdAt != null) map['createdAt'] = createdAt!.toIso8601String();
-    if (updatedBy != null) map['updatedBy'] = updatedBy;
-    if (updatedAt != null) map['updatedAt'] = updatedAt!.toIso8601String();
+    if (approvedBudget != null) map['approvedBudget'] = approvedBudget;
+    if (initiativeCode != null) map['initiativeCode'] = initiativeCode;
+    if (departmentName != null) map['departmentName'] = departmentName;
+    if (category != null) map['category'] = category;
     return map;
   }
 }
 
-/// Risk model for project report
-class ProjectReportRiskModel {
-  int? id;
-  int? projectId;
-  String? riskName;
-  String? actionTaken;
-  String? description;
-  String? note;
-  RiskClassificationModel? riskClassification;
-  int? riskClassificationId;
-  int? statusRiskId;
-  RiskStatusModel? riskStatus;
-  dynamic riskLevel; // Can be String or int
-  String? likelihood;
-  String? createdBy;
-  DateTime? createdAt;
-  String? updatedBy;
-  DateTime? updatedAt;
+/// Budget item model
+class BudgetItemModel {
+  String? key;
+  String? label;
+  num? amount;
+  num? percent;
+  String? background;
 
-  ProjectReportRiskModel({
-    this.id,
-    this.projectId,
-    this.riskName,
-    this.actionTaken,
-    this.description,
-    this.note,
-    this.riskClassification,
-    this.riskClassificationId,
-    this.statusRiskId,
-    this.riskStatus,
-    this.riskLevel,
-    this.likelihood,
-    this.createdBy,
-    this.createdAt,
-    this.updatedBy,
-    this.updatedAt,
+  BudgetItemModel({
+    this.key,
+    this.label,
+    this.amount,
+    this.percent,
+    this.background,
   });
 
-  ProjectReportRiskModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    projectId = json['projectId'];
-    riskName = json['riskName'];
-    actionTaken = json['actionTaken'];
-    description = json['description'];
-    note = json['note'];
-    riskClassification = json['riskClassification'] != null
-        ? RiskClassificationModel.fromJson(json['riskClassification'])
-        : null;
-    riskClassificationId = json['riskClassificationId'];
-    statusRiskId = json['statusRiskId'];
-    riskStatus = json['riskStatus'] != null
-        ? RiskStatusModel.fromJson(json['riskStatus'])
-        : null;
-    riskLevel = json['riskLevel'];
-    likelihood = json['likelihood'];
-    createdBy = json['createdBy'];
-    createdAt = json['createdAt'] != null
-        ? DateTime.parse(json['createdAt'])
-        : null;
-    updatedBy = json['updatedBy'];
-    updatedAt = json['updatedAt'] != null
-        ? DateTime.parse(json['updatedAt'])
-        : null;
+  BudgetItemModel.fromJson(Map<String, dynamic> json) {
+    key = json['key'];
+    label = json['label'];
+    amount = json['amount'];
+    percent = json['percent'];
+    background = json['background'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> map = {};
-    if (id != null) map['id'] = id;
-    if (projectId != null) map['projectId'] = projectId;
-    if (riskName != null) map['riskName'] = riskName;
-    if (actionTaken != null) map['actionTaken'] = actionTaken;
-    if (description != null) map['description'] = description;
-    if (note != null) map['note'] = note;
-    if (riskClassification != null) {
-      map['riskClassification'] = riskClassification!.toJson();
-    }
-    if (riskClassificationId != null) {
-      map['riskClassificationId'] = riskClassificationId;
-    }
-    if (statusRiskId != null) map['statusRiskId'] = statusRiskId;
-    if (riskStatus != null) map['riskStatus'] = riskStatus!.toJson();
-    if (riskLevel != null) map['riskLevel'] = riskLevel;
-    if (likelihood != null) map['likelihood'] = likelihood;
-    if (createdBy != null) map['createdBy'] = createdBy;
-    if (createdAt != null) map['createdAt'] = createdAt!.toIso8601String();
-    if (updatedBy != null) map['updatedBy'] = updatedBy;
-    if (updatedAt != null) map['updatedAt'] = updatedAt!.toIso8601String();
+    if (key != null) map['key'] = key;
+    if (label != null) map['label'] = label;
+    if (amount != null) map['amount'] = amount;
+    if (percent != null) map['percent'] = percent;
+    if (background != null) map['background'] = background;
     return map;
   }
 }
 
-class RiskClassificationModel {
-  int? id;
-  String? name;
+/// Budget totals model
+class BudgetTotalsModel {
+  num? approved;
+  num? spent;
+  num? penalties;
+  num? spentWithPenalties;
+  num? remaining;
 
-  RiskClassificationModel({this.id, this.name});
-
-  RiskClassificationModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> map = {};
-    if (id != null) map['id'] = id;
-    if (name != null) map['name'] = name;
-    return map;
-  }
-}
-
-class RiskStatusModel {
-  int? id;
-  String? name;
-
-  RiskStatusModel({this.id, this.name});
-
-  RiskStatusModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> map = {};
-    if (id != null) map['id'] = id;
-    if (name != null) map['name'] = name;
-    return map;
-  }
-}
-
-/// Challenge model for project report
-class ProjectReportChallengeModel {
-  int? id;
-  String? challengeName;
-  int? projectId;
-  int? categoryId;
-  ChallengeCategoryModel? category;
-  int? impactId;
-  ChallengeImpactModel? impact;
-  int? statusId;
-  ChallengeStatusModel? status;
-  String? description;
-  String? note;
-  String? actionTaken;
-  String? createdBy;
-  DateTime? createdAt;
-  String? updatedBy;
-  DateTime? updatedAt;
-
-  ProjectReportChallengeModel({
-    this.id,
-    this.challengeName,
-    this.projectId,
-    this.categoryId,
-    this.category,
-    this.impactId,
-    this.impact,
-    this.statusId,
-    this.status,
-    this.description,
-    this.note,
-    this.actionTaken,
-    this.createdBy,
-    this.createdAt,
-    this.updatedBy,
-    this.updatedAt,
+  BudgetTotalsModel({
+    this.approved,
+    this.spent,
+    this.penalties,
+    this.spentWithPenalties,
+    this.remaining,
   });
 
-  ProjectReportChallengeModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    challengeName = json['challengeName'];
-    projectId = json['projectId'];
-    categoryId = json['categoryId'];
-    category = json['category'] != null
-        ? ChallengeCategoryModel.fromJson(json['category'])
-        : null;
-    impactId = json['impactId'];
-    impact = json['impact'] != null
-        ? ChallengeImpactModel.fromJson(json['impact'])
-        : null;
-    statusId = json['statusId'];
-    status = json['status'] != null
-        ? ChallengeStatusModel.fromJson(json['status'])
-        : null;
-    description = json['description'];
-    note = json['note'];
-    actionTaken = json['actionTaken'];
-    createdBy = json['createdBy'];
-    createdAt = json['createdAt'] != null
-        ? DateTime.parse(json['createdAt'])
-        : null;
-    updatedBy = json['updatedBy'];
-    updatedAt = json['updatedAt'] != null
-        ? DateTime.parse(json['updatedAt'])
-        : null;
+  BudgetTotalsModel.fromJson(Map<String, dynamic> json) {
+    approved = json['approved'];
+    spent = json['spent'];
+    penalties = json['penalties'];
+    spentWithPenalties = json['spentWithPenalties'];
+    remaining = json['remaining'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> map = {};
-    if (id != null) map['id'] = id;
-    if (challengeName != null) map['challengeName'] = challengeName;
-    if (projectId != null) map['projectId'] = projectId;
-    if (categoryId != null) map['categoryId'] = categoryId;
-    if (category != null) map['category'] = category!.toJson();
-    if (impactId != null) map['impactId'] = impactId;
-    if (impact != null) map['impact'] = impact!.toJson();
-    if (statusId != null) map['statusId'] = statusId;
-    if (status != null) map['status'] = status!.toJson();
-    if (description != null) map['description'] = description;
-    if (note != null) map['note'] = note;
-    if (actionTaken != null) map['actionTaken'] = actionTaken;
-    if (createdBy != null) map['createdBy'] = createdBy;
-    if (createdAt != null) map['createdAt'] = createdAt!.toIso8601String();
-    if (updatedBy != null) map['updatedBy'] = updatedBy;
-    if (updatedAt != null) map['updatedAt'] = updatedAt!.toIso8601String();
+    if (approved != null) map['approved'] = approved;
+    if (spent != null) map['spent'] = spent;
+    if (penalties != null) map['penalties'] = penalties;
+    if (spentWithPenalties != null) {
+      map['spentWithPenalties'] = spentWithPenalties;
+    }
+    if (remaining != null) map['remaining'] = remaining;
     return map;
   }
 }
 
-class ChallengeCategoryModel {
-  int? id;
-  String? name;
+/// Outputs model
+class OutputsModel {
+  int? total;
+  List<OutputItemModel>? completed;
+  List<OutputItemModel>? current;
+  List<OutputItemModel>? upcoming;
+  List<OutputItemModel>? delayed;
 
-  ChallengeCategoryModel({this.id, this.name});
+  OutputsModel({
+    this.total,
+    this.completed,
+    this.current,
+    this.upcoming,
+    this.delayed,
+  });
 
-  ChallengeCategoryModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
+  OutputsModel.fromJson(Map<String, dynamic> json) {
+    total = json['total'];
+    if (json['completed'] != null) {
+      completed = <OutputItemModel>[];
+      json['completed'].forEach((v) {
+        completed!.add(OutputItemModel.fromJson(v));
+      });
+    }
+    if (json['current'] != null) {
+      current = <OutputItemModel>[];
+      json['current'].forEach((v) {
+        current!.add(OutputItemModel.fromJson(v));
+      });
+    }
+    if (json['upcoming'] != null) {
+      upcoming = <OutputItemModel>[];
+      json['upcoming'].forEach((v) {
+        upcoming!.add(OutputItemModel.fromJson(v));
+      });
+    }
+    if (json['delayed'] != null) {
+      delayed = <OutputItemModel>[];
+      json['delayed'].forEach((v) {
+        delayed!.add(OutputItemModel.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> map = {};
-    if (id != null) map['id'] = id;
-    if (name != null) map['name'] = name;
+    if (total != null) map['total'] = total;
+    if (completed != null) {
+      map['completed'] = completed!.map((v) => v.toJson()).toList();
+    }
+    if (current != null) {
+      map['current'] = current!.map((v) => v.toJson()).toList();
+    }
+    if (upcoming != null) {
+      map['upcoming'] = upcoming!.map((v) => v.toJson()).toList();
+    }
+    if (delayed != null) {
+      map['delayed'] = delayed!.map((v) => v.toJson()).toList();
+    }
     return map;
   }
 }
 
-class ChallengeImpactModel {
-  int? id;
-  String? name;
-
-  ChallengeImpactModel({this.id, this.name});
-
-  ChallengeImpactModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> map = {};
-    if (id != null) map['id'] = id;
-    if (name != null) map['name'] = name;
-    return map;
-  }
-}
-
-class ChallengeStatusModel {
-  int? id;
-  String? name;
-
-  ChallengeStatusModel({this.id, this.name});
-
-  ChallengeStatusModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> map = {};
-    if (id != null) map['id'] = id;
-    if (name != null) map['name'] = name;
-    return map;
-  }
-}
-
-/// Output model for project report
-class ProjectReportOutputModel {
+/// Output item model
+class OutputItemModel {
   int? id;
   String? title;
   String? description;
-  String? filePath;
-  int? projectId;
-  bool? isDelivered;
-  int? workflowId;
-  bool? isRuningWorkflow;
-  bool? isCompletedWorkflow;
-  DateTime? updatedAt;
-  DateTime? createdAt;
-  bool? isHavepenalty;
-  num? penaltyValue;
+  DateTime? periodStart;
+  DateTime? periodEnd;
+  int? days;
 
-  ProjectReportOutputModel({
+  OutputItemModel({
     this.id,
     this.title,
     this.description,
-    this.filePath,
-    this.projectId,
-    this.isDelivered,
-    this.workflowId,
-    this.isRuningWorkflow,
-    this.isCompletedWorkflow,
-    this.updatedAt,
-    this.createdAt,
-    this.isHavepenalty,
-    this.penaltyValue,
+    this.periodStart,
+    this.periodEnd,
+    this.days,
   });
 
-  ProjectReportOutputModel.fromJson(Map<String, dynamic> json) {
+  OutputItemModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
     description = json['description'];
-    filePath = json['filePath'];
-    projectId = json['projectId'];
-    isDelivered = json['isDelivered'];
-    workflowId = json['workflowId'];
-    isRuningWorkflow = json['isRuningWorkflow'];
-    isCompletedWorkflow = json['isCompletedWorkflow'];
-    updatedAt = json['updatedAt'] != null
-        ? DateTime.parse(json['updatedAt'])
+    periodStart = json['periodStart'] != null
+        ? DateTime.parse(json['periodStart'])
         : null;
-    createdAt = json['createdAt'] != null
-        ? DateTime.parse(json['createdAt'])
+    periodEnd = json['periodEnd'] != null
+        ? DateTime.parse(json['periodEnd'])
         : null;
-    isHavepenalty = json['isHavepenalty'];
-    penaltyValue = json['penaltyValue'];
+    days = json['days'];
   }
 
   Map<String, dynamic> toJson() {
@@ -642,18 +403,242 @@ class ProjectReportOutputModel {
     if (id != null) map['id'] = id;
     if (title != null) map['title'] = title;
     if (description != null) map['description'] = description;
-    if (filePath != null) map['filePath'] = filePath;
-    if (projectId != null) map['projectId'] = projectId;
-    if (isDelivered != null) map['isDelivered'] = isDelivered;
-    if (workflowId != null) map['workflowId'] = workflowId;
-    if (isRuningWorkflow != null) map['isRuningWorkflow'] = isRuningWorkflow;
-    if (isCompletedWorkflow != null) {
-      map['isCompletedWorkflow'] = isCompletedWorkflow;
+    if (periodStart != null) {
+      map['periodStart'] = periodStart!.toIso8601String();
     }
-    if (updatedAt != null) map['updatedAt'] = updatedAt!.toIso8601String();
-    if (createdAt != null) map['createdAt'] = createdAt!.toIso8601String();
-    if (isHavepenalty != null) map['isHavepenalty'] = isHavepenalty;
-    if (penaltyValue != null) map['penaltyValue'] = penaltyValue;
+    if (periodEnd != null) map['periodEnd'] = periodEnd!.toIso8601String();
+    if (days != null) map['days'] = days;
+    return map;
+  }
+}
+
+/// Activities model
+class ActivitiesModel {
+  int? total;
+  ActivitiesBreakdownModel? breakdown;
+
+  ActivitiesModel({this.total, this.breakdown});
+
+  ActivitiesModel.fromJson(Map<String, dynamic> json) {
+    total = json['total'];
+    breakdown = json['breakdown'] != null
+        ? ActivitiesBreakdownModel.fromJson(json['breakdown'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> map = {};
+    if (total != null) map['total'] = total;
+    if (breakdown != null) map['breakdown'] = breakdown!.toJson();
+    return map;
+  }
+}
+
+/// Activities breakdown model
+class ActivitiesBreakdownModel {
+  int? done;
+  int? advanced;
+  int? inProgress;
+  int? delayed;
+
+  ActivitiesBreakdownModel({
+    this.done,
+    this.advanced,
+    this.inProgress,
+    this.delayed,
+  });
+
+  ActivitiesBreakdownModel.fromJson(Map<String, dynamic> json) {
+    done = json['done'];
+    advanced = json['advanced'];
+    inProgress = json['inProgress'];
+    delayed = json['delayed'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> map = {};
+    if (done != null) map['done'] = done;
+    if (advanced != null) map['advanced'] = advanced;
+    if (inProgress != null) map['inProgress'] = inProgress;
+    if (delayed != null) map['delayed'] = delayed;
+    return map;
+  }
+}
+
+/// Activities percent model
+class ActivitiesPercentModel {
+  List<ActivityBarModel>? bars;
+
+  ActivitiesPercentModel({this.bars});
+
+  ActivitiesPercentModel.fromJson(Map<String, dynamic> json) {
+    if (json['bars'] != null) {
+      bars = <ActivityBarModel>[];
+      json['bars'].forEach((v) {
+        bars!.add(ActivityBarModel.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> map = {};
+    if (bars != null) {
+      map['bars'] = bars!.map((v) => v.toJson()).toList();
+    }
+    return map;
+  }
+}
+
+/// Activity bar model
+class ActivityBarModel {
+  String? key;
+  String? label;
+  String? background;
+  num? value;
+
+  ActivityBarModel({this.key, this.label, this.background, this.value});
+
+  ActivityBarModel.fromJson(Map<String, dynamic> json) {
+    key = json['key'];
+    label = json['label'];
+    background = json['background'];
+    value = json['value'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> map = {};
+    if (key != null) map['key'] = key;
+    if (label != null) map['label'] = label;
+    if (background != null) map['background'] = background;
+    if (value != null) map['value'] = value;
+    return map;
+  }
+}
+
+/// Progress model
+class ProgressModel {
+  num? averageProgress;
+  List<ProgressBarModel>? bars;
+
+  ProgressModel({this.averageProgress, this.bars});
+
+  ProgressModel.fromJson(Map<String, dynamic> json) {
+    averageProgress = json['averageProgress'];
+    if (json['bars'] != null) {
+      bars = <ProgressBarModel>[];
+      json['bars'].forEach((v) {
+        bars!.add(ProgressBarModel.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> map = {};
+    if (averageProgress != null) map['averageProgress'] = averageProgress;
+    if (bars != null) {
+      map['bars'] = bars!.map((v) => v.toJson()).toList();
+    }
+    return map;
+  }
+}
+
+/// Progress bar model
+class ProgressBarModel {
+  String? key;
+  String? label;
+  String? background;
+  num? value;
+
+  ProgressBarModel({this.key, this.label, this.background, this.value});
+
+  ProgressBarModel.fromJson(Map<String, dynamic> json) {
+    key = json['key'];
+    label = json['label'];
+    background = json['background'];
+    value = json['value'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> map = {};
+    if (key != null) map['key'] = key;
+    if (label != null) map['label'] = label;
+    if (background != null) map['background'] = background;
+    if (value != null) map['value'] = value;
+    return map;
+  }
+}
+
+/// Challenge card model
+class ChallengeCardModel {
+  String? key;
+  String? label;
+  int? value;
+  String? background;
+
+  ChallengeCardModel({this.key, this.label, this.value, this.background});
+
+  ChallengeCardModel.fromJson(Map<String, dynamic> json) {
+    key = json['key'];
+    label = json['label'];
+    value = json['value'];
+    background = json['background'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> map = {};
+    if (key != null) map['key'] = key;
+    if (label != null) map['label'] = label;
+    if (value != null) map['value'] = value;
+    if (background != null) map['background'] = background;
+    return map;
+  }
+}
+
+/// Risk card model
+class RiskCardModel {
+  String? key;
+  String? label;
+  int? value;
+  String? background;
+
+  RiskCardModel({this.key, this.label, this.value, this.background});
+
+  RiskCardModel.fromJson(Map<String, dynamic> json) {
+    key = json['key'];
+    label = json['label'];
+    value = json['value'];
+    background = json['background'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> map = {};
+    if (key != null) map['key'] = key;
+    if (label != null) map['label'] = label;
+    if (value != null) map['value'] = value;
+    if (background != null) map['background'] = background;
+    return map;
+  }
+}
+
+/// Related item model
+class RelatedItemModel {
+  String? type;
+  int? id;
+  String? title;
+
+  RelatedItemModel({this.type, this.id, this.title});
+
+  RelatedItemModel.fromJson(Map<String, dynamic> json) {
+    type = json['type'];
+    id = json['id'];
+    title = json['title'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> map = {};
+    if (type != null) map['type'] = type;
+    if (id != null) map['id'] = id;
+    if (title != null) map['title'] = title;
     return map;
   }
 }

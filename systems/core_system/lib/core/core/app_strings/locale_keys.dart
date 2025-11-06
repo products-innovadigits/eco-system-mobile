@@ -283,6 +283,7 @@ abstract class  LocaleKeys {
   static const objectives = 'objectives';
   static const objective = 'objective';
   static const initiative = 'initiative';
+  static const initiatives_and_kpis = 'initiatives_and_kpis';
   static const kpi = 'kpi';
   static const all_objectives = 'all_objectives';
   static const something_went_wrong = 'something_went_wrong';
@@ -345,6 +346,7 @@ abstract class  LocaleKeys {
   static const project_life_cycle = 'project_life_cycle';
   static const project_category = 'project_category';
   static const project_manager = 'project_manager';
+  static const project_owner = 'project_owner';
   static const project_name = 'project_name';
   static const enter_project_name = 'enter_project_name';
   static const enter_employees_number = 'enter_employees_number';
@@ -356,6 +358,7 @@ abstract class  LocaleKeys {
   static const entity_name = 'entity_name';
   static const progress_at_each_stage_of_the_project = 'progress_at_each_stage_of_the_project';
   static const jobs = 'jobs';
+  static const implement_department = 'implement_department';
   static const delete = 'delete';
   static const search_history = 'search_history';
   static const searching_for_job = 'searching_for_job';

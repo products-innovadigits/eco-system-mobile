@@ -1,14 +1,12 @@
 import '../../shared/pms_exports.dart';
 
 class ReportObjectivePercentageChartMobilePortrait extends StatefulWidget {
+  final List<ActivityBarModel> activities;
+
   const ReportObjectivePercentageChartMobilePortrait({
     super.key,
-    required this.objectives,
-    this.colors,
+    required this.activities,
   });
-
-  final List<ReportObjectivePercentageModel> objectives;
-  final List<Color>? colors;
 
   @override
   State<ReportObjectivePercentageChartMobilePortrait> createState() =>
@@ -18,79 +16,59 @@ class ReportObjectivePercentageChartMobilePortrait extends StatefulWidget {
 class _ReportObjectivePercentageChartMobilePortraitState
     extends State<ReportObjectivePercentageChartMobilePortrait> {
   int touchedIndex = -1;
-  bool isEmpty = true;
 
   @override
   Widget build(BuildContext context) {
-    final total = widget.objectives
-        .map((e) => e.value ?? 0)
-        .fold<double>(0, (p, c) => p + c);
-    isEmpty = total <= 0;
-    final colors = widget.colors ?? _defaultPalette(context);
-
     return AspectRatio(
       aspectRatio: 1.4,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          PieChart(
-            PieChartData(
-              pieTouchData: PieTouchData(
-                touchCallback: (event, pieTouchResponse) {
-                  setState(() {
-                    if (!event.isInterestedForInteractions ||
-                        pieTouchResponse == null ||
-                        pieTouchResponse.touchedSection == null) {
-                      touchedIndex = -1;
-                      return;
-                    }
-                    touchedIndex =
-                        pieTouchResponse.touchedSection!.touchedSectionIndex;
-                  });
-                },
-              ),
-              borderData: FlBorderData(
-                show: false,
-                border: Border.all(color: context.color.outline),
-              ),
-              sectionsSpace: 5.w,
-              centerSpaceRadius: 50.w,
-              sections: isEmpty || _showingSections(colors).isEmpty
-                  ? _emptyState()
-                  : _showingSections(colors),
-            ),
+      child: PieChart(
+        PieChartData(
+          pieTouchData: PieTouchData(
+            touchCallback: (event, pieTouchResponse) {
+              setState(() {
+                if (!event.isInterestedForInteractions ||
+                    pieTouchResponse == null ||
+                    pieTouchResponse.touchedSection == null) {
+                  touchedIndex = -1;
+                  return;
+                }
+                touchedIndex =
+                    pieTouchResponse.touchedSection!.touchedSectionIndex;
+              });
+            },
           ),
-          SizedBox(
-            width: 80.w,
-            child: FittedBox(
-              child: RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  text: allTranslations.text("objective_percentage"),
-                  style: context.textTheme.labelSmall,
-                ),
-              ),
-            ),
+          borderData: FlBorderData(
+            show: false,
+            border: Border.all(color: context.color.outline),
           ),
-        ],
+          sectionsSpace: 5.w,
+          centerSpaceRadius: 50.w,
+          sections: widget.activities.isEmpty
+              ? _emptyState()
+              : _showingSections(),
+        ),
       ),
     );
   }
 
-  List<PieChartSectionData> _showingSections(List<Color> colors) {
-    return List.generate(widget.objectives.length, (i) {
+  List<PieChartSectionData> _showingSections() {
+    final colors = widget.activities
+        .map(
+          (activity) =>
+              Color(int.parse(activity.background!.replaceAll('#', '0xff'))),
+        )
+        .toList();
+    return List.generate(widget.activities.length, (i) {
       final isTouched = i == touchedIndex;
       final radius = isTouched ? 60.w : 50.w;
       return PieChartSectionData(
         color: colors[i % colors.length],
-        title: '${widget.objectives[i].value?.toStringAsFixed(0)}%',
+        title: '${widget.activities[i].value?.toStringAsFixed(0)}%',
         titleStyle: AppTextStyles.w600.copyWith(
           color: Colors.white,
-          fontSize: 10,
+          fontSize: 14,
         ),
-        // push title slightly towards the center for readability
-        titlePositionPercentageOffset: .6,
-        value: widget.objectives[i].value ?? 0,
+        value: widget.activities[i].value?.toDouble() ?? 0,
         radius: radius,
         borderSide: BorderSide(color: context.color.outline),
       );
@@ -108,12 +86,4 @@ class _ReportObjectivePercentageChartMobilePortraitState
       ),
     ];
   }
-
-  List<Color> _defaultPalette(BuildContext context) => const [
-    Color(0xFF175CD3),
-    Color(0xFFDC6803),
-    Color(0xFF12B76A),
-    Color(0xFF667085),
-    Color(0xFF7A5AF8),
-  ];
 }

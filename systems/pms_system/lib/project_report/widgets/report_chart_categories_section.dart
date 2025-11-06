@@ -1,47 +1,42 @@
+import 'package:core_system/core/utility/export.dart';
 import 'package:flutter/material.dart';
+import 'package:pms_system/project_report/model/project_report_model.dart';
 
 import '../model/report_objective_percentage_model.dart';
 
 class ReportChartCategoriesSection extends StatelessWidget {
-  final List<ReportObjectivePercentageModel> objectives;
-  final List<Color>? colors;
+  final List<ActivityBarModel> activities;
 
-  const ReportChartCategoriesSection({
-    super.key,
-    required this.objectives,
-    this.colors,
-  });
+  const ReportChartCategoriesSection({super.key, required this.activities});
 
   @override
   Widget build(BuildContext context) {
-    final palette =
-        colors ??
-        const [
-          Color(0xFF175CD3),
-          Color(0xFFDC6803),
-          Color(0xFF12B76A),
-          Color(0xFF667085),
-          Color(0xFF7A5AF8),
-        ];
-
     return Wrap(
       spacing: 12,
       runSpacing: 8,
-      children: List.generate(objectives.length, (index) {
-        final item = objectives[index];
-        final color = palette[index % palette.length];
+      children: List.generate(activities.length, (index) {
         return Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
               width: 10,
               height: 10,
-              decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+              decoration: BoxDecoration(
+                color: Color(
+                  int.parse(
+                    (activities[index].background ?? '#000000').replaceFirst(
+                      '#',
+                      '0xff',
+                    ),
+                  ),
+                ),
+                shape: BoxShape.circle,
+              ),
             ),
             const SizedBox(width: 6),
             Text(
-              item.categoryName ?? '-',
-              style: Theme.of(context).textTheme.bodySmall,
+              activities[index].label ?? '-',
+              style: context.textTheme.bodySmall,
             ),
           ],
         );

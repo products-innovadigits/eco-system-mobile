@@ -33,14 +33,9 @@ class ProjectReportView extends StatelessWidget {
                 return ShimmerCardsList(itemCount: 4, cardHeight: 200);
               } else if (state is Done && state.model is ProjectReportModel) {
                 final responseModel = state.model as ProjectReportModel;
-                final projectItem =
-                    responseModel.data?.items?.isNotEmpty == true
-                    ? responseModel.data!.items!.first
-                    : null;
+                final projectItem = responseModel.data;
                 if (projectItem != null) {
-                  return SingleChildScrollView(
-                    child: ProjectReportBody(model: projectItem),
-                  );
+                  return ProjectReportBody(model: projectItem , projectId : projectId);
                 } else {
                   return EmptyContainer();
                 }
