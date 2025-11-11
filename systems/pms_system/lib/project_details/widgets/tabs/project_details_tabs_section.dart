@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:pms_system/shared/pms_exports.dart';
 
 class ProjectDetailsTabsSection extends StatelessWidget {
-  const ProjectDetailsTabsSection({super.key});
+  final int projectId;
+  const ProjectDetailsTabsSection({super.key, required this.projectId});
 
   static Map<ProjectDetailsEnum, String> tabs = {
     ProjectDetailsEnum.mainInfo: LocaleKeys.main_info,
@@ -22,6 +25,7 @@ class ProjectDetailsTabsSection extends StatelessWidget {
                   context.watch<ProjectDetailsBloc>().selectedTab == tab,
               onTap: () {
                 context.read<ProjectDetailsBloc>().add(Select(arguments: tab));
+
               },
             ),
           );

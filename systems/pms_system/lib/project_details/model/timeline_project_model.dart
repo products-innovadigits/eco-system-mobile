@@ -1,3 +1,5 @@
+import 'package:pms_system/project_details/model/project_timeline_model.dart';
+
 class ProjectItem {
   final int startMonth, startWeek;
   final int endMonth, endWeek;
@@ -44,8 +46,32 @@ class PlacedProject {
   });
 }
 
+class PlacedMilestone {
+  final MilestoneModel milestone;
+  final int row; // top row of the reserved band
+  final int minCol, maxCol;
+  final int rowSpanRows; // band height in rows
+  final int bottomRow; // inclusive
+  final int subCount; // total subactivities count
+
+  PlacedMilestone({
+    required this.milestone,
+    required this.row,
+    required this.minCol,
+    required this.maxCol,
+    required this.rowSpanRows,
+    required this.bottomRow,
+    required this.subCount,
+  });
+}
+
 class LayoutResult {
-  final List<PlacedProject> placed;
+  final List<PlacedProject>? placed;
+  final List<PlacedMilestone>? placedMilestones;
   final int? maxRowIndex; // deepest occupied row
-  LayoutResult({required this.placed, required this.maxRowIndex});
+  LayoutResult({
+    this.placed,
+    this.placedMilestones,
+    required this.maxRowIndex,
+  });
 }

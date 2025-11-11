@@ -1,5 +1,8 @@
-import 'package:pms_system/pms_home/model/timeline_project_model.dart';
-import 'package:pms_system/pms_home/widgets/timeline/timeline_widget.dart';
+import 'dart:developer';
+
+import 'package:pms_system/project_details/model/timeline_project_model.dart';
+import 'package:pms_system/project_details/widgets/tabs/timeline_tab/project_timeline_tab.dart';
+import 'package:pms_system/project_details/widgets/tabs/timeline_tab/timeline_widget.dart';
 import 'package:pms_system/project_details/widgets/tabs/project_details_tabs_section.dart';
 import 'package:pms_system/project_details/widgets/tabs/project_main_info_tab.dart';
 import 'package:pms_system/project_details/widgets/tabs/workflow_tab/project_workflow_tab.dart';
@@ -11,6 +14,10 @@ class ProjectDetailsBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProjectDetailsBloc, AppState>(
+      buildWhen: (previous, current) =>
+          current is! Getting &&
+          current is! GettingDone &&
+          current is! GettingError,
       builder: (context, state) {
         final selectedTab = context.select(
           (ProjectDetailsBloc bloc) => bloc.selectedTab,
@@ -52,7 +59,7 @@ class _ProjectBody extends StatelessWidget {
         // Fixed header content
         ProjectCardContent(project: model, isDetails: true),
         SizedBox(height: 12.h),
-        ProjectDetailsTabsSection(),
+        ProjectDetailsTabsSection(projectId: model.id ?? 0),
         SizedBox(height: 16.h),
         Expanded(
           child: SingleChildScrollView(
@@ -92,106 +99,10 @@ Widget _getTabSection(
     ProjectDetailsEnum.workflow => ProjectWorkflowTab(
       projectDetailsModel: model,
     ),
-    _ => ProjectTimeline(
-      // canvasHeight: 400,
-      // keep true since your layout is RTL
-      timelineProjects: [
-        ProjectItem(
-          startMonth: 1,
-          startWeek: 2,
-          endMonth: 2,
-          endWeek: 3,
-          name: 'النشاط الرئيسي 01 – رفع جاهزية مركز عمليات الأمن السيبراني',
-          subProjects: [
-            ProjectItem(
-              startMonth: 1,
-              startWeek: 2,
-              endMonth: 2,
-              endWeek: 3,
-              name: 'SA-104 اختبار منصة',
-            ),
-            ProjectItem(
-              startMonth: 1,
-              startWeek: 2,
-              endMonth: 2,
-              endWeek: 3,
-              name: 'SA-104 اختبار منصة',
-            ),
-          ],
-        ),
-        ProjectItem(
-          startMonth: 1,
-          startWeek: 1,
-          endMonth: 2,
-          endWeek: 2,
-          name: 'النشاط الرئيسي 01 – رفع جاهزية مركز عمليات الأمن السيبراني',
-          subProjects: [
-            ProjectItem(
-              startMonth: 1,
-              startWeek: 2,
-              endMonth: 2,
-              endWeek: 3,
-              name: 'SA-104 اختبار منصة',
-            ),
-            ProjectItem(
-              startMonth: 1,
-              startWeek: 2,
-              endMonth: 2,
-              endWeek: 3,
-              name: 'SA-104 اختبار منصة',
-            ),
-            ProjectItem(
-              startMonth: 1,
-              startWeek: 2,
-              endMonth: 2,
-              endWeek: 3,
-              name: 'SA-104 اختبار منصة',
-            ),
-            ProjectItem(
-              startMonth: 1,
-              startWeek: 2,
-              endMonth: 2,
-              endWeek: 3,
-              name: 'SA-104 اختبار منصة',
-            ),
-          ],
-        ),
-        ProjectItem(
-          startMonth: 1,
-          startWeek: 3,
-          endMonth: 3,
-          endWeek: 1,
-          name: 'النشاط الرئيسى 01 – رفع جاهزية مركز عمليات الأمن ',
-        ),
-        ProjectItem(
-          startMonth: 1,
-          startWeek: 3,
-          endMonth: 3,
-          endWeek: 1,
-          name: 'النشاط الرئيسى 01 – رفع جاهزية مركز عمليات الأمن ',
-        ),
-        ProjectItem(
-          startMonth: 3,
-          startWeek: 1,
-          endMonth: 3,
-          endWeek: 4,
-          name: 'النشاط الرئيسى 01 – رفع جاهزية مركز عمليات الأمن ',
-        ),
-        ProjectItem(
-          startMonth: 4,
-          startWeek: 1,
-          endMonth: 5,
-          endWeek: 2,
-          name: 'النشاط الرئيسى 02 – رفع جاهزية مركز عمليات الأمن ',
-        ),
-        ProjectItem(
-          startMonth: 4,
-          startWeek: 1,
-          endMonth: 5,
-          endWeek: 2,
-          name: 'النشاط الرئيسى 02 – رفع جاهزية مركز عمليات الأمن ',
-        ),
-      ],
+    _ => ProjectTimelineTab(
+      projectStart: model.startDate ?? DateTime.now(),
+      projectEnd:
+          model.endDate ?? DateTime.now().add(const Duration(days: 365)),
     ),
   };
 }

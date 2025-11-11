@@ -25,8 +25,8 @@ abstract class ApiNames {
   static const projectSortingOptions = "Project/GetProjectSortOptionsAsync";
   static String projectDetails(id) => "Project/$id";
   static String projectReport(id) => "Project/mobile-report/$id";
-  static String projectGeneralProgressSummary(id) =>
-      "Project/$id/progress-summary";
+  static String projectGeneralProgressSummary(id) => "Project/$id/progress-summary";
+  static String projectTimeline(id) => "ProjectTimeLine/GetAllActivitiesByProjectId/$id";
   static String workflowProcessDetails = "WorkFlow/GroupSteps";
   static String currentNextSteps = "WorkFlow/CurrentAndNext";
   // static String stageDocsData = "DocumentData";

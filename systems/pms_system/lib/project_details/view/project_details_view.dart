@@ -14,8 +14,8 @@ class ProjectDetailsView extends StatelessWidget {
         child: MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) =>
-                  ProjectDetailsBloc()..add(Click(arguments: id)),
+              create: (context) => ProjectDetailsBloc()
+                ..add(Click(arguments: id)),
             ),
             BlocProvider(
               create: (context) =>

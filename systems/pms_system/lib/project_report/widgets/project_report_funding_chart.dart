@@ -21,10 +21,7 @@ class ProjectReportFundingChart extends StatelessWidget {
           title: allTranslations.text(LocaleKeys.project_financing),
           child: _ChartDetails(projects: data),
         ),
-        _ProgressHalfPie(
-          projects: data,
-          projectBudget: projectBudget,
-        ),
+        _ProgressHalfPie(projects: data, projectBudget: projectBudget),
       ],
     );
   }
@@ -37,7 +34,8 @@ class _ChartDetails extends StatelessWidget {
 
   Color _parseHex(String? hex) {
     final h = (hex ?? '#000000').replaceAll('#', '');
-    final value = int.tryParse(h.length == 6 ? 'ff$h' : h, radix: 16) ?? 0xff000000;
+    final value =
+        int.tryParse(h.length == 6 ? 'ff$h' : h, radix: 16) ?? 0xff000000;
     return Color(value);
   }
 
@@ -82,10 +80,7 @@ class _ProgressHalfPie extends StatelessWidget {
   final List<ProjectsOverviewData> projects;
   final double projectBudget;
 
-  const _ProgressHalfPie({
-    required this.projects,
-    required this.projectBudget,
-  });
+  const _ProgressHalfPie({required this.projects, required this.projectBudget});
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +104,7 @@ class _ProgressHalfPie extends StatelessWidget {
               _HalfCircleAnalyticChart(
                 project: donutItems[i],
                 radiusPercent: 60 + i * 13,
-                innerRadiusPercent: 86 + i *( i == 2 ? 2 : 3),
+                innerRadiusPercent: 86 + i * (i == 2 ? 2 : 3),
               ),
             Positioned(
               top: 100,
@@ -157,14 +152,17 @@ class _HalfCircleAnalyticChart extends StatelessWidget {
 
   Color _parseHex(String? hex) {
     final h = (hex ?? '#000000').replaceAll('#', '');
-    final value = int.tryParse(h.length == 6 ? 'ff$h' : h, radix: 16) ?? 0xff000000;
+    final value =
+        int.tryParse(h.length == 6 ? 'ff$h' : h, radix: 16) ?? 0xff000000;
     return Color(value);
   }
 
   @override
   Widget build(BuildContext context) {
     final isDisabled = (project.percentage ?? 0) <= 0.0;
-    final color = isDisabled ? const Color(0xFFEFEFF5) : _parseHex(project.hexColor);
+    final color = isDisabled
+        ? const Color(0xFFEFEFF5)
+        : _parseHex(project.hexColor);
 
     return Align(
       alignment: Alignment.topRight,
@@ -182,7 +180,9 @@ class _HalfCircleAnalyticChart extends StatelessWidget {
               endAngle: 90,
               innerRadius: '${innerRadiusPercent.toStringAsFixed(0)}%',
               radius: '${radiusPercent.toStringAsFixed(0)}%',
-              emptyPointSettings: const EmptyPointSettings(mode: EmptyPointMode.zero),
+              emptyPointSettings: const EmptyPointSettings(
+                mode: EmptyPointMode.zero,
+              ),
               animationDuration: isDisabled ? 0 : 300,
             ),
           ],

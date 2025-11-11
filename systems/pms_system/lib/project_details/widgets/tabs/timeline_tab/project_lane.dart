@@ -1,6 +1,6 @@
-import 'package:pms_system/pms_home/model/timeline_project_model.dart';
+import 'package:pms_system/project_details/model/timeline_project_model.dart';
 
-import '../../../shared/pms_exports.dart';
+import '../../../../shared/pms_exports.dart';
 
 class ProjectLane extends StatelessWidget {
   final String? name;

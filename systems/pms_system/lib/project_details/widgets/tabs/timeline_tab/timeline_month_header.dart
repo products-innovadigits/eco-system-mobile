@@ -1,36 +1,26 @@
-import '../../../shared/pms_exports.dart';
+import 'package:pms_system/project_details/widgets/tabs/timeline_tab/timeline_date_utils.dart';
+import '../../../../shared/pms_exports.dart';
 
-/// Months header row (12 equally sized month cells).
+/// Months header row (dynamically sized based on project months).
 class TimelineMonthsHeader extends StatelessWidget {
   final double width, monthWidth, height;
+  final List<ProjectMonth> months;
 
-  const TimelineMonthsHeader({super.key,
+  const TimelineMonthsHeader({
+    super.key,
     required this.width,
     required this.monthWidth,
     required this.height,
+    required this.months,
   });
 
   @override
   Widget build(BuildContext context) {
-    const List<String> kArabicMonths = [
-      'يناير',
-      'فبراير',
-      'مارس',
-      'أبريل',
-      'مايو',
-      'يونيو',
-      'يوليو',
-      'أغسطس',
-      'سبتمبر',
-      'أكتوبر',
-      'نوفمبر',
-      'ديسمبر',
-    ];
     return SizedBox(
       width: width,
       height: height,
       child: Row(
-        children: List.generate(12, (m) {
+        children: List.generate(months.length, (m) {
           return Container(
             width: monthWidth,
             height: height,
@@ -40,7 +30,7 @@ class TimelineMonthsHeader extends StatelessWidget {
               border: Border.all(color: LightColor.timelineBorder),
             ),
             child: Text(
-              kArabicMonths[m],
+              months[m].displayName,
               style: context.textTheme.labelLarge?.copyWith(
                 fontWeight: FontWeight.w600,
                 color: context.color.secondary,

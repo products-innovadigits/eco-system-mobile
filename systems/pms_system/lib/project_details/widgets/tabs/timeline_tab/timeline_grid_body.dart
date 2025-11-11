@@ -1,17 +1,20 @@
 
-import '../../../shared/pms_exports.dart';
+import '../../../../shared/pms_exports.dart';
 
-/// Grid body (rows × 48 weeks). Optionally builds custom cells via cellBuilder.
+/// Grid body (rows × dynamic weeks). Optionally builds custom cells via cellBuilder.
 class TimelineGridBody extends StatelessWidget {
   final int rows;
   final double width, monthWidth, weekWidth, rowHeight;
+  final int monthCount;
 
-  const TimelineGridBody({super.key,
+  const TimelineGridBody({
+    super.key,
     required this.rows,
     required this.width,
     required this.monthWidth,
     required this.weekWidth,
     required this.rowHeight,
+    required this.monthCount,
   });
 
   @override
@@ -22,7 +25,7 @@ class TimelineGridBody extends StatelessWidget {
           width: width,
           height: rowHeight,
           child: Row(
-            children: List.generate(12, (m) {
+            children: List.generate(monthCount, (m) {
               return SizedBox(
                 width: monthWidth,
                 height: rowHeight,

@@ -1,8 +1,9 @@
-import '../../../shared/pms_exports.dart';
+import '../../../../shared/pms_exports.dart';
 
 /// Weeks header row (4 week cells per month, with optional grid lines).
 class TimelineWeeksHeader extends StatelessWidget {
   final double width, monthWidth, height, weekWidth;
+  final int monthCount;
 
   const TimelineWeeksHeader({
     super.key,
@@ -10,6 +11,7 @@ class TimelineWeeksHeader extends StatelessWidget {
     required this.monthWidth,
     required this.height,
     required this.weekWidth,
+    required this.monthCount,
   });
 
   @override
@@ -23,7 +25,7 @@ class TimelineWeeksHeader extends StatelessWidget {
         ),
       ),
       child: Row(
-        children: List.generate(12, (m) {
+        children: List.generate(monthCount, (m) {
           return SizedBox(
             width: monthWidth,
             height: height,
