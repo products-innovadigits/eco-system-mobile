@@ -104,8 +104,10 @@ class TimelineProjectLanes extends StatelessWidget {
                 weekWidth: weekWidth,
                 projectStart: projectStart,
                 projectEnd: projectEnd,
+                isRTL: isRTL,
                 isExpanded: isExpanded,
-                onToggleExpansion: () => onToggleExpansion(p.milestone.id ?? -1),
+                onToggleExpansion: () =>
+                    onToggleExpansion(p.milestone.id ?? -1),
                 onMilestoneTap: onMilestoneTap,
                 onSubactivityTap: onSubactivityTap,
               ),

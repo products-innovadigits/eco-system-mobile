@@ -166,12 +166,12 @@ class ProjectMonth {
       final count = monthNameCount[key]!;
 
       String displayName;
-      if (count > 1) {
+      // if (count > 1) {
         // Append year if this month name appears multiple times
         displayName = '$monthName (${current.year})';
-      } else {
-        displayName = monthName;
-      }
+      // } else {
+      //   displayName = monthName;
+      // }
 
       months.add(ProjectMonth(current.year, current.month, displayName));
 

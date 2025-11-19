@@ -58,8 +58,14 @@ class _ProjectTimelineState extends State<ProjectTimeline> {
     setState(() {
       if (_expandedMilestoneIds.contains(milestoneId)) {
         _expandedMilestoneIds.remove(milestoneId);
+        debugPrint(
+          'Toggled: COLLAPSE milestone=$milestoneId | expanded=$_expandedMilestoneIds',
+        );
       } else {
         _expandedMilestoneIds.add(milestoneId);
+        debugPrint(
+          'Toggled: EXPAND milestone=$milestoneId | expanded=$_expandedMilestoneIds',
+        );
       }
     });
   }
@@ -87,12 +93,16 @@ class _ProjectTimelineState extends State<ProjectTimeline> {
     );
 
     // Compute rows required considering the deepest occupied row index
-    final int totalRows =
-        math.max(widget.baseRowCount, (layout.maxRowIndex ?? -1) + 1);
+    final int totalRows = math.max(
+      widget.baseRowCount,
+      (layout.maxRowIndex ?? -1) + 1,
+    );
 
     // Effective canvas height (auto-grow or fixed)
     final double effectiveHeight =
-        (widget.monthsHeaderHeight + widget.weeksHeaderHeight + totalRows * rowH);
+        (widget.monthsHeaderHeight +
+        widget.weeksHeaderHeight +
+        totalRows * rowH);
 
     return Directionality(
       textDirection: widget.textDirection,
@@ -108,7 +118,8 @@ class _ProjectTimelineState extends State<ProjectTimeline> {
             clipBehavior: Clip.hardEdge,
             child: SizedBox(
               width: _totalWidth,
-              height: effectiveHeight, // critical for Positioned children (Stack)
+              height: effectiveHeight,
+              // critical for Positioned children (Stack)
               child: Stack(
                 clipBehavior: Clip.none,
                 children: [
@@ -157,7 +168,7 @@ class _ProjectTimelineState extends State<ProjectTimeline> {
                       onMilestoneTap: widget.onMilestoneTap,
                       onSubactivityTap: widget.onSubactivityTap,
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -236,15 +247,17 @@ class _ProjectTimelineState extends State<ProjectTimeline> {
       final int bottomRow = r + rowSpanRows - 1;
       if (maxRow == null || bottomRow > maxRow) maxRow = bottomRow;
 
-      placed.add(PlacedMilestone(
-        milestone: milestone,
-        row: r,
-        minCol: startCol,
-        maxCol: endCol,
-        rowSpanRows: rowSpanRows,
-        bottomRow: bottomRow,
-        subCount: subs,
-      ));
+      placed.add(
+        PlacedMilestone(
+          milestone: milestone,
+          row: r,
+          minCol: startCol,
+          maxCol: endCol,
+          rowSpanRows: rowSpanRows,
+          bottomRow: bottomRow,
+          subCount: subs,
+        ),
+      );
     }
 
     return LayoutResult(placedMilestones: placed, maxRowIndex: maxRow);
