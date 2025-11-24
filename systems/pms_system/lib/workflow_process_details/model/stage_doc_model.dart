@@ -30,8 +30,10 @@ class StageDocData {
   WorkflowStep? currentStep;
   List<WorkflowStep>? nextStep;
   String? workFlowStatus;
+  String? pdfFilePath;
+  num? stepDocumentId;
 
-  StageDocData({this.currentStep, this.nextStep});
+  StageDocData({this.currentStep, this.nextStep, this.workFlowStatus, this.pdfFilePath});
 
   StageDocData.fromJson(Map<String, dynamic> json) {
     currentStep = json['currentStep'] != null
@@ -50,6 +52,8 @@ class StageDocData {
       }
     }
     workFlowStatus = json['workFlowStatus']?.toString();
+    pdfFilePath = json['pdfFilePath']?.toString();
+    stepDocumentId = json['stepDocumentId'] as num?;
   }
 
   Map<String, dynamic> toJson() {
@@ -59,6 +63,8 @@ class StageDocData {
       map['nextStep'] = nextStep!.map((e) => e.toJson()).toList();
     }
     map['workFlowStatus'] = workFlowStatus;
+    map['pdfFilePath'] = pdfFilePath;
+    map['stepDocumentId'] = stepDocumentId;
     return map;
   }
 }

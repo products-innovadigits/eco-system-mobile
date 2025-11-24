@@ -1,0 +1,105 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Nawah",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "Nawah (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "Nawah (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "ats_system",
+            "cwd": "systems\\ats_system",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "ats_system (profile mode)",
+            "cwd": "systems\\ats_system",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "ats_system (release mode)",
+            "cwd": "systems\\ats_system",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "core_system",
+            "cwd": "systems\\core_system",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "core_system (profile mode)",
+            "cwd": "systems\\core_system",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "core_system (release mode)",
+            "cwd": "systems\\core_system",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "pms_system",
+            "cwd": "systems\\pms_system",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "pms_system (profile mode)",
+            "cwd": "systems\\pms_system",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "pms_system (release mode)",
+            "cwd": "systems\\pms_system",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "strategy_system",
+            "cwd": "systems\\strategy_system",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "strategy_system (profile mode)",
+            "cwd": "systems\\strategy_system",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "strategy_system (release mode)",
+            "cwd": "systems\\strategy_system",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

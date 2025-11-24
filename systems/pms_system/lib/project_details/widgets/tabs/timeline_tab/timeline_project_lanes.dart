@@ -17,8 +17,6 @@ class TimelineProjectLanes extends StatelessWidget {
   final bool isRTL;
   final DateTime projectStart;
   final DateTime projectEnd;
-  final Set<int> expandedMilestoneIds;
-  final void Function(int milestoneId) onToggleExpansion;
   final void Function(MilestoneModel milestone)? onMilestoneTap;
   final void Function(SubActivityModel subactivity)? onSubactivityTap;
 
@@ -33,8 +31,6 @@ class TimelineProjectLanes extends StatelessWidget {
     required this.isRTL,
     required this.projectStart,
     required this.projectEnd,
-    required this.expandedMilestoneIds,
-    required this.onToggleExpansion,
     this.onMilestoneTap,
     this.onSubactivityTap,
   });
@@ -92,8 +88,6 @@ class TimelineProjectLanes extends StatelessWidget {
 
             final double laneWidth = (p.maxCol - p.minCol + 1) * weekWidth;
 
-            final isExpanded = expandedMilestoneIds.contains(p.milestone.id);
-
             return Positioned(
               left: leftPx,
               top: topPx,
@@ -105,9 +99,6 @@ class TimelineProjectLanes extends StatelessWidget {
                 projectStart: projectStart,
                 projectEnd: projectEnd,
                 isRTL: isRTL,
-                isExpanded: isExpanded,
-                onToggleExpansion: () =>
-                    onToggleExpansion(p.milestone.id ?? -1),
                 onMilestoneTap: onMilestoneTap,
                 onSubactivityTap: onSubactivityTap,
               ),

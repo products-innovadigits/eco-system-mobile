@@ -25,6 +25,7 @@ class ProjectReportView extends StatelessWidget {
         appBar: CustomAppBar(
           title: allTranslations.text(LocaleKeys.project_report),
           withBottomBorder: false,
+          action: _ExportButton(onTap: () {}),
         ),
         body: SafeArea(
           child: BlocBuilder<ProjectReportBloc, AppState>(
@@ -35,7 +36,10 @@ class ProjectReportView extends StatelessWidget {
                 final responseModel = state.model as ProjectReportModel;
                 final projectItem = responseModel.data;
                 if (projectItem != null) {
-                  return ProjectReportBody(model: projectItem , projectId : projectId);
+                  return ProjectReportBody(
+                    model: projectItem,
+                    projectId: projectId,
+                  );
                 } else {
                   return EmptyContainer();
                 }
@@ -48,6 +52,28 @@ class ProjectReportView extends StatelessWidget {
             },
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _ExportButton extends StatelessWidget {
+  final VoidCallback onTap;
+
+  const _ExportButton({required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: context.color.secondary.withValues(alpha: 0.2),
+          shape: BoxShape.circle,
+          border: Border.all(color: context.color.secondary),
+        ),
+        child: Images(image: Assets.svgs.download.path),
       ),
     );
   }

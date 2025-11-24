@@ -26,10 +26,13 @@ class ProcessExpansionCardWidget extends StatelessWidget {
           final process = processSteps?[idx];
           return _ProcessStepRowWidget(
             title: process?.stepName ?? '',
-            status: (process?.status == 0 ? false : true)
+            status:
+                ((process?.status == 0 || process?.status == 2) ? false : true)
                 ? allTranslations.text(LocaleKeys.completed)
                 : allTranslations.text(LocaleKeys.not_completed),
-            isCompleted: process?.status == 0 ? false : true,
+            isCompleted: (process?.status == 0 || process?.status == 2)
+                ? false
+                : true,
           );
         }),
       ),
@@ -54,7 +57,9 @@ class _ProcessProgressWidget extends StatelessWidget {
           valueColor: AlwaysStoppedAnimation<Color>(context.color.tertiary),
         ),
         Text(
-          '$progress%',
+          (progress % 1 == 0)
+              ? '${progress.toInt()}%'
+              : '${progress.toString()}%',
           style: context.textTheme.labelSmall?.copyWith(
             fontSize: 8,
             fontWeight: FontWeight.w800,

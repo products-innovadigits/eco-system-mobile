@@ -3,17 +3,22 @@ import '../../../../shared/pms_exports.dart';
 class StageDocsTab extends StatelessWidget {
   final int processId;
   final int projectId;
+  final String pdfFilePath;
+  final int stepDocumentId;
 
   const StageDocsTab({
     super.key,
     required this.processId,
     required this.projectId,
+    required this.pdfFilePath,
+    required this.stepDocumentId,
   });
 
   void _showHtmlContent(BuildContext context, StageDocument document) {
     showDialog(
       context: context,
-      builder: (context) => HtmlContentDialog(document: document),
+      builder: (context) =>
+          HtmlContentDialog(document: document, pdfFilePath: pdfFilePath),
     );
   }
 
@@ -64,12 +69,14 @@ class StageDocsTab extends StatelessWidget {
                               icon: Assets.svgs.eye.path,
                               onTap: () {
                                 docCommentsBloc.add(
-                                  Click(arguments: document.id),
+                                  Click(arguments: stepDocumentId),
                                 );
                                 PopUpHelper.showBottomSheet(
                                   child: BlocProvider.value(
                                     value: docCommentsBloc,
-                                    child: ViewCommentsBottomSheet(),
+                                    child: ViewCommentsBottomSheet(
+                                      stepDocumentId: stepDocumentId,
+                                    ),
                                   ),
                                 );
                               },
@@ -141,7 +148,7 @@ class StageDocsTab extends StatelessWidget {
                                   onTap: () {
                                     bloc.add(
                                       AddDocumentComment(
-                                        documentId: document.id ?? 0,
+                                        stepDocumentId: stepDocumentId,
                                         text:
                                             bloc
                                                 .getCommentController(

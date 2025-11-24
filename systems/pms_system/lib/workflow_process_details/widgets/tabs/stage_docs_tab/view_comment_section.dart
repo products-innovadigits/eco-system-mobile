@@ -4,8 +4,9 @@ import '../../../../shared/pms_exports.dart';
 
 class ViewCommentSection extends StatelessWidget {
   final DocumentComment documentComment;
+  final int stepDocumentId;
 
-  const ViewCommentSection({super.key, required this.documentComment});
+  const ViewCommentSection({super.key, required this.documentComment, required this.stepDocumentId});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,8 @@ class ViewCommentSection extends StatelessWidget {
             ),
             const SizedBox(width: 6),
             InkWell(
-              onTap: () => bloc.add(Toggle(arguments: documentComment.id ?? 0)),
+              onTap: () => bloc.add(Toggle(arguments: stepDocumentId)),
+              // onTap: () => bloc.add(Toggle(arguments: documentComment.id ?? 0)),
               child: Images(image: Assets.svgs.editSquare.path, width: 15),
             ),
           ],

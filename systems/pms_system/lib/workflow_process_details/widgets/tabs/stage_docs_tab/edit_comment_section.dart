@@ -4,8 +4,9 @@ import '../../../../shared/pms_exports.dart';
 
 class EditCommentSection extends StatelessWidget {
   final DocumentComment documentComment;
+  final int stepDocumentId;
 
-  const EditCommentSection({super.key, required this.documentComment});
+  const EditCommentSection({super.key, required this.documentComment, required this.stepDocumentId});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,8 @@ class EditCommentSection extends StatelessWidget {
                     onTap: () {
                       bloc.add(
                         Edit(
-                          documentId: documentComment.id ?? 0,
+                          documentId: stepDocumentId,
+                          // documentId: documentComment.id ?? 0,
                           comment: bloc.editCommentCtrl.text,
                           documentDataId:
                           documentComment.documentDataId ?? 0,

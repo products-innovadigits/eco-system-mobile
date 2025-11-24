@@ -19,7 +19,7 @@ class ProjectReportInitiativesAndKpis extends StatelessWidget {
         color: Colors.black,
         width: 24,
       ),
-      child: Column(
+      child: initiativesAndKpis.isNotEmpty ? Column(
         children: List.generate(initiativesAndKpis.length, (index) {
           final RelatedItemModel itemModel = initiativesAndKpis[index];
           return Padding(
@@ -48,6 +48,8 @@ class ProjectReportInitiativesAndKpis extends StatelessWidget {
             ),
           );
         }),
+      ) : Center(
+        child: Text(allTranslations.text(LocaleKeys.there_is_no_data)),
       ),
     );
   }

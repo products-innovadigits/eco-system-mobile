@@ -140,6 +140,9 @@ class $AssetsSvgsGen {
   SvgGenImage get blueGallery =>
       const SvgGenImage('assets/svgs/blue_gallery.svg');
 
+  /// File path: assets/svgs/box.svg
+  SvgGenImage get box => const SvgGenImage('assets/svgs/box.svg');
+
   /// File path: assets/svgs/building-4.svg
   SvgGenImage get building4 => const SvgGenImage('assets/svgs/building-4.svg');
 
@@ -269,9 +272,15 @@ class $AssetsSvgsGen {
   SvgGenImage get documentText =>
       const SvgGenImage('assets/svgs/document-text.svg');
 
+  /// File path: assets/svgs/dollar.svg
+  SvgGenImage get dollar => const SvgGenImage('assets/svgs/dollar.svg');
+
   /// File path: assets/svgs/download-box.svg
   SvgGenImage get downloadBox =>
       const SvgGenImage('assets/svgs/download-box.svg');
+
+  /// File path: assets/svgs/download.svg
+  SvgGenImage get download => const SvgGenImage('assets/svgs/download.svg');
 
   /// File path: assets/svgs/edit-2.svg
   SvgGenImage get edit2 => const SvgGenImage('assets/svgs/edit-2.svg');
@@ -334,6 +343,9 @@ class $AssetsSvgsGen {
 
   /// File path: assets/svgs/focus.svg
   SvgGenImage get focus => const SvgGenImage('assets/svgs/focus.svg');
+
+  /// File path: assets/svgs/hash.svg
+  SvgGenImage get hash => const SvgGenImage('assets/svgs/hash.svg');
 
   /// File path: assets/svgs/hide.svg
   SvgGenImage get hide => const SvgGenImage('assets/svgs/hide.svg');
@@ -619,6 +631,7 @@ class $AssetsSvgsGen {
     arrowUp,
     arrowBack,
     blueGallery,
+    box,
     building4,
     building,
     building224,
@@ -656,7 +669,9 @@ class $AssetsSvgsGen {
     doc,
     documentDownload,
     documentText,
+    dollar,
     downloadBox,
+    download,
     edit2,
     editOutline,
     editSquare,
@@ -675,6 +690,7 @@ class $AssetsSvgsGen {
     filter,
     focusPoint,
     focus,
+    hash,
     hide,
     homeActive,
     home,

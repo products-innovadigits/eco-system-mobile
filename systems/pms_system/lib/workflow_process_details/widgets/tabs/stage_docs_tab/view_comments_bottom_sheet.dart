@@ -4,7 +4,8 @@ import 'package:pms_system/workflow_process_details/widgets/tabs/stage_docs_tab/
 import 'package:pms_system/workflow_process_details/widgets/tabs/stage_docs_tab/view_comment_section.dart';
 
 class ViewCommentsBottomSheet extends StatelessWidget {
-  const ViewCommentsBottomSheet({super.key});
+  final int stepDocumentId;
+  const ViewCommentsBottomSheet({super.key, required this.stepDocumentId});
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +53,11 @@ class ViewCommentsBottomSheet extends StatelessWidget {
                                 )
                                 ? EditCommentSection(
                                     documentComment: documentComment,
+                                    stepDocumentId: stepDocumentId,
                                   )
                                 : ViewCommentSection(
                                     documentComment: documentComment,
+                                    stepDocumentId: stepDocumentId,
                                   ),
                           );
                         },

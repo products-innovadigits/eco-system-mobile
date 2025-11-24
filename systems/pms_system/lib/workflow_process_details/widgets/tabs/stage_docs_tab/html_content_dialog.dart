@@ -1,13 +1,20 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
+import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 import '../../../../shared/pms_exports.dart';
 
 class HtmlContentDialog extends StatelessWidget {
   final StageDocument document;
+  final String pdfFilePath;
 
-  const HtmlContentDialog({super.key, required this.document});
+  const HtmlContentDialog({
+    super.key,
+    required this.document,
+    required this.pdfFilePath,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -75,9 +82,9 @@ class HtmlContentDialog extends StatelessWidget {
                 children: [
                   Expanded(
                     child: CustomBtn(
-                      text: allTranslations.text('download'),
+                      text: allTranslations.text(LocaleKeys.download),
                       onPressed: () =>
-                          _downloadHtmlContent(context, htmlContent),
+                          _downloadHtmlContent(context, pdfFilePath),
                     ),
                   ),
                 ],
@@ -91,24 +98,15 @@ class HtmlContentDialog extends StatelessWidget {
 
   Future<void> _downloadHtmlContent(
     BuildContext context,
-    String htmlContent,
+    String pdfFilePath,
   ) async {
     try {
-      // Get the documents directory
-      final directory = await getApplicationDocumentsDirectory();
-
-      // Create filename with timestamp
-      final timestamp = DateTime.now().millisecondsSinceEpoch;
-      final fileName =
-          '${document.documentTitle ?? 'document'}_$timestamp.html';
-      final file = File('${directory.path}/$fileName');
-
-      // Write HTML content to file
-      await file.writeAsString(htmlContent);
-
-      // Show success message with file path
+      log('PdfFilePath :: $pdfFilePath');
+      await UrlLauncher.launchUrl(
+        Uri.parse('https://194.163.168.5:447$pdfFilePath'),
+      );
       AppCore.successToastMessage(
-        '${allTranslations.text('file_downloaded_successfully')}\n${allTranslations.text('file_saved_to')}: ${file.path}',
+        allTranslations.text(LocaleKeys.file_downloaded_successfully),
       );
     } catch (e) {
       AppCore.errorToastMessage(allTranslations.text('download_failed'));

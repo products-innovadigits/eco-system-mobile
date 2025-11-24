@@ -85,6 +85,8 @@ class _ProcessBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final stageDocsBloc = context.read<StageDocsBloc>();
+    final stageDocsData = stageDocsBloc.stageDocsData;
     return Expanded(
       child: Column(
         children: [
@@ -100,6 +102,8 @@ class _ProcessBody extends StatelessWidget {
                 processId: processId,
                 projectStepId: projectStepId,
                 processList: processList,
+                pdfFilePath: stageDocsData?.pdfFilePath ?? '',
+                stepDocumentId: (stageDocsData?.stepDocumentId ?? 0).toInt(),
               ),
             ),
           ),
@@ -152,6 +156,8 @@ Widget _getTabSection({
   required int processId,
   required int projectId,
   required int projectStepId,
+  required String pdfFilePath,
+  required int stepDocumentId,
 }) {
   return switch (selectedTab) {
     ProcessTabsEnum.followProcess => FollowProcessTab(processList: processList),
@@ -159,6 +165,8 @@ Widget _getTabSection({
     ProcessTabsEnum.stageDocs => StageDocsTab(
       projectId: projectId,
       processId: processId,
+      pdfFilePath: pdfFilePath,
+      stepDocumentId: stepDocumentId,
     ),
     // ProcessTabsEnum.fields => FieldsTab(),
     ProcessTabsEnum.history => HistoryTab(

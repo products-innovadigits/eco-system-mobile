@@ -33,8 +33,8 @@ class ProjectTimelineTab extends StatelessWidget {
           // ── Done ────────────────────────────
           GettingDone(data: final List<MilestoneModel> milestones) =>
             ProjectTimeline(
-              milestonesList: demoMilestones,
-              // milestonesList: milestones,
+              // milestonesList: demoMilestones,
+              milestonesList: milestones,
               projectStart: projectStart,
               projectEnd: projectEnd,
             ),
@@ -134,10 +134,48 @@ final List<MilestoneModel> demoMilestones = [
       ),
     ],
   ),
+  MilestoneModel(
+    id: 2,
+    name: 'MS-5 إعداد الخطة ',
+    description: 'تحضير وصياغة الخطة  2025-2030',
+    projectId: 10,
+    startDate: DateTime(2025, 8, 10),
+    endDate: DateTime(2025, 10, 10),
+    subActivities: [
+      SubActivityModel(
+        id: 165,
+        name: 'SA-1 جمع البيانات',
+        description: 'جمع البيانات الأولية من الإدارات المختلفة.',
+        activityId: 2,
+        startDate: DateTime(2025, 8, 10),
+        endDate: DateTime(2025, 8, 15),
+        outputId: null,
+        budgetValue: null,
+        isWithOutput: false,
+        isHaveBudget: false,
+        isDelivered: false,
+        updatedAt: DateTime(2025, 7, 7, 12, 58, 4),
+      ),
+      SubActivityModel(
+        id: 166,
+        name: 'SA-2 مراجعة لغوية',
+        description: 'مراجعة لغوية للوثيقة.',
+        activityId: 2,
+        startDate: DateTime(2025, 8, 16),
+        endDate: DateTime(2025, 10, 3),
+        outputId: null,
+        budgetValue: null,
+        isWithOutput: false,
+        isHaveBudget: false,
+        isDelivered: false,
+        updatedAt: DateTime(2025, 7, 7, 12, 58, 4),
+      ),
+    ],
+  ),
 
   // Milestone تاني للتجربة (subActivities أقل من أو يساوي 2)
   MilestoneModel(
-    id: 2,
+    id: 3,
     name: 'MS-2 تنفيذ الخطة',
     description: 'بدء تنفيذ الخطة الإستراتيجية',
     projectId: 10,

@@ -290,6 +290,8 @@
   "something_went_wrong": "Something went wrong!",
   "oops": "Oops!",
   "there_is_no_data": "There's no data",
+  "no_outputs": "No outputs",
+  "no_process": "No process",
   "no_comments": "No comments yet",
   "no_docs": "No docs yet",
   "no_projects_match_your_filters": "No projects match your filters",

@@ -43,28 +43,28 @@ class ProjectDetailsBloc extends Bloc<AppEvent, AppState> {
   }
 
   _onGet(AppEvent event, Emitter<AppState> emit) async {
-    // try {
-    emit(Getting());
+    try {
+      emit(Getting());
 
-    Response res = await ProjectDetailsRepo.projectTimeline(
-      event.arguments as int,
-    );
-
-    if (res.statusCode == 200 && res.data != null) {
-      List<MilestoneModel> milestones = List<MilestoneModel>.from(
-        res.data.map((x) => MilestoneModel.fromJson(x)),
+      Response res = await ProjectDetailsRepo.projectTimeline(
+        event.arguments as int,
       );
-      _cachedMilestonesList = milestones; // Cache the model
-      emit(GettingDone(data: _cachedMilestonesList));
-    } else {
+
+      if (res.statusCode == 200 && res.data != null) {
+        List<MilestoneModel> milestones = List<MilestoneModel>.from(
+          res.data.map((x) => MilestoneModel.fromJson(x)),
+        );
+        _cachedMilestonesList = milestones; // Cache the model
+        emit(GettingDone(data: _cachedMilestonesList));
+      } else {
+        AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+        emit(GettingError());
+      }
+    } catch (e) {
       AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+
       emit(GettingError());
     }
-    // } catch (e) {
-    //   AppCore.errorMessage(allTranslations.text('something_went_wrong'));
-    //
-    //   emit(GettingError());
-    // }
   }
 
   Future<void> _onSelectTab(Select event, Emitter<AppState> emit) async {
@@ -79,7 +79,8 @@ class ProjectDetailsBloc extends Bloc<AppEvent, AppState> {
       } else {
         emit(Done(model: _cachedModel!));
         // If switching to timeline and no cached milestones, fetch them
-        if (tab == ProjectDetailsEnum.timeline && _cachedMilestonesList == null) {
+        if (tab == ProjectDetailsEnum.timeline &&
+            _cachedMilestonesList == null) {
           add(Get(arguments: _cachedModel?.id ?? 0));
         }
       }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:pms_system/shared/pms_exports.dart';
 import 'package:pms_system/workflow_process_details/widgets/process_details_body.dart';
 
@@ -61,6 +63,12 @@ class WorkflowProcessDetailsView extends StatelessWidget {
                   stageDocsState.data is StageDocData) {
                 final stageDocData = stageDocsState.data as StageDocData;
                 final workflowStatus = stageDocData.workFlowStatus ?? '';
+                log(
+                  'StageDocDataWorkFlowStatus :: ${stageDocData.workFlowStatus ?? ''}',
+                );
+                log(
+                  'StageDocDataStepName :: ${stageDocData.currentStep?.text ?? ''}',
+                );
                 final isStart = workflowStatus == 'start';
 
                 return BlocBuilder<WorkflowProcessDetailsBloc, AppState>(

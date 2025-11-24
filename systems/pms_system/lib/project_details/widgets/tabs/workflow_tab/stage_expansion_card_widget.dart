@@ -22,26 +22,38 @@ class StageExpansionCardWidget extends StatelessWidget {
         count: stage.projectProcesses?.length ?? 0,
       ),
       withMargin: false,
-      child: Column(
-        children: List.generate(
-          stage.projectProcesses?.length ?? 0,
-          (idx) => _StageProcessCardWidget(
-            title: stage.projectProcesses?[idx].title ?? '',
-            processId: stage.projectProcesses?[idx].id ?? 0,
-            projectId: projectDetailsModel.id ?? 0,
-            workFlowStatus: stage.projectProcesses?[idx].workFlowStatus ?? '',
-            projectName: projectDetailsModel.title ?? '',
-            stageName: stage.title ?? '',
-            projectManagerName: projectDetailsModel.managerName ?? '',
-            projectBudget: (projectDetailsModel.budget ?? 0).toDouble(),
-            projectStartDate: (projectDetailsModel.startDate ?? DateTime.now()),
-            projectEndDate: (projectDetailsModel.endDate ?? DateTime.now()),
-            color: getStatusColor(
-              stage.projectProcesses?[idx].workFlowStatus ?? '',
+      child: stage.projectProcesses?.isNotEmpty ?? false
+          ? Column(
+              children: List.generate(
+                stage.projectProcesses?.length ?? 0,
+                (idx) => _StageProcessCardWidget(
+                  title: stage.projectProcesses?[idx].title ?? '',
+                  processId: stage.projectProcesses?[idx].id ?? 0,
+                  projectId: projectDetailsModel.id ?? 0,
+                  workFlowStatus:
+                      stage.projectProcesses?[idx].workFlowStatus ?? '',
+                  projectName: projectDetailsModel.title ?? '',
+                  stageName: stage.title ?? '',
+                  projectManagerName: projectDetailsModel.managerName ?? '',
+                  projectBudget: (projectDetailsModel.budget ?? 0).toDouble(),
+                  projectStartDate:
+                      (projectDetailsModel.startDate ?? DateTime.now()),
+                  projectEndDate:
+                      (projectDetailsModel.endDate ?? DateTime.now()),
+                  color: getStatusColor(
+                    stage.projectProcesses?[idx].workFlowStatus ?? '',
+                  ),
+                ),
+              ),
+            )
+          : Center(
+              child: Text(
+                allTranslations.text(LocaleKeys.no_process),
+                style: context.textTheme.labelMedium?.copyWith(
+                  color: context.color.outlineVariant,
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 }
@@ -117,6 +129,7 @@ class _StageProcessCardWidget extends StatelessWidget {
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        margin: const EdgeInsets.only(bottom: 8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: color.withValues(alpha: 0.3)),

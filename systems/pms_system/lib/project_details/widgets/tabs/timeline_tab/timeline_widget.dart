@@ -51,25 +51,6 @@ class ProjectTimeline extends StatefulWidget {
 }
 
 class _ProjectTimelineState extends State<ProjectTimeline> {
-  // Track expanded/collapsed state for milestones
-  final Set<int> _expandedMilestoneIds = {};
-
-  void _toggleMilestoneExpansion(int milestoneId) {
-    setState(() {
-      if (_expandedMilestoneIds.contains(milestoneId)) {
-        _expandedMilestoneIds.remove(milestoneId);
-        debugPrint(
-          'Toggled: COLLAPSE milestone=$milestoneId | expanded=$_expandedMilestoneIds',
-        );
-      } else {
-        _expandedMilestoneIds.add(milestoneId);
-        debugPrint(
-          'Toggled: EXPAND milestone=$milestoneId | expanded=$_expandedMilestoneIds',
-        );
-      }
-    });
-  }
-
   List<ProjectMonth> get _months =>
       ProjectMonth.generateMonths(widget.projectStart, widget.projectEnd);
 
@@ -163,8 +144,6 @@ class _ProjectTimelineState extends State<ProjectTimeline> {
                       isRTL: widget.textDirection == TextDirection.rtl,
                       projectStart: widget.projectStart,
                       projectEnd: widget.projectEnd,
-                      expandedMilestoneIds: _expandedMilestoneIds,
-                      onToggleExpansion: _toggleMilestoneExpansion,
                       onMilestoneTap: widget.onMilestoneTap,
                       onSubactivityTap: widget.onSubactivityTap,
                     ),
@@ -210,17 +189,55 @@ class _ProjectTimelineState extends State<ProjectTimeline> {
       final int startCol = span.startCol;
       final int endCol = span.endCol;
 
-      // Get subactivities count (clamp to [0..2] for initial display)
+      // Get subactivities count
       int subs = (milestone.subActivities?.length ?? 0);
       if (subs < 0) subs = 0;
-      // Don't clamp here - we'll handle display logic in the widget
+      // We do not clamp here – the band height depends on the real count.
 
-      /// Row separation heuristic (band height in rows):
-      /// 0 subs => 3 rows, 1 sub => 4 rows, 2+ subs => 5 rows (expandable).
+      /// Row separation heuristic (band height in rows).
+      /// We make the band height depend on the number of subactivities so that
+      /// the milestone bar + all subactivity chips + dashed connectors stay
+      /// inside the lane without overlapping the lane below.
+      ///
+      /// Calculation based on actual content height:
+      /// - Milestone bar: 32px
+      /// - Spacing after bar: 8px
+      /// - Each subactivity: 24px (chip) + 8px (spacing) = 32px
+      /// - Total content: 40 + 32n pixels
+      /// - Row height: 25px (default)
+      /// - Bottom spacing: 1-2 rows for separation between milestones
       int rowBandForSubs(int n) {
-        if (n == 0) return 3;
-        if (n == 1) return 4;
-        return 5; // For 2+ subs, we reserve space for expansion
+        if (n <= 0) {
+          // No subactivities: small band is enough for the milestone bar only.
+          // Content: 32px bar = ~1.3 rows, add 1.5 rows for spacing = ~3 rows
+          return 3;
+        }
+
+        // Constants from milestone_lane.dart
+        const double milestoneBarHeight = 32.0;
+        const double subactivitySpacing = 8.0;
+        const double subactivityChipHeight = 24.0;
+        final double rowHeight = widget.rowHeightPx;
+
+        // Calculate actual content height needed
+        final double contentHeight =
+            milestoneBarHeight +
+            subactivitySpacing +
+            (n * (subactivityChipHeight + subactivitySpacing));
+
+        // Convert to rows (content rows needed)
+        final double contentRows = contentHeight / rowHeight;
+
+        // Add minimal bottom spacing for separation between milestones
+        // Use adaptive spacing: smaller for fewer subactivities, slightly more for many
+        // This ensures consistent, minimal spacing regardless of subactivity count
+        final double bottomSpacing = n <= 2 ? 0.8 : (n <= 5 ? 1.0 : 1.2);
+
+        // Total rows needed: content + bottom spacing, rounded up
+        final int totalRows = (contentRows + bottomSpacing).ceil();
+
+        // Ensure minimum of 3 rows for visual consistency
+        return math.max(3, totalRows);
       }
 
       final int rowStep = rowBandForSubs(subs);

@@ -17,7 +17,10 @@ class ProjectOutputsBottomSheet extends StatelessWidget {
           data: outputsSummary
               .map(
                 (output) => output.key != 'total'
-                    ? OutputCardWidget(output: output)
+                    ? Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: OutputCardWidget(output: output),
+                    )
                     : const SizedBox.shrink(),
               )
               .toList(),

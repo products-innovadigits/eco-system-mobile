@@ -287,6 +287,8 @@
   "all_objectives": "جميع الاهداف",
   "something_went_wrong": "حدث خطأ ما!",
   "there_is_no_data": "لا يوجد بيانات الان!",
+  "no_process": "لا يوجد عمليات!",
+  "no_outputs": "لا يوجد مخرحات",
   "no_comments": "لا يوجد تعليقات!",
   "no_docs": "لا يوجد وثائق!",
   "no_projects_match_your_filters": "لا توجد مشاريع مطابقة لعوامل التصفية",

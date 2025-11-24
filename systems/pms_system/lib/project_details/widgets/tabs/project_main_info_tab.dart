@@ -1,6 +1,7 @@
 import 'package:pms_system/project_details/widgets/project_challenges.dart';
 import 'package:pms_system/project_details/widgets/project_details_funding_chart.dart';
 import 'package:pms_system/project_details/widgets/project_outputs_bottom_sheet.dart';
+import 'package:pms_system/project_report/widgets/project_report_funding_chart.dart';
 import 'package:pms_system/shared/pms_exports.dart';
 
 class ProjectMainInfoTab extends StatelessWidget {
@@ -63,11 +64,18 @@ class ProjectMainInfoTab extends StatelessWidget {
         ),
 
         ///Project Funding
-        ProjectDetailsFundingChart(
+        // ProjectDetailsFundingChart(
+        //   data: _generateSampleFundingData(
+        //     projectDetailsModel.mobileDetails?.budget ?? [],
+        //   ),
+        //   projectBudget: (projectDetailsModel.budget ?? 0.0).toDouble(),
+        // ),
+        ProjectReportFundingChart(
           data: _generateSampleFundingData(
             projectDetailsModel.mobileDetails?.budget ?? [],
           ),
           projectBudget: (projectDetailsModel.budget ?? 0.0).toDouble(),
+          rightChartPadding: 60,
         ),
 
         ///Challenges

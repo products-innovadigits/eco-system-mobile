@@ -19,29 +19,36 @@ class OutputCardWidget extends StatelessWidget {
             '${(output.titles ?? []).length} ${output.titles!.length > 10 ? allTranslations.text(LocaleKeys.output) : allTranslations.text(LocaleKeys.outputs)}',
         color: color,
       ),
-      child: ListAnimator(
-        scroll: false,
-        data: (output.titles ?? [])
-            .map(
-              (output) => Padding(
-                padding: const EdgeInsetsDirectional.only(bottom: 8),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.circle,
-                      size: 12,
-                      color: color.withValues(alpha: 0.1),
+      child: output.titles?.isNotEmpty ?? false
+          ? ListAnimator(
+              scroll: false,
+              data: (output.titles ?? [])
+                  .map(
+                    (output) => Padding(
+                      padding: const EdgeInsetsDirectional.only(bottom: 8),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.circle,
+                            size: 12,
+                            color: color.withValues(alpha: 0.1),
+                          ),
+                          const SizedBox(width: 4),
+                          Expanded(
+                            child: Text(
+                              output,
+                              style: context.textTheme.bodySmall,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    const SizedBox(width: 4),
-                    Expanded(
-                      child: Text(output, style: context.textTheme.bodySmall),
-                    ),
-                  ],
-                ),
-              ),
+                  )
+                  .toList(),
             )
-            .toList(),
-      ),
+          : Center(
+              child: Text(allTranslations.text(LocaleKeys.no_outputs)),
+            ),
     );
   }
 }

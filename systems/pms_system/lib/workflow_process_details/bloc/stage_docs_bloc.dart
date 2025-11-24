@@ -16,17 +16,15 @@ class StageDocsBloc extends Bloc<AppEvent, AppState> {
     Map<String, dynamic> args = event.arguments as Map<String, dynamic>;
     emit(Loading());
     try {
-      StageDocResponseModel res = await WorkflowProcessDetailsRepo.getCurrentNextSteps(
-        processId: args['processId'],
-        projectId: args['projectId'],
-      );
+      StageDocResponseModel res =
+          await WorkflowProcessDetailsRepo.getCurrentNextSteps(
+            processId: args['processId'],
+            projectId: args['projectId'],
+          );
 
       if (res.succeeded == true &&
           res.data != null &&
-          res.data!.currentStep != null &&
-          (res.data!.currentStep!.stepDocuments ?? []).any(
-            (doc) => doc != null,
-          )) {
+          res.data!.currentStep != null) {
         stageDocsData = res.data;
         // Initialize controllers for each document
         _initializeCommentControllers();
@@ -45,27 +43,29 @@ class StageDocsBloc extends Bloc<AppEvent, AppState> {
     AddDocumentComment event,
     Emitter<AppState> emit,
   ) async {
-    if(!formKey.currentState!.validate()) return;
+    if (!formKey.currentState!.validate()) return;
     emit(Getting());
     try {
-    // Add comment using the document ID
-    Response response = await WorkflowProcessDetailsRepo.addDocComment(
-      documentId: event.documentId,
-      text: event.text,
-      // projectId: event.projectId,
-      // processId: event.processId,
-      // stepId: event.stepId,
-    );
+      // Add comment using the document ID
+      Response response = await WorkflowProcessDetailsRepo.addDocComment(
+        documentId: event.stepDocumentId,
+        text: event.text,
+        // projectId: event.projectId,
+        // processId: event.processId,
+        // stepId: event.stepId,
+      );
 
-    if (response.statusCode == 200) {
-      // Clear the controller for this specific document
-      _commentControllers[event.documentId]?.clear();
-      AppCore.successMessage(allTranslations.text(LocaleKeys.comment_added_successfully));
-      emit(Done(data: stageDocsData));
-    } else {
-      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
-      emit(Error());
-    }
+      if (response.statusCode == 200) {
+        // Clear the controller for this specific document
+        _commentControllers[event.stepDocumentId]?.clear();
+        AppCore.successMessage(
+          allTranslations.text(LocaleKeys.comment_added_successfully),
+        );
+        emit(Done(data: stageDocsData));
+      } else {
+        AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+        emit(Error());
+      }
     } catch (e) {
       AppCore.errorMessage(allTranslations.text('something_went_wrong'));
       emit(Error());
@@ -74,7 +74,6 @@ class StageDocsBloc extends Bloc<AppEvent, AppState> {
 
   /// Initialize TextEditingController for each document
   void _initializeCommentControllers() {
-    // Dispose existing controllers
     _disposeControllers();
 
     if (stageDocsData?.currentStep?.stepDocuments != null) {

@@ -288,7 +288,7 @@ class AddComment extends AppEvent {
 }
 
 class AddDocumentComment extends AppEvent {
-  final int documentId;
+  final int stepDocumentId;
   final String text;
 
   // final int projectId;
@@ -299,7 +299,7 @@ class AddDocumentComment extends AppEvent {
     // required this.projectId,
     // required this.processId,
     // required this.stepId,
-    required this.documentId,
+    required this.stepDocumentId,
     required this.text,
   }) : super(null);
 }

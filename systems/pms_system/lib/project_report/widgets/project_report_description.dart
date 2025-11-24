@@ -29,12 +29,15 @@ class ProjectReportDescription extends StatelessWidget {
             )
           : null,
       child: Align(
-        alignment: AlignmentDirectional.centerStart,
-        child: Text(
-          description,
+        alignment: description.isNotEmpty
+            ? AlignmentDirectional.centerStart
+            : AlignmentDirectional.center,
+        child: description.isNotEmpty ? Text(description,
           style: context.textTheme.bodySmall?.copyWith(
             color: context.color.outlineVariant,
           ),
+        ) : Center(
+          child: Text(allTranslations.text(LocaleKeys.there_is_no_data)),
         ),
       ),
     );

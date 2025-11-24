@@ -5,11 +5,13 @@ import '../../shared/pms_exports.dart';
 class ProjectReportFundingChart extends StatelessWidget {
   final List<ProjectsOverviewData> data;
   final double projectBudget;
+  final double? rightChartPadding;
 
   const ProjectReportFundingChart({
     super.key,
     required this.data,
     required this.projectBudget,
+    this.rightChartPadding,
   });
 
   @override
@@ -21,7 +23,19 @@ class ProjectReportFundingChart extends StatelessWidget {
           title: allTranslations.text(LocaleKeys.project_financing),
           child: _ChartDetails(projects: data),
         ),
-        _ProgressHalfPie(projects: data, projectBudget: projectBudget),
+        Positioned(
+          left: 0,
+          right: 0,
+          top: 115,
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: _ProgressHalfPie(
+              projects: data,
+              projectBudget: projectBudget,
+              rightChartPadding: rightChartPadding,
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -79,61 +93,55 @@ class _ChartDetails extends StatelessWidget {
 class _ProgressHalfPie extends StatelessWidget {
   final List<ProjectsOverviewData> projects;
   final double projectBudget;
+  final double? rightChartPadding;
 
-  const _ProgressHalfPie({required this.projects, required this.projectBudget});
+  const _ProgressHalfPie({
+    required this.projects,
+    required this.projectBudget,
+    this.rightChartPadding,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // Base positioning constants
-    const topOffset = 120.0;
-    const rightOffset = 20.0;
-
     // Display up to three donut charts, compute radii based on index.
     final donutItems = projects.take(3).toList();
 
-    return Positioned(
-      top: topOffset,
-      right: rightOffset.w,
-      child: SizedBox(
-        height: 280,
-        width: 280,
-        child: Stack(
-          children: [
-            // build donuts from back to front
-            for (var i = 0; i < donutItems.length; i++)
-              _HalfCircleAnalyticChart(
-                project: donutItems[i],
-                radiusPercent: 60 + i * 13,
-                innerRadiusPercent: 86 + i * (i == 2 ? 2 : 3),
-              ),
-            Positioned(
-              top: 100,
-              left: 0,
-              right: 0,
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Column(
-                  children: [
-                    Text(
-                      projectBudget.toString(),
-                      style: context.textTheme.labelMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: context.color.secondary,
-                      ),
-                    ),
-                    Text(
-                      allTranslations.text(LocaleKeys.project_funding),
-                      style: context.textTheme.labelSmall?.copyWith(
-                        color: context.color.outlineVariant,
-                      ),
-                    ),
-                  ],
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        // build donuts from back to front
+        for (var i = 0; i < donutItems.length; i++)
+          _HalfCircleAnalyticChart(
+            project: donutItems[i],
+            radiusPercent: 60 + i * 13,
+            innerRadiusPercent: 86 + i * (i == 2 ? 2 : 3),
+          ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 40),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                width: 100,
+                child: Text(
+                  projectBudget.toString(),
+                  textAlign: TextAlign.center,
+                  style: context.textTheme.labelMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: context.color.secondary,
+                  ),
                 ),
               ),
-            ),
-          ],
+              Text(
+                allTranslations.text(LocaleKeys.project_funding),
+                style: context.textTheme.labelSmall?.copyWith(
+                  color: context.color.outlineVariant,
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }
@@ -164,29 +172,29 @@ class _HalfCircleAnalyticChart extends StatelessWidget {
         ? const Color(0xFFEFEFF5)
         : _parseHex(project.hexColor);
 
-    return Align(
-      alignment: Alignment.topRight,
-      child: SizedBox(
-        height: 280,
-        width: 280,
-        child: SfCircularChart(
-          series: [
-            DoughnutSeries<ProjectsOverviewData, String>(
-              dataSource: [project],
-              xValueMapper: (d, _) => d.name,
-              yValueMapper: (d, _) => isDisabled ? 1 : (d.count ?? 0),
-              pointColorMapper: (_, __) => color,
-              startAngle: 270,
-              endAngle: 90,
-              innerRadius: '${innerRadiusPercent.toStringAsFixed(0)}%',
-              radius: '${radiusPercent.toStringAsFixed(0)}%',
-              emptyPointSettings: const EmptyPointSettings(
-                mode: EmptyPointMode.zero,
-              ),
-              animationDuration: isDisabled ? 0 : 300,
+    // Use responsive sizing based on screen width
+    final chartSize = context.w * 0.65;
+
+    return SizedBox(
+      height: chartSize,
+      width: chartSize,
+      child: SfCircularChart(
+        series: [
+          DoughnutSeries<ProjectsOverviewData, String>(
+            dataSource: [project],
+            xValueMapper: (d, _) => d.name,
+            yValueMapper: (d, _) => isDisabled ? 1 : (d.count ?? 0),
+            pointColorMapper: (_, __) => color,
+            startAngle: 270,
+            endAngle: 90,
+            innerRadius: '${innerRadiusPercent.toStringAsFixed(0)}%',
+            radius: '${radiusPercent.toStringAsFixed(0)}%',
+            emptyPointSettings: const EmptyPointSettings(
+              mode: EmptyPointMode.zero,
             ),
-          ],
-        ),
+            animationDuration: isDisabled ? 0 : 300,
+          ),
+        ],
       ),
     );
   }

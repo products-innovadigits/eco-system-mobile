@@ -288,6 +288,8 @@ abstract class  LocaleKeys {
   static const all_objectives = 'all_objectives';
   static const something_went_wrong = 'something_went_wrong';
   static const there_is_no_data = 'there_is_no_data';
+  static const no_process = 'no_process';
+  static const no_outputs = 'no_outputs';
   static const no_comments = 'no_comments';
   static const no_docs = 'no_docs';
   static const no_projects_match_your_filters = 'no_projects_match_your_filters';
