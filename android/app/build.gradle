@@ -141,7 +141,7 @@ android {
         release {
             minifyEnabled false
             shrinkResources false
-            if (keystorePropertiesFile.exists()) {
+            if (keystorePropertiesFile.exists() && keystoreProperties['keyAlias'] != null) {
                 signingConfig signingConfigs.release
             }
         }

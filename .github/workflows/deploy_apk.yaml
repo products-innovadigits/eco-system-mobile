@@ -24,6 +24,12 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.32.2'
+      
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
 
       - name: Create .env file
         run: echo "# Environment variables" > .env
@@ -56,20 +62,40 @@ jobs:
         run: flutter doctor -v
 
       - name: Build APK
+        id: build_apk
         run: |
+          set -e
           flutter build apk \
             --release \
             --no-shrink \
             --dart-define=ACTIVE_SYSTEMS="${{ github.event.inputs.systems }}" \
-            --verbose
+            --verbose 2>&1 | tee build.log || (echo "Build failed, checking logs..." && cat build.log && exit 1)
         continue-on-error: false
+      
+      - name: Capture build logs (if build fails)
+        if: failure()
+        run: |
+          echo "=== Build log (last 200 lines) ==="
+          if [ -f build.log ]; then
+            tail -200 build.log
+          else
+            echo "Build log file not found"
+          fi
+          echo ""
+          echo "=== Searching for errors in build log ==="
+          if [ -f build.log ]; then
+            grep -i -A 20 "error\|exception\|failure\|failed" build.log | head -100 || echo "No obvious errors found in grep"
+          fi
       
       - name: Capture Gradle errors (if build fails)
         if: failure()
         working-directory: android
         run: |
-          echo "=== Full Gradle Error Log ==="
-          ./gradlew assembleRelease --stacktrace --info 2>&1 | tail -100 || true
+          echo "=== Running Gradle with full stacktrace ==="
+          ./gradlew assembleRelease --stacktrace --info 2>&1 | tee gradle-error.log || true
+          echo ""
+          echo "=== Error summary from Gradle ==="
+          grep -i -B 5 -A 30 "FAILURE\|> Task.*FAILED\|Exception\|Error\|Caused by" gradle-error.log | head -150 || echo "No obvious errors in Gradle output"
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
