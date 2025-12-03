@@ -36,6 +36,15 @@ jobs:
 
       - name: Debug systems input
         run: echo "🚀 ACTIVE_SYSTEMS='${{ github.event.inputs.systems }}'"
+      
+      - name: Check key.properties
+        working-directory: android
+        run: |
+          if [ -f "key.properties" ]; then
+            echo "✅ key.properties exists"
+          else
+            echo "⚠️  key.properties not found - release build may fail if signing is required"
+          fi
 
       - name: Clean and get dependencies
         run: |
@@ -53,6 +62,14 @@ jobs:
             --no-shrink \
             --dart-define=ACTIVE_SYSTEMS="${{ github.event.inputs.systems }}" \
             --verbose
+        continue-on-error: false
+      
+      - name: Capture Gradle errors (if build fails)
+        if: failure()
+        working-directory: android
+        run: |
+          echo "=== Full Gradle Error Log ==="
+          ./gradlew assembleRelease --stacktrace --info 2>&1 | tail -100 || true
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
