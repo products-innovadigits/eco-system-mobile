@@ -11,7 +11,7 @@ dependencies:
   core_system:
     path: ../core_system
 
-  fl_chart: ^1.0.0
+  fl_chart: ^0.71.0
   syncfusion_flutter_charts: ^28.2.6
   url_launcher: ^6.2.1
 

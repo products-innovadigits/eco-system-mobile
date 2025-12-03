@@ -4,28 +4,37 @@ platform :android do
   desc "Distribute existing CI-built APK"
   lane :distribute_ci do |options|
     test_email = options[:test_email]
-
-    # Build the APK
-    sh(
-      "flutter", "build", "apk",
-      "--release",
-      "--no-shrink",
-      "--dart-define=ACTIVE_SYSTEMS=#{ENV['ACTIVE_SYSTEMS']}"
-    )
-
+    
+    apk_path = "../build/app/outputs/flutter-apk/app-release.apk"
+    
+    # Check if APK already exists (built in CI workflow)
+    unless File.exist?(apk_path)
+      UI.important("APK not found at #{apk_path}, building now...")
+      # Build the APK if it doesn't exist
+      sh(
+        "flutter", "build", "apk",
+        "--release",
+        "--no-shrink",
+        "--dart-define=ACTIVE_SYSTEMS=#{ENV['ACTIVE_SYSTEMS']}"
+      )
+    else
+      UI.success("Using existing APK from CI build")
+    end
 
     firebase_args = {
         app: "1:419893562273:android:5d15901a1b38730eb659e0",
         firebase_cli_token: ENV["FIREBASE_TOKEN"],
         release_notes: "🚀 Automated CI release from GitHub Actions",
         groups: "nawah-team",
-        apk_path: "../build/app/outputs/flutter-apk/app-release.apk"
+        apk_path: apk_path
       }
 
-    # Add testers only if email is provided
-      firebase_args[:testers] = test_email unless test_email.to_s.strip.empty?
+    # Add testers only if email is provided and not the default placeholder
+    if test_email && !test_email.to_s.strip.empty? && test_email != "Enter the client email..."
+      firebase_args[:testers] = test_email
+    end
 
     # Upload to Firebase App Distribution
-      firebase_app_distribution(**firebase_args)
+    firebase_app_distribution(**firebase_args)
   end
 end
