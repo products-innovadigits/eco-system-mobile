@@ -29,7 +29,7 @@ class ProjectReportBody extends StatelessWidget {
           if (model.details?.projectName != null)
             ProjectReportName(
               name: model.details?.projectName ?? '',
-              status: model.descriptionStageAr ?? '',
+              status: model.status ?? '',
             ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
@@ -40,7 +40,7 @@ class ProjectReportBody extends StatelessWidget {
                   ProjectReportSummary(reportDetails: model.details!),
                 ProjectReportDescription(
                   description: model.description ?? '',
-                  category: model.details?.category ?? '',
+                  category: model.details?.categoryName ?? '',
                 ),
                 ProjectReportInitiativesAndKpis(
                   initiativesAndKpis: model.relatedItems ?? [],
@@ -70,31 +70,12 @@ class ProjectReportBody extends StatelessWidget {
                     totalActivities: model.activitiesCount ?? 0,
                   ),
                 ProjectReportOutputs(
-                  outputsSummary: [
-                    MobileOutputsSummaryModel(
-                      label: 'output 1',
-                      titles: ['jdfgjka', 'fdhgfjah'],
-                      value: 0,
-                      background: '#175CD3',
-                    ),
-                    MobileOutputsSummaryModel(
-                      label: 'output 2',
-                      titles: ['jdfgjka', 'fdhgfjah'],
-                      value: 0,
-                      background: '#175CD3',
-                    ),
-                    MobileOutputsSummaryModel(
-                      label: 'output 3',
-                      titles: ['jdfgjka', 'fdhgfjah'],
-                      value: 0,
-                      background: '#175CD3',
-                    ),
-                  ],
+                  outputsSummary: model.outputsSummary ?? [],
                 ),
-                // if (model.challenges != null)
-                //   ProjectReportChallenges(
-                //     challengesList: model.challenges?.items ?? [],
-                //   ),
+                if (model.challenges != null)
+                  ProjectReportChallenges(
+                    challengesList: model.challenges?.items ?? [],
+                  ),
                 if (model.risks != null)
                   ProjectReportRisks(reportRisks: model.risks ?? []),
               ],

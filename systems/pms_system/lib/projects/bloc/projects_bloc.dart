@@ -17,7 +17,13 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
         if (sortingState is SortingApplied || sortingState is SortingReset) {
           // Refresh projects when sorting is applied or reset
           // Preserve existing filter parameters when resetting sorting
-          _engine = SearchEngine(query: _getCurrentFilterParams());
+          // Reset pagination when sorting changes
+          _engine = SearchEngine(
+            query: _getCurrentFilterParams(),
+            currentPage: 0,
+            maxPages: 1,
+            totalCount: 0,
+          );
           _projects.clear(); // Clear data models instead of widgets
           add(Click(arguments: _engine));
         }
@@ -25,8 +31,7 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
     }
   }
 
-  late SearchEngine _engine;
-
+  late SearchEngine _engine = SearchEngine();
 
   final List<ProjectDetailsModel> _projects = [];
 
@@ -56,14 +61,19 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
       } else {
         updateGoingDown(true);
       }
-      bool scroll = AppCore.scrollListener(
-        controller,
-        _engine.maxPages,
-        _engine.currentPage,
-      );
-      if (scroll) {
-        _engine.updateCurrentPage(_engine.currentPage);
-        add(Click(arguments: _engine));
+      // Only trigger pagination if we haven't reached the last page
+      if (_engine.hasMorePages) {
+        bool scroll = AppCore.scrollListener(
+          controller,
+          _engine.maxPages,
+          _engine.currentPage,
+        );
+        if (scroll) {
+          // Increment currentPage for next page load
+          // The _getObjectives method will use nextPageIndex to request the correct page
+          _engine.updateCurrentPage(_engine.currentPage + 1);
+          add(Click(arguments: _engine));
+        }
       }
     });
   }
@@ -71,7 +81,9 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
   _getObjectives(AppEvent event, Emitter<AppState> emit) async {
     emit(Loading());
     try {
-      _engine = event.arguments as SearchEngine;
+      // Update engine from event arguments, preserving state if needed
+      final eventEngine = event.arguments as SearchEngine;
+      _engine = eventEngine;
 
       // SOLUTION 1: Handle pagination with data models instead of widgets
       if (_engine.currentPage == 0) {
@@ -91,27 +103,47 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
       // Get sorting parameters from sorting bloc
       final sortingParams = _sortingBloc?.getSortingParams() ?? {};
 
+      // Use nextPageIndex which converts 0-based to 1-based for API
+      int pageIndexToRequest = _engine.nextPageIndex;
+
       _engine.query = {
-        "searchKeyword": searchTEC?.text.trim(),
-        "pageIndex": _engine.currentPage + 1,
-        "pageSize": _engine.limit,
-        ...sortingParams,
         ...?(_engine.query as Map<String, dynamic>?)?.entries
             .where((e) => e.value != null)
             .fold<Map<String, dynamic>>(
               {},
               (acc, e) => {...acc, e.key: e.value},
             ),
+        ...sortingParams,
+
+        "searchKeyword": searchTEC?.text.trim(),
+        "pageIndex": pageIndexToRequest,
+        "pageSize": _engine.limit,
       };
 
       ProjectsModel res = await ProjectsRepo.getProjects(_engine);
 
-      if (res.data != null && res.data!.isNotEmpty) {
+      if (res.data?.items != null && res.data!.items!.isNotEmpty) {
         // SOLUTION 1: Add data models instead of creating widgets
         // This prevents widget recreation on every state emission
-        _projects.addAll(res.data!);
-        _engine.currentPage += 1;
-        _engine.maxPages += 1;
+        _projects.addAll(res.data!.items!);
+
+        // Sync pagination info from API response
+        // The API returns the currentPage (1-based) that we just loaded
+        // We convert it to 0-based and store it
+        // This ensures currentPage reflects the last page we loaded
+        if (res.data!.currentPage != null &&
+            res.data!.totalPages != null &&
+            res.data!.totalCount != null) {
+          _engine.syncPaginationFromApi(
+            apiCurrentPage: res.data!.currentPage!,
+            totalPages: res.data!.totalPages!,
+            totalCount: res.data!.totalCount!,
+            pageSize: res.data!.pageSize,
+            isLastPage: res.data!.isLastPage,
+          );
+        } else {
+          _engine.updateCurrentPage(pageIndexToRequest - 1);
+        }
 
         // Emit the new state with data models using Done state
         emit(
@@ -145,9 +177,14 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
   _onRefresh(AppEvent event, Emitter<AppState> emit) async {
     final filterParams = _getCurrentFilterParams();
     final sortingParams = _sortingBloc?.getSortingParams() ?? {};
-    _engine = SearchEngine(query: {...filterParams, ...sortingParams});
+    // Reset pagination when refreshing
+    _engine = SearchEngine(
+      query: {...filterParams, ...sortingParams},
+      currentPage: 0,
+      maxPages: 1,
+      totalCount: 0,
+    );
     _projects.clear();
-
 
     add(Click(arguments: _engine));
   }

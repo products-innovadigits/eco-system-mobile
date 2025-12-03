@@ -2,16 +2,34 @@ import 'package:pms_system/shared/pms_exports.dart';
 import 'package:pms_system/workflow_process_details/repo/workflow_process_details_repo.dart';
 
 class WorkflowProcessDetailsBloc extends Bloc<AppEvent, AppState> {
-  WorkflowProcessDetailsBloc({StageDocsBloc? stageDocsBloc}) : super(Start()) {
+  WorkflowProcessDetailsBloc() : super(Start()) {
     on<Click>(_onClick);
     on<Get>(_onStartProcess);
     on<Select>(_onSelectTab);
-    _stageDocsBloc = stageDocsBloc;
   }
 
   ProcessTabsEnum selectedTab = ProcessTabsEnum.followProcess;
   WorkflowProcessDetailsModel? _cachedModel;
-  StageDocsBloc? _stageDocsBloc;
+  StageDocData? stageDocsData;
+
+  Future<void> getCurrentNextStep({
+    required int projectId,
+    required int processId,
+  }) async {
+    try {
+      StageDocResponseModel res =
+          await WorkflowProcessDetailsRepo.getCurrentNextSteps(
+            processId: processId,
+            projectId: projectId,
+          );
+
+      if (res.succeeded == true && res.data != null) {
+        stageDocsData = res.data;
+      }
+    } catch (e) {
+      AppCore.errorMessage('Current Next Error');
+    }
+  }
 
   _onClick(AppEvent event, Emitter<AppState> emit) async {
     Map<String, dynamic> args = event.arguments as Map<String, dynamic>;
@@ -24,6 +42,10 @@ class WorkflowProcessDetailsBloc extends Bloc<AppEvent, AppState> {
           );
 
       if (res.data != null && res.data!.isNotEmpty) {
+        await getCurrentNextStep(
+          projectId: args['projectId'],
+          processId: args['processId'],
+        );
         _cachedModel = res;
         emit(Done(model: _cachedModel));
       } else {
@@ -52,9 +74,6 @@ class WorkflowProcessDetailsBloc extends Bloc<AppEvent, AppState> {
       if (response.statusCode == 200) {
         AppCore.successMessage(
           allTranslations.text(LocaleKeys.process_started_successfully),
-        );
-        _stageDocsBloc?.add(
-          Click(arguments: {'projectId': projectId, 'processId': processId}),
         );
         add(Click(arguments: {'projectId': projectId, 'processId': processId}));
       } else {

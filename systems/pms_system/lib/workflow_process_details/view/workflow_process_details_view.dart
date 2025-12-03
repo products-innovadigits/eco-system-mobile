@@ -29,46 +29,21 @@ class WorkflowProcessDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => StageDocsBloc()
-            ..add(
-              Click(
-                // arguments: {'processId': 146, 'projectId': 51},
-                arguments: {'processId': processId, 'projectId': projectId},
-              ),
-            ),
+    return BlocProvider(
+      create: (context) => WorkflowProcessDetailsBloc()
+        ..add(
+          Click(arguments: {'processId': processId, 'projectId': projectId}),
         ),
-        BlocProvider(
-          create: (context) =>
-              WorkflowProcessDetailsBloc(
-                stageDocsBloc: context.read<StageDocsBloc>(),
-              )..add(
-                Click(
-                  arguments: {'processId': processId, 'projectId': projectId},
-                ),
-              ),
-          // create: (context) => WorkflowProcessDetailsBloc(),
-        ),
-      ],
       child: Scaffold(
         appBar: CustomAppBar(
           title: processName,
           withBottomBorder: false,
-          action: BlocBuilder<StageDocsBloc, AppState>(
-            builder: (context, stageDocsState) {
+          action: BlocBuilder<WorkflowProcessDetailsBloc, AppState>(
+            builder: (context, state) {
+              final bloc = context.read<WorkflowProcessDetailsBloc>();
               // Only show button if data is loaded
-              if (stageDocsState is Done &&
-                  stageDocsState.data is StageDocData) {
-                final stageDocData = stageDocsState.data as StageDocData;
-                final workflowStatus = stageDocData.workFlowStatus ?? '';
-                log(
-                  'StageDocDataWorkFlowStatus :: ${stageDocData.workFlowStatus ?? ''}',
-                );
-                log(
-                  'StageDocDataStepName :: ${stageDocData.currentStep?.text ?? ''}',
-                );
+              if (state is Done && bloc.stageDocsData?.workFlowStatus != null) {
+                final workflowStatus = bloc.stageDocsData?.workFlowStatus;
                 final isStart = workflowStatus == 'start';
 
                 return BlocBuilder<WorkflowProcessDetailsBloc, AppState>(
@@ -99,7 +74,7 @@ class WorkflowProcessDetailsView extends StatelessWidget {
                         ),
                         decoration: BoxDecoration(
                           color: getStatusColor(
-                            workflowStatus,
+                            workflowStatus!,
                           ).withValues(alpha: isStart ? null : 0.1),
                           borderRadius: BorderRadius.circular(isStart ? 8 : 25),
                         ),
@@ -139,6 +114,7 @@ class WorkflowProcessDetailsView extends StatelessWidget {
             ),
             processId: processId,
             stageName: stageName,
+            processName: processName,
           ),
         ),
       ),

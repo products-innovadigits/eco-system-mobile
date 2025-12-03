@@ -6,24 +6,18 @@ import 'package:pms_system/workflow_process_details/bloc/actions_tab_bloc.dart';
 class ActionsTab extends StatelessWidget {
   final int processId;
   final int projectId;
-  final int projectStepId;
 
   const ActionsTab({
     super.key,
     required this.processId,
     required this.projectId,
-    required this.projectStepId,
   });
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ActionsTabBloc(),
-      child: _ActionsTabContent(
-        processId: processId,
-        projectId: projectId,
-        projectStepId: projectStepId,
-      ),
+      child: _ActionsTabContent(processId: processId, projectId: projectId),
     );
   }
 }
@@ -31,81 +25,115 @@ class ActionsTab extends StatelessWidget {
 class _ActionsTabContent extends StatelessWidget {
   final int processId;
   final int projectId;
-  final int projectStepId;
 
-  const _ActionsTabContent({
-    required this.processId,
-    required this.projectId,
-    required this.projectStepId,
-  });
+  const _ActionsTabContent({required this.processId, required this.projectId});
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<ActionsTabBloc, AppState>(
       listener: (context, state) {
-        // When compliance is successful, refresh the StageDocsBloc to update nextStep
+        // When compliance is successful, refresh the WorkflowProcessDetailsBloc to update nextStep
         if (state is Done && state.data == null) {
-          // This is a compliance success
-          final stageDocsBloc = context.read<StageDocsBloc>();
-          stageDocsBloc.add(
-            Click(arguments: {'projectId': projectId, 'processId': processId}),
-          );
+          final actionsTabBloc = context.read<ActionsTabBloc>();
+          // Only trigger reload if this was a compliance action, not a save action
+          if (actionsTabBloc.isComplianceCompleted) {
+            final workFlowProcessDetailsBloc = context
+                .read<WorkflowProcessDetailsBloc>();
+            workFlowProcessDetailsBloc.add(
+              Click(
+                arguments: {'projectId': projectId, 'processId': processId},
+              ),
+            );
+            // Reset the flag after triggering reload
+            actionsTabBloc.resetComplianceFlag();
+          }
         }
       },
-      child: BlocBuilder<ActionsTabBloc, AppState>(
-        builder: (context, state) {
-          final bloc = context.read<ActionsTabBloc>();
-
-          return Form(
-            key: bloc.formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                // Internal Comments Section
-                _InternalCommentsSection(
+      child: Form(
+        key: context.read<ActionsTabBloc>().formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            // Internal Comments Section
+            BlocBuilder<ActionsTabBloc, AppState>(
+              builder: (context, state) {
+                final bloc = context.read<ActionsTabBloc>();
+                return _InternalCommentsSection(
                   controller: bloc.commentController,
                   validation: NotEmptyValidator.notEmptyValidator,
-                ),
+                );
+              },
+            ),
 
-                // File Upload Section
-                _FileUploadSection(
+            // File Upload Section
+            BlocBuilder<ActionsTabBloc, AppState>(
+              builder: (context, state) {
+                final bloc = context.read<ActionsTabBloc>();
+                return _FileUploadSection(
                   selectedFile: bloc.selectedFile,
                   fileName: bloc.fileName,
                   fileSize: bloc.fileSize,
                   onPickFile: () => bloc.add(PickFile()),
                   onRemoveFile: () => bloc.add(RemoveFile()),
-                ),
+                );
+              },
+            ),
 
-                SizedBox(height: 16.h),
+            SizedBox(height: 16.h),
 
-                // Action Buttons Section
-                BlocBuilder<StageDocsBloc, AppState>(
-                  builder: (ctx, stageState) {
-                    final nextStep = ctx
-                        .read<StageDocsBloc>()
-                        .stageDocsData
-                        ?.nextStep;
+            // Action Buttons Section
+            BlocBuilder<ActionsTabBloc, AppState>(
+              builder: (context, actionsTabState) {
+                return BlocBuilder<WorkflowProcessDetailsBloc, AppState>(
+                  builder: (context, workFlowProcessDetailsState) {
+                    final workflowBloc = context
+                        .read<WorkflowProcessDetailsBloc>();
+                    final nextStep = workflowBloc.stageDocsData?.nextStep;
                     final nextStepText =
                         (nextStep != null && nextStep.isNotEmpty)
                         ? (nextStep[0].text ?? '')
                         : '';
+
+                    final actionsTabBloc = context.read<ActionsTabBloc>();
+                    // Save button loading: from ActionsTabBloc when Click event is processing (loading but not compliance)
+                    final isSaveLoading =
+                        actionsTabState is Loading &&
+                        !actionsTabBloc.isComplianceActionLoading;
+                    // Compliance button loading: from ActionsTabBloc when ComplianceClick is processing OR from WorkflowProcessDetailsBloc when reloading after compliance
+                    final isComplianceLoading =
+                        (actionsTabState is Loading &&
+                            actionsTabBloc.isComplianceActionLoading) ||
+                        (workFlowProcessDetailsState is Loading);
+
                     return _ActionButtonsSection(
                       onSave: () => _onSave(context),
                       onCompliance: () => _onCompliance(context),
-                      isLoading: stageState is Loading,
+                      isSaveLoading: isSaveLoading,
+                      isComplianceLoading: isComplianceLoading,
                       nextStepText: nextStepText,
                     );
                   },
-                ),
-              ],
+                );
+              },
             ),
-          );
-        },
+          ],
+        ),
       ),
     );
   }
 
   void _onSave(BuildContext context) {
+    final workflowBloc = context.read<WorkflowProcessDetailsBloc>();
+    final projectStepId = workflowBloc.stageDocsData?.currentStep?.id;
+    
+    // Validate that projectStepId is not null
+    if (projectStepId == null) {
+      AppCore.errorMessage(
+        allTranslations.text(LocaleKeys.something_went_wrong),
+      );
+      return;
+    }
+    
     final bloc = context.read<ActionsTabBloc>();
     bloc.add(
       Click(
@@ -120,8 +148,9 @@ class _ActionsTabContent extends StatelessWidget {
 
   void _onCompliance(BuildContext context) {
     // Read the nextStepId from StageDocsBloc to get the most current value
-    final stageDocsBloc = context.read<StageDocsBloc>();
-    final nextStep = stageDocsBloc.stageDocsData?.nextStep;
+    final workflowProcessDetailsBloc = context
+        .read<WorkflowProcessDetailsBloc>();
+    final nextStep = workflowProcessDetailsBloc.stageDocsData?.nextStep;
     final nextStepId = (nextStep != null && nextStep.isNotEmpty)
         ? nextStep[0].id
         : 0;
@@ -204,10 +233,10 @@ class _FileUploadSection extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(12.w),
             decoration: BoxDecoration(
-              color: context.color.primary.withOpacity(0.1),
+              color: context.color.primary.withValues(alpha: .1),
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: context.color.primary.withOpacity(0.3),
+                color: context.color.primary.withValues(alpha: .3),
                 width: 1,
               ),
             ),
@@ -233,7 +262,7 @@ class _FileUploadSection extends StatelessWidget {
                         Text(
                           fileSize!,
                           style: context.textTheme.bodySmall?.copyWith(
-                            color: context.color.primary.withOpacity(0.7),
+                            color: context.color.primary.withValues(alpha: .7),
                           ),
                         ),
                       ],
@@ -262,18 +291,23 @@ class _FileUploadSection extends StatelessWidget {
 class _ActionButtonsSection extends StatelessWidget {
   final VoidCallback onSave;
   final VoidCallback onCompliance;
-  final bool isLoading;
+  final bool isSaveLoading;
+  final bool isComplianceLoading;
   final String nextStepText;
 
   const _ActionButtonsSection({
     required this.onSave,
     required this.onCompliance,
-    required this.isLoading,
+    required this.isSaveLoading,
+    required this.isComplianceLoading,
     required this.nextStepText,
   });
 
   @override
   Widget build(BuildContext context) {
+    // Disable both buttons if either is loading
+    final isAnyLoading = isSaveLoading || isComplianceLoading;
+
     return Column(
       children: [
         // Save Button (Outlined)
@@ -286,8 +320,8 @@ class _ActionButtonsSection extends StatelessWidget {
           height: 34,
           fontSize: 12,
           borderRadius: 8,
-          loading: isLoading,
-          onPressed: isLoading ? null : onSave,
+          loading: isSaveLoading,
+          onPressed: isAnyLoading ? null : onSave,
         ),
 
         // Only show Next Step button if there's a next step available
@@ -304,8 +338,8 @@ class _ActionButtonsSection extends StatelessWidget {
               height: 34,
               fontSize: 12,
               borderRadius: 8,
-              loading: isLoading,
-              onPressed: isLoading ? null : onCompliance,
+              loading: isComplianceLoading,
+              onPressed: isAnyLoading ? null : onCompliance,
             ),
           ),
         ],

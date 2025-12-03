@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:pms_system/project_details/widgets/tabs/timeline_tab/timeline_widget.dart';
 
 import '../../../../shared/pms_exports.dart';
@@ -32,12 +30,16 @@ class ProjectTimelineTab extends StatelessWidget {
 
           // ── Done ────────────────────────────
           GettingDone(data: final List<MilestoneModel> milestones) =>
-            ProjectTimeline(
-              // milestonesList: demoMilestones,
-              milestonesList: milestones,
-              projectStart: projectStart,
-              projectEnd: projectEnd,
-            ),
+            milestones.isEmpty
+                ? const EmptyContainer(
+              remain: 500,
+            )
+                : ProjectTimeline(
+                    // milestonesList: demoMilestones,
+                    milestonesList: milestones,
+                    projectStart: projectStart,
+                    projectEnd: projectEnd,
+                  ),
 
           // ── Done state: check for cached milestones ──
           Done() => () {

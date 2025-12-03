@@ -751,7 +751,7 @@ class MobileChallengesModel {
   MobileChallengesModel({this.total, this.items});
 
   MobileChallengesModel.fromJson(Map<String, dynamic> json) {
-    total = json['total'];
+    total = json['challengesTotal'];
     if (json['items'] != null) {
       items = <MobileChallengeItemModel>[];
       json['items'].forEach((v) {
@@ -762,7 +762,7 @@ class MobileChallengesModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['total'] = total;
+    data['challengesTotal'] = total;
     if (items != null) {
       data['items'] = items!.map((v) => v.toJson()).toList();
     }

@@ -4,12 +4,13 @@ class ProcessDetailsBody extends StatelessWidget {
   final ProjectDetailsModel projectDetailsModel;
   final int processId;
   final String stageName;
+  final String processName;
 
   const ProcessDetailsBody({
     super.key,
     required this.projectDetailsModel,
     required this.processId,
-    required this.stageName,
+    required this.stageName, required this.processName,
   });
 
   @override
@@ -17,7 +18,7 @@ class ProcessDetailsBody extends StatelessWidget {
     return Column(
       children: [
         // Fixed header content
-        BlocBuilder<StageDocsBloc, AppState>(
+        BlocBuilder<WorkflowProcessDetailsBloc, AppState>(
           builder: (context, state) {
             return state is Loading
                 ? Padding(
@@ -48,6 +49,7 @@ class ProcessDetailsBody extends StatelessWidget {
                   processId: processId,
                   projectDetailsModel: projectDetailsModel,
                   stageName: stageName,
+                  processName: processName,
                 ),
 
               // ── Empty ───────────────────────────
@@ -73,6 +75,8 @@ class _ProcessBody extends StatelessWidget {
   final int processId;
   final int projectStepId;
   final String stageName;
+  final String processName;
+
 
   const _ProcessBody({
     required this.processList,
@@ -81,12 +85,14 @@ class _ProcessBody extends StatelessWidget {
     required this.processId,
     required this.stageName,
     required this.projectStepId,
+    required this.processName
   });
 
   @override
   Widget build(BuildContext context) {
-    final stageDocsBloc = context.read<StageDocsBloc>();
-    final stageDocsData = stageDocsBloc.stageDocsData;
+    final workflowProcessDetailsBloc = context
+        .read<WorkflowProcessDetailsBloc>();
+    final stageDocsData = workflowProcessDetailsBloc.stageDocsData;
     return Expanded(
       child: Column(
         children: [
@@ -104,6 +110,7 @@ class _ProcessBody extends StatelessWidget {
                 processList: processList,
                 pdfFilePath: stageDocsData?.pdfFilePath ?? '',
                 stepDocumentId: (stageDocsData?.stepDocumentId ?? 0).toInt(),
+                processName: processName,
               ),
             ),
           ),
@@ -120,9 +127,10 @@ Widget _buildProcessBody({
   required int processId,
   required ProjectDetailsModel projectDetailsModel,
   required String stageName,
+  required String processName
 }) {
-  final stageDocsBloc = context.read<StageDocsBloc>();
-  final stageDocsData = stageDocsBloc.stageDocsData;
+  final workflowProcessDetailsBloc = context.read<WorkflowProcessDetailsBloc>();
+  final stageDocsData = workflowProcessDetailsBloc.stageDocsData;
 
   return _ProcessBody(
     processList: model.data ?? [],
@@ -131,6 +139,7 @@ Widget _buildProcessBody({
     processId: processId,
     projectStepId: stageDocsData?.currentStep?.id ?? 0,
     stageName: stageName,
+    processName: processName,
   );
 }
 
@@ -158,6 +167,7 @@ Widget _getTabSection({
   required int projectStepId,
   required String pdfFilePath,
   required int stepDocumentId,
+  required String processName
 }) {
   return switch (selectedTab) {
     ProcessTabsEnum.followProcess => FollowProcessTab(processList: processList),
@@ -166,7 +176,7 @@ Widget _getTabSection({
       projectId: projectId,
       processId: processId,
       pdfFilePath: pdfFilePath,
-      stepDocumentId: stepDocumentId,
+      processName: processName,
     ),
     // ProcessTabsEnum.fields => FieldsTab(),
     ProcessTabsEnum.history => HistoryTab(
@@ -176,7 +186,6 @@ Widget _getTabSection({
     _ => ActionsTab(
       processId: processId,
       projectId: projectId,
-      projectStepId: projectStepId,
     ),
   };
 }

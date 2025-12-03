@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:core_system/core/utility/export.dart';
+import 'package:pms_system/workflow_process_details/model/current_step_document_model.dart';
 import 'package:pms_system/workflow_process_details/model/document_comments_model.dart';
 import 'package:pms_system/workflow_process_details/model/history_model.dart';
 import 'package:pms_system/workflow_process_details/model/stage_doc_model.dart';
@@ -32,8 +33,6 @@ abstract class WorkflowProcessDetailsRepo {
         'processId': processId,
         // 'projectId': 51,
         'projectId': projectId,
-        'pageIndex': pageIndex,
-        'pageSize': pageSize,
       },
       method: ServerMethods.GET,
       model: StageDocResponseModel(),
@@ -161,6 +160,27 @@ abstract class WorkflowProcessDetailsRepo {
         // 'nextStepId': 170,
         'nextStepId': nextStepId,
       },
+    );
+  }
+
+  static Future<CurrentStepDocumentModel> getCurrentStepDocs({
+    required int projectId,
+    required int projectStepId,
+    required int processId
+  }) async {
+
+    return await Network().request(
+      ApiNames.currentStepDocs,
+      method: ServerMethods.GET,
+      query: {
+        // 'projectId': 26,
+        'projectId': projectId,
+        // 'stepId': 106,
+        'stepId': projectStepId,
+        // 'processId': 167,
+        'processId': processId,
+      },
+      model: CurrentStepDocumentModel()
     );
   }
 }

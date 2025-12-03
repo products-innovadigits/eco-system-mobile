@@ -41,7 +41,7 @@ class ProjectMainInfoTab extends StatelessWidget {
                       .toString(),
             ),
             child: CustomBarChart(
-              data: _generateSampleProgressData(
+              data: _generateGeneralProgressData(
                 projectDetailsModel.mobileDetails!.progress!,
               ),
               // chartHeight: 180,
@@ -108,7 +108,7 @@ class ProjectMainInfoTab extends StatelessWidget {
     );
   }
 
-  List<ProjectCategoriesProgressModel> _generateSampleProgressData(
+  List<ProjectCategoriesProgressModel> _generateGeneralProgressData(
     MobileProgressModel progressModel,
   ) {
     return progressModel.bars
@@ -123,28 +123,6 @@ class ProjectMainInfoTab extends StatelessWidget {
             )
             .toList() ??
         [];
-    // return [
-    //   ProjectCategoriesProgressModel(
-    //     name: "الجدول الزمني",
-    //     progress: 20.5,
-    //     color: LightColor.tertiaryLight,
-    //   ),
-    //   ProjectCategoriesProgressModel(
-    //     name: "الميزانية",
-    //     progress: 55,
-    //     color: LightColor.secondary,
-    //   ),
-    //   ProjectCategoriesProgressModel(
-    //     name: "الأنشطة",
-    //     progress: 72,
-    //     color: LightColor.error,
-    //   ),
-    //   ProjectCategoriesProgressModel(
-    //     name: "المخرجات",
-    //     progress: 90,
-    //     color: LightColor.warning,
-    //   ),
-    // ];
   }
 
   // TODO: Replace this with actual data from the ProjectDetailsModel

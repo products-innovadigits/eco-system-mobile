@@ -1,20 +1,22 @@
+import 'package:pms_system/workflow_process_details/model/current_step_document_model.dart';
+
 import '../../../../shared/pms_exports.dart';
 
 class StageDocsTab extends StatelessWidget {
   final int processId;
   final int projectId;
   final String pdfFilePath;
-  final int stepDocumentId;
+  final String processName;
 
   const StageDocsTab({
     super.key,
     required this.processId,
     required this.projectId,
     required this.pdfFilePath,
-    required this.stepDocumentId,
+    required this.processName,
   });
 
-  void _showHtmlContent(BuildContext context, StageDocument document) {
+  void _showHtmlContent(BuildContext context, StepDocument document) {
     showDialog(
       context: context,
       builder: (context) =>
@@ -24,10 +26,28 @@ class StageDocsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => DocCommentsBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => DocCommentsBloc()),
+        BlocProvider(
+          create: (context) => StageDocsBloc()
+            ..add(
+              Click(
+                arguments: {
+                  'processId': processId,
+                  'projectId': projectId,
+                  'projectStepId': context
+                      .read<WorkflowProcessDetailsBloc>()
+                      .stageDocsData
+                      ?.currentStep
+                      ?.id,
+                },
+              ),
+            ),
+        ),
+      ],
       child: BlocBuilder<StageDocsBloc, AppState>(
-        buildWhen: (previous, current) => current is! Getting,
+        buildWhen: (previous, current) => current is! Adding,
         builder: (context, state) {
           final docCommentsBloc = context.read<DocCommentsBloc>();
           return switch (state) {
@@ -36,12 +56,12 @@ class StageDocsTab extends StatelessWidget {
 
             // ── Done ────────────────────────────
             Done(:final data) => (() {
-              final StageDocData? model = data as StageDocData?;
-              final documents = model?.currentStep?.stepDocuments ?? [];
+              final CurrentStepDocumentData? model =
+                  data as CurrentStepDocumentData?;
+              final documents = model?.items ?? [];
               return Column(
                 children: List.generate(documents.length, (index) {
-                  final StageDocument? document = documents[index];
-                  if (document == null) return SizedBox.shrink();
+                  final CurrentStepDocumentItem document = documents[index];
                   return Container(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                     margin: EdgeInsets.only(bottom: 8),
@@ -56,26 +76,27 @@ class StageDocsTab extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                document.documentTitle ?? '',
+                                document.document?.documentTitle ?? '',
                                 style: context.textTheme.labelSmall,
                               ),
                             ),
                             _DocActionCardWidget(
                               icon: Assets.svgs.exporting.path,
-                              onTap: () => _showHtmlContent(context, document),
+                              onTap: () =>
+                                  _showHtmlContent(context, document.document!),
                             ),
                             SizedBox(width: 4),
                             _DocActionCardWidget(
                               icon: Assets.svgs.eye.path,
                               onTap: () {
                                 docCommentsBloc.add(
-                                  Click(arguments: stepDocumentId),
+                                  Click(arguments: document.id),
                                 );
                                 PopUpHelper.showBottomSheet(
                                   child: BlocProvider.value(
                                     value: docCommentsBloc,
                                     child: ViewCommentsBottomSheet(
-                                      stepDocumentId: stepDocumentId,
+                                      stepDocumentId: document.id ?? 0,
                                     ),
                                   ),
                                 );
@@ -115,7 +136,7 @@ class StageDocsTab extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 2),
                                 Text(
-                                  model?.currentStep?.text ?? 'الادارة / مركز',
+                                  processName,
                                   style: context.textTheme.labelSmall?.copyWith(
                                     fontSize: FontSizes.f10,
                                   ),
@@ -132,8 +153,8 @@ class StageDocsTab extends StatelessWidget {
                               key: bloc.formKey,
                               child: CustomTextField(
                                 verticalPadding: 0,
-                                isReadOnly: state is Getting,
-                                color: state is Getting
+                                isReadOnly: state is Adding,
+                                color: state is Adding
                                     ? context.color.outline
                                     : null,
                                 contentPadding: EdgeInsets.symmetric(
@@ -148,7 +169,7 @@ class StageDocsTab extends StatelessWidget {
                                   onTap: () {
                                     bloc.add(
                                       AddDocumentComment(
-                                        stepDocumentId: stepDocumentId,
+                                        stepDocumentId: document.id ?? 0,
                                         text:
                                             bloc
                                                 .getCommentController(
@@ -163,7 +184,7 @@ class StageDocsTab extends StatelessWidget {
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 6,
                                     ),
-                                    child: state is Getting
+                                    child: state is Adding
                                         ? SizedBox(
                                             width: 20,
                                             height: 20,

@@ -50,29 +50,31 @@ class ProjectReportDataModel {
   String? description;
   String? descriptionStageAr;
   List<BudgetItemModel>? budget;
-  BudgetTotalsModel? budgetTotals;
   OutputsModel? outputs;
   ActivitiesModel? activities;
   ActivitiesPercentModel? activitiesPercent;
   ProgressModel? progress;
   String? statusAr;
   String? statusEn;
+  String? status;
   int? statusEnum;
   int? challengesCount;
-  // MobileChallengesModel? challenges;
+
+  MobileChallengesModel? challenges;
   List<MobileRiskModel>? risks;
+  List<MobileOutputsSummaryModel>? outputsSummary;
   int? risksCount;
   int? activitiesCount;
   int? outputsCount;
   int? daysLeft;
   List<RelatedItemModel>? relatedItems;
+  String? pdfFileUrl;
 
   ProjectReportDataModel({
     this.details,
     this.description,
     this.descriptionStageAr,
     this.budget,
-    this.budgetTotals,
     this.outputs,
     this.activities,
     this.activitiesPercent,
@@ -80,14 +82,17 @@ class ProjectReportDataModel {
     this.statusAr,
     this.statusEn,
     this.statusEnum,
-    // this.challenges,
+    this.status,
+    this.challenges,
     this.challengesCount,
     this.risks,
+    this.outputsSummary,
     this.risksCount,
     this.activitiesCount,
     this.outputsCount,
     this.daysLeft,
     this.relatedItems,
+    this.pdfFileUrl,
   });
 
   ProjectReportDataModel.fromJson(Map<String, dynamic> json) {
@@ -95,6 +100,8 @@ class ProjectReportDataModel {
         ? ProjectReportDetailsModel.fromJson(json['details'])
         : null;
     description = json['description'];
+    pdfFileUrl = json['pdfFileUrl'];
+    status = json['status'];
     descriptionStageAr = json['descriptionStageAr'];
     if (json['budget'] != null) {
       budget = <BudgetItemModel>[];
@@ -102,9 +109,7 @@ class ProjectReportDataModel {
         budget!.add(BudgetItemModel.fromJson(v));
       });
     }
-    budgetTotals = json['budgetTotals'] != null
-        ? BudgetTotalsModel.fromJson(json['budgetTotals'])
-        : null;
+
     outputs = json['outputs'] != null
         ? OutputsModel.fromJson(json['outputs'])
         : null;
@@ -120,13 +125,19 @@ class ProjectReportDataModel {
     statusAr = json['statusAr'];
     statusEn = json['statusEn'];
     statusEnum = json['statusEnum'];
-    // challenges = json['challengesCards'] != null
-    //     ? MobileChallengesModel.fromJson(json['challengesCards'])
-    //     : null;
+    challenges = json['challenges'] != null
+        ? MobileChallengesModel.fromJson(json['challenges'])
+        : null;
     if (json['risks'] != null) {
       risks = <MobileRiskModel>[];
       json['risks'].forEach((v) {
         risks!.add(MobileRiskModel.fromJson(v));
+      });
+    }
+    if (json['outputsSummary'] != null) {
+      outputsSummary = <MobileOutputsSummaryModel>[];
+      json['outputsSummary'].forEach((v) {
+        outputsSummary!.add(MobileOutputsSummaryModel.fromJson(v));
       });
     }
     challengesCount = json['challengesCount'];
@@ -146,13 +157,14 @@ class ProjectReportDataModel {
     final Map<String, dynamic> map = {};
     if (details != null) map['details'] = details!.toJson();
     if (description != null) map['description'] = description;
+    if (status != null) map['status'] = status;
+    if (pdfFileUrl != null) map['pdfFileUrl'] = pdfFileUrl;
     if (descriptionStageAr != null) {
       map['descriptionStageAr'] = descriptionStageAr;
     }
     if (budget != null) {
       map['budget'] = budget!.map((v) => v.toJson()).toList();
     }
-    if (budgetTotals != null) map['budgetTotals'] = budgetTotals!.toJson();
     if (outputs != null) map['outputs'] = outputs!.toJson();
     if (activities != null) map['activities'] = activities!.toJson();
     if (activitiesPercent != null) {
@@ -162,14 +174,17 @@ class ProjectReportDataModel {
     if (statusAr != null) map['statusAr'] = statusAr;
     if (statusEn != null) map['statusEn'] = statusEn;
     if (statusEnum != null) map['statusEnum'] = statusEnum;
-    // challenges = map['challengesCards'] != null
-    //     ? MobileChallengesModel.fromJson(map['challengesCards'])
-    //     : null;
+    challenges = map['challenges'] != null
+        ? MobileChallengesModel.fromJson(map['challenges'])
+        : null;
     if (map['risks'] != null) {
       risks = <MobileRiskModel>[];
       map['risks'].forEach((v) {
         risks!.add(MobileRiskModel.fromJson(v));
       });
+    }
+    if (outputsSummary != null) {
+      map['outputsSummary'] = outputsSummary!.map((v) => v.toJson()).toList();
     }
     if (challengesCount != null) map['challengesCount'] = challengesCount;
     if (risksCount != null) map['risksCount'] = risksCount;
@@ -192,7 +207,7 @@ class ProjectReportDetailsModel {
   num? approvedBudget;
   String? initiativeCode;
   String? departmentName;
-  String? category;
+  String? categoryName;
 
   ProjectReportDetailsModel({
     this.projectName,
@@ -202,7 +217,7 @@ class ProjectReportDetailsModel {
     this.approvedBudget,
     this.initiativeCode,
     this.departmentName,
-    this.category,
+    this.categoryName,
   });
 
   ProjectReportDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -215,7 +230,7 @@ class ProjectReportDetailsModel {
     approvedBudget = json['approvedBudget'];
     initiativeCode = json['initiativeCode'];
     departmentName = json['departmentName'];
-    category = json['category'];
+    categoryName = json['categoryName'];
   }
 
   Map<String, dynamic> toJson() {
@@ -227,7 +242,7 @@ class ProjectReportDetailsModel {
     if (approvedBudget != null) map['approvedBudget'] = approvedBudget;
     if (initiativeCode != null) map['initiativeCode'] = initiativeCode;
     if (departmentName != null) map['departmentName'] = departmentName;
-    if (category != null) map['category'] = category;
+    if (categoryName != null) map['categoryName'] = categoryName;
     return map;
   }
 }

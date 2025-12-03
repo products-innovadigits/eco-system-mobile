@@ -21,6 +21,23 @@ class ActionsTabBloc extends Bloc<AppEvent, AppState> {
   File? selectedFile;
   String? fileName;
   String? fileSize;
+  
+  // Flag to track if compliance was just completed (for reload trigger)
+  bool _isComplianceCompleted = false;
+  
+  // Flag to track which action is currently loading
+  bool _isComplianceActionLoading = false;
+  
+  // Getter to check if compliance was just completed
+  bool get isComplianceCompleted => _isComplianceCompleted;
+  
+  // Getter to check if compliance action is currently loading
+  bool get isComplianceActionLoading => _isComplianceActionLoading;
+  
+  // Method to reset the compliance completed flag
+  void resetComplianceFlag() {
+    _isComplianceCompleted = false;
+  }
 
   Future<void> _onClick(Click event, Emitter<AppState> emit) async {
     // Validate form first
@@ -29,6 +46,7 @@ class ActionsTabBloc extends Bloc<AppEvent, AppState> {
     }
 
     try {
+      _isComplianceActionLoading = false; // This is a save action
       emit(Loading());
 
       final arguments = event.arguments as Map<String, dynamic>;
@@ -49,23 +67,27 @@ class ActionsTabBloc extends Bloc<AppEvent, AppState> {
           );
 
       if (response.statusCode == 200) {
-        AppCore.successMessage(
+        AppCore.successToastMessage(
           allTranslations.text(LocaleKeys.comment_added_successfully),
         );
         // Clear form after successful submission
         commentController.clear();
         _clearFile();
+        _isComplianceCompleted = false; // This is a save action, not compliance
+        _isComplianceActionLoading = false;
         emit(Done());
       } else {
-        AppCore.errorMessage(
+        AppCore.errorToastMessage(
           allTranslations.text(LocaleKeys.something_went_wrong),
         );
+        _isComplianceActionLoading = false;
         emit(Error());
       }
     } catch (e) {
-      AppCore.errorMessage(
+      AppCore.errorToastMessage(
         allTranslations.text(LocaleKeys.something_went_wrong),
       );
+      _isComplianceActionLoading = false;
       emit(Error());
     }
   }
@@ -75,6 +97,7 @@ class ActionsTabBloc extends Bloc<AppEvent, AppState> {
     Emitter<AppState> emit,
   ) async {
     try {
+      _isComplianceActionLoading = true; // This is a compliance action
       emit(Loading());
 
       final arguments = event.arguments as Map<String, dynamic>;
@@ -90,17 +113,23 @@ class ActionsTabBloc extends Bloc<AppEvent, AppState> {
 
       if (response.statusCode == 200) {
         AppCore.successMessage(allTranslations.text(LocaleKeys.process_done_successfully));
+        _isComplianceCompleted = true; // Mark that compliance was completed
+        _isComplianceActionLoading = false; // Compliance action is done
         emit(Done());
       } else {
         AppCore.errorMessage(
           allTranslations.text(LocaleKeys.something_went_wrong),
         );
+        _isComplianceCompleted = false; // Reset on error
+        _isComplianceActionLoading = false;
         emit(Error());
       }
     } catch (e) {
       AppCore.errorMessage(
         allTranslations.text(LocaleKeys.something_went_wrong),
       );
+      _isComplianceCompleted = false; // Reset on error
+      _isComplianceActionLoading = false;
       emit(Error());
     }
   }

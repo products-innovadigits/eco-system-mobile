@@ -2,12 +2,13 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
+import 'package:pms_system/workflow_process_details/model/current_step_document_model.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 import '../../../../shared/pms_exports.dart';
 
 class HtmlContentDialog extends StatelessWidget {
-  final StageDocument document;
+  final StepDocument document;
   final String pdfFilePath;
 
   const HtmlContentDialog({
@@ -84,7 +85,7 @@ class HtmlContentDialog extends StatelessWidget {
                     child: CustomBtn(
                       text: allTranslations.text(LocaleKeys.download),
                       onPressed: () =>
-                          _downloadHtmlContent(context, pdfFilePath),
+                          LauncherHelper.downloadFiles(pdfFilePath),
                     ),
                   ),
                 ],
@@ -94,23 +95,6 @@ class HtmlContentDialog extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Future<void> _downloadHtmlContent(
-    BuildContext context,
-    String pdfFilePath,
-  ) async {
-    try {
-      log('PdfFilePath :: $pdfFilePath');
-      await UrlLauncher.launchUrl(
-        Uri.parse('https://194.163.168.5:447$pdfFilePath'),
-      );
-      AppCore.successToastMessage(
-        allTranslations.text(LocaleKeys.file_downloaded_successfully),
-      );
-    } catch (e) {
-      AppCore.errorToastMessage(allTranslations.text('download_failed'));
-    }
   }
 
   Widget _buildTableFromData(

@@ -123,6 +123,11 @@ class GettingError extends AppState {
   Map<String, dynamic> toJson() => {"state": "GettingError"};
 }
 
+class Adding extends AppState {
+  @override
+  Map<String, dynamic> toJson() => {"state": "Adding"};
+}
+
 class Exporting extends AppState {
   @override
   Map<String, dynamic> toJson() => {"state": "Exporting"};

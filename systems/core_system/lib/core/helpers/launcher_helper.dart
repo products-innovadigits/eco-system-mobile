@@ -1,3 +1,9 @@
+import 'dart:developer';
+
+import 'package:core_system/core/core/app_core.dart';
+import 'package:core_system/core/core/app_strings/locale_keys.dart';
+import 'package:core_system/core/helpers/translation/all_translation.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 abstract class LauncherHelper {
@@ -30,6 +36,18 @@ abstract class LauncherHelper {
 
     if (!await launchUrl(uri)) {
       throw Exception('Could not launch email to $email');
+    }
+  }
+
+  static Future<void> downloadFiles(String pdfFilePath) async {
+    try {
+      log('PdfFilePath :: $pdfFilePath');
+      await launchUrl(Uri.parse('https://194.163.168.5:447$pdfFilePath'));
+      AppCore.successToastMessage(
+        allTranslations.text(LocaleKeys.file_downloaded_successfully),
+      );
+    } catch (e) {
+      AppCore.errorToastMessage(allTranslations.text('download_failed'));
     }
   }
 }

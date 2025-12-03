@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '../../shared/pms_exports.dart';
 
 class ProcessHeaderCard extends StatelessWidget {
@@ -80,7 +82,7 @@ class ProcessHeaderCard extends StatelessWidget {
                       ),
                       SizedBox(height: 4),
                       Text(
-                        '${allTranslations.text(LocaleKeys.current_step)} : ${context.read<StageDocsBloc>().stageDocsData?.currentStep?.text ?? ''}',
+                        '${allTranslations.text(LocaleKeys.current_step)} : ${context.read<WorkflowProcessDetailsBloc>().stageDocsData?.currentStep?.text ?? ''}',
                         style: context.textTheme.labelSmall?.copyWith(
                           fontSize: FontSizes.f10,
                           color: context.color.secondary,

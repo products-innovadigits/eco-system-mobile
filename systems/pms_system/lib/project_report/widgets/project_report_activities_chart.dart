@@ -12,20 +12,26 @@ class ProjectReportActivitiesChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isEmpty = activities.every(
+      (activity) => (activity.value ?? 0) == 0,
+    );
     return CustomExpansionCard(
       title: allTranslations.text(LocaleKeys.activities_number),
       withExpanded: false,
       withMargin: false,
       action: CustomInfoContainerWidget(
-        title:
-            '$totalActivities ${allTranslations.text(LocaleKeys.activity)}',
+        title: '$totalActivities ${allTranslations.text(LocaleKeys.activity)}',
         color: context.color.tertiary,
       ),
       child: Column(
         children: [
-          ReportObjectivePercentageChartMobilePortrait(activities: activities),
+          isEmpty
+              ? Text(allTranslations.text(LocaleKeys.there_is_no_data))
+              : ReportObjectivePercentageChartMobilePortrait(
+                  activities: activities,
+                ),
           const SizedBox(height: 12),
-          ReportChartCategoriesSection(activities: activities),
+          if (!isEmpty) ReportChartCategoriesSection(activities: activities),
         ],
       ),
     );

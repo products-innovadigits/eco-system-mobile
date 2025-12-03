@@ -36,7 +36,7 @@ class ProjectReportName extends StatelessWidget {
           SizedBox(width: 16.w),
           Expanded(child: Text(name, style: context.textTheme.labelMedium)),
           SizedBox(width: 16.w),
-          Container(
+        if(status.isNotEmpty)  Container(
             padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
               color: context.color.secondary.withValues(alpha: 0.1),

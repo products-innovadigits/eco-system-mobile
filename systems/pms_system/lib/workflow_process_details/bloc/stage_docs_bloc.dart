@@ -1,4 +1,5 @@
 import 'package:pms_system/shared/pms_exports.dart';
+import 'package:pms_system/workflow_process_details/model/current_step_document_model.dart';
 import 'package:pms_system/workflow_process_details/repo/workflow_process_details_repo.dart';
 
 class StageDocsBloc extends Bloc<AppEvent, AppState> {
@@ -10,25 +11,28 @@ class StageDocsBloc extends Bloc<AppEvent, AppState> {
   // Map to store TextEditingController for each document
   final Map<int, TextEditingController> _commentControllers = {};
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  StageDocData? stageDocsData;
+  CurrentStepDocumentData? currentStepDocumentData;
+
 
   _onClick(AppEvent event, Emitter<AppState> emit) async {
     Map<String, dynamic> args = event.arguments as Map<String, dynamic>;
     emit(Loading());
     try {
-      StageDocResponseModel res =
-          await WorkflowProcessDetailsRepo.getCurrentNextSteps(
-            processId: args['processId'],
-            projectId: args['projectId'],
-          );
+      CurrentStepDocumentModel res =
+      await WorkflowProcessDetailsRepo.getCurrentStepDocs(
+        processId: args['processId'],
+        projectId: args['projectId'],
+        projectStepId: args['projectStepId'],
+      );
 
       if (res.succeeded == true &&
           res.data != null &&
-          res.data!.currentStep != null) {
-        stageDocsData = res.data;
+          res.data!.items != null &&
+          res.data!.items!.isNotEmpty) {
+        currentStepDocumentData = res.data;
         // Initialize controllers for each document
         _initializeCommentControllers();
-        emit(Done(data: stageDocsData));
+        emit(Done(data: currentStepDocumentData));
       } else {
         emit(Empty());
       }
@@ -44,7 +48,7 @@ class StageDocsBloc extends Bloc<AppEvent, AppState> {
     Emitter<AppState> emit,
   ) async {
     if (!formKey.currentState!.validate()) return;
-    emit(Getting());
+    emit(Adding());
     try {
       // Add comment using the document ID
       Response response = await WorkflowProcessDetailsRepo.addDocComment(
@@ -61,7 +65,7 @@ class StageDocsBloc extends Bloc<AppEvent, AppState> {
         AppCore.successMessage(
           allTranslations.text(LocaleKeys.comment_added_successfully),
         );
-        emit(Done(data: stageDocsData));
+        emit(Done(data: currentStepDocumentData));
       } else {
         AppCore.errorMessage(allTranslations.text('something_went_wrong'));
         emit(Error());
@@ -76,9 +80,9 @@ class StageDocsBloc extends Bloc<AppEvent, AppState> {
   void _initializeCommentControllers() {
     _disposeControllers();
 
-    if (stageDocsData?.currentStep?.stepDocuments != null) {
-      for (StageDocument? document
-          in stageDocsData!.currentStep!.stepDocuments!) {
+    if (currentStepDocumentData?.items != null) {
+      for (CurrentStepDocumentItem? document
+          in currentStepDocumentData!.items!) {
         if (document?.id != null) {
           _commentControllers[document!.id!] = TextEditingController();
         }

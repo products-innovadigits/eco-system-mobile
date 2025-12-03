@@ -163,15 +163,10 @@ class ProjectMonth {
       final key = monthName;
       
       monthNameCount[key] = (monthNameCount[key] ?? 0) + 1;
-      final count = monthNameCount[key]!;
 
       String displayName;
-      // if (count > 1) {
-        // Append year if this month name appears multiple times
-        displayName = '$monthName (${current.year})';
-      // } else {
-      //   displayName = monthName;
-      // }
+      // Append year if this month name appears multiple times
+      displayName = '$monthName (${current.year})';
 
       months.add(ProjectMonth(current.year, current.month, displayName));
 
@@ -180,6 +175,27 @@ class ProjectMonth {
         current = DateTime(current.year + 1, 1, 1);
       } else {
         current = DateTime(current.year, current.month + 1, 1);
+      }
+    }
+
+    // Ensure at least 4 months are shown
+    const int minMonths = 4;
+    if (months.length < minMonths) {
+      DateTime lastMonth = months.isNotEmpty 
+          ? DateTime(months.last.year, months.last.month, 1)
+          : start;
+      
+      while (months.length < minMonths) {
+        // Move to next month
+        if (lastMonth.month == 12) {
+          lastMonth = DateTime(lastMonth.year + 1, 1, 1);
+        } else {
+          lastMonth = DateTime(lastMonth.year, lastMonth.month + 1, 1);
+        }
+        
+        final monthName = kArabicMonths[lastMonth.month - 1];
+        final displayName = '$monthName (${lastMonth.year})';
+        months.add(ProjectMonth(lastMonth.year, lastMonth.month, displayName));
       }
     }
 

@@ -10,13 +10,13 @@ class ProjectReportOutputs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final outputsCount = outputsSummary[0].value;
     return CustomExpansionCard(
       title: allTranslations.text(LocaleKeys.the_outputs),
       withExpanded: false,
       withMargin: false,
       action: CustomInfoContainerWidget(
-        title:
-            '${outputsSummary.length} ${allTranslations.text(LocaleKeys.outputs)}',
+        title: '$outputsCount ${allTranslations.text(LocaleKeys.outputs)}',
         color: context.color.secondary,
       ),
       child: ListAnimator(

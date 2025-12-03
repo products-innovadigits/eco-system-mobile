@@ -25,7 +25,22 @@ class ProjectReportView extends StatelessWidget {
         appBar: CustomAppBar(
           title: allTranslations.text(LocaleKeys.project_report),
           withBottomBorder: false,
-          action: _ExportButton(onTap: () {}),
+          action: BlocBuilder<ProjectReportBloc, AppState>(
+            builder: (context, state) {
+              return state is Done && state.model is ProjectReportModel
+                  ? _ExportButton(
+                      onTap: () {
+                        LauncherHelper.downloadFiles(
+                          (state.model as ProjectReportModel)
+                                  .data
+                                  ?.pdfFileUrl ??
+                              '',
+                        );
+                      },
+                    )
+                  : const SizedBox.shrink();
+            },
+          ),
         ),
         body: SafeArea(
           child: BlocBuilder<ProjectReportBloc, AppState>(
