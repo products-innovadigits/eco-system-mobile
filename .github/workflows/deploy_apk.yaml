@@ -7,13 +7,20 @@ on:
         description: 'Add new tester email (will also send to fixed list)'
         required: false
         default: 'Enter the client email...'
+
       systems:
         description: 'Comma-separated list of active systems (e.g. strategy,ats,pms)'
         required: true
         default: 'strategy,ats,pms'
+
       release_name:
         description: 'Release name (e.g. v1.2.3-clientX)'
         required: true
+
+      release_notes:
+        description: 'Release notes for Firebase tester emails'
+        required: true
+        default: 'Automated CI release'
 
 jobs:
   build:
@@ -120,9 +127,8 @@ jobs:
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           ACTIVE_SYSTEMS: ${{ github.event.inputs.systems }}
-          RELEASE_NAME: ${{ github.event.inputs.release_name }}
         run: |
           fastlane android distribute_ci \
             test_email:"${{ github.event.inputs.test_email }}" \
-            release_name:"${{ github.event.inputs.release_name }}"
-      
+            release_name:"${{ github.event.inputs.release_name }}" \
+            release_notes:"${{ github.event.inputs.release_notes }}"

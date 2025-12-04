@@ -3,10 +3,12 @@ default_platform(:android)
 platform :android do
   desc "Distribute existing CI-built APK"
   lane :distribute_ci do |options|
-    test_email = options[:test_email]
-    
+    test_email     = options[:test_email]
+    release_name   = options[:release_name]
+    release_notes  = options[:release_notes]
+
     apk_path = "../build/app/outputs/flutter-apk/app-release.apk"
-    
+
     # Check if APK already exists (built in CI workflow)
     unless File.exist?(apk_path)
       UI.important("APK not found at #{apk_path}, building now...")
@@ -21,13 +23,14 @@ platform :android do
       UI.success("Using existing APK from CI build")
     end
 
+    # Firebase Distribution arguments
     firebase_args = {
-        app: "1:419893562273:android:5d15901a1b38730eb659e0",
-        firebase_cli_token: ENV["FIREBASE_TOKEN"],
-        release_notes: "🚀 Automated CI release from GitHub Actions",
-        groups: "nawah-team",
-        apk_path: apk_path
-      }
+      app: "1:419893562273:android:5d15901a1b38730eb659e0",
+      firebase_cli_token: ENV["FIREBASE_TOKEN"],
+      release_notes: release_notes,           # <-- NEW INPUT FROM WORKFLOW
+      groups: "nawah-team",
+      apk_path: apk_path
+    }
 
     # Add testers only if email is provided and not the default placeholder
     if test_email && !test_email.to_s.strip.empty? && test_email != "Enter the client email..."
