@@ -32,7 +32,7 @@ class EditCommentSection extends StatelessWidget {
                     onTap: () {
                       bloc.add(
                         Edit(
-                          documentId: stepDocumentId,
+                          documentId: documentComment.id ?? 0,
                           // documentId: documentComment.id ?? 0,
                           comment: bloc.editCommentCtrl.text,
                           documentDataId:

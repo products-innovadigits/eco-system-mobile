@@ -59,8 +59,9 @@ class StageDocsTab extends StatelessWidget {
               final CurrentStepDocumentData? model =
                   data as CurrentStepDocumentData?;
               final documents = model?.items ?? [];
-              return Column(
-                children: List.generate(documents.length, (index) {
+              return ListView.builder(
+                itemCount: documents.length,
+                itemBuilder: (context, index) {
                   final CurrentStepDocumentItem document = documents[index];
                   return Container(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -149,34 +150,35 @@ class StageDocsTab extends StatelessWidget {
                         BlocBuilder<StageDocsBloc, AppState>(
                           builder: (context, state) {
                             final bloc = context.read<StageDocsBloc>();
+                            final documentId = document.id ?? 0;
+                            final formKey = bloc.getFormKey(documentId);
+                            final controller = bloc.getCommentController(documentId);
+                            final isAdding = state is Adding;
+                            
+                            if (formKey == null || controller == null || documentId == 0) {
+                              return const SizedBox.shrink();
+                            }
+                            
                             return Form(
-                              key: bloc.formKey,
+                              key: formKey,
                               child: CustomTextField(
                                 verticalPadding: 0,
-                                isReadOnly: state is Adding,
-                                color: state is Adding
+                                isReadOnly: isAdding,
+                                color: isAdding
                                     ? context.color.outline
                                     : null,
                                 contentPadding: EdgeInsets.symmetric(
                                   horizontal: 16.w,
                                   vertical: 8.h,
                                 ),
-                                controller: bloc.getCommentController(
-                                  document.id ?? 0,
-                                ),
+                                controller: controller,
                                 validation: NotEmptyValidator.notEmptyValidator,
                                 suffixWidget: InkWell(
                                   onTap: () {
                                     bloc.add(
                                       AddDocumentComment(
-                                        stepDocumentId: document.id ?? 0,
-                                        text:
-                                            bloc
-                                                .getCommentController(
-                                                  document.id ?? 0,
-                                                )
-                                                ?.text ??
-                                            '',
+                                        stepDocumentId: documentId,
+                                        text: controller.text,
                                       ),
                                     );
                                   },
@@ -184,7 +186,7 @@ class StageDocsTab extends StatelessWidget {
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 6,
                                     ),
-                                    child: state is Adding
+                                    child: isAdding
                                         ? SizedBox(
                                             width: 20,
                                             height: 20,
@@ -209,7 +211,7 @@ class StageDocsTab extends StatelessWidget {
                       ],
                     ),
                   );
-                }),
+                },
               );
             })(),
 

@@ -6,12 +6,17 @@ class ProjectCategoriesProgressModel extends SingleMapper {
   double? progress;
   Color? color;
 
-  ProjectCategoriesProgressModel({this.id, this.name, this.progress , this.color});
+  ProjectCategoriesProgressModel({
+    this.id,
+    this.name,
+    this.progress,
+    this.color,
+  });
 
   ProjectCategoriesProgressModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
-    progress = json['progress'];
+    progress = (json['progress'] is! double) ? 0.0 : json['progress'];
     color = json['color'];
   }
 

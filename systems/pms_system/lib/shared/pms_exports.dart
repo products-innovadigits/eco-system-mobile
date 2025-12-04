@@ -13,7 +13,6 @@ export 'package:pms_system/project_categories_progress/model/project_categories_
 export 'package:pms_system/project_categories_progress/model/projects_progress_model.dart';
 export 'package:pms_system/project_categories_progress/repo/project_categories_progress_repo.dart';
 export 'package:pms_system/project_categories_progress/view/project_category_progress_section.dart';
-export 'package:pms_system/project_categories_progress/widgets/project_categories_chart.dart';
 export 'package:pms_system/project_details/bloc/project_details_bloc.dart';
 export 'package:pms_system/project_details/model/project_details_model.dart';
 export 'package:pms_system/project_details/repo/project_details_repo.dart';

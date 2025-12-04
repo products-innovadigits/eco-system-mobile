@@ -10,7 +10,8 @@ class StageDocsBloc extends Bloc<AppEvent, AppState> {
 
   // Map to store TextEditingController for each document
   final Map<int, TextEditingController> _commentControllers = {};
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  // Map to store FormKey for each document
+  final Map<int, GlobalKey<FormState>> _formKeys = {};
   CurrentStepDocumentData? currentStepDocumentData;
 
 
@@ -47,7 +48,8 @@ class StageDocsBloc extends Bloc<AppEvent, AppState> {
     AddDocumentComment event,
     Emitter<AppState> emit,
   ) async {
-    if (!formKey.currentState!.validate()) return;
+    final formKey = _formKeys[event.stepDocumentId];
+    if (formKey == null || !formKey.currentState!.validate()) return;
     emit(Adding());
     try {
       // Add comment using the document ID
@@ -76,7 +78,7 @@ class StageDocsBloc extends Bloc<AppEvent, AppState> {
     }
   }
 
-  /// Initialize TextEditingController for each document
+  /// Initialize TextEditingController and FormKey for each document
   void _initializeCommentControllers() {
     _disposeControllers();
 
@@ -84,23 +86,38 @@ class StageDocsBloc extends Bloc<AppEvent, AppState> {
       for (CurrentStepDocumentItem? document
           in currentStepDocumentData!.items!) {
         if (document?.id != null) {
-          _commentControllers[document!.id!] = TextEditingController();
+          final documentId = document!.id!;
+          _commentControllers[documentId] = TextEditingController();
+          _formKeys[documentId] = GlobalKey<FormState>();
         }
       }
     }
   }
 
   /// Get TextEditingController for a specific document
+  /// Creates one if it doesn't exist (lazy initialization)
   TextEditingController? getCommentController(int documentId) {
-    return _commentControllers[documentId];
+    if (documentId == 0) return null;
+    return _commentControllers.putIfAbsent(
+      documentId,
+      () => TextEditingController(),
+    );
   }
 
-  /// Dispose all controllers
+  /// Get FormKey for a specific document
+  /// Creates one if it doesn't exist (lazy initialization)
+  GlobalKey<FormState>? getFormKey(int documentId) {
+    if (documentId == 0) return null;
+    return _formKeys.putIfAbsent(documentId, () => GlobalKey<FormState>());
+  }
+
+  /// Dispose all controllers and form keys
   void _disposeControllers() {
     for (var controller in _commentControllers.values) {
       controller.dispose();
     }
     _commentControllers.clear();
+    _formKeys.clear();
   }
 
   @override

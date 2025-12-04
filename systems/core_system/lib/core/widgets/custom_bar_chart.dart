@@ -112,7 +112,8 @@ class CustomBarChart extends StatelessWidget {
     int index,
   ) {
     final progress = (item.progress ?? 0).clamp(0, 100);
-    final Color color = LightColor.projectCategoryColors[index];
+    final Color color = LightColor
+        .projectCategoryColors[index % LightColor.projectCategoryColors.length];
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
