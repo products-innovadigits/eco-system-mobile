@@ -11,6 +11,9 @@ on:
         description: 'Comma-separated list of active systems (e.g. strategy,ats,pms)'
         required: true
         default: 'strategy,ats,pms'
+      release_name:
+        description: 'Release name (e.g. v1.2.3-clientX)'
+        required: true
 
 jobs:
   build:
@@ -24,7 +27,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.32.2'
-      
+
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
@@ -42,7 +45,7 @@ jobs:
 
       - name: Debug systems input
         run: echo "🚀 ACTIVE_SYSTEMS='${{ github.event.inputs.systems }}'"
-      
+
       - name: Check key.properties
         working-directory: android
         run: |
@@ -71,7 +74,7 @@ jobs:
             --dart-define=ACTIVE_SYSTEMS="${{ github.event.inputs.systems }}" \
             --verbose 2>&1 | tee build.log || (echo "Build failed, checking logs..." && cat build.log && exit 1)
         continue-on-error: false
-      
+
       - name: Capture build logs (if build fails)
         if: failure()
         run: |
@@ -86,7 +89,7 @@ jobs:
           if [ -f build.log ]; then
             grep -i -A 20 "error\|exception\|failure\|failed" build.log | head -100 || echo "No obvious errors found in grep"
           fi
-      
+
       - name: Capture Gradle errors (if build fails)
         if: failure()
         working-directory: android
@@ -117,5 +120,8 @@ jobs:
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           ACTIVE_SYSTEMS: ${{ github.event.inputs.systems }}
+          RELEASE_NAME: ${{ github.event.inputs.release_name }}
         run: |
-          fastlane android distribute_ci test_email:${{ github.event.inputs.test_email }}
+          fastlane android distribute_ci \
+            test_email:${{ github.event.inputs.test_email }} \
+            release_name:${{ github.event.inputs.release_name }}
