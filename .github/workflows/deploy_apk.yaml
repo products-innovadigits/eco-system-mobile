@@ -123,5 +123,6 @@ jobs:
           RELEASE_NAME: ${{ github.event.inputs.release_name }}
         run: |
           fastlane android distribute_ci \
-            test_email:${{ github.event.inputs.test_email }} \
-            release_name:${{ github.event.inputs.release_name }}
+            test_email:"${{ github.event.inputs.test_email }}" \
+            release_name:"${{ github.event.inputs.release_name }}"
+      
