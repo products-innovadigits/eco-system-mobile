@@ -44,7 +44,7 @@ class WorkflowProcessDetailsView extends StatelessWidget {
               // Only show button if data is loaded
               if (state is Done && bloc.stageDocsData?.workFlowStatus != null) {
                 final workflowStatus = bloc.stageDocsData?.workFlowStatus;
-                final isStart = workflowStatus == 'start';
+                final isStart = workflowStatus == 'NotStarted';
 
                 return BlocBuilder<WorkflowProcessDetailsBloc, AppState>(
                   builder: (context, state) {
@@ -77,6 +77,12 @@ class WorkflowProcessDetailsView extends StatelessWidget {
                             workflowStatus!,
                           ).withValues(alpha: isStart ? null : 0.1),
                           borderRadius: BorderRadius.circular(isStart ? 8 : 25),
+                          border: Border.all(
+                            color: isStart
+                                ? context.color.primary
+                                : Colors.transparent,
+                            width: 1,
+                          ),
                         ),
                         child: Row(
                           children: [
@@ -84,7 +90,7 @@ class WorkflowProcessDetailsView extends StatelessWidget {
                               getStatusName(workflowStatus),
                               style: context.textTheme.bodySmall?.copyWith(
                                 color: isStart
-                                    ? context.color.onPrimary
+                                    ? context.color.primary
                                     : getStatusColor(workflowStatus),
                                 fontSize: FontSizes.f10,
                               ),
@@ -123,13 +129,13 @@ class WorkflowProcessDetailsView extends StatelessWidget {
 }
 
 Color getStatusColor(String workflowStatus) => switch (workflowStatus) {
-  'start' => LightColor.primary,
+  'NotStarted' => Colors.transparent,
   'InProgress' => LightColor.secondary,
   _ => LightColor.tertiary,
 };
 
 String getStatusName(String workflowStatus) => switch (workflowStatus) {
-  'start' => allTranslations.text(LocaleKeys.start_process),
+  'NotStarted' => allTranslations.text(LocaleKeys.start_process),
   'InProgress' => allTranslations.text(LocaleKeys.in_progress),
   _ => allTranslations.text(LocaleKeys.done),
 };
