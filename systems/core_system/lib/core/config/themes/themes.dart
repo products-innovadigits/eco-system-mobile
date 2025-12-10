@@ -23,7 +23,7 @@ ThemeData buildLightTheme() {
       outlineVariant: LightColor.placeHolderText,
       onPrimary: LightColor.white,
       error: LightColor.error,
-      errorContainer: LightColor.warning
+      errorContainer: LightColor.warning,
     ),
     brightness: Brightness.light,
     primaryColor: LightColor.primary,
@@ -32,7 +32,7 @@ ThemeData buildLightTheme() {
     secondaryHeaderColor: LightColor.secondary,
     canvasColor: LightColor.white,
     scaffoldBackgroundColor: LightColor.scaffoldBg,
-    bottomAppBarTheme: const BottomAppBarTheme(
+    bottomAppBarTheme: const BottomAppBarThemeData(
       color: LightColor.white,
       elevation: 10,
     ),
@@ -42,9 +42,7 @@ ThemeData buildLightTheme() {
     splashColor: LightColor.white,
     unselectedWidgetColor: LightColor.white,
     disabledColor: LightColor.primary.withOpacity(0.3),
-    toggleButtonsTheme:  ToggleButtonsThemeData(
-      color: LightColor.secondary,
-    ),
+    toggleButtonsTheme: ToggleButtonsThemeData(color: LightColor.secondary),
     dialogBackgroundColor: LightColor.white,
     indicatorColor: LightColor.primary,
     hintColor: LightColor.primary,
@@ -71,15 +69,9 @@ ThemeData buildLightTheme() {
       labelMedium: AppTypography.labelMedium,
       labelSmall: AppTypography.labelSmall,
     ),
-    primaryIconTheme:  IconThemeData(
-      color: LightColor.primary,
-    ),
-    buttonTheme: base.buttonTheme.copyWith(
-      buttonColor: LightColor.primary,
-    ),
-    iconTheme: base.iconTheme.copyWith(
-      color: LightColor.white,
-    ),
+    primaryIconTheme: IconThemeData(color: LightColor.primary),
+    buttonTheme: base.buttonTheme.copyWith(buttonColor: LightColor.primary),
+    iconTheme: base.iconTheme.copyWith(color: LightColor.white),
     sliderTheme: const SliderThemeData().copyWith(
       valueIndicatorColor: LightColor.secondary,
       showValueIndicator: ShowValueIndicator.always,
@@ -91,7 +83,7 @@ ThemeData buildLightTheme() {
       backgroundColor: LightColor.white,
       foregroundColor: LightColor.white,
       surfaceTintColor: LightColor.white,
-      titleTextStyle:  TextStyle(
+      titleTextStyle: TextStyle(
         fontSize: 16,
         color: LightColor.primary,
         fontWeight: FontWeight.w700,
@@ -112,34 +104,18 @@ ThemeData buildLightTheme() {
     ),
     inputDecorationTheme: InputDecorationTheme(
       isDense: true,
-      hintStyle: const TextStyle(
-        fontSize: 14,
-        color: LightColor.grey,
-      ),
-      contentPadding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 16,
-      ),
+      hintStyle: const TextStyle(fontSize: 14, color: LightColor.grey),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(
-          color: LightColor.greyLight,
-        ),
+        borderSide: const BorderSide(color: LightColor.greyLight),
       ),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
     ),
     dataTableTheme: DataTableThemeData(
-      dataRowColor: MaterialStateProperty.all(
-        LightColor.error,
-      ),
-      headingRowColor: MaterialStateProperty.all(
-        LightColor.white,
-      ),
-      headingTextStyle:  TextStyle(
-        color: LightColor.error,
-      ),
+      dataRowColor: MaterialStateProperty.all(LightColor.error),
+      headingRowColor: MaterialStateProperty.all(LightColor.white),
+      headingTextStyle: TextStyle(color: LightColor.error),
     ),
     snackBarTheme: base.snackBarTheme.copyWith(
       actionTextColor: LightColor.secondary,
@@ -148,9 +124,7 @@ ThemeData buildLightTheme() {
       style: OutlinedButton.styleFrom(foregroundColor: LightColor.grey),
     ),
     radioTheme: RadioThemeData(
-      fillColor: MaterialStateProperty.all(
-        LightColor.primary,
-      ),
+      fillColor: MaterialStateProperty.all(LightColor.primary),
     ),
   );
 }
@@ -171,7 +145,7 @@ ThemeData _buildDarkTheme() {
     secondaryHeaderColor: DarkColor.secondary,
     canvasColor: DarkColor.offWhite,
     scaffoldBackgroundColor: DarkColor.black,
-    bottomAppBarTheme: const BottomAppBarTheme(color: DarkColor.offWhite),
+    bottomAppBarTheme: const BottomAppBarThemeData(color: DarkColor.offWhite),
     cardColor: DarkColor.offWhite,
     dividerColor: DarkColor.grey,
     highlightColor: DarkColor.grey,
@@ -187,18 +161,10 @@ ThemeData _buildDarkTheme() {
     primaryTextTheme: Typography.material2018(
       platform: TargetPlatform.iOS,
     ).white,
-    textTheme: Typography.material2018(
-      platform: TargetPlatform.iOS,
-    ).white,
-    primaryIconTheme: const IconThemeData(
-      color: DarkColor.grey,
-    ),
-    buttonTheme: base.buttonTheme.copyWith(
-      buttonColor: Colors.orange,
-    ),
-    iconTheme: base.iconTheme.copyWith(
-      color: DarkColor.primary,
-    ),
+    textTheme: Typography.material2018(platform: TargetPlatform.iOS).white,
+    primaryIconTheme: const IconThemeData(color: DarkColor.grey),
+    buttonTheme: base.buttonTheme.copyWith(buttonColor: Colors.orange),
+    iconTheme: base.iconTheme.copyWith(color: DarkColor.primary),
     sliderTheme: const SliderThemeData().copyWith(
       valueIndicatorColor: DarkColor.secondary,
       showValueIndicator: ShowValueIndicator.always,
@@ -221,18 +187,9 @@ ThemeData _buildDarkTheme() {
     ),
     inputDecorationTheme: InputDecorationTheme(
       isDense: true,
-      hintStyle: const TextStyle(
-        fontSize: 12,
-        color: DarkColor.grey,
-      ),
-      labelStyle: const TextStyle(
-        fontSize: 14,
-        color: DarkColor.primary,
-      ),
-      contentPadding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 16,
-      ),
+      hintStyle: const TextStyle(fontSize: 12, color: DarkColor.grey),
+      labelStyle: const TextStyle(fontSize: 14, color: DarkColor.primary),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       floatingLabelStyle: const TextStyle(
         fontSize: 14,
         color: DarkColor.primary,
@@ -252,8 +209,9 @@ ThemeData _buildDarkTheme() {
         TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
       },
     ),
-    snackBarTheme:
-        base.snackBarTheme.copyWith(actionTextColor: DarkColor.secondary),
+    snackBarTheme: base.snackBarTheme.copyWith(
+      actionTextColor: DarkColor.secondary,
+    ),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(foregroundColor: DarkColor.grey),
     ),
