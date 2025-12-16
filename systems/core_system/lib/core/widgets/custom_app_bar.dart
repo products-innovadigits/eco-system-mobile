@@ -83,7 +83,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
     return SafeArea(
       bottom: false,
       child: Container(
-        padding: EdgeInsets.only(right: 16.w, left: 16.w, top: 24.h),
+        padding: EdgeInsets.only(right: 16.w, left: 16.w, top: 16.h),
         decoration: BoxDecoration(
           color: context.color.surfaceContainer,
           border: Border(
@@ -120,12 +120,15 @@ class _CustomAppBarState extends State<CustomAppBar> {
                   ),
                   8.sw,
                 ],
-                Text(
-                  widget.title ?? "",
-                  style: context.textTheme.titleLarge,
-                  textAlign: TextAlign.center,
+                Expanded(
+                  child: Text(
+                    widget.title ?? "",
+                    maxLines: 2,
+                    style: context.textTheme.titleLarge,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-                const Spacer(),
+                SizedBox(width: 8),
                 widget.action ?? SizedBox(width: 16.w),
               ],
             ),

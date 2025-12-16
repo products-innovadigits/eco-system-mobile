@@ -243,26 +243,32 @@ class StepGroupModel extends SingleMapper {
 class StepCommentModel extends SingleMapper {
   int? id;
   String? text;
+  String? filePath;
   String? createdAt;
+  String? createdBy;
   String? updatedAt;
-  CommenterModel? commenter;
+  // CommenterModel? commenter;
 
   StepCommentModel({
     this.id,
     this.text,
+    this.filePath,
     this.createdAt,
+    this.createdBy,
     this.updatedAt,
-    this.commenter,
+    // this.commenter,
   });
 
   StepCommentModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     text = json['text'];
+    filePath = json['filePath'];
     createdAt = json['createdAt'];
+    createdBy = json['createdBy'];
     updatedAt = json['updatedAt'];
-    commenter = json['commenter'] != null
-        ? CommenterModel.fromJson(json['commenter'])
-        : null;
+    // commenter = json['commenter'] != null
+    //     ? CommenterModel.fromJson(json['commenter'])
+    //     : null;
   }
 
   @override
@@ -270,11 +276,13 @@ class StepCommentModel extends SingleMapper {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['text'] = text;
+    data['filePath'] = filePath;
     data['createdAt'] = createdAt;
+    data['createdBy'] = createdBy;
     data['updatedAt'] = updatedAt;
-    if (commenter != null) {
-      data['commenter'] = commenter!.toJson();
-    }
+    // if (commenter != null) {
+    //   data['commenter'] = commenter!.toJson();
+    // }
     return data;
   }
 
@@ -326,48 +334,129 @@ class CommenterModel extends SingleMapper {
 
 class AttachmentModel extends SingleMapper {
   int? id;
-  String? name;
-  String? url;
-  String? type;
-  int? size;
-  String? uploadedAt;
-  String? uploadedBy;
+  String? value;
+  SliceModel? slice;
+  int? sliceId;
+  int? processId;
+  int? projectId;
+  int? projectStepId;
+  String? createdBy;
+  String? createdAt;
+  String? updatedBy;
+  String? updatedAt;
 
   AttachmentModel({
     this.id,
-    this.name,
-    this.url,
-    this.type,
-    this.size,
-    this.uploadedAt,
-    this.uploadedBy,
+    this.value,
+    this.slice,
+    this.sliceId,
+    this.processId,
+    this.projectId,
+    this.projectStepId,
+    this.createdBy,
+    this.createdAt,
+    this.updatedBy,
+    this.updatedAt,
   });
 
   AttachmentModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    name = json['name'];
-    url = json['url'];
-    type = json['type'];
-    size = json['size'];
-    uploadedAt = json['uploadedAt'];
-    uploadedBy = json['uploadedBy'];
+    value = json['value']?.toString();
+    slice = json['slice'] != null ? SliceModel.fromJson(json['slice']) : null;
+    sliceId = json['sliceId'];
+    processId = json['processId'];
+    projectId = json['projectId'];
+    projectStepId = json['projectStepId'];
+    createdBy = json['createdBy'];
+    createdAt = json['createdAt'];
+    updatedBy = json['updatedBy'];
+    updatedAt = json['updatedAt'];
   }
 
   @override
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
-    data['name'] = name;
-    data['url'] = url;
-    data['type'] = type;
-    data['size'] = size;
-    data['uploadedAt'] = uploadedAt;
-    data['uploadedBy'] = uploadedBy;
+    data['value'] = value;
+    if (slice != null) {
+      data['slice'] = slice!.toJson();
+    }
+    data['sliceId'] = sliceId;
+    data['processId'] = processId;
+    data['projectId'] = projectId;
+    data['projectStepId'] = projectStepId;
+    data['createdBy'] = createdBy;
+    data['createdAt'] = createdAt;
+    data['updatedBy'] = updatedBy;
+    data['updatedAt'] = updatedAt;
     return data;
   }
 
   @override
   Mapper fromJson(Map<String, dynamic> json) {
     return AttachmentModel.fromJson(json);
+  }
+}
+
+class SliceModel extends SingleMapper {
+  int? id;
+  String? title;
+  String? type;
+  int? viewOrder;
+  String? defaultValue;
+  int? workFlowStepId;
+  bool? isRequired;
+  bool? isActive;
+  List<dynamic>? sliceOptions;
+
+  SliceModel({
+    this.id,
+    this.title,
+    this.type,
+    this.viewOrder,
+    this.defaultValue,
+    this.workFlowStepId,
+    this.isRequired,
+    this.isActive,
+    this.sliceOptions,
+  });
+
+  SliceModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+    type = json['type'];
+    viewOrder = json['viewOrder'];
+    defaultValue = json['defaultValue']?.toString();
+    workFlowStepId = json['workFlowStepId'];
+    isRequired = json['isRequired'];
+    isActive = json['isActive'];
+    if (json['sliceOptions'] != null) {
+      sliceOptions = <dynamic>[];
+      (json['sliceOptions'] as List).forEach((v) {
+        sliceOptions!.add(v);
+      });
+    }
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['type'] = type;
+    data['viewOrder'] = viewOrder;
+    data['defaultValue'] = defaultValue;
+    data['workFlowStepId'] = workFlowStepId;
+    data['isRequired'] = isRequired;
+    data['isActive'] = isActive;
+    if (sliceOptions != null) {
+      data['sliceOptions'] = sliceOptions!.map((v) => v).toList();
+    }
+    return data;
+  }
+
+  @override
+  Mapper fromJson(Map<String, dynamic> json) {
+    return SliceModel.fromJson(json);
   }
 }

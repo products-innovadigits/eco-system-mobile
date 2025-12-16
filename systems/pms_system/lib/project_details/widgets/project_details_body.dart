@@ -1,12 +1,9 @@
-import 'dart:developer';
-
-import 'package:pms_system/project_details/model/timeline_project_model.dart';
-import 'package:pms_system/project_details/widgets/tabs/timeline_tab/project_timeline_tab.dart';
-import 'package:pms_system/project_details/widgets/tabs/timeline_tab/timeline_widget.dart';
 import 'package:pms_system/project_details/widgets/tabs/project_details_tabs_section.dart';
 import 'package:pms_system/project_details/widgets/tabs/project_main_info_tab.dart';
+import 'package:pms_system/project_details/widgets/tabs/timeline_tab/project_timeline_tab.dart';
 import 'package:pms_system/project_details/widgets/tabs/workflow_tab/project_workflow_tab.dart';
 import 'package:pms_system/shared/pms_exports.dart';
+import 'package:pms_system/shared/widgets/shimmer/custom_details_shimmer_loading.dart';
 
 class ProjectDetailsBody extends StatelessWidget {
   const ProjectDetailsBody({super.key});
@@ -24,7 +21,7 @@ class ProjectDetailsBody extends StatelessWidget {
         );
         return switch (state) {
           // ── Loading ─────────────────────────
-          Loading() => _buildShimmerLoading(context),
+          Loading() => const CustomDetailsShimmerLoading(),
 
           // ── Done ────────────────────────────
           Done(:final ProjectDetailsModel model) => _ProjectBody(
@@ -36,10 +33,7 @@ class ProjectDetailsBody extends StatelessWidget {
           Empty() => const EmptyContainer(),
 
           // ── Error / fallback ────────────────
-          _ => EmptyContainer(
-            txt: allTranslations.text(LocaleKeys.something_went_wrong),
-            img: Assets.svgs.error.path,
-          ),
+          _ => const ErrorContainer(),
         };
       },
     );
@@ -71,22 +65,6 @@ class _ProjectBody extends StatelessWidget {
     );
   }
 }
-
-Widget _buildShimmerLoading(BuildContext context) => Padding(
-  padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
-  child: Column(
-    children: [
-      CustomShimmerContainer(height: 120.h),
-      Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: Divider(color: context.color.outline, thickness: 1.0),
-      ),
-      CustomShimmerContainer(height: context.h * 0.3, width: context.w),
-      SizedBox(height: 8),
-      CustomShimmerContainer(height: context.h * 0.3, width: context.w),
-    ],
-  ),
-);
 
 Widget _getTabSection(
   ProjectDetailsEnum selectedTab,

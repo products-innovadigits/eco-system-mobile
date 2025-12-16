@@ -6,7 +6,11 @@ class ViewCommentSection extends StatelessWidget {
   final DocumentComment documentComment;
   final int stepDocumentId;
 
-  const ViewCommentSection({super.key, required this.documentComment, required this.stepDocumentId});
+  const ViewCommentSection({
+    super.key,
+    required this.documentComment,
+    required this.stepDocumentId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +25,7 @@ class ViewCommentSection extends StatelessWidget {
                 style: context.textTheme.labelSmall,
               ),
             ),
+            SizedBox(width: 8),
             InkWell(
               onTap: () => _onDeleteComment(context, bloc, documentComment),
               child: Images(image: Assets.svgs.trash.path, width: 15),
@@ -37,15 +42,14 @@ class ViewCommentSection extends StatelessWidget {
   }
 }
 
-
 // anas.taher@innovaDigits.com
 // 1020304050Aa
 
 void _onDeleteComment(
-    BuildContext context,
-    DocCommentsBloc bloc,
-    DocumentComment documentComment,
-    ) => showDialog(
+  BuildContext context,
+  DocCommentsBloc bloc,
+  DocumentComment documentComment,
+) => showDialog(
   context: context,
   builder: (_) => AlertDialog(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),

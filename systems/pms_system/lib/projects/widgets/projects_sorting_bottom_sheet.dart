@@ -14,38 +14,29 @@ class ProjectsSortingBottomSheet extends StatelessWidget {
         final sortingBloc = context.read<ProjectsSortingBloc>();
         return Stack(
           children: [
-            Column(
-              children: [
-                BottomSheetHeader(title: allTranslations.text(LocaleKeys.sort)),
-                24.sh,
-                state is SortingLoading
-                    ? ShimmerCardsList(
-                        itemCount: 4,
-                        cardHeight: 30,
-                        listPadding: 0,
-                      )
-                    : ListAnimator(
-                        separatorPadding: 16.h,
-                        data: List.generate(
-                          sortingBloc.sortingOptions.length,
-                          (index) => CustomSortTileWidget(
-                            title: sortingBloc.sortingOptions[index].name ?? '',
-                            isSelected:
-                                sortingBloc.selectedOption?.key ==
-                                sortingBloc.sortingOptions[index].key,
-                            onSelect: () {
-                              sortingBloc.add(
-                                SelectSortingOption(
-                                  arguments: sortingBloc.sortingOptions[index],
-                                ),
-                              );
-                            },
-                          ),
-                        ),
+            state is SortingLoading
+                ? ShimmerCardsList(itemCount: 4, cardHeight: 40, listPadding: 0)
+                : ListAnimator(
+                    separatorPadding: 16.h,
+                    customPadding: EdgeInsets.only(bottom: context.h * 0.1),
+                    data: List.generate(
+                      sortingBloc.sortingOptions.length,
+                      (index) => CustomSortTileWidget(
+                        title: sortingBloc.sortingOptions[index].name ?? '',
+                        isSelected:
+                            sortingBloc.selectedOption?.key ==
+                            sortingBloc.sortingOptions[index].key,
+                        onSelect: () {
+                          sortingBloc.add(
+                            SelectSortingOption(
+                              arguments: sortingBloc.sortingOptions[index],
+                            ),
+                          );
+                        },
                       ),
-                80.sh,
-              ],
-            ),
+                    ),
+                  ),
+            80.sh,
             if (state is SortingOptionsLoaded ||
                 state is SortingOptionSelected ||
                 state is SortingApplied)

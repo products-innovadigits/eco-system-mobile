@@ -81,6 +81,7 @@ class StageDocsTab extends StatelessWidget {
                                 style: context.textTheme.labelSmall,
                               ),
                             ),
+                            SizedBox(width: 8),
                             _DocActionCardWidget(
                               icon: Assets.svgs.exporting.path,
                               onTap: () =>
@@ -94,6 +95,9 @@ class StageDocsTab extends StatelessWidget {
                                   Click(arguments: document.id),
                                 );
                                 PopUpHelper.showBottomSheet(
+                                  header: allTranslations.text(
+                                    LocaleKeys.view_comments,
+                                  ),
                                   child: BlocProvider.value(
                                     value: docCommentsBloc,
                                     child: ViewCommentsBottomSheet(
@@ -122,27 +126,31 @@ class StageDocsTab extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(width: 4),
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  allTranslations.text(
-                                    LocaleKeys.operation_name,
+                            Expanded(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    allTranslations.text(
+                                      LocaleKeys.operation_name,
+                                    ),
+                                    style: context.textTheme.bodySmall
+                                        ?.copyWith(
+                                          fontSize: FontSizes.f10,
+                                          color: context.color.outlineVariant,
+                                        ),
                                   ),
-                                  style: context.textTheme.bodySmall?.copyWith(
-                                    fontSize: FontSizes.f10,
-                                    color: context.color.outlineVariant,
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    processName,
+                                    style: context.textTheme.labelSmall
+                                        ?.copyWith(fontSize: FontSizes.f10),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
                                   ),
-                                ),
-                                const SizedBox(height: 2),
-                                Text(
-                                  processName,
-                                  style: context.textTheme.labelSmall?.copyWith(
-                                    fontSize: FontSizes.f10,
-                                  ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -152,21 +160,25 @@ class StageDocsTab extends StatelessWidget {
                             final bloc = context.read<StageDocsBloc>();
                             final documentId = document.id ?? 0;
                             final formKey = bloc.getFormKey(documentId);
-                            final controller = bloc.getCommentController(documentId);
-                            final isAdding = state is Adding;
-                            
-                            if (formKey == null || controller == null || documentId == 0) {
+                            final controller = bloc.getCommentController(
+                              documentId,
+                            );
+                            final isAdding =
+                                (state is Adding) &&
+                                bloc.addingDocumentId == documentId;
+
+                            if (formKey == null ||
+                                controller == null ||
+                                documentId == 0) {
                               return const SizedBox.shrink();
                             }
-                            
+
                             return Form(
                               key: formKey,
                               child: CustomTextField(
                                 verticalPadding: 0,
                                 isReadOnly: isAdding,
-                                color: isAdding
-                                    ? context.color.outline
-                                    : null,
+                                color: isAdding ? context.color.outline : null,
                                 contentPadding: EdgeInsets.symmetric(
                                   horizontal: 16.w,
                                   vertical: 8.h,

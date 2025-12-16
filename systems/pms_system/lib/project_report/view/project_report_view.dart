@@ -31,10 +31,12 @@ class ProjectReportView extends StatelessWidget {
                   ? _ExportButton(
                       onTap: () {
                         LauncherHelper.downloadFiles(
-                          (state.model as ProjectReportModel)
+                          filePath:
+                              (state.model as ProjectReportModel)
                                   .data
                                   ?.pdfFileUrl ??
                               '',
+                          context: context,
                         );
                       },
                     )

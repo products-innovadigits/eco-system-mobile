@@ -13,16 +13,9 @@ class ProjectsFilterBottomSheet extends StatelessWidget {
         final projectsBloc = context.read<ProjectsBloc>();
         return Stack(
           children: [
-            Column(
-              children: [
-                BottomSheetHeader(
-                  title: allTranslations.text(LocaleKeys.filtration),
-                ),
-                state is Loading
-                    ? ShimmerCardsList(itemCount: 4, cardHeight: 50 , listPadding: 0)
-                    : ProjectsFilterBottomSheetBody(),
-              ],
-            ),
+            state is Loading
+                ? ShimmerCardsList(itemCount: 4, cardHeight: 50, listPadding: 0)
+                : ProjectsFilterBottomSheetBody(),
             if (state is Done)
               ProjectsFilterButtonsSection(
                 onApplyFilters: () =>

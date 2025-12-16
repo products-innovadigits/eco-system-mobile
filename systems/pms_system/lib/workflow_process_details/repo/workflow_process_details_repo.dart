@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:dio/dio.dart';
+
 import 'package:core_system/core/utility/export.dart';
 import 'package:pms_system/workflow_process_details/model/current_step_document_model.dart';
 import 'package:pms_system/workflow_process_details/model/document_comments_model.dart';
@@ -113,7 +113,7 @@ abstract class WorkflowProcessDetailsRepo {
       'projectStepId': projectStepId,
       // 'processId': 167,
       'processId': processId,
-      'text': text,
+      'text': text.trim(),
       if (file != null)
         'file': await MultipartFile.fromFile(
           file.path,
@@ -136,10 +136,7 @@ abstract class WorkflowProcessDetailsRepo {
     return await Network().request(
       ApiNames.projectProcessStart,
       method: ServerMethods.POST,
-      body: {
-        'projectId': projectId,
-        'processId': processId,
-      },
+      body: {'projectId': projectId, 'processId': processId},
     );
   }
 
@@ -166,9 +163,8 @@ abstract class WorkflowProcessDetailsRepo {
   static Future<CurrentStepDocumentModel> getCurrentStepDocs({
     required int projectId,
     required int projectStepId,
-    required int processId
+    required int processId,
   }) async {
-
     return await Network().request(
       ApiNames.currentStepDocs,
       method: ServerMethods.GET,
@@ -180,7 +176,7 @@ abstract class WorkflowProcessDetailsRepo {
         // 'processId': 167,
         'processId': processId,
       },
-      model: CurrentStepDocumentModel()
+      model: CurrentStepDocumentModel(),
     );
   }
 }

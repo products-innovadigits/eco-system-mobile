@@ -100,7 +100,7 @@ android {
 
     namespace = "com.innova_product.eco_system"
     testNamespace = "com.innova_product.eco_system.test"
-    compileSdk = 35
+    compileSdk = 36
     ndkVersion = "27.0.12077973"
 
     compileOptions {
@@ -119,8 +119,8 @@ android {
 
     defaultConfig {
         applicationId = "com.innova_product.eco_system"
-        minSdk = 23
-        targetSdk = 35
+        minSdkVersion = flutter.minSdkVersion
+        targetSdk = 36
         versionCode = flutterVersionCode.toInteger()
         versionName =  flutterVersionName
         multiDexEnabled = true

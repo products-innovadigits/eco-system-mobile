@@ -506,6 +506,12 @@
       "languageVersion": "3.9"
     },
     {
+      "name": "flutter_screenutil",
+      "rootUri": "file:///Users/macbook/.pub-cache/hosted/pub.dev/flutter_screenutil-5.9.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "flutter_secure_storage",
       "rootUri": "file:///Users/macbook/.pub-cache/hosted/pub.dev/flutter_secure_storage-9.2.4",
       "packageUri": "lib/",

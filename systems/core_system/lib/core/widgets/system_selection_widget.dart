@@ -15,6 +15,7 @@ class SystemSelectionWidget extends StatelessWidget {
   void _showSystemSelectionBottomSheet(BuildContext context) {
     PopUpHelper.showBottomSheet(
       height: 400.h,
+      header: allTranslations.text(LocaleKeys.select_system),
       child: SystemSelectionBottomSheet(
         onSystemSelected: SystemHelper.handleSystemSelection,
       ),
@@ -77,51 +78,46 @@ class SystemSelectionBottomSheet extends StatelessWidget {
       UserBloc.currentActiveSystem,
     );
 
-    return Column(
-      children: [
-        BottomSheetHeader(title: 'أختيار النظام'),
-        ListView.separated(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            final system = systemOptions[index];
-            return InkWell(
-              onTap: () {
-                CustomNavigator.pop();
-                onSystemSelected(system['enum'] as ActiveSystemEnum?);
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                decoration: BoxDecoration(
-                  color: context.color.secondary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        system['name'] as String,
-                        style: context.textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: context.color.secondary,
-                        ),
-                      ),
-                    ),
-                    Images(
-                      image: Assets.svgs.arrowLeft.path,
-                      width: 16,
-                      height: 16,
+    return ListView.separated(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemBuilder: (context, index) {
+        final system = systemOptions[index];
+        return InkWell(
+          onTap: () {
+            CustomNavigator.pop();
+            onSystemSelected(system['enum'] as ActiveSystemEnum?);
+          },
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+            decoration: BoxDecoration(
+              color: context.color.secondary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    system['name'] as String,
+                    style: context.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
                       color: context.color.secondary,
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            );
-          },
-          separatorBuilder: (context, index) => const SizedBox(height: 16),
-          itemCount: systemOptions.length,
-        ),
-      ],
+                Images(
+                  image: Assets.svgs.arrowLeft.path,
+                  width: 16,
+                  height: 16,
+                  color: context.color.secondary,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+      separatorBuilder: (context, index) => const SizedBox(height: 16),
+      itemCount: systemOptions.length,
     );
   }
 }

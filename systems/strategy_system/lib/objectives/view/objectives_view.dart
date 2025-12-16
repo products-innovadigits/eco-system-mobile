@@ -31,6 +31,7 @@ class ObjectivesView extends StatelessWidget {
               searchHintText: allTranslations.text(LocaleKeys.search_hint),
               onFiltering: () {
                 PopUpHelper.showBottomSheet(
+                  header: allTranslations.text(LocaleKeys.candidate),
                   child: BlocProvider.value(
                     value: bloc,
                     child: ObjectivesFilterBottomSheet(),

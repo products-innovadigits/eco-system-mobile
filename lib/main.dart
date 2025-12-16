@@ -13,6 +13,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -35,7 +36,8 @@ void main() async {
 
   if (!kDebugMode) {
     await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform);
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
     await FirebaseNotifications.setUpFirebase();
   }
   await SharedHelper.init();
@@ -69,89 +71,98 @@ class _MyAppState extends State<MyApp> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.light,
         statusBarBrightness: Brightness.dark,
         systemNavigationBarColor: Colors.transparent,
-        systemNavigationBarIconBrightness: Brightness.light));
-    return MultiBlocProvider(
-      providers: ProviderList.providers,
-      child: StreamBuilder<String>(
-        stream: mainAppBloc.langStream,
-        builder: (context, lang) {
-          return lang.hasData
-              ? ConnectivityWrapper(
-            child: BlocBuilder<ThemeCubit, ThemeState>(
-              builder: (context, state) {
-                return MaterialApp(
-                    builder: (context, child) {
-                      return MediaQuery(
-                        data: MediaQuery.of(context).copyWith(
-                          textScaler: const TextScaler.linear(1),
-                        ),
-                        child:
-                        Unfocus(child: child ?? const SizedBox.shrink()),
-                      );
-                    },
-                    initialRoute: Routes.SPLASH,
-                    onGenerateRoute: AppRouter.onGenerateRoute,
-                    navigatorKey: CustomNavigator.navigatorState,
-                    navigatorObservers: [CustomNavigator.routeObserver],
-                    debugShowCheckedModeBanner: false,
-                    scaffoldMessengerKey: CustomNavigator.scaffoldState,
-                    locale: Locale(lang.data!, ''),
-                    supportedLocales: allTranslations.supportedLocales(),
-                    localizationsDelegates: const [
-                      TranslationsDelegate(),
-                      GlobalMaterialLocalizations.delegate,
-                      GlobalWidgetsLocalizations.delegate,
-                      GlobalCupertinoLocalizations.delegate,
-                    ],
-                    title: "Nawah",
-                    themeMode: ThemeMode.light,
-                    // theme: Themes.lightTheme().themeData
-                    theme: state.themeData
-                  // .copyWith(
-                  //   appBarTheme: Themes.lightTheme()
-                  //       .themeData
-                  //       .appBarTheme
-                  //       .copyWith(
-                  //           iconTheme: const IconThemeData(
-                  //             color: LightColor.black,
-                  //           ),
-                  //           titleTextStyle: TextStyle(
-                  //             color: context.color.primary,
-                  //             fontSize: FontSizes.f16,
-                  //             fontWeight: FontWeight.w600,
-                  //             fontFamily: lang.data == 'en'
-                  //                 ? Styles.FONT_EN
-                  //                 : Styles.FONT_AR,
-                  //           ),
-                  //           systemOverlayStyle: SystemUiOverlayStyle(
-                  //             statusBarColor: Colors.transparent,
-                  //             statusBarBrightness: Brightness.dark,
-                  //             statusBarIconBrightness: Brightness.dark,
-                  //             systemNavigationBarColor:
-                  //                 Colors.transparent,
-                  //             systemNavigationBarIconBrightness:
-                  //                 Brightness.dark,
-                  //           )),
-                  //   highlightColor: Colors.transparent,
-                  //   splashColor: Colors.transparent,
-                  //   textTheme:
-                  //       Themes.lightTheme().themeData.textTheme.apply(
-                  //             fontFamily: lang.data == 'en'
-                  //                 ? Styles.FONT_EN
-                  //                 : Styles.FONT_AR,
-                  //           ),
-                  // ),
-                );
-              },
-            ),
-          )
-              : Container();
-        },
+        systemNavigationBarIconBrightness: Brightness.light,
+      ),
+    );
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      child: MultiBlocProvider(
+        providers: ProviderList.providers,
+        child: StreamBuilder<String>(
+          stream: mainAppBloc.langStream,
+          builder: (context, lang) {
+            return lang.hasData
+                ? ConnectivityWrapper(
+                    child: BlocBuilder<ThemeCubit, ThemeState>(
+                      builder: (context, state) {
+                        return MaterialApp(
+                          builder: (context, child) {
+                            return MediaQuery(
+                              data: MediaQuery.of(context).copyWith(
+                                textScaler: const TextScaler.linear(1),
+                              ),
+                              child: Unfocus(
+                                child: child ?? const SizedBox.shrink(),
+                              ),
+                            );
+                          },
+                          initialRoute: Routes.SPLASH,
+                          onGenerateRoute: AppRouter.onGenerateRoute,
+                          navigatorKey: CustomNavigator.navigatorState,
+                          navigatorObservers: [CustomNavigator.routeObserver],
+                          debugShowCheckedModeBanner: false,
+                          scaffoldMessengerKey: CustomNavigator.scaffoldState,
+                          locale: Locale(lang.data!, ''),
+                          supportedLocales: allTranslations.supportedLocales(),
+                          localizationsDelegates: const [
+                            TranslationsDelegate(),
+                            GlobalMaterialLocalizations.delegate,
+                            GlobalWidgetsLocalizations.delegate,
+                            GlobalCupertinoLocalizations.delegate,
+                          ],
+                          title: "Nawah",
+                          themeMode: ThemeMode.light,
+                          // theme: Themes.lightTheme().themeData
+                          theme: state.themeData,
+                          // .copyWith(
+                          //   appBarTheme: Themes.lightTheme()
+                          //       .themeData
+                          //       .appBarTheme
+                          //       .copyWith(
+                          //           iconTheme: const IconThemeData(
+                          //             color: LightColor.black,
+                          //           ),
+                          //           titleTextStyle: TextStyle(
+                          //             color: context.color.primary,
+                          //             fontSize: FontSizes.f16,
+                          //             fontWeight: FontWeight.w600,
+                          //             fontFamily: lang.data == 'en'
+                          //                 ? Styles.FONT_EN
+                          //                 : Styles.FONT_AR,
+                          //           ),
+                          //           systemOverlayStyle: SystemUiOverlayStyle(
+                          //             statusBarColor: Colors.transparent,
+                          //             statusBarBrightness: Brightness.dark,
+                          //             statusBarIconBrightness: Brightness.dark,
+                          //             systemNavigationBarColor:
+                          //                 Colors.transparent,
+                          //             systemNavigationBarIconBrightness:
+                          //                 Brightness.dark,
+                          //           )),
+                          //   highlightColor: Colors.transparent,
+                          //   splashColor: Colors.transparent,
+                          //   textTheme:
+                          //       Themes.lightTheme().themeData.textTheme.apply(
+                          //             fontFamily: lang.data == 'en'
+                          //                 ? Styles.FONT_EN
+                          //                 : Styles.FONT_AR,
+                          //           ),
+                          // ),
+                        );
+                      },
+                    ),
+                  )
+                : Container();
+          },
+        ),
       ),
     );
   }

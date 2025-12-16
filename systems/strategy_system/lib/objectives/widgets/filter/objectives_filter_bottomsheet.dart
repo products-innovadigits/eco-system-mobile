@@ -11,14 +11,7 @@ class ObjectivesFilterBottomSheet extends StatelessWidget {
         final objectivesBloc = context.read<ObjectivesBloc>();
         return Stack(
           children: [
-            Column(
-              children: [
-                BottomSheetHeader(
-                  title: allTranslations.text(LocaleKeys.candidate),
-                ),
-                ObjectivesFilterBottomSheetBody(),
-              ],
-            ),
+            ObjectivesFilterBottomSheetBody(),
             ObjectivesFilterButtonsSection(
               onApplyFilters: () =>
                   filterBloc.applyFilters(objectivesBloc: objectivesBloc),

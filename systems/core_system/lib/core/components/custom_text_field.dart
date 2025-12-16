@@ -22,7 +22,7 @@ class CustomTextField extends StatefulWidget {
   final double verticalPadding, horizontalPadding;
   final int? maxLines;
   final int? minLines;
-  final double? borderWidth, prefixImageHeight, prefixImageWidth;
+  final double? borderWidth, prefixImageHeight, prefixImageWidth, hintSize;
   final List<TextInputFormatter>? inputFormatters;
   final Color? color, hintColor, borderColor;
   final Widget? suffixWidget, prefixWidget;
@@ -67,6 +67,7 @@ class CustomTextField extends StatefulWidget {
     this.textAlign,
     this.isPassword,
     this.hintColor,
+    this.hintSize,
     this.headLabel,
     this.suffixIcon,
     this.suffixWidget,
@@ -241,9 +242,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 hintStyle:
                     widget.hintStyle?.copyWith(
                       color: widget.hintColor ?? context.color.outlineVariant,
+                      fontSize: widget.hintSize,
                     ) ??
                     context.textTheme.bodyMedium?.copyWith(
                       color: widget.hintColor ?? context.color.outlineVariant,
+                      fontSize: widget.hintSize,
                     ),
                 suffixIcon:
                     widget.suffixWidget ??

@@ -41,7 +41,11 @@ abstract class PopUpHelper {
     );
   }
 
-  static showBottomSheet({@required Widget? child, double? height}) {
+  static showBottomSheet({
+    required Widget? child,
+    double? height,
+    String? header,
+  }) {
     return showMaterialModalBottomSheet(
       elevation: 2,
       enableDrag: true,
@@ -57,38 +61,37 @@ abstract class PopUpHelper {
         ),
       ),
       backgroundColor: LightColor.scaffoldBg,
-      // isScrollControlled: true,
       builder: (context) {
         final mediaQuery = MediaQuery.of(context);
         final safeAreaBottom = mediaQuery.padding.bottom;
         final viewInsetsBottom = mediaQuery.viewInsets.bottom;
+        final maxHeight = height ?? context.h * 0.8;
 
         return Padding(
           padding: EdgeInsets.only(bottom: safeAreaBottom + viewInsetsBottom),
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-            constraints: height != null
-                ? BoxConstraints(maxHeight: height)
-                : null,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: context.w * 0.2,
-                  height: 5.h,
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(50),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: maxHeight),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: context.w * 0.2,
+                    height: 4.h,
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(50),
+                    ),
                   ),
-                ),
-                24.sh,
-                Flexible(
-                  child: ListAnimator(
-                    controller: ScrollController(),
-                    data: [child!],
-                  ),
-                ),
-              ],
+                  24.sh,
+                  if (header != null) ...[
+                    BottomSheetHeader(title: header),
+                    16.sh,
+                  ],
+                  Flexible(child: SingleChildScrollView(child: child!)),
+                ],
+              ),
             ),
           ),
         );

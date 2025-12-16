@@ -1,4 +1,6 @@
 import 'package:pms_system/shared/pms_exports.dart';
+import 'package:pms_system/shared/widgets/shimmer/custom_details_shimmer_loading.dart';
+import 'package:pms_system/workflow_process_details/widgets/tabs/technical_log_tab/technical_log_tab.dart';
 
 class ProcessDetailsBody extends StatelessWidget {
   final ProjectDetailsModel projectDetailsModel;
@@ -10,14 +12,14 @@ class ProcessDetailsBody extends StatelessWidget {
     super.key,
     required this.projectDetailsModel,
     required this.processId,
-    required this.stageName, required this.processName,
+    required this.stageName,
+    required this.processName,
   });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Fixed header content
         BlocBuilder<WorkflowProcessDetailsBloc, AppState>(
           builder: (context, state) {
             return state is Loading
@@ -38,7 +40,7 @@ class ProcessDetailsBody extends StatelessWidget {
             );
             return switch (state) {
               // ── Loading ─────────────────────────
-              Loading() => _buildShimmerLoading(context),
+              Loading() => const CustomDetailsShimmerLoading(),
 
               // ── Done ────────────────────────────
               Done(:final WorkflowProcessDetailsModel model) =>
@@ -77,7 +79,6 @@ class _ProcessBody extends StatelessWidget {
   final String stageName;
   final String processName;
 
-
   const _ProcessBody({
     required this.processList,
     required this.selectedTab,
@@ -85,7 +86,7 @@ class _ProcessBody extends StatelessWidget {
     required this.processId,
     required this.stageName,
     required this.projectStepId,
-    required this.processName
+    required this.processName,
   });
 
   @override
@@ -127,7 +128,7 @@ Widget _buildProcessBody({
   required int processId,
   required ProjectDetailsModel projectDetailsModel,
   required String stageName,
-  required String processName
+  required String processName,
 }) {
   final workflowProcessDetailsBloc = context.read<WorkflowProcessDetailsBloc>();
   final stageDocsData = workflowProcessDetailsBloc.stageDocsData;
@@ -143,22 +144,6 @@ Widget _buildProcessBody({
   );
 }
 
-Widget _buildShimmerLoading(BuildContext context) => Padding(
-  padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
-  child: Column(
-    children: [
-      // CustomShimmerContainer(height: 120.h),
-      Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: Divider(color: context.color.outline, thickness: 1.0),
-      ),
-      CustomShimmerContainer(height: context.h * 0.3, width: context.w),
-      SizedBox(height: 8),
-      CustomShimmerContainer(height: context.h * 0.3, width: context.w),
-    ],
-  ),
-);
-
 Widget _getTabSection({
   required ProcessTabsEnum selectedTab,
   required List<WorkflowProcessGroupModel> processList,
@@ -167,7 +152,7 @@ Widget _getTabSection({
   required int projectStepId,
   required String pdfFilePath,
   required int stepDocumentId,
-  required String processName
+  required String processName,
 }) {
   return switch (selectedTab) {
     ProcessTabsEnum.followProcess => FollowProcessTab(processList: processList),
@@ -179,13 +164,10 @@ Widget _getTabSection({
       processName: processName,
     ),
     // ProcessTabsEnum.fields => FieldsTab(),
-    ProcessTabsEnum.history => HistoryTab(
+    ProcessTabsEnum.history => TechnicalLogTab(
       processId: processId,
       projectId: projectId,
     ),
-    _ => ActionsTab(
-      processId: processId,
-      projectId: projectId,
-    ),
+    _ => ActionsTab(processId: processId, projectId: projectId),
   };
 }

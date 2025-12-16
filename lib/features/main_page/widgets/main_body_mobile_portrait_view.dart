@@ -17,10 +17,10 @@ class MainBodyMobilePortraitView extends StatelessWidget {
             if (UserBloc.activeSystems.contains(ActiveSystemEnum.pms)) ...[
               ProjectManagementSection(),
               // ProjectCategoryProgressSection(),
-              if (UserBloc.activeSystems.contains(ActiveSystemEnum.ats)) ...[
-                AvailableJobsSection(),
-                TalentPoolSection(),
-              ],
+              // if (UserBloc.activeSystems.contains(ActiveSystemEnum.ats)) ...[
+              //   AvailableJobsSection(),
+              //   TalentPoolSection(),
+              // ],
               16.sh,
             ],
           ],

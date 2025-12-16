@@ -1,7 +1,6 @@
 import 'package:core_system/core/widgets/nav_app.dart';
 import 'package:pms_system/projects/bloc/projects_sorting_bloc.dart';
-import 'package:pms_system/projects/bloc/projects_sorting_events.dart';
-import 'package:pms_system/projects/widgets/projects_sorting_bottom_sheet.dart';
+import 'package:pms_system/projects/widgets/projects_app_bar_widget.dart';
 import 'package:pms_system/shared/pms_exports.dart';
 
 class ProjectsView extends StatefulWidget {
@@ -25,6 +24,27 @@ class _ProjectsViewState extends State<ProjectsView> {
     });
   }
 
+  void _handleNavigation(int index) {
+    // Handle navigation based on selected index
+    switch (index) {
+      case 0:
+        CustomNavigator.push(Routes.PMS_LAYOUT);
+        break;
+      case 1:
+        /* Navigate to reports */
+        break;
+      case 2:
+        /* Navigate to notifications */
+        break;
+    }
+
+    if (_selectedIndex != index) {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -40,51 +60,14 @@ class _ProjectsViewState extends State<ProjectsView> {
           },
         ),
       ],
-      child: BlocBuilder<ProjectsBloc, AppState>(
-        builder: (context, state) {
+      child: Builder(
+        builder: (context) {
           final bloc = context.read<ProjectsBloc>();
           final sortingBloc = context.read<ProjectsSortingBloc>();
-          final projectsFiltrationBloc = ProjectsFiltrationBloc.instance;
           return Scaffold(
-            appBar: CustomAppBar(
-              title: allTranslations.text(LocaleKeys.projects),
-              withSearch: true,
-              withFilter: true,
-              isFiltered: projectsFiltrationBloc.isFilterApplied,
-              isSorted: sortingBloc.hasAppliedSorting,
-              withSorting: true,
-              withCancelBtn: true,
-              onSearching: (value) =>
-                  bloc.add(Click(arguments: SearchEngine())),
-              onCanceling: () => bloc.add(Click(arguments: SearchEngine())),
-              searchController: bloc.searchTEC,
-              searchHintText: allTranslations.text(LocaleKeys.search_hint),
-              onFiltering: () {
-                if (!projectsFiltrationBloc.isFilterApplied) {
-                  projectsFiltrationBloc.resetFilters(projectsBloc: bloc);
-                }
-                projectsFiltrationBloc.loadFilterOptions();
-                PopUpHelper.showBottomSheet(
-                  child: BlocProvider.value(
-                    value: bloc,
-                    child: ProjectsFilterBottomSheet(),
-                  ),
-                );
-              },
-              onSorting: () {
-                // Clear selection if no applied sorting
-                if (!sortingBloc.hasAppliedSorting) {
-                  sortingBloc.add(ClearSortingSelection());
-                }
-                // Load sorting options
-                sortingBloc.add(LoadSortingOptions());
-                PopUpHelper.showBottomSheet(
-                  child: BlocProvider.value(
-                    value: sortingBloc,
-                    child: const ProjectsSortingBottomSheet(),
-                  ),
-                );
-              },
+            appBar: ProjectsAppBarWidget(
+              bloc: bloc,
+              sortingBloc: sortingBloc,
             ),
             body: SafeArea(
               child: BlocBuilder<ProjectsBloc, AppState>(
@@ -93,19 +76,15 @@ class _ProjectsViewState extends State<ProjectsView> {
                     // Loading…
                     Loading() => const ShimmerCardsList(),
 
-                    // SOLUTION 1: Handle Done state with data models instead of widgets
+                    // Handle Done state with data models
                     Done(:final list, :final loading) when list != null => Column(
                       children: [
                         Expanded(
                           child: ListAnimator(
-                            customPadding: EdgeInsets.symmetric(
-                              horizontal: 16.w,
-                            ),
+                            customPadding: EdgeInsets.symmetric(horizontal: 16.w),
                             controller: context
                                 .read<ProjectsBloc>()
                                 .scrollController,
-                            // SOLUTION 1: Build widgets from data models in the UI layer
-                            // This allows Flutter to optimize widget rebuilding
                             data: (list as List<ProjectDetailsModel>)
                                 .map((project) => ProjectCard(project: project))
                                 .toList(),
@@ -115,85 +94,66 @@ class _ProjectsViewState extends State<ProjectsView> {
                       ],
                     ),
 
-                    // Fallback for old Done state with cards (for backward compatibility)
-                    Done(:final cards, :final loading) when cards != null =>
-                      Column(
-                        children: [
-                          Expanded(
-                            child: ListAnimator(
-                              customPadding: EdgeInsets.symmetric(
-                                horizontal: 16.w,
-                              ),
-                              controller: context
-                                  .read<ProjectsBloc>()
-                                  .scrollController,
-                              data: cards,
-                            ),
-                          ),
-                          CustomLoading(isTextLoading: true, loading: loading),
-                        ],
-                      ),
-
                     // Empty
-                    Empty(:final initial) => SizedBox(
-                      height: context.h * 0.6,
-                      child: EmptyContainer(
-                        txt: initial == true
-                            ? null
-                            : (bloc.searchTEC != null &&
-                                  bloc.searchTEC!.text.isEmpty)
-                            ? allTranslations.text(
-                                LocaleKeys.no_projects_match_your_filters,
-                              )
-                            : '${allTranslations.text(LocaleKeys.no_projects_match)} \' ${bloc.searchTEC!.text} \'',
-                      ),
+                    Empty(:final initial) => _HandleEmptyList(
+                      initial: initial,
+                      bloc: bloc,
                     ),
 
                     // Fallback (in case error occurs or something else)
-                    _ => RefreshIndicator(
-                      onRefresh: () async {
-                        context.read<ProjectsBloc>().add(Refresh());
-                      },
-                      child: SingleChildScrollView(
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        child: SizedBox(
-                          height: context.h * 0.6,
-                          child: EmptyContainer(
-                            img: Assets.svgs.error.path,
-                            txt: allTranslations.text(
-                              LocaleKeys.something_went_wrong,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    _ => _HandleErrorState(bloc: bloc),
                   };
                 },
               ),
             ),
+            // ✅ PERFORMANCE OPTIMIZATION: BottomNav outside BlocBuilder
+            // Only rebuilds when _selectedIndex changes, not on ProjectsBloc state changes
             bottomNavigationBar: NavApp(
               index: _selectedIndex,
-              onSelect: (index) {
-                // Handle navigation based on selected index
-                switch (index) {
-                  case 0:
-                    CustomNavigator.push(Routes.PMS_LAYOUT);
-                    break;
-                  case 1:
-                    /* Navigate to reports */
-                    break;
-                  case 2:
-                    /* Navigate to notifications */
-                    break;
-                }
-
-                setState(() {
-                  _selectedIndex = index;
-                });
-              },
+              onSelect: _handleNavigation,
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _HandleEmptyList extends StatelessWidget {
+  final bool? initial;
+  final ProjectsBloc bloc;
+
+  const _HandleEmptyList({required this.initial, required this.bloc});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: context.h * 0.6,
+      child: EmptyContainer(
+        txt: initial == true
+            ? null
+            : (bloc.searchTEC != null && bloc.searchTEC!.text.isEmpty)
+            ? allTranslations.text(LocaleKeys.no_projects_match_your_filters)
+            : '${allTranslations.text(LocaleKeys.no_projects_match)} \' ${bloc.searchTEC!.text} \'',
+      ),
+    );
+  }
+}
+
+class _HandleErrorState extends StatelessWidget {
+  final ProjectsBloc bloc;
+
+  const _HandleErrorState({required this.bloc});
+
+  @override
+  Widget build(BuildContext context) {
+    return RefreshIndicator(
+      onRefresh: () async {
+        bloc.add(Refresh());
+      },
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: SizedBox(height: context.h * 0.6, child: const ErrorContainer()),
       ),
     );
   }

@@ -5,92 +5,63 @@ import 'package:pms_system/workflow_process_details/widgets/tabs/stage_docs_tab/
 
 class ViewCommentsBottomSheet extends StatelessWidget {
   final int stepDocumentId;
+
   const ViewCommentsBottomSheet({super.key, required this.stepDocumentId});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        BottomSheetHeader(
-          title: allTranslations.text(LocaleKeys.view_comments),
-        ),
-        const SizedBox(height: 24),
-        BlocBuilder<DocCommentsBloc, AppState>(
-          buildWhen: (previous, current) =>
-              current is! Deleting && current is! Editing,
-          builder: (context, state) {
-            final bloc = context.read<DocCommentsBloc>();
-            return switch (state) {
-              // ── Loading ─────────────────────────
-              Loading() => _buildingShimmerList(),
+    return BlocBuilder<DocCommentsBloc, AppState>(
+      buildWhen: (previous, current) =>
+          current is! Deleting && current is! Editing,
+      builder: (context, state) {
+        final bloc = context.read<DocCommentsBloc>();
+        return switch (state) {
+          // ── Loading ─────────────────────────
+          Loading() => _buildingShimmerList(),
 
-              // ── Done ────────────────────────────
-              Done(:final data) => Stack(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    child: ListAnimator(
-                      separatorPadding: 12,
-                      data: List.generate(
-                        ((data as CommentsData?)?.items ?? []).length,
-                        (index) {
-                          final DocumentComment documentComment =
-                              (data as CommentsData).items?[index] ??
-                              DocumentComment();
-                          return Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 16,
-                            ),
-                            decoration: BoxDecoration(
-                              color: context.color.surfaceContainer,
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color: context.color.outline),
-                            ),
-                            child:
-                                bloc.isCommentBeingEdited(
-                                  documentComment.id ?? 0,
-                                )
-                                ? EditCommentSection(
-                                    documentComment: documentComment,
-                                    stepDocumentId: stepDocumentId,
-                                  )
-                                : ViewCommentSection(
-                                    documentComment: documentComment,
-                                    stepDocumentId: stepDocumentId,
-                                  ),
-                          );
-                        },
+          // ── Done ────────────────────────────
+          Done(:final data) => ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.zero,
+            itemBuilder: (context, index) {
+              final documentComment = (data).items![index];
+
+              return Container(
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                decoration: BoxDecoration(
+                  color: context.color.surfaceContainer,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: context.color.outline),
+                ),
+                child: bloc.isCommentBeingEdited(documentComment.id ?? 0)
+                    ? EditCommentSection(
+                        documentComment: documentComment,
+                        stepDocumentId: stepDocumentId,
+                      )
+                    : ViewCommentSection(
+                        documentComment: documentComment,
+                        stepDocumentId: stepDocumentId,
                       ),
-                    ),
-                  ),
-                  // Positioned(
-                  //   bottom: 0,
-                  //   left: 0,
-                  //   right: 0,
-                  //   child: CustomBtn(
-                  //     text: allTranslations.text(LocaleKeys.save),
-                  //     onPressed: () => CustomNavigator.pop(),
-                  //   ),
-                  // ),
-                ],
-              ),
+              );
+            },
+            separatorBuilder: (context, index) => const SizedBox(height: 12),
+            itemCount: (data as CommentsData).items?.length ?? 0,
+          ),
 
-              // ── Empty ───────────────────────────
-              Empty() => EmptyContainer(
-                remain: 400,
-                txt: allTranslations.text(LocaleKeys.no_comments),
-              ),
+          // ── Empty ───────────────────────────
+          Empty() => EmptyContainer(
+            remain: 400,
+            txt: allTranslations.text(LocaleKeys.no_comments),
+          ),
 
-              // ── Error / fallback ────────────────
-              _ => EmptyContainer(
-                txt: allTranslations.text(LocaleKeys.something_went_wrong),
-                img: Assets.svgs.error.path,
-              ),
-            };
-          },
-        ),
-      ],
+          // ── Error / fallback ────────────────
+          _ => EmptyContainer(
+            txt: allTranslations.text(LocaleKeys.something_went_wrong),
+            img: Assets.svgs.error.path,
+          ),
+        };
+      },
     );
   }
 }

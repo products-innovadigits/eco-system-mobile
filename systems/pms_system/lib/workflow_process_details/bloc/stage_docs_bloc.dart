@@ -10,21 +10,22 @@ class StageDocsBloc extends Bloc<AppEvent, AppState> {
 
   // Map to store TextEditingController for each document
   final Map<int, TextEditingController> _commentControllers = {};
+
   // Map to store FormKey for each document
   final Map<int, GlobalKey<FormState>> _formKeys = {};
   CurrentStepDocumentData? currentStepDocumentData;
-
+  int addingDocumentId = 0;
 
   _onClick(AppEvent event, Emitter<AppState> emit) async {
     Map<String, dynamic> args = event.arguments as Map<String, dynamic>;
     emit(Loading());
     try {
       CurrentStepDocumentModel res =
-      await WorkflowProcessDetailsRepo.getCurrentStepDocs(
-        processId: args['processId'],
-        projectId: args['projectId'],
-        projectStepId: args['projectStepId'],
-      );
+          await WorkflowProcessDetailsRepo.getCurrentStepDocs(
+            processId: args['processId'],
+            projectId: args['projectId'],
+            projectStepId: args['projectStepId'],
+          );
 
       if (res.succeeded == true &&
           res.data != null &&
@@ -48,14 +49,22 @@ class StageDocsBloc extends Bloc<AppEvent, AppState> {
     AddDocumentComment event,
     Emitter<AppState> emit,
   ) async {
+    addingDocumentId = event.stepDocumentId;
+    final comment = (event.text as String? ?? '').trim();
     final formKey = _formKeys[event.stepDocumentId];
     if (formKey == null || !formKey.currentState!.validate()) return;
+    if (comment.isEmpty) {
+      AppCore.errorToastMessage(
+        allTranslations.text(LocaleKeys.enter_valid_comment),
+      );
+      return;
+    }
     emit(Adding());
     try {
       // Add comment using the document ID
       Response response = await WorkflowProcessDetailsRepo.addDocComment(
         documentId: event.stepDocumentId,
-        text: event.text,
+        text: comment,
         // projectId: event.projectId,
         // processId: event.processId,
         // stepId: event.stepId,
@@ -64,16 +73,19 @@ class StageDocsBloc extends Bloc<AppEvent, AppState> {
       if (response.statusCode == 200) {
         // Clear the controller for this specific document
         _commentControllers[event.stepDocumentId]?.clear();
-        AppCore.successMessage(
+        addingDocumentId = 0;
+        AppCore.successToastMessage(
           allTranslations.text(LocaleKeys.comment_added_successfully),
         );
         emit(Done(data: currentStepDocumentData));
       } else {
         AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+        addingDocumentId = 0;
         emit(Error());
       }
     } catch (e) {
       AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+      addingDocumentId = 0;
       emit(Error());
     }
   }
