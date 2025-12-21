@@ -169,7 +169,6 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
         }
       }
     } catch (e) {
-      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
       emit(Error());
     }
   }

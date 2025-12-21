@@ -65,10 +65,7 @@ class _ProjectsViewState extends State<ProjectsView> {
           final bloc = context.read<ProjectsBloc>();
           final sortingBloc = context.read<ProjectsSortingBloc>();
           return Scaffold(
-            appBar: ProjectsAppBarWidget(
-              bloc: bloc,
-              sortingBloc: sortingBloc,
-            ),
+            appBar: ProjectsAppBarWidget(bloc: bloc, sortingBloc: sortingBloc),
             body: SafeArea(
               child: BlocBuilder<ProjectsBloc, AppState>(
                 builder: (context, state) {
@@ -77,22 +74,27 @@ class _ProjectsViewState extends State<ProjectsView> {
                     Loading() => const ShimmerCardsList(),
 
                     // Handle Done state with data models
-                    Done(:final list, :final loading) when list != null => Column(
-                      children: [
-                        Expanded(
-                          child: ListAnimator(
-                            customPadding: EdgeInsets.symmetric(horizontal: 16.w),
-                            controller: context
-                                .read<ProjectsBloc>()
-                                .scrollController,
-                            data: (list as List<ProjectDetailsModel>)
-                                .map((project) => ProjectCard(project: project))
-                                .toList(),
+                    Done(:final list, :final loading) when list != null =>
+                      Column(
+                        children: [
+                          Expanded(
+                            child: ListAnimator(
+                              customPadding: EdgeInsets.symmetric(
+                                horizontal: 16.w,
+                              ),
+                              controller: context
+                                  .read<ProjectsBloc>()
+                                  .scrollController,
+                              data: (list as List<ProjectDetailsModel>)
+                                  .map(
+                                    (project) => ProjectCard(project: project),
+                                  )
+                                  .toList(),
+                            ),
                           ),
-                        ),
-                        CustomLoading(isTextLoading: true, loading: loading),
-                      ],
-                    ),
+                          CustomLoading(isTextLoading: true, loading: loading),
+                        ],
+                      ),
 
                     // Empty
                     Empty(:final initial) => _HandleEmptyList(
@@ -106,8 +108,6 @@ class _ProjectsViewState extends State<ProjectsView> {
                 },
               ),
             ),
-            // ✅ PERFORMANCE OPTIMIZATION: BottomNav outside BlocBuilder
-            // Only rebuilds when _selectedIndex changes, not on ProjectsBloc state changes
             bottomNavigationBar: NavApp(
               index: _selectedIndex,
               onSelect: _handleNavigation,

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:pms_system/shared/pms_exports.dart';
 import 'package:pms_system/workflow_process_details/widgets/process_details_body.dart';
 
@@ -39,6 +37,10 @@ class WorkflowProcessDetailsView extends StatelessWidget {
           title: processName,
           withBottomBorder: false,
           action: BlocBuilder<WorkflowProcessDetailsBloc, AppState>(
+            buildWhen: (previous, current) =>
+                (previous is! Done && current is Done) ||
+                (previous is Done && current is Loading) ||
+                (previous is Loading && current is Done),
             builder: (context, state) {
               final bloc = context.read<WorkflowProcessDetailsBloc>();
               // Only show button if data is loaded
@@ -46,65 +48,60 @@ class WorkflowProcessDetailsView extends StatelessWidget {
                 final workflowStatus = bloc.stageDocsData?.workFlowStatus;
                 final isStart = workflowStatus == 'NotStarted';
 
-                return BlocBuilder<WorkflowProcessDetailsBloc, AppState>(
-                  builder: (context, state) {
-                    final bloc = context.read<WorkflowProcessDetailsBloc>();
-                    return InkWell(
-                      onTap: isStart && state is! Loading
-                          ? () {
-                              YesNoDialogHelper.showStartProcessConfirmationDialog(
-                                context: context,
-                                onStartPressed: () {
-                                  bloc.add(
-                                    Get(
-                                      arguments: {
-                                        'processId': processId,
-                                        'projectId': projectId,
-                                      },
-                                    ),
-                                  );
-                                },
+                return InkWell(
+                  onTap: isStart && state is! Loading
+                      ? () {
+                          YesNoDialogHelper.showStartProcessConfirmationDialog(
+                            context: context,
+                            onStartPressed: () {
+                              bloc.add(
+                                Get(
+                                  arguments: {
+                                    'processId': processId,
+                                    'projectId': projectId,
+                                  },
+                                ),
                               );
-                            }
-                          : null,
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: getStatusColor(
-                            workflowStatus!,
-                          ).withValues(alpha: isStart ? null : 0.1),
-                          borderRadius: BorderRadius.circular(isStart ? 8 : 25),
-                          border: Border.all(
+                            },
+                          );
+                        }
+                      : null,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: getStatusColor(
+                        workflowStatus!,
+                      ).withValues(alpha: isStart ? null : 0.1),
+                      borderRadius: BorderRadius.circular(isStart ? 8 : 25),
+                      border: Border.all(
+                        color: isStart
+                            ? context.color.primary
+                            : Colors.transparent,
+                        width: 1,
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Text(
+                          getStatusName(workflowStatus),
+                          style: context.textTheme.bodySmall?.copyWith(
                             color: isStart
                                 ? context.color.primary
-                                : Colors.transparent,
-                            width: 1,
+                                : getStatusColor(workflowStatus),
+                            fontSize: FontSizes.f10,
                           ),
                         ),
-                        child: Row(
-                          children: [
-                            Text(
-                              getStatusName(workflowStatus),
-                              style: context.textTheme.bodySmall?.copyWith(
-                                color: isStart
-                                    ? context.color.primary
-                                    : getStatusColor(workflowStatus),
-                                fontSize: FontSizes.f10,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
+                      ],
+                    ),
+                  ),
                 );
               }
 
               // Return empty widget while loading
-              return SizedBox.shrink();
+              return const SizedBox.shrink();
             },
           ),
         ),

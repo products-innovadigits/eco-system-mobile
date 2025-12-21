@@ -13,6 +13,9 @@ class ProcessDetailsTabsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final selectedTab = context.select(
+      (WorkflowProcessDetailsBloc bloc) => bloc.selectedTab,
+    );
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Padding(
@@ -21,9 +24,7 @@ class ProcessDetailsTabsSection extends StatelessWidget {
           children: tabs.keys.map((tab) {
             return _TabWrapper(
               title: tabs[tab] ?? '',
-              isSelected:
-                  context.watch<WorkflowProcessDetailsBloc>().selectedTab ==
-                  tab,
+              isSelected: selectedTab == tab,
               onTap: () {
                 context.read<WorkflowProcessDetailsBloc>().add(
                   Select(arguments: tab),
@@ -53,10 +54,10 @@ class _TabWrapper extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        margin: EdgeInsetsDirectional.only(end: 8),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        margin: const EdgeInsetsDirectional.only(end: 8),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: const BorderRadius.all(Radius.circular(25)),
           color: isSelected
               ? context.color.secondary.withValues(alpha: 0.1)
               : context.color.surfaceContainer,

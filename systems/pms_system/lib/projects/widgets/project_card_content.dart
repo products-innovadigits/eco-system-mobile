@@ -12,6 +12,15 @@ class ProjectCardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final now = DateTime.now();
+    final endDate = project.endDate;
+    final daysLeft = endDate != null
+        ? (endDate.difference(now).inDays > 0
+              ? endDate.difference(now).inDays
+              : 0)
+        : 0;
+    final formattedEndDate = (endDate ?? now).format("d/M/yyyy");
+
     return Container(
       color: context.color.surfaceContainer,
       padding: isDetails ? EdgeInsets.all(16.w) : EdgeInsets.zero,
@@ -25,7 +34,7 @@ class ProjectCardContent extends StatelessWidget {
                 padding: EdgeInsets.all(8.w),
                 decoration: BoxDecoration(
                   color: context.color.surfaceContainer,
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
                   border: Border.all(color: context.color.outline),
                 ),
                 child: Images(
@@ -51,10 +60,9 @@ class ProjectCardContent extends StatelessWidget {
                       SizedBox(height: 4.h),
                       RichText(
                         textAlign: TextAlign.start,
-
                         text: TextSpan(
                           text:
-                              "${allTranslations.text(LocaleKeys.time_left)} ${(project.endDate?.difference(DateTime.now()).inDays ?? 0) > 0 ? (project.endDate?.difference(DateTime.now()).inDays ?? 0) : 0} ${allTranslations.text(LocaleKeys.days)}",
+                              "${allTranslations.text(LocaleKeys.time_left)} $daysLeft ${allTranslations.text(LocaleKeys.days)}",
                           style: context.textTheme.bodySmall?.copyWith(
                             color: context.color.error,
                           ),
@@ -67,7 +75,7 @@ class ProjectCardContent extends StatelessWidget {
                             ),
                             TextSpan(
                               text:
-                                  "${allTranslations.text(LocaleKeys.deliver_date)}: ${(project.endDate ?? DateTime.now()).format("d/M/yyyy")}",
+                                  "${allTranslations.text(LocaleKeys.deliver_date)}: $formattedEndDate",
                               style: context.textTheme.bodySmall?.copyWith(
                                 color: context.color.outlineVariant,
                               ),
@@ -179,7 +187,7 @@ class _RiskPriorityWidget extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
             decoration: BoxDecoration(
               color: color.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(25),
+              borderRadius: const BorderRadius.all(Radius.circular(25)),
             ),
             child: Text(
               level,
@@ -204,7 +212,7 @@ class _ActivitiesProgressSection extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(top: 16.h, bottom: 8.h),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(100),
+            borderRadius: const BorderRadius.all(Radius.circular(100)),
             child: LinearProgressIndicator(
               // value: getProgressBar() / 100,
               value: (project.progressRatio ?? 0.0).toDouble() / 100,

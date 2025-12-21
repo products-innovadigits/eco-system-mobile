@@ -67,11 +67,9 @@ class ProjectsFiltrationBloc extends Bloc<AppEvent, AppState> {
 
         emit(Done());
       } else {
-        AppCore.errorMessage(allTranslations.text('something_went_wrong'));
         emit(Error());
       }
     } catch (e) {
-      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
       emit(Error());
     }
   }

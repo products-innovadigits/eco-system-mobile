@@ -38,6 +38,7 @@ abstract class ApiNames {
   static String projectStepComment = "ProjectStepComment";
   static String projectProcessNext = "ProjectProcess/next";
   static String projectProcessStart = "WorkFlow/Run";
+  static const latestRequest = "project/latest_request";
 
   // Jobs APIs ====================
   static const jobs = "chances";

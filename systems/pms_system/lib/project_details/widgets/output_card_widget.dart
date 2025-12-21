@@ -10,19 +10,24 @@ class OutputCardWidget extends StatelessWidget {
     final color = Color(
       int.parse((output.background ?? '#000000').replaceFirst('#', '0xff')),
     );
+    final titles = output.titles ?? [];
+    final titlesLength = titles.length;
+    final titleText = titlesLength > 10
+        ? allTranslations.text(LocaleKeys.output)
+        : allTranslations.text(LocaleKeys.outputs);
+
     return CustomExpansionCard(
       title: output.label ?? '',
       withMargin: false,
       withExpanded: false,
       action: CustomInfoContainerWidget(
-        title:
-            '${(output.titles ?? []).length} ${output.titles!.length > 10 ? allTranslations.text(LocaleKeys.output) : allTranslations.text(LocaleKeys.outputs)}',
+        title: '$titlesLength $titleText',
         color: color,
       ),
-      child: output.titles?.isNotEmpty ?? false
+      child: titles.isNotEmpty
           ? ListAnimator(
               scroll: false,
-              data: (output.titles ?? [])
+              data: titles
                   .map(
                     (output) => Padding(
                       padding: const EdgeInsetsDirectional.only(bottom: 8),
@@ -46,9 +51,7 @@ class OutputCardWidget extends StatelessWidget {
                   )
                   .toList(),
             )
-          : Center(
-              child: Text(allTranslations.text(LocaleKeys.no_outputs)),
-            ),
+          : Center(child: Text(allTranslations.text(LocaleKeys.no_outputs))),
     );
   }
 }

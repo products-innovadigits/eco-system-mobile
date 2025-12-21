@@ -1,6 +1,4 @@
 import 'package:pms_system/project_details/widgets/project_challenges.dart';
-import 'package:pms_system/project_details/widgets/risk_challenge_card_widget.dart';
-import 'package:pms_system/project_report/widgets/custom_info_container_widget.dart';
 
 import '../../shared/pms_exports.dart';
 
@@ -15,7 +13,8 @@ class ProjectReportChallenges extends StatelessWidget {
       title: allTranslations.text(LocaleKeys.the_challenges),
       withMargin: false,
       withExpanded: false,
-      subTitle: '${challengesList.length} ${allTranslations.text(LocaleKeys.challenge)}',
+      subTitle:
+          '${challengesList.length} ${allTranslations.text(LocaleKeys.challenge)}',
       child: ProjectChallenges(challenges: challengesList),
     );
   }

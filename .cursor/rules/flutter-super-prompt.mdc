@@ -1,0 +1,804 @@
+---
+description: Flutter Super Prompt - create trigger
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# Flutter Super Prompt - One Question at a Time Flow
+
+## HARD ENFORCEMENT RULES (HIGHEST PRIORITY)
+
+**These rules override all other sections. They are non-negotiable and must be followed exactly.**
+
+### 1) Trigger Handling (Case-Insensitive)
+
+**If user message is exactly "create":**
+- Your entire response MUST be ONLY this single question (no other text, no explanation, no examples):
+  ```
+  FEATURE, DESIGN, or BOTH?
+  ```
+
+**If user message starts with "create feature":**
+- Set `mode = FEATURE` immediately
+- Do NOT ask "FEATURE, DESIGN, or BOTH?"
+- Do NOT analyze, explain, or list examples
+- Immediately ask ONLY the first FEATURE question (Step 1). No extra text.
+
+**If user message starts with "create design":**
+- Set `mode = DESIGN` immediately
+- Do NOT ask "FEATURE, DESIGN, or BOTH?"
+- Do NOT analyze, explain, or list examples
+- Immediately ask ONLY the first DESIGN question (Step 1). No extra text.
+
+**If user message starts with "create both":**
+- Set `mode = BOTH` immediately
+- Do NOT ask "FEATURE, DESIGN, or BOTH?"
+- Do NOT analyze, explain, or list examples
+- Immediately ask ONLY the first BOTH question (Step 1). No extra text.
+
+### 2) One-Question-Per-Message Guard (VERY STRICT)
+
+**In any triggered interview message, you must output:**
+- At most ONE question mark (?) in the whole response
+- NO bullet lists
+- NO "share:" or "provide:" lists
+- NO prefacing like "reviewing", "I will", "next", "to proceed"
+- NO analysis or explanation before the question
+- MUST include ONE example answer inline in the same message
+
+**Exception:** You may include ONE short confirmation sentence after the user answers (1-2 lines max), but then ONLY one question with example.
+
+**Violation Examples (DO NOT DO THIS):**
+- "To proceed, I need to know: What is the feature name?"
+- "Please provide: 1. Feature name 2. Feature slug"
+- "Reviewing your request and what is the feature name?"
+- "What is the feature name and slug?" (missing example)
+
+**Correct Format:**
+- "What is the feature name and feature slug? Example: Project Details - project_details"
+- "Captured: Feature name = User Profile, slug = user_profile. Which system should this feature live in? Example: pms_system"
+
+### 3) Step Order (Do Not Skip, Do Not Reorder) - INCREMENTAL IMPLEMENTATION
+
+**FEATURE steps (must be asked in this exact order with incremental implementation):**
+- Q1: Feature name + slug (Example: Project Details - project_details)
+- Q2: System name ONLY (Example: pms_system) then locate system, inspect existing feature locations, determine path, implement folder structure, placeholder files, minimal routing, ask Q3
+- Q3: API endpoint + method (Example: GET /v1/projects/{id}) then store endpoint info only, ask Q4
+- Q4: JSON response then implement models, update repo with typed methods, update bloc with real logic, COMPLETE
+
+**DESIGN steps (must be asked in this exact order with incremental implementation):**
+- Q1: System name ONLY (Example: pms_system) then locate system, inspect existing locations, determine path
+- Q2: MCP link/screenshot + route then capture info, ask Q3
+- Q3: Constraints then implement UI from screenshot/MCP, localization, COMPLETE
+
+**BOTH steps (must be asked in this exact order with incremental implementation):**
+- Q1: Feature name + slug (Example: Project Details - project_details)
+- Q2: System name ONLY (Example: pms_system) then locate system, inspect existing feature locations, determine path, implement folder structure, placeholder files, minimal routing, ask Q3
+- Q3: API endpoint + method (Example: GET /v1/projects/{id}) then store endpoint info only, ask Q4
+- Q4: JSON response then implement models, update repo with typed methods, update bloc with real logic, ask Q5
+- Q5: MCP link/screenshot + route then implement real UI from screenshot/MCP, localization, COMPLETE
+
+### 4) Mode Lock (STRICT)
+
+- If `mode = FEATURE`, do NOT mention DESIGN or BOTH at all
+- If `mode = DESIGN`, do NOT mention FEATURE or BOTH at all
+- If `mode = BOTH`, do NOT mention FEATURE or DESIGN separately
+- Mode stays LOCKED until user explicitly types: "switch to feature" OR "switch to design" OR "switch to both" OR "cancel create" OR starts a new trigger
+
+### 5) No Repo Scanning Before Interview
+
+- Do NOT scan repo or scaffold anything when the trigger is received
+- Do NOT analyze existing code structure
+- Do NOT list examples or provide context (except the required inline example in each question)
+- Only after user answers questions should you inspect the repo and start implementation
+- Do NOT create or update any AI markdown spec files during workflow
+
+## FEATURE Flow - Incremental Implementation
+
+**IMPORTANT: Implement incrementally after each answer group, then ask the next question.**
+
+If `mode = FEATURE` (either from explicit "create feature" trigger or user selected FEATURE), proceed with these questions **ONE AT A TIME** in **EXACT ORDER**, implementing work immediately after each answer group:
+
+**Rule:** The assistant must NOT jump ahead or skip steps. If the user partially answers, ask one follow-up question for the missing part, then continue.
+
+**Output for Every Step:**
+After each user answer, briefly confirm what you captured (1 line max), perform the phase work immediately, and then ask the next single question. The question must be a single sentence with only ONE question mark and MUST include ONE example answer inline.
+
+### PHASE 1: Setup (Questions 1-2)
+
+**Step 1: Feature Name & Slug**
+```
+What is the feature name and feature slug? Example: Project Details - project_details
+```
+
+**Step 2: System Selection**
+```
+Which system should this feature live in? Example: pms_system
+```
+
+**After user responds to BOTH Step 1 AND Step 2:**
+- Confirm: "Captured: Feature name = [name], slug = [slug], System = [system_name]"
+- **Compute Exactly ONE Feature Root (`feature_root`):**
+  1. **Find `system_root`:** Locate the system folder by name (e.g., `systems/pms_system/` or `lib/`)
+  2. **Search for existing feature locations:** Inside `system_root`, find all directories that contain feature folders (patterns: `lib/features/*/`, `lib/feature/*/`, `features/*/`, `lib/modules/*/`, or any repeated feature folder pattern)
+  3. **Choose ONE candidate deterministically:**
+     - If at least one feature-location candidate exists:
+       - Pick the candidate folder that contains the MOST existing feature subdirectories
+       - If tie, pick the shortest path
+       - Set `feature_root = <chosen_feature_location>/<feature_slug>`
+       - **NEVER execute fallback if a candidate was found**
+     - If NO candidates exist (fallback):
+       - Ensure `<system_root>/lib/features/` exists (create lib and features folders if needed)
+       - Set `feature_root = <system_root>/lib/features/<feature_slug>`
+  4. **Idempotency Check:** If `feature_root` already exists, skip creation and proceed to next step
+  5. **Hard Rule:** NEVER create both `<system_root>/<feature_slug>` and `<system_root>/lib/features/<feature_slug>`
+- **IMMEDIATELY IMPLEMENT PHASE 1:**
+  - Create the feature root folder at `feature_root` (if not exists), following repo conventions
+  - Create nested folders: `bloc/`, `model/`, `repo/`, `view/`, `widgets/`
+  - Create initial placeholder files:
+    - `<feature_root>/bloc/<feature_slug>_bloc.dart` (uses shared AppEvent from core, imports pms_exports)
+    - `<feature_root>/bloc/<feature_slug>_states.dart` (custom states or can use shared AppState)
+    - `<feature_root>/model/<feature_slug>_models.dart` (empty model skeleton with TODOs)
+    - `<feature_root>/repo/<feature_slug>_repo.dart` (class with TODO method signatures)
+    - `<feature_root>/view/<feature_slug>_view.dart` (Scaffold placeholder only, no real UI)
+  - Add feature to navigation/routing ONLY at the minimal level needed to open the placeholder screen
+  - Add route constant to `systems/core_system/lib/core/navigation/routes.dart`
+  - Add route handler to `lib/navigation/custom_navigation.dart`
+- **VERIFY GATES (silent self-check, do NOT show reasoning):**
+  - feature_root computed once, no duplicates created
+  - bloc folder contains `<feature_slug>_bloc.dart` and `<feature_slug>_states.dart` (NO event file)
+  - All folders and files created successfully
+  - If any check fails, fix immediately before proceeding
+- **Then ask Step 3**
+
+### PHASE 2: API Info Capture (Question 3)
+
+**Step 3: API Endpoint & Method**
+```
+What is the API endpoint path and HTTP method? Example: GET /v1/projects/{id}
+```
+
+**After user responds:**
+- Confirm: "Captured: Endpoint = [path], Method = [method]"
+- **IMMEDIATELY IMPLEMENT PHASE 2:**
+  - Add endpoint constant to `systems/core_system/lib/core/config/api_names.dart`
+  - Do NOT create repo methods yet (wait for JSON response in Q4)
+  - Store the endpoint and method information for next phase
+- **Then ask Step 4**
+
+### PHASE 3: Models & Logic (Question 4)
+
+**Step 4: Request Body & Response JSON**
+```
+Paste realistic success JSON response example (and request body if POST)? Example: {"id": 1, "title": "Project", "status": "active"}
+```
+
+**After user responds:**
+- Confirm: "Captured: Request body, success response"
+- **IMMEDIATELY IMPLEMENT PHASE 3:**
+  1. **Inspect response structure:** Identify if it has wrapper (succeeded, data, validationErrors) or is direct
+  2. **Generate ROOT model + nested models:**
+     - For wrapper/list responses: ALWAYS create ONE root model (e.g., `ProjectsModel extends SingleMapper`)
+     - Keep the list inside `data.items` structure
+     - For single-object: create root model + data model
+     - For nested objects: create dedicated model classes
+     - Use manual `fromJson`/`toJson` + `SingleMapper` pattern from repo
+  3. **Create/update repo method in `<feature_slug>_repo.dart`:**
+     ```dart
+     static Future<RootModel> methodName(params) async {
+       return await Network().request(
+         ApiNames.endpointName,
+         query: data.query,  // if POST with body
+         method: ServerMethods.GET, // or POST, PUT, DELETE
+         model: RootModel(),
+       );
+     }
+     ```
+     - Return type MUST be `Future<RootModel>` (NOT `Future<Response>`, NOT `Future<dynamic>`)
+     - Always pass `model: RootModel()` parameter
+  4. **Update bloc logic in `<feature_slug>_bloc.dart`:**
+     - Import the model
+     - Call typed repo method: `RootModel model = await Repo.method()`
+     - For list responses, access items from model: `List<Item> items = model.data?.items ?? []`
+     - Emit typed states from `<feature_slug>_states.dart`
+     - Use shared states (Loading, Done, Error) or custom states
+     - Handle errors with `AppCore.errorMessage(allTranslations.text('something_went_wrong'))`
+  5. **DO NOT create real UI** (only placeholder screen from Phase 1 remains)
+- **VERIFY GATES (silent self-check, do NOT show reasoning):**
+  - Root model created with proper structure
+  - Repo method return type is `Future<RootModel>`
+  - Repo uses `Network().request(... model: RootModel())`
+  - Bloc uses RootModel and reads items from model (not List return)
+  - Bloc emits typed states
+  - If any check fails, fix immediately before completing
+- **FEATURE mode is complete** - no further questions
+
+## DESIGN Flow - Incremental Implementation
+
+**IMPORTANT: Implement incrementally after each answer group, then ask the next question.**
+
+If `mode = DESIGN`, proceed with these questions **ONE AT A TIME** in **EXACT ORDER**, implementing work immediately after each answer group:
+
+### PHASE 1: Setup (Questions 1-2)
+
+**Step 1: System Selection**
+```
+Which system should this design live in? Example: pms_system
+```
+
+**Step 2: Component Reference & Target Screen/Route**
+```
+Share MCP component link OR upload screenshot + target screen route/name? Example: https://mcp.link/component or screenshot + ProjectsView
+```
+
+**After user responds to BOTH Step 1 AND Step 2:**
+- Confirm: "Captured: System = [system_name], Design reference and target route"
+- **Locate System & Determine Feature Path:**
+  - Search the repo to locate the system root folder by name
+  - Inspect where other features/designs live inside that system by finding existing folder patterns
+  - If structure is detected, follow the same nesting and naming convention
+  - **Fallback:** If no clear structure exists, create under `<system_root>/lib/features/` or `<system_root>/lib/`
+- **Then ask Step 3**
+
+### PHASE 2: UI Implementation (Question 3)
+
+**Step 3: Constraints**
+```
+Any constraints (responsive/dark mode/animations/a11y/min Flutter)? Example: responsive, dark mode support
+```
+
+**After user responds:**
+- Confirm: "Captured: Constraints"
+- **IMMEDIATELY IMPLEMENT PHASE 2:**
+  - Build UI only (screen + widgets) from screenshot/MCP link
+  - Create view/screen files
+  - Create widget files in `widgets/` folder
+  - Add routes and route handlers if needed
+  - Extract all strings to localization keys (use `snake_case`)
+  - Add to both `assets/langs/en.json` and `assets/langs/ar.json`
+  - Run localization generation command:
+    ```
+    cd systems/core_system
+    flutter pub run easy_localization:generate -S ../../assets/langs -O lib/core/core/app_strings -f keys -o locale_keys.dart
+    ```
+  - Colors from `LightColor` class
+  - Typography from `AppTypography` class
+  - Components from `systems/core_system/lib/core/components/`
+  - Widgets from `systems/core_system/lib/core/widgets/`
+  - Do NOT create repository/network/models unless user later switches to BOTH/FEATURE
+- **VERIFY GATES (silent self-check, do NOT show reasoning):**
+  - UI files created in correct location
+  - All strings extracted to localization
+  - Theme/design system patterns followed
+  - If any check fails, fix immediately before completing
+- **DESIGN mode is complete** - no further questions
+
+## BOTH Flow - Incremental Implementation
+
+**IMPORTANT: Implement incrementally after each answer group, then ask the next question.**
+
+If `mode = BOTH`, proceed with these questions **ONE AT A TIME** in **EXACT ORDER**, implementing work immediately after each answer group:
+
+### PHASE 1: Setup (Questions 1-2)
+
+**Step 1: Feature Name & Slug**
+```
+What is the feature name and feature slug? Example: Project Details - project_details
+```
+
+**Step 2: System Selection**
+```
+Which system should this feature live in? Example: pms_system
+```
+
+**After user responds to BOTH Step 1 AND Step 2:**
+- Confirm: "Captured: Feature name = [name], slug = [slug], System = [system_name]"
+- **Compute Exactly ONE Feature Root (`feature_root`):**
+  1. **Find `system_root`:** Locate the system folder by name (e.g., `systems/pms_system/` or `lib/`)
+  2. **Search for existing feature locations:** Inside `system_root`, find all directories that contain feature folders (patterns: `lib/features/*/`, `lib/feature/*/`, `features/*/`, `lib/modules/*/`, or any repeated feature folder pattern)
+  3. **Choose ONE candidate deterministically:**
+     - If at least one feature-location candidate exists:
+       - Pick the candidate folder that contains the MOST existing feature subdirectories
+       - If tie, pick the shortest path
+       - Set `feature_root = <chosen_feature_location>/<feature_slug>`
+       - **NEVER execute fallback if a candidate was found**
+     - If NO candidates exist (fallback):
+       - Ensure `<system_root>/lib/features/` exists (create lib and features folders if needed)
+       - Set `feature_root = <system_root>/lib/features/<feature_slug>`
+  4. **Idempotency Check:** If `feature_root` already exists, skip creation and proceed to next step
+  5. **Hard Rule:** NEVER create both `<system_root>/<feature_slug>` and `<system_root>/lib/features/<feature_slug>`
+- **IMMEDIATELY IMPLEMENT PHASE 1:**
+  - Create the feature root folder at `feature_root` (if not exists), following repo conventions
+  - Create nested folders: `bloc/`, `model/`, `repo/`, `view/`, `widgets/`
+  - Create initial placeholder files:
+    - `<feature_root>/bloc/<feature_slug>_bloc.dart` (uses shared AppEvent from core, imports pms_exports)
+    - `<feature_root>/bloc/<feature_slug>_states.dart` (custom states or can use shared AppState)
+    - `<feature_root>/model/<feature_slug>_models.dart` (empty model skeleton with TODOs)
+    - `<feature_root>/repo/<feature_slug>_repo.dart` (class with TODO method signatures)
+    - `<feature_root>/view/<feature_slug>_view.dart` (Scaffold placeholder only, no real UI yet)
+  - Add feature to navigation/routing ONLY at the minimal level needed to open the placeholder screen
+  - Add route constant to `systems/core_system/lib/core/navigation/routes.dart`
+  - Add route handler to `lib/navigation/custom_navigation.dart`
+- **VERIFY GATES (silent self-check, do NOT show reasoning):**
+  - feature_root computed once, no duplicates created
+  - bloc folder contains `<feature_slug>_bloc.dart` and `<feature_slug>_states.dart` (NO event file)
+  - All folders and files created successfully
+  - If any check fails, fix immediately before proceeding
+- **Then ask Step 3**
+
+### PHASE 2: API Info Capture (Question 3)
+
+**Step 3: API Endpoint & Method**
+```
+What is the API endpoint path and HTTP method? Example: GET /v1/projects/{id}
+```
+
+**After user responds:**
+- Confirm: "Captured: Endpoint = [path], Method = [method]"
+- **IMMEDIATELY IMPLEMENT PHASE 2:**
+  - Add endpoint constant to `systems/core_system/lib/core/config/api_names.dart`
+  - Do NOT create repo methods yet (wait for JSON response in Q4)
+  - Store the endpoint and method information for next phase
+- **Then ask Step 4**
+
+### PHASE 3: Models & Logic (Question 4)
+
+**Step 4: Request Body & Response JSON**
+```
+Paste realistic success JSON response example (and request body if POST)? Example: {"id": 1, "title": "Project", "status": "active"}
+```
+
+**After user responds:**
+- Confirm: "Captured: Request body, success response"
+- **IMMEDIATELY IMPLEMENT PHASE 3:**
+  1. **Inspect response structure:** Identify if it has wrapper (succeeded, data, validationErrors) or is direct
+  2. **Generate ROOT model + nested models:**
+     - For wrapper/list responses: ALWAYS create ONE root model (e.g., `ProjectsModel extends SingleMapper`)
+     - Keep the list inside `data.items` structure
+     - For single-object: create root model + data model
+     - For nested objects: create dedicated model classes
+     - Use manual `fromJson`/`toJson` + `SingleMapper` pattern from repo
+  3. **Create/update repo method in `<feature_slug>_repo.dart`:**
+     ```dart
+     static Future<RootModel> methodName(params) async {
+       return await Network().request(
+         ApiNames.endpointName,
+         query: data.query,  // if POST with body
+         method: ServerMethods.GET, // or POST, PUT, DELETE
+         model: RootModel(),
+       );
+     }
+     ```
+     - Return type MUST be `Future<RootModel>` (NOT `Future<Response>`, NOT `Future<dynamic>`)
+     - Always pass `model: RootModel()` parameter
+  4. **Update bloc logic in `<feature_slug>_bloc.dart`:**
+     - Import the model
+     - Call typed repo method: `RootModel model = await Repo.method()`
+     - For list responses, access items from model: `List<Item> items = model.data?.items ?? []`
+     - Emit typed states from `<feature_slug>_states.dart`
+     - Use shared states (Loading, Done, Error) or custom states
+     - Handle errors with `AppCore.errorMessage(allTranslations.text('something_went_wrong'))`
+- **VERIFY GATES (silent self-check, do NOT show reasoning):**
+  - Root model created with proper structure
+  - Repo method return type is `Future<RootModel>`
+  - Repo uses `Network().request(... model: RootModel())`
+  - Bloc uses RootModel and reads items from model (not List return)
+  - Bloc emits typed states
+  - If any check fails, fix immediately before proceeding
+- **Then ask Step 5**
+
+### PHASE 4: UI Implementation (Question 5)
+
+**Step 5: Component Reference & Target Screen/Route**
+```
+Share MCP component link OR upload screenshot + target screen route/name? Example: https://mcp.link/component or screenshot + ProjectsView
+```
+
+**After user responds:**
+- Confirm: "Captured: Design reference and target route"
+- **IMMEDIATELY IMPLEMENT PHASE 4:**
+  - Implement actual UI widgets (not just scaffold) matching design in the view file and widgets folder
+  - Extract all strings to localization keys (use `snake_case`)
+  - Add to both `assets/langs/en.json` and `assets/langs/ar.json`
+  - Run localization generation command:
+    ```
+    cd systems/core_system
+    flutter pub run easy_localization:generate -S ../../assets/langs -O lib/core/core/app_strings -f keys -o locale_keys.dart
+    ```
+  - Colors from `LightColor` class
+  - Typography from `AppTypography` class
+  - Components from `systems/core_system/lib/core/components/`
+  - Widgets from `systems/core_system/lib/core/widgets/`
+  - Wire UI to Bloc for data display and interactions
+- **VERIFY GATES (silent self-check, do NOT show reasoning):**
+  - Real UI implemented (not placeholder)
+  - All strings extracted to localization
+  - Theme/design system patterns followed
+  - UI wired to Bloc correctly
+  - If any check fails, fix immediately before completing
+- **BOTH mode is complete** - no further questions
+
+## Repository-Specific Patterns (CRITICAL)
+
+**These patterns MUST be followed exactly for this repository:**
+
+### 1) Model Rule for LIST Responses
+
+**Even if the API returns a list, ALWAYS generate a single ROOT model:**
+- Repository method MUST return `Future<RootModel>` (e.g., `Future<ProjectsModel>`)
+- NEVER return `Future<List<SomeModel>>` or `Future<Response>`
+- The list MUST live inside the root model structure (e.g., `ProjectsModel.data.items`)
+- The bloc MUST access the list from the model, NOT from a List return type
+
+**Example Structure:**
+```dart
+// Repository - CORRECT
+static Future<ProjectsModel> getProjects(SearchEngine data) async {
+  return await Network().request(
+    ApiNames.projects,
+    query: data.query,
+    method: ServerMethods.POST,
+    model: ProjectsModel(),
+  );
+}
+
+// Bloc - CORRECT
+ProjectsModel model = await ProjectsRepo.getProjects(searchData);
+List<ProjectItem> items = model.data?.items ?? [];
+emit(Done(data: items));
+
+// Repository - WRONG
+static Future<List<ProjectItem>> getProjects(params) { return [...]; }
+static Future<Response> getProjects(params) { return response; }
+```
+
+### 2) Repository Method Wiring Pattern
+
+**All repo methods MUST follow the `Network().request` pattern:**
+```dart
+static Future<RootModel> methodName(params) async {
+  return await Network().request(
+    ApiNames.endpointName,
+    query: data.query,        // if POST with body
+    method: ServerMethods.GET, // or POST, PUT, DELETE
+    model: RootModel(),        // REQUIRED: pass empty instance
+  );
+}
+```
+
+**Rules:**
+- Return type: `Future<RootModel>` (NOT `Future<Response>`, NOT `Future<dynamic>`)
+- Always use `Network().request()` (NOT direct Dio calls)
+- Always pass `model: RootModel()` parameter
+- Use `ServerMethods.GET`, `ServerMethods.POST`, etc. (NOT lowercase strings)
+
+### 3) Model Generation from JSON Response
+
+**When the response has wrapper structure (succeeded, data, validationErrors), generate at minimum:**
+
+**For single-object endpoints:**
+```dart
+class FeatureModel extends SingleMapper {
+  bool? succeeded;
+  FeatureDataModel? data;
+  dynamic warningErrors;
+  List<dynamic>? validationErrors;
+
+  FeatureModel({this.succeeded, this.data, this.warningErrors, this.validationErrors});
+
+  FeatureModel.fromJson(Map<String, dynamic> json) {
+    succeeded = json['succeeded'];
+    data = json['data'] != null ? FeatureDataModel.fromJson(json['data']) : null;
+    warningErrors = json['warningErrors'];
+    validationErrors = json['validationErrors'] != null ? List<dynamic>.from(json['validationErrors']) : null;
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['succeeded'] = succeeded;
+    if (this.data != null) data['data'] = this.data!.toJson();
+    data['warningErrors'] = warningErrors;
+    if (validationErrors != null) data['validationErrors'] = validationErrors;
+    return data;
+  }
+
+  @override
+  Mapper fromJson(Map<String, dynamic> json) {
+    return FeatureModel.fromJson(json);
+  }
+}
+
+class FeatureDataModel {
+  int? id;
+  String? title;
+  // Direct fields from data object
+
+  FeatureDataModel({this.id, this.title});
+
+  FeatureDataModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    return data;
+  }
+}
+```
+
+**For list endpoints:**
+```dart
+class FeaturesModel extends SingleMapper {
+  bool? succeeded;
+  FeaturesDataModel? data;
+  dynamic warningErrors;
+  List<dynamic>? validationErrors;
+
+  FeaturesModel({this.succeeded, this.data, this.warningErrors, this.validationErrors});
+
+  FeaturesModel.fromJson(Map<String, dynamic> json) {
+    succeeded = json['succeeded'];
+    data = json['data'] != null ? FeaturesDataModel.fromJson(json['data']) : null;
+    warningErrors = json['warningErrors'];
+    validationErrors = json['validationErrors'] != null ? List<dynamic>.from(json['validationErrors']) : null;
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['succeeded'] = succeeded;
+    if (this.data != null) data['data'] = this.data!.toJson();
+    data['warningErrors'] = warningErrors;
+    if (validationErrors != null) data['validationErrors'] = validationErrors;
+    return data;
+  }
+
+  @override
+  Mapper fromJson(Map<String, dynamic> json) {
+    return FeaturesModel.fromJson(json);
+  }
+}
+
+class FeaturesDataModel {
+  List<FeatureItemModel>? items;
+  int? currentPage;
+  int? pageSize;
+  int? totalPages;
+  int? totalCount;
+  bool? isLastPage;
+
+  FeaturesDataModel({this.items, this.currentPage, this.pageSize, this.totalPages, this.totalCount, this.isLastPage});
+
+  FeaturesDataModel.fromJson(Map<String, dynamic> json) {
+    if (json['items'] != null) {
+      items = <FeatureItemModel>[];
+      json['items'].forEach((v) {
+        items!.add(FeatureItemModel.fromJson(v));
+      });
+    }
+    currentPage = json['currentPage'];
+    pageSize = json['pageSize'];
+    totalPages = json['totalPages'];
+    totalCount = json['totalCount'];
+    isLastPage = json['isLastPage'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (items != null) data['items'] = items!.map((v) => v.toJson()).toList();
+    data['currentPage'] = currentPage;
+    data['pageSize'] = pageSize;
+    data['totalPages'] = totalPages;
+    data['totalCount'] = totalCount;
+    data['isLastPage'] = isLastPage;
+    return data;
+  }
+}
+
+class FeatureItemModel {
+  int? id;
+  String? title;
+  // Each item's fields
+
+  FeatureItemModel({this.id, this.title});
+
+  FeatureItemModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    return data;
+  }
+}
+```
+
+**Rules:**
+- Root model extends `SingleMapper` and implements `fromJson(Map<String, dynamic>)` method
+- Always include `succeeded`, `warningErrors`, `validationErrors` if present in response
+- For paginated lists, create a separate Data model that holds `items` + pagination fields
+- For nested objects, create dedicated model classes
+
+### 4) Bloc & States File Naming
+
+**CRITICAL: This repo uses this pattern:**
+- Create `<feature_slug>_bloc.dart` (uses shared AppEvent from core)
+- Create `<feature_slug>_states.dart` (custom states or use shared AppState)
+- Do NOT create `<feature_slug>_event.dart` file (we use shared AppEvent pattern)
+- Do NOT create `part` directives for events
+
+**Example Bloc:**
+```dart
+// latest_request_bloc.dart
+import 'package:pms_system/latest_request/model/latest_request_models.dart';
+import 'package:pms_system/latest_request/repo/latest_request_repo.dart';
+import 'package:pms_system/shared/pms_exports.dart';
+
+class LatestRequestBloc extends Bloc<AppEvent, AppState> {
+  LatestRequestBloc() : super(Start()) {
+    on<Click>(_onClick);
+  }
+
+  _onClick(AppEvent event, Emitter<AppState> emit) async {
+    try {
+      emit(Loading());
+      
+      LatestRequestModel model = await LatestRequestRepo.getLatestRequest();
+      
+      emit(Done(model: model));
+    } catch (e) {
+      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+      emit(Error());
+    }
+  }
+}
+```
+
+**Example States (if custom needed):**
+```dart
+// latest_request_states.dart
+abstract class LatestRequestState {}
+
+class LatestRequestInitial extends LatestRequestState {}
+
+class LatestRequestLoading extends LatestRequestState {}
+
+class LatestRequestLoaded extends LatestRequestState {
+  final LatestRequestModel model;
+  LatestRequestLoaded(this.model);
+}
+
+class LatestRequestError extends LatestRequestState {
+  final String message;
+  LatestRequestError(this.message);
+}
+```
+
+## Strict Enforcement
+
+**These rules are in addition to the HARD ENFORCEMENT RULES at the top of this document.**
+
+- **NEVER ask multiple questions at once** - Only ONE question mark per response
+- **NEVER use bullet lists in questions** - Single question format only
+- **NEVER add prefacing text** like "reviewing", "to proceed", "I will"
+- **ALWAYS include ONE example answer inline** in each question
+- **NEVER proceed to next question without user's answer**
+- **NEVER skip questions** - ask all questions in exact sequence
+- **ALWAYS implement work immediately after each answer group** (follow phase rules)
+- **ALWAYS wait for explicit user response** before continuing
+- **NEVER create or update AI markdown spec files** during workflow
+- **NEVER refer to non-existent paths** - only refer to real paths detected in the repo
+- **After each user answer:** respond with ONE short confirmation sentence (no lists), perform the phase work immediately, then ask the next single question with example
+- **After each phase implementation:** briefly mention what was created
+- **Never say "reviewing project" or provide multi-option lists** - embed options naturally if needed, still only one question
+
+## Mode Lock Enforcement
+
+**Mode stays LOCKED throughout the entire workflow:**
+- Once mode is set (FEATURE, DESIGN, or BOTH), it stays fixed
+- Only way to change mode:
+  - User explicitly types: "switch to feature" OR "switch to design" OR "switch to both"
+  - User explicitly types: "cancel create" OR "reset create"
+  - User starts a completely new trigger
+- If `mode = FEATURE`, do NOT mention design or both steps at all
+- If `mode = DESIGN`, do NOT mention feature or both steps at all
+- If `mode = BOTH`, do NOT mention feature or design separately
+
+## Verify Gates (Silent Self-Check)
+
+**After each phase implementation, silently verify (do NOT show reasoning to user):**
+
+**After PHASE 1 (Scaffolding):**
+- feature_root computed once, no duplicates created
+- bloc folder contains exactly: `<feature_slug>_bloc.dart` and `<feature_slug>_states.dart`
+- NO `<feature_slug>_event.dart` file exists
+- All required folders created: `bloc/`, `model/`, `repo/`, `view/`, `widgets/`
+- All placeholder files created successfully
+- Navigation/routing added
+- If any check fails, fix immediately before asking next question
+
+**After PHASE 2 (API Info):**
+- Endpoint constant added to api_names.dart
+- No premature repo method creation (wait for Q4)
+
+**After PHASE 3 (Models & Logic for FEATURE or BOTH):**
+- Root model created with proper structure (extends SingleMapper)
+- Repo method return type is `Future<RootModel>` (NOT Response, NOT dynamic)
+- Repo uses `Network().request(... model: RootModel())`
+- Bloc uses RootModel and reads items from model structure (for lists: `model.data?.items`)
+- Bloc emits typed states
+- If any check fails, fix immediately before proceeding
+
+**After PHASE 4 (UI for BOTH):**
+- Real UI implemented (not just placeholder)
+- All strings extracted to localization
+- Theme/design system patterns followed
+- UI wired to Bloc correctly
+- If any check fails, fix immediately before completing
+
+## Example Flows
+
+### Example 1: FEATURE Flow (explicit mode)
+```
+User: create feature
+
+AI: What is the feature name and feature slug? Example: Project Details - project_details
+
+User: Settings / settings
+
+AI: Captured: Feature name = Settings, slug = settings. Which system should this feature live in? Example: pms_system
+
+User: pms_system
+
+AI: Captured: System = pms_system. Created folder structure and placeholder files at systems/pms_system/lib/<computed_path>/settings/. What is the API endpoint path and HTTP method? Example: GET /v1/projects/{id}
+
+User: GET /v1/settings
+
+AI: Captured: Endpoint = /v1/settings, Method = GET. Paste realistic success JSON response example (and request body if POST)? Example: {"id": 1, "title": "Project", "status": "active"}
+
+User: {"id": 1, "enabled": true}
+
+AI: Captured: Response. Implemented models, repo with typed methods, bloc with real logic. FEATURE complete.
+```
+
+### Example 2: BOTH Flow
+```
+User: create both
+
+AI: What is the feature name and feature slug? Example: Project Details - project_details
+
+User: User Profile / user_profile
+
+AI: Captured: Feature name = User Profile, slug = user_profile. Which system should this feature live in? Example: pms_system
+
+User: pms_system
+
+AI: Captured: System = pms_system. Created folder structure and placeholder files. What is the API endpoint path and HTTP method? Example: GET /v1/projects/{id}
+
+User: GET /v1/user/profile
+
+AI: Captured: Endpoint = /v1/user/profile, Method = GET. Paste realistic success JSON response example (and request body if POST)? Example: {"id": 1, "title": "Project", "status": "active"}
+
+User: {"id": 1, "name": "John", "email": "john@example.com"}
+
+AI: Captured: Response. Implemented models, repo with typed methods, bloc with real logic. Share MCP component link OR upload screenshot + target screen route/name? Example: https://mcp.link/component or screenshot + ProjectsView
+
+User: [uploads screenshot] + UserProfileView
+
+AI: Captured: Design reference and target route. Implemented real UI with localization and theme patterns. BOTH complete.
+```
+
+### Example 3: Not Triggered
+```
+User: How do I add a new route?
+
+AI: [Answers normally/helpfully without starting interview]
+```

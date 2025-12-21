@@ -29,7 +29,6 @@ class HistoryTabBloc extends Bloc<AppEvent, AppState> {
         emit(Empty());
       }
     } catch (e) {
-      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
       emit(Error());
     }
   }

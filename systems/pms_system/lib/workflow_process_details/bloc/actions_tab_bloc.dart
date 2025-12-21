@@ -84,9 +84,6 @@ class ActionsTabBloc extends Bloc<AppEvent, AppState> {
         emit(Error());
       }
     } catch (e) {
-      AppCore.errorToastMessage(
-        allTranslations.text(LocaleKeys.something_went_wrong),
-      );
       _isComplianceActionLoading = false;
       emit(Error());
     }
@@ -125,9 +122,6 @@ class ActionsTabBloc extends Bloc<AppEvent, AppState> {
         emit(Error());
       }
     } catch (e) {
-      AppCore.errorMessage(
-        allTranslations.text(LocaleKeys.something_went_wrong),
-      );
       _isComplianceCompleted = false; // Reset on error
       _isComplianceActionLoading = false;
       emit(Error());
@@ -162,9 +156,6 @@ class ActionsTabBloc extends Bloc<AppEvent, AppState> {
       }
     } catch (e) {
       print('Error picking file: $e');
-      AppCore.errorMessage(
-        allTranslations.text(LocaleKeys.something_went_wrong),
-      );
     }
   }
 

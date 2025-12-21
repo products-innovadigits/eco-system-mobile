@@ -7,7 +7,7 @@ class MainAppBloc {
   final _notifyRoute = BehaviorSubject<String?>();
   final messageNumber = BehaviorSubject<int?>();
   final theme = BehaviorSubject<bool?>();
-  final connectivity = BehaviorSubject<bool?>();
+  final connectivity = BehaviorSubject<bool?>.seeded(true);
   final search = BehaviorSubject<String>();
   final shared = SharedHelper();
 
@@ -23,8 +23,8 @@ class MainAppBloc {
       messageNumber.stream.asBroadcastStream();
   Stream<bool?> get themeStream => theme.stream.asBroadcastStream();
   Stream<String?> get routeStream => _notifyRoute.stream.asBroadcastStream();
-  Stream<bool?> get connectivityStream =>
-      connectivity.stream.asBroadcastStream();
+  // BehaviorSubject is already a broadcast stream, use it directly
+  Stream<bool?> get connectivityStream => connectivity.stream;
 
   void dispose() {
     lang.close();

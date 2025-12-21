@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:pms_system/shared/pms_exports.dart';
 
 class ProjectDetailsTabsSection extends StatelessWidget {
@@ -14,6 +12,9 @@ class ProjectDetailsTabsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final selectedTab = context.select(
+      (ProjectDetailsBloc bloc) => bloc.selectedTab,
+    );
     return IntrinsicHeight(
       child: Row(
         children: tabs.keys.map((tab) {
@@ -21,11 +22,9 @@ class ProjectDetailsTabsSection extends StatelessWidget {
             fit: FlexFit.tight,
             child: _TabWrapper(
               title: tabs[tab] ?? '',
-              isSelected:
-                  context.watch<ProjectDetailsBloc>().selectedTab == tab,
+              isSelected: selectedTab == tab,
               onTap: () {
                 context.read<ProjectDetailsBloc>().add(Select(arguments: tab));
-
               },
             ),
           );
@@ -53,7 +52,7 @@ class _TabWrapper extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
-        padding: EdgeInsets.symmetric(vertical: 16 , horizontal: 12),
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
         decoration: BoxDecoration(
           color: isSelected
               ? context.color.secondary.withValues(alpha: 0.1)

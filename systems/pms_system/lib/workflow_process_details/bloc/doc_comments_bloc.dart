@@ -40,8 +40,6 @@ class DocCommentsBloc extends Bloc<AppEvent, AppState> {
         emit(Empty());
       }
     } catch (e) {
-      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
-
       emit(Error());
     }
   }
@@ -55,20 +53,11 @@ class DocCommentsBloc extends Bloc<AppEvent, AppState> {
       );
 
       if (response.statusCode == 200) {
-        AppCore.successToastMessage(
-          allTranslations.text(LocaleKeys.comment_deleted_successfully),
-        );
         add(Click(arguments: event.documentId));
       } else {
-        AppCore.errorMessage(
-          allTranslations.text(LocaleKeys.something_went_wrong),
-        );
         emit(Done(data: _commentsData));
       }
     } catch (e) {
-      AppCore.errorMessage(
-        allTranslations.text(LocaleKeys.something_went_wrong),
-      );
       emit(Done(data: _commentsData));
     }
   }
@@ -84,22 +73,13 @@ class DocCommentsBloc extends Bloc<AppEvent, AppState> {
       );
 
       if (response.statusCode == 200) {
-        AppCore.successToastMessage(
-          allTranslations.text(LocaleKeys.comment_updated_successfully),
-        );
         add(Click(arguments: event.documentDataId));
         editCommentCtrl.clear();
         _editingCommentId = null;
       } else {
-        AppCore.errorMessage(
-          allTranslations.text(LocaleKeys.something_went_wrong),
-        );
         emit(Done(data: _commentsData));
       }
     } catch (e) {
-      AppCore.errorMessage(
-        allTranslations.text(LocaleKeys.something_went_wrong),
-      );
       emit(Done(data: _commentsData));
     }
   }

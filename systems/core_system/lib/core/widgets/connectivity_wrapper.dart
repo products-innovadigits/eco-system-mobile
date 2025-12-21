@@ -1,13 +1,12 @@
+import 'dart:developer';
+
 import 'package:core_system/core/utility/export.dart';
 import 'package:core_system/core/widgets/connectivity_widget.dart';
 
 class ConnectivityWrapper extends StatefulWidget {
   final Widget child;
 
-  const ConnectivityWrapper({
-    super.key,
-    required this.child,
-  });
+  const ConnectivityWrapper({super.key, required this.child});
 
   @override
   State<ConnectivityWrapper> createState() => _ConnectivityWrapperState();
@@ -27,17 +26,12 @@ class _ConnectivityWrapperState extends State<ConnectivityWrapper> {
             stream: mainAppBloc.connectivityStream,
             builder: (context, connectivitySnapshot) {
               final isConnected = connectivitySnapshot.data ?? true;
+              log('ConnectivityWrapper - isConnected: $isConnected');
 
               return Stack(
                 children: [
                   widget.child,
-                  if (!isConnected)
-                    Positioned(
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      child: const ConnectivityWidget(),
-                    ),
+                  if (!isConnected) const ConnectivityWidget(),
                 ],
               );
             },

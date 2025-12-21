@@ -165,15 +165,15 @@
     },
     {
       "name": "connectivity_plus",
-      "rootUri": "file:///Users/macbook/.pub-cache/hosted/pub.dev/connectivity_plus-5.0.2",
+      "rootUri": "file:///Users/macbook/.pub-cache/hosted/pub.dev/connectivity_plus-7.0.0",
       "packageUri": "lib/",
-      "languageVersion": "2.18"
+      "languageVersion": "3.2"
     },
     {
       "name": "connectivity_plus_platform_interface",
-      "rootUri": "file:///Users/macbook/.pub-cache/hosted/pub.dev/connectivity_plus_platform_interface-1.2.4",
+      "rootUri": "file:///Users/macbook/.pub-cache/hosted/pub.dev/connectivity_plus_platform_interface-2.0.1",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "2.18"
     },
     {
       "name": "convert",
@@ -828,6 +828,12 @@
       "rootUri": "file:///Users/macbook/.pub-cache/hosted/pub.dev/injectable_generator-2.9.1",
       "packageUri": "lib/",
       "languageVersion": "3.8"
+    },
+    {
+      "name": "internet_connection_checker_plus",
+      "rootUri": "file:///Users/macbook/.pub-cache/hosted/pub.dev/internet_connection_checker_plus-2.9.1+2",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
     },
     {
       "name": "intl",

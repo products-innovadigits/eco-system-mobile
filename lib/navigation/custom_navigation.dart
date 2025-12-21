@@ -11,6 +11,7 @@ import 'package:eco_system/features/intro/view/intro_view.dart';
 import 'package:eco_system/features/intro/view/onboarding.dart';
 import 'package:eco_system/features/main_page/view/main_page.dart';
 import 'package:eco_system/features/splash/splash.dart';
+import 'package:pms_system/latest_request/view/latest_request_view.dart';
 import 'package:pms_system/pms_layout.dart';
 import 'package:pms_system/project_details/view/project_details_view.dart';
 import 'package:pms_system/project_report/view/project_report_view.dart';
@@ -112,6 +113,9 @@ class AppRouter {
             projectEndDate: args?.projectEndDate ?? DateTime.now(),
           ),
         );
+
+      case Routes.LATEST_REQUEST:
+        return MaterialPageRoute(builder: (_) => const LatestRequestView());
 
       /// ATS Routes ===========================================
       case Routes.JOBS:

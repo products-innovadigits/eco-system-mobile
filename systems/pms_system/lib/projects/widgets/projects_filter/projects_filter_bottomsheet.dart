@@ -8,14 +8,20 @@ class ProjectsFilterBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProjectsFiltrationBloc, AppState>(
+      buildWhen: (previous, current) =>
+          previous.runtimeType != current.runtimeType,
       builder: (context, state) {
         final filterBloc = context.read<ProjectsFiltrationBloc>();
         final projectsBloc = context.read<ProjectsBloc>();
         return Stack(
           children: [
             state is Loading
-                ? ShimmerCardsList(itemCount: 4, cardHeight: 50, listPadding: 0)
-                : ProjectsFilterBottomSheetBody(),
+                ? const ShimmerCardsList(
+                    itemCount: 4,
+                    cardHeight: 50,
+                    listPadding: 0,
+                  )
+                : const ProjectsFilterBottomSheetBody(),
             if (state is Done)
               ProjectsFilterButtonsSection(
                 onApplyFilters: () =>

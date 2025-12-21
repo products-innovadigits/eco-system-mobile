@@ -26,6 +26,11 @@ class ProjectReportView extends StatelessWidget {
           title: allTranslations.text(LocaleKeys.project_report),
           withBottomBorder: false,
           action: BlocBuilder<ProjectReportBloc, AppState>(
+            buildWhen: (previous, current) =>
+                (previous is! Done && current is Done) ||
+                (previous is Done &&
+                    current is Done &&
+                    previous.model != current.model),
             builder: (context, state) {
               return state is Done && state.model is ProjectReportModel
                   ? _ExportButton(
@@ -46,6 +51,8 @@ class ProjectReportView extends StatelessWidget {
         ),
         body: SafeArea(
           child: BlocBuilder<ProjectReportBloc, AppState>(
+            buildWhen: (previous, current) =>
+                previous.runtimeType != current.runtimeType,
             builder: (context, state) {
               if (state is Loading) {
                 return ShimmerCardsList(itemCount: 4, cardHeight: 200);

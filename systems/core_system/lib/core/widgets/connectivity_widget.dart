@@ -1,4 +1,3 @@
-import 'package:core_system/core/services/connectivity_service.dart';
 import 'package:core_system/core/utility/export.dart';
 
 class ConnectivityWidget extends StatelessWidget {
@@ -11,57 +10,35 @@ class ConnectivityWidget extends StatelessWidget {
       builder: (context, langSnapshot) {
         final isRTL = langSnapshot.data == 'ar';
 
-        return SafeArea(
-          child: Directionality(
-            textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
-            child: StreamBuilder<bool?>(
-              stream: mainAppBloc.connectivityStream,
-              builder: (context, connectivitySnapshot) {
-                final isConnected = connectivitySnapshot.data ?? true;
-
-                if (isConnected) return const SizedBox.shrink();
-
-                return AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                  height: isConnected ? 0 : 40,
-                  color: Styles.ERROR_COLOR,
-                  child: Center(
-                    child: Row(
+        return Directionality(
+          textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
+          child: Container(
+            width: double.infinity,
+            height: double.infinity,
+            color: context.color.surface,
+            child: Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.wifi_off_rounded,
-                          color: context.color.surfaceContainer,
-                          size: 20,
-                        ),
-                        8.sw,
+                        Images(image: Assets.svgs.error.path),
+                        16.sh,
                         Text(
-                          allTranslations.text(LocaleKeys.no_internet_connection),
-                          style: AppTextStyles.w500.copyWith(
-                            color: context.color.surfaceContainer,
-                            fontSize: 14,
+                          allTranslations.text(
+                            LocaleKeys.no_internet_connection,
                           ),
+                          style: context.textTheme.headlineSmall,
                         ),
-                        if (!isConnected) ...[
-                          8.sw,
-                          IconButton(
-                            icon: Icon(
-                              Icons.refresh_rounded,
-                              color: context.color.surfaceContainer,
-                              size: 20,
-                            ),
-                            onPressed: () async {
-                              final connectivityService = ConnectivityService();
-                              await connectivityService.checkConnection();
-                            },
-                          ),
-                        ],
                       ],
                     ),
                   ),
-                );
-              },
+                ],
+              ),
             ),
           ),
         );

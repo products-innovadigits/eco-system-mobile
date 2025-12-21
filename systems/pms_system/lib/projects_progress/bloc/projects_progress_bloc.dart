@@ -36,12 +36,9 @@ class ProjectsProgressBloc extends Bloc<AppEvent, AppState> {
             res.data["data"].map((e) => ProjectsOverviewData.fromJson(e)));
         emit(Done(data: data));
       } else {
-        AppCore.errorMessage(allTranslations.text('something_went_wrong'));
         emit(Error());
       }
     } catch (e) {
-      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
-
       emit(Error());
     }
   }

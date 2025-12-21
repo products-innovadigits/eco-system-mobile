@@ -39,8 +39,6 @@ class StageDocsBloc extends Bloc<AppEvent, AppState> {
         emit(Empty());
       }
     } catch (e) {
-      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
-
       emit(Error());
     }
   }
@@ -54,9 +52,6 @@ class StageDocsBloc extends Bloc<AppEvent, AppState> {
     final formKey = _formKeys[event.stepDocumentId];
     if (formKey == null || !formKey.currentState!.validate()) return;
     if (comment.isEmpty) {
-      AppCore.errorToastMessage(
-        allTranslations.text(LocaleKeys.enter_valid_comment),
-      );
       return;
     }
     emit(Adding());
@@ -74,17 +69,12 @@ class StageDocsBloc extends Bloc<AppEvent, AppState> {
         // Clear the controller for this specific document
         _commentControllers[event.stepDocumentId]?.clear();
         addingDocumentId = 0;
-        AppCore.successToastMessage(
-          allTranslations.text(LocaleKeys.comment_added_successfully),
-        );
         emit(Done(data: currentStepDocumentData));
       } else {
-        AppCore.errorMessage(allTranslations.text('something_went_wrong'));
         addingDocumentId = 0;
         emit(Error());
       }
     } catch (e) {
-      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
       addingDocumentId = 0;
       emit(Error());
     }

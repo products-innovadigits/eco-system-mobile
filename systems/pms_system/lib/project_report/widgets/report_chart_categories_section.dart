@@ -1,8 +1,5 @@
 import 'package:core_system/core/utility/export.dart';
-import 'package:flutter/material.dart';
 import 'package:pms_system/project_report/model/project_report_model.dart';
-
-import '../model/report_objective_percentage_model.dart';
 
 class ReportChartCategoriesSection extends StatelessWidget {
   final List<ActivityBarModel> activities;

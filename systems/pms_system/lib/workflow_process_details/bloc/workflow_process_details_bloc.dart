@@ -27,7 +27,7 @@ class WorkflowProcessDetailsBloc extends Bloc<AppEvent, AppState> {
         stageDocsData = res.data;
       }
     } catch (e) {
-      AppCore.errorMessage('Current Next Error');
+      // Error handled silently
     }
   }
 
@@ -52,8 +52,6 @@ class WorkflowProcessDetailsBloc extends Bloc<AppEvent, AppState> {
         emit(Empty());
       }
     } catch (e) {
-      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
-
       emit(Error());
     }
   }
@@ -77,15 +75,9 @@ class WorkflowProcessDetailsBloc extends Bloc<AppEvent, AppState> {
         );
         add(Click(arguments: {'projectId': projectId, 'processId': processId}));
       } else {
-        AppCore.errorMessage(
-          allTranslations.text(LocaleKeys.something_went_wrong),
-        );
         emit(Error());
       }
     } catch (e) {
-      AppCore.errorMessage(
-        allTranslations.text(LocaleKeys.something_went_wrong),
-      );
       emit(Error());
     }
   }

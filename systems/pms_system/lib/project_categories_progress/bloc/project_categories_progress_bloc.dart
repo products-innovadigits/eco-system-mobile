@@ -18,12 +18,9 @@ class ProjectCategoriesProgressBloc extends Bloc<AppEvent, AppState> {
                 .map((e) => ProjectCategoriesProgressModel.fromJson(e)));
         emit(Done(list: data));
       } else {
-        AppCore.errorMessage(allTranslations.text('something_went_wrong'));
         emit(Error());
       }
     } catch (e) {
-      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
-
       emit(Error());
     }
   }

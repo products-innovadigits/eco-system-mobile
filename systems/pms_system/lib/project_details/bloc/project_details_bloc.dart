@@ -32,12 +32,9 @@ class ProjectDetailsBloc extends Bloc<AppEvent, AppState> {
         _cachedModel = model; // Cache the model
         emit(Done(model: model));
       } else {
-        AppCore.errorMessage(allTranslations.text('something_went_wrong'));
         emit(Error());
       }
     } catch (e) {
-      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
-
       emit(Error());
     }
   }
@@ -57,12 +54,9 @@ class ProjectDetailsBloc extends Bloc<AppEvent, AppState> {
         _cachedMilestonesList = milestones; // Cache the model
         emit(GettingDone(data: _cachedMilestonesList));
       } else {
-        AppCore.errorMessage(allTranslations.text('something_went_wrong'));
         emit(GettingError());
       }
     } catch (e) {
-      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
-
       emit(GettingError());
     }
   }
@@ -85,7 +79,6 @@ class ProjectDetailsBloc extends Bloc<AppEvent, AppState> {
         }
       }
     } else {
-      // If no cached model, emit error or handle appropriately
       emit(Error());
     }
   }

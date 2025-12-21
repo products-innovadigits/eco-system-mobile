@@ -1,4 +1,5 @@
 import 'package:core_system/core/utility/export.dart';
+import 'package:pms_system/project_categories_progress/view/project_category_progress_section.dart';
 
 class MainBodyMobilePortraitView extends StatelessWidget {
   const MainBodyMobilePortraitView({super.key});
@@ -16,11 +17,11 @@ class MainBodyMobilePortraitView extends StatelessWidget {
               ObjectivePercentageSection(),
             if (UserBloc.activeSystems.contains(ActiveSystemEnum.pms)) ...[
               ProjectManagementSection(),
-              // ProjectCategoryProgressSection(),
-              // if (UserBloc.activeSystems.contains(ActiveSystemEnum.ats)) ...[
-              //   AvailableJobsSection(),
-              //   TalentPoolSection(),
-              // ],
+              ProjectCategoryProgressSection(),
+              if (UserBloc.activeSystems.contains(ActiveSystemEnum.ats)) ...[
+                AvailableJobsSection(),
+                TalentPoolSection(),
+              ],
               16.sh,
             ],
           ],

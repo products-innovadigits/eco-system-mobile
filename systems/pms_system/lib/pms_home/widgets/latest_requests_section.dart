@@ -10,11 +10,11 @@ class LatestRequestsSection extends StatelessWidget {
     return MainCardWidget(
       title: allTranslations.text(LocaleKeys.latest_requests),
       moreBtnTxt: allTranslations.text(LocaleKeys.view_more),
-      onViewMoreTap: (){},
+      onViewMoreTap: () {},
       child: Column(
         children: List.generate(4, (i) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 16),
+          return const Padding(
+            padding: EdgeInsets.only(bottom: 16),
             child: RequestCardWidget(),
           );
         }),

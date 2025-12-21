@@ -23,14 +23,16 @@ class ProjectDetailsView extends StatelessWidget {
                     ..add(Click(arguments: id)),
             ),
           ],
-          child: ProjectDetailsBody(),
+          child: const ProjectDetailsBody(),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () =>
             CustomNavigator.push(Routes.PROJECT_REPORT, arguments: id),
         backgroundColor: context.color.primary,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(50)),
+        ),
         child: Images(
           image: Assets.svgs.chartReport.path,
           width: 20.w,

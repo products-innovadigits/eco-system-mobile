@@ -21,6 +21,8 @@ class ProcessDetailsBody extends StatelessWidget {
     return Column(
       children: [
         BlocBuilder<WorkflowProcessDetailsBloc, AppState>(
+          buildWhen: (previous, current) =>
+              (previous is Loading) != (current is Loading),
           builder: (context, state) {
             return state is Loading
                 ? Padding(
@@ -34,6 +36,11 @@ class ProcessDetailsBody extends StatelessWidget {
           },
         ),
         BlocBuilder<WorkflowProcessDetailsBloc, AppState>(
+          buildWhen: (previous, current) =>
+              previous.runtimeType != current.runtimeType ||
+              (previous is Done &&
+                  current is Done &&
+                  previous.model != current.model),
           builder: (context, state) {
             final selectedTab = context.select(
               (WorkflowProcessDetailsBloc bloc) => bloc.selectedTab,
@@ -97,7 +104,7 @@ class _ProcessBody extends StatelessWidget {
     return Expanded(
       child: Column(
         children: [
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           ProcessDetailsTabsSection(),
           SizedBox(height: 16.h),
           Expanded(

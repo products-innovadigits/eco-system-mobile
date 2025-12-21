@@ -61,6 +61,5 @@ export 'package:pms_system/workflow_process_details/widgets/tabs/fields_tab/fiel
 export 'package:pms_system/workflow_process_details/widgets/tabs/follow_process_tab/follow_process_tab.dart';
 export 'package:pms_system/workflow_process_details/widgets/tabs/follow_process_tab/process_expansion_card_widget.dart';
 export 'package:pms_system/workflow_process_details/widgets/tabs/process_details_tabs_section.dart';
-export 'package:pms_system/workflow_process_details/widgets/tabs/stage_docs_tab/html_content/html_content_dialog.dart';
 export 'package:pms_system/workflow_process_details/widgets/tabs/stage_docs_tab/stage_docs_tab.dart';
 export 'package:pms_system/workflow_process_details/widgets/tabs/stage_docs_tab/view_comments_bottom_sheet.dart';

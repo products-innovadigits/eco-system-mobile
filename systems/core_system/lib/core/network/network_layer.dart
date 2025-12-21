@@ -23,14 +23,14 @@ class Network {
       _dio.interceptors.add(NetworkLogger.logger);
 
       // if (kDebugMode) {
-        // 👇 Add this block to ignore SSL certificates
-        (_dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
-            (client) {
-              client.badCertificateCallback =
-                  (X509Certificate cert, String host, int port) => true;
-              return client;
-            };
-        _instance = Network._private();
+      // 👇 Add this block to ignore SSL certificates
+      (_dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
+          (client) {
+            client.badCertificateCallback =
+                (X509Certificate cert, String host, int port) => true;
+            return client;
+          };
+      _instance = Network._private();
       // }
     }
 
@@ -47,6 +47,14 @@ class Network {
     Map<String, dynamic>? header,
     ServerMethods method = ServerMethods.GET,
   }) async {
+    // final bool isConnected = await ConnectivityService().checkConnection();
+    // if (!isConnected) {
+    //   AppCore.errorToastMessage(
+    //     allTranslations.text(LocaleKeys.no_internet_connection),
+    //   );
+    //
+    //   throw SocketException('No internet connection');
+    // }
     // String token = await SharedHelper().readString(CachingKey.TOKEN);
     String token = await SecureStorageHelper().getToken();
 
@@ -88,3 +96,14 @@ class Network {
     }
   }
 }
+
+// Future<bool> _hasInternetConnection() async {
+//   try {
+//     final result = await InternetAddress.lookup('example.com');
+//     return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
+//   } on SocketException {
+//     return false;
+//   } catch (_) {
+//     return false;
+//   }
+// }

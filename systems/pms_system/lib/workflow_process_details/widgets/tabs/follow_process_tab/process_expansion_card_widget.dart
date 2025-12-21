@@ -26,13 +26,7 @@ class ProcessExpansionCardWidget extends StatelessWidget {
           final process = processSteps?[idx];
           return _ProcessStepRowWidget(
             title: process?.stepName ?? '',
-            status:
-                ((process?.status == 0 || process?.status == 2) ? false : true)
-                ? allTranslations.text(LocaleKeys.completed)
-                : allTranslations.text(LocaleKeys.not_completed),
-            isCompleted: (process?.status == 0 || process?.status == 2)
-                ? false
-                : true,
+            status: process?.status ?? 0,
           );
         }),
       ),
@@ -73,20 +67,12 @@ class _ProcessProgressWidget extends StatelessWidget {
 
 class _ProcessStepRowWidget extends StatelessWidget {
   final String title;
-  final String status;
-  final bool isCompleted;
+  final int status;
 
-  const _ProcessStepRowWidget({
-    required this.title,
-    required this.status,
-    required this.isCompleted,
-  });
+  const _ProcessStepRowWidget({required this.title, required this.status});
 
   @override
   Widget build(BuildContext context) {
-    final color = isCompleted
-        ? context.color.secondary
-        : context.color.outlineVariant;
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
@@ -101,13 +87,13 @@ class _ProcessStepRowWidget extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.1),
+              color: _statusColor(status, context).withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(25),
             ),
             child: Text(
-              status,
+              _statusName(status),
               style: context.textTheme.bodySmall?.copyWith(
-                color: color,
+                color: _statusColor(status, context),
                 fontSize: FontSizes.f10,
               ),
             ),
@@ -115,5 +101,27 @@ class _ProcessStepRowWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+String _statusName(int? status) {
+  switch (status) {
+    case 0:
+      return allTranslations.text(LocaleKeys.not_completed);
+    case 1:
+      return allTranslations.text(LocaleKeys.completed);
+    default:
+      return allTranslations.text(LocaleKeys.in_progress);
+  }
+}
+
+Color _statusColor(int? status, BuildContext context) {
+  switch (status) {
+    case 0:
+      return context.color.outlineVariant;
+    case 1:
+      return context.color.tertiary;
+    default:
+      return context.color.secondary;
   }
 }

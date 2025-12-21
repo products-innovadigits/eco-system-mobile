@@ -14,7 +14,6 @@ class SystemSelectionWidget extends StatelessWidget {
 
   void _showSystemSelectionBottomSheet(BuildContext context) {
     PopUpHelper.showBottomSheet(
-      height: 400.h,
       header: allTranslations.text(LocaleKeys.select_system),
       child: SystemSelectionBottomSheet(
         onSystemSelected: SystemHelper.handleSystemSelection,
@@ -80,6 +79,7 @@ class SystemSelectionBottomSheet extends StatelessWidget {
 
     return ListView.separated(
       shrinkWrap: true,
+      padding: EdgeInsets.only(top: 12.h),
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
         final system = systemOptions[index];

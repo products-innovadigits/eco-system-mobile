@@ -1,11 +1,7 @@
 import 'package:core_system/core/utility/export.dart';
 
 class NavApp extends StatefulWidget {
-  const NavApp({
-    super.key,
-    required this.index,
-    this.onSelect,
-  });
+  const NavApp({super.key, required this.index, this.onSelect});
 
   final int index;
   final Function(int)? onSelect;
@@ -27,41 +23,45 @@ class _NavAppState extends State<NavApp> {
       type: BottomNavigationBarType.fixed,
       currentIndex: widget.index,
       selectedLabelStyle: TextStyle(
-          color: context.theme.primaryColor,
-          fontSize: 11,
-          fontWeight: FontWeight.w600),
+        color: context.theme.primaryColor,
+        fontSize: 12,
+        fontWeight: FontWeight.w600,
+      ),
       unselectedLabelStyle: TextStyle(
         color: context.theme.primaryColorDark,
-        fontSize: 11,
+        fontSize: 12,
       ),
       unselectedItemColor: context.theme.primaryColorDark,
       selectedItemColor: context.theme.primaryColor,
       items: [
         BottomNavigationBarItem(
           icon: NavAppItem(
-              title: LocaleKeys.home,
-              isSelected: widget.index == 0,
-              icon: Assets.svgs.home.path,
-              activeIcon: Assets.svgs.homeActive.path,
-              color: _selectedColor(0)),
+            title: LocaleKeys.home,
+            isSelected: widget.index == 0,
+            icon: Assets.svgs.home.path,
+            activeIcon: Assets.svgs.homeActive.path,
+            color: _selectedColor(0),
+          ),
           label: '',
         ),
         BottomNavigationBarItem(
           icon: NavAppItem(
-              title: LocaleKeys.reports,
-              isSelected: widget.index == 1,
-              icon: Assets.svgs.reports.path,
-              activeIcon: Assets.svgs.reports.path,
-              color: _selectedColor(1)),
+            title: LocaleKeys.reports,
+            isSelected: widget.index == 1,
+            icon: Assets.svgs.reports.path,
+            activeIcon: Assets.svgs.reports.path,
+            color: _selectedColor(1),
+          ),
           label: '',
         ),
         BottomNavigationBarItem(
           icon: NavAppItem(
-              title: LocaleKeys.notifications,
-              isSelected: widget.index == 2,
-              icon: Assets.svgs.notification.path,
-              activeIcon: Assets.svgs.notification.path,
-              color: _selectedColor(2)),
+            title: LocaleKeys.notifications,
+            isSelected: widget.index == 2,
+            icon: Assets.svgs.notification.path,
+            activeIcon: Assets.svgs.notification.path,
+            color: _selectedColor(2),
+          ),
           label: '',
         ),
         // BottomNavigationBarItem(

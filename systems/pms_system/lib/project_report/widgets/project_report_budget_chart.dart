@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+
 import '../../shared/pms_exports.dart';
 
 class ProjectReportBudgetChart extends StatelessWidget {
@@ -154,10 +155,7 @@ class _BudgetChart extends StatelessWidget {
   final List<ProjectsOverviewData> projects;
   final double projectBudget;
 
-  const _BudgetChart({
-    required this.projects,
-    required this.projectBudget,
-  });
+  const _BudgetChart({required this.projects, required this.projectBudget});
 
   @override
   Widget build(BuildContext context) {
@@ -235,4 +233,3 @@ class _BudgetChart extends StatelessWidget {
     return formatter.format(value);
   }
 }
-

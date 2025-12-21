@@ -19,11 +19,9 @@ class ProjectReportBloc extends Bloc<AppEvent, AppState> {
         );
         emit(Done(model: model));
       } else {
-        AppCore.errorMessage(allTranslations.text('something_went_wrong'));
         emit(Error());
       }
     } catch (e) {
-      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
       emit(Error());
     }
   }

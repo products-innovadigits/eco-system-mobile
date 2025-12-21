@@ -27,6 +27,11 @@ class ProjectsAppBarWidget extends StatelessWidget
     // Use BlocBuilder to react to sorting state changes
     return BlocBuilder<ProjectsSortingBloc, AppState>(
       bloc: sortingBloc,
+      buildWhen: (previous, current) =>
+          previous is Done != current is Done ||
+          (previous is Done &&
+              current is Done &&
+              previous.model != current.model),
       builder: (context, sortingState) {
         return CustomAppBar(
           title: allTranslations.text(LocaleKeys.projects),
