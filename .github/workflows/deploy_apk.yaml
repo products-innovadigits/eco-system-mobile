@@ -41,9 +41,6 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Create .env file
-        run: echo "# Environment variables" > .env
-
       - name: Install Dependencies
         run: flutter pub get
 
@@ -53,59 +50,57 @@ jobs:
       - name: Debug systems input
         run: echo "🚀 ACTIVE_SYSTEMS='${{ github.event.inputs.systems }}'"
 
-      - name: Check key.properties
-        working-directory: android
+      # ✅ (1) Fail fast: root .env exists + contains the key
+      - name: Validate root .env and required key
         run: |
-          if [ -f "key.properties" ]; then
-            echo "✅ key.properties exists"
-          else
-            echo "⚠️  key.properties not found - release build may fail if signing is required"
+          set -e
+          ENV_SOURCE="./.env"
+          REQUIRED_KEY="STRATEGY_BASE_URL_DEV"
+
+          echo "Repo root is: $(pwd)"
+          echo "Checking file: $ENV_SOURCE"
+
+          if [ ! -f "$ENV_SOURCE" ]; then
+            echo "❌ .env not found at repo root: $ENV_SOURCE"
+            echo "Make sure .env is committed to the repo (not gitignored)."
+            exit 1
           fi
+
+          if ! grep -q "^${REQUIRED_KEY}=" "$ENV_SOURCE"; then
+            echo "❌ Key '${REQUIRED_KEY}' not found in $ENV_SOURCE"
+            echo "Expected line like: ${REQUIRED_KEY}=https://..."
+            exit 1
+          fi
+
+          echo "✅ .env exists and contains ${REQUIRED_KEY}"
+
+      # ✅ Copy root .env into an asset so flutter_dotenv can load it inside APK
+      - name: Prepare dotenv asset
+        run: |
+          set -e
+          mkdir -p assets/env
+          cp ./.env assets/env/.env
+          echo "✅ Copied ./.env -> assets/env/.env"
 
       - name: Clean and get dependencies
         run: |
           flutter clean
           flutter pub get
-          flutter pub deps
 
       - name: Check Flutter doctor
         run: flutter doctor -v
 
+      # ✅ (3) Safe flags to avoid silent failures
       - name: Build APK
-        id: build_apk
         run: |
           set -e
           flutter build apk \
             --release \
             --no-shrink \
             --dart-define=ACTIVE_SYSTEMS="${{ github.event.inputs.systems }}" \
-            --verbose 2>&1 | tee build.log || (echo "Build failed, checking logs..." && cat build.log && exit 1)
-        continue-on-error: false
-
-      - name: Capture build logs (if build fails)
-        if: failure()
-        run: |
-          echo "=== Build log (last 200 lines) ==="
-          if [ -f build.log ]; then
-            tail -200 build.log
-          else
-            echo "Build log file not found"
-          fi
-          echo ""
-          echo "=== Searching for errors in build log ==="
-          if [ -f build.log ]; then
-            grep -i -A 20 "error\|exception\|failure\|failed" build.log | head -100 || echo "No obvious errors found in grep"
-          fi
-
-      - name: Capture Gradle errors (if build fails)
-        if: failure()
-        working-directory: android
-        run: |
-          echo "=== Running Gradle with full stacktrace ==="
-          ./gradlew assembleRelease --stacktrace --info 2>&1 | tee gradle-error.log || true
-          echo ""
-          echo "=== Error summary from Gradle ==="
-          grep -i -B 5 -A 30 "FAILURE\|> Task.*FAILED\|Exception\|Error\|Caused by" gradle-error.log | head -150 || echo "No obvious errors in Gradle output"
+            --dart-define=DOTENV_ASSET_PATH="assets/env/.env" \
+            --dart-define=ENABLE_HTTP_LOGS="true" \
+            --verbose 2>&1 | tee build.log || (cat build.log && exit 1)
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -117,10 +112,6 @@ jobs:
 
       - name: Install Bundler
         run: gem install bundler
-
-      # - name: Install Fastlane plugins
-      #   working-directory: android
-      #   run: bundle exec fastlane install_plugins
 
       - name: Distribute via Firebase App Distribution
         working-directory: android

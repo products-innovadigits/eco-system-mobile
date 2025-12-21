@@ -42,7 +42,13 @@ void main() async {
   }
   await SharedHelper.init();
   await allTranslations.init();
-  await dotenv.load(fileName: ".env");
+  // await dotenv.load(fileName: ".env");
+  const dotenvPath = String.fromEnvironment(
+    'DOTENV_ASSET_PATH',
+    defaultValue: 'assets/env/.env',
+  );
+
+  await dotenv.load(fileName: dotenvPath);
   await mainAppBloc.getShared();
 
   // Initialize connectivity service
