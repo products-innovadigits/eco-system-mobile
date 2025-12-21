@@ -32,6 +32,9 @@ platform :android do
       apk_path: apk_path
     }
 
+    if release_name && !release_name.to_s.strip.empty?
+      firebase_args[:release_name] = release_name
+
     # Add testers only if email is provided and not the default placeholder
     if test_email && !test_email.to_s.strip.empty? && test_email != "Enter the client email..."
       firebase_args[:testers] = test_email
