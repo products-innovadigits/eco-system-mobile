@@ -13,9 +13,6 @@ on:
         required: true
         default: 'strategy,ats,pms'
 
-      release_name:
-        description: 'Release name (e.g. v1.2.3-clientX)'
-        required: true
 
       release_notes:
         description: 'Release notes for Firebase tester emails'
