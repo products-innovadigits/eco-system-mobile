@@ -1,3 +1,5 @@
+import 'package:pms_system/project_categories_progress/bloc/project_categories_progress_cubit.dart';
+import 'package:pms_system/project_categories_progress/bloc/project_categories_progress_state.dart';
 import 'package:pms_system/shared/pms_exports.dart';
 
 class ProjectCategoryProgressSection extends StatelessWidget {
@@ -8,36 +10,39 @@ class ProjectCategoryProgressSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ProjectCategoriesProgressBloc()..add(Click()),
-      child: BlocBuilder<ProjectCategoriesProgressBloc, AppState>(
+      create: (context) =>
+          ProjectCategoriesProgressCubit()..loadCategoriesProgress(),
+      child: BlocBuilder<ProjectCategoriesProgressCubit,
+          ProjectCategoriesProgressState>(
         builder: (context, state) {
           return switch (state) {
             // ── Loading ─────────────────────────
-            Loading() => const CustomShimmerContainer(),
+            ProjectCategoriesProgressLoading() => const CustomShimmerContainer(),
 
-            // ── Done ────────────────────────────
-            Done(:final list) => _CategoriesChart(
-              data:
-                  list as List<ProjectCategoriesProgressModel>? ??
-                  <ProjectCategoriesProgressModel>[],
-              isPmsHome: isPmsHome,
-            ),
+            // ── Loaded ────────────────────────────
+            ProjectCategoriesProgressLoaded(:final categories) =>
+              _CategoriesChart(
+                data: categories,
+                isPmsHome: isPmsHome,
+              ),
 
             // ── Empty ───────────────────────────
-            Empty() => const EmptyContainer(),
+            ProjectCategoriesProgressEmpty() => const EmptyContainer(),
 
             // ── Error / fallback ────────────────
             _ => MainCardWidget(
-              title: allTranslations.text(
-                LocaleKeys.project_progress_rate_in_each_category,
+                title: allTranslations.text(
+                  LocaleKeys.project_progress_rate_in_each_category,
+                ),
+                moreBtnTxt: allTranslations.text(LocaleKeys.view_projects),
+                child: TryAgainWidget(
+                  onTryAgain: () {
+                    context
+                        .read<ProjectCategoriesProgressCubit>()
+                        .loadCategoriesProgress();
+                  },
+                ),
               ),
-              moreBtnTxt: allTranslations.text(LocaleKeys.view_projects),
-              child: TryAgainWidget(
-                onTryAgain: () {
-                  context.read<ProjectCategoriesProgressBloc>().add(Click());
-                },
-              ),
-            ),
           };
         },
       ),

@@ -1,9 +1,16 @@
-import 'package:pms_system/projects/bloc/projects_sorting_bloc.dart';
+import 'package:pms_system/projects/bloc/filtration/projects_filtration_events.dart';
+import 'package:pms_system/projects/bloc/filtration/projects_filtration_state.dart';
+import 'package:pms_system/projects/bloc/projects/projects_events.dart';
+import 'package:pms_system/projects/bloc/sorting/projects_sorting_bloc.dart';
 import 'package:pms_system/shared/pms_exports.dart';
 
-class ProjectsFiltrationBloc extends Bloc<AppEvent, AppState> {
-  ProjectsFiltrationBloc() : super(Start()) {
-    on<Click>(_onClick);
+class ProjectsFiltrationBloc
+    extends Bloc<ProjectsFiltrationEvent, ProjectsFiltrationState> {
+  ProjectsFiltrationBloc() : super(const ProjectsFiltrationInitial()) {
+    on<LoadProjectsFilterOptions>(_onLoadFilterOptions);
+    on<ApplyProjectsFilters>(_onApplyFilters);
+    on<ResetProjectsFilters>(_onResetFilters);
+    on<ClearProjectsFilters>(_onClearFilters);
   }
 
   static ProjectsFiltrationBloc get instance =>
@@ -13,7 +20,6 @@ class ProjectsFiltrationBloc extends Bloc<AppEvent, AppState> {
   List<DropListModel> categoriesList = [];
   List<DropListModel> riskList = [];
   List<DropListModel> priorityList = [];
-  bool isFilterApplied = false;
   DropListModel? selectedStatus;
   DropListModel? selectedCategory;
   DropListModel? selectedRisk;
@@ -21,9 +27,15 @@ class ProjectsFiltrationBloc extends Bloc<AppEvent, AppState> {
   TextEditingController pickedStartCtrl = TextEditingController();
   TextEditingController pickedEndCtrl = TextEditingController();
 
-  _onClick(AppEvent event, Emitter<AppState> emit) async {
+  // Cache the loaded filter options
+  ProjectsFiltersData? _cachedFilterOptions;
+
+  _onLoadFilterOptions(
+    LoadProjectsFilterOptions event,
+    Emitter<ProjectsFiltrationState> emit,
+  ) async {
     try {
-      emit(Loading());
+      emit(const ProjectsFiltrationLoading());
 
       ProjectsFiltersModel model = await ProjectsRepo.getProjectFilterOptions();
 
@@ -65,12 +77,28 @@ class ProjectsFiltrationBloc extends Bloc<AppEvent, AppState> {
               .toList();
         }
 
-        emit(Done());
+        _cachedFilterOptions = model.data!;
+        emit(
+          ProjectsFiltrationLoaded(
+            filterOptions: model.data!,
+            isFilterApplied: state is ProjectsFiltrationLoaded
+                ? (state as ProjectsFiltrationLoaded).isFilterApplied
+                : false,
+          ),
+        );
       } else {
-        emit(Error());
+        emit(
+          const ProjectsFiltrationFailure(
+            message: 'Failed to load filter options',
+          ),
+        );
       }
     } catch (e) {
-      emit(Error());
+      emit(
+        const ProjectsFiltrationFailure(
+          message: 'Failed to load filter options',
+        ),
+      );
     }
   }
 
@@ -79,7 +107,7 @@ class ProjectsFiltrationBloc extends Bloc<AppEvent, AppState> {
         priorityList.isEmpty ||
         riskList.isEmpty ||
         categoriesList.isEmpty) {
-      add(Click());
+      add(const LoadProjectsFilterOptions());
     }
   }
 
@@ -95,8 +123,8 @@ class ProjectsFiltrationBloc extends Bloc<AppEvent, AppState> {
 
     /// Add the parameters to the project bloc
     projectsBloc.add(
-      Click(
-        arguments: SearchEngine(
+      LoadProjects(
+        searchEngine: SearchEngine(
           query: {
             'status': selectedStatus?.name ?? '',
             'projectCategoryId': selectedCategory?.id ?? '',
@@ -109,8 +137,25 @@ class ProjectsFiltrationBloc extends Bloc<AppEvent, AppState> {
         ),
       ),
     );
-    isFilterApplied = true;
+
+    // Trigger event to emit new state
+    add(const ApplyProjectsFilters());
+
     CustomNavigator.pop();
+  }
+
+  void _onApplyFilters(
+    ApplyProjectsFilters event,
+    Emitter<ProjectsFiltrationState> emit,
+  ) {
+    if (_cachedFilterOptions != null) {
+      emit(
+        ProjectsFiltrationLoaded(
+          filterOptions: _cachedFilterOptions!,
+          isFilterApplied: true,
+        ),
+      );
+    }
   }
 
   bool _areAllFiltersEmpty() {
@@ -209,12 +254,33 @@ class ProjectsFiltrationBloc extends Bloc<AppEvent, AppState> {
     selectedRisk = null;
     pickedStartCtrl.clear();
     pickedEndCtrl.clear();
-    if (isFilterApplied) {
-      isFilterApplied = false;
+
+    final currentState = state;
+    if (currentState is ProjectsFiltrationLoaded &&
+        currentState.isFilterApplied) {
+      // Trigger event to emit new state
+      add(const ResetProjectsFilters());
+
       // Preserve sorting parameters when resetting filters
       final sortingParams = _getCurrentSortingParams();
-      projectsBloc.add(Click(arguments: SearchEngine(query: sortingParams)));
+      projectsBloc.add(
+        LoadProjects(searchEngine: SearchEngine(query: sortingParams)),
+      );
       CustomNavigator.pop();
+    }
+  }
+
+  void _onResetFilters(
+    ResetProjectsFilters event,
+    Emitter<ProjectsFiltrationState> emit,
+  ) {
+    if (_cachedFilterOptions != null) {
+      emit(
+        ProjectsFiltrationLoaded(
+          filterOptions: _cachedFilterOptions!,
+          isFilterApplied: false,
+        ),
+      );
     }
   }
 
@@ -225,7 +291,23 @@ class ProjectsFiltrationBloc extends Bloc<AppEvent, AppState> {
     selectedRisk = null;
     pickedStartCtrl.clear();
     pickedEndCtrl.clear();
-    isFilterApplied = false;
+
+    // Trigger event to emit new state
+    add(const ClearProjectsFilters());
+  }
+
+  void _onClearFilters(
+    ClearProjectsFilters event,
+    Emitter<ProjectsFiltrationState> emit,
+  ) {
+    if (_cachedFilterOptions != null) {
+      emit(
+        ProjectsFiltrationLoaded(
+          filterOptions: _cachedFilterOptions!,
+          isFilterApplied: false,
+        ),
+      );
+    }
   }
 
   // Helper method to get current sorting parameters from sorting bloc

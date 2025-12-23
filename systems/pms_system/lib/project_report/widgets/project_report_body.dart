@@ -38,7 +38,7 @@ class ProjectReportBody extends StatelessWidget {
                 if (model.details != null)
                   ProjectReportSummary(reportDetails: model.details!),
                 ProjectReportDescription(
-                  description: model.description ?? '',
+                  description: model.details?.description ?? '',
                   category: model.details?.categoryName ?? '',
                 ),
                 ProjectReportInitiativesAndKpis(

@@ -1,5 +1,7 @@
 import 'package:core_system/core/widgets/nav_app.dart';
-import 'package:pms_system/projects/bloc/projects_sorting_bloc.dart';
+import 'package:pms_system/projects/bloc/projects/projects_events.dart';
+import 'package:pms_system/projects/bloc/projects/projects_state.dart';
+import 'package:pms_system/projects/bloc/sorting/projects_sorting_bloc.dart';
 import 'package:pms_system/projects/widgets/projects_app_bar_widget.dart';
 import 'package:pms_system/shared/pms_exports.dart';
 
@@ -56,7 +58,7 @@ class _ProjectsViewState extends State<ProjectsView> {
           create: (context) {
             final sortingBloc = context.read<ProjectsSortingBloc>();
             return ProjectsBloc(sortingBloc: sortingBloc)
-              ..add(Click(arguments: SearchEngine()));
+              ..add(LoadProjects(searchEngine: SearchEngine()));
           },
         ),
       ],
@@ -67,14 +69,14 @@ class _ProjectsViewState extends State<ProjectsView> {
           return Scaffold(
             appBar: ProjectsAppBarWidget(bloc: bloc, sortingBloc: sortingBloc),
             body: SafeArea(
-              child: BlocBuilder<ProjectsBloc, AppState>(
+              child: BlocBuilder<ProjectsBloc, ProjectsState>(
                 builder: (context, state) {
                   return switch (state) {
-                    // Loading…
-                    Loading() => const ShimmerCardsList(),
+                    // Loading first page
+                    ProjectsLoading() => const ShimmerCardsList(),
 
-                    // Handle Done state with data models
-                    Done(:final list, :final loading) when list != null =>
+                    // Handle loaded state with data models
+                    ProjectsLoaded(:final projects, :final isLoadingMore) =>
                       Column(
                         children: [
                           Expanded(
@@ -85,24 +87,27 @@ class _ProjectsViewState extends State<ProjectsView> {
                               controller: context
                                   .read<ProjectsBloc>()
                                   .scrollController,
-                              data: (list as List<ProjectDetailsModel>)
+                              data: projects
                                   .map(
                                     (project) => ProjectCard(project: project),
                                   )
                                   .toList(),
                             ),
                           ),
-                          CustomLoading(isTextLoading: true, loading: loading),
+                          CustomLoading(
+                            isTextLoading: true,
+                            loading: isLoadingMore,
+                          ),
                         ],
                       ),
 
                     // Empty
-                    Empty(:final initial) => _HandleEmptyList(
-                      initial: initial,
+                    ProjectsEmpty(:final isInitial) => _HandleEmptyList(
+                      initial: isInitial,
                       bloc: bloc,
                     ),
 
-                    // Fallback (in case error occurs or something else)
+                    // Error or fallback
                     _ => _HandleErrorState(bloc: bloc),
                   };
                 },
@@ -149,7 +154,7 @@ class _HandleErrorState extends StatelessWidget {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        bloc.add(Refresh());
+        bloc.add(const RefreshProjects());
       },
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),

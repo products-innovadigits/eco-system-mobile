@@ -1,19 +1,22 @@
-import 'package:pms_system/projects/bloc/projects_sorting_bloc.dart';
-import 'package:pms_system/projects/bloc/projects_sorting_states.dart';
+import 'package:pms_system/projects/bloc/projects/projects_events.dart';
+import 'package:pms_system/projects/bloc/projects/projects_state.dart';
+import 'package:pms_system/projects/bloc/sorting/projects_sorting_bloc.dart';
+import 'package:pms_system/projects/bloc/sorting/projects_sorting_states.dart';
 import 'package:pms_system/shared/pms_exports.dart';
 
-class ProjectsBloc extends Bloc<AppEvent, AppState> {
-  ProjectsBloc({ProjectsSortingBloc? sortingBloc}) : super(Start()) {
+class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
+  ProjectsBloc({ProjectsSortingBloc? sortingBloc})
+    : super(const ProjectsInitial()) {
     scrollController = ScrollController();
     searchTEC = TextEditingController();
     customScroll(scrollController);
-    on<Click>(_getObjectives);
-    on<Refresh>(_onRefresh);
+    on<LoadProjects>(_getObjectives);
+    on<RefreshProjects>(_onRefresh);
 
     // Listen to sorting changes
     _sortingBloc = sortingBloc;
     if (_sortingBloc != null) {
-      _sortingBloc!.stream.listen((sortingState) {
+      _sortingSubscription = _sortingBloc!.stream.listen((sortingState) {
         if (sortingState is SortingApplied || sortingState is SortingReset) {
           // Refresh projects when sorting is applied or reset
           // Preserve existing filter parameters when resetting sorting
@@ -25,7 +28,7 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
             totalCount: 0,
           );
           _projects.clear(); // Clear data models instead of widgets
-          add(Click(arguments: _engine));
+          add(LoadProjects(searchEngine: _engine));
         }
       });
     }
@@ -40,6 +43,7 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
 
   // Reference to sorting bloc
   ProjectsSortingBloc? _sortingBloc;
+  StreamSubscription? _sortingSubscription;
 
   final filter = BehaviorSubject<CustomFieldModel?>();
 
@@ -72,30 +76,31 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
           // Increment currentPage for next page load
           // The _getObjectives method will use nextPageIndex to request the correct page
           _engine.updateCurrentPage(_engine.currentPage + 1);
-          add(Click(arguments: _engine));
+          add(LoadProjects(searchEngine: _engine));
         }
       }
     });
   }
 
-  _getObjectives(AppEvent event, Emitter<AppState> emit) async {
-    emit(Loading());
+  _getObjectives(LoadProjects event, Emitter<ProjectsState> emit) async {
+    emit(const ProjectsLoading());
     try {
-      // Update engine from event arguments, preserving state if needed
-      final eventEngine = event.arguments as SearchEngine;
-      _engine = eventEngine;
+      // Update engine from event, preserving state if needed
+      _engine = event.searchEngine;
 
       // SOLUTION 1: Handle pagination with data models instead of widgets
       if (_engine.currentPage == 0) {
         _projects.clear(); // Clear data models instead of widgets
-        emit(Loading());
+        emit(const ProjectsLoading());
       } else {
-        // Emit loading state with current projects for pagination using Done state
+        // Emit loading state with current projects for pagination
         emit(
-          Done(
-            list: _projects, // Use 'list' property to store data models
-            loading: true,
-            reload: true,
+          ProjectsLoaded(
+            projects: _projects,
+            isLoadingMore: true,
+            currentPage: _engine.currentPage,
+            totalPages: _engine.maxPages,
+            hasMore: _engine.hasMorePages,
           ),
         );
       }
@@ -145,35 +150,39 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
           _engine.updateCurrentPage(pageIndexToRequest - 1);
         }
 
-        // Emit the new state with data models using Done state
+        // Emit the new state with data models
         emit(
-          Done(
-            list: _projects, // Use 'list' property to store data models
-            loading: false,
-            reload: true,
+          ProjectsLoaded(
+            projects: _projects,
+            isLoadingMore: false,
+            currentPage: _engine.currentPage,
+            totalPages: _engine.maxPages,
+            hasMore: _engine.hasMorePages,
           ),
         );
       } else {
         // Emit empty state if no projects found
         if (_projects.isEmpty) {
-          emit(Empty());
+          emit(const ProjectsEmpty());
         } else {
           // If we have projects but no new ones, just update the loading state
           emit(
-            Done(
-              list: _projects, // Use 'list' property to store data models
-              loading: false,
-              reload: true,
+            ProjectsLoaded(
+              projects: _projects,
+              isLoadingMore: false,
+              currentPage: _engine.currentPage,
+              totalPages: _engine.maxPages,
+              hasMore: _engine.hasMorePages,
             ),
           );
         }
       }
     } catch (e) {
-      emit(Error());
+      emit(const ProjectsFailure(message: 'Failed to load projects'));
     }
   }
 
-  _onRefresh(AppEvent event, Emitter<AppState> emit) async {
+  _onRefresh(RefreshProjects event, Emitter<ProjectsState> emit) async {
     final filterParams = _getCurrentFilterParams();
     final sortingParams = _sortingBloc?.getSortingParams() ?? {};
     // Reset pagination when refreshing
@@ -185,7 +194,7 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
     );
     _projects.clear();
 
-    add(Click(arguments: _engine));
+    add(LoadProjects(searchEngine: _engine));
   }
 
   // Helper method to get current filter parameters from filtration bloc
@@ -217,8 +226,15 @@ class ProjectsBloc extends Bloc<AppEvent, AppState> {
 
   @override
   Future<void> close() {
+    // Cancel stream subscriptions
+    _sortingSubscription?.cancel();
+    filter.close();
+    goingDown.close();
+
+    // Dispose controllers
     scrollController.dispose();
     searchTEC?.dispose();
+
     return super.close();
   }
 }

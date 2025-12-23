@@ -1,3 +1,5 @@
+import 'package:pms_system/project_details/bloc/project_details/project_details_bloc.dart';
+import 'package:pms_system/project_details/bloc/project_details/project_details_state.dart';
 import 'package:pms_system/project_details/widgets/tabs/timeline_tab/timeline_widget.dart';
 
 import '../../../../shared/pms_exports.dart';
@@ -15,54 +17,48 @@ class ProjectTimelineTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProjectDetailsBloc, AppState>(
+    return BlocBuilder<ProjectDetailsBloc, ProjectDetailsState>(
       buildWhen: (previous, current) {
-        return current is GettingDone ||
-            current is Getting ||
-            current is GettingError ||
-            current is Empty ||
-            current is Done;
+        return current is ProjectTimelineLoaded ||
+            current is ProjectTimelineLoading ||
+            current is ProjectTimelineFailure ||
+            current is ProjectDetailsLoaded;
       },
       builder: (context, state) {
         return switch (state) {
           // ── Loading ─────────────────────────
-          Getting() => CustomShimmerContainer(),
+          ProjectTimelineLoading() => CustomShimmerContainer(),
 
           // ── Done ────────────────────────────
-          GettingDone(data: final List<MilestoneModel> milestones) =>
-            milestones.isEmpty
-                ? const EmptyContainer(
-              remain: 500,
-            )
-                : ProjectTimeline(
-                    // milestonesList: demoMilestones,
-                    milestonesList: milestones,
+          ProjectTimelineLoaded(:final milestones) => milestones.isEmpty
+              ? const EmptyContainer(
+                  remain: 500,
+                )
+              : ProjectTimeline(
+                  milestonesList: milestones,
+                  projectStart: projectStart,
+                  projectEnd: projectEnd,
+                ),
+
+          // ── ProjectDetailsLoaded state: check for cached milestones ──
+          ProjectDetailsLoaded() => () {
+                final bloc = context.read<ProjectDetailsBloc>();
+                final cachedMilestones = bloc.cachedMilestones;
+                if (cachedMilestones != null && cachedMilestones.isNotEmpty) {
+                  return ProjectTimeline(
+                    milestonesList: cachedMilestones,
                     projectStart: projectStart,
                     projectEnd: projectEnd,
-                  ),
-
-          // ── Done state: check for cached milestones ──
-          Done() => () {
-            final bloc = context.read<ProjectDetailsBloc>();
-            final cachedMilestones = bloc.cachedMilestones;
-            if (cachedMilestones != null && cachedMilestones.isNotEmpty) {
-              return ProjectTimeline(
-                milestonesList: cachedMilestones,
-                projectStart: projectStart,
-                projectEnd: projectEnd,
-              );
-            }
-            return const EmptyContainer();
-          }(),
-
-          // ── Empty ───────────────────────────
-          Empty() => const EmptyContainer(),
+                  );
+                }
+                return const EmptyContainer();
+              }(),
 
           // ── Error / fallback ────────────────
           _ => EmptyContainer(
-            txt: allTranslations.text(LocaleKeys.something_went_wrong),
-            img: Assets.svgs.error.path,
-          ),
+                txt: allTranslations.text(LocaleKeys.something_went_wrong),
+                img: Assets.svgs.error.path,
+              ),
         };
       },
     );

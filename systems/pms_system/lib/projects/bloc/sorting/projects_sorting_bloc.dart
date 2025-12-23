@@ -1,9 +1,9 @@
-import 'package:pms_system/projects/bloc/projects_sorting_events.dart';
-import 'package:pms_system/projects/bloc/projects_sorting_states.dart';
+import 'package:pms_system/projects/bloc/sorting/projects_sorting_events.dart';
+import 'package:pms_system/projects/bloc/sorting/projects_sorting_states.dart';
 import 'package:pms_system/shared/pms_exports.dart';
 
-class ProjectsSortingBloc extends Bloc<AppEvent, AppState> {
-  ProjectsSortingBloc() : super(SortingInitial()) {
+class ProjectsSortingBloc extends Bloc<AppEvent, ProjectsSortingState> {
+  ProjectsSortingBloc() : super(const SortingInitial()) {
     on<LoadSortingOptions>(_onLoadSortingOptions);
     on<SelectSortingOption>(_onSelectSortingOption);
     on<ApplySortingOption>(_onApplySorting);
@@ -29,16 +29,16 @@ class ProjectsSortingBloc extends Bloc<AppEvent, AppState> {
 
   Future<void> _onLoadSortingOptions(
     LoadSortingOptions event,
-    Emitter<AppState> emit,
+    Emitter<ProjectsSortingState> emit,
   ) async {
     // Return cached data if already loaded
     if (_sortingOptions.isNotEmpty) {
-      emit(SortingOptionsLoaded());
+      emit(const SortingOptionsLoaded());
       return;
     }
 
     try {
-      emit(SortingLoading());
+      emit(const SortingLoading());
 
       Response model = await ProjectsRepo.getProjectSortingOptions();
 
@@ -54,47 +54,47 @@ class ProjectsSortingBloc extends Bloc<AppEvent, AppState> {
               )
               .toList();
 
-          emit(SortingOptionsLoaded());
+          emit(const SortingOptionsLoaded());
         } else {
-          emit(SortingError());
+          emit(const SortingError());
         }
       } else {
-        emit(SortingError());
+        emit(const SortingError());
       }
     } catch (e) {
-      emit(SortingError());
+      emit(const SortingError());
     }
   }
 
   void _onSelectSortingOption(
     SelectSortingOption event,
-    Emitter<AppState> emit,
+    Emitter<ProjectsSortingState> emit,
   ) {
     _selectedOption = event.arguments as DropListModel?;
 
-    emit(SortingOptionSelected());
+    emit(const SortingOptionSelected());
   }
 
-  void _onApplySorting(ApplySortingOption event, Emitter<AppState> emit) {
+  void _onApplySorting(ApplySortingOption event, Emitter<ProjectsSortingState> emit) {
     _appliedOption = _selectedOption;
 
-    emit(SortingApplied());
+    emit(const SortingApplied());
   }
 
-  void _onResetSorting(ResetSortingOption event, Emitter<AppState> emit) {
+  void _onResetSorting(ResetSortingOption event, Emitter<ProjectsSortingState> emit) {
     _appliedOption = null;
     _selectedOption = null;
 
-    emit(SortingReset());
+    emit(const SortingReset());
   }
 
   void _onClearSortingSelection(
     ClearSortingSelection event,
-    Emitter<AppState> emit,
+    Emitter<ProjectsSortingState> emit,
   ) {
     _selectedOption = null;
 
-    emit(SortingOptionsLoaded());
+    emit(const SortingOptionsLoaded());
   }
 
   // Helper method to get current sorting parameters for API calls

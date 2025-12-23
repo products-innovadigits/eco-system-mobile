@@ -1,3 +1,5 @@
+import 'package:pms_system/project_details/bloc/project_details/project_details_bloc.dart';
+import 'package:pms_system/project_details/bloc/project_details/project_details_state.dart';
 import 'package:pms_system/project_details/widgets/tabs/project_details_tabs_section.dart';
 import 'package:pms_system/project_details/widgets/tabs/project_main_info_tab.dart';
 import 'package:pms_system/project_details/widgets/tabs/timeline_tab/project_timeline_tab.dart';
@@ -10,27 +12,24 @@ class ProjectDetailsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProjectDetailsBloc, AppState>(
+    return BlocBuilder<ProjectDetailsBloc, ProjectDetailsState>(
       buildWhen: (previous, current) =>
-          current is! Getting &&
-          current is! GettingDone &&
-          current is! GettingError,
+          current is! ProjectTimelineLoading &&
+          current is! ProjectTimelineLoaded &&
+          current is! ProjectTimelineFailure,
       builder: (context, state) {
         final selectedTab = context.select(
           (ProjectDetailsBloc bloc) => bloc.selectedTab,
         );
         return switch (state) {
           // ── Loading ─────────────────────────
-          Loading() => const CustomDetailsShimmerLoading(),
+          ProjectDetailsLoading() => const CustomDetailsShimmerLoading(),
 
           // ── Done ────────────────────────────
-          Done(:final ProjectDetailsModel model) => _ProjectBody(
-            model: model,
-            selectedTab: selectedTab,
-          ),
-
-          // ── Empty ───────────────────────────
-          Empty() => const EmptyContainer(),
+          ProjectDetailsLoaded(:final projectDetails) => _ProjectBody(
+                model: projectDetails,
+                selectedTab: selectedTab,
+              ),
 
           // ── Error / fallback ────────────────
           _ => const ErrorContainer(),

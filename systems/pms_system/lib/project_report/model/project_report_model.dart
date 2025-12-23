@@ -208,6 +208,7 @@ class ProjectReportDetailsModel {
   String? initiativeCode;
   String? departmentName;
   String? categoryName;
+  String? description;
 
   ProjectReportDetailsModel({
     this.projectName,
@@ -218,6 +219,7 @@ class ProjectReportDetailsModel {
     this.initiativeCode,
     this.departmentName,
     this.categoryName,
+    this.description,
   });
 
   ProjectReportDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -231,6 +233,7 @@ class ProjectReportDetailsModel {
     initiativeCode = json['initiativeCode'];
     departmentName = json['departmentName'];
     categoryName = json['categoryName'];
+    description = json['description'];
   }
 
   Map<String, dynamic> toJson() {
@@ -243,6 +246,7 @@ class ProjectReportDetailsModel {
     if (initiativeCode != null) map['initiativeCode'] = initiativeCode;
     if (departmentName != null) map['departmentName'] = departmentName;
     if (categoryName != null) map['categoryName'] = categoryName;
+    if (description != null) map['description'] = description;
     return map;
   }
 }

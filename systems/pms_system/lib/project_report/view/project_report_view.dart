@@ -1,6 +1,5 @@
+import 'package:pms_system/pms_home/model/kpis_initiatives_progress_model.dart';
 import 'package:pms_system/shared/pms_exports.dart';
-
-import '../../project_details/bloc/project_general_progress_summary_bloc.dart';
 
 class ProjectReportView extends StatelessWidget {
   const ProjectReportView({super.key, required this.projectId});
@@ -13,34 +12,35 @@ class ProjectReportView extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) =>
-              ProjectReportBloc()..add(Click(arguments: projectId)),
+              ProjectReportCubit()..loadProjectReport(projectId),
         ),
         BlocProvider(
-          create: (context) =>
-              ProjectGeneralProgressSummaryBloc()
-                ..add(Click(arguments: projectId)),
+          create: (context) => ProjectGeneralProgressSummaryBloc()
+            ..add(
+              LoadGeneralProgressSummary(
+                projectId: projectId,
+                chartType: ChartTime.Month,
+              ),
+            ),
         ),
       ],
       child: Scaffold(
         appBar: CustomAppBar(
           title: allTranslations.text(LocaleKeys.project_report),
           withBottomBorder: false,
-          action: BlocBuilder<ProjectReportBloc, AppState>(
+          action: BlocBuilder<ProjectReportCubit, ProjectReportState>(
             buildWhen: (previous, current) =>
-                (previous is! Done && current is Done) ||
-                (previous is Done &&
-                    current is Done &&
-                    previous.model != current.model),
+                (previous is! ProjectReportLoaded &&
+                    current is ProjectReportLoaded) ||
+                (previous is ProjectReportLoaded &&
+                    current is ProjectReportLoaded &&
+                    previous.report != current.report),
             builder: (context, state) {
-              return state is Done && state.model is ProjectReportModel
+              return state is ProjectReportLoaded
                   ? _ExportButton(
                       onTap: () {
                         LauncherHelper.downloadFiles(
-                          filePath:
-                              (state.model as ProjectReportModel)
-                                  .data
-                                  ?.pdfFileUrl ??
-                              '',
+                          filePath: state.report.data?.pdfFileUrl ?? '',
                           context: context,
                         );
                       },
@@ -50,29 +50,32 @@ class ProjectReportView extends StatelessWidget {
           ),
         ),
         body: SafeArea(
-          child: BlocBuilder<ProjectReportBloc, AppState>(
+          child: BlocBuilder<ProjectReportCubit, ProjectReportState>(
             buildWhen: (previous, current) =>
                 previous.runtimeType != current.runtimeType,
             builder: (context, state) {
-              if (state is Loading) {
-                return ShimmerCardsList(itemCount: 4, cardHeight: 200);
-              } else if (state is Done && state.model is ProjectReportModel) {
-                final responseModel = state.model as ProjectReportModel;
-                final projectItem = responseModel.data;
-                if (projectItem != null) {
-                  return ProjectReportBody(
-                    model: projectItem,
-                    projectId: projectId,
-                  );
-                } else {
-                  return EmptyContainer();
-                }
-              } else {
-                return EmptyContainer(
+              return switch (state) {
+                // Loading
+                ProjectReportLoading() => ShimmerCardsList(
+                  itemCount: 4,
+                  cardHeight: 200,
+                ),
+
+                // Loaded
+                ProjectReportLoaded(:final report) =>
+                  report.data != null
+                      ? ProjectReportBody(
+                          model: report.data!,
+                          projectId: projectId,
+                        )
+                      : EmptyContainer(),
+
+                // Error or fallback
+                _ => EmptyContainer(
                   txt: allTranslations.text(LocaleKeys.something_went_wrong),
                   img: Assets.svgs.error.path,
-                );
-              }
+                ),
+              };
             },
           ),
         ),

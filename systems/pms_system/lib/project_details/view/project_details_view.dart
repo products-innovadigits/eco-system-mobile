@@ -1,4 +1,8 @@
-import 'package:pms_system/project_details/bloc/project_general_progress_summary_bloc.dart';
+import 'package:pms_system/project_details/bloc/project_details/project_details_bloc.dart';
+import 'package:pms_system/project_details/bloc/project_details/project_details_events.dart';
+import 'package:pms_system/project_details/bloc/general_progress/project_general_progress_summary_bloc.dart';
+import 'package:pms_system/project_details/bloc/general_progress/project_general_progress_summary_events.dart';
+import 'package:pms_system/pms_home/model/kpis_initiatives_progress_model.dart';
 import 'package:pms_system/shared/pms_exports.dart';
 
 class ProjectDetailsView extends StatelessWidget {
@@ -15,12 +19,14 @@ class ProjectDetailsView extends StatelessWidget {
           providers: [
             BlocProvider(
               create: (context) => ProjectDetailsBloc()
-                ..add(Click(arguments: id)),
+                ..add(LoadProjectDetails(projectId: id)),
             ),
             BlocProvider(
-              create: (context) =>
-                  ProjectGeneralProgressSummaryBloc()
-                    ..add(Click(arguments: id)),
+              create: (context) => ProjectGeneralProgressSummaryBloc()
+                ..add(LoadGeneralProgressSummary(
+                  projectId: id,
+                  chartType: ChartTime.Month,
+                )),
             ),
           ],
           child: const ProjectDetailsBody(),

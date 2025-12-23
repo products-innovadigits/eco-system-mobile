@@ -1,3 +1,5 @@
+import 'package:pms_system/projects_progress/bloc/projects_progress_cubit.dart';
+import 'package:pms_system/projects_progress/bloc/projects_progress_state.dart';
 import '../../shared/pms_exports.dart';
 
 class ProjectProgressMobileLandscape extends StatelessWidget {
@@ -80,12 +82,12 @@ class _ProgressHalfPie extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocSelector<
-        ProjectsProgressBloc,
-        AppState,
+        ProjectsProgressCubit,
+        ProjectsProgressState,
         List<ProjectsOverviewData>
     >(
       selector: (state) =>
-      state is Done ? (state.data ?? <ProjectsOverviewData>[]) : projects,
+      state is ProjectsProgressLoaded ? state.projects : projects,
       builder: (context, projs) {
         final total = projs.fold<int>(0, (s, i) => s + (i.count ?? 0).toInt());
         return Positioned(

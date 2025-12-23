@@ -1,3 +1,5 @@
+import 'package:pms_system/project_details/bloc/project_details/project_details_bloc.dart';
+import 'package:pms_system/project_details/bloc/project_details/project_details_events.dart';
 import 'package:pms_system/shared/pms_exports.dart';
 
 class ProjectDetailsTabsSection extends StatelessWidget {
@@ -24,7 +26,9 @@ class ProjectDetailsTabsSection extends StatelessWidget {
               title: tabs[tab] ?? '',
               isSelected: selectedTab == tab,
               onTap: () {
-                context.read<ProjectDetailsBloc>().add(Select(arguments: tab));
+                context
+                    .read<ProjectDetailsBloc>()
+                    .add(SelectProjectTab(tab: tab));
               },
             ),
           );

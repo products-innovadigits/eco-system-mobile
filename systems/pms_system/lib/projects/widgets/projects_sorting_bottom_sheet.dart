@@ -1,6 +1,6 @@
-import 'package:pms_system/projects/bloc/projects_sorting_bloc.dart';
-import 'package:pms_system/projects/bloc/projects_sorting_events.dart';
-import 'package:pms_system/projects/bloc/projects_sorting_states.dart';
+import 'package:pms_system/projects/bloc/sorting/projects_sorting_bloc.dart';
+import 'package:pms_system/projects/bloc/sorting/projects_sorting_events.dart';
+import 'package:pms_system/projects/bloc/sorting/projects_sorting_states.dart';
 import 'package:pms_system/projects/widgets/custom_sort_tile_widget.dart';
 import 'package:pms_system/shared/pms_exports.dart';
 
@@ -9,7 +9,7 @@ class ProjectsSortingBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProjectsSortingBloc, AppState>(
+    return BlocBuilder<ProjectsSortingBloc, ProjectsSortingState>(
       builder: (context, state) {
         final sortingBloc = context.read<ProjectsSortingBloc>();
         return Stack(

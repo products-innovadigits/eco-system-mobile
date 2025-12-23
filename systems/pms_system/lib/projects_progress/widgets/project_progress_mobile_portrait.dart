@@ -31,9 +31,9 @@ class ProjectProgressMobilePortrait extends StatelessWidget {
                     arguments: ActiveSystemEnum.pms,
                   );
           },
-          child: _ChartDetails(projects: data ?? <ProjectsOverviewData>[]),
+          child: _ChartDetails(projects: data),
         ),
-        _ProgressHalfPie(projects: data ?? <ProjectsOverviewData>[]),
+        _ProgressHalfPie(projects: data),
       ],
     );
   }
@@ -91,48 +91,38 @@ class _ProgressHalfPie extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<
-      ProjectsProgressBloc,
-      AppState,
-      List<ProjectsOverviewData>
-    >(
-      selector: (state) =>
-          state is Done ? (state.data ?? <ProjectsOverviewData>[]) : projects,
-      builder: (context, projs) {
-        final total = projs.fold<int>(0, (s, i) => s + (i.count ?? 0).toInt());
-        return Positioned(
-          top: 120.h,
-          right: 20.w,
-          child: Stack(
-            children: [
-              HalfCircleAnalyticChart(projs),
-              Positioned(
-                top: 90.h,
-                left: 0,
-                right: 0,
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Column(
-                    children: [
-                      Text(
-                        allTranslations.text(LocaleKeys.total_projects),
-                        style: context.textTheme.labelSmall,
-                      ),
-                      Text(
-                        total.toString(),
-                        style: context.textTheme.labelLarge?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: context.color.secondary,
-                        ),
-                      ),
-                    ],
+    final total = projects.fold<int>(0, (s, i) => s + (i.count ?? 0).toInt());
+    return Positioned(
+      top: 120.h,
+      right: 20.w,
+      child: Stack(
+        children: [
+          RepaintBoundary(child: HalfCircleAnalyticChart(projects)),
+          Positioned(
+            top: 90.h,
+            left: 0,
+            right: 0,
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Column(
+                children: [
+                  Text(
+                    allTranslations.text(LocaleKeys.total_projects),
+                    style: context.textTheme.labelSmall,
                   ),
-                ),
+                  Text(
+                    total.toString(),
+                    style: context.textTheme.labelLarge?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: context.color.secondary,
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 }
