@@ -2,8 +2,9 @@ import 'package:core_system/core/utility/export.dart';
 
 class SystemsSwitcher extends StatefulWidget {
   final ActiveSystemEnum? systemEnum;
+  final VoidCallback? onComplete;
 
-  const SystemsSwitcher({super.key, this.systemEnum});
+  const SystemsSwitcher({super.key, this.systemEnum, this.onComplete});
 
   @override
   State<SystemsSwitcher> createState() => _SystemsSwitcherState();
@@ -17,8 +18,6 @@ class _SystemsSwitcherState extends State<SystemsSwitcher>
   @override
   void initState() {
     super.initState();
-    // Set the current active system
-    UserBloc.currentActiveSystem = widget.systemEnum;
     _setupAnimation();
   }
 
@@ -34,18 +33,8 @@ class _SystemsSwitcherState extends State<SystemsSwitcher>
 
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        // Add a small delay to ensure any chart animations are properly disposed
-        Future.delayed(const Duration(milliseconds: 100), () {
-          // Navigate to the selected system after loading
-          CustomNavigator.push(
-            widget.systemEnum == ActiveSystemEnum.strategy
-                ? Routes.STRATEGY_LAYOUT
-                : widget.systemEnum == ActiveSystemEnum.pms
-                ? Routes.PMS_LAYOUT
-                : Routes.STRATEGY_LAYOUT,
-            clean: true,
-          );
-        });
+        // Notify parent that transition is complete
+        widget.onComplete?.call();
       }
     });
 
@@ -63,8 +52,9 @@ class _SystemsSwitcherState extends State<SystemsSwitcher>
   Widget build(BuildContext context) {
     const double size = 70;
     const double stroke = 4;
-    return Scaffold(
-      body: Padding(
+    return Material(
+      color: context.color.surface,
+      child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.w),
         child: Center(
           child: Column(
@@ -75,7 +65,7 @@ class _SystemsSwitcherState extends State<SystemsSwitcher>
                   Container(
                     height: size,
                     width: size,
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: context.color.secondary.withValues(alpha: 0.1),
@@ -88,7 +78,7 @@ class _SystemsSwitcherState extends State<SystemsSwitcher>
                       return CircularProgressIndicator(
                         value: _progressAnimation.value,
                         strokeWidth: stroke,
-                        constraints: BoxConstraints(
+                        constraints: const BoxConstraints(
                           minHeight: size,
                           minWidth: size,
                         ),

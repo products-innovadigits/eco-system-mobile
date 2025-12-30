@@ -1,4 +1,8 @@
 import 'package:core_system/core/utility/export.dart';
+// NOTE: Known coupling - VisionDataModel is from strategy_system but used in shared AppState.
+// This is acceptable for now as BscLoaded is a shared state. Consider refactoring in future:
+// - Move VisionDataModel to core_system, OR
+// - Make BscLoaded generic with type parameter.
 import 'package:strategy_system/bsc/model/bsc_model.dart';
 
 abstract class AppState {

@@ -1,4 +1,8 @@
-import 'package:pms_system/shared/pms_exports.dart';
+import 'package:ats_system/jobs/view/sections/available_jobs_section.dart';
+import 'package:ats_system/talent_pool/view/sections/talent_pool_section.dart';
+import 'package:pms_system/core/utility/pms_exports.dart';
+import 'package:pms_system/features/projects_progress/widgets/project_progress_section.dart';
+import 'package:strategy_system/objective_percentage/view/objective_percentage_section.dart';
 
 class MainBodyMobileLandscapeView extends StatelessWidget {
   const MainBodyMobileLandscapeView({super.key});

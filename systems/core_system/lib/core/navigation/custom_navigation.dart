@@ -85,6 +85,20 @@ class WorkflowProcessDetailsArgs {
   });
 }
 
+class PmsLayoutArgs {
+  final int index;
+  final bool showSwitcher;
+
+  PmsLayoutArgs({this.index = 0, this.showSwitcher = false});
+}
+
+class StrategyLayoutArgs {
+  final int index;
+  final bool showSwitcher;
+
+  StrategyLayoutArgs({this.index = 0, this.showSwitcher = false});
+}
+
 class MainPageArgs {
   final int index;
 

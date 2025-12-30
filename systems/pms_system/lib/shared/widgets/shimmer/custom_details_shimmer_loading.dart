@@ -1,4 +1,4 @@
-import '../../pms_exports.dart';
+import 'package:pms_system/core/utility/pms_exports.dart';
 
 class CustomDetailsShimmerLoading extends StatelessWidget {
   const CustomDetailsShimmerLoading({super.key});
@@ -11,6 +11,7 @@ class CustomDetailsShimmerLoading extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            CustomShimmerContainer(height: context.h * 0.2, width: context.w),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Divider(color: context.color.outline, thickness: 1.0),
@@ -22,6 +23,5 @@ class CustomDetailsShimmerLoading extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }

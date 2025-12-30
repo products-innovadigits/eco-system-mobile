@@ -1,7 +1,7 @@
 // Flutter core imports
 // Third-party imports
 import 'package:core_system/core/bloc/theme_cubit.dart';
-import 'package:core_system/core/config/providers.dart';
+import 'app/modules/modules_registry.dart';
 import 'package:core_system/core/helpers/notification_helper/notification_helper.dart';
 import 'package:core_system/core/helpers/translation/translations.dart';
 import 'package:core_system/core/navigation/routes.dart';
@@ -85,7 +85,7 @@ class _MyAppState extends State<MyApp> {
       minTextAdapt: true,
       splitScreenMode: true,
       child: MultiBlocProvider(
-        providers: ProviderList.providers,
+        providers: ModulesRegistry.appProviders,
         child: StreamBuilder<String>(
           stream: mainAppBloc.langStream,
           builder: (context, lang) {

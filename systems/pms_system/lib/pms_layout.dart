@@ -1,12 +1,12 @@
-import 'package:core_system/core/helpers/font_sizes.dart';
-import 'package:core_system/core/utility/export.dart';
-import 'package:core_system/core/widgets/nav_app.dart';
-import 'package:pms_system/pms_home/view/pms_home_view.dart';
+import 'package:pms_system/core/utility/pms_exports.dart';
+import 'package:pms_system/shared/components/pms_system_switcher.dart';
+import 'package:pms_system/shared/widgets/pms_bottom_nav_bar.dart';
 
 class PmsLayout extends StatefulWidget {
   final int index;
+  final bool showSwitcher;
 
-  const PmsLayout({super.key, this.index = 0});
+  const PmsLayout({super.key, this.index = 0, this.showSwitcher = false});
 
   @override
   State<PmsLayout> createState() => _PmsLayoutState();
@@ -14,10 +14,12 @@ class PmsLayout extends StatefulWidget {
 
 class _PmsLayoutState extends State<PmsLayout> with WidgetsBindingObserver {
   int _index = 0;
+  late bool _showSwitcher;
 
   @override
   void initState() {
     _index = widget.index;
+    _showSwitcher = widget.showSwitcher;
     super.initState();
   }
 
@@ -36,15 +38,27 @@ class _PmsLayoutState extends State<PmsLayout> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      child: Scaffold(
-        body: layout(_index),
-        bottomNavigationBar: NavApp(
-          index: _index,
-          onSelect: (p0) {
-            _index = p0;
-            setState(() {});
-          },
-        ),
+      child: Stack(
+        children: [
+          Scaffold(
+            body: layout(_index),
+            bottomNavigationBar: PmsBottomNavBar(
+              index: _index,
+              onSelect: (p0) {
+                _index = p0;
+                setState(() {});
+              },
+            ),
+          ),
+          if (_showSwitcher)
+            PmsSystemSwitcher(
+              onComplete: () {
+                setState(() {
+                  _showSwitcher = false;
+                });
+              },
+            ),
+        ],
       ),
     );
   }

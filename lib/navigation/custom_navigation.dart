@@ -3,7 +3,6 @@ import 'package:ats_system/candidates/view/screens/candidates_view.dart';
 import 'package:ats_system/jobs/view/screens/jobs_view.dart';
 import 'package:ats_system/profile/view/screens/profile_view.dart';
 import 'package:ats_system/talent_pool/view/screens/talent_pool_view.dart';
-import 'package:core_system/core/components/system_switcher.dart';
 import 'package:core_system/core/utility/export.dart';
 import 'package:eco_system/features/auth/login/view/login.dart';
 import 'package:eco_system/features/auth/otp/view/otp_view.dart';
@@ -11,12 +10,12 @@ import 'package:eco_system/features/intro/view/intro_view.dart';
 import 'package:eco_system/features/intro/view/onboarding.dart';
 import 'package:eco_system/features/main_page/view/main_page.dart';
 import 'package:eco_system/features/splash/splash.dart';
-import 'package:pms_system/latest_request/view/latest_request_view.dart';
+import 'package:pms_system/features/latest_request/view/latest_request_view.dart';
+import 'package:pms_system/features/project_details/view/project_details_view.dart';
+import 'package:pms_system/features/project_report/view/project_report_view.dart';
+import 'package:pms_system/features/projects/view/projects_view.dart';
+import 'package:pms_system/features/workflow_process_details/view/workflow_process_details_view.dart';
 import 'package:pms_system/pms_layout.dart';
-import 'package:pms_system/project_details/view/project_details_view.dart';
-import 'package:pms_system/project_report/view/project_report_view.dart';
-import 'package:pms_system/projects/view/projects_view.dart';
-import 'package:pms_system/workflow_process_details/view/workflow_process_details_view.dart';
 import 'package:strategy_system/bsc/view/bsc_view.dart';
 import 'package:strategy_system/objective_details/view/objective_details_view.dart';
 import 'package:strategy_system/objectives/view/objectives_view.dart';
@@ -46,19 +45,32 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const MainPage());
 
       case Routes.SYSTEM_SWITCHER:
-        return MaterialPageRoute(
-          builder: (_) => SystemsSwitcher(
-            systemEnum:
-                settings.arguments as ActiveSystemEnum? ??
-                ActiveSystemEnum.strategy,
-          ),
-        );
+        final systemEnum =
+            settings.arguments as ActiveSystemEnum? ??
+            ActiveSystemEnum.strategy;
+
+        // Set the current active system
+        UserBloc.currentActiveSystem = systemEnum;
+
+        // Redirect to the selected system's layout with switcher overlay enabled
+        if (systemEnum == ActiveSystemEnum.pms) {
+          return MaterialPageRoute(
+            builder: (_) => const PmsLayout(showSwitcher: true),
+          );
+        } else {
+          return MaterialPageRoute(
+            builder: (_) => const StrategyLayout(showSwitcher: true),
+          );
+        }
 
       /// Strategy Routes ===========================================
       case Routes.STRATEGY_LAYOUT:
-        final args = settings.arguments as MainPageArgs?;
+        final args = settings.arguments as StrategyLayoutArgs?;
         return MaterialPageRoute(
-          builder: (_) => StrategyLayout(index: args?.index ?? 0),
+          builder: (_) => StrategyLayout(
+            index: args?.index ?? 0,
+            showSwitcher: args?.showSwitcher ?? false,
+          ),
         );
 
       case Routes.OBJECTIVES:
@@ -80,9 +92,12 @@ class AppRouter {
 
       /// PMS Routes ===========================================
       case Routes.PMS_LAYOUT:
-        final args = settings.arguments as MainPageArgs?;
+        final args = settings.arguments as PmsLayoutArgs?;
         return MaterialPageRoute(
-          builder: (_) => PmsLayout(index: args?.index ?? 0),
+          builder: (_) => PmsLayout(
+            index: args?.index ?? 0,
+            showSwitcher: args?.showSwitcher ?? false,
+          ),
         );
 
       case Routes.PROJECTS:
@@ -95,7 +110,8 @@ class AppRouter {
 
       case Routes.PROJECT_REPORT:
         return MaterialPageRoute(
-          builder: (_) => ProjectReportView(projectId: settings.arguments as int),
+          builder: (_) =>
+              ProjectReportView(projectId: settings.arguments as int),
         );
 
       case Routes.WORKFLOW_PROCESS_DETAILS:

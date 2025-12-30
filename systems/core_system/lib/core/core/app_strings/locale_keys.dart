@@ -5,6 +5,9 @@
 abstract class  LocaleKeys {
   static const unit_name = 'unit_name';
   static const operation_name = 'operation_name';
+  static const process = 'process';
+  static const by = 'by';
+  static const added_date = 'added_date';
   static const username = 'username';
   static const name = 'name';
   static const org = 'org';

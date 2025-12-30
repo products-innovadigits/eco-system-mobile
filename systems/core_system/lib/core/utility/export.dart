@@ -1,8 +1,7 @@
 export 'dart:async';
 export 'dart:convert';
 
-export 'package:ats_system/jobs/view/sections/available_jobs_section.dart';
-export 'package:ats_system/talent_pool/view/sections/talent_pool_section.dart';
+// Feature system exports removed - import directly from feature systems
 export 'package:cached_network_image/cached_network_image.dart';
 export 'package:connectivity_plus/connectivity_plus.dart';
 export 'package:core_system/core/bloc/main_app_bloc.dart';
@@ -58,7 +57,6 @@ export 'package:core_system/core/widgets/animated_expansion_arrow_widget.dart';
 export 'package:core_system/core/widgets/app_loading.dart';
 export 'package:core_system/core/widgets/bottom_sheet_header.dart';
 export 'package:core_system/core/widgets/custom_app_bar.dart';
-export 'package:core_system/core/widgets/custom_bar_chart.dart';
 export 'package:core_system/core/widgets/custom_tab_widget.dart';
 export 'package:core_system/core/widgets/images.dart';
 export 'package:core_system/core/widgets/main_header.dart';
@@ -75,8 +73,10 @@ export 'package:flutter_spinkit/flutter_spinkit.dart';
 export 'package:flutter_svg/svg.dart';
 export 'package:fluttertoast/fluttertoast.dart';
 export 'package:image_picker/image_picker.dart';
-export 'package:pms_system/projects_progress/view/project_management_section.dart';
+export 'package:pms_system/shared/widgets/custom_bar_chart.dart';
+// Feature system exports removed - import directly from feature systems
 export 'package:readmore/readmore.dart';
 export 'package:rxdart/rxdart.dart';
 export 'package:shimmer/shimmer.dart';
-export 'package:strategy_system/objective_percentage/view/objective_percentage_section.dart';
+
+// Feature system exports removed - import directly from feature systems

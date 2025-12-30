@@ -1,12 +1,14 @@
 import 'package:core_system/core/helpers/font_sizes.dart';
 import 'package:core_system/core/utility/export.dart';
 import 'package:core_system/core/widgets/nav_app.dart';
+import 'package:strategy_system/shared/components/strategy_system_switcher.dart';
 import 'package:strategy_system/strategy_home/view/strategy_home_view.dart';
 
 class StrategyLayout extends StatefulWidget {
   final int index;
+  final bool showSwitcher;
 
-  const StrategyLayout({super.key, this.index = 0});
+  const StrategyLayout({super.key, this.index = 0, this.showSwitcher = false});
 
   @override
   State<StrategyLayout> createState() => _StrategyLayoutState();
@@ -15,10 +17,12 @@ class StrategyLayout extends StatefulWidget {
 class _StrategyLayoutState extends State<StrategyLayout>
     with WidgetsBindingObserver {
   int _index = 0;
+  late bool _showSwitcher;
 
   @override
   void initState() {
     _index = widget.index;
+    _showSwitcher = widget.showSwitcher;
     super.initState();
   }
 
@@ -37,15 +41,27 @@ class _StrategyLayoutState extends State<StrategyLayout>
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      child: Scaffold(
-        body: layout(_index),
-        bottomNavigationBar: NavApp(
-          index: _index,
-          onSelect: (p0) {
-            _index = p0;
-            setState(() {});
-          },
-        ),
+      child: Stack(
+        children: [
+          Scaffold(
+            body: layout(_index),
+            bottomNavigationBar: NavApp(
+              index: _index,
+              onSelect: (p0) {
+                _index = p0;
+                setState(() {});
+              },
+            ),
+          ),
+          if (_showSwitcher)
+            StrategySystemSwitcher(
+              onComplete: () {
+                setState(() {
+                  _showSwitcher = false;
+                });
+              },
+            ),
+        ],
       ),
     );
   }

@@ -287,22 +287,22 @@ class AddComment extends AppEvent {
   AddComment({required this.index, required this.comment}) : super(null);
 }
 
-class AddDocumentComment extends AppEvent {
-  final int stepDocumentId;
-  final String text;
-
-  // final int projectId;
-  // final int processId;
-  // final int stepId;
-
-  AddDocumentComment({
-    // required this.projectId,
-    // required this.processId,
-    // required this.stepId,
-    required this.stepDocumentId,
-    required this.text,
-  }) : super(null);
-}
+// class AddDocumentComment extends AppEvent {
+//   final int stepDocumentId;
+//   final String text;
+//
+//   // final int projectId;
+//   // final int processId;
+//   // final int stepId;
+//
+//   AddDocumentComment({
+//     // required this.projectId,
+//     // required this.processId,
+//     // required this.stepId,
+//     required this.stepDocumentId,
+//     required this.text,
+//   }) : super(null);
+// }
 
 class ToggleCommentField extends AppEvent {
   final int index;

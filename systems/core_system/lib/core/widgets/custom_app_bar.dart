@@ -19,6 +19,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final VoidCallback? onTapSearch;
   final VoidCallback? onBackBtn;
   final bool? withBackBtn;
+  final TextAlign textAlign;
 
   const CustomAppBar({
     super.key,
@@ -40,6 +41,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.isFiltered = false,
     this.isSorted = false,
     this.withBackBtn = true,
+    this.textAlign = TextAlign.start,
   });
 
   @override
@@ -48,7 +50,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => Size(
     CustomNavigator.navigatorState.currentContext!.w,
-    (withSearch ?? false) ? 122.h : 65.h,
+    (withSearch ?? false) ? 122.h : 55.h,
   );
 }
 
@@ -125,7 +127,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                     widget.title ?? "",
                     maxLines: 2,
                     style: context.textTheme.titleLarge,
-                    textAlign: TextAlign.center,
+                    textAlign: widget.textAlign,
                   ),
                 ),
                 SizedBox(width: 8),

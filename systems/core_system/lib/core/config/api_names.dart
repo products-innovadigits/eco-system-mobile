@@ -25,8 +25,10 @@ abstract class ApiNames {
   static const projectSortingOptions = "Project/GetProjectSortOptionsAsync";
   static String projectDetails(id) => "Project/$id";
   static String projectReport(id) => "Project/mobile-report/$id";
-  static String projectGeneralProgressSummary(id) => "Project/$id/progress-summary";
-  static String projectTimeline(id) => "ProjectTimeLine/GetAllActivitiesByProjectId/$id";
+  static String projectGeneralProgressSummary(id) =>
+      "Project/$id/progress-summary";
+  static String projectTimeline(id) =>
+      "ProjectTimeLine/GetAllActivitiesByProjectId/$id";
   static String workflowProcessDetails = "WorkFlow/GroupSteps";
   static String currentNextSteps = "WorkFlow/CurrentAndNext_Mobile";
   // static String currentNextSteps = "WorkFlow/CurrentAndNext";
@@ -38,7 +40,7 @@ abstract class ApiNames {
   static String projectStepComment = "ProjectStepComment";
   static String projectProcessNext = "ProjectProcess/next";
   static String projectProcessStart = "WorkFlow/Run";
-  static const latestRequest = "project/latest_request";
+  static const latestRequest = "ProjectProcess/Active";
 
   // Jobs APIs ====================
   static const jobs = "chances";
