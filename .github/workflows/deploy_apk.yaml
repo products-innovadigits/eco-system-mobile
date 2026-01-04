@@ -20,7 +20,6 @@ on:
       release_notes:
         description: 'Release notes for Firebase tester emails'
         required: true
-        default: 'Automated CI release'
 
 jobs:
   build:
