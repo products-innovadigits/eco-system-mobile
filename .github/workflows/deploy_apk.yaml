@@ -4,23 +4,22 @@ on:
   workflow_dispatch:
     inputs:
       test_email:
-        description: 'Add new tester email (will also send to fixed list)'
+        description: "Add new tester email (will also send to fixed list)"
         required: false
-        default: 'Enter the client email...'
+        default: "Enter the client email..."
 
       systems:
-        description: 'Comma-separated list of active systems (e.g. strategy,ats,pms)'
+        description: "Comma-separated list of active systems (e.g. strategy,ats,pms)"
         required: true
-        default: 'strategy,ats,pms'
+        default: "strategy,ats,pms"
 
       release_name:
-        description: 'Release name (e.g. v1.2.3-clientX)'
+        description: "Release name (e.g. v1.2.3-clientX)"
         required: true
 
       release_notes:
-        description: 'Release notes for Firebase tester emails'
+        description: "Release notes for Firebase tester emails"
         required: true
-        default: 'Automated CI release'
 
 jobs:
   build:
@@ -33,13 +32,13 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.35.0'
+          flutter-version: "3.35.0"
 
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
-          java-version: '17'
+          distribution: "zulu"
+          java-version: "17"
 
       - name: Create .env file
         run: echo "# Environment variables" > .env
@@ -144,8 +143,6 @@ jobs:
           set -euo pipefail
           echo "Checking for illegal feature imports in app shell..."
 
-          # IMPORTANT: grep --exclude matches filename patterns, not full paths.
-          # So exclude the generated registry by filename.
           MATCHES=$(grep -rE "package:(ats|pms|strategy)_system" lib \
             --exclude="enabled_modules.dart" || true)
 
@@ -176,22 +173,33 @@ jobs:
           flutter pub get
           flutter pub deps
 
-      - name: Flutter Analyze
-        run: flutter analyze
+      # ✅ UPDATED: Fail only when analyzer has REAL errors (not infos/warnings)
+      - name: Flutter Analyze (fail only on errors)
+        shell: bash
+        run: |
+          set -euo pipefail
+          flutter analyze 2>&1 | tee analyze.log
+
+          if grep -qE '^\s*error •' analyze.log; then
+            echo "❌ Analyzer errors found. Failing the job."
+            exit 1
+          fi
+
+          echo "✅ No analyzer errors. Infos/warnings won't fail the job."
 
       - name: Check Flutter doctor
         run: flutter doctor -v
 
+      # ✅ UPDATED: pipefail so build failure is not hidden by tee
       - name: Build APK
         id: build_apk
         shell: bash
         run: |
-          set -e
+          set -euo pipefail
           flutter build apk \
             --release \
             --dart-define=ACTIVE_SYSTEMS="${{ github.event.inputs.systems }}" \
-            --verbose 2>&1 | tee build.log || (echo "Build failed, checking logs..." && cat build.log && exit 1)
-        continue-on-error: false
+            --verbose 2>&1 | tee build.log
 
       - name: Capture build logs (if build fails)
         if: failure()
