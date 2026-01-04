@@ -63,25 +63,20 @@ jobs:
           SYSTEMS_RAW="${{ github.event.inputs.systems }}"
           echo "Generating enabled_modules.dart for systems: '$SYSTEMS_RAW'"
 
-          # Read inputs into array
           IFS=',' read -ra RAW_ADDR <<< "$SYSTEMS_RAW"
 
-          # Normalize and check for empties/duplicates
           declare -A SEEN
           ADDR=()
 
           for i in "${RAW_ADDR[@]}"; do
-            # Trim whitespace and convert to lowercase
             CLEAN_KEY="$(echo "$i" | xargs | tr '[:upper:]' '[:lower:]')"
 
-            # Empty key check (double comma or trailing comma)
             if [ -z "$CLEAN_KEY" ]; then
               echo "❌ Error: Empty system key detected (double comma or trailing comma)."
               echo "✅ Example valid input: strategy,ats,pms"
               exit 1
             fi
 
-            # Duplicate check (FIXED for associative array)
             if [[ -n "${SEEN[$CLEAN_KEY]+x}" ]]; then
               echo "❌ Error: Duplicate system key found: '$CLEAN_KEY'"
               exit 1
@@ -91,7 +86,6 @@ jobs:
             ADDR+=("$CLEAN_KEY")
           done
 
-          # Empty list check
           if [ "${#ADDR[@]}" -eq 0 ]; then
             echo "❌ Error: systems input is empty. Valid keys: pms, ats, strategy."
             exit 1
@@ -99,10 +93,8 @@ jobs:
 
           OUT_FILE="lib/app/modules/generated/enabled_modules.dart"
 
-          # Start generating file (overwrite)
           echo "import 'package:core_system/core/modules/system_module.dart';" > "$OUT_FILE"
 
-          # Imports
           for i in "${ADDR[@]}"; do
             case "$i" in
               pms)
@@ -121,7 +113,6 @@ jobs:
             esac
           done
 
-          # Body
           {
             echo ""
             echo "/// GENERATED FILE - DO NOT EDIT MANUALLY"
@@ -153,10 +144,10 @@ jobs:
           set -euo pipefail
           echo "Checking for illegal feature imports in app shell..."
 
-          GENERATED_FILE="lib/app/modules/generated/enabled_modules.dart"
-
+          # IMPORTANT: grep --exclude matches filename patterns, not full paths.
+          # So exclude the generated registry by filename.
           MATCHES=$(grep -rE "package:(ats|pms|strategy)_system" lib \
-            --exclude="$GENERATED_FILE" || true)
+            --exclude="enabled_modules.dart" || true)
 
           if [ -n "$MATCHES" ]; then
             echo "❌ Modularity Violation: Direct feature imports found outside generated registry!"
