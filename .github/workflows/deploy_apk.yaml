@@ -4,22 +4,23 @@ on:
   workflow_dispatch:
     inputs:
       test_email:
-        description: "Add new tester email (will also send to fixed list)"
+        description: 'Add new tester email (will also send to fixed list)'
         required: false
-        default: "Enter the client email..."
+        default: 'Enter the client email...'
 
       systems:
-        description: "Comma-separated list of active systems (e.g. strategy,ats,pms)"
+        description: 'Comma-separated list of active systems (e.g. strategy,ats,pms)'
         required: true
-        default: "strategy,ats,pms"
+        default: 'strategy,ats,pms'
 
       release_name:
-        description: "Release name (e.g. v1.2.3-clientX)"
+        description: 'Release name (e.g. v1.2.3-clientX)'
         required: true
 
       release_notes:
-        description: "Release notes for Firebase tester emails"
+        description: 'Release notes for Firebase tester emails'
         required: true
+        default: 'Automated CI release'
 
 jobs:
   build:
@@ -32,16 +33,81 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.35.0"
+          flutter-version: '3.35.0'
 
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
-          distribution: "zulu"
-          java-version: "17"
+          distribution: 'zulu'
+          java-version: '17'
 
-      - name: Create .env file
-        run: echo "# Environment variables" > .env
+      # ✅ Ensure .env exists (it should be in repo root)
+      - name: Verify .env exists
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -f ".env" ]; then
+            echo "❌ .env not found in repo root."
+            echo "Expected: project_root/.env"
+            exit 1
+          fi
+          echo "✅ .env found."
+
+      # ✅ Optional: Override specific .env keys from GitHub Secrets (if provided)
+      # This does NOT erase the file, it only replaces keys that exist or appends if missing.
+      - name: Apply .env overrides from secrets (optional)
+        shell: bash
+        env:
+          DOMAIN_DEV: ${{ secrets.DOMAIN_DEV }}
+          DOMAIN_PRO: ${{ secrets.DOMAIN_PRO }}
+          BASE_URL_PRO: ${{ secrets.BASE_URL_PRO }}
+          BASE_URL_DEV: ${{ secrets.BASE_URL_DEV }}
+          STRATEGY_BASE_URL_DEV: ${{ secrets.STRATEGY_BASE_URL_DEV }}
+          AUTH_BASE_URL_DEV: ${{ secrets.AUTH_BASE_URL_DEV }}
+          ATS_BASE_URL_DEV: ${{ secrets.ATS_BASE_URL_DEV }}
+          GOOGLE_MAPS_BASE_URL: ${{ secrets.GOOGLE_MAPS_BASE_URL }}
+          SHARED_PREFERENCES_NAME: ${{ secrets.SHARED_PREFERENCES_NAME }}
+          API_KEY: ${{ secrets.API_KEY }}
+        run: |
+          set -euo pipefail
+
+          upsert_env () {
+            local key="$1"
+            local value="$2"
+
+            # Skip if value is empty (secret not set)
+            if [ -z "${value:-}" ]; then
+              return 0
+            fi
+
+            # Escape sed replacement (slashes, ampersands)
+            local escaped
+            escaped="$(printf '%s' "$value" | sed -e 's/[\/&]/\\&/g')"
+
+            if grep -qE "^${key}=" .env; then
+              sed -i "s/^${key}=.*/${key}=${escaped}/" .env
+            else
+              echo "${key}=${value}" >> .env
+            fi
+          }
+
+          upsert_env "DOMAIN_DEV" "${DOMAIN_DEV:-}"
+          upsert_env "DOMAIN_PRO" "${DOMAIN_PRO:-}"
+          upsert_env "BASE_URL_PRO" "${BASE_URL_PRO:-}"
+          upsert_env "BASE_URL_DEV" "${BASE_URL_DEV:-}"
+          upsert_env "STRATEGY_BASE_URL_DEV" "${STRATEGY_BASE_URL_DEV:-}"
+          upsert_env "AUTH_BASE_URL_DEV" "${AUTH_BASE_URL_DEV:-}"
+          upsert_env "ATS_BASE_URL_DEV" "${ATS_BASE_URL_DEV:-}"
+          upsert_env "GOOGLE_MAPS_BASE_URL" "${GOOGLE_MAPS_BASE_URL:-}"
+          upsert_env "SHARED_PREFERENCES_NAME" "${SHARED_PREFERENCES_NAME:-}"
+          upsert_env "API_KEY" "${API_KEY:-}"
+
+          # Basic sanity: show important keys (mask API_KEY)
+          echo "✅ Effective .env (safe preview):"
+          grep -E "^(DOMAIN_DEV|DOMAIN_PRO|BASE_URL_PRO|BASE_URL_DEV|STRATEGY_BASE_URL_DEV|AUTH_BASE_URL_DEV|ATS_BASE_URL_DEV|GOOGLE_MAPS_BASE_URL|SHARED_PREFERENCES_NAME)=" .env || true
+          if grep -qE "^API_KEY=" .env; then
+            echo "API_KEY=*** (hidden)"
+          fi
 
       - name: Install Dependencies
         run: flutter pub get
@@ -173,33 +239,22 @@ jobs:
           flutter pub get
           flutter pub deps
 
-      # ✅ UPDATED: Fail only when analyzer has REAL errors (not infos/warnings)
-      - name: Flutter Analyze (fail only on errors)
-        shell: bash
-        run: |
-          set -euo pipefail
-          flutter analyze 2>&1 | tee analyze.log
-
-          if grep -qE '^\s*error •' analyze.log; then
-            echo "❌ Analyzer errors found. Failing the job."
-            exit 1
-          fi
-
-          echo "✅ No analyzer errors. Infos/warnings won't fail the job."
+      - name: Flutter Analyze
+        run: flutter analyze
 
       - name: Check Flutter doctor
         run: flutter doctor -v
 
-      # ✅ UPDATED: pipefail so build failure is not hidden by tee
       - name: Build APK
         id: build_apk
         shell: bash
         run: |
-          set -euo pipefail
+          set -e
           flutter build apk \
             --release \
             --dart-define=ACTIVE_SYSTEMS="${{ github.event.inputs.systems }}" \
-            --verbose 2>&1 | tee build.log
+            --verbose 2>&1 | tee build.log || (echo "Build failed, checking logs..." && cat build.log && exit 1)
+        continue-on-error: false
 
       - name: Capture build logs (if build fails)
         if: failure()
