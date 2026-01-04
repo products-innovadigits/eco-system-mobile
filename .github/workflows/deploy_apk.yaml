@@ -53,6 +53,92 @@ jobs:
       - name: Debug systems input
         run: echo "🚀 ACTIVE_SYSTEMS='${{ github.event.inputs.systems }}'"
 
+      - name: Generate Enabled Modules
+        run: |
+          mkdir -p lib/app/modules/generated
+          
+          # Read inputs into array, trimming spaces
+          IFS=',' read -ra RAW_ADDR <<< "${{ github.event.inputs.systems }}"
+          
+          # Normalize and check for duplicates
+          declare -A SEEN
+          ADDR=()
+          for i in "${RAW_ADDR[@]}"; do
+            # Trim whitespace and convert to lowercase
+            CLEAN_KEY=$(echo "$i" | xargs | tr '[:upper:]' '[:lower:]')
+            
+            if [ -z "$CLEAN_KEY" ]; then
+              echo "❌ Error: Empty system key detected (double comma or trailing comma)."
+              echo "✅ Example valid input: strategy,ats,pms"
+              exit 1
+            fi
+            
+            if [ -n "$SEEN[$CLEAN_KEY]" ]; then
+              echo "❌ Error: Duplicate system key found: '$CLEAN_KEY'"
+              exit 1
+            fi
+            SEEN[$CLEAN_KEY]=1
+            ADDR+=("$CLEAN_KEY")
+          done
+          
+          if [ "${#ADDR[@]}" -eq 0 ]; then
+            echo "❌ Error: systems input is empty. Valid keys: pms, ats, strategy."
+            exit 1
+          fi
+          
+          # Start generating file
+          echo "import 'package:core_system/core/modules/system_module.dart';" > lib/app/modules/generated/enabled_modules.dart
+          
+          for i in "${ADDR[@]}"; do
+            case $i in
+              pms)
+                echo "import 'package:pms_system/core/module/pms_module.dart';" >> lib/app/modules/generated/enabled_modules.dart
+                ;;
+              ats)
+                echo "import 'package:ats_system/ats_module.dart';" >> lib/app/modules/generated/enabled_modules.dart
+                ;;
+              strategy)
+                echo "import 'package:strategy_system/strategy_module.dart';" >> lib/app/modules/generated/enabled_modules.dart
+                ;;
+              *)
+                echo "❌ Error: Unknown system key '$i'. Valid keys: pms, ats, strategy."
+                exit 1
+                ;;
+            esac
+          done
+          
+          echo "" >> lib/app/modules/generated/enabled_modules.dart
+          echo "List<SystemModule> buildEnabledModules() {" >> lib/app/modules/generated/enabled_modules.dart
+          echo "  return [" >> lib/app/modules/generated/enabled_modules.dart
+          
+          for i in "${ADDR[@]}"; do
+            case $i in
+              pms) echo "    PmsModule()," >> lib/app/modules/generated/enabled_modules.dart ;;
+              ats) echo "    AtsModule()," >> lib/app/modules/generated/enabled_modules.dart ;;
+              strategy) echo "    StrategyModule()," >> lib/app/modules/generated/enabled_modules.dart ;;
+            esac
+          done
+          
+          echo "  ];" >> lib/app/modules/generated/enabled_modules.dart
+          echo "}" >> lib/app/modules/generated/enabled_modules.dart
+          
+          echo "✅ Generated lib/app/modules/generated/enabled_modules.dart:"
+          cat lib/app/modules/generated/enabled_modules.dart
+
+      - name: Modularity Enforcement
+        run: |
+          echo "Checking for illegal feature imports in app shell..."
+          set -e
+          # Grep for feature imports in lib/, excluding the generated FILE only.
+          # If matches found, it means modularity is violated.
+          MATCHES=$(grep -rE "package:(ats|pms|strategy)_system" lib --exclude="lib/app/modules/generated/enabled_modules.dart" || true)
+          if [ -n "$MATCHES" ]; then
+            echo "❌ Modularity Violation: Direct feature imports found outside generated registry!"
+            echo "$MATCHES"
+            exit 1
+          fi
+          echo "✅ No illegal imports found."
+
       - name: Check key.properties
         working-directory: android
         run: |
@@ -68,6 +154,9 @@ jobs:
           flutter pub get
           flutter pub deps
 
+      - name: Flutter Analyze
+        run: flutter analyze
+
       - name: Check Flutter doctor
         run: flutter doctor -v
 
@@ -77,7 +166,6 @@ jobs:
           set -e
           flutter build apk \
             --release \
-            --no-shrink \
             --dart-define=ACTIVE_SYSTEMS="${{ github.event.inputs.systems }}" \
             --verbose 2>&1 | tee build.log || (echo "Build failed, checking logs..." && cat build.log && exit 1)
         continue-on-error: false

@@ -1,4 +1,5 @@
-import 'package:ats_system/shared/ats_exports.dart';
+// Feature system imports removed for modularization
+// abstract class AppEvent is kept here as it's used by core components
 
 abstract class AppEvent {
   Object? arguments;
@@ -237,13 +238,6 @@ class AddToFav extends AppEvent {
   AddToFav({Object? arguments}) : super(arguments);
 }
 
-class InitCandidates extends AppEvent {
-  final String? targetStage;
-  final List<StageModel>? stages;
-  final String? jobTitle;
-
-  InitCandidates({this.targetStage, this.stages, this.jobTitle}) : super(null);
-}
 
 class AddSkill extends AppEvent {
   AddSkill({Object? arguments}) : super(arguments);

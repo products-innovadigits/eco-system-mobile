@@ -43,3 +43,4 @@ export '../talent_pool/view/sections/talent_pool_list_section.dart';
 export '../talent_pool/view/widgets/assign_to_job_list.dart';
 export '../talent_pool/view/widgets/bottom_nav_action_widget.dart';
 export '../talent_pool/view/widgets/multiple_select_btn_widget.dart';
+export 'ats_events.dart';

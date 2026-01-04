@@ -1,37 +1,94 @@
-import 'package:ats_system/ats_module.dart';
 import 'package:core_system/core/config/providers.dart';
+import 'package:core_system/core/modules/home_section.dart';
 import 'package:core_system/core/modules/system_module.dart';
+import 'package:core_system/core/utility/export.dart';
+import 'package:eco_system/app/modules/generated/enabled_modules.dart' as gen;
 import 'package:flutter/foundation.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pms_system/core/module/pms_module.dart';
-import 'package:strategy_system/strategy_module.dart';
 
 class ModulesRegistry {
   /// List of enabled system modules.
-  ///
-  /// Modify this list to enable/disable modules. Only enabled modules'
-  /// providers will be included in the app.
-  static List<SystemModule> get enabledModules => [
-    AtsModule(),
-    PmsModule(),
-    StrategyModule(),
-    // Add more modules here as needed
-  ];
+  /// This list is now provided by a generated file to ensure
+  /// compile-time modularity and zero shell imports of feature systems.
+  static List<SystemModule> get enabledModules => gen.buildEnabledModules();
+
+  /// Aggregated routes from all enabled modules.
+  static Map<String, RouteFactory> get appRoutes {
+    final Map<String, RouteFactory> routes = {};
+    for (final module in enabledModules) {
+      if (kDebugMode) {
+        _assertNoDuplicateRoutes(routes, module.routes);
+      }
+      routes.addAll(module.routes);
+    }
+    return routes;
+  }
+
+  /// Aggregated and sorted home sections from all enabled modules.
+  static List<HomeSection> get appSections {
+    final List<HomeSection> sections = enabledModules
+        .expand((m) => m.homeSections)
+        .toList();
+
+    if (kDebugMode) {
+      _assertNoDuplicateSections(sections);
+    }
+
+    return sections..sort((a, b) => a.order.compareTo(b.order));
+  }
+
+  static void _assertNoDuplicateRoutes(
+    Map<String, RouteFactory> currentRoutes,
+    Map<String, RouteFactory> newRoutes,
+  ) {
+    for (final routeName in newRoutes.keys) {
+      if (currentRoutes.containsKey(routeName)) {
+        throw AssertionError(
+          'Duplicate route detected: $routeName. '
+          'Ensure route names are unique across all modules.',
+        );
+      }
+    }
+  }
+
+  static void _assertNoDuplicateSections(List<HomeSection> sections) {
+    final Set<String> ids = {};
+    for (final section in sections) {
+      if (!ids.add(section.id)) {
+        throw AssertionError(
+          'Duplicate home section ID detected: ${section.id}',
+        );
+      }
+    }
+  }
+
+  /// Returns the layout route for a specific system.
+  /// This performs a generic lookup from aggregated routes,
+  /// ensuring the shell has zero knowledge of feature layout classes.
+  static Route<dynamic>? getLayoutRoute(ActiveSystemEnum system) {
+    String? routeName;
+    if (system == ActiveSystemEnum.pms) {
+      routeName = Routes.PMS_LAYOUT;
+    } else if (system == ActiveSystemEnum.strategy) {
+      routeName = Routes.STRATEGY_LAYOUT;
+    }
+
+    if (routeName != null) {
+      final factory = appRoutes[routeName];
+      // Lookup the factory and call it with name only;
+      // feature modules are expected to handle default arguments for their layouts.
+      return factory?.call(RouteSettings(name: routeName));
+    }
+    return null;
+  }
 
   /// Composes all providers from core system and enabled feature modules.
-  ///
-  /// Returns a flat list of all BlocProvider widgets that should be wrapped
-  /// in MultiBlocProvider at the app root.
   static List<BlocProvider> get appProviders {
-    // Start with core providers (always required)
     final List<BlocProvider> providers = [...ProviderList.providers];
 
-    // Add providers from each enabled module
     for (final module in enabledModules) {
       providers.addAll(module.providers);
     }
 
-    // Safety check: detect duplicate providers in debug mode
     if (kDebugMode) {
       _assertNoDuplicateProviders(providers);
     }
@@ -39,13 +96,6 @@ class ModulesRegistry {
     return providers;
   }
 
-  /// Debug assertion to detect duplicate provider types.
-  ///
-  /// Throws an assertion error if multiple providers of the same type are found.
-  /// This helps catch configuration errors early.
-  ///
-  /// Note: This checks provider runtime types. For generic BlocProvider<T>,
-  /// this will catch providers with the same T type.
   static void _assertNoDuplicateProviders(List<BlocProvider> providers) {
     final Map<String, int> typeCounts = <String, int>{};
 
@@ -68,7 +118,6 @@ class ModulesRegistry {
     }
   }
 
-  /// Get module by ID (useful for conditional logic based on enabled modules).
   static SystemModule? getModuleById(String id) {
     try {
       return enabledModules.firstWhere((m) => m.id == id);
@@ -77,7 +126,6 @@ class ModulesRegistry {
     }
   }
 
-  /// Check if a module is enabled.
   static bool isModuleEnabled(String moduleId) {
     return enabledModules.any((m) => m.id == moduleId);
   }

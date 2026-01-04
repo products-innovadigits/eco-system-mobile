@@ -51,4 +51,4 @@ export 'package:strategy_system/strategy_home/bloc/strategy_bloc.dart';
 export 'package:strategy_system/strategy_home/widgets/bsc_card_section.dart';
 export 'package:strategy_system/strategy_home/widgets/kpi_initiatives_progress_section.dart';
 export 'package:strategy_system/strategy_home/widgets/kpis_initiatives_progress_chart.dart';
-export 'package:strategy_system/strategy_home/widgets/strategic_axis_card_section.dart';
+export 'package:strategy_system/strategy_home/widgets/strategic_axis_card_section.dart';export 'strategy_states.dart';

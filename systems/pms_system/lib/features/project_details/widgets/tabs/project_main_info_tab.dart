@@ -1,4 +1,5 @@
 import 'package:pms_system/core/utility/pms_exports.dart';
+import 'package:pms_system/shared/widgets/custom_bar_chart.dart';
 import 'package:pms_system/shared/widgets/project_risks.dart';
 
 class ProjectMainInfoTab extends StatelessWidget {

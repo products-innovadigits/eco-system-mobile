@@ -1,6 +1,7 @@
 import 'package:core_system/core/bloc/theme_cubit.dart';
 import 'package:core_system/core/helpers/permissions.dart';
 import 'package:core_system/core/utility/export.dart';
+import 'package:eco_system/app/modules/modules_registry.dart';
 
 class SplashBloc extends Bloc<AppEvent, AppState> {
   SplashBloc() : super(Start()) {
@@ -8,17 +9,10 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
   }
 
   void getActiveSystem() async {
-    /// Selected Systems from CI/CD
-    const String selectedSystems = String.fromEnvironment(
-      'ACTIVE_SYSTEMS',
-      defaultValue: 'strategy,ats,pms',
-    );
-    final List<ActiveSystemEnum> activeSystems = selectedSystems
-        .split(',')
-        .map((s) => ActiveSystemEnum.fromString(s))
+    /// Selected Systems derived from compile-time enabled modules (Single Source of Truth)
+    UserBloc.activeSystems = ModulesRegistry.enabledModules
+        .map((m) => m.system)
         .toList();
-
-    UserBloc.activeSystems = activeSystems;
   }
 
   Future<void> getColorScheme() async {

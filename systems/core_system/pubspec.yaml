@@ -8,17 +8,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  # NOTE: Feature system dependencies kept for now due to coupling in:
-  # - app_event.dart (imports ats_system for StageModel in InitCandidates)
-  # - app_state.dart (imports strategy_system for VisionDataModel in BscLoaded)
-  # These should be refactored in future to remove coupling.
   # Provider registrations have been removed from core_system (moved to SystemModule pattern).
-  ats_system:
-    path: ../ats_system
-  pms_system:
-    path: ../pms_system
-  strategy_system:
-    path: ../strategy_system
   
   # Network & HTTP
   dio: ^5.8.0+1

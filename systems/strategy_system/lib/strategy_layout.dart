@@ -66,3 +66,13 @@ class _StrategyLayoutState extends State<StrategyLayout>
     );
   }
 }
+
+class StrategyLayoutArgs {
+  final int index;
+  final bool showSwitcher;
+
+  const StrategyLayoutArgs({
+    this.index = 0,
+    this.showSwitcher = false,
+  });
+}

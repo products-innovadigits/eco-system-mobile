@@ -63,3 +63,13 @@ class _PmsLayoutState extends State<PmsLayout> with WidgetsBindingObserver {
     );
   }
 }
+
+class PmsLayoutArgs {
+  final int index;
+  final bool showSwitcher;
+
+  const PmsLayoutArgs({
+    this.index = 0,
+    this.showSwitcher = false,
+  });
+}

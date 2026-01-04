@@ -1,3 +1,4 @@
+export 'package:pms_system/shared/widgets/custom_bar_chart.dart';
 export 'package:core_system/core/components/custom_filters_drop_list.dart';
 export 'package:core_system/core/helpers/font_sizes.dart';
 export 'package:core_system/core/model/custom_field_model.dart';
