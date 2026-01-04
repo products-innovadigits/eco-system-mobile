@@ -11,9 +11,7 @@ class _OnBoardingState extends State<OnBoarding> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("الحساب"),
-      ),
+      appBar: AppBar(title: const Text("الحساب")),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: ListAnimator(
@@ -30,10 +28,10 @@ class _OnBoardingState extends State<OnBoarding> {
                       height: 100,
                       width: 100,
                       decoration: BoxDecoration(
-                        color: context.color.primary.withOpacity(0.05),
+                        color: context.color.primary.withValues(alpha: 0.05),
                         borderRadius: BorderRadius.circular(100),
                       ),
-                      child:  Center(
+                      child: Center(
                         child: Text(
                           "LOGO",
                           style: TextStyle(
@@ -52,10 +50,7 @@ class _OnBoardingState extends State<OnBoarding> {
             const Center(
               child: Text(
                 "قم بتسجيل الدخول",
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
             ),
             SizedBox(height: 12.h),
@@ -65,7 +60,7 @@ class _OnBoardingState extends State<OnBoarding> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16,
-                  color: context.color.primary.withOpacity(0.5),
+                  color: context.color.primary.withValues(alpha: 0.5),
                 ),
               ),
             ),

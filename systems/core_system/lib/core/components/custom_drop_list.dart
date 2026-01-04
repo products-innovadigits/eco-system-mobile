@@ -1,4 +1,3 @@
-
 import 'package:core_system/core/utility/export.dart';
 
 class CustomDropList extends StatefulWidget {
@@ -24,7 +23,9 @@ class CustomDropList extends StatefulWidget {
 /// This is the private State class that goes with CustomDropList.
 class _CustomDropListState extends State<CustomDropList> {
   late DropListModel dropdownValue = DropListModel(
-      id: 0, name: widget.hint ?? allTranslations.text(LocaleKeys.select));
+    id: 0,
+    name: widget.hint ?? allTranslations.text(LocaleKeys.select),
+  );
 
   @override
   void initState() {
@@ -35,8 +36,9 @@ class _CustomDropListState extends State<CustomDropList> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: context.color.outline)),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: context.color.outline),
+      ),
       child: DropdownButton<DropListModel>(
         icon: Padding(
           padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -45,23 +47,23 @@ class _CustomDropListState extends State<CustomDropList> {
         iconSize: 24,
         elevation: 16,
         hint: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    dropdownValue.name!,
-                    style: AppTextStyles.w400.copyWith(
-                        fontSize: 12.0,
-                        color: dropdownValue.id != 0
-                            ? Styles.HEADER
-                            : Styles.HINT),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  dropdownValue.name!,
+                  style: AppTextStyles.w400.copyWith(
+                    fontSize: 12.0,
+                    color: dropdownValue.id != 0 ? Styles.header : Styles.hint,
                   ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ],
-            )),
+              ),
+            ],
+          ),
+        ),
         isExpanded: true,
         onChanged: (DropListModel? newValue) {
           FocusScope.of(context).requestFocus(FocusNode());

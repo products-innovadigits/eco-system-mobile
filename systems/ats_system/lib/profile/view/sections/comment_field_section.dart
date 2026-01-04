@@ -22,20 +22,29 @@ class CommentFieldSection extends StatelessWidget {
       if (comment.isNotEmpty) {
         return Row(
           children: [
-            Text('${allTranslations.text(LocaleKeys.comment)}:',
-                style: AppTextStyles.w600
-                    .copyWith(fontSize: 10, color: context.color.primary)),
+            Text(
+              '${allTranslations.text(LocaleKeys.comment)}:',
+              style: AppTextStyles.w600.copyWith(
+                fontSize: 10,
+                color: context.color.primary,
+              ),
+            ),
             4.sw,
-            Text(comment,
-                style: AppTextStyles.w400
-                    .copyWith(fontSize: 10, color: Styles.SUB_TEXT_DARK_COLOR)),
+            Text(
+              comment,
+              style: AppTextStyles.w400.copyWith(
+                fontSize: 10,
+                color: Styles.subTextDarkColor,
+              ),
+            ),
             4.sw,
             InkWell(
-                onTap: () {
-                  controller.text = comment;
-                  onToggle();
-                },
-                child: Images(image: Assets.svgs.editOutline.path)),
+              onTap: () {
+                controller.text = comment;
+                onToggle();
+              },
+              child: Images(image: Assets.svgs.editOutline.path),
+            ),
           ],
         );
       }
@@ -45,9 +54,13 @@ class CommentFieldSection extends StatelessWidget {
           children: [
             Images(image: Assets.svgs.addCircle.path),
             8.sw,
-            Text(allTranslations.text(LocaleKeys.add_comment),
-                style: AppTextStyles.w400
-                    .copyWith(fontSize: 12, color: context.color.primary)),
+            Text(
+              allTranslations.text(LocaleKeys.add_comment),
+              style: AppTextStyles.w400.copyWith(
+                fontSize: 12,
+                color: context.color.primary,
+              ),
+            ),
           ],
         ),
       );
@@ -69,7 +82,10 @@ class CommentFieldSection extends StatelessWidget {
               child: Align(
                 alignment: AlignmentDirectional.bottomEnd,
                 child: Images(
-                    image: Assets.svgs.send.path, height: 20.h, width: 20.w),
+                  image: Assets.svgs.send.path,
+                  height: 20.h,
+                  width: 20.w,
+                ),
               ),
             ),
           ),

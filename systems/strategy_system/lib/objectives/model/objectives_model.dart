@@ -1,4 +1,4 @@
-import 'package:ats_system/shared/ats_exports.dart';
+import 'package:core_system/core/model/meta.dart';
 
 import '../../shared/strategy_exports.dart';
 
@@ -23,6 +23,7 @@ class ObjectivesModel extends SingleMapper {
     message = json['message'];
   }
 
+  @override
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {

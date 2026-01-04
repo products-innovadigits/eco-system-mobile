@@ -1,6 +1,5 @@
 import 'package:core_system/core/utility/export.dart';
 
-
 Widget customImageIcon({
   String? folderPath,
   required String? imageName,
@@ -12,22 +11,24 @@ Widget customImageIcon({
   return Image.asset(
     'assets/${folderPath ?? "images"}/$imageName.${imagePath ?? "png"}',
     color: color,
+    colorBlendMode: color != null ? BlendMode.srcIn : null,
     width: width ?? 30,
     height: height ?? 25,
   );
 }
 
-Widget customCircleSvgIcon(
-    {String? folderPath,
-    String? title,
-    required String? imageName,
-    String? imagePath,
-    Function? onTap,
-    Color? color,
-    Color backgroundColor = Styles.WHITE_COLOR,
-    width,
-    height,
-    double radius = 25}) {
+Widget customCircleSvgIcon({
+  String? folderPath,
+  String? title,
+  required String? imageName,
+  String? imagePath,
+  Function? onTap,
+  Color? color,
+  Color backgroundColor = Styles.whiteColor,
+  width,
+  height,
+  double radius = 25,
+}) {
   return InkWell(
     onTap: () {
       onTap!();
@@ -41,7 +42,9 @@ Widget customCircleSvgIcon(
           child: SvgPicture.asset(
             width: radius * 1.4,
             height: radius * 1.4,
-            color: color,
+            colorFilter: color != null
+                ? ColorFilter.mode(color, BlendMode.srcIn)
+                : null,
             'assets/svgs/$imageName.svg',
           ),
         ),
@@ -49,17 +52,16 @@ Widget customCircleSvgIcon(
           visible: title != null,
           child: Column(
             children: [
-              const SizedBox(
-                height: 2,
-              ),
+              const SizedBox(height: 2),
               Text(
                 title ?? "",
-                style:  TextStyle(
-                    color: LightColor.primary,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 10),
+                style: TextStyle(
+                  color: LightColor.primary,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 10,
+                ),
                 overflow: TextOverflow.ellipsis,
-              )
+              ),
             ],
           ),
         ),
@@ -68,8 +70,12 @@ Widget customCircleSvgIcon(
   );
 }
 
-Widget customImageIconSVG(
-    {required String? imageName, Color? color, double? height, width}) {
+Widget customImageIconSVG({
+  required String? imageName,
+  Color? color,
+  double? height,
+  width,
+}) {
   return Images(
     image: 'assets/svgs/$imageName.svg',
     color: color,

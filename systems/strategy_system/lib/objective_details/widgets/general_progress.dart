@@ -13,7 +13,7 @@ class GeneralProgress extends StatefulWidget {
 }
 
 class _GeneralProgressState extends State<GeneralProgress> {
-  ChartTime currentTime = ChartTime.Month;
+  ChartTime currentTime = ChartTime.month;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,7 @@ class _GeneralProgressState extends State<GeneralProgress> {
             padding: EdgeInsets.symmetric(vertical: 12.h),
             child: Divider(color: context.color.outline),
           ),
-          currentTime == ChartTime.Month
+          currentTime == ChartTime.month
               ? GeneralProgressChart(
                   isMonthly: true,
                   data: GeneralProgressChartModel(

@@ -23,9 +23,9 @@ class CurrentStepDocumentModel extends SingleMapper {
     warningErrors = json['warningErrors'];
     if (json['validationErrors'] != null) {
       validationErrors = <dynamic>[];
-      (json['validationErrors'] as List).forEach((v) {
+      for (var v in (json['validationErrors'] as List)) {
         validationErrors!.add(v);
-      });
+      }
     }
   }
 
@@ -59,11 +59,11 @@ class CurrentStepDocumentData extends SingleMapper {
     totalCount = (json['totalCount'] as num?)?.toInt();
     if (json['items'] != null && json['items'] is List) {
       items = <CurrentStepDocumentItem>[];
-      (json['items'] as List).forEach((v) {
+      for (var v in (json['items'] as List)) {
         items!.add(
           CurrentStepDocumentItem.fromJson((v as Map).cast<String, dynamic>()),
         );
-      });
+      }
     }
   }
 

@@ -21,7 +21,8 @@ class UserBloc extends Bloc<AppEvent, AppState> {
     emit(Loading());
     try {
       // UserModel sharedModel = await SharedHelper.sharedHelper!.getUser();
-      UserModel sharedModel = await SecureStorageHelper.secureStorageHelper!.getUser();
+      UserModel sharedModel = await SecureStorageHelper.secureStorageHelper!
+          .getUser();
       _model = sharedModel;
       emit(Done(model: sharedModel));
     } catch (e) {
@@ -33,7 +34,8 @@ class UserBloc extends Bloc<AppEvent, AppState> {
     emit(Loading());
     try {
       // UserModel sharedModel = await SharedHelper.sharedHelper!.getUser();
-      UserModel sharedModel = await SecureStorageHelper.secureStorageHelper!.getUser();
+      UserModel sharedModel = await SecureStorageHelper.secureStorageHelper!
+          .getUser();
       _model = sharedModel;
       emit(Done(model: sharedModel, reload: false));
     } catch (e) {

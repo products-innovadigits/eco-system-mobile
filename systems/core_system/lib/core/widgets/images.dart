@@ -58,42 +58,22 @@ class Images extends StatelessWidget {
         case "png":
           return ClipRRect(
             borderRadius: BorderRadius.circular(border),
-            child: Image.asset(
-              image,
-              height: height,
-              width: width,
-              fit: fit,
-            ),
+            child: Image.asset(image, height: height, width: width, fit: fit),
           );
         case "jpg":
           return ClipRRect(
             borderRadius: BorderRadius.circular(border),
-            child: Image.asset(
-              image,
-              height: height,
-              width: width,
-              fit: fit,
-            ),
+            child: Image.asset(image, height: height, width: width, fit: fit),
           );
         case "jpeg":
           return ClipRRect(
             borderRadius: BorderRadius.circular(border),
-            child: Image.asset(
-              image,
-              height: height,
-              width: width,
-              fit: fit,
-            ),
+            child: Image.asset(image, height: height, width: width, fit: fit),
           );
         default:
           return ClipRRect(
             borderRadius: BorderRadius.circular(border),
-            child: Image.asset(
-              image,
-              height: height,
-              width: width,
-              fit: fit,
-            ),
+            child: Image.asset(image, height: height, width: width, fit: fit),
           );
       }
     }

@@ -1,17 +1,16 @@
 part of 'notification_helper.dart';
 
-FlutterLocalNotificationsPlugin? _notificationsPlugin = FlutterLocalNotificationsPlugin();
+FlutterLocalNotificationsPlugin? _notificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
-localNotification() {
+void localNotification() {
   _notificationsPlugin = FlutterLocalNotificationsPlugin();
   if (Platform.isIOS) {
     _notificationsPlugin!
-        .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()!
-        .requestPermissions(
-          alert: true,
-          badge: true,
-          sound: true,
-        );
+        .resolvePlatformSpecificImplementation<
+          IOSFlutterLocalNotificationsPlugin
+        >()!
+        .requestPermissions(alert: true, badge: true, sound: true);
   }
   var android = const AndroidInitializationSettings('@mipmap/launcher_icon');
   var ios = const DarwinInitializationSettings(
@@ -19,10 +18,7 @@ localNotification() {
     defaultPresentAlert: true,
     defaultPresentSound: true,
   );
-  var initSetting = InitializationSettings(
-    android: android,
-    iOS: ios,
-  );
+  var initSetting = InitializationSettings(android: android, iOS: ios);
   _notificationsPlugin!.initialize(
     initSetting,
     onDidReceiveNotificationResponse: (not) {

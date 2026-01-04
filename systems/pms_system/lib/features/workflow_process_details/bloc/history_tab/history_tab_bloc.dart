@@ -11,7 +11,7 @@ class HistoryTabBloc extends Bloc<HistoryTabEvent, HistoryTabState> {
 
   HistoryResponseModel? _cachedModel;
 
-  _onLoadHistoryData(
+  Future<void> _onLoadHistoryData(
     LoadHistoryData event,
     Emitter<HistoryTabState> emit,
   ) async {
@@ -30,14 +30,9 @@ class HistoryTabBloc extends Bloc<HistoryTabEvent, HistoryTabState> {
         emit(const HistoryTabEmpty());
       }
     } catch (e) {
-      emit(
-        const HistoryTabFailure(
-          message: 'Failed to load history data',
-        ),
-      );
+      emit(const HistoryTabFailure(message: 'Failed to load history data'));
     }
   }
 
   HistoryResponseModel? get cachedModel => _cachedModel;
 }
-

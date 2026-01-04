@@ -64,7 +64,7 @@ class _CustomExpansionCardState extends State<CustomExpansionCard> {
                     text: widget.title,
                     style: AppTextStyles.w600.copyWith(
                       fontSize: 14,
-                      color: Styles.HEADER,
+                      color: Styles.header,
                     ),
                     children: [
                       if (widget.subTitle != null)

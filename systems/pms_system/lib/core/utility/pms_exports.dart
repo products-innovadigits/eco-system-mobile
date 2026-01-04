@@ -1,4 +1,3 @@
-export 'package:pms_system/shared/widgets/custom_bar_chart.dart';
 export 'package:core_system/core/components/custom_filters_drop_list.dart';
 export 'package:core_system/core/helpers/font_sizes.dart';
 export 'package:core_system/core/model/custom_field_model.dart';
@@ -85,3 +84,4 @@ export 'package:pms_system/features/project_report/widgets/report_chart_categori
 export 'package:pms_system/features/project_report/widgets/report_objective_percentage_chart_mobile_landscape.dart';
 export 'package:pms_system/features/project_report/widgets/report_objective_percentage_chart_mobile_portrait.dart';
 export 'package:pms_system/features/project_report/widgets/report_objective_percentage_circular_chart.dart';
+export 'package:pms_system/shared/widgets/custom_bar_chart.dart';

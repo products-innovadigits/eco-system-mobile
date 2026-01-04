@@ -5,20 +5,12 @@ class ErrorMessage extends StatelessWidget {
   final dynamic margin;
   final dynamic height;
 
-  const ErrorMessage({
-    super.key,
-    this.text,
-    this.margin,
-    this.height,
-  });
+  const ErrorMessage({super.key, this.text, this.margin, this.height});
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text(
-        text ?? "Shared Error !",
-        textAlign: TextAlign.center,
-      ),
+      child: Text(text ?? "Shared Error !", textAlign: TextAlign.center),
     );
   }
 }

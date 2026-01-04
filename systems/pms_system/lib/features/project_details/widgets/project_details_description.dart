@@ -7,7 +7,6 @@ class ProjectDetailsDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final projectStages = model.projectLifeCycle?.projectStages ?? [];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

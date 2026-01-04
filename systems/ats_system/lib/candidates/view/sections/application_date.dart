@@ -10,8 +10,10 @@ class ApplicationDate extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(allTranslations.text(LocaleKeys.application_date),
-            style: AppTextStyles.w400.copyWith(fontSize: 12)),
+        Text(
+          allTranslations.text(LocaleKeys.application_date),
+          style: AppTextStyles.w400.copyWith(fontSize: 12),
+        ),
         CustomTextField(
           hint: allTranslations.text(LocaleKeys.enter_application_date),
           controller: filtrationBloc.applicationDateController,
@@ -22,22 +24,24 @@ class ApplicationDate extends StatelessWidget {
               context,
               initialDate:
                   filtrationBloc.applicationDateController.text.isNotEmpty
-                      ? DateTime.parse(
-                          filtrationBloc.applicationDateController.text)
-                      : null,
+                  ? DateTime.parse(
+                      filtrationBloc.applicationDateController.text,
+                    )
+                  : null,
               (onDateSelected) {
-                filtrationBloc.applicationDateController.text =
-                    onDateSelected.toString();
+                filtrationBloc.applicationDateController.text = onDateSelected
+                    .toString();
               },
             );
           },
           suffixWidget: Padding(
             padding: EdgeInsetsDirectional.only(end: 12.w),
             child: Images(
-                image: Assets.svgs.calendar.path,
-                color: Styles.ICON_DARK_COLOR,
-                width: 19.h,
-                height: 19.h),
+              image: Assets.svgs.calendar.path,
+              color: Styles.iconDarkColor,
+              width: 19.h,
+              height: 19.h,
+            ),
           ),
         ),
       ],

@@ -1,18 +1,17 @@
 import 'package:core_system/core/utility/export.dart';
 
-abstract class MediaQueryHelper{
+abstract class MediaQueryHelper {
+  static MediaQueryData get instance =>
+      MediaQuery.of(CustomNavigator.navigatorState.currentContext!);
 
-  static get instance => MediaQuery.of(CustomNavigator.navigatorState.currentContext!);
-
-
-  static Size get  appMediaQuerySize => instance.size;
-  static double get  width => appMediaQuerySize.width;
-  static double get  height => appMediaQuerySize.height;
+  static Size get appMediaQuerySize => instance.size;
+  static double get width => appMediaQuerySize.width;
+  static double get height => appMediaQuerySize.height;
 
   static EdgeInsets get appMediaQueryPadding => instance.padding;
   static double get topPadding => appMediaQueryPadding.top;
 
   static EdgeInsets get appMediaQueryViewPadding => instance.viewPadding;
 
-  static EdgeInsets get  appMediaQueryViewInsets => instance.viewInsets;
+  static EdgeInsets get appMediaQueryViewInsets => instance.viewInsets;
 }

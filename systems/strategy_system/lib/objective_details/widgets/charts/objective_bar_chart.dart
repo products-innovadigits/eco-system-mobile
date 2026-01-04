@@ -20,9 +20,8 @@ class _ObjectiveBarChartState extends State<ObjectiveBarChart> {
 
   @override
   Widget build(BuildContext context) {
-    final isArabic = mainAppBloc.lang.valueOrNull == 'ar';
     // Step 1: Reverse the list
-    final data =  widget.data.reversed.toList();
+    final data = widget.data.reversed.toList();
 
     // Step 2: Prepare bottom titles
     final bottomTitlesData = data
@@ -140,7 +139,7 @@ Widget bottomTitles(
     bottomTilesData[value.toInt()],
     textAlign: TextAlign.center,
     style: AppTextStyles.w400.copyWith(
-      color: Styles.ACCENT_PRIMARY_COLOR,
+      color: Styles.accentPrimaryColor,
       fontSize: 12,
     ),
   );
@@ -153,7 +152,7 @@ Widget leftTitles(double value, TitleMeta meta) {
   final text = Text(
     "$formattedValue%",
     style: AppTextStyles.w400.copyWith(
-      color: Styles.ACCENT_PRIMARY_COLOR,
+      color: Styles.accentPrimaryColor,
       fontSize: 12,
     ),
   );

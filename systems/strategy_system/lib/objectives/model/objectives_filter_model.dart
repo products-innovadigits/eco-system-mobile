@@ -46,8 +46,8 @@ class StrategyFilterModel {
     return StrategyFilterModel(
       selectedSkills: selectedSkills ?? this.selectedSkills,
       selectedTags: selectedTags ?? this.selectedTags,
-      salaryMin: expectedSalaryFrom ?? this.salaryMin,
-      salaryMax: expectedSalaryTo ?? this.salaryMax,
+      salaryMin: expectedSalaryFrom ?? salaryMin,
+      salaryMax: expectedSalaryTo ?? salaryMax,
       currency: currency ?? this.currency,
       experienceFrom: experienceFrom ?? this.experienceFrom,
       experienceTo: experienceTo ?? this.experienceTo,
@@ -85,8 +85,10 @@ class StrategyFilterModel {
 
   bool get isValidCurrency {
     // Only validate currency if both salary fields are not null and not empty
-    if (salaryMin == null || salaryMin!.isEmpty ||
-        salaryMax == null || salaryMax!.isEmpty) {
+    if (salaryMin == null ||
+        salaryMin!.isEmpty ||
+        salaryMax == null ||
+        salaryMax!.isEmpty) {
       return true;
     }
     return currency != null && currency!.isNotEmpty;
@@ -105,9 +107,7 @@ class StrategyFilterModel {
 
   /// Checks if salary filter is active
   bool get hasActiveSalary =>
-      salaryMin != null ||
-          salaryMax != null ||
-          currency != null;
+      salaryMin != null || salaryMax != null || currency != null;
 
   /// Checks if experience filter is active
   bool get hasActiveExperience =>
@@ -132,8 +132,10 @@ class StrategyFilterModel {
     }
 
     // Only validate currency if both salary fields are not null and not empty
-    if (salaryMin != null && salaryMin!.isNotEmpty &&
-        salaryMax != null && salaryMax!.isNotEmpty) {
+    if (salaryMin != null &&
+        salaryMin!.isNotEmpty &&
+        salaryMax != null &&
+        salaryMax!.isNotEmpty) {
       if (!isValidCurrency) {
         errors.add(allTranslations.text(LocaleKeys.currency_required));
       }

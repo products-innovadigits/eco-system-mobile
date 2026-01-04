@@ -16,9 +16,6 @@ class DefaultRequestModel extends SingleMapper {
 
   @override
   Map<String, dynamic> toJson() {
-    return {
-      'status': status,
-      'message': message,
-    };
+    return {'status': status, 'message': message};
   }
 }

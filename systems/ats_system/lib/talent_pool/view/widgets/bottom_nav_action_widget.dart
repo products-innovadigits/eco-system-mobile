@@ -8,12 +8,13 @@ class BottomNavActionWidget extends StatelessWidget {
   final Widget bottomSheetContent;
   final double? height;
 
-  const BottomNavActionWidget(
-      {super.key,
-      required this.icon,
-      required this.title,
-      required this.bottomSheetContent,
-      this.height});
+  const BottomNavActionWidget({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.bottomSheetContent,
+    this.height,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,23 +23,26 @@ class BottomNavActionWidget extends StatelessWidget {
       onTap: () {
         talentPoolBloc.fileNameController.clear();
         PopUpHelper.showBottomSheet(
-            height: height,
-            child: BlocProvider.value(
-              value: talentPoolBloc,
-              child: bottomSheetContent,
-            ));
+          height: height,
+          child: BlocProvider.value(
+            value: talentPoolBloc,
+            child: bottomSheetContent,
+          ),
+        );
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Images(image: icon, color: Styles.DETAILS),
+          Images(image: icon, color: Styles.details),
           8.sh,
           Text(
             allTranslations.text(title),
-            style: AppTextStyles.w400
-                .copyWith(fontSize: 11, color: Styles.DETAILS),
-          )
+            style: AppTextStyles.w400.copyWith(
+              fontSize: 11,
+              color: Styles.details,
+            ),
+          ),
         ],
       ),
     );

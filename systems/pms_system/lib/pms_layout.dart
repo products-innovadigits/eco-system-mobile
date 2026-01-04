@@ -68,8 +68,5 @@ class PmsLayoutArgs {
   final int index;
   final bool showSwitcher;
 
-  const PmsLayoutArgs({
-    this.index = 0,
-    this.showSwitcher = false,
-  });
+  const PmsLayoutArgs({this.index = 0, this.showSwitcher = false});
 }

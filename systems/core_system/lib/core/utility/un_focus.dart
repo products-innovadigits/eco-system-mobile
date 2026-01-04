@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Unfocus extends StatefulWidget {
-  const Unfocus({
-    super.key,
-    required this.child,
-  });
+  const Unfocus({super.key, required this.child});
 
   final Widget child;
 
@@ -16,8 +13,9 @@ class _UnfocusState extends State<Unfocus> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: widget.child);
+      behavior: HitTestBehavior.opaque,
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: widget.child,
+    );
   }
 }

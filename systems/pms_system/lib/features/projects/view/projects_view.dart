@@ -1,5 +1,4 @@
 import 'package:pms_system/core/utility/pms_exports.dart';
-import 'package:pms_system/shared/widgets/pms_bottom_nav_bar.dart';
 import 'package:pms_system/features/projects/bloc/filtration/projects_filtration_bloc.dart';
 import 'package:pms_system/features/projects/bloc/projects/projects_bloc.dart';
 import 'package:pms_system/features/projects/bloc/projects/projects_events.dart';
@@ -7,6 +6,7 @@ import 'package:pms_system/features/projects/bloc/projects/projects_state.dart';
 import 'package:pms_system/features/projects/bloc/sorting/projects_sorting_bloc.dart';
 import 'package:pms_system/features/projects/widgets/project_card.dart';
 import 'package:pms_system/features/projects/widgets/projects_app_bar_widget.dart';
+import 'package:pms_system/shared/widgets/pms_bottom_nav_bar.dart';
 
 class ProjectsView extends StatefulWidget {
   const ProjectsView({super.key});

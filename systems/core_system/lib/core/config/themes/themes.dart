@@ -41,10 +41,10 @@ ThemeData buildLightTheme() {
     highlightColor: LightColor.grey,
     splashColor: LightColor.white,
     unselectedWidgetColor: LightColor.white,
-    disabledColor: LightColor.primary.withOpacity(0.3),
+    disabledColor: LightColor.primary.withValues(alpha: 0.3),
     toggleButtonsTheme: ToggleButtonsThemeData(color: LightColor.secondary),
-    dialogBackgroundColor: LightColor.white,
-    indicatorColor: LightColor.primary,
+    dialogTheme: DialogThemeData(backgroundColor: LightColor.white),
+    tabBarTheme: TabBarThemeData(indicatorColor: LightColor.primary),
     hintColor: LightColor.primary,
     primaryTextTheme: Typography.material2018(
       platform: TargetPlatform.iOS,
@@ -74,7 +74,7 @@ ThemeData buildLightTheme() {
     iconTheme: base.iconTheme.copyWith(color: LightColor.white),
     sliderTheme: const SliderThemeData().copyWith(
       valueIndicatorColor: LightColor.secondary,
-      showValueIndicator: ShowValueIndicator.always,
+      showValueIndicator: ShowValueIndicator.onlyForContinuous,
     ),
     visualDensity: VisualDensity.adaptivePlatformDensity,
     appBarTheme: base.appBarTheme.copyWith(
@@ -113,8 +113,8 @@ ThemeData buildLightTheme() {
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
     ),
     dataTableTheme: DataTableThemeData(
-      dataRowColor: MaterialStateProperty.all(LightColor.error),
-      headingRowColor: MaterialStateProperty.all(LightColor.white),
+      dataRowColor: WidgetStateProperty.all(LightColor.error),
+      headingRowColor: WidgetStateProperty.all(LightColor.white),
       headingTextStyle: TextStyle(color: LightColor.error),
     ),
     snackBarTheme: base.snackBarTheme.copyWith(
@@ -124,7 +124,7 @@ ThemeData buildLightTheme() {
       style: OutlinedButton.styleFrom(foregroundColor: LightColor.grey),
     ),
     radioTheme: RadioThemeData(
-      fillColor: MaterialStateProperty.all(LightColor.primary),
+      fillColor: WidgetStateProperty.all(LightColor.primary),
     ),
   );
 }
@@ -136,12 +136,12 @@ ThemeData _buildDarkTheme() {
       secondary: DarkColor.secondary,
       primary: DarkColor.primary,
       error: DarkColor.brightRed,
-      background: DarkColor.offWhite,
+      surface: DarkColor.offWhite,
     ),
     brightness: Brightness.light,
     primaryColor: DarkColor.primary,
-    primaryColorLight: DarkColor.primary.withOpacity(0.5),
-    primaryColorDark: DarkColor.primary.withOpacity(1),
+    primaryColorLight: DarkColor.primary.withValues(alpha: 0.5),
+    primaryColorDark: DarkColor.primary.withValues(alpha: 1),
     secondaryHeaderColor: DarkColor.secondary,
     canvasColor: DarkColor.offWhite,
     scaffoldBackgroundColor: DarkColor.black,
@@ -151,12 +151,12 @@ ThemeData _buildDarkTheme() {
     highlightColor: DarkColor.grey,
     splashColor: DarkColor.offWhite,
     unselectedWidgetColor: DarkColor.offWhite,
-    disabledColor: DarkColor.primary.withOpacity(0.3),
+    disabledColor: DarkColor.primary.withValues(alpha: 0.3),
     toggleButtonsTheme: const ToggleButtonsThemeData(
       color: DarkColor.secondary,
     ),
-    dialogBackgroundColor: DarkColor.offWhite,
-    indicatorColor: DarkColor.primary,
+    dialogTheme: DialogThemeData(backgroundColor: DarkColor.offWhite),
+    tabBarTheme: TabBarThemeData(indicatorColor: DarkColor.primary),
     hintColor: DarkColor.primary,
     primaryTextTheme: Typography.material2018(
       platform: TargetPlatform.iOS,
@@ -167,7 +167,7 @@ ThemeData _buildDarkTheme() {
     iconTheme: base.iconTheme.copyWith(color: DarkColor.primary),
     sliderTheme: const SliderThemeData().copyWith(
       valueIndicatorColor: DarkColor.secondary,
-      showValueIndicator: ShowValueIndicator.always,
+      showValueIndicator: ShowValueIndicator.onlyForContinuous,
     ),
     visualDensity: VisualDensity.adaptivePlatformDensity,
     appBarTheme: base.appBarTheme.copyWith(
@@ -196,7 +196,7 @@ ThemeData _buildDarkTheme() {
       ),
       alignLabelWithHint: true,
       floatingLabelBehavior: FloatingLabelBehavior.always,
-      fillColor: DarkColor.grey.withOpacity(0.1),
+      fillColor: DarkColor.grey.withValues(alpha: 0.1),
       filled: true,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),

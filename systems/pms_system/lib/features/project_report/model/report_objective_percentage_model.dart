@@ -5,4 +5,3 @@ class ReportObjectivePercentageModel {
 
   ReportObjectivePercentageModel({this.categoryName, this.value, this.count});
 }
-

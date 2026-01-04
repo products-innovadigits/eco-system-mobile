@@ -1,6 +1,7 @@
 name: core_system
 description: Shared core utilities and components for eco_system.
 version: 1.0.0
+publish_to: 'none'
 
 environment:
   sdk: '>=3.8.0 <4.0.0'

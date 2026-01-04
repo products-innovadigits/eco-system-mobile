@@ -1,7 +1,5 @@
 import 'package:pms_system/core/utility/pms_exports.dart';
 
-import 'output_card_widget.dart';
-
 class ProjectOutputsBottomSheet extends StatelessWidget {
   final List<MobileOutputsSummaryModel> outputsSummary;
 

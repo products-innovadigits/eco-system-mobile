@@ -80,96 +80,94 @@ class _IntroViewState extends State<IntroView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(
                     introItems.length,
-                        (index) =>
-                        Container(
-                          margin: EdgeInsetsDirectional.only(end: 5.w),
-                          height: 4,
-                          width: selectPage == index ? 32 : 8,
-                          decoration: BoxDecoration(
-                            color: selectPage == index
-                                ? context.color.primary
-                                : context.color.outlineVariant,
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                        ),
+                    (index) => Container(
+                      margin: EdgeInsetsDirectional.only(end: 5.w),
+                      height: 4,
+                      width: selectPage == index ? 32 : 8,
+                      decoration: BoxDecoration(
+                        color: selectPage == index
+                            ? context.color.primary
+                            : context.color.outlineVariant,
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                    ),
                   ),
                 ),
               ),
               selectPage != introItems.length - 1
                   ? GestureDetector(
-                onTap: () {
-                  if (selectPage == introItems.length - 1) {
-                    CustomNavigator.push(Routes.MAIN_PAGE);
-                  } else {
-                    controller.nextPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                    );
-                  }
-                },
-                child: Container(
-                  color: Colors.transparent,
-                  child: Stack(
-                    children: [
-                      Center(
-                        child: SizedBox(
-                          height: 60,
-                          width: 60,
-                          child: TweenAnimationBuilder<double>(
-                            tween: Tween<double>(
-                              begin: 0.0,
-                              end:
-                              (selectPage + 1) /
-                                  introItems.length *
-                                  1,
-                            ),
+                      onTap: () {
+                        if (selectPage == introItems.length - 1) {
+                          CustomNavigator.push(Routes.MAIN_PAGE);
+                        } else {
+                          controller.nextPage(
                             duration: const Duration(milliseconds: 300),
-                            builder: (context, value, _) =>
-                                CircularProgressIndicator(
-                                  value: value,
-                                  strokeCap: StrokeCap.round,
+                            curve: Curves.easeIn,
+                          );
+                        }
+                      },
+                      child: Container(
+                        color: Colors.transparent,
+                        child: Stack(
+                          children: [
+                            Center(
+                              child: SizedBox(
+                                height: 60,
+                                width: 60,
+                                child: TweenAnimationBuilder<double>(
+                                  tween: Tween<double>(
+                                    begin: 0.0,
+                                    end:
+                                        (selectPage + 1) /
+                                        introItems.length *
+                                        1,
+                                  ),
+                                  duration: const Duration(milliseconds: 300),
+                                  builder: (context, value, _) =>
+                                      CircularProgressIndicator(
+                                        value: value,
+                                        strokeCap: StrokeCap.round,
+                                      ),
                                 ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        right: 0,
-                        left: 0,
-                        top: 0,
-                        bottom: 0,
-                        child: Center(
-                          child: Container(
-                            height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                              color: context.theme.primaryColor,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: Center(
-                              child: Icon(
-                                Icons.arrow_forward,
-                                color:
-                                context.theme.scaffoldBackgroundColor,
                               ),
                             ),
-                          ),
+                            Positioned(
+                              right: 0,
+                              left: 0,
+                              top: 0,
+                              bottom: 0,
+                              child: Center(
+                                child: Container(
+                                  height: 40,
+                                  width: 40,
+                                  decoration: BoxDecoration(
+                                    color: context.theme.primaryColor,
+                                    borderRadius: BorderRadius.circular(100),
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.arrow_forward,
+                                      color:
+                                          context.theme.scaffoldBackgroundColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              )
+                    )
                   : CustomBtn(
-                text: allTranslations.text(LocaleKeys.login),
-                onPressed: () {
-                  return SharedHelper.sharedHelper?.writeData(
-                    CachingKey.SKIP_BOARDING,
-                    true,
-                  ).then((v) {
-                    CustomNavigator.push(Routes.LOGIN, clean: true);
-                  });
-                },
-              ),
+                      text: allTranslations.text(LocaleKeys.login),
+                      onPressed: () {
+                        return SharedHelper.sharedHelper
+                            ?.writeData(CachingKey.skipBoarding, true)
+                            .then((v) {
+                              CustomNavigator.push(Routes.LOGIN, clean: true);
+                            });
+                      },
+                    ),
             ],
           ),
         ),

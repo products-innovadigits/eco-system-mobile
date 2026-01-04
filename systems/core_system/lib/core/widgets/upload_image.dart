@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:core_system/core/utility/export.dart';
 import 'package:path/path.dart';
 
-
 class UploadImage extends StatefulWidget {
   final ValueChanged? updatedImage;
 
@@ -46,7 +45,7 @@ class _UploadImageState extends State<UploadImage> {
             height: image != null ? 192 : 140,
             width: MediaQueryHelper.width,
             decoration: BoxDecoration(
-              color: context.color.primary.withOpacity(.1),
+              color: context.color.primary.withValues(alpha: .1),
               borderRadius: BorderRadius.circular(15.0),
               image: DecorationImage(
                 image: Image.asset(
@@ -64,8 +63,9 @@ class _UploadImageState extends State<UploadImage> {
                     ImagePickerHelper.showOption(
                       onGet: (file) async {
                         setState(() => image = file);
-                        var multipartImage =
-                            await MultipartFile.fromFile(image!.path);
+                        var multipartImage = await MultipartFile.fromFile(
+                          image!.path,
+                        );
                         widget.updatedImage!(multipartImage);
                         widget.updateFile?.call(image);
                       },
@@ -77,12 +77,10 @@ class _UploadImageState extends State<UploadImage> {
                       height: 44,
                       width: 44,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0)),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
                       child: image != null
-                          ? Image.file(
-                              image!,
-                              fit: BoxFit.fill,
-                            )
+                          ? Image.file(image!, fit: BoxFit.fill)
                           : customImageIconSVG(imageName: 'blue_gallery'),
                     ),
                   ),
@@ -92,10 +90,10 @@ class _UploadImageState extends State<UploadImage> {
                   image != null
                       ? "${allTranslations.text("Uploaded")}!"
                       : widget.label != null
-                          ? widget.label!
-                          : allTranslations.text("Upload Image"),
+                      ? widget.label!
+                      : allTranslations.text("Upload Image"),
                   style: const TextStyle(
-                    color: Styles.HEADER,
+                    color: Styles.header,
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                   ),
@@ -109,18 +107,18 @@ class _UploadImageState extends State<UploadImage> {
                           ? basename(image!.path)
                           : allTranslations.text('must be less than'),
                       style: AppTextStyles.w400.copyWith(
-                        color: Styles.TITLE,
+                        color: Styles.title,
                         fontSize: 11,
                       ),
                       children: [
                         TextSpan(
                           text: image != null ? "" : ' 6MB',
                           style: AppTextStyles.w600.copyWith(
-                            color: Styles.TITLE,
+                            color: Styles.title,
                             fontSize: 11,
                             fontWeight: FontWeight.w600,
                           ),
-                        )
+                        ),
                       ],
                     ),
                     textAlign: TextAlign.center,
@@ -138,13 +136,15 @@ class _UploadImageState extends State<UploadImage> {
                           CustomBtn(
                             text: allTranslations.text("Change"),
                             onPressed: () {
-                              ImagePickerHelper.showOption(onGet: (file) async {
-                                setState(() => image = file);
-                                var multipartImage =
-                                    await MultipartFile.fromFile(image!.path);
-                                widget.updatedImage?.call(multipartImage);
-                                widget.updateFile?.call(image);
-                              });
+                              ImagePickerHelper.showOption(
+                                onGet: (file) async {
+                                  setState(() => image = file);
+                                  var multipartImage =
+                                      await MultipartFile.fromFile(image!.path);
+                                  widget.updatedImage?.call(multipartImage);
+                                  widget.updateFile?.call(image);
+                                },
+                              );
                             },
                             color: context.color.primary,
                           ),
@@ -159,14 +159,14 @@ class _UploadImageState extends State<UploadImage> {
                               widget.updatedImage?.call(null);
                               widget.updateFile?.call(null);
                             },
-                            color: Styles.IN_ACTIVE.withOpacity(.1),
-                            textColor: Styles.IN_ACTIVE,
+                            color: Styles.inActive.withValues(alpha: .1),
+                            textColor: Styles.inActive,
                           ),
                         ],
-                      )
+                      ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),

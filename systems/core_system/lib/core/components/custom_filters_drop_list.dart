@@ -14,7 +14,8 @@ class CustomFiltersDropList extends StatefulWidget {
     required this.onSelect,
     this.initial,
     required this.hintText,
-    this.labelText, this.radius,
+    this.labelText,
+    this.radius,
   });
 
   @override

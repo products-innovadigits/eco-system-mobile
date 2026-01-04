@@ -53,7 +53,7 @@ class _DonutPainter extends CustomPainter {
     final radius = (size.shortestSide - strokeWidth) / 2;
 
     final backgroundPaint = Paint()
-      ..color = Colors.grey.withOpacity(0.15)
+      ..color = Colors.grey.withValues(alpha: 0.15)
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth
       ..strokeCap = StrokeCap.round;
@@ -88,4 +88,3 @@ class _DonutPainter extends CustomPainter {
         oldDelegate.strokeWidth != strokeWidth;
   }
 }
-

@@ -1,10 +1,7 @@
 import 'package:core_system/core/utility/export.dart';
 
 class RememberMe extends StatelessWidget {
-  const RememberMe({super.key,
-    this.check = false,
-    required this.onChange,
-  });
+  const RememberMe({super.key, this.check = false, required this.onChange});
   final bool check;
   final Function(bool) onChange;
 
@@ -25,13 +22,17 @@ class RememberMe extends StatelessWidget {
               width: 18.w,
               height: 18.h,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: check ? context.color.primary : context.color.surfaceContainer,
-                  border: Border.all(
-                      color: check ? context.color.primary : Styles.DETAILS,
-                      width: 1)),
+                borderRadius: BorderRadius.circular(5),
+                color: check
+                    ? context.color.primary
+                    : context.color.surfaceContainer,
+                border: Border.all(
+                  color: check ? context.color.primary : Styles.details,
+                  width: 1,
+                ),
+              ),
               child: check
-                  ?  Icon(
+                  ? Icon(
                       Icons.check,
                       color: context.color.surfaceContainer,
                       size: 14,
@@ -44,9 +45,10 @@ class RememberMe extends StatelessWidget {
                 allTranslations.text("remember_me"),
                 maxLines: 1,
                 style: AppTextStyles.w500.copyWith(
-                    fontSize: 13,
-                    overflow: TextOverflow.ellipsis,
-                    color: check ? context.color.primary : Styles.TITLE),
+                  fontSize: 13,
+                  overflow: TextOverflow.ellipsis,
+                  color: check ? context.color.primary : Styles.title,
+                ),
               ),
             ),
           ],

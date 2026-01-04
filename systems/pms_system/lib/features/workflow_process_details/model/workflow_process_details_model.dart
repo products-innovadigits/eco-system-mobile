@@ -23,18 +23,18 @@ class WorkflowProcessDetailsModel extends SingleMapper {
     // data is a direct List of groups
     if (json['data'] != null && json['data'] is List) {
       data = <WorkflowProcessGroupModel>[];
-      (json['data'] as List).forEach((v) {
+      for (var v in (json['data'] as List)) {
         data!.add(WorkflowProcessGroupModel.fromJson(v));
-      });
+      }
     }
     meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
     message = json['message'];
     warningErrors = json['warningErrors'];
     if (json['validationErrors'] != null) {
       validationErrors = <dynamic>[];
-      (json['validationErrors'] as List).forEach((v) {
+      for (var v in (json['validationErrors'] as List)) {
         validationErrors!.add(v);
-      });
+      }
     }
   }
 
@@ -83,9 +83,9 @@ class WorkflowProcessGroupModel extends SingleMapper {
     progress = double.tryParse(json['progress']?.toString() ?? '0');
     if (json['steps'] != null) {
       steps = <WorkflowProcessStepModel>[];
-      (json['steps'] as List).forEach((v) {
+      for (var v in (json['steps'] as List)) {
         steps!.add(WorkflowProcessStepModel.fromJson(v));
-      });
+      }
     }
   }
 

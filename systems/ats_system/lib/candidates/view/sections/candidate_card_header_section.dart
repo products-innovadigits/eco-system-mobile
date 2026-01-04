@@ -16,27 +16,32 @@ class CandidateCardHeaderSection extends StatelessWidget {
           percentageMargin: 4.w,
           percentageRadius: 2.w,
           percentageTextStyle: AppTextStyles.w600.copyWith(
-              color: Styles.TEXT_BLUE_DARK_COLOR, fontSize: 6),
+            color: Styles.textBlueDarkColor,
+            fontSize: 6,
+          ),
         ),
         8.sw,
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'هشام منصور',
-              style: context.textTheme.labelSmall,
-            ),
+            Text('هشام منصور', style: context.textTheme.labelSmall),
             2.sh,
             Row(
               children: [
                 Text(
                   'مدير المشروعات . ',
                   style: AppTextStyles.w400.copyWith(
-                      color: Styles.SUB_TEXT_DARK_COLOR, fontSize: 10),
+                    color: Styles.subTextDarkColor,
+                    fontSize: 10,
+                  ),
                 ),
-                Text('5 من الوظائف',
-                    style: AppTextStyles.w400.copyWith(
-                        color: context.color.primary, fontSize: 10))
+                Text(
+                  '5 من الوظائف',
+                  style: AppTextStyles.w400.copyWith(
+                    color: context.color.primary,
+                    fontSize: 10,
+                  ),
+                ),
               ],
             ),
           ],

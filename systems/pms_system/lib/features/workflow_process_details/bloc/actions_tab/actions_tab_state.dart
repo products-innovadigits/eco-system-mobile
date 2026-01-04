@@ -35,5 +35,3 @@ class ActionsTabFailure extends ActionsTabState {
   const ActionsTabFailure({required this.message});
 }
 
-
-

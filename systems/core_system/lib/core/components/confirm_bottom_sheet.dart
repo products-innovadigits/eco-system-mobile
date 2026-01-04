@@ -2,7 +2,7 @@ import 'package:core_system/core/utility/export.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 abstract class CustomBottomSheet {
-  static show({
+  static Future<dynamic> show({
     Function()? onConfirm,
     String? label,
     String? buttonText,

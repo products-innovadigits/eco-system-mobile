@@ -5,7 +5,12 @@ class ShimmerCardsList extends StatelessWidget {
   final double? cardHeight;
   final double? listPadding;
 
-  const ShimmerCardsList({super.key, this.itemCount, this.cardHeight, this.listPadding});
+  const ShimmerCardsList({
+    super.key,
+    this.itemCount,
+    this.cardHeight,
+    this.listPadding,
+  });
 
   @override
   Widget build(BuildContext context) {

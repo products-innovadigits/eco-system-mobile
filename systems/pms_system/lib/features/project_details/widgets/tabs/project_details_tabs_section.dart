@@ -1,5 +1,3 @@
-
-
 import 'package:pms_system/core/utility/pms_exports.dart';
 
 class ProjectDetailsTabsSection extends StatelessWidget {

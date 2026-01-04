@@ -1,6 +1,0 @@
-class LocaleKeys {
-  // ... existing keys ...
-  static const String no_internet_connection = 'no_internet_connection';
-  static const String retry = 'retry';
-  // ... rest of the class ...
-}

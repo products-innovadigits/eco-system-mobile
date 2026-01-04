@@ -1,8 +1,13 @@
 import 'package:core_system/core/utility/export.dart';
 
 class TabWidget extends StatelessWidget {
-  const TabWidget(this.data, this.isSelected, this.onClick,
-      {super.key, this.iconPath});
+  const TabWidget(
+    this.data,
+    this.isSelected,
+    this.onClick, {
+    super.key,
+    this.iconPath,
+  });
   final String data;
   final bool isSelected;
   final Function() onClick;
@@ -51,7 +56,7 @@ class TabWidget extends StatelessWidget {
                   top: Radius.circular(15),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

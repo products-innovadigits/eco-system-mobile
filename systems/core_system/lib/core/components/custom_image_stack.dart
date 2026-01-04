@@ -19,7 +19,8 @@ class CustomImageStack extends StatelessWidget {
       var widgetList = images!
           .sublist(0, images!.length)
           .asMap()
-          .map((index, value) => MapEntry(
+          .map(
+            (index, value) => MapEntry(
               index,
               Padding(
                 padding: EdgeInsets.only(left: 0.7 * 20 * index),
@@ -28,13 +29,12 @@ class CustomImageStack extends StatelessWidget {
                   radius: radius ?? 12,
                   color: boarderColor ?? Colors.white,
                 ),
-              )))
+              ),
+            ),
+          )
           .values
           .toList();
-      return Stack(
-        clipBehavior: Clip.none,
-        children: widgetList,
-      );
+      return Stack(clipBehavior: Clip.none, children: widgetList);
     }
   }
 }

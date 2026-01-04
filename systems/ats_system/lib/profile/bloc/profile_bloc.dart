@@ -35,8 +35,9 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
   ];
 
   void _onUpdateRating(UpdateRating event, Emitter<AppState> emit) {
-    ratingItems[event.index] =
-        ratingItems[event.index].copyWith(rating: event.rating);
+    ratingItems[event.index] = ratingItems[event.index].copyWith(
+      rating: event.rating,
+    );
     emit(Done());
   }
 
@@ -67,7 +68,10 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
   //   emit(Done());
   // }
 
-  Future<void> _onToggleExpansion(ToggleExpand event, Emitter<AppState> emit) async {
+  Future<void> _onToggleExpansion(
+    ToggleExpand event,
+    Emitter<AppState> emit,
+  ) async {
     int index = event.arguments as int;
     if (reviewExpandedIndex == index) {
       reviewExpandedIndex = -1;
@@ -86,7 +90,10 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
     emit(Done());
   }
 
-  Future<void> _onSelectRatingTab(SelectTab event, Emitter<AppState> emit) async {
+  Future<void> _onSelectRatingTab(
+    SelectTab event,
+    Emitter<AppState> emit,
+  ) async {
     int tabIndex = event.arguments as int;
     if (selectedRatingTabIndex != tabIndex) {
       selectedRatingTabIndex = tabIndex;
@@ -94,7 +101,10 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
     emit(Done());
   }
 
-  Future<void> _onShowMoreDialog(ShowDialog event, Emitter<AppState> emit) async {
+  Future<void> _onShowMoreDialog(
+    ShowDialog event,
+    Emitter<AppState> emit,
+  ) async {
     bool? isDialogOpen = event.arguments as bool?;
     if (isDialogOpen == null) {
       showMoreDialog = !showMoreDialog;
@@ -121,14 +131,16 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
       emit(Exporting());
 
       final res = await TalentPoolRepo.assignToJob(
-          selectedJobsList: selectedJobsList, selectedTalentsList: [talentId]);
+        selectedJobsList: selectedJobsList,
+        selectedTalentsList: [talentId],
+      );
       CustomNavigator.pop();
       if (res.status == 200) {
         selectedJobsList.clear();
         add(Click(arguments: candidateModel?.id));
-        AppCore.successMessage(res.message);
+        AppCore.successMessage(res.message ?? '');
       } else {
-        AppCore.errorMessage(res.message);
+        AppCore.errorMessage(res.message ?? '');
         emit(Done());
       }
     } catch (e) {
@@ -141,8 +153,9 @@ class ProfileBloc extends Bloc<AppEvent, AppState> {
     try {
       emit(Loading());
 
-      Response res =
-          await ProfileRepo.getCandidateDetails(event.arguments as int);
+      Response res = await ProfileRepo.getCandidateDetails(
+        event.arguments as int,
+      );
 
       if (res.statusCode == 200 &&
           res.data != null &&

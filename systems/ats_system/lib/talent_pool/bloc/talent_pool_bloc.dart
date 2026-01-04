@@ -42,7 +42,9 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
   CandidateFilterModel filterModel = const CandidateFilterModel();
 
   Future<void> _onSelectSorting(
-      SelectSorting event, Emitter<AppState> emit) async {
+    SelectSorting event,
+    Emitter<AppState> emit,
+  ) async {
     selectedSorting = event.arguments as DropListModel?;
     emit(Done());
   }
@@ -59,13 +61,14 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
   void _onSelectTalent(SelectTalent event, Emitter<AppState> emit) {
     bool selectAll =
         (event.arguments as Map<String, dynamic>?)?['selectAll'] as bool? ??
-            false;
+        false;
     int? talentId =
         (event.arguments as Map<String, dynamic>?)?['talentId'] as int?;
 
     if (selectAll) {
-      selectedTalentsList
-          .addAll(talentsList.map((talent) => talent.id ?? 0).toList());
+      selectedTalentsList.addAll(
+        talentsList.map((talent) => talent.id ?? 0).toList(),
+      );
     }
     if (talentId != null) {
       if (selectedTalentsList.contains(talentId)) {
@@ -86,7 +89,10 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
   void customScroll(ScrollController controller) {
     controller.addListener(() {
       bool scroll = AppCore.scrollListener(
-          controller, _engine.maxPages, _engine.currentPage);
+        controller,
+        _engine.maxPages,
+        _engine.currentPage,
+      );
       if (scroll) {
         _engine.updateCurrentPage(_engine.currentPage);
         add(Click(arguments: _engine));
@@ -180,10 +186,9 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
             res.data['data'] as Map<String, dynamic>?;
         if (data != null && data.isNotEmpty) {
           data.forEach((key, value) {
-            sortingList.add(DropListModel(
-              key: key.toString(),
-              name: value.toString(),
-            ));
+            sortingList.add(
+              DropListModel(key: key.toString(), name: value.toString()),
+            );
           });
         }
       }
@@ -205,12 +210,13 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
       emit(Exporting());
 
       final FileModel fileUrl = await TalentPoolRepo.exportFile(
-          fileName: fileNameController.text,
-          isExcel: isExcel,
-          selectedTalentsList: selectedTalentsList);
+        fileName: fileNameController.text,
+        isExcel: isExcel,
+        selectedTalentsList: selectedTalentsList,
+      );
       if (fileUrl.url != null && fileUrl.url!.isNotEmpty) {
         CustomNavigator.pop();
-        AppCore.successToastMessage(fileUrl.message);
+        AppCore.successToastMessage(fileUrl.message ?? '');
         emit(Done());
         Future.delayed(Duration(milliseconds: 1500), () {
           LauncherHelper.openUrl(fileUrl.url!);
@@ -228,18 +234,20 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
       emit(Exporting());
 
       final res = await TalentPoolRepo.assignToJob(
-          selectedJobsList: selectedJobsList,
-          selectedTalentsList:
-              talentId != null ? [talentId] : selectedTalentsList);
+        selectedJobsList: selectedJobsList,
+        selectedTalentsList: talentId != null
+            ? [talentId]
+            : selectedTalentsList,
+      );
       CustomNavigator.pop();
       if (res.status == 200) {
         selectedJobsList.clear();
         selectedTalentsList.clear();
         activeSelection = false;
         add(Click(arguments: SearchEngine()));
-        AppCore.successMessage(res.message);
+        AppCore.successMessage(res.message ?? '');
       } else {
-        AppCore.errorMessage(res.message);
+        AppCore.errorMessage(res.message ?? '');
       }
       emit(Done());
     } catch (e) {

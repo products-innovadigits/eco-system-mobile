@@ -45,7 +45,7 @@ class RequestCardWidget extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: context.color.secondary.withOpacity(0.1),
+                    color: context.color.secondary.withValues(alpha: 0.1),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),

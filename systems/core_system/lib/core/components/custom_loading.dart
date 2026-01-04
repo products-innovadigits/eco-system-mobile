@@ -1,4 +1,3 @@
-
 import 'package:core_system/core/utility/export.dart';
 
 class CustomLoading extends StatelessWidget {
@@ -10,15 +9,16 @@ class CustomLoading extends StatelessWidget {
   final double? height;
   final bool isTextLoading;
 
-  const CustomLoading(
-      {super.key,
-      this.loading,
-      this.margin,
-      this.isTextLoading = false,
-      this.color,
-      this.value,
-      this.remain = 0.0,
-      this.height});
+  const CustomLoading({
+    super.key,
+    this.loading,
+    this.margin,
+    this.isTextLoading = false,
+    this.color,
+    this.value,
+    this.remain = 0.0,
+    this.height,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,19 +26,20 @@ class CustomLoading extends StatelessWidget {
         ? Visibility(
             visible: loading ?? true,
             child: SizedBox(
-                height: 50,
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        allTranslations.text(LocaleKeys.loading),
-                        style: Styles.SUB_HEADER_STYLE,
-                      )
-                    ],
-                  ),
-                )),
+              height: 50,
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      allTranslations.text(LocaleKeys.loading),
+                      style: Styles.subHeaderStyle,
+                    ),
+                  ],
+                ),
+              ),
+            ),
           )
         : Visibility(
             visible: loading ?? true,

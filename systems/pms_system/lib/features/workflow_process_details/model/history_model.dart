@@ -22,18 +22,18 @@ class HistoryResponseModel extends SingleMapper {
     succeeded = json['succeeded'];
     if (json['data'] != null && json['data'] is List) {
       data = <HistoryItemModel>[];
-      (json['data'] as List).forEach((v) {
+      for (var v in (json['data'] as List)) {
         data!.add(HistoryItemModel.fromJson(v));
-      });
+      }
     }
     meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
     message = json['message'];
     warningErrors = json['warningErrors'];
     if (json['validationErrors'] != null) {
       validationErrors = <dynamic>[];
-      (json['validationErrors'] as List).forEach((v) {
+      for (var v in (json['validationErrors'] as List)) {
         validationErrors!.add(v);
-      });
+      }
     }
   }
 
@@ -94,16 +94,16 @@ class HistoryItemModel extends SingleMapper {
 
     if (json['stepComments'] != null) {
       stepComments = <StepCommentModel>[];
-      (json['stepComments'] as List).forEach((v) {
+      for (var v in (json['stepComments'] as List)) {
         stepComments!.add(StepCommentModel.fromJson(v));
-      });
+      }
     }
 
     if (json['slicesData'] != null) {
       slicesData = <AttachmentModel>[];
-      (json['slicesData'] as List).forEach((v) {
+      for (var v in (json['slicesData'] as List)) {
         slicesData!.add(AttachmentModel.fromJson(v));
-      });
+      }
     }
 
     lastChangeTime = json['lastChangeTime'];
@@ -432,9 +432,9 @@ class SliceModel extends SingleMapper {
     isActive = json['isActive'];
     if (json['sliceOptions'] != null) {
       sliceOptions = <dynamic>[];
-      (json['sliceOptions'] as List).forEach((v) {
+      for (var v in (json['sliceOptions'] as List)) {
         sliceOptions!.add(v);
-      });
+      }
     }
   }
 

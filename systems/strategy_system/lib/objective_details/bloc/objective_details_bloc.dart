@@ -7,7 +7,7 @@ class ObjectiveDetailsBloc extends Bloc<AppEvent, AppState> {
     on<Click>(onClick);
   }
 
-  onClick(AppEvent event, Emitter<AppState> emit) async {
+  Future<void> onClick(AppEvent event, Emitter<AppState> emit) async {
     try {
       emit(Loading());
 

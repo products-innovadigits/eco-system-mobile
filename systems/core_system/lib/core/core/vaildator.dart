@@ -1,56 +1,59 @@
-import 'dart:developer';
-
 import 'package:core_system/core/utility/export.dart';
 
 class Validator {
-  var emailValidator = StreamTransformer<String, String>.fromHandlers(
-    handleData: (email, sink) {
-      if (email.contains('@')) {
-        sink.add(email);
-      } else {
-        sink.addError('ادخل البريد الإكتروني بشكل صحيح');
-      }
-    },
-  );
-  var nameValidator = StreamTransformer<String, String>.fromHandlers(
-    handleData: (name, sink) {
-      if (name.length > 2) {
-        sink.add(name);
-      } else {
-        sink.addError('ادخل الاسم بشكل صحيح');
-      }
-    },
-  );
+  final StreamTransformer<String, String> emailValidator =
+      StreamTransformer<String, String>.fromHandlers(
+        handleData: (email, sink) {
+          if (email.contains('@')) {
+            sink.add(email);
+          } else {
+            sink.addError('ادخل البريد الإكتروني بشكل صحيح');
+          }
+        },
+      );
+  final StreamTransformer<String, String> nameValidator =
+      StreamTransformer<String, String>.fromHandlers(
+        handleData: (name, sink) {
+          if (name.length > 2) {
+            sink.add(name);
+          } else {
+            sink.addError('ادخل الاسم بشكل صحيح');
+          }
+        },
+      );
 
-  var number = StreamTransformer<String, String>.fromHandlers(
-    handleData: (dynamic num, sink) {
-      if (num.length > 9) {
-        sink.add(num);
-      } else {
-        sink.addError('يجب ان يكون رقم الجوال من 10 خانات');
-      }
-    },
-  );
+  final StreamTransformer<String, String> number =
+      StreamTransformer<String, String>.fromHandlers(
+        handleData: (dynamic num, sink) {
+          if (num.length > 9) {
+            sink.add(num);
+          } else {
+            sink.addError('يجب ان يكون رقم الجوال من 10 خانات');
+          }
+        },
+      );
 
-  var passwordValidator = StreamTransformer<String, String>.fromHandlers(
-    handleData: (password, sink) {
-      if (password.length > 7) {
-        sink.add(password);
-      } else {
-        sink.addError('يجب ان لا تقل كلمة المرور عن 8 خانات');
-      }
-    },
-  );
+  final StreamTransformer<String, String> passwordValidator =
+      StreamTransformer<String, String>.fromHandlers(
+        handleData: (password, sink) {
+          if (password.length > 7) {
+            sink.add(password);
+          } else {
+            sink.addError('يجب ان لا تقل كلمة المرور عن 8 خانات');
+          }
+        },
+      );
 
-  var confirmPassWordValidator = StreamTransformer<String, String>.fromHandlers(
-    handleData: (password, sink) {
-      if (password.length > 7) {
-        sink.add(password);
-      } else {
-        sink.addError('تأكيد كلمة المرور خاطئ');
-      }
-    },
-  );
+  final StreamTransformer<String, String> confirmPassWordValidator =
+      StreamTransformer<String, String>.fromHandlers(
+        handleData: (password, sink) {
+          if (password.length > 7) {
+            sink.add(password);
+          } else {
+            sink.addError('تأكيد كلمة المرور خاطئ');
+          }
+        },
+      );
 }
 
 class EmailValidator {
@@ -63,7 +66,7 @@ class EmailValidator {
 }
 
 class PasswordValidator {
-  static String? passwordValidator(var password) {
+  static String? passwordValidator(String? password) {
     if (password!.length < 6) {
       return allTranslations.text("please_enter_valid_password");
     }
@@ -85,7 +88,7 @@ class PasswordConfirmationValidator {
 }
 
 class ChangePasswordConfirmationValidator {
-  static passwordValidator(String? password, BuildContext context) {
+  static String? passwordValidator(String? password, BuildContext context) {
     if (password!.length < 6) {
       return allTranslations.text("confirm_password");
     }
@@ -98,10 +101,10 @@ class ChangePasswordConfirmationValidator {
 
 class PhoneValidator {
   static String? phoneValidator(String? phone) {
-    cprint(RegExp(Constants.PHONE_EXP).hasMatch(phone!.trim()));
+    cprint(RegExp(Constants.phoneExp).hasMatch(phone!.trim()));
     cprint(phone.length == 11);
     if (phone.length != 11 ||
-        RegExp(Constants.PHONE_EXP).hasMatch(phone.trim()) == false) {
+        RegExp(Constants.phoneExp).hasMatch(phone.trim()) == false) {
       return allTranslations.text("please_enter_valid_phone_number");
     }
     return null;
@@ -109,7 +112,7 @@ class PhoneValidator {
 }
 
 class NameValidator {
-  static String? nameValidator(var name) {
+  static String? nameValidator(String? name) {
     if (name!.length < 2) {
       return allTranslations.text("please_enter_valid_user_name");
     }

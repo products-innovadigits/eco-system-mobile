@@ -39,5 +39,3 @@ class StageDocsFailure extends StageDocsState {
   const StageDocsFailure({required this.message});
 }
 
-
-

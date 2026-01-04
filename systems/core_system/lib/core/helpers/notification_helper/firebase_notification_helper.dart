@@ -5,7 +5,10 @@ part of 'notification_helper.dart';
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call initializeApp before using other Firebase services.
-  await Firebase.initializeApp(name: 'teska', options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(
+    name: 'teska',
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   log('on Message background notification ${message.data}');
   log('on Message background data ${message.notification?.body}');
   log('Handling a background message: ${message.notification!.toMap()}');
@@ -38,7 +41,7 @@ class FirebaseNotifications {
     firebaseCloudMessagingListeners();
   }
 
-  static getToken() async {
+  static Future<void> getToken() async {
     String? deviceToken;
     log('-----------Device Token--------------');
 
@@ -49,25 +52,27 @@ class FirebaseNotifications {
       log('Error getting device token $e');
       deviceToken = 'Device Token Null';
     }
-    SharedHelper.sharedHelper!.writeData(CachingKey.DEVICE_TOKEN, deviceToken);
+    SharedHelper.sharedHelper!.writeData(CachingKey.deviceToken, deviceToken);
   }
 
   static Future<void> firebaseCloudMessagingListeners() async {
     if (Platform.isIOS) iOSPermission();
     getToken();
-    FirebaseMessaging.onMessage.listen(
-      (RemoteMessage data) {
-        log('on Message notification ${data.notification?.toMap()}');
-        log('on Message data ${data.data}');
-        log('on Message body ${data.notification?.body}');
-        Map notify = data.data;
-        log('$notify');
-        if (Platform.isAndroid) {
-          scheduleNotification(data.notification!.title ?? '', data.notification!.body ?? '', json.encode(notify));
-        }
-        updateUserFunctions(notify: notify);
-      },
-    );
+    FirebaseMessaging.onMessage.listen((RemoteMessage data) {
+      log('on Message notification ${data.notification?.toMap()}');
+      log('on Message data ${data.data}');
+      log('on Message body ${data.notification?.body}');
+      Map notify = data.data;
+      log('$notify');
+      if (Platform.isAndroid) {
+        scheduleNotification(
+          data.notification!.title ?? '',
+          data.notification!.body ?? '',
+          json.encode(notify),
+        );
+      }
+      updateUserFunctions(notify: notify);
+    });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage data) {
       log('on Opened ${data.data}');
@@ -88,9 +93,14 @@ class FirebaseNotifications {
       }
     });
 
-    _notificationsPlugin!.getNotificationAppLaunchDetails().then((NotificationAppLaunchDetails? data) {
-      log('on Opened From Notification ${json.decode(json.encode(data!.notificationResponse?.payload.toString()))}');
-      if (data.notificationResponse?.payload != null && data.notificationResponse?.payload != '') {
+    _notificationsPlugin!.getNotificationAppLaunchDetails().then((
+      NotificationAppLaunchDetails? data,
+    ) {
+      log(
+        'on Opened From Notification ${json.decode(json.encode(data!.notificationResponse?.payload.toString()))}',
+      );
+      if (data.notificationResponse?.payload != null &&
+          data.notificationResponse?.payload != '') {
         handlePath(json.decode(data.notificationResponse?.payload ?? ''));
       }
     });

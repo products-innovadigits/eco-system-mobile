@@ -14,7 +14,11 @@ class LatestRequestSortingBottomSheet extends StatelessWidget {
         return Stack(
           children: [
             state is LatestRequestSortingLoading
-                ? const ShimmerCardsList(itemCount: 4, cardHeight: 40, listPadding: 0)
+                ? const ShimmerCardsList(
+                    itemCount: 4,
+                    cardHeight: 40,
+                    listPadding: 0,
+                  )
                 : ListAnimator(
                     separatorPadding: 16.h,
                     customPadding: EdgeInsets.only(bottom: context.h * 0.1),

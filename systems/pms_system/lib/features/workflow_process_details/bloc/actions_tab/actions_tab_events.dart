@@ -1,5 +1,3 @@
-import 'dart:io';
-
 /// Events for ActionsTabBloc
 abstract class ActionsTabEvent {
   const ActionsTabEvent();
@@ -40,6 +38,4 @@ class PickFile extends ActionsTabEvent {
 class RemoveFile extends ActionsTabEvent {
   const RemoveFile();
 }
-
-
 

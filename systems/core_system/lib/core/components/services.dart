@@ -39,10 +39,7 @@ void shareTheAppIOS() async {
 }
 
 void launchURL({String? url}) async {
-  final Uri launcher = Uri(
-    scheme: 'https',
-    path: url!.replaceAll('https', ''),
-  );
+  final Uri launcher = Uri(scheme: 'https', path: url!.replaceAll('https', ''));
   if (!await launchUrl(launcher)) {
     throw 'Could not launch $url';
   }
@@ -58,18 +55,12 @@ void sendWhatsApp({String? phone}) async {
 }
 
 Future<void> callUser({String? phoneNumber}) async {
-  final Uri launchUri = Uri(
-    scheme: 'tel',
-    path: phoneNumber,
-  );
+  final Uri launchUri = Uri(scheme: 'tel', path: phoneNumber);
   await launchUrl(launchUri);
 }
 
 void sendEmail({String? email}) {
-  final Uri emailLaunchUri = Uri(
-    scheme: 'mailto',
-    path: email!,
-  );
+  final Uri emailLaunchUri = Uri(scheme: 'mailto', path: email!);
   launchUrl(emailLaunchUri);
 }
 
@@ -109,10 +100,7 @@ Future<bool> saveFile(String url, String fileName) async {
         await directory.create(recursive: true);
       }
       if (await directory.exists()) {
-        await Dio().download(
-          "http://$url",
-          saveFile.path,
-        );
+        await Dio().download("http://$url", saveFile.path);
       }
 
       cprint(saveFile.path);

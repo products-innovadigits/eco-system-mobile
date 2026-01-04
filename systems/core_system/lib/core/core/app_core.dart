@@ -29,7 +29,7 @@ class AppCore {
     return false;
   }
 
-  static showSnackBar({required AppNotification notification}) {
+  static void showSnackBar({required AppNotification notification}) {
     Timer(const Duration(milliseconds: 200), () {
       CustomNavigator.scaffoldState.currentState!.showSnackBar(
         SnackBar(
@@ -69,8 +69,10 @@ class AppCore {
     });
   }
 
-  static showToastSnackBar({required AppNotification notification}) {
-    Fluttertoast.showToast(
+  static Future<bool?> showToastSnackBar({
+    required AppNotification notification,
+  }) {
+    return Fluttertoast.showToast(
       msg: notification.message,
       toastLength: Toast.LENGTH_LONG,
       gravity: ToastGravity.BOTTOM,
@@ -81,7 +83,7 @@ class AppCore {
     );
   }
 
-  static successMessage(message) => AppCore.showSnackBar(
+  static void successMessage(String message) => AppCore.showSnackBar(
     notification: AppNotification(
       message: message,
       backgroundColor: LightColor.secondary,
@@ -90,24 +92,26 @@ class AppCore {
     ),
   );
 
-  static warningExitMessage(message) => AppCore.showToastSnackBar(
-    notification: AppNotification(
-      message: message,
-      backgroundColor: LightColor.placeHolderText,
-      fontSize: 16,
-    ),
-  );
+  static Future<bool?> warningExitMessage(String message) =>
+      AppCore.showToastSnackBar(
+        notification: AppNotification(
+          message: message,
+          backgroundColor: LightColor.placeHolderText,
+          fontSize: 16,
+        ),
+      );
 
-  static successToastMessage(message) => AppCore.showToastSnackBar(
-    notification: AppNotification(
-      message: message,
-      backgroundColor: LightColor.secondary,
-      borderColor: LightColor.secondary,
-      iconName: 'check-circle',
-    ),
-  );
+  static Future<bool?> successToastMessage(String message) =>
+      AppCore.showToastSnackBar(
+        notification: AppNotification(
+          message: message,
+          backgroundColor: LightColor.secondary,
+          borderColor: LightColor.secondary,
+          iconName: 'check-circle',
+        ),
+      );
 
-  static errorMessage(message) => AppCore.showSnackBar(
+  static void errorMessage(String message) => AppCore.showSnackBar(
     notification: AppNotification(
       message: message,
       backgroundColor: LightColor.error,
@@ -116,14 +120,15 @@ class AppCore {
     ),
   );
 
-  static errorToastMessage(message) => AppCore.showToastSnackBar(
-    notification: AppNotification(
-      message: message,
-      backgroundColor: LightColor.error,
-      borderColor: LightColor.error,
-      iconName: 'fill-close-circle',
-    ),
-  );
+  static Future<bool?> errorToastMessage(String message) =>
+      AppCore.showToastSnackBar(
+        notification: AppNotification(
+          message: message,
+          backgroundColor: LightColor.error,
+          borderColor: LightColor.error,
+          iconName: 'fill-close-circle',
+        ),
+      );
 
   static String getMonthName(int monthNumber) {
     List<String> months = mainAppBloc.lang.valueOrNull == 'en'

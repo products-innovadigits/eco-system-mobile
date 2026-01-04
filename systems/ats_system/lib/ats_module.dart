@@ -10,11 +10,10 @@ import 'package:ats_system/talent_pool/view/screens/talent_pool_view.dart';
 import 'package:ats_system/talent_pool/view/sections/talent_pool_section.dart';
 import 'package:core_system/core/modules/home_section.dart';
 import 'package:core_system/core/modules/system_module.dart';
-import 'package:core_system/core/model/search_engine.dart';
 import 'package:core_system/core/utility/export.dart'; // BlocProvider, AppEvent/AppState
 
 /// ATS System module implementation.
-/// 
+///
 /// Registers all Bloc providers required by the ATS (Applicant Tracking System) module.
 class AtsModule implements SystemModule {
   @override
@@ -33,15 +32,17 @@ class AtsModule implements SystemModule {
       create: (_) => JobsBloc()..add(Click(arguments: SearchEngine())),
     ),
     // ATS Filtration Bloc - used for filtering candidates/jobs
-    BlocProvider<AtsFiltrationBloc>(
-      create: (_) => AtsFiltrationBloc(),
-    ),
+    BlocProvider<AtsFiltrationBloc>(create: (_) => AtsFiltrationBloc()),
   ];
 
   @override
   Map<String, RouteFactory> get routes => {
-    Routes.JOBS: (settings) => MaterialPageRoute(settings: settings, builder: (_) => const JobsView()),
-    Routes.TALENT_POOL: (settings) => MaterialPageRoute(settings: settings, builder: (_) => const TalentPoolView()),
+    Routes.JOBS: (settings) =>
+        MaterialPageRoute(settings: settings, builder: (_) => const JobsView()),
+    Routes.TALENT_POOL: (settings) => MaterialPageRoute(
+      settings: settings,
+      builder: (_) => const TalentPoolView(),
+    ),
     Routes.PROFILE: (settings) {
       final args = settings.arguments as ProfileViewArgs?;
       return MaterialPageRoute(
@@ -91,4 +92,3 @@ class AtsModule implements SystemModule {
     ),
   ];
 }
-

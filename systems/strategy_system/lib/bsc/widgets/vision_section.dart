@@ -8,7 +8,12 @@ class VisionSection extends StatelessWidget {
   final String visionTitle;
   final List<ValueModel> values;
   final List<MissionModel> messages;
-  const VisionSection({super.key, required this.visionTitle, required this.values, required this.messages});
+  const VisionSection({
+    super.key,
+    required this.visionTitle,
+    required this.values,
+    required this.messages,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +59,7 @@ class VisionSection extends StatelessWidget {
                   ),
                 );
               },
-              separatorBuilder: (_, __) => 8.sw,
+              separatorBuilder: (_, _) => 8.sw,
               itemCount: values.length,
             ),
           ),

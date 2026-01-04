@@ -1,5 +1,4 @@
-import 'package:pms_system/core/utility/pms_exports.dart'
-    hide ProjectProgressModel;
+import 'package:pms_system/core/utility/pms_exports.dart';
 
 import '../model/project_progress_model.dart';
 
@@ -79,7 +78,7 @@ class _ProjectsProgressChartState extends State<ProjectsProgressChart> {
     });
   }
 
-  emptyState(BuildContext context) {
+  List<PieChartSectionData> emptyState(BuildContext context) {
     return [
       PieChartSectionData(
         color: context.color.surfaceContainer,

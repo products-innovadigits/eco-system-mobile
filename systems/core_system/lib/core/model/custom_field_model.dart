@@ -8,21 +8,17 @@ class CustomFieldsModel extends SingleMapper {
 
   Meta? meta;
 
-  CustomFieldsModel({
-    this.message,
-    this.statusCode,
-    this.data,
-    this.meta,
-  });
+  CustomFieldsModel({this.message, this.statusCode, this.data, this.meta});
 
+  @override
   Map<String, dynamic> toJson() => {
-        "message": message,
-        "status_code": statusCode,
-        "meta": meta?.toJson(),
-        "data": data != null
-            ? List<CustomFieldModel>.from(data!.map((x) => x.toJson()))
-            : [],
-      };
+    "message": message,
+    "status_code": statusCode,
+    "meta": meta?.toJson(),
+    "data": data != null
+        ? List<CustomFieldModel>.from(data!.map((x) => x.toJson()))
+        : [],
+  };
 
   CustomFieldsModel.fromJson(Map<String, dynamic> json) {
     message = json['message'];
@@ -43,7 +39,7 @@ class CustomFieldsModel extends SingleMapper {
   }
 }
 
-class CustomFieldModel extends SingleMapper{
+class CustomFieldModel extends SingleMapper {
   int? id;
   String? name;
   String? description;
@@ -69,14 +65,15 @@ class CustomFieldModel extends SingleMapper{
     isSelect = false;
   }
 
+  @override
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "desc": description,
-        "image": image,
-        "code": code,
-        "is_select": isSelect,
-      };
+    "id": id,
+    "name": name,
+    "desc": description,
+    "image": image,
+    "code": code,
+    "is_select": isSelect,
+  };
 
   @override
   Mapper fromJson(Map<String, dynamic> json) {

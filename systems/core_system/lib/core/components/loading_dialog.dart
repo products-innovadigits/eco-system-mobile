@@ -11,11 +11,7 @@ void showLoadingDialog() {
           height: MediaQueryHelper.appMediaQuerySize.height,
           width: MediaQueryHelper.appMediaQuerySize.width,
           child: const Center(
-            child: Center(
-              child: SpinKitFadingCircle(
-                color: Colors.white,
-              ),
-            ),
+            child: Center(child: SpinKitFadingCircle(color: Colors.white)),
           ),
         ),
       );

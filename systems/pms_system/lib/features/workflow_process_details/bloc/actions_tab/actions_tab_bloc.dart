@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:pms_system/core/utility/pms_exports.dart';
@@ -81,19 +82,11 @@ class ActionsTabBloc extends Bloc<ActionsTabEvent, ActionsTabState> {
           allTranslations.text(LocaleKeys.something_went_wrong),
         );
         _isComplianceActionLoading = false;
-        emit(
-          const ActionsTabFailure(
-            message: 'Failed to save comment',
-          ),
-        );
+        emit(const ActionsTabFailure(message: 'Failed to save comment'));
       }
     } catch (e) {
       _isComplianceActionLoading = false;
-      emit(
-        const ActionsTabFailure(
-          message: 'Failed to save comment',
-        ),
-      );
+      emit(const ActionsTabFailure(message: 'Failed to save comment'));
     }
   }
 
@@ -124,20 +117,12 @@ class ActionsTabBloc extends Bloc<ActionsTabEvent, ActionsTabState> {
         );
         _isComplianceCompleted = false; // Reset on error
         _isComplianceActionLoading = false;
-        emit(
-          const ActionsTabFailure(
-            message: 'Failed to move to next step',
-          ),
-        );
+        emit(const ActionsTabFailure(message: 'Failed to move to next step'));
       }
     } catch (e) {
       _isComplianceCompleted = false; // Reset on error
       _isComplianceActionLoading = false;
-      emit(
-        const ActionsTabFailure(
-          message: 'Failed to move to next step',
-        ),
-      );
+      emit(const ActionsTabFailure(message: 'Failed to move to next step'));
     }
   }
 
@@ -171,7 +156,7 @@ class ActionsTabBloc extends Bloc<ActionsTabEvent, ActionsTabState> {
         emit(const ActionsTabFileSelected());
       }
     } catch (e) {
-      print('Error picking file: $e');
+      log('Error picking file: $e');
     }
   }
 
@@ -192,4 +177,3 @@ class ActionsTabBloc extends Bloc<ActionsTabEvent, ActionsTabState> {
     return super.close();
   }
 }
-

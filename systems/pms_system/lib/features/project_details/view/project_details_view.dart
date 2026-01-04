@@ -1,5 +1,3 @@
-
-
 import 'package:pms_system/core/utility/pms_exports.dart';
 
 class ProjectDetailsView extends StatelessWidget {
@@ -23,7 +21,7 @@ class ProjectDetailsView extends StatelessWidget {
                 ..add(
                   LoadGeneralProgressSummary(
                     projectId: id,
-                    chartType: ChartTime.Month,
+                    chartType: ChartTime.month,
                   ),
                 ),
             ),

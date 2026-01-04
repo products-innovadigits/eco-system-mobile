@@ -20,7 +20,7 @@ class DocCommentsBloc extends Bloc<DocCommentsEvent, DocCommentsState> {
   // Check if a specific comment is being edited
   bool isCommentBeingEdited(int commentId) => _editingCommentId == commentId;
 
-  _onLoadDocComments(
+  Future<void> _onLoadDocComments(
     LoadDocComments event,
     Emitter<DocCommentsState> emit,
   ) async {
@@ -45,9 +45,7 @@ class DocCommentsBloc extends Bloc<DocCommentsEvent, DocCommentsState> {
       }
     } catch (e) {
       emit(
-        const DocCommentsFailure(
-          message: 'Failed to load document comments',
-        ),
+        const DocCommentsFailure(message: 'Failed to load document comments'),
       );
     }
   }
@@ -69,22 +67,14 @@ class DocCommentsBloc extends Bloc<DocCommentsEvent, DocCommentsState> {
         if (_commentsData != null) {
           emit(DocCommentsLoaded(commentsData: _commentsData!));
         } else {
-          emit(
-            const DocCommentsFailure(
-              message: 'Failed to delete comment',
-            ),
-          );
+          emit(const DocCommentsFailure(message: 'Failed to delete comment'));
         }
       }
     } catch (e) {
       if (_commentsData != null) {
         emit(DocCommentsLoaded(commentsData: _commentsData!));
       } else {
-        emit(
-          const DocCommentsFailure(
-            message: 'Failed to delete comment',
-          ),
-        );
+        emit(const DocCommentsFailure(message: 'Failed to delete comment'));
       }
     }
   }
@@ -110,22 +100,14 @@ class DocCommentsBloc extends Bloc<DocCommentsEvent, DocCommentsState> {
         if (_commentsData != null) {
           emit(DocCommentsLoaded(commentsData: _commentsData!));
         } else {
-          emit(
-            const DocCommentsFailure(
-              message: 'Failed to edit comment',
-            ),
-          );
+          emit(const DocCommentsFailure(message: 'Failed to edit comment'));
         }
       }
     } catch (e) {
       if (_commentsData != null) {
         emit(DocCommentsLoaded(commentsData: _commentsData!));
       } else {
-        emit(
-          const DocCommentsFailure(
-            message: 'Failed to edit comment',
-          ),
-        );
+        emit(const DocCommentsFailure(message: 'Failed to edit comment'));
       }
     }
   }
@@ -158,4 +140,3 @@ class DocCommentsBloc extends Bloc<DocCommentsEvent, DocCommentsState> {
     }
   }
 }
-

@@ -1,7 +1,6 @@
 // Flutter core imports
 // Third-party imports
 import 'package:core_system/core/bloc/theme_cubit.dart';
-import 'app/modules/modules_registry.dart';
 import 'package:core_system/core/helpers/notification_helper/notification_helper.dart';
 import 'package:core_system/core/helpers/translation/translations.dart';
 import 'package:core_system/core/navigation/routes.dart';
@@ -17,6 +16,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'app/modules/modules_registry.dart';
 // Local imports
 import 'firebase_options.dart';
 import 'navigation/custom_navigation.dart';

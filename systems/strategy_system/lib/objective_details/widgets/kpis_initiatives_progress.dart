@@ -12,9 +12,8 @@ class KpisInitiativesProgress extends StatefulWidget {
       _KpisInitiativesProgressState();
 }
 
-class _KpisInitiativesProgressState
-    extends State<KpisInitiativesProgress> {
-  ChartTime currentTime = ChartTime.Month;
+class _KpisInitiativesProgressState extends State<KpisInitiativesProgress> {
+  ChartTime currentTime = ChartTime.month;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +51,7 @@ class _KpisInitiativesProgressState
             padding: EdgeInsets.symmetric(vertical: 12.h),
             child: Divider(color: context.color.outline),
           ),
-          currentTime == ChartTime.Month
+          currentTime == ChartTime.month
               ? ObjectiveLineChart(
                   data: [
                     ObjectiveChartModel(

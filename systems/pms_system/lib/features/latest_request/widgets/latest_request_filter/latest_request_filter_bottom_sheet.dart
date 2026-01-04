@@ -10,7 +10,10 @@ class LatestRequestFilterBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LatestRequestFiltrationCubit, LatestRequestFiltrationState>(
+    return BlocBuilder<
+      LatestRequestFiltrationCubit,
+      LatestRequestFiltrationState
+    >(
       buildWhen: (previous, current) =>
           previous.runtimeType != current.runtimeType,
       builder: (context, state) {
@@ -27,10 +30,12 @@ class LatestRequestFilterBottomSheet extends StatelessWidget {
                 : const LatestRequestFilterBottomSheetBody(),
             if (state is LatestRequestFiltrationLoaded)
               LatestRequestFilterButtonsSection(
-                onApplyFilters: () =>
-                    filterCubit.applyFilters(latestRequestCubit: latestRequestCubit),
-                onResetFilters: () =>
-                    filterCubit.resetFilters(latestRequestCubit: latestRequestCubit),
+                onApplyFilters: () => filterCubit.applyFilters(
+                  latestRequestCubit: latestRequestCubit,
+                ),
+                onResetFilters: () => filterCubit.resetFilters(
+                  latestRequestCubit: latestRequestCubit,
+                ),
                 isFiltered: state.isFilterApplied,
               ),
           ],

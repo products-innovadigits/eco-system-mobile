@@ -13,7 +13,7 @@ class ArrowBack extends StatelessWidget {
 
 class ArrowBackIos extends StatelessWidget {
   final Color color;
-  const ArrowBackIos({super.key, this.color = Styles.HEADER});
+  const ArrowBackIos({super.key, this.color = Styles.header});
   @override
   Widget build(BuildContext context) {
     return allTranslations.currentLanguage != "ar"

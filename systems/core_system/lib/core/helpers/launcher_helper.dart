@@ -116,8 +116,11 @@ abstract class LauncherHelper {
     } finally {
       // dismiss loading dialog if still shown
       try {
-        if (Navigator.of(context, rootNavigator: true).canPop()) {
-          Navigator.of(context, rootNavigator: true).pop();
+        if (!context.mounted) return;
+
+        final navigator = Navigator.of(context, rootNavigator: true);
+        if (navigator.canPop()) {
+          navigator.pop();
         }
       } catch (_) {}
     }

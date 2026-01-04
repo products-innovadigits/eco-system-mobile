@@ -37,10 +37,7 @@ class MonthlyProgressChart extends StatelessWidget {
               LineChartBarData(
                 spots: List.generate(
                   data.length,
-                  (i) => FlSpot(
-                    i.toDouble(),
-                    data[i].progress ?? 0,
-                  ),
+                  (i) => FlSpot(i.toDouble(), data[i].progress ?? 0),
                 ),
                 isCurved: false,
                 gradient: LinearGradient(

@@ -1,6 +1,7 @@
 name: pms_system
 description: Nawah PMS module.
 version: 1.0.0
+publish_to: 'none'
 
 environment:
   sdk: '>=3.8.0 <4.0.0'
@@ -14,6 +15,8 @@ dependencies:
   fl_chart: ^0.71.0
   syncfusion_flutter_charts: ^28.2.6
   url_launcher: ^6.2.1
+  intl: ^0.20.2
+  html: ^0.15.6
 
 
 dev_dependencies:

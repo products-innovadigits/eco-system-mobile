@@ -1,5 +1,3 @@
-
-
 import '../../shared/strategy_exports.dart';
 
 class ObjectiveKPISBloc extends Bloc<AppEvent, AppState> {
@@ -7,16 +5,18 @@ class ObjectiveKPISBloc extends Bloc<AppEvent, AppState> {
     on<Click>(onClick);
   }
 
-  onClick(AppEvent event, Emitter<AppState> emit) async {
+  Future<void> onClick(AppEvent event, Emitter<AppState> emit) async {
     try {
       emit(Loading());
 
-      Response res =
-          await ObjectiveDetailsRepo.getObjectiveKPIS(event.arguments as int);
+      Response res = await ObjectiveDetailsRepo.getObjectiveKPIS(
+        event.arguments as int,
+      );
       if (res.statusCode == 200 && res.data != null) {
         if (res.data["data"] != null && res.data["data"].isNotEmpty) {
           List<ObjectiveKPIModel> list = List<ObjectiveKPIModel>.from(
-              res.data["data"].map((e) => ObjectiveKPIModel.fromJson(e)));
+            res.data["data"].map((e) => ObjectiveKPIModel.fromJson(e)),
+          );
           emit(Done(list: list));
         } else {
           emit(Empty());

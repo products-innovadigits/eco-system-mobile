@@ -1,13 +1,13 @@
+import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/latest_request/bloc/filtration/latest_request_filtration_state.dart';
 import 'package:pms_system/features/latest_request/bloc/latest_request/latest_request_cubit.dart';
 import 'package:pms_system/features/latest_request/bloc/sorting/latest_request_sorting_cubit.dart';
 import 'package:pms_system/features/projects/model/projects_filters_model.dart';
 import 'package:pms_system/features/projects/repo/projects_repo.dart';
 
-import 'package:pms_system/core/utility/pms_exports.dart';
-
 class LatestRequestFiltrationCubit extends Cubit<LatestRequestFiltrationState> {
-  LatestRequestFiltrationCubit() : super(const LatestRequestFiltrationInitial());
+  LatestRequestFiltrationCubit()
+    : super(const LatestRequestFiltrationInitial());
 
   static LatestRequestFiltrationCubit get instance =>
       BlocProvider.of(CustomNavigator.navigatorState.currentContext!);
@@ -170,9 +170,7 @@ class LatestRequestFiltrationCubit extends Cubit<LatestRequestFiltrationState> {
 
     if (pickedEndCtrl.text.isNotEmpty) {
       DateTime endDate = DateTime.parse(pickedEndCtrl.text);
-      lastDate = endDate.subtract(
-        const Duration(days: 1),
-      );
+      lastDate = endDate.subtract(const Duration(days: 1));
     }
 
     if (pickedStartCtrl.text.isNotEmpty) {
@@ -202,7 +200,9 @@ class LatestRequestFiltrationCubit extends Cubit<LatestRequestFiltrationState> {
     DateTime? initialDate;
 
     if (pickedStartCtrl.text.isNotEmpty) {
-      firstDate = DateTime.parse(pickedStartCtrl.text).add(const Duration(days: 1));
+      firstDate = DateTime.parse(
+        pickedStartCtrl.text,
+      ).add(const Duration(days: 1));
     }
 
     if (pickedEndCtrl.text.isNotEmpty) {
@@ -236,7 +236,6 @@ class LatestRequestFiltrationCubit extends Cubit<LatestRequestFiltrationState> {
     final currentState = state;
     if (currentState is LatestRequestFiltrationLoaded &&
         currentState.isFilterApplied) {
-      
       if (_cachedFilterOptions != null) {
         emit(
           LatestRequestFiltrationLoaded(
@@ -249,7 +248,8 @@ class LatestRequestFiltrationCubit extends Cubit<LatestRequestFiltrationState> {
       // Preserve sorting parameters when resetting filters
       final sortingParams = _getCurrentSortingParams();
       latestRequestCubit.getLatestRequest(
-          searchEngine: SearchEngine(query: sortingParams));
+        searchEngine: SearchEngine(query: sortingParams),
+      );
       CustomNavigator.pop();
     }
   }

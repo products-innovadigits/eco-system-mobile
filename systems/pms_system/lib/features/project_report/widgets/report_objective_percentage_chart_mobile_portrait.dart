@@ -1,4 +1,3 @@
-
 import 'package:pms_system/core/utility/pms_exports.dart';
 
 class ReportObjectivePercentageChartMobilePortrait extends StatefulWidget {
@@ -79,11 +78,11 @@ class _ReportObjectivePercentageChartMobilePortraitState
   List<PieChartSectionData> _emptyState() {
     return [
       PieChartSectionData(
-        color: Styles.SURFACE,
+        color: Styles.surface,
         title: "",
         value: 100,
         radius: 50,
-        borderSide: const BorderSide(color: Styles.SURFACE),
+        borderSide: const BorderSide(color: Styles.surface),
       ),
     ];
   }

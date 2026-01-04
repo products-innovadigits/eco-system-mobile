@@ -26,9 +26,7 @@ class AnimatedWidgets extends StatelessWidget {
         curve: Curves.easeInOut,
         horizontalOffset: horizontalOffset,
         verticalOffset: verticalOffset,
-        child: FadeInAnimation(
-          child: child,
-        ),
+        child: FadeInAnimation(child: child),
       ),
     );
   }
@@ -75,11 +73,13 @@ class _ListAnimatorState extends State<ListAnimator> {
         return AnimationLimiter(
           child: ListView.separated(
             controller: widget.controller,
-            padding: widget.customPadding ??
+            padding:
+                widget.customPadding ??
                 EdgeInsets.only(top: widget.addPadding ? 0 : 0),
             physics: widget.scroll
                 ? const BouncingScrollPhysics(
-                    parent: AlwaysScrollableScrollPhysics())
+                    parent: AlwaysScrollableScrollPhysics(),
+                  )
                 : const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             scrollDirection: widget.direction ?? Axis.vertical,

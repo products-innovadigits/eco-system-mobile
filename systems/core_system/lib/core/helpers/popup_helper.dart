@@ -2,29 +2,28 @@ import 'package:core_system/core/utility/export.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 abstract class PopUpHelper {
-  static showTopSheet({
-    @required BuildContext? context,
-    @required Widget? child,
+  static Future<dynamic> showTopSheet({
+    required BuildContext? context,
+    required Widget? child,
   }) {
     return showGeneralDialog(
       context: context!,
       barrierDismissible: true,
       transitionDuration: Duration(milliseconds: 500),
       barrierLabel: MaterialLocalizations.of(context).dialogLabel,
-      barrierColor: Colors.black.withOpacity(0.5),
-      pageBuilder: (context, _, __) {
+      barrierColor: Colors.black.withValues(alpha: 0.5),
+      pageBuilder: (context, anim1, anim2) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Card(
-              child: child,
-              elevation: 2,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(15),
                   bottomRight: Radius.circular(15),
                 ),
               ),
+              child: child,
             ),
           ],
         );
@@ -41,7 +40,7 @@ abstract class PopUpHelper {
     );
   }
 
-  static showBottomSheet({
+  static Future<dynamic> showBottomSheet({
     required Widget? child,
     double? height,
     String? header,

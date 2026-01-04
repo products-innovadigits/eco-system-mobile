@@ -1,7 +1,10 @@
 import '../../shared/strategy_exports.dart';
 
 class ObjectivePercentageChartMobilePortrait extends StatefulWidget {
-  const ObjectivePercentageChartMobilePortrait({super.key, required this.objectives});
+  const ObjectivePercentageChartMobilePortrait({
+    super.key,
+    required this.objectives,
+  });
 
   final List<ObjectivePercentageModel> objectives;
 
@@ -10,7 +13,8 @@ class ObjectivePercentageChartMobilePortrait extends StatefulWidget {
       _ObjectivePercentageChartMobilePortraitState();
 }
 
-class _ObjectivePercentageChartMobilePortraitState extends State<ObjectivePercentageChartMobilePortrait> {
+class _ObjectivePercentageChartMobilePortraitState
+    extends State<ObjectivePercentageChartMobilePortrait> {
   int touchedIndex = -1;
   bool isEmpty = true;
 
@@ -39,13 +43,15 @@ class _ObjectivePercentageChartMobilePortraitState extends State<ObjectivePercen
                           return;
                         }
                         touchedIndex = pieTouchResponse
-                            .touchedSection!.touchedSectionIndex;
+                            .touchedSection!
+                            .touchedSectionIndex;
                       });
                     },
                   ),
                   borderData: FlBorderData(
-                      show: false,
-                      border: Border.all(color: context.color.outline)),
+                    show: false,
+                    border: Border.all(color: context.color.outline),
+                  ),
                   sectionsSpace: 5.w,
                   centerSpaceRadius: 50.w,
                   sections: isEmpty || showingSections().isEmpty
@@ -102,20 +108,19 @@ class _ObjectivePercentageChartMobilePortraitState extends State<ObjectivePercen
         title: "",
         value: widget.objectives[i].value ?? 0,
         radius: radius,
-        borderSide: BorderSide(
-          color: context.color.outline,
-        ),
+        borderSide: BorderSide(color: context.color.outline),
         badgeWidget: Container(
           padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 10.h),
           decoration: BoxDecoration(
-              border: Border.all(color: context.color.outline),
-              color: context.color.surfaceContainer,
-              shape: BoxShape.circle),
+            border: Border.all(color: context.color.outline),
+            color: context.color.surfaceContainer,
+            shape: BoxShape.circle,
+          ),
           child: Text(
             '${widget.objectives[i].value?.toStringAsFixed(0)}%',
             style: AppTextStyles.w600.copyWith(
               fontSize: 12,
-              color: Styles.HEADER,
+              color: Styles.header,
             ),
           ),
         ),
@@ -124,17 +129,15 @@ class _ObjectivePercentageChartMobilePortraitState extends State<ObjectivePercen
     });
   }
 
-  emptyState() {
+  List<PieChartSectionData> emptyState() {
     return [
       PieChartSectionData(
-        color: Styles.SURFACE,
+        color: Styles.surface,
         title: "",
         value: 100,
         radius: 50,
-        borderSide: BorderSide(
-          color: Styles.SURFACE,
-        ),
-      )
+        borderSide: BorderSide(color: Styles.surface),
+      ),
     ];
   }
 }

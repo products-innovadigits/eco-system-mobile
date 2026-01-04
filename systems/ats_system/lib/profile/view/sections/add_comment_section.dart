@@ -5,22 +5,31 @@ class AddCommentSection extends StatelessWidget {
   final TextEditingController commentController;
   final Function(String) onCommentAdded;
 
-  const AddCommentSection(
-      {super.key,
-      required this.commentController,
-      required this.onCommentAdded});
+  const AddCommentSection({
+    super.key,
+    required this.commentController,
+    required this.onCommentAdded,
+  });
 
   @override
   Widget build(BuildContext context) {
     return commentController.text.isNotEmpty
         ? Row(
             children: [
-              Text('${allTranslations.text(LocaleKeys.comment)}:',
-                  style: AppTextStyles.w600
-                      .copyWith(fontSize: 10, color: context.color.primary)),
-              Text(commentController.text,
-                  style: AppTextStyles.w400.copyWith(
-                      fontSize: 10, color: Styles.SUB_TEXT_DARK_COLOR))
+              Text(
+                '${allTranslations.text(LocaleKeys.comment)}:',
+                style: AppTextStyles.w600.copyWith(
+                  fontSize: 10,
+                  color: context.color.primary,
+                ),
+              ),
+              Text(
+                commentController.text,
+                style: AppTextStyles.w400.copyWith(
+                  fontSize: 10,
+                  color: Styles.subTextDarkColor,
+                ),
+              ),
             ],
           )
         : BlocBuilder<ProfileBloc, AppState>(
@@ -38,9 +47,13 @@ class AddCommentSection extends StatelessWidget {
                   children: [
                     Images(image: Assets.svgs.addCircle.path),
                     8.sw,
-                    Text(allTranslations.text(LocaleKeys.add_comment),
-                        style: AppTextStyles.w400.copyWith(
-                            fontSize: 12, color: context.color.primary)),
+                    Text(
+                      allTranslations.text(LocaleKeys.add_comment),
+                      style: AppTextStyles.w400.copyWith(
+                        fontSize: 12,
+                        color: context.color.primary,
+                      ),
+                    ),
                   ],
                 ),
               );

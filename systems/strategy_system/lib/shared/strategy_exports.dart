@@ -10,7 +10,7 @@ export 'package:strategy_system/bsc/repo/bsc_repo.dart';
 export 'package:strategy_system/bsc/widgets/perspectives_section.dart';
 export 'package:strategy_system/bsc/widgets/strategic_axes_section.dart';
 export 'package:strategy_system/bsc/widgets/vision_section.dart';
-export 'package:strategy_system/objective_details/bloc/objective_Initiatives_bloc.dart';
+export 'package:strategy_system/objective_details/bloc/objective_initiatives_bloc.dart';
 export 'package:strategy_system/objective_details/bloc/objective_chart_annual_bloc.dart';
 export 'package:strategy_system/objective_details/bloc/objective_chart_month_bloc.dart';
 export 'package:strategy_system/objective_details/bloc/objective_details_bloc.dart';
@@ -51,4 +51,6 @@ export 'package:strategy_system/strategy_home/bloc/strategy_bloc.dart';
 export 'package:strategy_system/strategy_home/widgets/bsc_card_section.dart';
 export 'package:strategy_system/strategy_home/widgets/kpi_initiatives_progress_section.dart';
 export 'package:strategy_system/strategy_home/widgets/kpis_initiatives_progress_chart.dart';
-export 'package:strategy_system/strategy_home/widgets/strategic_axis_card_section.dart';export 'strategy_states.dart';
+export 'package:strategy_system/strategy_home/widgets/strategic_axis_card_section.dart';
+
+export 'strategy_states.dart';

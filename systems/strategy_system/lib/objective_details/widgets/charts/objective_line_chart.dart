@@ -17,12 +17,12 @@ class ObjectiveLineChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        double _targetBarPx = data.length > 3 ? 60 : 40;
-        double _minSeriesWidth = data.length > 3 ? 0.12 : 0.12;
-        double _maxSeriesWidth = data.length > 3 ? 0.5 : 0.6;
+        double targetBarPx = data.length > 3 ? 60 : 40;
+        double minSeriesWidth = data.length > 3 ? 0.12 : 0.12;
+        double maxSeriesWidth = data.length > 3 ? 0.5 : 0.6;
         final double plotWidth = constraints.maxWidth;
-        double seriesWidth = (data.length * _targetBarPx) / plotWidth;
-        seriesWidth = seriesWidth.clamp(_minSeriesWidth, _maxSeriesWidth);
+        double seriesWidth = (data.length * targetBarPx) / plotWidth;
+        seriesWidth = seriesWidth.clamp(minSeriesWidth, maxSeriesWidth);
         return SfCartesianChart(
           tooltipBehavior: _tooltip,
           zoomPanBehavior: ZoomPanBehavior(

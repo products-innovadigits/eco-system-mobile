@@ -3,11 +3,7 @@ import 'package:core_system/core/utility/export.dart';
 class ImageBG extends StatelessWidget {
   final String? image;
   final bool isOpacity;
-  const ImageBG({
-    super.key,
-    this.image,
-    this.isOpacity = false,
-  });
+  const ImageBG({super.key, this.image, this.isOpacity = false});
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +20,11 @@ class ImageBG extends StatelessWidget {
         Visibility(
           visible: isOpacity,
           child: Container(
-            color: Styles.BOARDING_BLUR,
+            color: Styles.boardingBlur,
             height: MediaQueryHelper.height,
             width: MediaQueryHelper.width,
           ),
-        )
+        ),
       ],
     );
   }

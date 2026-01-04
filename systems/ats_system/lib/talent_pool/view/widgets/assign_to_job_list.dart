@@ -144,7 +144,7 @@ class _JobCard extends StatelessWidget {
                       Text(
                         '${job.chanceType} . ${job.address} . ${job.department}',
                         style: AppTextStyles.w400.copyWith(
-                          color: Styles.SUB_TEXT_DARK_COLOR,
+                          color: Styles.subTextDarkColor,
                           fontSize: 10,
                         ),
                       ),

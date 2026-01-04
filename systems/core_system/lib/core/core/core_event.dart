@@ -238,7 +238,6 @@ class AddToFav extends AppEvent {
   AddToFav({Object? arguments}) : super(arguments);
 }
 
-
 class AddSkill extends AppEvent {
   AddSkill({Object? arguments}) : super(arguments);
 }

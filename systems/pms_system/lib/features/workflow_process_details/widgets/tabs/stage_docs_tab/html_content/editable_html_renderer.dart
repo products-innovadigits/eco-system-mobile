@@ -17,7 +17,6 @@ class EditableHtmlRenderer extends StatelessWidget {
   final String htmlContent;
 
   /// Field definitions mapped by field ID.
-  /// Typically Map<String, FieldModel>, but can also be Map<String, dynamic>
   /// (based on how you parse it).
   final Map<String, dynamic> fields;
 
@@ -290,7 +289,7 @@ class EditableHtmlRenderer extends StatelessWidget {
   /// All fields are displayed as read-only (view-only mode).
   /// Only represents content from the response.
   Widget _buildFieldWidget(String id, dynamic field, BuildContext context) {
-    final type = HtmlContentHelper.readFieldType(field);
+    // final type = HtmlContentHelper.readFieldType(field);
     final placeholder = HtmlContentHelper.readFieldPlaceholder(field);
     final controller = controllers.putIfAbsent(
       id,
@@ -395,40 +394,40 @@ class EditableHtmlRenderer extends StatelessWidget {
   }
 
   /// Builds a read-only date input field widget for viewing date values.
-  Widget _dateInput({
-    required String id,
-    required dynamic field,
-    required TextEditingController controller,
-    required String hint,
-    required BuildContext context,
-  }) {
-    return ConstrainedBox(
-      constraints: const BoxConstraints(
-        minWidth: HtmlContentHelper.inputFieldMinWidth,
-        maxWidth: HtmlContentHelper.inputFieldMaxWidth,
-        maxHeight: 40, // Limit height to fit table cells
-      ),
-      child: CustomTextField(
-        controller: controller,
-        isReadOnly: true,
-        verticalPadding: 0,
-        // Remove vertical padding wrapper
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: HtmlContentHelper.inputFieldHorizontalPadding,
-          vertical: 6, // Reduced vertical padding for smaller height
-        ),
-        hint: hint,
-        hintStyle: context.textTheme.labelSmall?.copyWith(
-          color: context.color.outlineVariant,
-          fontSize: FontSizes.f10,
-        ),
-        textStyle: context.textTheme.labelSmall?.copyWith(
-          fontSize: FontSizes.f10,
-        ),
-        suffixIcon: Icons.calendar_month,
-      ),
-    );
-  }
+  // Widget _dateInput({
+  //   required String id,
+  //   required dynamic field,
+  //   required TextEditingController controller,
+  //   required String hint,
+  //   required BuildContext context,
+  // }) {
+  //   return ConstrainedBox(
+  //     constraints: const BoxConstraints(
+  //       minWidth: HtmlContentHelper.inputFieldMinWidth,
+  //       maxWidth: HtmlContentHelper.inputFieldMaxWidth,
+  //       maxHeight: 40, // Limit height to fit table cells
+  //     ),
+  //     child: CustomTextField(
+  //       controller: controller,
+  //       isReadOnly: true,
+  //       verticalPadding: 0,
+  //       // Remove vertical padding wrapper
+  //       contentPadding: const EdgeInsets.symmetric(
+  //         horizontal: HtmlContentHelper.inputFieldHorizontalPadding,
+  //         vertical: 6, // Reduced vertical padding for smaller height
+  //       ),
+  //       hint: hint,
+  //       hintStyle: context.textTheme.labelSmall?.copyWith(
+  //         color: context.color.outlineVariant,
+  //         fontSize: FontSizes.f10,
+  //       ),
+  //       textStyle: context.textTheme.labelSmall?.copyWith(
+  //         fontSize: FontSizes.f10,
+  //       ),
+  //       suffixIcon: Icons.calendar_month,
+  //     ),
+  //   );
+  // }
 
   // -------------------------
   // CSS and background color helpers
@@ -436,35 +435,35 @@ class EditableHtmlRenderer extends StatelessWidget {
 
   /// Scans the element tree to determine if any background color is defined.
   /// Checks both 'bgcolor' attributes and CSS 'background-color'/'background' styles.
-  bool _hasAnyBackground(dom.Element root) {
-    bool found = false;
-
-    void scan(dom.Element el) {
-      if (found) return;
-
-      // bgcolor attribute (old HTML)
-      final bgAttr = el.attributes['bgcolor'];
-      if (bgAttr != null && bgAttr.trim().isNotEmpty) {
-        found = true;
-        return;
-      }
-
-      final style = el.attributes['style'] ?? '';
-      final bg = _css(style, 'background-color') ?? _css(style, 'background');
-      if (bg != null && bg.trim().isNotEmpty) {
-        found = true;
-        return;
-      }
-
-      for (final c in el.children) {
-        scan(c);
-        if (found) return;
-      }
-    }
-
-    scan(root);
-    return found;
-  }
+  // bool _hasAnyBackground(dom.Element root) {
+  //   bool found = false;
+  //
+  //   void scan(dom.Element el) {
+  //     if (found) return;
+  //
+  //     // bgcolor attribute (old HTML)
+  //     final bgAttr = el.attributes['bgcolor'];
+  //     if (bgAttr != null && bgAttr.trim().isNotEmpty) {
+  //       found = true;
+  //       return;
+  //     }
+  //
+  //     final style = el.attributes['style'] ?? '';
+  //     final bg = _css(style, 'background-color') ?? _css(style, 'background');
+  //     if (bg != null && bg.trim().isNotEmpty) {
+  //       found = true;
+  //       return;
+  //     }
+  //
+  //     for (final c in el.children) {
+  //       scan(c);
+  //       if (found) return;
+  //     }
+  //   }
+  //
+  //   scan(root);
+  //   return found;
+  // }
 
   /// Extracts the background color from an HTML element.
   /// Checks 'bgcolor' attribute first, then CSS 'background-color' and 'background' styles.

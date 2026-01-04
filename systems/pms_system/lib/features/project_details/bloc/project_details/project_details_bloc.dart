@@ -1,5 +1,3 @@
-
-
 import 'package:pms_system/core/utility/pms_exports.dart';
 
 class ProjectDetailsBloc
@@ -17,7 +15,7 @@ class ProjectDetailsBloc
   // Getter to access cached milestones
   List<MilestoneModel>? get cachedMilestones => _cachedMilestonesList;
 
-  _onLoadProjectDetails(
+  Future<void> _onLoadProjectDetails(
     LoadProjectDetails event,
     Emitter<ProjectDetailsState> emit,
   ) async {
@@ -50,7 +48,7 @@ class ProjectDetailsBloc
     }
   }
 
-  _onLoadProjectTimeline(
+  Future<void> _onLoadProjectTimeline(
     LoadProjectTimeline event,
     Emitter<ProjectDetailsState> emit,
   ) async {

@@ -15,9 +15,9 @@ class ProjectGeneralProgressSummaryBloc
 
   GeneralProgressChartModel? chartModel;
   ProgressSeriesItem? latestProgressItem;
-  ChartTime selectedChartType = ChartTime.Month;
+  ChartTime selectedChartType = ChartTime.month;
 
-  _onLoadGeneralProgressSummary(
+  Future<void> _onLoadGeneralProgressSummary(
     LoadGeneralProgressSummary event,
     Emitter<ProjectGeneralProgressSummaryState> emit,
   ) async {

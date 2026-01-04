@@ -7,36 +7,39 @@ class ObjectiveChartModel extends SingleMapper {
   int? year;
   int? month;
 
-  ObjectiveChartModel(
-      {this.objectValue,
-      this.kpisValue,
-      this.initiativesValue,
-      this.year,
-      this.month});
+  ObjectiveChartModel({
+    this.objectValue,
+    this.kpisValue,
+    this.initiativesValue,
+    this.year,
+    this.month,
+  });
 
   ObjectiveChartModel.fromJson(Map<String, dynamic> json) {
     objectValue = double.tryParse(json['objectValue']?.toString() ?? "0");
     kpisValue = double.tryParse(json['kpisValue']?.toString() ?? "0");
-    initiativesValue =
-        double.tryParse(json['initiativesValue']?.toString() ?? "0");
+    initiativesValue = double.tryParse(
+      json['initiativesValue']?.toString() ?? "0",
+    );
     year = json['year'];
     month = json['month'];
   }
 
+  @override
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['objectValue'] = this.objectValue;
-    data['kpisValue'] = this.kpisValue;
-    data['initiativesValue'] = this.initiativesValue;
-    data['year'] = this.year;
-    data['month'] = this.month;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['objectValue'] = objectValue;
+    data['kpisValue'] = kpisValue;
+    data['initiativesValue'] = initiativesValue;
+    data['year'] = year;
+    data['month'] = month;
     return data;
   }
+
   @override
   Mapper fromJson(Map<String, dynamic> json) {
     return ObjectiveChartModel.fromJson(json);
   }
-
 }
 
-enum ChartTime { Year, Month }
+enum ChartTime { year, month }

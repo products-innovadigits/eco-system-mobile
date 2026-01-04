@@ -10,9 +10,18 @@ import 'package:url_launcher/url_launcher.dart';
 void cprint(dynamic data, {String? errorIn, String? event, String? label}) {
   if (kDebugMode) {
     if (errorIn != null) {
-      print('****************************** error ******************************');
-      developer.log('[${label ?? "Error"}]', time: DateTime.now(), error: data, name: errorIn);
-      print('****************************** error ******************************');
+      print(
+        '****************************** error ******************************',
+      );
+      developer.log(
+        '[${label ?? "Error"}]',
+        time: DateTime.now(),
+        error: data,
+        name: errorIn,
+      );
+      print(
+        '****************************** error ******************************',
+      );
     } else if (data != null) {
       developer.log(data, time: DateTime.now(), name: label ?? "Log");
     }
@@ -23,7 +32,7 @@ void cprint(dynamic data, {String? errorIn, String? event, String? label}) {
 }
 
 class Utility {
-  static launchURL(String url) async {
+  static Future<void> launchURL(String url) async {
     if (await canLaunchUrl(Uri.parse(url))) {
       await launchUrl(Uri.parse(url));
     } else {
@@ -56,5 +65,4 @@ class Utility {
       ..writeAsBytesSync(result!);
     return compressedFile;
   }
-
 }

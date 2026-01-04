@@ -3,14 +3,15 @@ import 'dart:io';
 import 'package:core_system/core/utility/export.dart';
 
 class ProfileImageWidget extends StatelessWidget {
-  const ProfileImageWidget(
-      {this.withEdit = false,
-      this.radius = 35,
-      super.key,
-      this.onGet,
-      this.onTap,
-      this.imageFile,
-      this.image});
+  const ProfileImageWidget({
+    this.withEdit = false,
+    this.radius = 35,
+    super.key,
+    this.onGet,
+    this.onTap,
+    this.imageFile,
+    this.image,
+  });
 
   final bool withEdit;
   final Function(File)? onGet;
@@ -41,22 +42,28 @@ class ProfileImageWidget extends StatelessWidget {
                         width: radius * 2,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Center(
-                            child: Container(
-                                height: radius * 2,
-                                width: radius * 2,
-                                color: Colors.grey,
-                                child: const Center(
-                                    child: Icon(Icons.replay,
-                                        color: Colors.green)))),
+                          child: Container(
+                            height: radius * 2,
+                            width: radius * 2,
+                            color: Colors.grey,
+                            child: const Center(
+                              child: Icon(Icons.replay, color: Colors.green),
+                            ),
+                          ),
+                        ),
                       ),
                     )
                   : image != null
-                      ? CustomNetworkImage.circleNewWorkImage(
-                          color: Styles.HINT, image: image, radius: radius)
-                      : customCircleSvgIcon(
-                          radius: radius,
-                          imageName: "user",
-                          color: context.color.primary),
+                  ? CustomNetworkImage.circleNewWorkImage(
+                      color: Styles.hint,
+                      image: image,
+                      radius: radius,
+                    )
+                  : customCircleSvgIcon(
+                      radius: radius,
+                      imageName: "user",
+                      color: context.color.primary,
+                    ),
               if (withEdit)
                 Positioned(
                   bottom: 0,
@@ -73,17 +80,19 @@ class ProfileImageWidget extends StatelessWidget {
                       }
                     },
                     child: Container(
-                        height: 24,
-                        width: 24,
-                        padding: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                            boxShadow: kElevationToShadow[1],
-                            color: context.color.surfaceContainer,
-                            borderRadius: BorderRadius.circular(100)),
-                        child: customImageIconSVG(
-                          imageName: "camera",
-                          color: context.color.primary,
-                        )),
+                      height: 24,
+                      width: 24,
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        boxShadow: kElevationToShadow[1],
+                        color: context.color.surfaceContainer,
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: customImageIconSVG(
+                        imageName: "camera",
+                        color: context.color.primary,
+                      ),
+                    ),
                   ),
                 ),
             ],

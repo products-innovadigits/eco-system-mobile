@@ -28,7 +28,7 @@ class ObjectivesBloc extends Bloc<AppEvent, AppState> {
 
   Stream<bool> get goingDownStream => goingDown.stream.asBroadcastStream();
 
-  customScroll(ScrollController controller) {
+  void customScroll(ScrollController controller) {
     controller.addListener(() {
       if (controller.position.userScrollDirection == ScrollDirection.forward) {
         updateGoingDown(false);
@@ -47,41 +47,41 @@ class ObjectivesBloc extends Bloc<AppEvent, AppState> {
     });
   }
 
-  _getObjectives(AppEvent event, Emitter<AppState> emit) async {
+  Future<void> _getObjectives(AppEvent event, Emitter<AppState> emit) async {
     emit(Loading());
     try {
-    _engine = event.arguments as SearchEngine;
-    if (_engine.currentPage == 0) {
-      _cards.clear();
-      emit(Loading());
-    } else {
-      emit(Done(cards: _cards, loading: true));
-    }
-
-    _engine.query = {
-      // if(_engine.query.isNotEmpty) ..._engine.query,
-      "searchKeyword": searchTEC?.text.trim(),
-      "strategicAxisId": filter.valueOrNull?.id,
-      "pageIndex": _engine.currentPage + 1,
-      "pageSize": _engine.limit,
-      if (_engine.query != null) "status": _engine.query['status'],
-    };
-
-    ObjectivesModel res = await ObjectivesRepo.getObjectives(_engine);
-
-    if (res.data != null && res.data!.isNotEmpty) {
-      for (var objective in res.data ?? []) {
-        _cards.add(ObjectiveCard(objective: objective));
+      _engine = event.arguments as SearchEngine;
+      if (_engine.currentPage == 0) {
+        _cards.clear();
+        emit(Loading());
+      } else {
+        emit(Done(cards: _cards, loading: true));
       }
-      _engine.currentPage += 1;
-      _engine.maxPages += 1;
-      // _engine.updateCurrentPage(res.meta!.currPage!);
-    }
-    if (_cards.isNotEmpty) {
-      emit(Done(cards: _cards));
-    } else {
-      emit(Empty());
-    }
+
+      _engine.query = {
+        // if(_engine.query.isNotEmpty) ..._engine.query,
+        "searchKeyword": searchTEC?.text.trim(),
+        "strategicAxisId": filter.valueOrNull?.id,
+        "pageIndex": _engine.currentPage + 1,
+        "pageSize": _engine.limit,
+        if (_engine.query != null) "status": _engine.query['status'],
+      };
+
+      ObjectivesModel res = await ObjectivesRepo.getObjectives(_engine);
+
+      if (res.data != null && res.data!.isNotEmpty) {
+        for (var objective in res.data ?? []) {
+          _cards.add(ObjectiveCard(objective: objective));
+        }
+        _engine.currentPage += 1;
+        _engine.maxPages += 1;
+        // _engine.updateCurrentPage(res.meta!.currPage!);
+      }
+      if (_cards.isNotEmpty) {
+        emit(Done(cards: _cards));
+      } else {
+        emit(Empty());
+      }
     } catch (e) {
       AppCore.errorMessage(allTranslations.text('something_went_wrong'));
 

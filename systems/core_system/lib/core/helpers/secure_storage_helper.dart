@@ -4,19 +4,21 @@ class SecureStorageHelper {
   static SecureStorageHelper? secureStorageHelper = SecureStorageHelper();
   static const FlutterSecureStorage _storage = FlutterSecureStorage();
 
-  static init() async {
+  static Future<void> init() async {
     secureStorageHelper ??= SecureStorageHelper();
   }
 
   Future<void> saveUser(UserModel model) async {
-    await _storage.write(key: CachingKey.TOKEN.value, value: model.accessToken);
+    await _storage.write(key: CachingKey.token.value, value: model.accessToken);
     await _storage.write(
-        key: CachingKey.USER.value, value: json.encode(model.toJson()));
+      key: CachingKey.user.value,
+      value: json.encode(model.toJson()),
+    );
     cprint('SAVE USER INFO >>> ${json.encode(model.toJson())}');
   }
 
   Future<UserModel> getUser() async {
-    String? userData = await _storage.read(key: CachingKey.USER.value);
+    String? userData = await _storage.read(key: CachingKey.user.value);
     if (userData == null) {
       throw Exception('No user data found');
     }
@@ -26,7 +28,7 @@ class SecureStorageHelper {
   }
 
   Future<String> getToken() async {
-    String token = await _storage.read(key: CachingKey.TOKEN.value) ?? '';
+    String token = await _storage.read(key: CachingKey.token.value) ?? '';
     return token;
   }
 
@@ -35,7 +37,7 @@ class SecureStorageHelper {
   }
 
   Future<void> deleteUser() async {
-    await _storage.delete(key: CachingKey.USER.value);
-    await _storage.delete(key: CachingKey.TOKEN.value);
+    await _storage.delete(key: CachingKey.user.value);
+    await _storage.delete(key: CachingKey.token.value);
   }
 }

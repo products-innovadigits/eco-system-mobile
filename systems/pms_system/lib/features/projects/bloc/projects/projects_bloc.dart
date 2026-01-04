@@ -1,4 +1,4 @@
-
+import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/projects/bloc/filtration/projects_filtration_bloc.dart';
 import 'package:pms_system/features/projects/bloc/projects/projects_events.dart';
 import 'package:pms_system/features/projects/bloc/projects/projects_state.dart';
@@ -6,8 +6,6 @@ import 'package:pms_system/features/projects/bloc/sorting/projects_sorting_bloc.
 import 'package:pms_system/features/projects/bloc/sorting/projects_sorting_states.dart';
 import 'package:pms_system/features/projects/model/projects_model.dart';
 import 'package:pms_system/features/projects/repo/projects_repo.dart';
-
-import 'package:pms_system/core/utility/pms_exports.dart';
 
 class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
   ProjectsBloc({ProjectsSortingBloc? sortingBloc})
@@ -63,7 +61,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
 
   Stream<bool> get goingDownStream => goingDown.stream.asBroadcastStream();
 
-  customScroll(ScrollController controller) {
+  void customScroll(ScrollController controller) {
     controller.addListener(() {
       if (controller.position.userScrollDirection == ScrollDirection.forward) {
         updateGoingDown(false);
@@ -87,7 +85,10 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     });
   }
 
-  _getObjectives(LoadProjects event, Emitter<ProjectsState> emit) async {
+  Future<void> _getObjectives(
+    LoadProjects event,
+    Emitter<ProjectsState> emit,
+  ) async {
     emit(const ProjectsLoading());
     try {
       // Update engine from event, preserving state if needed
@@ -187,7 +188,10 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     }
   }
 
-  _onRefresh(RefreshProjects event, Emitter<ProjectsState> emit) async {
+  Future<void> _onRefresh(
+    RefreshProjects event,
+    Emitter<ProjectsState> emit,
+  ) async {
     final filterParams = _getCurrentFilterParams();
     final sortingParams = _sortingBloc?.getSortingParams() ?? {};
     // Reset pagination when refreshing

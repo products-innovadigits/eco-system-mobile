@@ -28,19 +28,14 @@ class GridListAnimator extends StatelessWidget {
       childAspectRatio: aspectRatio ?? 1.7,
       mainAxisSpacing: .25,
       crossAxisSpacing: .3,
-      children: List.generate(
-        data!.length,
-        (int index) {
-          return AnimationConfiguration.staggeredGrid(
-            columnCount: rowCount ?? 2,
-            position: index,
-            duration: const Duration(milliseconds: 375),
-            child: ScaleAnimation(
-              child: FadeInAnimation(child: data![index]),
-            ),
-          );
-        },
-      ),
+      children: List.generate(data!.length, (int index) {
+        return AnimationConfiguration.staggeredGrid(
+          columnCount: rowCount ?? 2,
+          position: index,
+          duration: const Duration(milliseconds: 375),
+          child: ScaleAnimation(child: FadeInAnimation(child: data![index])),
+        );
+      }),
     );
   }
 }

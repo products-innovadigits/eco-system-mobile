@@ -1,3 +1,4 @@
+import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/projects/bloc/filtration/projects_filtration_events.dart';
 import 'package:pms_system/features/projects/bloc/filtration/projects_filtration_state.dart';
 import 'package:pms_system/features/projects/bloc/projects/projects_bloc.dart';
@@ -5,8 +6,6 @@ import 'package:pms_system/features/projects/bloc/projects/projects_events.dart'
 import 'package:pms_system/features/projects/bloc/sorting/projects_sorting_bloc.dart';
 import 'package:pms_system/features/projects/model/projects_filters_model.dart';
 import 'package:pms_system/features/projects/repo/projects_repo.dart';
-
-import 'package:pms_system/core/utility/pms_exports.dart';
 
 class ProjectsFiltrationBloc
     extends Bloc<ProjectsFiltrationEvent, ProjectsFiltrationState> {
@@ -34,7 +33,7 @@ class ProjectsFiltrationBloc
   // Cache the loaded filter options
   ProjectsFiltersData? _cachedFilterOptions;
 
-  _onLoadFilterOptions(
+  Future<void> _onLoadFilterOptions(
     LoadProjectsFilterOptions event,
     Emitter<ProjectsFiltrationState> emit,
   ) async {

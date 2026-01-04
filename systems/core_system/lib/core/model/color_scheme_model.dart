@@ -10,7 +10,7 @@ Color _hex(String hex) {
 /// Convert a Color to "#AARRGGBB" (or null if c is null).
 String? _toHex(Color? c) {
   if (c == null) return null;
-  final value = c.value.toRadixString(16).padLeft(8, '0').toUpperCase();
+  final value = c.toARGB32().toRadixString(16).padLeft(8, '0').toUpperCase();
   return '#$value'; // includes alpha
 }
 
@@ -88,6 +88,7 @@ class ColorSchemeModel extends SingleMapper {
           : _hex(json['errorContainer'] as String);
 
   /// Emit only non-null fields to keep payloads minimal.
+  @override
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
 

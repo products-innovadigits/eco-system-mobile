@@ -56,7 +56,8 @@ class CustomNetworkImage {
                   borderRadius: edges
                       ? BorderRadius.only(
                           topRight: Radius.circular(radius ?? 10),
-                          topLeft: Radius.circular(radius ?? 10))
+                          topLeft: Radius.circular(radius ?? 10),
+                        )
                       : BorderRadius.all(Radius.circular(radius ?? 10.0)),
                   image: DecorationImage(
                     fit: fit,
@@ -77,14 +78,10 @@ class CustomNetworkImage {
             borderRadius: edges
                 ? BorderRadius.only(
                     topRight: Radius.circular(radius ?? 10),
-                    topLeft: Radius.circular(radius ?? 10))
-                : BorderRadius.all(
-                    Radius.circular(radius ?? 10.0),
-                  ),
-            image: DecorationImage(
-              fit: fit,
-              image: provider,
-            ),
+                    topLeft: Radius.circular(radius ?? 10),
+                  )
+                : BorderRadius.all(Radius.circular(radius ?? 10.0)),
+            image: DecorationImage(fit: fit, image: provider),
           ),
         );
       },
@@ -92,13 +89,14 @@ class CustomNetworkImage {
   }
 
   /// Circle Network Image
-  static Widget circleNewWorkImage(
-      {String? image,
-      double? radius,
-      String? defaultImage,
-      bool isDefaultSvg = true,
-      backGroundColor,
-      color}) {
+  static Widget circleNewWorkImage({
+    String? image,
+    double? radius,
+    String? defaultImage,
+    bool isDefaultSvg = true,
+    backGroundColor,
+    color,
+  }) {
     return CachedNetworkImage(
       imageUrl: image == "" || image == null ? "https://" : image,
       repeat: ImageRepeat.noRepeat,
@@ -107,14 +105,15 @@ class CustomNetworkImage {
         height: radius != null ? radius * 2 : null,
         width: radius != null ? radius * 2 : null,
         decoration: BoxDecoration(
-            border: color != null ? Border.all(color: color, width: 1) : null,
-            shape: BoxShape.circle),
+          border: color != null ? Border.all(color: color, width: 1) : null,
+          shape: BoxShape.circle,
+        ),
         child: CircleAvatar(
           radius: radius,
           backgroundColor: backGroundColor ?? Colors.white,
           child: SvgPicture.asset(
             Assets.svgs.user.path,
-            colorFilter: ColorFilter.mode(Styles.WHITE_COLOR, BlendMode.srcIn),
+            colorFilter: ColorFilter.mode(Styles.whiteColor, BlendMode.srcIn),
           ),
         ),
       ),
@@ -124,8 +123,9 @@ class CustomNetworkImage {
         height: radius != null ? radius * 2 : null,
         width: radius != null ? radius * 2 : null,
         decoration: BoxDecoration(
-            border: color != null ? Border.all(color: color, width: 1) : null,
-            shape: BoxShape.circle),
+          border: color != null ? Border.all(color: color, width: 1) : null,
+          shape: BoxShape.circle,
+        ),
         child: CircleAvatar(
           radius: radius,
           backgroundColor: backGroundColor ?? Colors.white,
@@ -137,8 +137,9 @@ class CustomNetworkImage {
           height: radius != null ? radius * 2 : null,
           width: radius != null ? radius * 2 : null,
           decoration: BoxDecoration(
-              border: color != null ? Border.all(color: color, width: 1) : null,
-              shape: BoxShape.circle),
+            border: color != null ? Border.all(color: color, width: 1) : null,
+            shape: BoxShape.circle,
+          ),
           child: CircleAvatar(
             backgroundImage: provider,
             radius: radius,
@@ -150,8 +151,12 @@ class CustomNetworkImage {
   }
 
   //Asset network Image
-  Widget imageNewWorkImage(
-      {String? image, String? defaultImage, double? height, double? width}) {
+  Widget imageNewWorkImage({
+    String? image,
+    String? defaultImage,
+    double? height,
+    double? width,
+  }) {
     return CachedNetworkImage(
       imageUrl: image == "" || image == null ? "https://" : image,
       errorWidget: (a, b, c) => Container(
@@ -174,10 +179,7 @@ class CustomNetworkImage {
           height: height ?? 40,
           width: width ?? 40,
           decoration: BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: provider,
-            ),
+            image: DecorationImage(fit: BoxFit.cover, image: provider),
           ),
         );
       },

@@ -33,4 +33,3 @@ class HistoryTabFailure extends HistoryTabState {
 
   const HistoryTabFailure({required this.message});
 }
-

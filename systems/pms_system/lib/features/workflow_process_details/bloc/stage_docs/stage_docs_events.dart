@@ -21,11 +21,6 @@ class AddDocumentComment extends StageDocsEvent {
   final int stepDocumentId;
   final String text;
 
-  const AddDocumentComment({
-    required this.stepDocumentId,
-    required this.text,
-  });
+  const AddDocumentComment({required this.stepDocumentId, required this.text});
 }
-
-
 

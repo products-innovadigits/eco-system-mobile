@@ -13,22 +13,22 @@ abstract class CustomNavigator {
   static final GlobalKey<ScaffoldMessengerState> scaffoldState =
       GlobalKey<ScaffoldMessengerState>();
 
-  static pageRouteBuilder(Widget child) => PageRouteBuilder(
+  static PageRouteBuilder pageRouteBuilder(Widget child) => PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => child,
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       return SlideTransition(position: animation.drive(tween), child: child);
     },
   );
 
-  static pop({dynamic result}) {
+  static void pop({dynamic result}) {
     if (navigatorState.currentState?.canPop() == true) {
       navigatorState.currentState?.pop(result);
     }
   }
 
-  static push(
+  static Future<dynamic>? push(
     String routeName, {
-    arguments,
+    dynamic arguments,
     bool replace = false,
     bool clean = false,
   }) {
@@ -84,7 +84,6 @@ class WorkflowProcessDetailsArgs {
     required this.projectEndDate,
   });
 }
-
 
 class MainPageArgs {
   final int index;

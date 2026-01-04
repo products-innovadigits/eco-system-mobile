@@ -24,4 +24,3 @@ class ResetProjectsFilters extends ProjectsFiltrationEvent {
 class ClearProjectsFilters extends ProjectsFiltrationEvent {
   const ClearProjectsFilters();
 }
-

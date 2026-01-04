@@ -25,6 +25,7 @@ class UserModel extends SingleMapper {
     avatar = json['avatar'] ?? '';
   }
 
+  @override
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['tokken'] = accessToken;

@@ -34,7 +34,7 @@ class CustomTextField extends StatefulWidget {
   final EdgeInsetsGeometry? contentPadding;
 
   const CustomTextField({
-    Key? key,
+    super.key,
     required this.hint,
     this.init,
     this.onChanged,
@@ -84,7 +84,7 @@ class CustomTextField extends StatefulWidget {
     this.maxSuffixIconHeight,
     this.textStyle,
     this.hintStyle,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();

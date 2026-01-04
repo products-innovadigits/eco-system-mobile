@@ -38,7 +38,6 @@ class _HtmlContentDialogState extends State<HtmlContentDialog> {
   }
 
   /// Initializes text editing controllers for all fields in the document.
-  /// Fields are typically Map<String, FieldModel> or Map<String, dynamic>.
   void _initControllers() {
     final fields = widget.document.data?.fields;
     if (fields == null) return;

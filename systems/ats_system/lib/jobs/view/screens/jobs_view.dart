@@ -6,13 +6,15 @@ class JobsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        if (context.read<JobsBloc>().searchController.text.isNotEmpty) {
-          context.read<JobsBloc>().searchController.clear();
-          context.read<JobsBloc>().add(Click(arguments: SearchEngine()));
+    return PopScope(
+      canPop: true,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) {
+          if (context.read<JobsBloc>().searchController.text.isNotEmpty) {
+            context.read<JobsBloc>().searchController.clear();
+            context.read<JobsBloc>().add(Click(arguments: SearchEngine()));
+          }
         }
-        return true;
       },
       child: Scaffold(
         appBar: CustomAppBar(

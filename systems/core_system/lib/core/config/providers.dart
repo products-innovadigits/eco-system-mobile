@@ -3,7 +3,7 @@ import 'package:core_system/core/bloc/user_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Core system providers only.
-/// 
+///
 /// Feature system providers are registered via SystemModule implementations
 /// in the app shell (lib/app/modules/modules_registry.dart).
 abstract class ProviderList {

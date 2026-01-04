@@ -12,7 +12,7 @@ class MonthlyAnnualChartFilterWidget extends StatefulWidget {
 
 class _MonthlyAnnualChartFilterWidgetState
     extends State<MonthlyAnnualChartFilterWidget> {
-  ChartTime currentTime = ChartTime.Month;
+  ChartTime currentTime = ChartTime.month;
 
   @override
   Widget build(BuildContext context) {

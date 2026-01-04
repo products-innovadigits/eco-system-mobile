@@ -34,5 +34,3 @@ class WorkflowProcessDetailsFailure extends WorkflowProcessDetailsState {
   const WorkflowProcessDetailsFailure({required this.message});
 }
 
-
-

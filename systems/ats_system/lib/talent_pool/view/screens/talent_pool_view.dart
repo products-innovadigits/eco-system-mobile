@@ -14,7 +14,7 @@ class TalentPoolView extends StatelessWidget {
           final bloc = context.read<TalentPoolBloc>();
           return PopScope(
             canPop: !bloc.activeSelection,
-            onPopInvoked: (didPop) {
+            onPopInvokedWithResult: (didPop, result) {
               if (!didPop && bloc.activeSelection) {
                 bloc.add(Select(arguments: false));
               }

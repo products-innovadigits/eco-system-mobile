@@ -6,7 +6,7 @@ class ProjectProgressModel extends SingleMapper {
   int? count;
   String? color;
 
-  ProjectProgressModel({this.categoryName, this.value , this.color , this.count});
+  ProjectProgressModel({this.categoryName, this.value, this.color, this.count});
 
   ProjectProgressModel.fromJson(Map<String, dynamic> json) {
     categoryName = json['categoryName'];

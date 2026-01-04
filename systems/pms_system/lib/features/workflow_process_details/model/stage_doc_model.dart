@@ -33,7 +33,12 @@ class StageDocData {
   String? pdfFilePath;
   num? stepDocumentId;
 
-  StageDocData({this.currentStep, this.nextStep, this.workFlowStatus, this.pdfFilePath});
+  StageDocData({
+    this.currentStep,
+    this.nextStep,
+    this.workFlowStatus,
+    this.pdfFilePath,
+  });
 
   StageDocData.fromJson(Map<String, dynamic> json) {
     currentStep = json['currentStep'] != null

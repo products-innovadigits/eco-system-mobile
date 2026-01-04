@@ -15,10 +15,7 @@ class DeleteDocComment extends DocCommentsEvent {
   final int documentId;
   final int commentId;
 
-  const DeleteDocComment({
-    required this.documentId,
-    required this.commentId,
-  });
+  const DeleteDocComment({required this.documentId, required this.commentId});
 }
 
 /// Edit a document comment
@@ -40,6 +37,4 @@ class ToggleEditComment extends DocCommentsEvent {
 
   const ToggleEditComment({required this.commentId});
 }
-
-
 

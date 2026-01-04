@@ -1,4 +1,3 @@
-
 import 'package:pms_system/core/utility/pms_exports.dart';
 
 class MonthlyAnnualChartFilterWidget extends StatelessWidget {
@@ -8,7 +7,7 @@ class MonthlyAnnualChartFilterWidget extends StatelessWidget {
   const MonthlyAnnualChartFilterWidget({
     super.key,
     required this.onSelect,
-    this.selectedTime = ChartTime.Month,
+    this.selectedTime = ChartTime.month,
   });
 
   @override

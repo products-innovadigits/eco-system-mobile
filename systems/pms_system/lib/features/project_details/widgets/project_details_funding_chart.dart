@@ -1,7 +1,5 @@
-
-import 'package:pms_system/features/projects_progress/widgets/half_circle_analatic_chart.dart';
-
 import 'package:pms_system/core/utility/pms_exports.dart';
+import 'package:pms_system/features/projects_progress/widgets/half_circle_analatic_chart.dart';
 
 class ProjectDetailsFundingChart extends StatelessWidget {
   final List<ProjectsOverviewData> data;

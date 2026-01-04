@@ -5,7 +5,7 @@ class StrategicAxisBloc extends Bloc<AppEvent, AppState> {
     on<Click>(_getStrategicAxis);
   }
 
-  _getStrategicAxis(AppEvent event, Emitter<AppState> emit) async {
+  Future<void> _getStrategicAxis(AppEvent event, Emitter<AppState> emit) async {
     try {
       emit(Loading());
 

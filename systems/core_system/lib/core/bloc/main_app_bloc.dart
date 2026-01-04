@@ -36,7 +36,7 @@ class MainAppBloc {
 
   Future<void> toggleLang() async {
     // Read current code from your translations helper
-    final current = allTranslations.currentLanguage as String;
+    final current = allTranslations.currentLanguage;
 
     // Decide the next one
     final newLang = (current == 'en') ? 'ar' : 'en';

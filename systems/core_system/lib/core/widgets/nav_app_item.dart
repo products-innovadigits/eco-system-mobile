@@ -7,25 +7,21 @@ class NavAppItem extends StatelessWidget {
   final String icon;
   final String activeIcon;
 
-  const NavAppItem(
-      {super.key,
-      required this.title,
-      required this.isSelected,
-      required this.icon,
-      required this.color,
-      required this.activeIcon});
+  const NavAppItem({
+    super.key,
+    required this.title,
+    required this.isSelected,
+    required this.icon,
+    required this.color,
+    required this.activeIcon,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          height: 20.h,
-        ),
-        Images(
-          image: isSelected ? activeIcon : icon,
-          color: color,
-        ),
+        SizedBox(height: 20.h),
+        Images(image: isSelected ? activeIcon : icon, color: color),
         SizedBox(height: 2.h),
         Text(
           allTranslations.text(title),

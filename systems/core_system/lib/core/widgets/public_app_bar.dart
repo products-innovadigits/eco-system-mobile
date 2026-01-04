@@ -21,9 +21,9 @@ class PublicAppbar extends StatefulWidget {
     this.withBack,
     this.filterWidget,
   }) : assert(
-          hasFilter == false || filterWidget != null,
-          'filterWidget cannot be null when hasFilter is true',
-        );
+         hasFilter == false || filterWidget != null,
+         'filterWidget cannot be null when hasFilter is true',
+       );
 
   @override
   State<PublicAppbar> createState() => _PublicAppbarState();
@@ -43,7 +43,10 @@ class _PublicAppbarState extends State<PublicAppbar> {
       color: context.color.primary,
       child: Padding(
         padding: EdgeInsets.only(
-            top: MediaQueryHelper.topPadding, right: 24, left: 24),
+          top: MediaQueryHelper.topPadding,
+          right: 24,
+          left: 24,
+        ),
         child: Stack(
           alignment: Alignment.centerRight,
           children: [
@@ -55,8 +58,9 @@ class _PublicAppbarState extends State<PublicAppbar> {
                     ? Expanded(
                         child: Padding(
                           padding: EdgeInsets.only(
-                              left: _checkLang() ? 24 : 0,
-                              right: _checkLang() ? 0 : 24),
+                            left: _checkLang() ? 24 : 0,
+                            right: _checkLang() ? 0 : 24,
+                          ),
                           child: Center(
                             child: Row(
                               children: [
@@ -69,19 +73,21 @@ class _PublicAppbarState extends State<PublicAppbar> {
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
                                       hintText: allTranslations.text("search"),
-                                      hintStyle:  TextStyle(
-                                          fontWeight: FontWeight.w200,
-                                          fontSize: 12,
-                                          color: context.color.surfaceContainer),
+                                      hintStyle: TextStyle(
+                                        fontWeight: FontWeight.w200,
+                                        fontSize: 12,
+                                        color: context.color.surfaceContainer,
+                                      ),
                                       contentPadding:
                                           const EdgeInsets.symmetric(
-                                        horizontal: 15.0,
-                                      ),
+                                            horizontal: 15.0,
+                                          ),
                                     ),
-                                    style:  TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 14,
-                                        color: context.color.surfaceContainer),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14,
+                                      color: context.color.surfaceContainer,
+                                    ),
                                   ),
                                 ),
                                 InkWell(
@@ -94,13 +100,13 @@ class _PublicAppbarState extends State<PublicAppbar> {
                                     child: Text(
                                       allTranslations.text("cancel"),
                                       style: const TextStyle(
-                                        color: Styles.ACCENT_PRIMARY_COLOR,
+                                        color: Styles.accentPrimaryColor,
                                         fontWeight: FontWeight.w700,
                                         fontSize: 12,
                                       ),
                                     ),
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),
@@ -109,13 +115,13 @@ class _PublicAppbarState extends State<PublicAppbar> {
                     : Row(
                         children: [
                           Visibility(
-                              visible: widget.withBack ?? false,
-                              child: InkWell(
-                                  onTap: () => CustomNavigator.pop(),
-                                  child: const ArrowBack())),
-                          const SizedBox(
-                            width: 8,
+                            visible: widget.withBack ?? false,
+                            child: InkWell(
+                              onTap: () => CustomNavigator.pop(),
+                              child: const ArrowBack(),
+                            ),
                           ),
+                          const SizedBox(width: 8),
                           AnimatedWidgets(
                             horizontalOffset: 0.0,
                             verticalOffset: 0.0,
@@ -123,9 +129,10 @@ class _PublicAppbarState extends State<PublicAppbar> {
                               child: Text(
                                 widget.title!,
                                 style: TextStyle(
-                                    fontSize: widget.fontSize ?? 24,
-                                    fontWeight: FontWeight.w700,
-                                    color: context.color.surfaceContainer),
+                                  fontSize: widget.fontSize ?? 24,
+                                  fontWeight: FontWeight.w700,
+                                  color: context.color.surfaceContainer,
+                                ),
                               ),
                             ),
                           ),
@@ -161,17 +168,20 @@ class _PublicAppbarState extends State<PublicAppbar> {
                   opacity: showSearch ? 0 : 1,
                   duration: const Duration(milliseconds: 800),
                   child: InkWell(
-                      onTap: () {
-                        showModalBottomSheet(
-                            backgroundColor: Colors.transparent,
-                            context: context,
-                            builder: (context) => widget.filterWidget!,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)));
-                      },
-                      child: customImageIconSVG(imageName: "filter")),
+                    onTap: () {
+                      showModalBottomSheet(
+                        backgroundColor: Colors.transparent,
+                        context: context,
+                        builder: (context) => widget.filterWidget!,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      );
+                    },
+                    child: customImageIconSVG(imageName: "filter"),
+                  ),
                 ),
-              )
+              ),
           ],
         ),
       ),

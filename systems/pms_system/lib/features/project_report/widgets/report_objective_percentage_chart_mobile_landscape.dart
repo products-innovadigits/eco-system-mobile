@@ -65,7 +65,7 @@ class _BarTile extends StatelessWidget {
           value: value / 100.0,
           minHeight: 10,
           color: color,
-          backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+          backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
           borderRadius: const BorderRadius.all(Radius.circular(6)),
         ),
         const SizedBox(height: 6),
@@ -74,4 +74,3 @@ class _BarTile extends StatelessWidget {
     );
   }
 }
-

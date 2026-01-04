@@ -1,4 +1,3 @@
-import 'package:core_system/core/core/enums.dart';
 import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/workflow_process_details/workflow_process_details_events.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/workflow_process_details/workflow_process_details_state.dart';
@@ -37,7 +36,7 @@ class WorkflowProcessDetailsBloc
     }
   }
 
-  _onLoadWorkflowProcessDetails(
+  Future<void> _onLoadWorkflowProcessDetails(
     LoadWorkflowProcessDetails event,
     Emitter<WorkflowProcessDetailsState> emit,
   ) async {
@@ -84,10 +83,12 @@ class WorkflowProcessDetailsBloc
         AppCore.successMessage(
           allTranslations.text(LocaleKeys.process_started_successfully),
         );
-        add(LoadWorkflowProcessDetails(
-          processId: event.processId,
-          projectId: event.projectId,
-        ));
+        add(
+          LoadWorkflowProcessDetails(
+            processId: event.processId,
+            projectId: event.projectId,
+          ),
+        );
       } else {
         emit(
           const WorkflowProcessDetailsFailure(
@@ -97,9 +98,7 @@ class WorkflowProcessDetailsBloc
       }
     } catch (e) {
       emit(
-        const WorkflowProcessDetailsFailure(
-          message: 'Failed to start process',
-        ),
+        const WorkflowProcessDetailsFailure(message: 'Failed to start process'),
       );
     }
   }
@@ -126,4 +125,3 @@ class WorkflowProcessDetailsBloc
     }
   }
 }
-

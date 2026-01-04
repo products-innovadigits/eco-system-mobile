@@ -1,4 +1,4 @@
-import 'package:pms_system/core/utility/pms_exports.dart' hide AddDocumentComment;
+import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/stage_docs/stage_docs_events.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/stage_docs/stage_docs_state.dart';
 import 'package:pms_system/features/workflow_process_details/model/current_step_document_model.dart';
@@ -18,7 +18,7 @@ class StageDocsBloc extends Bloc<StageDocsEvent, StageDocsState> {
   CurrentStepDocumentData? currentStepDocumentData;
   int addingDocumentId = 0;
 
-  _onLoadCurrentStepDocs(
+  Future<void> _onLoadCurrentStepDocs(
     LoadCurrentStepDocs event,
     Emitter<StageDocsState> emit,
   ) async {
@@ -81,19 +81,11 @@ class StageDocsBloc extends Bloc<StageDocsEvent, StageDocsState> {
         }
       } else {
         addingDocumentId = 0;
-        emit(
-          const StageDocsFailure(
-            message: 'Failed to add document comment',
-          ),
-        );
+        emit(const StageDocsFailure(message: 'Failed to add document comment'));
       }
     } catch (e) {
       addingDocumentId = 0;
-      emit(
-        const StageDocsFailure(
-          message: 'Failed to add document comment',
-        ),
-      );
+      emit(const StageDocsFailure(message: 'Failed to add document comment'));
     }
   }
 
@@ -145,4 +137,3 @@ class StageDocsBloc extends Bloc<StageDocsEvent, StageDocsState> {
     return super.close();
   }
 }
-

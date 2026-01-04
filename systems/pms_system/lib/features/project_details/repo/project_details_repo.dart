@@ -1,4 +1,3 @@
-
 import 'package:pms_system/core/utility/pms_exports.dart';
 
 abstract class ProjectDetailsRepo {
@@ -11,11 +10,11 @@ abstract class ProjectDetailsRepo {
 
   static Future<dynamic> getProjectGeneralProgressSummary(
     int id, {
-    ChartTime chartType = ChartTime.Month,
+    ChartTime chartType = ChartTime.month,
   }) async {
     return await Network().request(
       ApiNames.projectGeneralProgressSummary(id),
-      query: {'type': chartType == ChartTime.Month ? 'monthly' : 'yearly'},
+      query: {'type': chartType == ChartTime.month ? 'monthly' : 'yearly'},
       method: ServerMethods.GET,
     );
   }

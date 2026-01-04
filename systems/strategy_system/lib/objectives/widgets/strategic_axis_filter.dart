@@ -31,17 +31,19 @@ class StrategicAxisFilter extends StatelessWidget {
               }
               if (state is Loading) {
                 AppCore.showSnackBar(
-                    notification: AppNotification(
-                  message: allTranslations.text("loading"),
-                  backgroundColor: Styles.PENDING,
-                ));
+                  notification: AppNotification(
+                    message: allTranslations.text("loading"),
+                    backgroundColor: Styles.pending,
+                  ),
+                );
               }
               if (state is Empty) {
                 AppCore.showSnackBar(
-                    notification: AppNotification(
-                  message: allTranslations.text("there_is_no_strategic_axis"),
-                  backgroundColor: Styles.PENDING,
-                ));
+                  notification: AppNotification(
+                    message: allTranslations.text("there_is_no_strategic_axis"),
+                    backgroundColor: Styles.pending,
+                  ),
+                );
               }
               if (state is Error) {
                 AppCore.errorMessage(
@@ -54,9 +56,7 @@ class StrategicAxisFilter extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
               decoration: BoxDecoration(
                 color: context.color.surfaceContainer,
-                border: Border.all(
-                  color: context.color.outline,
-                ),
+                border: Border.all(color: context.color.outline),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
@@ -67,16 +67,17 @@ class StrategicAxisFilter extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: context.textTheme.bodyMedium?.copyWith(
-                          color: initialSelection != null
-                              ? context.color.primary
-                              : context.color.outlineVariant),
+                        color: initialSelection != null
+                            ? context.color.primary
+                            : context.color.outlineVariant,
+                      ),
                     ),
                   ),
                   SizedBox(width: 12.w),
                   Icon(
                     Icons.keyboard_arrow_down_rounded,
                     size: 24,
-                    color: context.color.outlineVariant
+                    color: context.color.outlineVariant,
                   ),
                 ],
               ),
@@ -89,8 +90,11 @@ class StrategicAxisFilter extends StatelessWidget {
 }
 
 class _SelectionView extends StatefulWidget {
-  const _SelectionView(
-      {required this.onConfirm, required this.list, this.initialValue});
+  const _SelectionView({
+    required this.onConfirm,
+    required this.list,
+    this.initialValue,
+  });
   final ValueChanged<CustomFieldModel> onConfirm;
   final List<CustomFieldModel> list;
   final CustomFieldModel? initialValue;
@@ -131,9 +135,10 @@ class _SelectionViewState extends State<_SelectionView> {
                   : context.color.surfaceContainer,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                  color: _selectedItem?.id == widget.list[index].id
-                      ? context.color.surfaceContainer
-                      : context.color.primary),
+                color: _selectedItem?.id == widget.list[index].id
+                    ? context.color.surfaceContainer
+                    : context.color.primary,
+              ),
             ),
             width: context.w,
             child: Row(
@@ -142,7 +147,7 @@ class _SelectionViewState extends State<_SelectionView> {
                 Expanded(
                   child: Text(
                     widget.list[index].name ?? "",
-                    style:context.textTheme.titleMedium?.copyWith(
+                    style: context.textTheme.titleMedium?.copyWith(
                       overflow: TextOverflow.ellipsis,
                       color: _selectedItem?.id == widget.list[index].id
                           ? context.color.surfaceContainer
@@ -151,13 +156,14 @@ class _SelectionViewState extends State<_SelectionView> {
                   ),
                 ),
                 Icon(
-                    _selectedItem?.id == widget.list[index].id
-                        ? Icons.radio_button_checked_outlined
-                        : Icons.radio_button_off,
-                    size: 22,
-                    color: _selectedItem?.id == widget.list[index].id
-                        ? context.color.surfaceContainer
-                        : context.color.primary)
+                  _selectedItem?.id == widget.list[index].id
+                      ? Icons.radio_button_checked_outlined
+                      : Icons.radio_button_off,
+                  size: 22,
+                  color: _selectedItem?.id == widget.list[index].id
+                      ? context.color.surfaceContainer
+                      : context.color.primary,
+                ),
               ],
             ),
           ),

@@ -40,17 +40,17 @@ class PmsModule implements SystemModule {
   @override
   Map<String, RouteFactory> get routes => {
     Routes.PMS_LAYOUT: (settings) {
-      final args = settings.arguments as PmsLayoutArgs? ??
+      final args =
+          settings.arguments as PmsLayoutArgs? ??
           const PmsLayoutArgs(showSwitcher: true);
       return MaterialPageRoute(
         settings: settings,
-        builder: (_) => PmsLayout(
-          index: args.index,
-          showSwitcher: args.showSwitcher,
-        ),
+        builder: (_) =>
+            PmsLayout(index: args.index, showSwitcher: args.showSwitcher),
       );
     },
-    Routes.PROJECTS: (settings) => MaterialPageRoute(builder: (_) => const ProjectsView()),
+    Routes.PROJECTS: (settings) =>
+        MaterialPageRoute(builder: (_) => const ProjectsView()),
     Routes.PROJECT_DETAILS: (settings) => MaterialPageRoute(
       builder: (_) => ProjectDetailsView(id: settings.arguments as int),
     ),
@@ -73,7 +73,8 @@ class PmsModule implements SystemModule {
         ),
       );
     },
-    Routes.LATEST_REQUEST: (settings) => MaterialPageRoute(builder: (_) => const LatestRequestView()),
+    Routes.LATEST_REQUEST: (settings) =>
+        MaterialPageRoute(builder: (_) => const LatestRequestView()),
   };
 
   @override

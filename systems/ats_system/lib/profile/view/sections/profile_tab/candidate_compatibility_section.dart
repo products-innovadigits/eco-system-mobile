@@ -2,7 +2,6 @@ import 'package:ats_system/profile/view/widgets/profile_tab/compatibility_bottom
 import 'package:ats_system/shared/ats_exports.dart';
 import 'package:core_system/core/utility/export.dart';
 
-
 class CandidateCompatibilitySection extends StatelessWidget {
   const CandidateCompatibilitySection({super.key});
 
@@ -15,9 +14,10 @@ class CandidateCompatibilitySection extends StatelessWidget {
         width: context.w,
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
         decoration: BoxDecoration(
-            color: context.color.surfaceContainer,
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: context.color.outline)),
+          color: context.color.surfaceContainer,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: context.color.outline),
+        ),
         child: Row(
           children: [
             PercentageAvatar(
@@ -26,14 +26,18 @@ class CandidateCompatibilitySection extends StatelessWidget {
               avatarSize: 32.w,
               percentageMargin: 4.w,
               percentageRadius: 2.w,
-              percentageTextStyle: AppTextStyles.w600
-                  .copyWith(color: Styles.TEXT_BLUE_DARK_COLOR, fontSize: 6),
+              percentageTextStyle: AppTextStyles.w600.copyWith(
+                color: Styles.textBlueDarkColor,
+                fontSize: 6,
+              ),
             ),
             12.sw,
             Text(
               'ما مدي التوافق بين هشام وهذة الوظيفة؟',
-              style: AppTextStyles.w400
-                  .copyWith(color: Styles.TEXT_COLOR, fontSize: 10),
+              style: AppTextStyles.w400.copyWith(
+                color: Styles.textColor,
+                fontSize: 10,
+              ),
             ),
             const Spacer(),
             Images(image: Assets.svgs.arrowLeft.path),

@@ -1,12 +1,11 @@
 import '../../shared/strategy_exports.dart';
 
-
 class ObjectivePercentageBloc extends Bloc<AppEvent, AppState> {
   ObjectivePercentageBloc() : super(Start()) {
     on<Click>(onClick);
   }
 
-  onClick(AppEvent event, Emitter<AppState> emit) async {
+  Future<void> onClick(AppEvent event, Emitter<AppState> emit) async {
     try {
       emit(Loading());
 

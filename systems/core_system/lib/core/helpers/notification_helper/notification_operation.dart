@@ -1,6 +1,10 @@
 part of 'notification_helper.dart';
 
-scheduleNotification(String title, String subtitle, String data) async {
+Future<void> scheduleNotification(
+  String title,
+  String subtitle,
+  String data,
+) async {
   var rng = math.Random();
   var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
     'channel_id',
@@ -26,7 +30,11 @@ scheduleNotification(String title, String subtitle, String data) async {
 
 void iOSPermission() {
   _firebaseMessaging!.requestPermission(
-      alert: true, announcement: true, badge: true, sound: true);
+    alert: true,
+    announcement: true,
+    badge: true,
+    sound: true,
+  );
 }
 
 void handlePath(Map dataMap) {
@@ -34,11 +42,11 @@ void handlePath(Map dataMap) {
   handlePathByRoute(dataMap);
 }
 
-updateUserFunctions({@required notify}) async {}
+Future<void> updateUserFunctions({required dynamic notify}) async {}
 
 Future<void> handlePathByRoute(Map notify) async {}
 
-downloadAndSaveFile(String url, String fileName) async {
+Future<String> downloadAndSaveFile(String url, String fileName) async {
   var directory = await getApplicationDocumentsDirectory();
   var filePath = '${directory.path}/$fileName';
   var response = await http.get(Uri.parse(url));

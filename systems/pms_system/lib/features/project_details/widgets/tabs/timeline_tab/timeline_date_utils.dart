@@ -1,11 +1,11 @@
 /// Week bucket utility: converts a DateTime to a week cell index within the project timeline.
-/// 
+///
 /// Week buckets:
 /// - W1: days 1-7
 /// - W2: days 8-14
 /// - W3: days 15-21
 /// - W4: days 22-end of month
-/// 
+///
 /// Returns (monthIndex, weekInMonth 1..4) relative to projectStart.
 /// monthIndex is 0-based from projectStart (0 = first month of project).
 class WeekCell {
@@ -20,22 +20,26 @@ class WeekCell {
 
     // Normalize to start of day
     final date = DateTime(dt.year, dt.month, dt.day);
-    final start = DateTime(projectStart.year, projectStart.month, projectStart.day);
+    final start = DateTime(
+      projectStart.year,
+      projectStart.month,
+      projectStart.day,
+    );
 
     if (date.isBefore(start)) return null;
 
     // Calculate months difference
     int monthIndex = 0;
-    
+
     // If date is in the same month as projectStart, monthIndex is 0
     if (date.year == start.year && date.month == start.month) {
       monthIndex = 0;
     } else {
       // Calculate months from projectStart
       DateTime current = DateTime(start.year, start.month, 1);
-      
-      while (current.year < date.year || 
-             (current.year == date.year && current.month < date.month)) {
+
+      while (current.year < date.year ||
+          (current.year == date.year && current.month < date.month)) {
         monthIndex++;
         if (current.month == 12) {
           current = DateTime(current.year + 1, 1, 1);
@@ -96,15 +100,25 @@ class DateSpan {
     // Normalize dates to start of day
     final start = DateTime(startDate.year, startDate.month, startDate.day);
     final end = DateTime(endDate.year, endDate.month, endDate.day);
-    final projStart = DateTime(projectStart.year, projectStart.month, projectStart.day);
+    final projStart = DateTime(
+      projectStart.year,
+      projectStart.month,
+      projectStart.day,
+    );
     final projEnd = DateTime(projectEnd.year, projectEnd.month, projectEnd.day);
 
     // Ensure start <= end (swap if reversed)
-    final actualStart = start.isBefore(end) || start.isAtSameMomentAs(end) ? start : end;
-    final actualEnd = start.isBefore(end) || start.isAtSameMomentAs(end) ? end : start;
+    final actualStart = start.isBefore(end) || start.isAtSameMomentAs(end)
+        ? start
+        : end;
+    final actualEnd = start.isBefore(end) || start.isAtSameMomentAs(end)
+        ? end
+        : start;
 
     // Clamp to project window
-    final clampedStart = actualStart.isBefore(projStart) ? projStart : actualStart;
+    final clampedStart = actualStart.isBefore(projStart)
+        ? projStart
+        : actualStart;
     final clampedEnd = actualEnd.isAfter(projEnd) ? projEnd : actualEnd;
 
     if (clampedStart.isAfter(clampedEnd)) return null;
@@ -134,9 +148,13 @@ class ProjectMonth {
 
   ProjectMonth(this.year, this.month, this.displayName);
 
-  static List<ProjectMonth> generateMonths(DateTime projectStart, DateTime projectEnd) {
+  static List<ProjectMonth> generateMonths(
+    DateTime projectStart,
+    DateTime projectEnd,
+  ) {
     final List<ProjectMonth> months = [];
-    final Map<String, int> monthNameCount = {}; // Track occurrences of each month name
+    final Map<String, int> monthNameCount =
+        {}; // Track occurrences of each month name
 
     final start = DateTime(projectStart.year, projectStart.month, 1);
     final end = DateTime(projectEnd.year, projectEnd.month, 1);
@@ -157,11 +175,11 @@ class ProjectMonth {
     ];
 
     DateTime current = start;
-    while (current.isBefore(end) || 
-           (current.year == end.year && current.month == end.month)) {
+    while (current.isBefore(end) ||
+        (current.year == end.year && current.month == end.month)) {
       final monthName = kArabicMonths[current.month - 1];
       final key = monthName;
-      
+
       monthNameCount[key] = (monthNameCount[key] ?? 0) + 1;
 
       String displayName;
@@ -181,10 +199,10 @@ class ProjectMonth {
     // Ensure at least 4 months are shown
     const int minMonths = 4;
     if (months.length < minMonths) {
-      DateTime lastMonth = months.isNotEmpty 
+      DateTime lastMonth = months.isNotEmpty
           ? DateTime(months.last.year, months.last.month, 1)
           : start;
-      
+
       while (months.length < minMonths) {
         // Move to next month
         if (lastMonth.month == 12) {
@@ -192,7 +210,7 @@ class ProjectMonth {
         } else {
           lastMonth = DateTime(lastMonth.year, lastMonth.month + 1, 1);
         }
-        
+
         final monthName = kArabicMonths[lastMonth.month - 1];
         final displayName = '$monthName (${lastMonth.year})';
         months.add(ProjectMonth(lastMonth.year, lastMonth.month, displayName));
@@ -202,4 +220,3 @@ class ProjectMonth {
     return months;
   }
 }
-

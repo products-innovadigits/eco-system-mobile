@@ -10,16 +10,17 @@ class PercentageAvatar extends StatelessWidget {
   final TextStyle? percentageTextStyle;
   final bool? withPercentage;
 
-  const PercentageAvatar(
-      {super.key,
-      required this.avatarPath,
-      required this.percentage,
-      required this.avatarSize,
-      this.stackHeight,
-      this.percentageTextStyle,
-      this.percentageMargin,
-      this.percentageRadius,
-      this.withPercentage = true});
+  const PercentageAvatar({
+    super.key,
+    required this.avatarPath,
+    required this.percentage,
+    required this.avatarSize,
+    this.stackHeight,
+    this.percentageTextStyle,
+    this.percentageMargin,
+    this.percentageRadius,
+    this.withPercentage = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,9 @@ class PercentageAvatar extends StatelessWidget {
               shape: BoxShape.circle,
               border: Border.all(color: context.color.surface, width: 3),
               image: DecorationImage(
-                  image: AssetImage(avatarPath), fit: BoxFit.contain),
+                image: AssetImage(avatarPath),
+                fit: BoxFit.contain,
+              ),
             ),
           ),
           if (withPercentage == true)
@@ -45,21 +48,23 @@ class PercentageAvatar extends StatelessWidget {
               right: 0,
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-                margin:
-                    EdgeInsets.symmetric(horizontal: percentageMargin ?? 8.w),
+                margin: EdgeInsets.symmetric(
+                  horizontal: percentageMargin ?? 8.w,
+                ),
                 decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.circular(percentageRadius ?? 16.w),
-                    color: context.color.surfaceContainer),
+                  borderRadius: BorderRadius.circular(percentageRadius ?? 16.w),
+                  color: context.color.surfaceContainer,
+                ),
                 child: Center(
                   child: Text(
                     '$percentage%',
-                    style: percentageTextStyle ??
+                    style:
+                        percentageTextStyle ??
                         context.textTheme.titleSmall?.copyWith(fontSize: 10),
                   ),
                 ),
               ),
-            )
+            ),
         ],
       ),
     );

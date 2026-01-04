@@ -17,7 +17,9 @@ class ProjectsOverviewModel extends SingleMapper {
       ProjectsOverviewModel(
         succeeded: json['succeeded'] as bool?,
         data: (json['data'] as List<dynamic>?)
-            ?.map((e) => ProjectsOverviewData.fromJson(e as Map<String, dynamic>))
+            ?.map(
+              (e) => ProjectsOverviewData.fromJson(e as Map<String, dynamic>),
+            )
             .toList(),
         warningErrors: (json['warningErrors'] as List<dynamic>?)
             ?.map((e) => e as String)
@@ -46,12 +48,7 @@ class ProjectsOverviewData extends SingleMapper {
   final num? percentage;
   final num? count;
 
-  ProjectsOverviewData({
-    this.name,
-    this.hexColor,
-    this.percentage,
-    this.count,
-  });
+  ProjectsOverviewData({this.name, this.hexColor, this.percentage, this.count});
 
   factory ProjectsOverviewData.fromJson(Map<String, dynamic> json) =>
       ProjectsOverviewData(

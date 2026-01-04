@@ -16,7 +16,6 @@ class ProfileEnum extends Enum<String> {
   static const List<ProfileEnum> values = [profile, events, answers];
 }
 
-
 class ProjectDetailsEnum extends Enum<String> {
   const ProjectDetailsEnum(super.value);
 
@@ -26,9 +25,9 @@ class ProjectDetailsEnum extends Enum<String> {
 
   static const List<ProjectDetailsEnum> values = [mainInfo, workflow, timeline];
 }
+
 class ProcessTabsEnum extends Enum<String> {
   const ProcessTabsEnum(super.value);
-
 
   static const ProcessTabsEnum followProcess = ProcessTabsEnum('followProcess');
   static const ProcessTabsEnum stageDocs = ProcessTabsEnum('stageDocs');
@@ -36,7 +35,13 @@ class ProcessTabsEnum extends Enum<String> {
   static const ProcessTabsEnum history = ProcessTabsEnum('history');
   static const ProcessTabsEnum actions = ProcessTabsEnum('actions');
 
-  static const List<ProcessTabsEnum> values = [followProcess, stageDocs, fields , history , actions];
+  static const List<ProcessTabsEnum> values = [
+    followProcess,
+    stageDocs,
+    fields,
+    history,
+    actions,
+  ];
 }
 
 class SearchEnum extends Enum<String> {
@@ -60,10 +65,8 @@ class ActiveSystemEnum extends Enum<String> {
 
   factory ActiveSystemEnum.fromString(String value) {
     return values.firstWhere(
-          (e) => e.value == value,
+      (e) => e.value == value,
       orElse: () => values.first,
     );
   }
 }
-
-

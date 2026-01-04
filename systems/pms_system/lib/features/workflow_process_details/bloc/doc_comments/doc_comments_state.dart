@@ -44,5 +44,3 @@ class DocCommentsFailure extends DocCommentsState {
   const DocCommentsFailure({required this.message});
 }
 
-
-

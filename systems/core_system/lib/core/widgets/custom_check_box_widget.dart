@@ -1,10 +1,13 @@
-
 import 'package:core_system/core/utility/export.dart';
 
 class CustomCheckBoxWidget extends StatelessWidget {
   final VoidCallback onCheck;
   final bool isChecked;
-  const CustomCheckBoxWidget({super.key, required this.onCheck, this.isChecked = false});
+  const CustomCheckBoxWidget({
+    super.key,
+    required this.onCheck,
+    this.isChecked = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +24,9 @@ class CustomCheckBoxWidget extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(2),
             border: Border.all(color: context.color.secondary),
-            color: isChecked ? context.color.secondary : context.color.surfaceContainer,
+            color: isChecked
+                ? context.color.secondary
+                : context.color.surfaceContainer,
           ),
           child: isChecked
               ? Images(image: Assets.svgs.check.path)

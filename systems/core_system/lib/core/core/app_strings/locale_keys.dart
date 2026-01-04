@@ -2,7 +2,7 @@
 
 // ignore_for_file: constant_identifier_names
 
-abstract class  LocaleKeys {
+abstract class LocaleKeys {
   static const unit_name = 'unit_name';
   static const operation_name = 'operation_name';
   static const process = 'process';
@@ -38,13 +38,15 @@ abstract class  LocaleKeys {
   static const change_password = 'change_password';
   static const please_enter_valid_account = 'please_enter_valid_account';
   static const please_enter_valid_password = 'please_enter_valid_password';
-  static const please_enter_valid_phone_number = 'please_enter_valid_phone_number';
+  static const please_enter_valid_phone_number =
+      'please_enter_valid_phone_number';
   static const please_enter_valid_user_name = 'please_enter_valid_user_name';
   static const please_enter_valid_location = 'please_enter_valid_location';
   static const please_enter_valid_email = 'please_enter_valid_email';
   static const please_enter_valid_org = 'please_enter_valid_org';
   static const rent_deposit_amount = 'rent_deposit_amount';
-  static const for_this_lease_do_not_bill_the_first_period = 'for_this_lease_do_not_bill_the_first_period';
+  static const for_this_lease_do_not_bill_the_first_period =
+      'for_this_lease_do_not_bill_the_first_period';
   static const home_welcome_message = 'home_welcome_message';
   static const mr = 'mr';
   static const home = 'home';
@@ -298,7 +300,8 @@ abstract class  LocaleKeys {
   static const no_process = 'no_process';
   static const no_comments = 'no_comments';
   static const no_docs = 'no_docs';
-  static const no_projects_match_your_filters = 'no_projects_match_your_filters';
+  static const no_projects_match_your_filters =
+      'no_projects_match_your_filters';
   static const no_projects_match = 'no_projects_match';
   static const deliver_date = 'deliver_date';
   static const time_left = 'time_left';
@@ -338,7 +341,8 @@ abstract class  LocaleKeys {
   static const available_jobs = 'available_jobs';
   static const implement_department = 'implement_department';
   static const talent_pool = 'talent_pool';
-  static const candidate_with_future_potential = 'candidate_with_future_potential';
+  static const candidate_with_future_potential =
+      'candidate_with_future_potential';
   static const total_candidates = 'total_candidates';
   static const total_projects = 'total_projects';
   static const project_progress_rate = 'project_progress_rate';
@@ -346,7 +350,8 @@ abstract class  LocaleKeys {
   static const challenges_risks = 'challenges_risks';
   static const risk = 'risk';
   static const main_data = 'main_data';
-  static const project_progress_rate_in_each_category = 'project_progress_rate_in_each_category';
+  static const project_progress_rate_in_each_category =
+      'project_progress_rate_in_each_category';
   static const the_owning_entity = 'the_owning_entity';
   static const project_life_cycle = 'project_life_cycle';
   static const project_category = 'project_category';
@@ -361,7 +366,8 @@ abstract class  LocaleKeys {
   static const budget = 'budget';
   static const outputs_number = 'outputs_number';
   static const entity_name = 'entity_name';
-  static const progress_at_each_stage_of_the_project = 'progress_at_each_stage_of_the_project';
+  static const progress_at_each_stage_of_the_project =
+      'progress_at_each_stage_of_the_project';
   static const jobs = 'jobs';
   static const delete = 'delete';
   static const save = 'save';
@@ -485,7 +491,8 @@ abstract class  LocaleKeys {
   static const select_category = 'select_category';
   static const select_system = 'select_system';
   static const organizational_objective = 'organizational_objective';
-  static const select_organizational_objective = 'select_organizational_objective';
+  static const select_organizational_objective =
+      'select_organizational_objective';
   static const newest_to_oldest_creation = 'newest_to_oldest_creation';
   static const oldest_to_newest_creation = 'oldest_to_newest_creation';
   static const nearest_to_farthest_delivery = 'nearest_to_farthest_delivery';
@@ -493,7 +500,8 @@ abstract class  LocaleKeys {
   static const most_advanced_to_least = 'most_advanced_to_least';
   static const least_advanced_to_most = 'least_advanced_to_most';
   static const date_range_validation_error = 'date_range_validation_error';
-  static const please_select_at_least_one_filter = 'please_select_at_least_one_filter';
+  static const please_select_at_least_one_filter =
+      'please_select_at_least_one_filter';
   static const main_info = 'main_info';
   static const workflow = 'workflow';
   static const timeline = 'timeline';
@@ -540,7 +548,8 @@ abstract class  LocaleKeys {
   static const internal_comments = 'internal_comments';
   static const enter_internal_comments = 'enter_internal_comments';
   static const upload_additional_file = 'upload_additional_file';
-  static const ensure_compliance_with_pmo_standards = 'ensure_compliance_with_pmo_standards';
+  static const ensure_compliance_with_pmo_standards =
+      'ensure_compliance_with_pmo_standards';
   static const no_comments_available = 'no_comments_available';
   static const no_attachments_available = 'no_attachments_available';
   static const stage_name_label = 'stage_name_label';
@@ -559,5 +568,4 @@ abstract class  LocaleKeys {
   static const specialized_section = 'specialized_section';
   static const specialized_kpi = 'specialized_kpi';
   static const specialized_initiative = 'specialized_initiative';
-
 }

@@ -8,16 +8,18 @@ class ObjectiveInitiativeModel extends SingleMapper {
 
   ObjectiveInitiativeModel.fromJson(Map<String, dynamic> json) {
     initiativeTitle = json['initiativeTitle'];
-    value = json['initiativeUpdateLogs'] != null &&
+    value =
+        json['initiativeUpdateLogs'] != null &&
             json["initiativeUpdateLogs"]["newValue"] != null
         ? json["initiativeUpdateLogs"]["newValue"]
         : null;
   }
 
+  @override
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['initiativeTitle'] = this.initiativeTitle;
-    data['value'] = this.value;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['initiativeTitle'] = initiativeTitle;
+    data['value'] = value;
     return data;
   }
 

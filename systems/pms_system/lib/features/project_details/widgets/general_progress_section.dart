@@ -41,7 +41,7 @@ class GeneralProgressSection extends StatelessWidget {
                       )
                     : null,
                 child: (bloc.chartModel?.series ?? []).isNotEmpty
-                    ? bloc.selectedChartType == ChartTime.Month
+                    ? bloc.selectedChartType == ChartTime.month
                           ? ProjectMonthlyProgressSection(
                               chartSeries: bloc.chartModel?.series ?? [],
                               latestProgressItem: bloc.chartModel?.latest,

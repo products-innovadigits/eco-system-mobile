@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 class Translations {
-  Translations(Locale locale) {
-    this.locale = locale;
+  Translations(Locale this.locale) {
     _localizedValues = null;
   }
 
@@ -22,14 +21,15 @@ class Translations {
   }
 
   static Future<Translations> load(Locale locale) async {
-    Translations translations = new Translations(locale);
-    String jsonContent =
-        await rootBundle.loadString("assets/langs/${locale.languageCode}.json");
+    Translations translations = Translations(locale);
+    String jsonContent = await rootBundle.loadString(
+      "assets/langs/${locale.languageCode}.json",
+    );
     _localizedValues = json.decode(jsonContent);
     return translations;
   }
 
-  get currentLanguage => locale!.languageCode;
+  String get currentLanguage => locale!.languageCode;
 }
 
 class TranslationsDelegate extends LocalizationsDelegate<Translations> {

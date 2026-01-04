@@ -29,8 +29,8 @@ class LatestRequestAppBarWidget extends StatelessWidget
           LatestRequestFiltrationState
         >(
           builder: (context, filtrationState) {
-            final latestRequestFiltrationCubit =
-                LatestRequestFiltrationCubit.instance;
+            // final latestRequestFiltrationCubit =
+            //     LatestRequestFiltrationCubit.instance;
             final isFiltered = filtrationState is LatestRequestFiltrationLoaded
                 ? filtrationState.isFilterApplied
                 : false;

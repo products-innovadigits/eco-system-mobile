@@ -40,8 +40,10 @@ class HtmlContentHelper {
   static const double tableCellFieldMargin = 8.0;
 
   /// Table cell padding
-  static const EdgeInsets tableCellPadding =
-      EdgeInsets.symmetric(vertical: 12, horizontal: 12);
+  static const EdgeInsets tableCellPadding = EdgeInsets.symmetric(
+    vertical: 12,
+    horizontal: 12,
+  );
 
   /// Date picker year range (50 years before/after current year)
   static const int datePickerYearRange = 50;
@@ -57,15 +59,16 @@ class HtmlContentHelper {
   static const double dialogPadding = 16.0;
 
   /// Dialog inset padding
-  static const EdgeInsets dialogInsetPadding =
-      EdgeInsets.symmetric(horizontal: 16, vertical: 16);
+  static const EdgeInsets dialogInsetPadding = EdgeInsets.symmetric(
+    horizontal: 16,
+    vertical: 16,
+  );
 
   // -------------------------
   // Field value helpers
   // -------------------------
 
   /// Reads the current value from a field object.
-  /// Supports both FieldModel objects and Map<String, dynamic> structures.
   static String readFieldValue(dynamic field) {
     try {
       final v = field.meta?.value;
@@ -80,7 +83,7 @@ class HtmlContentHelper {
   }
 
   /// Writes a new value to a field object.
-  /// Supports both FieldModel objects and Map<String, dynamic> structures.
+  /// Supports both FieldModel objects and `Map<String, dynamic>` structures.
   static void writeFieldValue(dynamic field, String value) {
     try {
       if (field.meta != null) {
@@ -129,4 +132,3 @@ class HtmlContentHelper {
   /// Cleans text by replacing non-breaking spaces with regular spaces.
   static String cleanText(String s) => s.replaceAll('\u00A0', ' ');
 }
-

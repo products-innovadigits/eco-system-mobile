@@ -5,15 +5,17 @@ class ObjectiveCategorizedBloc extends Bloc<AppEvent, AppState> {
     on<Click>(onClick);
   }
 
-  onClick(AppEvent event, Emitter<AppState> emit) async {
+  Future<void> onClick(AppEvent event, Emitter<AppState> emit) async {
     try {
       emit(Loading());
 
       Response res = await ObjectiveActiveRepo.getObjectActiveCategorized();
 
       if (res.statusCode == 200 && res.data != null) {
-        List<ObjectivePercentageModel> data = List<ObjectivePercentageModel>.from(
-            res.data["data"].map((e) => ObjectivePercentageModel.fromJson(e)));
+        List<ObjectivePercentageModel> data =
+            List<ObjectivePercentageModel>.from(
+              res.data["data"].map((e) => ObjectivePercentageModel.fromJson(e)),
+            );
         emit(Done(list: data));
       } else {
         AppCore.errorMessage(allTranslations.text('something_went_wrong'));

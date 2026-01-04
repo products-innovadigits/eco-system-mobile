@@ -19,7 +19,7 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
   TextEditingController mailTEC = TextEditingController();
   TextEditingController passwordTEC = TextEditingController();
 
-  clear() {
+  void clear() {
     mailTEC.clear();
     passwordTEC.clear();
   }

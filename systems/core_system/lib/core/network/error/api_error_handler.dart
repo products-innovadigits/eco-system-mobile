@@ -6,7 +6,7 @@ import '../../helpers/shared_helper.dart';
 import '../../helpers/translation/all_translation.dart';
 
 class ApiErrorHandler {
-  static dynamic getMessage(error) async {
+  static Future<dynamic> getMessage(dynamic error) async {
     dynamic errorDescription = "";
     if (error is Exception) {
       try {
@@ -33,7 +33,7 @@ class ApiErrorHandler {
                   break;
                 case 401:
                   if (await SharedHelper.sharedHelper?.readBoolean(
-                        CachingKey.IS_LOGIN,
+                        CachingKey.isLogin,
                       ) ==
                       true) {
                     SharedHelper.sharedHelper?.logout();

@@ -9,25 +9,26 @@ abstract class ApiNames {
   static const objectActiveCategorized = "ObjectActive/Categorized";
   static const objectives = "ObjectActive";
   static const strategicAxis = "ObjectActive/GetStrategicAxis";
-  static String objectiveDetails(id) => "ObjectActive/$id";
+  static String objectiveDetails(int id) => "ObjectActive/$id";
   static const objectiveKPIS = "KPIS/GetKpiByObjectActive";
   static const objectiveInitiatives = "Initiatives/ByObjectActive";
   static const bsc = "Dashboard/getDashboardBalance";
-  static String objectiveChartData(id, time) => "ObjectActive/$id/Chart/$time";
+  static String objectiveChartData(int id, String time) =>
+      "ObjectActive/$id/Chart/$time";
 
   // Project Management APIs ====================
-  static const ProjectProgress = "Project/GetProgressCountPrestange";
-  static const ProjectCategoriesProgress = "ProjectCategory/CategoriesProgress";
+  static const projectProgress = "Project/GetProgressCountPrestange";
+  static const projectCategoriesProgress = "ProjectCategory/CategoriesProgress";
   static const projects = "Project/GetFilteredProjects";
   // static const projects = "Project";
   static const projectPriorityLevels = "Project/PeriortyLevels";
   static const projectFilterOptions = "Project/filter-options";
   static const projectSortingOptions = "Project/GetProjectSortOptionsAsync";
-  static String projectDetails(id) => "Project/$id";
-  static String projectReport(id) => "Project/mobile-report/$id";
-  static String projectGeneralProgressSummary(id) =>
+  static String projectDetails(int id) => "Project/$id";
+  static String projectReport(int id) => "Project/mobile-report/$id";
+  static String projectGeneralProgressSummary(int id) =>
       "Project/$id/progress-summary";
-  static String projectTimeline(id) =>
+  static String projectTimeline(int id) =>
       "ProjectTimeLine/GetAllActivitiesByProjectId/$id";
   static String workflowProcessDetails = "WorkFlow/GroupSteps";
   static String currentNextSteps = "WorkFlow/CurrentAndNext_Mobile";
@@ -35,7 +36,7 @@ abstract class ApiNames {
   static String currentStepDocs = "Documents/CurrentStepDocuments";
   // static String stageDocsData = "DocumentData";
   static String documentComment = "DocumentComment";
-  static String documentCommentActions(id) => "DocumentComment/$id";
+  static String documentCommentActions(int id) => "DocumentComment/$id";
   static String projectProcessTechnicalLog = "ProjectProcess/TechnicalLog";
   static String projectStepComment = "ProjectStepComment";
   static String projectProcessNext = "ProjectProcess/next";
@@ -50,7 +51,7 @@ abstract class ApiNames {
   static const exportZipFile = "candidates/export-resumes";
   static const exportExcelFile = "candidates/export-resumes-excel";
   static const assignCandidatesToJobs = "candidates/bulk-assign-to-job";
-  static String candidateDetails(id) => "candidates/$id";
+  static String candidateDetails(int id) => "candidates/$id";
 
   // Filters ===================================
   static const tags = "tags/get-all";

@@ -1,7 +1,7 @@
 import 'package:strategy_system/shared/strategy_exports.dart';
 
 class ObjectivesFiltrationBloc extends Bloc<AppEvent, AppState> {
-  ObjectivesFiltrationBloc() : super(Start()) {}
+  ObjectivesFiltrationBloc() : super(Start());
 
   final List<DropListModel> statusList = [
     DropListModel(id: 1, name: 'مكتمل'),

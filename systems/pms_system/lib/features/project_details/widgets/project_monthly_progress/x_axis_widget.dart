@@ -14,22 +14,19 @@ class MonthlyProgressXAxis extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: List.generate(
-        data.length,
-        (index) {
-          final label = data[index].name ?? '';
-          return SizedBox(
-            width: perPointWidth,
-            child: Text(
-              label,
-              textAlign: TextAlign.center,
-              style: context.textTheme.bodySmall?.copyWith(
-                color: context.color.outlineVariant,
-              ),
+      children: List.generate(data.length, (index) {
+        final label = data[index].name ?? '';
+        return SizedBox(
+          width: perPointWidth,
+          child: Text(
+            label,
+            textAlign: TextAlign.center,
+            style: context.textTheme.bodySmall?.copyWith(
+              color: context.color.outlineVariant,
             ),
-          );
-        },
-      ),
+          ),
+        );
+      }),
     );
   }
 }

@@ -30,12 +30,12 @@ class GlobalTranslations {
   ///
   /// Returns the current language code
   ///
-  get currentLanguage => _locale == null ? 'ar' : _locale!.languageCode;
+  String get currentLanguage => _locale == null ? 'ar' : _locale!.languageCode;
 
   ///
   /// Returns the current Locale
   ///
-  get locale => _locale;
+  Locale? get locale => _locale;
 
   ///
   /// One-time initialization
@@ -50,32 +50,35 @@ class GlobalTranslations {
   /// ----------------------------------------------------------
   /// Method that saves/restores the preferred language
   /// ----------------------------------------------------------
-  getPreferredLanguage() async {
+  Future<String> getPreferredLanguage() async {
     return _getApplicationSavedInformation('language');
   }
 
-  setPreferredLanguage(String lang) async {
+  Future<void> setPreferredLanguage(String lang) async {
     return _setApplicationSavedInformation('language', lang);
   }
 
   ///
   /// Routine to change the language
   ///
-  Future<void> setNewLanguage(
-      [String? newLanguage,
-      bool saveInPrefs = true,
-      BuildContext? context]) async {
+  Future<void> setNewLanguage([
+    String? newLanguage,
+    bool saveInPrefs = true,
+    BuildContext? context,
+  ]) async {
     String? language = newLanguage;
     language ??= await getPreferredLanguage();
-    bool isLogin =
-        await SharedHelper.sharedHelper!.readBoolean(CachingKey.IS_LOGIN);
+    bool isLogin = await SharedHelper.sharedHelper!.readBoolean(
+      CachingKey.isLogin,
+    );
     if (language == "") {
       language = "en";
     }
-    _locale = Locale(language!, "");
+    _locale = Locale(language, "");
     // App.setLocale(context, _locale);
-    String jsonContent = await rootBundle
-        .loadString("assets/langs/${_locale!.languageCode}.json");
+    String jsonContent = await rootBundle.loadString(
+      "assets/langs/${_locale!.languageCode}.json",
+    );
     _localizedValues = json.decode(jsonContent);
 
     // If we are asked to save the new language in the application preferences
@@ -112,21 +115,24 @@ class GlobalTranslations {
   /// ----------------------------------------------------------
   /// Generic routine to saves an application preference
   /// ----------------------------------------------------------
-  _setApplicationSavedInformation(String name, String value) async {
+  Future<void> _setApplicationSavedInformation(
+    String name,
+    String value,
+  ) async {
     return SharedHelper.box!.put(_storageKey + name, value);
   }
 
   ///
   /// Singleton Factory
   ///
-  static final GlobalTranslations? _translations =
-      new GlobalTranslations._internal();
+  static final GlobalTranslations _translations =
+      GlobalTranslations._internal();
 
   factory GlobalTranslations() {
-    return _translations!;
+    return _translations;
   }
 
   GlobalTranslations._internal();
 }
 
-GlobalTranslations allTranslations = new GlobalTranslations();
+GlobalTranslations allTranslations = GlobalTranslations();

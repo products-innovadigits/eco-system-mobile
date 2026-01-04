@@ -1,4 +1,3 @@
-
 import '../../shared/strategy_exports.dart';
 
 class ObjectivesSearchBar extends StatefulWidget {
@@ -25,11 +24,7 @@ class _ObjectivesSearchBarState extends State<ObjectivesSearchBar> {
               duration: const Duration(milliseconds: 400),
               firstChild: SizedBox(width: context.w),
               secondChild: Padding(
-                padding: EdgeInsets.only(
-                  left: 16.w,
-                  right: 16.w,
-                  top: 16.h,
-                ),
+                padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -44,38 +39,38 @@ class _ObjectivesSearchBarState extends State<ObjectivesSearchBar> {
                         borderColor: context.color.outline,
                         addBorder: true,
                         onChanged: (v) {
-                          if (timer != null) if (timer!.isActive) {
+                          if (timer != null && timer!.isActive) {
                             timer!.cancel();
                           }
-                          timer = Timer(
-                            const Duration(milliseconds: 400),
-                            () {
-                              context
-                                  .read<ObjectivesBloc>()
-                                  .add(Click(arguments: SearchEngine()));
-                            },
-                          );
+                          timer = Timer(const Duration(milliseconds: 400), () {
+                            context.read<ObjectivesBloc>().add(
+                              Click(arguments: SearchEngine()),
+                            );
+                          });
                         },
                         onSaved: (v) {
-                          context
-                              .read<ObjectivesBloc>()
-                              .add(Click(arguments: SearchEngine()));
+                          context.read<ObjectivesBloc>().add(
+                            Click(arguments: SearchEngine()),
+                          );
                         },
                       ),
                     ),
                     SizedBox(width: 12.w),
                     Expanded(
-                        flex: 3,
-                        child: StrategicAxisFilter(
-                          initialSelection:
-                              context.read<ObjectivesBloc>().filter.valueOrNull,
-                          onSelect: (CustomFieldModel? v) {
-                            context.read<ObjectivesBloc>().updateFilter(v);
-                            context
-                                .read<ObjectivesBloc>()
-                                .add(Click(arguments: SearchEngine()));
-                          },
-                        )),
+                      flex: 3,
+                      child: StrategicAxisFilter(
+                        initialSelection: context
+                            .read<ObjectivesBloc>()
+                            .filter
+                            .valueOrNull,
+                        onSelect: (CustomFieldModel? v) {
+                          context.read<ObjectivesBloc>().updateFilter(v);
+                          context.read<ObjectivesBloc>().add(
+                            Click(arguments: SearchEngine()),
+                          );
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),

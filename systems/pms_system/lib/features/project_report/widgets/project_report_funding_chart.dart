@@ -182,7 +182,7 @@ class _HalfCircleAnalyticChart extends StatelessWidget {
             dataSource: [project],
             xValueMapper: (d, _) => d.name,
             yValueMapper: (d, _) => isDisabled ? 1 : (d.count ?? 0),
-            pointColorMapper: (_, __) => color,
+            pointColorMapper: (_, _) => color,
             startAngle: 270,
             endAngle: 90,
             innerRadius: '${innerRadiusPercent.toStringAsFixed(0)}%',

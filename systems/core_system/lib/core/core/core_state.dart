@@ -118,6 +118,7 @@ class Getting extends AppState {
   @override
   Map<String, dynamic> toJson() => {"state": "Getting"};
 }
+
 class GettingError extends AppState {
   @override
   Map<String, dynamic> toJson() => {"state": "GettingError"};
@@ -141,6 +142,5 @@ class Empty extends AppState {
   @override
   Map<String, dynamic> toJson() => {"state": "Empty"};
 }
-
 
 // BscLoaded moved to app shell

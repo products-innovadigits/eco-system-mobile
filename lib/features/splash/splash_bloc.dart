@@ -29,8 +29,8 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
       // Geolocator.requestPermission();
 
       SharedHelper helper = SharedHelper();
-      bool? isLogin = await helper.readBoolean(CachingKey.IS_LOGIN);
-      bool? skip = await helper.readBoolean(CachingKey.SKIP_BOARDING);
+      bool? isLogin = await helper.readBoolean(CachingKey.isLogin);
+      bool? skip = await helper.readBoolean(CachingKey.skipBoarding);
 
       ///Get Selected Active System
       getActiveSystem();

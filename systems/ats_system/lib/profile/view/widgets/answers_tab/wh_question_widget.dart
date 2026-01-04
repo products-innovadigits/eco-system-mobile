@@ -4,8 +4,11 @@ class WhQuestionWidget extends StatelessWidget {
   final String question;
   final String answer;
 
-  const WhQuestionWidget(
-      {super.key, required this.question, required this.answer});
+  const WhQuestionWidget({
+    super.key,
+    required this.question,
+    required this.answer,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +23,13 @@ class WhQuestionWidget extends StatelessWidget {
         children: [
           Text(question, style: AppTextStyles.w400.copyWith(fontSize: 11)),
           8.sh,
-          Text(answer,
-              style: AppTextStyles.w400
-                  .copyWith(fontSize: 10, color: Styles.SUB_TEXT_DARK_COLOR)),
+          Text(
+            answer,
+            style: AppTextStyles.w400.copyWith(
+              fontSize: 10,
+              color: Styles.subTextDarkColor,
+            ),
+          ),
         ],
       ),
     );

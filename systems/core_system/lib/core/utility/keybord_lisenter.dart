@@ -3,8 +3,9 @@ import 'package:core_system/core/utility/export.dart';
 class KeyBordBloc extends Bloc<AppEvent, AppState> {
   KeyBordBloc() : super(Start());
 
-  final BehaviorSubject<bool> isKeyboardOpen =
-      BehaviorSubject<bool>.seeded(false);
+  final BehaviorSubject<bool> isKeyboardOpen = BehaviorSubject<bool>.seeded(
+    false,
+  );
 
   Function(bool) get changeKeyBoardState => isKeyboardOpen.add;
 
