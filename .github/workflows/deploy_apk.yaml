@@ -24,6 +24,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      BUNDLE_GEMFILE: ${{ github.workspace }}/Gemfile
 
     steps:
       - name: Checkout Repository
@@ -399,5 +401,7 @@ jobs:
           ACTIVE_SYSTEMS: ${{ github.event.inputs.systems }}
         run: |
           bundle exec fastlane android distribute_ci \
+            apk_path:"../build/app/outputs/flutter-apk/app-release.apk" \
+            release_name:"${{ github.event.inputs.release_name }}" \
             test_email:"${{ github.event.inputs.test_email }}" \
             release_notes:"${{ github.event.inputs.release_notes }}"

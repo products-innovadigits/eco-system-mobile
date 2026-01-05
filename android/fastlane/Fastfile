@@ -5,11 +5,20 @@ default_platform(:android)
 ENV["FASTLANE_SKIP_UPDATE_CHECK"] = "true"
 ENV["FASTLANE_HIDE_CHANGELOG"] = "true"
 
+# Explicitly load Firebase App Distribution plugin
+require "fastlane/plugin/firebase_app_distribution"
+
 platform :android do
   desc "Distribute existing CI-built APK (no build inside Fastlane)"
   lane :distribute_ci do |options|
     test_email    = options[:test_email]
+    release_name  = options[:release_name].to_s.strip
     release_notes = options[:release_notes].to_s
+
+    # Prefix release notes with release name if provided
+    unless release_name.empty?
+      release_notes = "[#{release_name}] #{release_notes}"
+    end
 
     apk_path = options[:apk_path].to_s.strip
     apk_path = "../build/app/outputs/flutter-apk/app-release.apk" if apk_path.empty?
