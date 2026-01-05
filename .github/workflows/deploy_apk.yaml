@@ -33,12 +33,14 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.35.0'
+          cache: true
 
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: '17'
+          cache: gradle
 
       # ✅ Ensure .env exists (it should be in repo root)
       - name: Verify .env exists
@@ -230,19 +232,20 @@ jobs:
             echo "⚠️  key.properties not found - release build may fail if signing is required"
           fi
 
-      - name: Clean and get dependencies
+      # ✅ Speed: remove flutter clean (kills caches) + remove flutter pub deps (slow & not needed)
+      - name: Ensure dependencies are ready
         shell: bash
         run: |
           set -e
-          flutter clean
           flutter pub get
-          flutter pub deps
 
+      # ✅ Speed: analyze is useful but can be long; keep it if you want gatekeeping.
       - name: Flutter Analyze
         run: flutter analyze
 
-      - name: Check Flutter doctor
-        run: flutter doctor -v
+      # ❌ Speed: doctor -v is slow and rarely needed in CI unless debugging.
+      # - name: Check Flutter doctor
+      #   run: flutter doctor -v
 
       - name: Build APK
         id: build_apk
@@ -254,6 +257,106 @@ jobs:
             --dart-define=ACTIVE_SYSTEMS="${{ github.event.inputs.systems }}" \
             --verbose 2>&1 | tee build.log || (echo "Build failed, checking logs..." && cat build.log && exit 1)
         continue-on-error: false
+
+      - name: Tree-Shaking Verification
+        shell: bash
+        run: |
+          set -euo pipefail
+          
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🔍 Verifying Tree-Shaking Effectiveness"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo ""
+          
+          APK_PATH="build/app/outputs/flutter-apk/app-release.apk"
+          EXTRACT_DIR="build/apk_tree_shake_check"
+          
+          # Extract APK
+          echo "📦 Extracting APK..."
+          rm -rf "$EXTRACT_DIR"
+          unzip -q "$APK_PATH" -d "$EXTRACT_DIR"
+          
+          # Determine libapp.so path (prefer arm64, fallback to armeabi)
+          if [ -f "$EXTRACT_DIR/lib/arm64-v8a/libapp.so" ]; then
+            LIBAPP="$EXTRACT_DIR/lib/arm64-v8a/libapp.so"
+            ARCH="arm64-v8a"
+          elif [ -f "$EXTRACT_DIR/lib/armeabi-v7a/libapp.so" ]; then
+            LIBAPP="$EXTRACT_DIR/lib/armeabi-v7a/libapp.so"
+            ARCH="armeabi-v7a"
+          else
+            echo "❌ Error: libapp.so not found in APK"
+            exit 1
+          fi
+          
+          echo "✅ Found libapp.so at: lib/$ARCH/libapp.so"
+          echo ""
+          
+          # Parse enabled systems
+          IFS=',' read -ra ENABLED_SYSTEMS <<< "${{ github.event.inputs.systems }}"
+          
+          # Define system configurations
+          declare -A SYSTEM_PACKAGES=(
+            ["ats"]="package:ats_system"
+            ["pms"]="package:pms_system"
+            ["strategy"]="package:strategy_system"
+          )
+          
+          # Track verification results
+          VIOLATIONS=0
+          
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📊 System Package Reference Analysis"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo ""
+          
+          # Check each system
+          for system in ats pms strategy; do
+            PKG="${SYSTEM_PACKAGES[$system]}"
+            COUNT=$(strings "$LIBAPP" | grep -c "$PKG" || true)
+          
+            # Determine if this system should be enabled
+            SHOULD_BE_ENABLED=false
+            for enabled in "${ENABLED_SYSTEMS[@]}"; do
+              if [ "$(echo "$enabled" | xargs | tr '[:upper:]' '[:lower:]')" == "$system" ]; then
+                SHOULD_BE_ENABLED=true
+                break
+              fi
+            done
+          
+            # Verify expectations
+            if [ "$SHOULD_BE_ENABLED" = true ]; then
+              if [ "$COUNT" -gt 0 ]; then
+                echo "✅ ${system^^} (enabled): $COUNT references found"
+              else
+                echo "❌ ${system^^} (enabled): 0 references found - MISSING!"
+                VIOLATIONS=$((VIOLATIONS + 1))
+              fi
+            else
+              if [ "$COUNT" -eq 0 ]; then
+                echo "✅ ${system^^} (disabled): 0 references - correctly excluded"
+              else
+                echo "❌ ${system^^} (disabled): $COUNT references found - LEAK DETECTED!"
+                VIOLATIONS=$((VIOLATIONS + 1))
+              fi
+            fi
+          done
+          
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          
+          # Final verdict
+          if [ "$VIOLATIONS" -eq 0 ]; then
+            echo "✅ PASS: Tree-shaking verification successful"
+            echo "   All disabled systems correctly excluded from binary"
+            echo "   All enabled systems present in binary"
+          else
+            echo "❌ FAIL: Tree-shaking verification failed"
+            echo "   Found $VIOLATIONS violation(s)"
+            exit 1
+          fi
+          
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo ""
 
       - name: Capture build logs (if build fails)
         if: failure()
@@ -282,16 +385,12 @@ jobs:
           echo "=== Error summary from Gradle ==="
           grep -i -B 5 -A 30 "FAILURE\|> Task.*FAILED\|Exception\|Error\|Caused by" gradle-error.log | head -150 || echo "No obvious errors in Gradle output"
 
-      - name: Setup Ruby
+      # ✅ Fastlane speed: Bundler cache (requires Gemfile + Gemfile.lock committed at repo root)
+      - name: Setup Ruby (with Bundler cache)
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.1
-
-      - name: Install Fastlane
-        run: gem install fastlane
-
-      - name: Install Bundler
-        run: gem install bundler
+          bundler-cache: true
 
       - name: Distribute via Firebase App Distribution
         working-directory: android
@@ -299,7 +398,6 @@ jobs:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           ACTIVE_SYSTEMS: ${{ github.event.inputs.systems }}
         run: |
-          fastlane android distribute_ci \
+          bundle exec fastlane android distribute_ci \
             test_email:"${{ github.event.inputs.test_email }}" \
-            release_name:"${{ github.event.inputs.release_name }}" \
             release_notes:"${{ github.event.inputs.release_notes }}"

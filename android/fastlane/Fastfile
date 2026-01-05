@@ -1,33 +1,37 @@
+# Fastfile
 default_platform(:android)
 
+# Small speed/cleanliness improvements
+ENV["FASTLANE_SKIP_UPDATE_CHECK"] = "true"
+ENV["FASTLANE_HIDE_CHANGELOG"] = "true"
+
 platform :android do
-  desc "Distribute existing CI-built APK"
+  desc "Distribute existing CI-built APK (no build inside Fastlane)"
   lane :distribute_ci do |options|
-    test_email     = options[:test_email]
-    release_name   = options[:release_name]
-    release_notes  = options[:release_notes]
+    test_email    = options[:test_email]
+    release_notes = options[:release_notes].to_s
 
-    apk_path = "../build/app/outputs/flutter-apk/app-release.apk"
+    apk_path = options[:apk_path].to_s.strip
+    apk_path = "../build/app/outputs/flutter-apk/app-release.apk" if apk_path.empty?
 
-    # Check if APK already exists (built in CI workflow)
+    UI.message("Using APK path: #{apk_path}")
+
     unless File.exist?(apk_path)
-      UI.important("APK not found at #{apk_path}, building now...")
-      # Build the APK if it doesn't exist
-      sh(
-        "flutter", "build", "apk",
-        "--release",
-        "--no-shrink",
-        "--dart-define=ACTIVE_SYSTEMS=#{ENV['ACTIVE_SYSTEMS']}"
-      )
-    else
-      UI.success("Using existing APK from CI build")
+      UI.user_error!("APK not found at #{apk_path}. CI build step must produce it before running Fastlane.")
     end
 
-    # Firebase Distribution arguments
+    # Optional: show size quickly
+    begin
+      size_mb = (File.size(apk_path).to_f / (1024 * 1024)).round(2)
+      UI.message("APK size: #{size_mb} MB")
+    rescue
+      # ignore
+    end
+
     firebase_args = {
       app: "1:419893562273:android:5d15901a1b38730eb659e0",
       firebase_cli_token: ENV["FIREBASE_TOKEN"],
-      release_notes: release_notes,           # <-- NEW INPUT FROM WORKFLOW
+      release_notes: release_notes,
       groups: "nawah-team",
       apk_path: apk_path
     }
@@ -37,7 +41,8 @@ platform :android do
       firebase_args[:testers] = test_email
     end
 
-    # Upload to Firebase App Distribution
     firebase_app_distribution(**firebase_args)
+
+    UI.success("✅ Firebase distribution done.")
   end
 end
