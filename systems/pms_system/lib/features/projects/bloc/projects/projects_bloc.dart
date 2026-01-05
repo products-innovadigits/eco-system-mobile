@@ -113,6 +113,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
 
       // Get sorting parameters from sorting bloc
       final sortingParams = _sortingBloc?.getSortingParams() ?? {};
+      final filterParams = _getCurrentFilterParams();
 
       // Use nextPageIndex which converts 0-based to 1-based for API
       int pageIndexToRequest = _engine.nextPageIndex;
@@ -125,6 +126,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
               (acc, e) => {...acc, e.key: e.value},
             ),
         ...sortingParams,
+        ...filterParams,
 
         "searchKeyword": searchTEC?.text.trim(),
         "pageIndex": pageIndexToRequest,
