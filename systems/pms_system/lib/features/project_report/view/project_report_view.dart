@@ -18,7 +18,7 @@ class ProjectReportView extends StatelessWidget {
             ..add(
               LoadGeneralProgressSummary(
                 projectId: projectId,
-                chartType: ChartTime.month,
+                chartType: ChartTime.monthly,
               ),
             ),
         ),

@@ -10,11 +10,11 @@ abstract class ProjectDetailsRepo {
 
   static Future<dynamic> getProjectGeneralProgressSummary(
     int id, {
-    ChartTime chartType = ChartTime.month,
+    ChartTime chartType = ChartTime.monthly,
   }) async {
     return await Network().request(
       ApiNames.projectGeneralProgressSummary(id),
-      query: {'type': chartType == ChartTime.month ? 'monthly' : 'yearly'},
+      query: {'type': chartType == ChartTime.monthly ? 'monthly' : 'yearly'},
       method: ServerMethods.GET,
     );
   }

@@ -7,7 +7,7 @@ class MonthlyAnnualChartFilterWidget extends StatelessWidget {
   const MonthlyAnnualChartFilterWidget({
     super.key,
     required this.onSelect,
-    this.selectedTime = ChartTime.month,
+    this.selectedTime = ChartTime.monthly,
   });
 
   @override

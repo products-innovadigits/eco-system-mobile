@@ -27,9 +27,8 @@ class GeneralProgressSection extends StatelessWidget {
                 title: allTranslations.text(LocaleKeys.general_progress),
                 withExpanded: false,
                 withMargin: false,
-                action:
-                    (withFiltration == true &&
-                        (bloc.chartModel?.series ?? []).isNotEmpty)
+                action: (withFiltration == true)
+                    // && (bloc.chartModel?.series ?? []).isNotEmpty)
                     ? MonthlyAnnualChartFilterWidget(
                         selectedTime: bloc.selectedChartType,
                         onSelect: (time) {
@@ -41,7 +40,7 @@ class GeneralProgressSection extends StatelessWidget {
                       )
                     : null,
                 child: (bloc.chartModel?.series ?? []).isNotEmpty
-                    ? bloc.selectedChartType == ChartTime.month
+                    ? bloc.selectedChartType == ChartTime.monthly
                           ? ProjectMonthlyProgressSection(
                               chartSeries: bloc.chartModel?.series ?? [],
                               latestProgressItem: bloc.chartModel?.latest,

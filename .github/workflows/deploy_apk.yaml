@@ -19,7 +19,6 @@ on:
 
       release_notes:
         description: 'Release notes for Firebase tester emails'
-        required: true
 
 jobs:
   build:
@@ -43,6 +42,29 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
           cache: gradle
+
+      # ✅ Extra speed: cache Gradle build cache + wrapper + android/.gradle
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            android/.gradle
+          key: ${{ runner.os }}-gradle-${{ hashFiles('android/**/build.gradle*', 'android/**/settings.gradle*', 'android/gradle.properties', 'android/gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      # ✅ Extra speed: cache pub + dart tool
+      - name: Cache Pub + Dart tool
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache
+            .dart_tool
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
 
       - name: Verify .env exists
         shell: bash
@@ -107,7 +129,13 @@ jobs:
         run: flutter pub get
 
       - name: Set Gradle Heap Size
-        run: echo "org.gradle.jvmargs=-Xmx4g" >> android/gradle.properties
+        run: |
+          {
+            echo "org.gradle.jvmargs=-Xmx4g"
+            echo "org.gradle.parallel=true"
+            echo "org.gradle.caching=true"
+            echo "org.gradle.configureondemand=true"
+          } >> android/gradle.properties
 
       - name: Debug systems input
         run: echo "🚀 ACTIVE_SYSTEMS='${{ github.event.inputs.systems }}'"
@@ -206,16 +234,10 @@ jobs:
             echo "⚠️  key.properties not found - release build may fail if signing is required"
           fi
 
-      - name: Ensure dependencies are ready
-        shell: bash
-        run: |
-          set -e
-          flutter pub get
-
       - name: Flutter Analyze
         run: flutter analyze
 
-      # ✅ FIX: Build without verbose + export apk_path output
+      # ✅ Speed: --no-pub (pub get already done), no verbose
       - name: Build APK
         id: build_apk
         shell: bash
@@ -224,6 +246,7 @@ jobs:
 
           flutter build apk \
             --release \
+            --no-pub \
             --dart-define=ACTIVE_SYSTEMS="${{ github.event.inputs.systems }}"
 
           APK_PATH="build/app/outputs/flutter-apk/app-release.apk"
@@ -318,14 +341,12 @@ jobs:
             exit 1
           fi
 
-      # ✅ Fastlane speed: Bundler cache
       - name: Setup Ruby (with Bundler cache)
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.1
           bundler-cache: true
 
-      # ✅ FIX: pass absolute-ish workspace path to Fastlane to avoid ../ issues
       - name: Distribute via Firebase App Distribution
         working-directory: android
         env:

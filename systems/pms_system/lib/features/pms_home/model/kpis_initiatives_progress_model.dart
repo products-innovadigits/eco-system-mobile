@@ -42,4 +42,4 @@ class KpisInitiativesProgressModel extends SingleMapper {
   }
 }
 
-enum ChartTime { year, month }
+enum ChartTime { yearly, monthly }
