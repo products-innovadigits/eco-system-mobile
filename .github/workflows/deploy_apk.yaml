@@ -44,7 +44,6 @@ jobs:
           java-version: '17'
           cache: gradle
 
-      # ✅ Ensure .env exists (it should be in repo root)
       - name: Verify .env exists
         shell: bash
         run: |
@@ -56,8 +55,6 @@ jobs:
           fi
           echo "✅ .env found."
 
-      # ✅ Optional: Override specific .env keys from GitHub Secrets (if provided)
-      # This does NOT erase the file, it only replaces keys that exist or appends if missing.
       - name: Apply .env overrides from secrets (optional)
         shell: bash
         env:
@@ -77,16 +74,11 @@ jobs:
           upsert_env () {
             local key="$1"
             local value="$2"
-
-            # Skip if value is empty (secret not set)
             if [ -z "${value:-}" ]; then
               return 0
             fi
-
-            # Escape sed replacement (slashes, ampersands)
             local escaped
             escaped="$(printf '%s' "$value" | sed -e 's/[\/&]/\\&/g')"
-
             if grep -qE "^${key}=" .env; then
               sed -i "s/^${key}=.*/${key}=${escaped}/" .env
             else
@@ -105,7 +97,6 @@ jobs:
           upsert_env "SHARED_PREFERENCES_NAME" "${SHARED_PREFERENCES_NAME:-}"
           upsert_env "API_KEY" "${API_KEY:-}"
 
-          # Basic sanity: show important keys (mask API_KEY)
           echo "✅ Effective .env (safe preview):"
           grep -E "^(DOMAIN_DEV|DOMAIN_PRO|BASE_URL_PRO|BASE_URL_DEV|STRATEGY_BASE_URL_DEV|AUTH_BASE_URL_DEV|ATS_BASE_URL_DEV|GOOGLE_MAPS_BASE_URL|SHARED_PREFERENCES_NAME)=" .env || true
           if grep -qE "^API_KEY=" .env; then
@@ -127,29 +118,24 @@ jobs:
           set -euo pipefail
 
           mkdir -p lib/app/modules/generated
-
           SYSTEMS_RAW="${{ github.event.inputs.systems }}"
           echo "Generating enabled_modules.dart for systems: '$SYSTEMS_RAW'"
 
           IFS=',' read -ra RAW_ADDR <<< "$SYSTEMS_RAW"
-
           declare -A SEEN
           ADDR=()
 
           for i in "${RAW_ADDR[@]}"; do
             CLEAN_KEY="$(echo "$i" | xargs | tr '[:upper:]' '[:lower:]')"
-
             if [ -z "$CLEAN_KEY" ]; then
               echo "❌ Error: Empty system key detected (double comma or trailing comma)."
               echo "✅ Example valid input: strategy,ats,pms"
               exit 1
             fi
-
             if [[ -n "${SEEN[$CLEAN_KEY]+x}" ]]; then
               echo "❌ Error: Duplicate system key found: '$CLEAN_KEY'"
               exit 1
             fi
-
             SEEN[$CLEAN_KEY]=1
             ADDR+=("$CLEAN_KEY")
           done
@@ -160,24 +146,14 @@ jobs:
           fi
 
           OUT_FILE="lib/app/modules/generated/enabled_modules.dart"
-
           echo "import 'package:core_system/core/modules/system_module.dart';" > "$OUT_FILE"
 
           for i in "${ADDR[@]}"; do
             case "$i" in
-              pms)
-                echo "import 'package:pms_system/core/module/pms_module.dart';" >> "$OUT_FILE"
-                ;;
-              ats)
-                echo "import 'package:ats_system/ats_module.dart';" >> "$OUT_FILE"
-                ;;
-              strategy)
-                echo "import 'package:strategy_system/strategy_module.dart';" >> "$OUT_FILE"
-                ;;
-              *)
-                echo "❌ Error: Unknown system key '$i'. Valid keys: pms, ats, strategy."
-                exit 1
-                ;;
+              pms) echo "import 'package:pms_system/core/module/pms_module.dart';" >> "$OUT_FILE" ;;
+              ats) echo "import 'package:ats_system/ats_module.dart';" >> "$OUT_FILE" ;;
+              strategy) echo "import 'package:strategy_system/strategy_module.dart';" >> "$OUT_FILE" ;;
+              *) echo "❌ Error: Unknown system key '$i'. Valid keys: pms, ats, strategy." ; exit 1 ;;
             esac
           done
 
@@ -211,16 +187,12 @@ jobs:
         run: |
           set -euo pipefail
           echo "Checking for illegal feature imports in app shell..."
-
-          MATCHES=$(grep -rE "package:(ats|pms|strategy)_system" lib \
-            --exclude="enabled_modules.dart" || true)
-
+          MATCHES=$(grep -rE "package:(ats|pms|strategy)_system" lib --exclude="enabled_modules.dart" || true)
           if [ -n "$MATCHES" ]; then
             echo "❌ Modularity Violation: Direct feature imports found outside generated registry!"
             echo "$MATCHES"
             exit 1
           fi
-
           echo "✅ No illegal imports found."
 
       - name: Check key.properties
@@ -234,51 +206,57 @@ jobs:
             echo "⚠️  key.properties not found - release build may fail if signing is required"
           fi
 
-      # ✅ Speed: remove flutter clean (kills caches) + remove flutter pub deps (slow & not needed)
       - name: Ensure dependencies are ready
         shell: bash
         run: |
           set -e
           flutter pub get
 
-      # ✅ Speed: analyze is useful but can be long; keep it if you want gatekeeping.
       - name: Flutter Analyze
         run: flutter analyze
 
-      # ❌ Speed: doctor -v is slow and rarely needed in CI unless debugging.
-      # - name: Check Flutter doctor
-      #   run: flutter doctor -v
-
+      # ✅ FIX: Build without verbose + export apk_path output
       - name: Build APK
         id: build_apk
         shell: bash
         run: |
-          set -e
+          set -euo pipefail
+
           flutter build apk \
             --release \
-            --dart-define=ACTIVE_SYSTEMS="${{ github.event.inputs.systems }}" \
-            --verbose 2>&1 | tee build.log || (echo "Build failed, checking logs..." && cat build.log && exit 1)
-        continue-on-error: false
+            --dart-define=ACTIVE_SYSTEMS="${{ github.event.inputs.systems }}"
+
+          APK_PATH="build/app/outputs/flutter-apk/app-release.apk"
+
+          if [ ! -f "$APK_PATH" ]; then
+            echo "❌ APK not found at expected path: $APK_PATH"
+            echo "🔎 Listing build/app/outputs/flutter-apk:"
+            ls -la build/app/outputs/flutter-apk || true
+            echo "🔎 Searching for any APK under build/:"
+            find build -maxdepth 6 -name "*.apk" -print || true
+            exit 1
+          fi
+
+          echo "apk_path=$APK_PATH" >> "$GITHUB_OUTPUT"
+          echo "✅ APK ready at: $APK_PATH"
 
       - name: Tree-Shaking Verification
         shell: bash
         run: |
           set -euo pipefail
-          
+
+          APK_PATH="${{ steps.build_apk.outputs.apk_path }}"
+          EXTRACT_DIR="build/apk_tree_shake_check"
+
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           echo "🔍 Verifying Tree-Shaking Effectiveness"
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "APK: $APK_PATH"
           echo ""
-          
-          APK_PATH="build/app/outputs/flutter-apk/app-release.apk"
-          EXTRACT_DIR="build/apk_tree_shake_check"
-          
-          # Extract APK
-          echo "📦 Extracting APK..."
+
           rm -rf "$EXTRACT_DIR"
           unzip -q "$APK_PATH" -d "$EXTRACT_DIR"
-          
-          # Determine libapp.so path (prefer arm64, fallback to armeabi)
+
           if [ -f "$EXTRACT_DIR/lib/arm64-v8a/libapp.so" ]; then
             LIBAPP="$EXTRACT_DIR/lib/arm64-v8a/libapp.so"
             ARCH="arm64-v8a"
@@ -289,34 +267,24 @@ jobs:
             echo "❌ Error: libapp.so not found in APK"
             exit 1
           fi
-          
+
           echo "✅ Found libapp.so at: lib/$ARCH/libapp.so"
           echo ""
-          
-          # Parse enabled systems
+
           IFS=',' read -ra ENABLED_SYSTEMS <<< "${{ github.event.inputs.systems }}"
-          
-          # Define system configurations
+
           declare -A SYSTEM_PACKAGES=(
             ["ats"]="package:ats_system"
             ["pms"]="package:pms_system"
             ["strategy"]="package:strategy_system"
           )
-          
-          # Track verification results
+
           VIOLATIONS=0
-          
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo "📊 System Package Reference Analysis"
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo ""
-          
-          # Check each system
+
           for system in ats pms strategy; do
             PKG="${SYSTEM_PACKAGES[$system]}"
             COUNT=$(strings "$LIBAPP" | grep -c "$PKG" || true)
-          
-            # Determine if this system should be enabled
+
             SHOULD_BE_ENABLED=false
             for enabled in "${ENABLED_SYSTEMS[@]}"; do
               if [ "$(echo "$enabled" | xargs | tr '[:upper:]' '[:lower:]')" == "$system" ]; then
@@ -324,8 +292,7 @@ jobs:
                 break
               fi
             done
-          
-            # Verify expectations
+
             if [ "$SHOULD_BE_ENABLED" = true ]; then
               if [ "$COUNT" -gt 0 ]; then
                 echo "✅ ${system^^} (enabled): $COUNT references found"
@@ -342,58 +309,23 @@ jobs:
               fi
             fi
           done
-          
+
           echo ""
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          
-          # Final verdict
           if [ "$VIOLATIONS" -eq 0 ]; then
             echo "✅ PASS: Tree-shaking verification successful"
-            echo "   All disabled systems correctly excluded from binary"
-            echo "   All enabled systems present in binary"
           else
-            echo "❌ FAIL: Tree-shaking verification failed"
-            echo "   Found $VIOLATIONS violation(s)"
+            echo "❌ FAIL: Tree-shaking verification failed ($VIOLATIONS violation(s))"
             exit 1
           fi
-          
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo ""
 
-      - name: Capture build logs (if build fails)
-        if: failure()
-        shell: bash
-        run: |
-          echo "=== Build log (last 200 lines) ==="
-          if [ -f build.log ]; then
-            tail -200 build.log
-          else
-            echo "Build log file not found"
-          fi
-          echo ""
-          echo "=== Searching for errors in build log ==="
-          if [ -f build.log ]; then
-            grep -i -A 20 "error\|exception\|failure\|failed" build.log | head -100 || echo "No obvious errors found in grep"
-          fi
-
-      - name: Capture Gradle errors (if build fails)
-        if: failure()
-        working-directory: android
-        shell: bash
-        run: |
-          echo "=== Running Gradle with full stacktrace ==="
-          ./gradlew assembleRelease --stacktrace --info 2>&1 | tee gradle-error.log || true
-          echo ""
-          echo "=== Error summary from Gradle ==="
-          grep -i -B 5 -A 30 "FAILURE\|> Task.*FAILED\|Exception\|Error\|Caused by" gradle-error.log | head -150 || echo "No obvious errors in Gradle output"
-
-      # ✅ Fastlane speed: Bundler cache (requires Gemfile + Gemfile.lock committed at repo root)
+      # ✅ Fastlane speed: Bundler cache
       - name: Setup Ruby (with Bundler cache)
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.1
           bundler-cache: true
 
+      # ✅ FIX: pass absolute-ish workspace path to Fastlane to avoid ../ issues
       - name: Distribute via Firebase App Distribution
         working-directory: android
         env:
@@ -401,7 +333,7 @@ jobs:
           ACTIVE_SYSTEMS: ${{ github.event.inputs.systems }}
         run: |
           bundle exec fastlane android distribute_ci \
-            apk_path:"../build/app/outputs/flutter-apk/app-release.apk" \
+            apk_path:"${{ github.workspace }}/${{ steps.build_apk.outputs.apk_path }}" \
             release_name:"${{ github.event.inputs.release_name }}" \
             test_email:"${{ github.event.inputs.test_email }}" \
             release_notes:"${{ github.event.inputs.release_notes }}"
