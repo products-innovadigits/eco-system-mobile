@@ -17,14 +17,14 @@ on:
         description: 'Release name (e.g. v1.2.3-clientX)'
         required: true
 
+      release_notes:
+        description: 'Release notes for Firebase tester emails'
+
       enable_proxy:
         description: 'Enable proxy feature'
         required: false
         default: false
         type: boolean
-
-      release_notes:
-        description: 'Release notes for Firebase tester emails'
 
 jobs:
   build:
