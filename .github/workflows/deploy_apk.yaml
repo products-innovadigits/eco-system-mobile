@@ -19,7 +19,6 @@ on:
 
       release_notes:
         description: 'Release notes for Firebase tester emails'
-        required: true
 
       enable_proxy:
         description: 'Enable proxy feature'
