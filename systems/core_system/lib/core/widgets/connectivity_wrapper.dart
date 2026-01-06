@@ -27,11 +27,11 @@ class _ConnectivityWrapperState extends State<ConnectivityWrapper> {
             builder: (context, connectivitySnapshot) {
               final isConnected = connectivitySnapshot.data ?? true;
               log('ConnectivityWrapper - isConnected: $isConnected');
-
               return Stack(
                 children: [
                   widget.child,
-                  if (!isConnected) const ConnectivityWidget(),
+                  if (!isConnected && !UserBloc.enableProxy)
+                    const ConnectivityWidget(),
                 ],
               );
             },

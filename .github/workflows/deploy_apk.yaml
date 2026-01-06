@@ -17,6 +17,12 @@ on:
         description: 'Release name (e.g. v1.2.3-clientX)'
         required: true
 
+      enable_proxy:
+        description: 'Enable proxy feature'
+        required: false
+        default: false
+        type: boolean
+
       release_notes:
         description: 'Release notes for Firebase tester emails'
 
@@ -247,7 +253,8 @@ jobs:
           flutter build apk \
             --release \
             --no-pub \
-            --dart-define=ACTIVE_SYSTEMS="${{ github.event.inputs.systems }}"
+            --dart-define=ACTIVE_SYSTEMS="${{ github.event.inputs.systems }}" \
+            --dart-define=ENABLE_PROXY="${{ github.event.inputs.enable_proxy }}"
 
           APK_PATH="build/app/outputs/flutter-apk/app-release.apk"
 
