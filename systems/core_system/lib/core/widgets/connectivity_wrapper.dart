@@ -30,8 +30,8 @@ class _ConnectivityWrapperState extends State<ConnectivityWrapper> {
               return Stack(
                 children: [
                   widget.child,
-                  if (!isConnected && !UserBloc.enableProxy)
-                    const ConnectivityWidget(),
+                  if (UserBloc.enableProxy == false)
+                    if (!isConnected) const ConnectivityWidget(),
                 ],
               );
             },
