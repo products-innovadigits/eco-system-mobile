@@ -18,7 +18,6 @@ class _NavAppState extends State<NavApp> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      iconSize: 35,
       onTap: widget.onSelect,
       type: BottomNavigationBarType.fixed,
       currentIndex: widget.index,

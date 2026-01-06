@@ -4,6 +4,7 @@ import 'package:pms_system/features/projects_progress/widgets/half_circle_analat
 class ProjectProgressMobileLandscape extends StatelessWidget {
   final bool isPmsHome;
   final List<ProjectsOverviewData> data;
+
   const ProjectProgressMobileLandscape({
     super.key,
     required this.isPmsHome,
@@ -15,7 +16,7 @@ class ProjectProgressMobileLandscape extends StatelessWidget {
     return Stack(
       children: [
         MainCardWidget(
-          height: 660.h,
+          height: 520.h,
           title: allTranslations.text(LocaleKeys.project_progress_rate),
           onViewMoreTap: () => CustomNavigator.push(
             isPmsHome ? Routes.PROJECTS : Routes.PMS_LAYOUT,
@@ -82,12 +83,14 @@ class _ProgressHalfPie extends StatelessWidget {
   Widget build(BuildContext context) {
     final total = projects.fold<int>(0, (s, i) => s + (i.count ?? 0).toInt());
     return Positioned(
-      top: 220,
+      top: 100,
+      left: 0,
+      right: 0,
       child: Stack(
         children: [
-          HalfCircleAnalyticChart(projects),
+          HalfCircleAnalyticChart(projects, height: 300),
           Positioned(
-            top: 100.h,
+            top: 200.h,
             left: 0,
             right: 0,
             child: Align(

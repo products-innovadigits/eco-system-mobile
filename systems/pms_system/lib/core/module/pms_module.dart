@@ -3,7 +3,6 @@ import 'package:core_system/core/modules/system_module.dart';
 import 'package:core_system/core/utility/export.dart'; // BlocProvider
 import 'package:pms_system/features/latest_request/bloc/filtration/latest_request_filtration_cubit.dart';
 import 'package:pms_system/features/latest_request/view/latest_request_view.dart';
-import 'package:pms_system/features/project_categories_progress/view/project_category_progress_section.dart';
 import 'package:pms_system/features/project_details/view/project_details_view.dart';
 import 'package:pms_system/features/project_report/view/project_report_view.dart';
 import 'package:pms_system/features/projects/bloc/filtration/projects_filtration_bloc.dart';
@@ -85,16 +84,6 @@ class PmsModule implements SystemModule {
       builder: (context) {
         if (UserBloc.activeSystems.contains(ActiveSystemEnum.pms)) {
           return const ProjectManagementSection();
-        }
-        return const SizedBox.shrink();
-      },
-    ),
-    HomeSection(
-      id: 'project_category_progress',
-      order: 21,
-      builder: (context) {
-        if (UserBloc.activeSystems.contains(ActiveSystemEnum.pms)) {
-          return const ProjectCategoryProgressSection();
         }
         return const SizedBox.shrink();
       },

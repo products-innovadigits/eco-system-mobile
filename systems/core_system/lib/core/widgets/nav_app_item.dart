@@ -20,7 +20,7 @@ class NavAppItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 20.h),
+        SizedBox(height: 12.h),
         Images(image: isSelected ? activeIcon : icon, color: color),
         SizedBox(height: 2.h),
         Text(

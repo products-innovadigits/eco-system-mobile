@@ -72,7 +72,7 @@ class _PercentageChartSection extends StatelessWidget {
     return MainCardWidget(
       title: allTranslations.text(LocaleKeys.objective_percentage_rate),
       onViewMoreTap: () {
-        if(!isStrategyHome){
+        if (!isStrategyHome) {
           UserBloc.currentActiveSystem = ActiveSystemEnum.strategy;
         }
         isStrategyHome
@@ -84,13 +84,15 @@ class _PercentageChartSection extends StatelessWidget {
       },
       child: Column(
         children: [
+          const SizedBox(height: 12),
           CustomScreenTypeLayoutWidget(
             mobilePortrait: (ctx) =>
                 ObjectivePercentageChartMobilePortrait(objectives: objectives),
             mobileLandscape: (ctx) =>
                 ObjectivePercentageChartMobileLandscape(objectives: objectives),
           ),
-          const SizedBox(height: 12),
+
+          const SizedBox(height: 24),
           ChartCategoriesSection(objectives: objectives),
         ],
       ),

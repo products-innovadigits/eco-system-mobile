@@ -3,14 +3,16 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../../core/utility/pms_exports.dart';
 
 class HalfCircleAnalyticChart extends StatelessWidget {
-  const HalfCircleAnalyticChart(this.projects, {super.key});
+  final double? height;
+
+  const HalfCircleAnalyticChart(this.projects, {this.height, super.key});
 
   final List<ProjectsOverviewData> projects;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 280.h,
+      height: height ?? 280.h,
       child: Column(
         children: [
           Expanded(
