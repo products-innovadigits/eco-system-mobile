@@ -15,10 +15,11 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
         .toList();
 
     /// Check if Proxy is enabled from compile-time flag
-    UserBloc.enableProxy = bool.fromEnvironment(
+    final raw = const String.fromEnvironment(
       'ENABLE_PROXY',
-      defaultValue: false,
+      defaultValue: 'false',
     );
+    UserBloc.enableProxy = raw.toLowerCase().trim() == 'true';
   }
 
   Future<void> getColorScheme() async {
