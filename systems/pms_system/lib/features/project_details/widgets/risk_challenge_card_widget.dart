@@ -30,7 +30,7 @@ class RiskChallengeCardWidget extends StatelessWidget {
                 color: color,
               ),
             ),
-            4.sh,
+            SizedBox(height: 4.h),
             Text(
               title,
               style: context.textTheme.bodySmall?.copyWith(

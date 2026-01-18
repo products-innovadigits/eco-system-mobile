@@ -60,7 +60,7 @@ class _JobsCard extends StatelessWidget {
             },
           ),
           Divider(color: context.color.outline),
-          12.sh,
+          SizedBox(height: 12.h),
           child,
         ],
       ),

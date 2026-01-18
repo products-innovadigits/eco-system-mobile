@@ -13,7 +13,8 @@ class AllCandidatesSection extends StatelessWidget {
           controller: bloc.scrollController,
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
           itemCount: 1 + bloc.stages.length,
-          separatorBuilder: (context, index) => index == 0 ? 8.sh : 16.sh,
+          separatorBuilder: (context, index) =>
+              index == 0 ? SizedBox(height: 8.h) : SizedBox(height: 16.h),
           itemBuilder: (context, index) {
             if (index == 0) {
               return Row(
@@ -24,7 +25,7 @@ class AllCandidatesSection extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  8.sw,
+                  SizedBox(width: 8.w),
                   Text(
                     '(${bloc.candidateCount})',
                     style: context.textTheme.titleSmall?.copyWith(

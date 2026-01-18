@@ -89,13 +89,13 @@ class StageDocsTab extends StatelessWidget {
                                 style: context.textTheme.labelSmall,
                               ),
                             ),
-                            SizedBox(width: 8),
+                            SizedBox(width: 8.w),
                             _DocActionCardWidget(
                               icon: Assets.svgs.exporting.path,
                               onTap: () =>
                                   _showHtmlContent(context, document.document!),
                             ),
-                            SizedBox(width: 4),
+                            SizedBox(width: 4.w),
                             _DocActionCardWidget(
                               icon: Assets.svgs.eye.path,
                               onTap: () {
@@ -117,7 +117,7 @@ class StageDocsTab extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 8),
+                        SizedBox(height: 8.h),
                         Row(
                           children: [
                             Container(
@@ -133,7 +133,7 @@ class StageDocsTab extends StatelessWidget {
                                 color: context.color.secondary,
                               ),
                             ),
-                            const SizedBox(width: 4),
+                            SizedBox(width: 4.w),
                             Expanded(
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
@@ -149,7 +149,7 @@ class StageDocsTab extends StatelessWidget {
                                           color: context.color.outlineVariant,
                                         ),
                                   ),
-                                  const SizedBox(height: 2),
+                                  SizedBox(height: 2.h),
                                   Text(
                                     processName,
                                     style: context.textTheme.labelSmall
@@ -162,7 +162,7 @@ class StageDocsTab extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         BlocBuilder<StageDocsBloc, StageDocsState>(
                           builder: (context, state) {
                             final bloc = context.read<StageDocsBloc>();

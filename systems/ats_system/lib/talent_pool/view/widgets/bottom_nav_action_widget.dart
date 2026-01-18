@@ -35,7 +35,7 @@ class BottomNavActionWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Images(image: icon, color: Styles.details),
-          8.sh,
+          SizedBox(height: 8.h),
           Text(
             allTranslations.text(title),
             style: AppTextStyles.w400.copyWith(

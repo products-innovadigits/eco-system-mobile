@@ -27,7 +27,7 @@ class CandidateInfoCardWidget extends StatelessWidget {
             Text(value,
                 style: context.textTheme.titleLarge
                     ?.copyWith(color: context.color.primary)),
-            4.sh,
+            SizedBox(height: 4.h),
             Text(title,
                 style: context.textTheme.titleSmall
                     ?.copyWith(fontSize: 10, color: context.color.outlineVariant)),

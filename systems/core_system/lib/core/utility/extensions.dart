@@ -142,32 +142,3 @@ extension DateTimeExtension on DateTime {
   }
 }
 
-extension ScreenScale on num {
-  double get w =>
-      MediaQuery.of(CustomNavigator.navigatorState.currentContext!).size.width *
-      (toDouble() / 375);
-
-  double get h =>
-      MediaQuery.of(
-        CustomNavigator.navigatorState.currentContext!,
-      ).size.height *
-      (toDouble() / 812);
-}
-
-extension ScreenScaleWidget on num {
-  Widget get sw => SizedBox(
-    width:
-        MediaQuery.of(
-          CustomNavigator.navigatorState.currentContext!,
-        ).size.width *
-        (toDouble() / 375),
-  );
-
-  Widget get sh => SizedBox(
-    height:
-        MediaQuery.of(
-          CustomNavigator.navigatorState.currentContext!,
-        ).size.height *
-        (toDouble() / 812),
-  );
-}

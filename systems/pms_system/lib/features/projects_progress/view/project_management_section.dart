@@ -11,7 +11,7 @@ class ProjectManagementSection extends StatelessWidget {
     return Column(
       children: [
         ProjectProgressSection(isPmsHome: isPmsHome),
-        16.sh,
+        SizedBox(height: 16.h),
         ProjectCategoryProgressSection(isPmsHome: isPmsHome),
       ],
     );

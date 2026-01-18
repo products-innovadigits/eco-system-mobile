@@ -56,7 +56,7 @@ class EducationSection extends StatelessWidget {
                           //     itemBuilder: (context, index) =>
                           //         EducationCardWidget(
                           //             educationModel: educationList[index]),
-                          //     separatorBuilder: (context, index) => 24.sh,
+                          //     separatorBuilder: (context, index) => SizedBox(height: 24.h),
                           //     itemCount: educationList.length),
                         ),
                       ],

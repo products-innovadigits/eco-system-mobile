@@ -84,7 +84,7 @@ class _ProcessStepRowWidget extends StatelessWidget {
             color: context.color.outlineVariant.withValues(alpha: 0.3),
             size: 10,
           ),
-          const SizedBox(width: 6),
+          SizedBox(width: 6.w),
           Expanded(child: Text(title, style: context.textTheme.bodySmall)),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),

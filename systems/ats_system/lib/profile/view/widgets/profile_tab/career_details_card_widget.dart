@@ -36,12 +36,12 @@ class CareerDetailsCardWidget extends StatelessWidget {
                 color: context.color.primary,
               ),
             ),
-            8.sw,
+            SizedBox(width: 8.w),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(title, style: AppTextStyles.w400.copyWith(fontSize: 12)),
-                4.sh,
+                SizedBox(height: 4.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -52,7 +52,7 @@ class CareerDetailsCardWidget extends StatelessWidget {
                         fontSize: 10,
                       ),
                     ),
-                    4.sw,
+                    SizedBox(width: 4.w),
                     Text(
                       '$startDate - $endDate',
                       style: AppTextStyles.w400.copyWith(
@@ -67,7 +67,7 @@ class CareerDetailsCardWidget extends StatelessWidget {
           ],
         ),
         if (desc.isNotEmpty) ...[
-          8.sh,
+          SizedBox(height: 8.h),
           ReadMoreText(
             desc,
             trimMode: TrimMode.Line,

@@ -36,7 +36,7 @@ class ProjectsSortingBottomSheet extends StatelessWidget {
                       ),
                     ),
                   ),
-            80.sh,
+            SizedBox(height: 80.h),
             if (state is SortingOptionsLoaded ||
                 state is SortingOptionSelected ||
                 state is SortingApplied)
@@ -57,7 +57,7 @@ class ProjectsSortingBottomSheet extends StatelessWidget {
                       ),
                     ),
                     if (sortingBloc.hasAppliedSorting) ...[
-                      8.sw,
+                      SizedBox(width: 8.w),
                       Expanded(
                         child: CustomBtn(
                           text: allTranslations.text(LocaleKeys.reset),

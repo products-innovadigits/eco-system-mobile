@@ -152,7 +152,7 @@ Widget outputsBottomTitles(
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        8.sh,
+        SizedBox(height: 8.h),
         Text(
           outputData.label ?? '',
           style: TextStyle(

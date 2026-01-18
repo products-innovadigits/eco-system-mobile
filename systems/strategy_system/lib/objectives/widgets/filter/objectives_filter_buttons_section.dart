@@ -26,7 +26,7 @@ class ObjectivesFilterButtonsSection extends StatelessWidget {
             ),
           ),
           if (isFiltered) ...[
-            8.sw,
+            SizedBox(width: 8.w),
             Expanded(
               child: CustomBtn(
                 text: allTranslations.text(LocaleKeys.reset),

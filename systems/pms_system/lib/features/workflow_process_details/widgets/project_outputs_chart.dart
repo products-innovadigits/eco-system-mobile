@@ -160,7 +160,7 @@ Widget outputsBottomTitles(
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        8.sh,
+        SizedBox(height: 8.h),
         Text(
           allTranslations.text(outputData.titleKey),
           style: TextStyle(

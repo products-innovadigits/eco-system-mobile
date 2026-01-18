@@ -40,18 +40,18 @@ class ProfileHeaderSection extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          10.sh,
+                          SizedBox(height: 10.h),
                           ProfileCustomAppbarWidget(
                             title: candidateModel?.jobTitle ?? '',
                           ),
-                          16.sh,
+                          SizedBox(height: 16.h),
                           ProfileUserDataWidget(
                             cvUrl: candidateModel?.resume?.url ?? '',
                             showAvatarPercentage: !isTalent,
                             name: candidateModel?.name ?? '',
                             email: candidateModel?.email ?? '',
                           ),
-                          12.sh,
+                          SizedBox(height: 12.h),
                           Row(
                             spacing: 8.w,
                             mainAxisAlignment: MainAxisAlignment.start,

@@ -21,7 +21,7 @@ class OkrVisionSection extends StatelessWidget {
           child: Row(
             children: [
               Images(image: Assets.svgs.visionSquare.path , width: 22.w),
-              8.sw,
+              SizedBox(width: 8.w),
               Expanded(
                 child: Text(
                   visionTitle,
@@ -30,7 +30,7 @@ class OkrVisionSection extends StatelessWidget {
                   ),
                 ),
               ),
-              16.sw,
+              SizedBox(width: 16.w),
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(

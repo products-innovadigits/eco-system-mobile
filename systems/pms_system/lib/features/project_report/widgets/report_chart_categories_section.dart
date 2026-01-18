@@ -29,7 +29,7 @@ class ReportChartCategoriesSection extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
             ),
-            const SizedBox(width: 6),
+            SizedBox(width: 6.w),
             Text(
               activities[index].label ?? '-',
               style: context.textTheme.bodySmall,

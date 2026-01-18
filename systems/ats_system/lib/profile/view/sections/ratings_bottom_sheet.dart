@@ -17,12 +17,12 @@ class RatingsBottomSheet extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             BottomSheetHeader(title: allTranslations.text(LocaleKeys.rating)),
-            24.sh,
+            SizedBox(height: 24.h),
             RatingTabsSection(),
             profileBloc.selectedRatingTabIndex == 0
                 ? AddRatingTabSection()
                 : RatingsSection(),
-            24.sh,
+            SizedBox(height: 24.h),
           ],
         );
       },

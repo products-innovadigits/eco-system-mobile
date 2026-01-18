@@ -10,7 +10,7 @@ class ObjectivesFilterBottomSheetBody extends StatelessWidget {
       height: context.h * 0.62,
       child: ListAnimator(
         data: [
-          16.sh,
+          SizedBox(height: 16.h),
           CustomFiltersDropList(
             labelText: LocaleKeys.status,
             hintText: LocaleKeys.select_status,
@@ -20,7 +20,7 @@ class ObjectivesFilterBottomSheetBody extends StatelessWidget {
               bloc.selectedStatus = s;
             },
           ),
-          16.sh,
+          SizedBox(height: 16.h),
           CustomFiltersDropList(
             labelText: LocaleKeys.objective_type,
             hintText: LocaleKeys.select_objective_type,
@@ -30,7 +30,7 @@ class ObjectivesFilterBottomSheetBody extends StatelessWidget {
               bloc.selectedObjectiveType = s;
             },
           ),
-          16.sh,
+          SizedBox(height: 16.h),
           CustomFiltersDropList(
             labelText: LocaleKeys.axis,
             hintText: LocaleKeys.select_strategic_axis,
@@ -40,7 +40,7 @@ class ObjectivesFilterBottomSheetBody extends StatelessWidget {
               bloc.selectedAxis = s;
             },
           ),
-          16.sh,
+          SizedBox(height: 16.h),
           CustomFiltersDropList(
             labelText: LocaleKeys.perspective,
             hintText: LocaleKeys.select_perspective,
@@ -50,7 +50,7 @@ class ObjectivesFilterBottomSheetBody extends StatelessWidget {
               bloc.selectedPerspective = s;
             },
           ),
-          16.sh,
+          SizedBox(height: 16.h),
           CustomFiltersDropList(
             labelText: LocaleKeys.organizational_objective,
             hintText: LocaleKeys.select_organizational_objective,

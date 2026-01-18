@@ -16,7 +16,7 @@ class MainBodyMobilePortraitView extends StatelessWidget {
             ...ModulesRegistry.appSections.map(
               (section) => section.builder(context),
             ),
-            16.sh,
+            SizedBox(height: 16.h),
           ],
         ),
       ),

@@ -43,7 +43,7 @@ class StrategicAxisCardSection extends StatelessWidget {
               return Row(
                 children: [
                   Icon(Icons.circle, color: context.color.secondary, size: 10),
-                  2.sw,
+                  SizedBox(width: 2.w),
                   Expanded(
                     child: RichText(
                       text: TextSpan(

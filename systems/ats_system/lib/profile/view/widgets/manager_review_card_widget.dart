@@ -45,7 +45,7 @@ class ManagerReviewCardWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-                    8.sw,
+                    SizedBox(width: 8.w),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -56,7 +56,7 @@ class ManagerReviewCardWidget extends StatelessWidget {
                             fontSize: 12,
                           ),
                         ),
-                        2.sh,
+                        SizedBox(height: 2.h),
                         Text(
                           '4.5/5 ${allTranslations.text(LocaleKeys.degree)}',
                           style: AppTextStyles.w400.copyWith(
@@ -76,7 +76,7 @@ class ManagerReviewCardWidget extends StatelessWidget {
                 ),
               ),
               if (isExpanded) ...[
-                10.sh,
+                SizedBox(height: 10.h),
                 Padding(
                   padding: EdgeInsetsDirectional.only(start: 16.w),
                   child: Column(
@@ -89,7 +89,7 @@ class ManagerReviewCardWidget extends StatelessWidget {
                           fontSize: 10,
                         ),
                       ),
-                      8.sh,
+                      SizedBox(height: 8.h),
                       Text(
                         '١- لقد اعطاة معاذ ٣ من ٥ في المهارات',
                         style: AppTextStyles.w400.copyWith(
@@ -97,7 +97,7 @@ class ManagerReviewCardWidget extends StatelessWidget {
                           fontSize: 10,
                         ),
                       ),
-                      8.sh,
+                      SizedBox(height: 8.h),
                       Text(
                         '١- لقد اعطاة معاذ ٣ من ٥ في المهارات',
                         style: AppTextStyles.w400.copyWith(
@@ -105,7 +105,7 @@ class ManagerReviewCardWidget extends StatelessWidget {
                           fontSize: 10,
                         ),
                       ),
-                      8.sh,
+                      SizedBox(height: 8.h),
                     ],
                   ),
                 ),

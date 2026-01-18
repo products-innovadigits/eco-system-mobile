@@ -16,13 +16,13 @@ class ProfileSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 16.h,
       children: [
-       if(!isTalent) CandidateCompatibilitySection(),
+        if (!isTalent) CandidateCompatibilitySection(),
         CandidateInfoSection(),
         CandidateSkillsSection(),
         WorkExperienceSection(),
         EducationSection(),
         CertificatesSection(),
-        16.sh,
+        SizedBox(height: 16.h),
       ],
     );
   }

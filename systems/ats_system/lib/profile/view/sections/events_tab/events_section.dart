@@ -11,7 +11,7 @@ class EventsSection extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) => EventDetailsCardWidget(),
-      separatorBuilder: (context, index) => 28.sh,
+      separatorBuilder: (context, index) => SizedBox(height: 28.h),
       itemCount: 4,
     );
   }

@@ -19,7 +19,7 @@ class AddRatingTabSection extends StatelessWidget {
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: ratingItems.length,
-                  separatorBuilder: (_, index) => 16.sh,
+                  separatorBuilder: (_, index) => SizedBox(height: 16.h),
                   itemBuilder: (_, index) {
                     final item = ratingItems[index];
                     final controller = TextEditingController(
@@ -43,7 +43,7 @@ class AddRatingTabSection extends StatelessWidget {
                     );
                   },
                 ),
-                70.sh,
+                SizedBox(height: 70.h),
               ],
             ),
             Positioned(

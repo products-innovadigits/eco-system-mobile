@@ -29,7 +29,7 @@ class BscInfoContainer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Images(image: icon),
-          const SizedBox(width: 12),
+          SizedBox(width: 12.w),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(top: 4),
@@ -42,7 +42,7 @@ class BscInfoContainer extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: context.textTheme.labelMedium?.copyWith(color: color),
                   ),
-                  const SizedBox(width: 16),
+                  SizedBox(width: 16.w),
                   Expanded(
                     child:
                     descriptionWidget ??

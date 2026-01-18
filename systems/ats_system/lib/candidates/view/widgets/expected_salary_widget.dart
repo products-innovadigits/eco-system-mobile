@@ -2,9 +2,7 @@ import 'package:ats_system/shared/ats_exports.dart';
 import 'package:core_system/core/utility/export.dart';
 
 class ExpectedSalary extends StatelessWidget {
-
-  const ExpectedSalary(
-      {super.key,});
+  const ExpectedSalary({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,8 +10,10 @@ class ExpectedSalary extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(allTranslations.text(LocaleKeys.expected_salary),
-            style: context.textTheme.bodySmall),
+        Text(
+          allTranslations.text(LocaleKeys.expected_salary),
+          style: context.textTheme.bodySmall,
+        ),
         Row(
           children: [
             Expanded(
@@ -23,7 +23,7 @@ class ExpectedSalary extends StatelessWidget {
                 type: TextInputType.number,
               ),
             ),
-            4.sw,
+            SizedBox(width: 4.w),
             Expanded(
               child: CustomTextField(
                 hint: allTranslations.text(LocaleKeys.to),
@@ -31,7 +31,7 @@ class ExpectedSalary extends StatelessWidget {
                 type: TextInputType.number,
               ),
             ),
-            4.sw,
+            SizedBox(width: 4.w),
             Expanded(
               child: CustomDropList(
                 list: filtrationBloc.currencies,

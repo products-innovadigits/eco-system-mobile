@@ -10,9 +10,11 @@ class Location extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(allTranslations.text(LocaleKeys.location),
-            style: AppTextStyles.w400.copyWith(fontSize: 12)),
-        8.sh,
+        Text(
+          allTranslations.text(LocaleKeys.location),
+          style: AppTextStyles.w400.copyWith(fontSize: 12),
+        ),
+        SizedBox(height: 8.h),
         // CustomDropList(
         //   list: filtrationBloc.locations,
         //   hint: allTranslations.text(LocaleKeys.select_your_location),

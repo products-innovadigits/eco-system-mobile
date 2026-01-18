@@ -10,34 +10,36 @@ class WorkflowProcessDetailsView extends StatelessWidget {
     required this.processId,
     required this.projectId,
     required this.processName,
-    required this.projectName,
-    required this.stageName,
-    required this.projectStartDate,
-    required this.projectEndDate,
-    required this.projectManagerName,
-    required this.projectBudget,
+    // required this.projectName,
+    // required this.stageName,
+    // required this.projectStartDate,
+    // required this.projectEndDate,
+    // required this.projectManagerName,
+    // required this.projectBudget,
   });
 
   final int processId;
   final int projectId;
   final String processName;
-  final String projectName;
-  final String stageName;
-  final String projectManagerName;
-  final double projectBudget;
-  final DateTime? projectStartDate;
-  final DateTime? projectEndDate;
+
+  // final String projectName;
+  // final String stageName;
+  // final String projectManagerName;
+  // final double projectBudget;
+  // final DateTime? projectStartDate;
+  // final DateTime? projectEndDate;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => WorkflowProcessDetailsBloc()
-        ..add(
+      create: (context) {
+        return WorkflowProcessDetailsBloc()..add(
           LoadWorkflowProcessDetails(
-            processId: processId,
-            projectId: projectId,
+            processId: 305 ?? processId,
+            projectId: 249 ?? projectId,
           ),
-        ),
+        );
+      },
       child: Scaffold(
         appBar: CustomAppBar(
           title: processName,
@@ -119,17 +121,45 @@ class WorkflowProcessDetailsView extends StatelessWidget {
         ),
         body: SafeArea(
           child: ProcessDetailsBody(
-            projectDetailsModel: ProjectDetailsModel(
-              id: projectId,
-              title: projectName,
-              managerName: projectManagerName,
-              budget: projectBudget,
-              startDate: projectStartDate,
-              endDate: projectEndDate,
-            ),
+            projectId: projectId,
             processId: processId,
-            stageName: stageName,
-            processName: processName,
+            // projectDetailsModel: ProjectDetailsModel(
+            //   id: projectId,
+            //   title: context
+            //       .read<WorkflowProcessDetailsBloc>()
+            //       .stageDocsData
+            //       ?.processTitle,
+            //   managerName: context
+            //       .read<WorkflowProcessDetailsBloc>()
+            //       .stageDocsData
+            //       ?.projectManager,
+            //   budget: context
+            //       .read<WorkflowProcessDetailsBloc>()
+            //       .stageDocsData
+            //       ?.projectBudget,
+            //   startDate: DateTime.tryParse(
+            //     context
+            //             .read<WorkflowProcessDetailsBloc>()
+            //             .stageDocsData
+            //             ?.projectStartDate ??
+            //         '',
+            //   ),
+            //   endDate: DateTime.tryParse(
+            //     context
+            //             .read<WorkflowProcessDetailsBloc>()
+            //             .stageDocsData
+            //             ?.projectEndDate ??
+            //         '',
+            //   ),
+            // ),
+
+            // stageName:
+            //     context
+            //         .read<WorkflowProcessDetailsBloc>()
+            //         .stageDocsData
+            //         ?.processStageTitle ??
+            //     '',
+            // processName: processName,
           ),
         ),
       ),

@@ -27,12 +27,12 @@ class ViewCommentSection extends StatelessWidget {
                 style: context.textTheme.labelSmall,
               ),
             ),
-            SizedBox(width: 8),
+            SizedBox(width: 8.w),
             InkWell(
               onTap: () => _onDeleteComment(context, bloc, documentComment),
               child: Images(image: Assets.svgs.trash.path, width: 15),
             ),
-            const SizedBox(width: 6),
+            SizedBox(width: 6.w),
             InkWell(
               onTap: () => bloc.add(
                 ToggleEditComment(commentId: documentComment.id ?? 0),
@@ -75,7 +75,7 @@ void _onDeleteComment(
               onPressed: () => CustomNavigator.pop(),
             ),
           ),
-          SizedBox(width: 8),
+          SizedBox(width: 8.w),
           Expanded(
             child: CustomBtn(
               text: allTranslations.text(LocaleKeys.delete),

@@ -23,12 +23,12 @@ class CandidateSkillsSection extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              12.sh,
+              SizedBox(height: 12.h),
               Wrap(
                 spacing: 8.w,
                 runSpacing: 8.h,
                 children: List.generate(5, (index) => _buildShimmerSkill()),
-              )
+              ),
             ],
           );
         }
@@ -40,10 +40,11 @@ class CandidateSkillsSection extends StatelessWidget {
                 children: [
                   Text(
                     allTranslations.text(LocaleKeys.skills),
-                    style: context.textTheme.titleSmall
-                        ?.copyWith(fontWeight: FontWeight.w600),
+                    style: context.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                  8.sh,
+                  SizedBox(height: 8.h),
                   Wrap(
                     spacing: 8.w,
                     runSpacing: 8.h,
@@ -51,20 +52,22 @@ class CandidateSkillsSection extends StatelessWidget {
                       skills.length,
                       (index) => Container(
                         padding: EdgeInsets.symmetric(
-                            horizontal: 12.w, vertical: 6.h),
+                          horizontal: 12.w,
+                          vertical: 6.h,
+                        ),
                         decoration: BoxDecoration(
-                          color: context.color.secondary
-                              .withValues(alpha: 0.1),
+                          color: context.color.secondary.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
                           skills[index],
-                          style: context.textTheme.bodySmall
-                              ?.copyWith(fontSize: 10),
+                          style: context.textTheme.bodySmall?.copyWith(
+                            fontSize: 10,
+                          ),
                         ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               );
       },
@@ -82,11 +85,7 @@ Widget _buildShimmerSkill() {
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Container(
-        width: 40,
-        height: 10,
-        color: Colors.white,
-      ),
+      child: Container(width: 40, height: 10, color: Colors.white),
     ),
   );
 }

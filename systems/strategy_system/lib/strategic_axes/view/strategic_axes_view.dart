@@ -52,7 +52,7 @@ class StrategicAxesView extends StatelessWidget {
                     values: visionData.values ?? [],
                     messages: visionData.missions ?? [],
                   ),
-                  24.sh,
+                  SizedBox(height: 24.h),
 
                   /// Strategic Axes Section
                   Container(
@@ -76,7 +76,7 @@ class StrategicAxesView extends StatelessWidget {
                           selectedAxes: bloc.selectedAxes,
                           isStrategicAxes: true,
                         ),
-                        8.sh,
+                        SizedBox(height: 8.h),
 
                         /// Objectives Section
                         StrategicAxisObjectivesSection(

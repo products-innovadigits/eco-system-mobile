@@ -41,7 +41,7 @@ class _CustomFiltersDropListState extends State<CustomFiltersDropList> {
             allTranslations.text(widget.labelText ?? ''),
             style: context.textTheme.bodySmall,
           ),
-          8.sh,
+          SizedBox(height: 8.h),
         ],
         Theme(
           data: Theme.of(context).copyWith(

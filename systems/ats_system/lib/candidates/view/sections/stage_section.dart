@@ -22,28 +22,35 @@ class StageSection extends StatelessWidget {
               SizedBox(width: 8.w),
               Text(
                 stage.type ?? '',
-                style: context.textTheme.labelSmall
-                    ?.copyWith(color: context.color.secondary),
+                style: context.textTheme.labelSmall?.copyWith(
+                  color: context.color.secondary,
+                ),
               ),
-              4.sw,
-              Text('(${stage.count})',
-                  style: context.textTheme.labelSmall
-                      ?.copyWith(color: context.color.secondary)),
+              SizedBox(width: 4.w),
+              Text(
+                '(${stage.count})',
+                style: context.textTheme.labelSmall?.copyWith(
+                  color: context.color.secondary,
+                ),
+              ),
             ],
           ),
-          16.sh,
+          SizedBox(height: 16.h),
           stage.count == 0
               ? Container(
                   width: context.w,
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 40.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 40.h,
+                  ),
                   decoration: BoxDecoration(
-                      color: context.color.surfaceContainer,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: context.color.outline)),
+                    color: context.color.surfaceContainer,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: context.color.outline),
+                  ),
                   child: Center(
-                      child:
-                          Text(allTranslations.text(LocaleKeys.no_candidates))),
+                    child: Text(allTranslations.text(LocaleKeys.no_candidates)),
+                  ),
                 )
               : ListView.separated(
                   shrinkWrap: true,
@@ -52,7 +59,7 @@ class StageSection extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return CandidateCardWidget();
                   },
-                  separatorBuilder: (context, index) => 16.sh,
+                  separatorBuilder: (context, index) => SizedBox(height: 16.h),
                 ),
         ],
       ),

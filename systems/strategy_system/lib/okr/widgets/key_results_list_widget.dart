@@ -38,7 +38,7 @@ class KeyResultsListWidget extends StatelessWidget {
                           width: 14.w,
                         ),
                       ),
-                      8.sw,
+                      SizedBox(width: 8.w),
                       Expanded(
                         child: Text(
                           kr.title ?? '',

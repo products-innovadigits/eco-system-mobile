@@ -52,7 +52,7 @@ class _MonthlyAnnualChartFilterWidgetState
                 allTranslations.text(currentTime.name),
                 style: context.textTheme.bodySmall,
               ),
-              8.sw,
+              SizedBox(width: 8.w),
               Images(image: Assets.svgs.arrowDown.path, width: 6, height: 6),
             ],
           ),

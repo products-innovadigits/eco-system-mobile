@@ -42,14 +42,14 @@ class IndicatorsCardWidget extends StatelessWidget {
                   ),
                   child: Images(image: indicatorIcon, width: 14.w),
                 ),
-                8.sw,
+                SizedBox(width: 8.w),
                 Text(objectiveTitle, style: context.textTheme.labelMedium),
                 const Spacer(),
                 AnimatedExpansionArrowWidget(isExpanded: isExpanded),
               ],
             ),
           ),
-          16.sh,
+          SizedBox(height: 16.h),
           AnimatedCrossFade(
             firstChild: const SizedBox.shrink(),
             secondChild: Container(
@@ -82,7 +82,7 @@ class IndicatorsCardWidget extends StatelessWidget {
                           ),
                           child: Images(image: indicatorIcon, width: 14.w),
                         ),
-                        8.sw,
+                        SizedBox(width: 8.w),
                         Expanded(
                           child: Text(
                             indicator.title ?? '',

@@ -38,7 +38,7 @@ class OutputCardWidget extends StatelessWidget {
                             size: 12,
                             color: color.withValues(alpha: 0.1),
                           ),
-                          const SizedBox(width: 4),
+                          SizedBox(width: 4.w),
                           Expanded(
                             child: Text(
                               output,

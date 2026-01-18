@@ -29,10 +29,11 @@ class ApplicantMoreDialog extends StatelessWidget {
                   onTap: () {
                     profileBloc.resetRatingBottomSheetData();
                     PopUpHelper.showBottomSheet(
-                        child: BlocProvider.value(
-                      value: profileBloc,
-                      child: RatingsBottomSheet(),
-                    ));
+                      child: BlocProvider.value(
+                        value: profileBloc,
+                        child: RatingsBottomSheet(),
+                      ),
+                    );
                   },
                 ),
                 MoreDialogTileWidget(
@@ -51,22 +52,26 @@ class ApplicantMoreDialog extends StatelessWidget {
                           Column(
                             children: [
                               BottomSheetHeader(
-                                  title: allTranslations.text(LocaleKeys.assign_to_job)),
-                              24.sh,
+                                title: allTranslations.text(
+                                  LocaleKeys.assign_to_job,
+                                ),
+                              ),
+                              SizedBox(height: 24.h),
                               AssignToJobList(
                                 onSelectJob: (jobs) {},
                                 selectedJobsList: [],
                               ),
-                              52.sh,
+                              SizedBox(height: 52.h),
                             ],
                           ),
                           Positioned(
                             bottom: 0,
                             child: CustomBtn(
-                                width: context.w * 0.9,
-                                text: allTranslations.text(LocaleKeys.save),
-                                onPressed: () {}),
-                          )
+                              width: context.w * 0.9,
+                              text: allTranslations.text(LocaleKeys.save),
+                              onPressed: () {},
+                            ),
+                          ),
                         ],
                       ),
                     );

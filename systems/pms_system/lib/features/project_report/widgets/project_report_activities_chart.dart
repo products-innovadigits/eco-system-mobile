@@ -30,7 +30,7 @@ class ProjectReportActivitiesChart extends StatelessWidget {
               : ReportObjectivePercentageChartMobilePortrait(
                   activities: activities,
                 ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12.h),
           if (!isEmpty) ReportChartCategoriesSection(activities: activities),
         ],
       ),

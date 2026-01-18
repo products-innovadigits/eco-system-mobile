@@ -25,14 +25,14 @@ class VisionSection extends StatelessWidget {
           icon: Assets.svgs.vision.path,
           description: visionTitle,
         ),
-        12.sh,
+        SizedBox(height: 12.h),
         BscInfoContainer(
           color: LightColor.chartTertiary,
           title: allTranslations.text(LocaleKeys.the_message),
           icon: Assets.svgs.multiMessage.path,
           descriptionWidget: MessagesListSection(messages: messages),
         ),
-        12.sh,
+        SizedBox(height: 12.h),
         BscInfoContainer(
           color: LightColor.chartSecondary,
           title: allTranslations.text(LocaleKeys.values),
@@ -59,7 +59,7 @@ class VisionSection extends StatelessWidget {
                   ),
                 );
               },
-              separatorBuilder: (_, _) => 8.sw,
+              separatorBuilder: (_, _) => SizedBox(width: 8.w),
               itemCount: values.length,
             ),
           ),

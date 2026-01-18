@@ -26,7 +26,7 @@ class SectionTitle extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          if (icon != null) ...[Images(image: icon!), 16.sw],
+          if (icon != null) ...[Images(image: icon!), SizedBox(width: 16.w)],
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

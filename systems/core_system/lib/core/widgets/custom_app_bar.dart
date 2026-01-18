@@ -120,7 +120,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                       ),
                     ),
                   ),
-                  8.sw,
+                  SizedBox(width: 8.w),
                 ],
                 Expanded(
                   child: Text(
@@ -227,7 +227,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         if (widget.withSorting ?? false) ...[
-                          8.sw,
+                          SizedBox(width: 8.w),
                           GestureDetector(
                             onTap: () {
                               if (widget.onSorting != null) {
@@ -269,7 +269,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                           ),
                         ],
                         if (widget.withFilter ?? false) ...[
-                          8.sw,
+                          SizedBox(width: 8.w),
                           GestureDetector(
                             onTap: () {
                               if (widget.onFiltering != null) {

@@ -33,7 +33,7 @@ class MoreDialogTileWidget extends StatelessWidget {
               child: Row(
                 children: [
                   Images(image: iconPath, color: context.color.secondary),
-                  8.sw,
+                  SizedBox(width: 8.w),
                   Text(
                     allTranslations.text(title),
                     style: context.textTheme.bodySmall,

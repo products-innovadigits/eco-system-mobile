@@ -80,7 +80,7 @@ class _TalentPoolCard extends StatelessWidget {
               onViewTap: () {}, // kept as-is
             ),
             Divider(color: context.color.outline),
-            12.sh,
+            SizedBox(height: 12.h),
             child,
           ],
         ),

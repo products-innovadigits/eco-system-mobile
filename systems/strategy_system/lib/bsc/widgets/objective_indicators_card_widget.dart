@@ -55,7 +55,7 @@ class ObjectiveIndicatorsCardWidget extends StatelessWidget {
                             : context.color.primary,
                       ),
                     ),
-                    8.sw,
+                    SizedBox(width: 8.w),
                     Text(
                       objectiveTitle,
                       style: context.textTheme.labelMedium?.copyWith(
@@ -74,7 +74,7 @@ class ObjectiveIndicatorsCardWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              16.sh,
+              SizedBox(height: 16.h),
               AnimatedCrossFade(
                 firstChild: const SizedBox.shrink(),
                 secondChild: Container(
@@ -88,7 +88,7 @@ class ObjectiveIndicatorsCardWidget extends StatelessWidget {
                         isExpanded: bscBloc.isKpisExpanded,
                         indicatorIcon: Assets.svgs.focus.path,
                       ),
-                      16.sh,
+                      SizedBox(height: 16.h),
                       IndicatorsCardWidget(
                         objectiveTitle: LocaleKeys.initiatives,
                         indicators: initiatives,
@@ -97,7 +97,7 @@ class ObjectiveIndicatorsCardWidget extends StatelessWidget {
                         isExpanded: bscBloc.isInitiativesExpanded,
                         indicatorIcon: Assets.svgs.rocket.path,
                       ),
-                      24.sh,
+                      SizedBox(height: 24.h),
                     ],
                   ),
                 ),

@@ -22,7 +22,7 @@ class WhQuestionWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(question, style: AppTextStyles.w400.copyWith(fontSize: 11)),
-          8.sh,
+          SizedBox(height: 8.h),
           Text(
             answer,
             style: AppTextStyles.w400.copyWith(

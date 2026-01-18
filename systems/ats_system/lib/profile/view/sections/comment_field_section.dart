@@ -29,7 +29,7 @@ class CommentFieldSection extends StatelessWidget {
                 color: context.color.primary,
               ),
             ),
-            4.sw,
+            SizedBox(width: 4.w),
             Text(
               comment,
               style: AppTextStyles.w400.copyWith(
@@ -37,7 +37,7 @@ class CommentFieldSection extends StatelessWidget {
                 color: Styles.subTextDarkColor,
               ),
             ),
-            4.sw,
+            SizedBox(width: 4.w),
             InkWell(
               onTap: () {
                 controller.text = comment;
@@ -53,7 +53,7 @@ class CommentFieldSection extends StatelessWidget {
         child: Row(
           children: [
             Images(image: Assets.svgs.addCircle.path),
-            8.sw,
+            SizedBox(width: 8.w),
             Text(
               allTranslations.text(LocaleKeys.add_comment),
               style: AppTextStyles.w400.copyWith(

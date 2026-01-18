@@ -10,10 +10,11 @@ class RatingsSection extends StatelessWidget {
     return Column(
       children: [
         ManagersReviewsListSection(),
-        16.sh,
+        SizedBox(height: 16.h),
         CompatibilityPercentageWidget(
-            title: allTranslations.text(LocaleKeys.final_evaluation),
-            percentage: 80)
+          title: allTranslations.text(LocaleKeys.final_evaluation),
+          percentage: 80,
+        ),
       ],
     );
   }

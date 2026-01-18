@@ -11,12 +11,12 @@ class TryAgainWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        if (header != null) ...[header!, 12.sh],
+        if (header != null) ...[header!, SizedBox(height: 12.h)],
         Text(
           allTranslations.text(LocaleKeys.something_went_wrong),
           style: context.textTheme.labelSmall,
         ),
-        12.sh,
+        SizedBox(height: 12.h),
         InkWell(
           onTap: onTryAgain,
           child: Row(
@@ -29,7 +29,7 @@ class TryAgainWidget extends StatelessWidget {
                   fontSize: 12,
                 ),
               ),
-              8.sw,
+              SizedBox(width: 8.w),
               Icon(
                 Icons.refresh_outlined,
                 color: context.color.outlineVariant,

@@ -10,8 +10,10 @@ class Experience extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(allTranslations.text(LocaleKeys.experience),
-            style: AppTextStyles.w400.copyWith(fontSize: 12)),
+        Text(
+          allTranslations.text(LocaleKeys.experience),
+          style: AppTextStyles.w400.copyWith(fontSize: 12),
+        ),
         Row(
           children: [
             Expanded(
@@ -22,7 +24,7 @@ class Experience extends StatelessWidget {
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               ),
             ),
-            4.sw,
+            SizedBox(width: 4.w),
             Expanded(
               child: CustomTextField(
                 hint: allTranslations.text(LocaleKeys.to),

@@ -137,7 +137,7 @@ class _StageProcessCardWidget extends StatelessWidget {
         child: Row(
           children: [
             Icon(Icons.circle, color: color, size: 10),
-            const SizedBox(width: 6),
+            SizedBox(width: 6.w),
             Expanded(child: Text(title, style: context.textTheme.bodySmall)),
             Icon(Icons.arrow_forward, color: color, size: 16),
             // InkWell(
@@ -162,7 +162,7 @@ class _StageProcessCardWidget extends StatelessWidget {
             //             fontSize: FontSizes.f10,
             //           ),
             //         ),
-            //         SizedBox(width: 6),
+            //         SizedBox(width: 6.w),
             //         Icon(Icons.arrow_forward, color: color, size: 12),
             //       ],
             //     ),

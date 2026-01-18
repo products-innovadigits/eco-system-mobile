@@ -10,9 +10,11 @@ class Gender extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(allTranslations.text(LocaleKeys.gender),
-            style: context.textTheme.bodySmall),
-        8.sh,
+        Text(
+          allTranslations.text(LocaleKeys.gender),
+          style: context.textTheme.bodySmall,
+        ),
+        SizedBox(height: 8.h),
         CustomDropList(
           list: filtrationBloc.genders,
           hint: filtrationBloc.genderController.text.isEmpty

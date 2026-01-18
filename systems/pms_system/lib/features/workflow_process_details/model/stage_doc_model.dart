@@ -30,6 +30,13 @@ class StageDocData {
   WorkflowStep? currentStep;
   List<WorkflowStep>? nextStep;
   String? workFlowStatus;
+  String? processTitle;
+  String? projectTitle;
+  String? projectManager;
+  double? projectBudget;
+  String? projectStartDate;
+  String? projectEndDate;
+  String? processStageTitle;
   String? pdfFilePath;
   num? stepDocumentId;
 
@@ -57,6 +64,13 @@ class StageDocData {
       }
     }
     workFlowStatus = json['workFlowStatus']?.toString();
+    processTitle = json['processTitle']?.toString();
+    projectTitle = json['projectTitle']?.toString();
+    projectManager = json['projectManager']?.toString();
+    projectBudget = (json['projectBudget'] as num?)?.toDouble();
+    projectStartDate = json['projectStartDate']?.toString();
+    projectEndDate = json['projectEndDate']?.toString();
+    processStageTitle = json['processStageTitle']?.toString();
     pdfFilePath = json['pdfFilePath']?.toString();
     stepDocumentId = json['stepDocumentId'] as num?;
   }
@@ -68,6 +82,13 @@ class StageDocData {
       map['nextStep'] = nextStep!.map((e) => e.toJson()).toList();
     }
     map['workFlowStatus'] = workFlowStatus;
+    map['processTitle'] = processTitle;
+    map['projectTitle'] = projectTitle;
+    map['projectManager'] = projectManager;
+    map['projectBudget'] = projectBudget;
+    map['projectStartDate'] = projectStartDate;
+    map['projectEndDate'] = projectEndDate;
+    map['processStageTitle'] = processStageTitle;
     map['pdfFilePath'] = pdfFilePath;
     map['stepDocumentId'] = stepDocumentId;
     return map;

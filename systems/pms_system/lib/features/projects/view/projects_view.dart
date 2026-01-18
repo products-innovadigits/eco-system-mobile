@@ -1,11 +1,12 @@
+import 'package:core_system/core/components/custom_screen_type_layout_widget.dart';
 import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/projects/bloc/filtration/projects_filtration_bloc.dart';
 import 'package:pms_system/features/projects/bloc/projects/projects_bloc.dart';
 import 'package:pms_system/features/projects/bloc/projects/projects_events.dart';
-import 'package:pms_system/features/projects/bloc/projects/projects_state.dart';
 import 'package:pms_system/features/projects/bloc/sorting/projects_sorting_bloc.dart';
-import 'package:pms_system/features/projects/widgets/project_card.dart';
 import 'package:pms_system/features/projects/widgets/projects_app_bar_widget.dart';
+import 'package:pms_system/features/projects/widgets/projects_body_mobile_landscape_view.dart';
+import 'package:pms_system/features/projects/widgets/projects_body_mobile_portrait_view.dart';
 import 'package:pms_system/shared/widgets/pms_bottom_nav_bar.dart';
 
 class ProjectsView extends StatefulWidget {
@@ -17,10 +18,17 @@ class ProjectsView extends StatefulWidget {
 
 class _ProjectsViewState extends State<ProjectsView> {
   int _selectedIndex = 0;
+  late ProjectsSortingBloc _sortingBloc;
+  late ProjectsBloc _projectsBloc;
 
   @override
   void initState() {
     super.initState();
+    _sortingBloc = ProjectsSortingBloc();
+    _projectsBloc = ProjectsBloc(sortingBloc: _sortingBloc)..add(
+      LoadProjects(searchEngine: SearchEngine()),
+    );
+
     // Clear filters when entering the view
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
@@ -30,70 +38,32 @@ class _ProjectsViewState extends State<ProjectsView> {
   }
 
   @override
+  void dispose() {
+    _sortingBloc.close();
+    _projectsBloc.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<ProjectsSortingBloc>(
-          create: (context) => ProjectsSortingBloc(),
-        ),
-        BlocProvider<ProjectsBloc>(
-          create: (context) {
-            final sortingBloc = context.read<ProjectsSortingBloc>();
-            return ProjectsBloc(sortingBloc: sortingBloc)
-              ..add(LoadProjects(searchEngine: SearchEngine()));
-          },
-        ),
+        BlocProvider<ProjectsSortingBloc>.value(value: _sortingBloc),
+        BlocProvider<ProjectsBloc>.value(value: _projectsBloc),
       ],
       child: Builder(
         builder: (context) {
-          final bloc = context.read<ProjectsBloc>();
-          final sortingBloc = context.read<ProjectsSortingBloc>();
+          final isPortrait =
+              MediaQuery.of(context).orientation == Orientation.portrait;
           return Scaffold(
-            appBar: ProjectsAppBarWidget(bloc: bloc, sortingBloc: sortingBloc),
-            body: SafeArea(
-              child: BlocBuilder<ProjectsBloc, ProjectsState>(
-                builder: (context, state) {
-                  return switch (state) {
-                    // Loading first page
-                    ProjectsLoading() => const ShimmerCardsList(),
-
-                    // Handle loaded state with data models
-                    ProjectsLoaded(:final projects, :final isLoadingMore) =>
-                      Column(
-                        children: [
-                          Expanded(
-                            child: ListAnimator(
-                              customPadding: EdgeInsets.symmetric(
-                                horizontal: 16.w,
-                              ),
-                              controller: context
-                                  .read<ProjectsBloc>()
-                                  .scrollController,
-                              data: projects
-                                  .map(
-                                    (project) => ProjectCard(project: project),
-                                  )
-                                  .toList(),
-                            ),
-                          ),
-                          CustomLoading(
-                            isTextLoading: true,
-                            loading: isLoadingMore,
-                          ),
-                        ],
-                      ),
-
-                    // Empty
-                    ProjectsEmpty(:final isInitial) => _HandleEmptyList(
-                      initial: isInitial,
-                      bloc: bloc,
-                    ),
-
-                    // Error or fallback
-                    _ => _HandleErrorState(bloc: bloc),
-                  };
-                },
-              ),
+            appBar: ProjectsAppBarWidget(
+              bloc: _projectsBloc,
+              sortingBloc: _sortingBloc,
+              isPortrait: isPortrait,
+            ),
+            body: CustomScreenTypeLayoutWidget(
+              mobilePortrait: (ctx) => const ProjectsBodyMobilePortraitView(),
+              mobileLandscape: (ctx) => const ProjectsBodyMobileLandscapeView(),
             ),
             bottomNavigationBar: PmsBottomNavBar(
               index: _selectedIndex,
@@ -108,46 +78,6 @@ class _ProjectsViewState extends State<ProjectsView> {
             ),
           );
         },
-      ),
-    );
-  }
-}
-
-class _HandleEmptyList extends StatelessWidget {
-  final bool? initial;
-  final ProjectsBloc bloc;
-
-  const _HandleEmptyList({required this.initial, required this.bloc});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: context.h * 0.6,
-      child: EmptyContainer(
-        txt: initial == true
-            ? null
-            : (bloc.searchTEC != null && bloc.searchTEC!.text.isEmpty)
-            ? allTranslations.text(LocaleKeys.no_projects_match_your_filters)
-            : '${allTranslations.text(LocaleKeys.no_projects_match)} \' ${bloc.searchTEC!.text} \'',
-      ),
-    );
-  }
-}
-
-class _HandleErrorState extends StatelessWidget {
-  final ProjectsBloc bloc;
-
-  const _HandleErrorState({required this.bloc});
-
-  @override
-  Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () async {
-        bloc.add(const RefreshProjects());
-      },
-      child: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: SizedBox(height: context.h * 0.6, child: const ErrorContainer()),
       ),
     );
   }

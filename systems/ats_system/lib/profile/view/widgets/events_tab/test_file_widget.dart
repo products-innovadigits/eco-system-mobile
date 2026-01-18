@@ -6,26 +6,25 @@ class TestFileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
-          horizontal: 16.w, vertical: 10.h),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
       decoration: BoxDecoration(
-          color: context.color.surfaceContainer,
-          border: Border.all(color: context.color.outline),
-          borderRadius: BorderRadius.circular(10)),
+        color: context.color.surfaceContainer,
+        border: Border.all(color: context.color.outline),
+        borderRadius: BorderRadius.circular(10),
+      ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Images(
-              image: Assets.svgs.file.path,
-              color: context.color.primary),
-          8.sw,
+          Images(image: Assets.svgs.file.path, color: context.color.primary),
+          SizedBox(width: 8.w),
           Text(
             allTranslations.text(LocaleKeys.test_file),
             style: AppTextStyles.w500.copyWith(
-                color: context.color.primary,
-                fontSize: 10),
-          )
+              color: context.color.primary,
+              fontSize: 10,
+            ),
+          ),
         ],
       ),
     );

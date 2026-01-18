@@ -26,7 +26,7 @@ class ProjectDetailsDescription extends StatelessWidget {
                 desc: (model.startDate ?? DateTime.now()).format("d MMM yyyy"),
               ),
             ),
-            SizedBox(width: 8.h),
+            SizedBox(width: 8.w),
             Expanded(
               child: ProjectContentCard(
                 icon: Assets.svgs.calendarTick.path,
@@ -47,7 +47,7 @@ class ProjectDetailsDescription extends StatelessWidget {
                 desc: model.sectionDepartment?.name ?? "",
               ),
             ),
-            SizedBox(width: 8.h),
+            SizedBox(width: 8.w),
             Expanded(
               child: ProjectContentCard(
                 icon: Assets.svgs.projectLifeCycle.path,
@@ -72,7 +72,7 @@ class ProjectDetailsDescription extends StatelessWidget {
                 desc: model.projectCategoryName ?? "",
               ),
             ),
-            SizedBox(width: 8.h),
+            SizedBox(width: 8.w),
             Expanded(
               child: ProjectContentCard(
                 icon: Assets.svgs.user.path,
@@ -93,7 +93,7 @@ class ProjectDetailsDescription extends StatelessWidget {
         //         desc: model.teamName?[0].name ?? '',
         //       ),
         //     ),
-        //     SizedBox(width: 8.h),
+        //     SizedBox(width: 8.w),
         //     Expanded(
         //       child: ProjectContentCard(
         //         icon: Assets.svgs.warning.path,
@@ -114,7 +114,7 @@ class ProjectDetailsDescription extends StatelessWidget {
         //         desc: "${model.budget ?? 0}",
         //       ),
         //     ),
-        //     SizedBox(width: 8.h),
+        //     SizedBox(width: 8.w),
         //     Expanded(
         //       child: ProjectContentCard(
         //         icon: Assets.svgs.task.path,

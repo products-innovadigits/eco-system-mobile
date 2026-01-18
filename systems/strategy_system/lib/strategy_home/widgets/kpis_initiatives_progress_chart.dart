@@ -125,7 +125,7 @@ final TooltipBehavior _tooltip = TooltipBehavior(
                       fontSize: 12,
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: 8.w),
                   Text(
                     '${m.kpisValue}% '
                     '${allTranslations.text(LocaleKeys.kpi)}',

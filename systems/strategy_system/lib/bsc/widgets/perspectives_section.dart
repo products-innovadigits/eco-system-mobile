@@ -50,7 +50,7 @@ class PerspectivesSection extends StatelessWidget {
                             BottomSheetHeader(
                               title: perspectives[index].title ?? '',
                             ),
-                            24.sh,
+                            SizedBox(height: 24.h),
                             ObjectivesBottomSheet(
                               objectivesList:
                                   perspectives[index].objectives ?? [],

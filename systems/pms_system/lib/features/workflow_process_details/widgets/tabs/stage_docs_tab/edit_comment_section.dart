@@ -70,7 +70,7 @@ class EditCommentSection extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: 12.w),
             InkWell(
               onTap: () => bloc.add(
                 ToggleEditComment(commentId: documentComment.id ?? 0),

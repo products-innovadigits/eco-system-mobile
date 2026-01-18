@@ -26,7 +26,7 @@ class ProjectReportSummary extends StatelessWidget {
                   // desc: (model.endDate ?? DateTime.now()).format("d MMM yyyy"),
                 ),
               ),
-              SizedBox(width: 8.h),
+              SizedBox(width: 8.w),
               Expanded(
                 child: ProjectContentCard(
                   icon: Assets.svgs.user.path,
@@ -50,7 +50,7 @@ class ProjectReportSummary extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(width: 8.h),
+              SizedBox(width: 8.w),
               Expanded(
                 child: ProjectContentCard(
                   icon: Assets.svgs.calendarEnd.path,
@@ -73,7 +73,7 @@ class ProjectReportSummary extends StatelessWidget {
                   desc: reportDetails.approvedBudget.toString(),
                 ),
               ),
-              // SizedBox(width: 8.h),
+              // SizedBox(width: 8.w),
               // Expanded(
               //   child: ProjectContentCard(
               //     icon: Assets.svgs.multiCard.path,
@@ -96,7 +96,7 @@ class ProjectReportSummary extends StatelessWidget {
           //         desc: 'الموشر المختص',
           //       ),
           //     ),
-          //     SizedBox(width: 8.h),
+          //     SizedBox(width: 8.w),
           //     Expanded(
           //       child: ProjectContentCard(
           //         icon: Assets.svgs.building.path,

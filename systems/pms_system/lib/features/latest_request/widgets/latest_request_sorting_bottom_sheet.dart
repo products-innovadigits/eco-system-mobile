@@ -37,7 +37,7 @@ class LatestRequestSortingBottomSheet extends StatelessWidget {
                       ),
                     ),
                   ),
-            80.sh,
+            SizedBox(height: 80.h),
             if (state is LatestRequestSortingOptionsLoaded ||
                 state is LatestRequestSortingOptionSelected ||
                 state is LatestRequestSortingApplied)
@@ -58,7 +58,7 @@ class LatestRequestSortingBottomSheet extends StatelessWidget {
                       ),
                     ),
                     if (sortingCubit.hasAppliedSorting) ...[
-                      8.sw,
+                      SizedBox(width: 8.w),
                       Expanded(
                         child: CustomBtn(
                           text: allTranslations.text(LocaleKeys.reset),

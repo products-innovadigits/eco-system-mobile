@@ -58,7 +58,7 @@ class WorkExperienceSection extends StatelessWidget {
                           //   itemBuilder: (context, index) =>
                           //       ExperienceCardWidget(
                           //           experience: experienceList[index]),
-                          //   separatorBuilder: (context, index) => 24.sh,
+                          //   separatorBuilder: (context, index) => SizedBox(height: 24.h),
                           //   itemCount: experienceList.length,
                           // ),
                         ),

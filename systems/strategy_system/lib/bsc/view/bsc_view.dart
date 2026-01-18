@@ -52,9 +52,9 @@ class _BscBody extends StatelessWidget {
           values: visionData.values ?? [],
           messages: visionData.missions ?? [],
         ),
-        24.sh,
+        SizedBox(height: 24.h),
         // StrategicAxesSection(...)  // keep commented if not used
-        // 24.sh,
+        // SizedBox(height: 24.h),
         /// Perspectives Section
         PerspectivesSection(perspectives: (visionData.manzors ?? [])),
       ],

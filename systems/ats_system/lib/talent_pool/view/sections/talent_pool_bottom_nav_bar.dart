@@ -30,13 +30,13 @@ class TalentPoolBottomNav extends StatelessWidget {
                     Column(
                       children: [
                         BottomSheetHeader(title: allTranslations.text(LocaleKeys.assign_to_job)),
-                        24.sh,
+                        SizedBox(height: 24.h),
                         AssignToJobList(
                             onSelectJob: (jobs) {
                               bloc.selectedJobsList = jobs;
                             },
                             selectedJobsList: bloc.selectedJobsList),
-                        52.sh,
+                        SizedBox(height: 52.h),
                       ],
                     ),
                     Positioned(
@@ -63,13 +63,13 @@ class TalentPoolBottomNav extends StatelessWidget {
                 return Column(
                   children: [
                     BottomSheetHeader(title: allTranslations.text(LocaleKeys.export_zip)),
-                    24.sh,
+                    SizedBox(height: 24.h),
                     CustomTextField(
                       hint: allTranslations.text(LocaleKeys.enter_file_name),
                       label: allTranslations.text(LocaleKeys.file_name),
                       controller: bloc.fileNameController,
                     ),
-                    16.sh,
+                    SizedBox(height: 16.h),
                     CustomBtn(
                         text: allTranslations.text(LocaleKeys.save),
                         loading: state is Exporting,
@@ -90,13 +90,13 @@ class TalentPoolBottomNav extends StatelessWidget {
                 return Column(
                   children: [
                     BottomSheetHeader(title: allTranslations.text(LocaleKeys.export_excel)),
-                    24.sh,
+                    SizedBox(height: 24.h),
                     CustomTextField(
                       hint: allTranslations.text(LocaleKeys.enter_file_name),
                       label: allTranslations.text(LocaleKeys.file_name),
                       controller: bloc.fileNameController,
                     ),
-                    16.sh,
+                    SizedBox(height: 16.h),
                     CustomBtn(
                         text: allTranslations.text(LocaleKeys.save),
                         loading: state is Exporting,

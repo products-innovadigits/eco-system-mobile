@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-import '../model/report_objective_percentage_model.dart';
+import 'package:pms_system/core/utility/pms_exports.dart';
 
 class ReportObjectivePercentageChartMobileLandscape extends StatelessWidget {
   final List<ReportObjectivePercentageModel> objectives;
@@ -60,7 +58,7 @@ class _BarTile extends StatelessWidget {
           data.categoryName ?? '-',
           style: Theme.of(context).textTheme.bodyMedium,
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: 6.h),
         LinearProgressIndicator(
           value: value / 100.0,
           minHeight: 10,
@@ -68,7 +66,7 @@ class _BarTile extends StatelessWidget {
           backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
           borderRadius: const BorderRadius.all(Radius.circular(6)),
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: 6.h),
         Text('${value.toStringAsFixed(0)}%'),
       ],
     );

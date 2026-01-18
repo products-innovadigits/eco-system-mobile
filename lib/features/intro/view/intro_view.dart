@@ -42,7 +42,7 @@ class _IntroViewState extends State<IntroView> {
           padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: Column(
             children: [
-              50.sh,
+              SizedBox(height: 50.h),
               SizedBox(
                 height: context.h / 1.9,
                 width: context.w,
@@ -61,7 +61,7 @@ class _IntroViewState extends State<IntroView> {
                   },
                 ),
               ),
-              40.sh,
+              SizedBox(height: 40.h),
               Text(
                 introItems[selectPage].title,
                 style: context.textTheme.titleLarge,

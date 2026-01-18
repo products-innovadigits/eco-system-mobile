@@ -13,7 +13,7 @@ class LatestRequestFilterBottomSheetBody extends StatelessWidget {
       child: ListAnimator(
         separatorPadding: 16.h,
         data: [
-          16.sh,
+          SizedBox(height: 16.h),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -34,7 +34,7 @@ class LatestRequestFilterBottomSheetBody extends StatelessWidget {
                       onTap: () => cubit.showStartDatePicker(context),
                     ),
                   ),
-                  16.sw,
+                  SizedBox(width: 16.w),
                   Expanded(
                     child: CustomTextField(
                       hint: allTranslations.text(LocaleKeys.to),

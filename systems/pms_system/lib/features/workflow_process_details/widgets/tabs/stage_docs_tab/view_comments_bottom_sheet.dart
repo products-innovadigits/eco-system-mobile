@@ -46,7 +46,7 @@ class ViewCommentsBottomSheet extends StatelessWidget {
                       ),
               );
             },
-            separatorBuilder: (context, index) => const SizedBox(height: 12),
+            separatorBuilder: (context, index) => SizedBox(height: 12.h),
             itemCount: commentsData.items?.length ?? 0,
           ),
 

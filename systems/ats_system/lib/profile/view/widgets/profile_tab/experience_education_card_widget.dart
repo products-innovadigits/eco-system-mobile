@@ -18,13 +18,15 @@ class ExperienceCardWidget extends StatelessWidget {
               height: 32.w,
               padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
-                  color: context.color.secondary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8)),
+                color: context.color.secondary.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
               child: Images(
-                  image: Assets.svgs.building.path,
-                  color: context.color.onSurface),
+                image: Assets.svgs.building.path,
+                color: context.color.onSurface,
+              ),
             ),
-            8.sw,
+            SizedBox(width: 8.w),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,7 +36,7 @@ class ExperienceCardWidget extends StatelessWidget {
                     style: context.textTheme.bodySmall,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  4.sh,
+                  SizedBox(height: 4.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -42,25 +44,28 @@ class ExperienceCardWidget extends StatelessWidget {
                         child: Text(
                           '${experience.title} . ',
                           style: context.textTheme.bodySmall?.copyWith(
-                              color: context.color.secondary,
-                              fontSize: 10),
+                            color: context.color.secondary,
+                            fontSize: 10,
+                          ),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       Text(
                         '${experience.startDate} - ${experience.endDate}',
                         style: context.textTheme.bodySmall?.copyWith(
-                            color: context.color.outline, fontSize: 10),
+                          color: context.color.outline,
+                          fontSize: 10,
+                        ),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
-        // 8.sh,
+        // SizedBox(height: 8.h),
         // ReadMoreText(
         //   'قمت بقيادة دورة حياة تطوير منتجات B2B و SaaS، مع ضمان التوافق مع الأهداف.قمت بقيادة دورة حياة تطوير قمت بقيادة دورة حياة تطوير منتجات B2B و SaaS، مع ضمان التوافق مع الأهداف.قمت بقيادة دورة حياة تطوير',
         //   trimMode: TrimMode.Line,

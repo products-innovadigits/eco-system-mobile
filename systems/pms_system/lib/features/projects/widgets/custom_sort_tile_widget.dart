@@ -36,7 +36,7 @@ class CustomSortTileWidget extends StatelessWidget {
               ),
             ),
           ),
-          8.sw,
+          SizedBox(width: 8.w),
           Text(title, style: context.textTheme.labelSmall),
         ],
       ),

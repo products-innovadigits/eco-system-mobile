@@ -10,9 +10,11 @@ class Qualified extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(allTranslations.text(LocaleKeys.qualification),
-            style: AppTextStyles.w400.copyWith(fontSize: 12)),
-        8.sh,
+        Text(
+          allTranslations.text(LocaleKeys.qualification),
+          style: AppTextStyles.w400.copyWith(fontSize: 12),
+        ),
+        SizedBox(height: 8.h),
         CustomDropList(
           list: filtrationBloc.qualified,
           hint: allTranslations.text(LocaleKeys.enter_qualification),

@@ -88,7 +88,7 @@ class ProjectLane extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  if (items.isNotEmpty) 8.sh,
+                  if (items.isNotEmpty) SizedBox(height: 8.h),
                   if (items.isNotEmpty)
                     ...List.generate(
                       items.length >= 2 ? 2 : items.length,
@@ -123,7 +123,7 @@ class ProjectLane extends StatelessWidget {
                             ),
                           ),
                           if (items.length > 2 && i == 1) ...[
-                            6.sw,
+                            SizedBox(width: 6.w),
                             Text(
                               '+${items.length - 2}',
                               style: context.textTheme.labelMedium?.copyWith(

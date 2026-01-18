@@ -31,7 +31,7 @@ class CandidateCompatibilitySection extends StatelessWidget {
                 fontSize: 6,
               ),
             ),
-            12.sw,
+            SizedBox(width: 12.w),
             Text(
               'ما مدي التوافق بين هشام وهذة الوظيفة؟',
               style: AppTextStyles.w400.copyWith(

@@ -18,13 +18,15 @@ class EducationCardWidget extends StatelessWidget {
               height: 32.w,
               padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
-                  color: context.color.primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8)),
+                color: context.color.primary.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
               child: Images(
-                  image: Assets.svgs.building.path,
-                  color: context.color.onSurface),
+                image: Assets.svgs.building.path,
+                color: context.color.onSurface,
+              ),
             ),
-            8.sw,
+            SizedBox(width: 8.w),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -33,49 +35,58 @@ class EducationCardWidget extends StatelessWidget {
                   style: context.textTheme.bodySmall,
                   overflow: TextOverflow.ellipsis,
                 ),
-                4.sh,
+                SizedBox(height: 4.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
                       educationModel.degree ?? 'قائد تصميم المنتجات .',
                       style: context.textTheme.bodySmall?.copyWith(
-                          color: context.color.secondary,
-                          fontSize: 10),
+                        color: context.color.secondary,
+                        fontSize: 10,
+                      ),
                       overflow: TextOverflow.ellipsis,
                     ),
-                    4.sw,
+                    SizedBox(width: 4.w),
                     Text(
                       '${educationModel.startDate} - ${educationModel.endDate}',
                       style: context.textTheme.bodySmall?.copyWith(
-                          color: context.color.outline, fontSize: 10),
+                        color: context.color.outline,
+                        fontSize: 10,
+                      ),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
               ],
-            )
+            ),
           ],
         ),
         if (educationModel.fieldStudy != null &&
             educationModel.fieldStudy!.isNotEmpty) ...[
-          8.sh,
+          SizedBox(height: 8.h),
           // Using DefaultTextStyle to apply a consistent style cause it's not working with ReadMoreText directly
           DefaultTextStyle.merge(
-            style: context.textTheme.labelSmall
-                ?.copyWith(color: context.color.outline, fontSize: 10),
+            style: context.textTheme.labelSmall?.copyWith(
+              color: context.color.outline,
+              fontSize: 10,
+            ),
             child: ReadMoreText(
               educationModel.fieldStudy ?? '',
               trimMode: TrimMode.Line,
               colorClickableText: context.color.secondary,
               trimExpandedText: allTranslations.text(LocaleKeys.read_less),
               trimCollapsedText: allTranslations.text(LocaleKeys.read_more),
-              lessStyle: context.textTheme.labelSmall
-                  ?.copyWith(color: context.color.secondary , fontSize: 10),
-              moreStyle: context.textTheme.labelSmall
-                  ?.copyWith(color: context.color.secondary , fontSize: 10),
+              lessStyle: context.textTheme.labelSmall?.copyWith(
+                color: context.color.secondary,
+                fontSize: 10,
+              ),
+              moreStyle: context.textTheme.labelSmall?.copyWith(
+                color: context.color.secondary,
+                fontSize: 10,
+              ),
             ),
-          )
+          ),
         ],
       ],
     );

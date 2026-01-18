@@ -48,7 +48,7 @@ class ProfileUserDataWidget extends StatelessWidget {
                         image: Assets.svgs.downloadBox.path,
                         color: context.color.onSurface,
                       ),
-                      8.sw,
+                      SizedBox(width: 8.w),
                       Text('CV', style: context.textTheme.labelSmall),
                     ],
                   ),
@@ -56,14 +56,14 @@ class ProfileUserDataWidget extends StatelessWidget {
               ),
           ],
         ),
-        10.sh,
+        SizedBox(height: 10.h),
         Text(
           name,
           style: context.textTheme.titleLarge?.copyWith(
             color: context.color.onPrimary,
           ),
         ),
-        4.sh,
+        SizedBox(height: 4.h),
         Text(
           email,
           style: context.textTheme.bodyMedium?.copyWith(

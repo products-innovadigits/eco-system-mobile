@@ -54,7 +54,7 @@ class _OkrBody extends StatelessWidget {
       data: [
         /// Vision
         OkrVisionSection(visionTitle: visionData.title ?? ''),
-        16.sh,
+        SizedBox(height: 16.h),
 
         /// Organizational Objectives Section (example hardcoded list here)
         OkrOrganizationalObjectivesSection(

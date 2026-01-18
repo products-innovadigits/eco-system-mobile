@@ -37,13 +37,13 @@ class CustomRatingSection extends StatelessWidget {
         children: [
           Text('${allTranslations.text(LocaleKeys.enter_rating)} $title:',
               style: AppTextStyles.w400.copyWith(fontSize: 11)),
-          16.sh,
+          SizedBox(height: 16.h),
           NumbersRatingSection(
             selectedRating: selectedRating,
             onRatingSelected: onRatingSelected,
           ),
           if (selectedRating != -1) ...[
-            16.sh,
+            SizedBox(height: 16.h),
             CommentFieldSection(
               isVisible: isCommentVisible,
               controller: controller,

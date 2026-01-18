@@ -23,7 +23,7 @@ class MultipleSelectBtnWidget extends StatelessWidget {
                       style: context.textTheme.bodySmall?.copyWith(color: context.color.secondary),
                     ),
                   ),
-                  8.sw,
+                  SizedBox(width: 8.w),
                   GestureDetector(
                     onTap: () => bloc.add(Select(arguments: false)),
                     child: Text(

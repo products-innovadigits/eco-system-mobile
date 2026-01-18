@@ -2,7 +2,6 @@ import 'package:ats_system/candidates/view/widgets/add_skill_field_widget.dart';
 import 'package:ats_system/shared/ats_exports.dart';
 import 'package:core_system/core/utility/export.dart';
 
-
 class Skills extends StatelessWidget {
   final List<DropListModel> selectedSkills;
 
@@ -16,9 +15,11 @@ class Skills extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(allTranslations.text(LocaleKeys.skills),
-                style: context.textTheme.bodySmall),
-            8.sh,
+            Text(
+              allTranslations.text(LocaleKeys.skills),
+              style: context.textTheme.bodySmall,
+            ),
+            SizedBox(height: 8.h),
             Container(
               padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
               width: double.infinity,
@@ -32,12 +33,13 @@ class Skills extends StatelessWidget {
                 children: [
                   if (selectedSkills.isNotEmpty) ...[
                     PickedChoicesList(
-                        list: selectedSkills,
-                        onRemove: (item) =>
-                            bloc.add(RemoveSkill(arguments: item))),
-                    8.sw,
+                      list: selectedSkills,
+                      onRemove: (item) =>
+                          bloc.add(RemoveSkill(arguments: item)),
+                    ),
+                    SizedBox(width: 8.w),
                   ],
-                  AddSkillFieldWidget()
+                  AddSkillFieldWidget(),
                 ],
               ),
             ),
@@ -75,7 +77,7 @@ class Skills extends StatelessWidget {
             //                   list: selectedSkills,
             //                   onRemove: (item) =>
             //                       bloc.add(RemoveSkill(arguments: item))),
-            //               16.sw,
+            //               SizedBox(width: 16.w),
             //             ],
             //           ],
             //         ),

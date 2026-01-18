@@ -58,7 +58,7 @@ class CertificatesSection extends StatelessWidget {
                       //     itemBuilder: (context, index) =>
                       //         CertificateCardWidget(
                       //             certificate: certificatesList[index]),
-                      //     separatorBuilder: (context, index) => 24.sh,
+                      //     separatorBuilder: (context, index) => SizedBox(height: 24.h),
                       //     itemCount: certificatesList.length)
                     ),
                   ],

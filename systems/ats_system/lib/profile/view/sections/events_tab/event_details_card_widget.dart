@@ -11,7 +11,7 @@ class EventDetailsCardWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         FollowUpManagerDetailsSection(),
-        8.sh,
+        SizedBox(height: 8.h),
         Container(
           width: context.w,
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
@@ -48,7 +48,7 @@ class EventDetailsCardWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              16.sh,
+              SizedBox(height: 16.h),
               TestFileWidget(),
             ],
           ),

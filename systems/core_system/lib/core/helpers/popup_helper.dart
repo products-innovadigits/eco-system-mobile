@@ -83,10 +83,10 @@ abstract class PopUpHelper {
                       borderRadius: BorderRadius.circular(50),
                     ),
                   ),
-                  24.sh,
+                  SizedBox(height: 24.h),
                   if (header != null) ...[
                     BottomSheetHeader(title: header),
-                    16.sh,
+                    SizedBox(height: 16.h),
                   ],
                   Flexible(child: SingleChildScrollView(child: child!)),
                 ],

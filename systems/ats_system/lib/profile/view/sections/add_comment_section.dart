@@ -46,7 +46,7 @@ class AddCommentSection extends StatelessWidget {
                 child: Row(
                   children: [
                     Images(image: Assets.svgs.addCircle.path),
-                    8.sw,
+                    SizedBox(width: 8.w),
                     Text(
                       allTranslations.text(LocaleKeys.add_comment),
                       style: AppTextStyles.w400.copyWith(

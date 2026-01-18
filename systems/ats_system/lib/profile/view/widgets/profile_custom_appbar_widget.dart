@@ -16,7 +16,7 @@ class ProfileCustomAppbarWidget extends StatelessWidget {
             onTap: () => CustomNavigator.pop(),
             child: Images(
                 image: Assets.svgs.arrowBack.path, color: context.color.surfaceContainer)),
-        8.sw,
+        SizedBox(width: 8.w),
         isLoading == true
             ? CustomShimmerContainer(width: 120.w, height: 30, borderRadius: 4)
             : Text(title,

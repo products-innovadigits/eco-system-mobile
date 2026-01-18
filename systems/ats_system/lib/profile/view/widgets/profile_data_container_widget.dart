@@ -22,7 +22,7 @@ class ProfileDataContainerWidget extends StatelessWidget {
         child: Row(
           children: [
             Images(image: icon , color: context.color.onPrimary),
-            6.sw,
+            SizedBox(width: 6.w),
             Text(
               title,
               textDirection: TextDirection.ltr,

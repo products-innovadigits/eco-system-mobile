@@ -13,17 +13,19 @@ class ProjectsAppBarWidget extends StatelessWidget
     implements PreferredSizeWidget {
   final ProjectsBloc bloc;
   final ProjectsSortingBloc sortingBloc;
+  final bool isPortrait;
 
   const ProjectsAppBarWidget({
     super.key,
     required this.bloc,
     required this.sortingBloc,
+    this.isPortrait = true,
   });
 
   @override
   Size get preferredSize => Size(
     CustomNavigator.navigatorState.currentContext!.w,
-    122.h, // withSearch is true, so height is 122.h
+    isPortrait ? 122.h : 200.h, // withSearch is true, so height is 122.h
   );
 
   @override

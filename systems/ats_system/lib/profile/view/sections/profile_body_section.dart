@@ -27,7 +27,7 @@ class ProfileBodySection extends StatelessWidget {
             child: Column(
               children: [
                 if (state is Done) ProfileTabsSection(isTalent: isTalent),
-                20.sh,
+                SizedBox(height: 20.h),
                 Expanded(
                   child: SingleChildScrollView(
                     padding: EdgeInsets.symmetric(horizontal: 16.w),

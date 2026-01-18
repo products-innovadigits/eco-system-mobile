@@ -31,7 +31,7 @@ class CustomBarChart extends StatelessWidget {
                 child: ListView.separated(
                   shrinkWrap: true,
                   itemCount: itemCount,
-                  separatorBuilder: (_, _) => const SizedBox(height: 18),
+                  separatorBuilder: (_, _) => SizedBox(height: 18.h),
                   itemBuilder: (context, index) {
                     return _buildBarItem(context, data[index], index);
                   },
@@ -41,13 +41,13 @@ class CustomBarChart extends StatelessWidget {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: itemCount,
-                separatorBuilder: (_, _) => const SizedBox(height: 18),
+                separatorBuilder: (_, _) => SizedBox(height: 18.h),
                 itemBuilder: (context, index) {
                   return _buildBarItem(context, data[index], index);
                 },
               ),
         if (showPercentageAxis == true) ...[
-          const SizedBox(height: 24),
+          SizedBox(height: 24.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

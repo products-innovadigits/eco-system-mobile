@@ -15,7 +15,7 @@ class SortingBottomSheet extends StatelessWidget {
             Column(
               children: [
                 BottomSheetHeader(title: allTranslations.text(LocaleKeys.sort)),
-                24.sh,
+                SizedBox(height: 24.h),
                 ListAnimator(
                   separatorPadding: 16.h,
                   data: List.generate(
@@ -52,9 +52,9 @@ class SortingBottomSheet extends StatelessWidget {
                 //                       element.key ==
                 //                       bloc.sortingList[index].key)));
                 //         }),
-                //     separatorBuilder: (context, index) => 16.sh,
+                //     separatorBuilder: (context, index) => SizedBox(height: 16.h),
                 //     itemCount: bloc.sortingList.length),
-                80.sh,
+                SizedBox(height: 80.h),
               ],
             ),
             Positioned(
@@ -71,7 +71,7 @@ class SortingBottomSheet extends StatelessWidget {
                     ),
                   ),
                   if (bloc.appliedSorting != null) ...[
-                    8.sw,
+                    SizedBox(width: 8.w),
                     Expanded(
                       child: CustomBtn(
                         text: allTranslations.text(LocaleKeys.reset),

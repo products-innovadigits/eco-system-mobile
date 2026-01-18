@@ -11,17 +11,21 @@ import 'package:pms_system/features/workflow_process_details/widgets/tabs/techni
 import 'package:pms_system/shared/widgets/shimmer/custom_details_shimmer_loading.dart';
 
 class ProcessDetailsBody extends StatelessWidget {
-  final ProjectDetailsModel projectDetailsModel;
+  final int projectId;
+
+  // final ProjectDetailsModel projectDetailsModel;
   final int processId;
-  final String stageName;
-  final String processName;
+
+  // final String stageName;
+  // final String processName;
 
   const ProcessDetailsBody({
     super.key,
-    required this.projectDetailsModel,
+    required this.projectId,
+    // required this.projectDetailsModel,
     required this.processId,
-    required this.stageName,
-    required this.processName,
+    // required this.stageName,
+    // required this.processName,
   });
 
   @override
@@ -36,8 +40,8 @@ class ProcessDetailsBody extends StatelessWidget {
             return state is WorkflowProcessDetailsLoading
                 ? SizedBox.shrink()
                 : ProcessHeaderCard(
-                    project: projectDetailsModel,
-                    stageName: stageName,
+                    // project: projectDetailsModel,
+                    // stageName: stageName,
                   );
           },
         ),
@@ -63,9 +67,10 @@ class ProcessDetailsBody extends StatelessWidget {
                   model: processDetails,
                   selectedTab: selectedTab,
                   processId: processId,
-                  projectDetailsModel: projectDetailsModel,
-                  stageName: stageName,
-                  processName: processName,
+                  projectId: projectId,
+                  // projectDetailsModel: projectDetailsModel,
+                  // stageName: stageName,
+                  // processName: processName,
                 ),
 
               // ── Empty ───────────────────────────
@@ -86,21 +91,25 @@ class ProcessDetailsBody extends StatelessWidget {
 
 class _ProcessBody extends StatelessWidget {
   final List<WorkflowProcessGroupModel> processList;
-  final ProjectDetailsModel projectDetailsModel;
+  final int projectId;
+
+  // final ProjectDetailsModel projectDetailsModel;
   final ProcessTabsEnum selectedTab;
   final int processId;
   final int projectStepId;
-  final String stageName;
-  final String processName;
+
+  // final String stageName;
+  // final String processName;
 
   const _ProcessBody({
     required this.processList,
     required this.selectedTab,
-    required this.projectDetailsModel,
+    required this.projectId,
+    // required this.projectDetailsModel,
     required this.processId,
-    required this.stageName,
+    // required this.stageName,
     required this.projectStepId,
-    required this.processName,
+    // required this.processName,
   });
 
   @override
@@ -111,7 +120,7 @@ class _ProcessBody extends StatelessWidget {
     return Expanded(
       child: Column(
         children: [
-          const SizedBox(height: 12),
+          SizedBox(height: 12.h),
           ProcessDetailsTabsSection(),
           SizedBox(height: 16.h),
           Expanded(
@@ -119,13 +128,13 @@ class _ProcessBody extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: _getTabSection(
                 selectedTab: selectedTab,
-                projectId: projectDetailsModel.id!,
+                projectId: projectId,
                 processId: processId,
                 projectStepId: projectStepId,
                 processList: processList,
                 pdfFilePath: stageDocsData?.pdfFilePath ?? '',
                 stepDocumentId: (stageDocsData?.stepDocumentId ?? 0).toInt(),
-                processName: processName,
+                processName: stageDocsData?.processTitle ?? '',
               ),
             ),
           ),
@@ -140,21 +149,23 @@ Widget _buildProcessBody({
   required WorkflowProcessDetailsModel model,
   required ProcessTabsEnum selectedTab,
   required int processId,
-  required ProjectDetailsModel projectDetailsModel,
-  required String stageName,
-  required String processName,
+  required int projectId,
+  // required ProjectDetailsModel projectDetailsModel,
+  // required String stageName,
+  // required String processName,
 }) {
   final workflowProcessDetailsBloc = context.read<WorkflowProcessDetailsBloc>();
   final stageDocsData = workflowProcessDetailsBloc.stageDocsData;
 
   return _ProcessBody(
     processList: model.data ?? [],
-    projectDetailsModel: projectDetailsModel,
+    // projectDetailsModel: projectDetailsModel,
+    projectId: projectId,
     selectedTab: selectedTab,
     processId: processId,
     projectStepId: stageDocsData?.currentStep?.id ?? 0,
-    stageName: stageName,
-    processName: processName,
+    // stageName: stageName,
+    // processName: processName,
   );
 }
 

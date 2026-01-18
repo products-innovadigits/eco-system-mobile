@@ -20,7 +20,7 @@ class FollowUpManagerDetailsSection extends StatelessWidget {
             ),
           ),
         ),
-        8.sw,
+        SizedBox(width: 8.w),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -30,7 +30,7 @@ class FollowUpManagerDetailsSection extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            2.sh,
+            SizedBox(height: 2.h),
             Row(
               children: [
                 Text(

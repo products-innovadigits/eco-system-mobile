@@ -7,12 +7,13 @@ class FilterButtonsSection extends StatelessWidget {
   final VoidCallback onResetFilters;
   final bool isFiltered;
 
-  const FilterButtonsSection(
-      {super.key,
-      required this.filterModel,
-      required this.onApplyFilters,
-      required this.onResetFilters,
-      required this.isFiltered});
+  const FilterButtonsSection({
+    super.key,
+    required this.filterModel,
+    required this.onApplyFilters,
+    required this.onResetFilters,
+    required this.isFiltered,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class FilterButtonsSection extends StatelessWidget {
             ),
           ),
           if (isFiltered) ...[
-            8.sw,
+            SizedBox(width: 8.w),
             Expanded(
               child: CustomBtn(
                 text: allTranslations.text(LocaleKeys.reset),
@@ -40,7 +41,7 @@ class FilterButtonsSection extends StatelessWidget {
                 onPressed: onResetFilters,
               ),
             ),
-          ]
+          ],
         ],
       ),
     );

@@ -27,7 +27,7 @@ class ConnectivityWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Images(image: Assets.svgs.error.path),
-                        16.sh,
+                        SizedBox(height: 16.h),
                         Text(
                           allTranslations.text(
                             LocaleKeys.no_internet_connection,

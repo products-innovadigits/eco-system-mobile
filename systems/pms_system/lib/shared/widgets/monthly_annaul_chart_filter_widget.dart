@@ -46,7 +46,7 @@ class MonthlyAnnualChartFilterWidget extends StatelessWidget {
                 allTranslations.text(selectedTime.name),
                 style: context.textTheme.bodySmall,
               ),
-              8.sw,
+              SizedBox(width: 8.w),
               Images(image: Assets.svgs.arrowDown.path, width: 6, height: 6),
             ],
           ),

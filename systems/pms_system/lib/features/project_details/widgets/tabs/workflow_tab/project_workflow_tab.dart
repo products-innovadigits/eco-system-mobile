@@ -16,13 +16,13 @@ class ProjectWorkflowTab extends StatelessWidget {
               context.color.outlineVariant,
               context,
             ),
-            SizedBox(width: 16),
+            SizedBox(width: 16.w),
             _infoItem(
               allTranslations.text(LocaleKeys.in_progress),
               context.color.primary,
               context,
             ),
-            SizedBox(width: 16),
+            SizedBox(width: 16.w),
             _infoItem(
               allTranslations.text(LocaleKeys.done),
               context.color.tertiary,
@@ -30,7 +30,7 @@ class ProjectWorkflowTab extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 8),
+        SizedBox(height: 8.h),
         ListView.separated(
           itemCount:
               projectDetailsModel.projectLifeCycle?.projectStages?.length ?? 0,
@@ -40,7 +40,7 @@ class ProjectWorkflowTab extends StatelessWidget {
             projectDetailsModel: projectDetailsModel,
             index: index,
           ),
-          separatorBuilder: (context, index) => const SizedBox(height: 12),
+          separatorBuilder: (context, index) => SizedBox(height: 12.h),
         ),
       ],
     );
@@ -51,7 +51,7 @@ Widget _infoItem(String title, Color color, BuildContext context) {
   return Row(
     children: [
       Icon(Icons.circle, color: color, size: 10),
-      const SizedBox(width: 4),
+      SizedBox(width: 4.w),
       Text(title, style: context.textTheme.bodySmall),
     ],
   );

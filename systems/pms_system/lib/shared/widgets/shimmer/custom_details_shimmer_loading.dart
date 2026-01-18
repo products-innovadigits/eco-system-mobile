@@ -17,7 +17,7 @@ class CustomDetailsShimmerLoading extends StatelessWidget {
               child: Divider(color: context.color.outline, thickness: 1.0),
             ),
             CustomShimmerContainer(height: context.h * 0.3, width: context.w),
-            SizedBox(height: 8),
+            SizedBox(height: 8.h),
             CustomShimmerContainer(height: context.h * 0.3, width: context.w),
           ],
         ),

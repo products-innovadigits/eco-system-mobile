@@ -40,7 +40,7 @@ class _OkrOrganizationalObjectivesSectionState
             fontWeight: FontWeight.w700,
           ),
         ),
-        16.sh,
+        SizedBox(height: 16.h),
         ...List.generate(
           widget.objectivesList.length,
           (i) => Padding(

@@ -13,7 +13,7 @@ class AnswersSection extends StatelessWidget {
         YesNoQuestionWidget(
             question: 'هل لديك أي خبرة في سوق المملكة العربية السعودية؟',
             isCorrect: true),
-        12.sh,
+        SizedBox(height: 12.h),
         WhQuestionWidget(
             question: 'هل يمكنك أن تخبرنا عن تجربتك السابقة في تصميم الواجهات؟',
             answer:

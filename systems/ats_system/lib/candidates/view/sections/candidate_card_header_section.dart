@@ -20,12 +20,12 @@ class CandidateCardHeaderSection extends StatelessWidget {
             fontSize: 6,
           ),
         ),
-        8.sw,
+        SizedBox(width: 8.w),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('هشام منصور', style: context.textTheme.labelSmall),
-            2.sh,
+            SizedBox(height: 2.h),
             Row(
               children: [
                 Text(

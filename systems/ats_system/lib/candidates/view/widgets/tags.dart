@@ -21,7 +21,7 @@ class Tags extends StatelessWidget {
               allTranslations.text(LocaleKeys.keyword),
               style: context.textTheme.bodySmall,
             ),
-            8.sh,
+            SizedBox(height: 8.h),
             CustomDropDownSkills(
               hint: allTranslations.text(LocaleKeys.select_keywords),
               selectedList: selectedTags,

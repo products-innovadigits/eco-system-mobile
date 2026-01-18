@@ -11,24 +11,28 @@ class CompatibilityBottomSheetWidget extends StatelessWidget {
         BottomSheetHeader(
           title: allTranslations.text(LocaleKeys.compatibility),
         ),
-        24.sh,
+        SizedBox(height: 24.h),
         ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) => Row(
-                  children: [
-                    Images(image: Assets.svgs.tickCircle.path),
-                    8.sw,
-                    Text('البحث عن تجربة المستخدم',
-                        style: AppTextStyles.w400.copyWith(fontSize: 12))
-                  ],
-                ),
-            separatorBuilder: (context, index) => 16.sh,
-            itemCount: 6),
-        24.sh,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemBuilder: (context, index) => Row(
+            children: [
+              Images(image: Assets.svgs.tickCircle.path),
+              SizedBox(width: 8.w),
+              Text(
+                'البحث عن تجربة المستخدم',
+                style: AppTextStyles.w400.copyWith(fontSize: 12),
+              ),
+            ],
+          ),
+          separatorBuilder: (context, index) => SizedBox(height: 16.h),
+          itemCount: 6,
+        ),
+        SizedBox(height: 24.h),
         CompatibilityPercentageWidget(
-            title: allTranslations.text(LocaleKeys.keyword_matching),
-            percentage: 80),
+          title: allTranslations.text(LocaleKeys.keyword_matching),
+          percentage: 80,
+        ),
       ],
     );
   }

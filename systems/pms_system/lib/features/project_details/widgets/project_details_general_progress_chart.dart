@@ -15,13 +15,13 @@ class ProjectDetailsGeneralProgressChart extends StatelessWidget {
           Expanded(
             child: ListView.separated(
               itemCount: data.length,
-              separatorBuilder: (_, _) => const SizedBox(height: 18),
+              separatorBuilder: (_, _) => SizedBox(height: 18.h),
               itemBuilder: (context, index) {
                 return _buildBarItem(context, data[index]);
               },
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

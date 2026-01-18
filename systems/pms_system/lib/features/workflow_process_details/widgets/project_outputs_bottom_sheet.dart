@@ -8,7 +8,7 @@ class ProjectOutputsBottomSheet extends StatelessWidget {
     return Column(
       children: [
         BottomSheetHeader(title: allTranslations.text(LocaleKeys.outputs)),
-        const SizedBox(height: 24),
+        SizedBox(height: 24.h),
         ListAnimator(
           data: [
             _OutputCardWidget(
@@ -20,7 +20,7 @@ class ProjectOutputsBottomSheet extends StatelessWidget {
                 'ميثاق المشروع (من ٢٢ ابريل ٢٠٢٤ الي ٢٢ يونيو ٢٠٢٢ )',
               ],
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12.h),
             _OutputCardWidget(
               outputStatus: 'جاري التسليم',
               color: context.color.secondary,
@@ -29,7 +29,7 @@ class ProjectOutputsBottomSheet extends StatelessWidget {
                 'وثيقه متطلبات الأعمال Business Requirement Document     (BRD)(من ٢٢ ابريل ٢٠٢٤ الي ٢٢ يونيو ٢٠٢٢ )',
               ],
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12.h),
             _OutputCardWidget(
               outputStatus: 'لم يتم التسليم',
               color: context.color.error,
@@ -101,7 +101,7 @@ class _OutputCardWidget extends StatelessWidget {
                     size: 12,
                     color: color.withValues(alpha: 0.1),
                   ),
-                  const SizedBox(width: 4),
+                  SizedBox(width: 4.w),
                   Text(
                     'ميثاق المشروع (من ٢٢ ابريل ٢٠٢٤ الي ٢٢ يونيو ٢٠٢٢ )',
                     style: context.textTheme.bodySmall,

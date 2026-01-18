@@ -32,17 +32,22 @@ class CandidateMoreDialog extends StatelessWidget {
                       children: [
                         Column(
                           children: [
-                            BottomSheetHeader(title: allTranslations.text(LocaleKeys.assign_to_job)),
-                            24.sh,
+                            BottomSheetHeader(
+                              title: allTranslations.text(
+                                LocaleKeys.assign_to_job,
+                              ),
+                            ),
+                            SizedBox(height: 24.h),
                             AssignToJobList(
-                                onSelectJob: (jobs) {
-                                  context.read<ProfileBloc>().selectedJobsList =
-                                      jobs;
-                                },
-                                selectedJobsList: context
-                                    .read<ProfileBloc>()
-                                    .selectedJobsList),
-                            52.sh,
+                              onSelectJob: (jobs) {
+                                context.read<ProfileBloc>().selectedJobsList =
+                                    jobs;
+                              },
+                              selectedJobsList: context
+                                  .read<ProfileBloc>()
+                                  .selectedJobsList,
+                            ),
+                            SizedBox(height: 52.h),
                           ],
                         ),
                         BlocBuilder<ProfileBloc, AppState>(
@@ -51,15 +56,16 @@ class CandidateMoreDialog extends StatelessWidget {
                             return Positioned(
                               bottom: 0,
                               child: CustomBtn(
-                                  width: context.w * 0.9,
-                                  loading: state is Exporting,
-                                  text: allTranslations.text(LocaleKeys.save),
-                                  onPressed: () {
-                                    bloc.add(Assign(arguments: candidateId));
-                                  }),
+                                width: context.w * 0.9,
+                                loading: state is Exporting,
+                                text: allTranslations.text(LocaleKeys.save),
+                                onPressed: () {
+                                  bloc.add(Assign(arguments: candidateId));
+                                },
+                              ),
                             );
                           },
-                        )
+                        ),
                       ],
                     ),
                   ),

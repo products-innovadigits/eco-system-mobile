@@ -13,29 +13,31 @@ class JobsListSection extends StatelessWidget {
         final jobsBloc = context.read<JobsBloc>();
 
         return StreamBuilder<int?>(
-            stream: jobsBloc.updateExpandedStream,
-            builder: (context, snapshot) {
-              return ListView.separated(
-                  controller:
-                      isHome == false ? jobsBloc.scrollController : null,
-                  shrinkWrap: isHome == false ? false : true,
-                  physics: isHome == false
-                      ? const BouncingScrollPhysics()
-                      : const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    final JobDataModel jobDataModel = jobsBloc.jobsList[index];
-                    return JobCardWidget(
-                        isExpanded: snapshot.data == index,
-                        index: index,
-                        jobDataModel: jobDataModel);
-                  },
-                  separatorBuilder: (context, index) => 16.sh,
-                  itemCount: (isHome == false)
-                      ? jobsBloc.jobsList.length
-                      : jobsBloc.jobsList.length > 2
-                          ? 2
-                          : jobsBloc.jobsList.length);
-            });
+          stream: jobsBloc.updateExpandedStream,
+          builder: (context, snapshot) {
+            return ListView.separated(
+              controller: isHome == false ? jobsBloc.scrollController : null,
+              shrinkWrap: isHome == false ? false : true,
+              physics: isHome == false
+                  ? const BouncingScrollPhysics()
+                  : const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                final JobDataModel jobDataModel = jobsBloc.jobsList[index];
+                return JobCardWidget(
+                  isExpanded: snapshot.data == index,
+                  index: index,
+                  jobDataModel: jobDataModel,
+                );
+              },
+              separatorBuilder: (context, index) => SizedBox(height: 16.h),
+              itemCount: (isHome == false)
+                  ? jobsBloc.jobsList.length
+                  : jobsBloc.jobsList.length > 2
+                  ? 2
+                  : jobsBloc.jobsList.length,
+            );
+          },
+        );
       },
     );
   }

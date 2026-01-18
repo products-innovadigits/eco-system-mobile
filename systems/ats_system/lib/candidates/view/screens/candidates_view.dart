@@ -11,24 +11,30 @@ class Candidates extends StatelessWidget {
         final bloc = context.read<CandidatesBloc>();
         return Scaffold(
           appBar: CustomAppBar(
-              title: allTranslations.text(LocaleKeys.candidates),
-              withSearch: true,
-              withFilter: true,
-              isFiltered: bloc.isFiltered,
-              onFiltering: () {
-                context.read<AtsFiltrationBloc>().collapseExpandedLists();
-                PopUpHelper.showBottomSheet(
-                    child: BlocProvider.value(
-                      value: bloc,
-                      child: CandidatesFilterBottomSheet(),
-                    ));
-              },
-              onTapSearch: () => CustomNavigator.push(Routes.SEARCH , arguments: SearchEnum.candidates),
-              searchHintText:
-              allTranslations.text(LocaleKeys.searching_for_candidate)),
+            title: allTranslations.text(LocaleKeys.candidates),
+            withSearch: true,
+            withFilter: true,
+            isFiltered: bloc.isFiltered,
+            onFiltering: () {
+              context.read<AtsFiltrationBloc>().collapseExpandedLists();
+              PopUpHelper.showBottomSheet(
+                child: BlocProvider.value(
+                  value: bloc,
+                  child: CandidatesFilterBottomSheet(),
+                ),
+              );
+            },
+            onTapSearch: () => CustomNavigator.push(
+              Routes.SEARCH,
+              arguments: SearchEnum.candidates,
+            ),
+            searchHintText: allTranslations.text(
+              LocaleKeys.searching_for_candidate,
+            ),
+          ),
           body: SingleChildScrollView(
             controller: bloc.scrollController,
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+            padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 16.h),
             child: AllCandidatesSection(),
           ),
         );

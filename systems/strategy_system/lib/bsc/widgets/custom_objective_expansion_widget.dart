@@ -73,7 +73,7 @@ class CustomObjectiveExpansionWidget extends StatelessWidget {
                       ),
                       child: Images(image: indicatorIcon),
                     ),
-                    8.sw,
+                    SizedBox(width: 8.w),
                     Text(
                       indicator.title ?? '',
                       style: context.textTheme.labelSmall,

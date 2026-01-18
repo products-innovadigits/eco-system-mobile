@@ -99,7 +99,7 @@ class ProjectCardContent extends StatelessWidget {
           if (!isDetails &&
               (project.riskLevelName != null ||
                   project.periortyLevelName != null)) ...[
-            const SizedBox(height: 12),
+            SizedBox(height: 12.h),
 
             /// Risk and Priority levels
             Row(
@@ -123,7 +123,7 @@ class ProjectCardContent extends StatelessWidget {
                   ),
               ],
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10.h),
           ],
 
           /// Activities Progress
@@ -164,7 +164,7 @@ class _RiskPriorityWidget extends StatelessWidget {
         alignment: WrapAlignment.center,
         children: [
           Text("$title:", style: context.textTheme.bodySmall),
-          const SizedBox(width: 8),
+          SizedBox(width: 8.w),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
             decoration: BoxDecoration(

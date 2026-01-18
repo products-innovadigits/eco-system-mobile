@@ -24,7 +24,7 @@ class CertificateCardWidget extends StatelessWidget {
                   image: Assets.svgs.building.path,
                   color: context.color.onSurface),
             ),
-            8.sw,
+            SizedBox(width: 8.w),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -34,7 +34,7 @@ class CertificateCardWidget extends StatelessWidget {
                   style: context.textTheme.bodySmall,
                   overflow: TextOverflow.ellipsis,
                 ),
-                4.sh,
+                SizedBox(height: 4.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -47,7 +47,7 @@ class CertificateCardWidget extends StatelessWidget {
                             fontSize: 10),
                         overflow: TextOverflow.ellipsis,
                       ),
-                    4.sw,
+                    SizedBox(width: 4.w),
                     if (certificate.date != null &&
                         certificate.date!.isNotEmpty)
                       Text(
@@ -62,7 +62,7 @@ class CertificateCardWidget extends StatelessWidget {
             )
           ],
         ),
-        // 8.sh,
+        // SizedBox(height: 8.h),
         // ReadMoreText(
         //   'قمت بقيادة دورة حياة تطوير منتجات B2B و SaaS، مع ضمان التوافق مع الأهداف.قمت بقيادة دورة حياة تطوير قمت بقيادة دورة حياة تطوير منتجات B2B و SaaS، مع ضمان التوافق مع الأهداف.قمت بقيادة دورة حياة تطوير',
         //   trimMode: TrimMode.Line,

@@ -13,7 +13,7 @@ class FollowProcessTab extends StatelessWidget {
       itemCount: processList.length,
       itemBuilder: (context, index) =>
           ProcessExpansionCardWidget(processList: processList, index: index),
-      separatorBuilder: (context, index) => const SizedBox(height: 12.0),
+      separatorBuilder: (context, index) => SizedBox(height: 12.0.h),
     );
   }
 }

@@ -132,7 +132,7 @@ class _JobCard extends StatelessWidget {
                     },
                     isChecked: isChecked,
                   ),
-                  8.sw,
+                  SizedBox(width: 8.w),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -140,7 +140,7 @@ class _JobCard extends StatelessWidget {
                         job.title ?? '',
                         style: context.textTheme.titleSmall,
                       ),
-                      4.sh,
+                      SizedBox(height: 4.h),
                       Text(
                         '${job.chanceType} . ${job.address} . ${job.department}',
                         style: AppTextStyles.w400.copyWith(

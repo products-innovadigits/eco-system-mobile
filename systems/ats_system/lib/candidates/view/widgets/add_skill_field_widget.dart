@@ -26,40 +26,44 @@ class AddSkillFieldWidget extends StatelessWidget {
               onChanged: (v) => bloc.add(Update()),
               onSubmitted: (v) {
                 if (v.isNotEmpty) {
-                  bloc.add(AddSkill(
-                      arguments:
-                          DropListModel(name: bloc.skillController.text)));
+                  bloc.add(
+                    AddSkill(
+                      arguments: DropListModel(name: bloc.skillController.text),
+                    ),
+                  );
                 }
               },
               decoration: InputDecoration(
-                  hintText: allTranslations.text(LocaleKeys.add_skill),
-                  hintStyle: context.textTheme.bodySmall
-                      ?.copyWith(color: context.color.outlineVariant),
-                  border: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  errorBorder: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(vertical: 6.h)),
+                hintText: allTranslations.text(LocaleKeys.add_skill),
+                hintStyle: context.textTheme.bodySmall?.copyWith(
+                  color: context.color.outlineVariant,
+                ),
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                contentPadding: EdgeInsets.symmetric(vertical: 6.h),
+              ),
             ),
           ),
-          4.sw,
+          SizedBox(width: 4.w),
           GestureDetector(
             onTap: () {
               if (bloc.skillController.text.isNotEmpty) {
-                bloc.add(AddSkill(
-                    arguments: DropListModel(name: bloc.skillController.text)));
+                bloc.add(
+                  AddSkill(
+                    arguments: DropListModel(name: bloc.skillController.text),
+                  ),
+                );
               }
             },
             child: bloc.skillController.text.isNotEmpty
                 ? Images(
                     image: Assets.svgs.send.path,
                     color: context.color.secondary,
-                    height: 20)
-                : Icon(
-                    Icons.add,
-                    color: context.color.secondary,
-                    size: 16,
-                  ),
+                    height: 20,
+                  )
+                : Icon(Icons.add, color: context.color.secondary, size: 16),
           ),
         ],
       ),

@@ -30,7 +30,7 @@ class _MessagesListSectionState extends State<MessagesListSection> {
                 child: Row(
                   children: [
                     Icon(Icons.circle, size: 6.w, color: context.color.primary),
-                    8.sw,
+                    SizedBox(width: 8.w),
                     Expanded(
                       child: Text(
                         message.name ?? '',

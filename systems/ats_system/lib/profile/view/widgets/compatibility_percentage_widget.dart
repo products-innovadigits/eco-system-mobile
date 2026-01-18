@@ -21,13 +21,13 @@ class CompatibilityPercentageWidget extends StatelessWidget {
       child: Row(
         children: [
           Images(image: Assets.svgs.percentageCircle.path),
-          8.sw,
+          SizedBox(width: 8.w),
           Text(
             '$title : ',
             textDirection: TextDirection.rtl,
             style: AppTextStyles.w400.copyWith(color: Styles.textColor),
           ),
-          2.sw,
+          SizedBox(width: 2.w),
           Text(
             '%${percentage.toInt()}',
             style: AppTextStyles.w800.copyWith(color: context.color.primary),

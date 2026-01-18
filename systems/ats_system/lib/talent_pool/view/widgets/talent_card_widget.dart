@@ -56,7 +56,7 @@ class TalentCardWidget extends StatelessWidget {
                 onCheck: onSelectTalent,
                 isChecked: isTalentSelected == true,
               ),
-              8.sw,
+              SizedBox(width: 8.w),
             ],
             Container(
               width: 40.w,
@@ -68,13 +68,13 @@ class TalentCardWidget extends StatelessWidget {
                 ),
               ),
             ),
-            8.sw,
+            SizedBox(width: 8.w),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(talent.name ?? '', style: context.textTheme.labelSmall),
-                  6.sh,
+                  SizedBox(height: 6.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [

@@ -15,10 +15,10 @@ class PmsHomeBody extends StatelessWidget {
           child: Column(
             spacing: 16.h,
             children: [
-              const SizedBox(height: 80),
+              SizedBox(height: 80.h),
               ProjectManagementSection(isPmsHome: true),
               const LatestRequestsSection(),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
             ],
           ),
         ),
