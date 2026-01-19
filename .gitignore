@@ -64,3 +64,6 @@ android/app/.cxx/
 **/generated_plugin_registrant.dart
 **/generated_plugins.cmake
 **/package_config.json
+
+# Generated files
+*.g.dart

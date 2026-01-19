@@ -60,7 +60,7 @@ dependencies:
   pin_code_fields: ^8.0.1
   
   # Configuration
-  flutter_dotenv: ^5.2.1
+  envied: ^1.3.2
 
   # Responsive
   responsive_builder: ^0.7.1
@@ -72,3 +72,5 @@ dev_dependencies:
     sdk: flutter
   bloc_test: ^10.0.0
   mocktail: ^1.0.4
+  build_runner:
+  envied_generator: ^1.3.2

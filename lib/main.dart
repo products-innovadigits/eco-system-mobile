@@ -10,7 +10,6 @@ import 'package:core_system/core/utility/un_focus.dart';
 import 'package:core_system/core/widgets/connectivity_wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
@@ -41,7 +40,6 @@ void main() async {
   }
   await SharedHelper.init();
   await allTranslations.init();
-  await dotenv.load(fileName: ".env");
   await mainAppBloc.getShared();
 
   // Initialize connectivity service

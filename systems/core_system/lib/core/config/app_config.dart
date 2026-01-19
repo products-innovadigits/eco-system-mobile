@@ -1,10 +1,10 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:core_system/core/env/env.dart';
 
 class AppConfig {
-  static String domain = dotenv.env['DOMAIN_DEV'] ?? "";
-  static String strategyBaseUrl = dotenv.env['STRATEGY_BASE_URL_DEV'] ?? "";
-  static String authBaseUrl = dotenv.env['AUTH_BASE_URL_DEV'] ?? "";
-  static String atsBaseUrl = dotenv.env['ATS_BASE_URL_DEV'] ?? "";
-  static String apiKey = dotenv.env['API_KEY'] ?? "";
-  static String googleMapsBaseUrl = dotenv.env['GOOGLE_MAPS_BASE_URL'] ?? "";
+  static const String domain = Env.domainDev;
+  static const String strategyBaseUrl = Env.strategyBaseUrlDev;
+  static const String authBaseUrl = Env.authBaseUrlDev;
+  static const String atsBaseUrl = Env.atsBaseUrlDev;
+  static const String apiKey = Env.apiKey;
+  static const String googleMapsBaseUrl = Env.googleMapsBaseUrl;
 }

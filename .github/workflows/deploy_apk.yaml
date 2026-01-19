@@ -131,8 +131,16 @@ jobs:
             echo "API_KEY=*** (hidden)"
           fi
 
-      - name: Install Dependencies
+      - name: Install Root Dependencies
         run: flutter pub get
+
+      - name: Install Core Dependencies
+        working-directory: systems/core_system
+        run: flutter pub get
+
+      - name: Generate Envied Code
+        working-directory: systems/core_system
+        run: flutter pub run build_runner build --delete-conflicting-outputs
 
       - name: Set Gradle Heap Size
         run: |
