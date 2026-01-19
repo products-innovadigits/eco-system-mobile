@@ -1,6 +1,7 @@
 import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/workflow_process_details/workflow_process_details_bloc.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/workflow_process_details/workflow_process_details_state.dart';
+import 'package:pms_system/features/workflow_process_details/model/stage_doc_model.dart';
 import 'package:pms_system/features/workflow_process_details/model/workflow_process_details_model.dart';
 import 'package:pms_system/features/workflow_process_details/widgets/process_header_card.dart';
 import 'package:pms_system/features/workflow_process_details/widgets/tabs/actions_tab/actions_tab.dart';
@@ -12,20 +13,12 @@ import 'package:pms_system/shared/widgets/shimmer/custom_details_shimmer_loading
 
 class ProcessDetailsBody extends StatelessWidget {
   final int projectId;
-
-  // final ProjectDetailsModel projectDetailsModel;
   final int processId;
-
-  // final String stageName;
-  // final String processName;
 
   const ProcessDetailsBody({
     super.key,
     required this.projectId,
-    // required this.projectDetailsModel,
     required this.processId,
-    // required this.stageName,
-    // required this.processName,
   });
 
   @override
@@ -39,10 +32,7 @@ class ProcessDetailsBody extends StatelessWidget {
           builder: (context, state) {
             return state is WorkflowProcessDetailsLoading
                 ? SizedBox.shrink()
-                : ProcessHeaderCard(
-                    // project: projectDetailsModel,
-                    // stageName: stageName,
-                  );
+                : ProcessHeaderCard();
           },
         ),
         BlocBuilder<WorkflowProcessDetailsBloc, WorkflowProcessDetailsState>(
@@ -68,9 +58,6 @@ class ProcessDetailsBody extends StatelessWidget {
                   selectedTab: selectedTab,
                   processId: processId,
                   projectId: projectId,
-                  // projectDetailsModel: projectDetailsModel,
-                  // stageName: stageName,
-                  // processName: processName,
                 ),
 
               // ── Empty ───────────────────────────
@@ -92,24 +79,16 @@ class ProcessDetailsBody extends StatelessWidget {
 class _ProcessBody extends StatelessWidget {
   final List<WorkflowProcessGroupModel> processList;
   final int projectId;
-
-  // final ProjectDetailsModel projectDetailsModel;
   final ProcessTabsEnum selectedTab;
   final int processId;
   final int projectStepId;
-
-  // final String stageName;
-  // final String processName;
 
   const _ProcessBody({
     required this.processList,
     required this.selectedTab,
     required this.projectId,
-    // required this.projectDetailsModel,
     required this.processId,
-    // required this.stageName,
     required this.projectStepId,
-    // required this.processName,
   });
 
   @override
@@ -135,6 +114,7 @@ class _ProcessBody extends StatelessWidget {
                 pdfFilePath: stageDocsData?.pdfFilePath ?? '',
                 stepDocumentId: (stageDocsData?.stepDocumentId ?? 0).toInt(),
                 processName: stageDocsData?.processTitle ?? '',
+                documents: stageDocsData?.currentStep?.stepDocuments ?? [],
               ),
             ),
           ),
@@ -150,22 +130,16 @@ Widget _buildProcessBody({
   required ProcessTabsEnum selectedTab,
   required int processId,
   required int projectId,
-  // required ProjectDetailsModel projectDetailsModel,
-  // required String stageName,
-  // required String processName,
 }) {
   final workflowProcessDetailsBloc = context.read<WorkflowProcessDetailsBloc>();
   final stageDocsData = workflowProcessDetailsBloc.stageDocsData;
 
   return _ProcessBody(
     processList: model.data ?? [],
-    // projectDetailsModel: projectDetailsModel,
     projectId: projectId,
     selectedTab: selectedTab,
     processId: processId,
     projectStepId: stageDocsData?.currentStep?.id ?? 0,
-    // stageName: stageName,
-    // processName: processName,
   );
 }
 
@@ -178,6 +152,7 @@ Widget _getTabSection({
   required String pdfFilePath,
   required int stepDocumentId,
   required String processName,
+  required List<StageDocument> documents,
 }) {
   return switch (selectedTab) {
     ProcessTabsEnum.followProcess => FollowProcessTab(processList: processList),
@@ -187,6 +162,7 @@ Widget _getTabSection({
       processId: processId,
       pdfFilePath: pdfFilePath,
       processName: processName,
+      documents: documents,
     ),
     // ProcessTabsEnum.fields => FieldsTab(),
     ProcessTabsEnum.history => TechnicalLogTab(

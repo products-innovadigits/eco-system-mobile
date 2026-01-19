@@ -8,6 +8,7 @@ import 'package:pms_system/features/project_report/view/project_report_view.dart
 import 'package:pms_system/features/projects/bloc/filtration/projects_filtration_bloc.dart';
 import 'package:pms_system/features/projects/view/projects_view.dart';
 import 'package:pms_system/features/projects_progress/view/project_management_section.dart';
+import 'package:pms_system/features/workflow_process_details/bloc/stage_docs/stage_docs_bloc.dart';
 import 'package:pms_system/features/workflow_process_details/view/workflow_process_details_view.dart';
 import 'package:pms_system/pms_layout.dart';
 
@@ -34,6 +35,7 @@ class PmsModule implements SystemModule {
     BlocProvider<LatestRequestFiltrationCubit>(
       create: (_) => LatestRequestFiltrationCubit(),
     ),
+    BlocProvider<StageDocsBloc>(create: (_) => StageDocsBloc()),
   ];
 
   @override

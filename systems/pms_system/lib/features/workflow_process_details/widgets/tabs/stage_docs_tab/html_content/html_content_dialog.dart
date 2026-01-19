@@ -1,4 +1,4 @@
-import 'package:pms_system/features/workflow_process_details/model/current_step_document_model.dart';
+import 'package:pms_system/features/workflow_process_details/model/stage_doc_model.dart';
 import 'package:pms_system/features/workflow_process_details/widgets/tabs/stage_docs_tab/html_content/editable_html_renderer.dart';
 import 'package:pms_system/features/workflow_process_details/widgets/tabs/stage_docs_tab/html_content/html_content_helper.dart';
 
@@ -8,7 +8,7 @@ import '../../../../../../core/utility/pms_exports.dart';
 /// Allows users to view document fields and download the PDF.
 class HtmlContentDialog extends StatefulWidget {
   /// The document containing HTML content and field definitions
-  final StepDocument document;
+  final StageDocument document;
 
   /// Path to the PDF file for download
   final String pdfFilePath;
@@ -84,7 +84,7 @@ class _HtmlContentDialogState extends State<HtmlContentDialog> {
             _buildHeader(context),
             const Divider(height: 1),
             _buildContent(htmlContent, fields),
-            _buildDownloadButton(),
+            // _buildDownloadButton(),
           ],
         ),
       ),
@@ -131,22 +131,22 @@ class _HtmlContentDialogState extends State<HtmlContentDialog> {
   }
 
   /// Builds the download button section.
-  Widget _buildDownloadButton() {
-    return Container(
-      padding: const EdgeInsets.all(HtmlContentHelper.dialogPadding),
-      child: Row(
-        children: [
-          Expanded(
-            child: CustomBtn(
-              text: allTranslations.text(LocaleKeys.download),
-              onPressed: () => LauncherHelper.downloadFiles(
-                filePath: widget.pdfFilePath,
-                context: context,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildDownloadButton() {
+  //   return Container(
+  //     padding: const EdgeInsets.all(HtmlContentHelper.dialogPadding),
+  //     child: Row(
+  //       children: [
+  //         Expanded(
+  //           child: CustomBtn(
+  //             text: allTranslations.text(LocaleKeys.download),
+  //             onPressed: () => LauncherHelper.downloadFiles(
+  //               filePath: widget.pdfFilePath,
+  //               context: context,
+  //             ),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }

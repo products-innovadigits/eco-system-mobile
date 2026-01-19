@@ -72,7 +72,7 @@ class WorkflowProcessDetailsBloc
     Emitter<WorkflowProcessDetailsState> emit,
   ) async {
     try {
-      emit(const WorkflowProcessDetailsLoading());
+      emit(const WorkflowProcessStarting());
 
       final Response response = await WorkflowProcessDetailsRepo.startProcess(
         processId: event.processId,
@@ -89,17 +89,12 @@ class WorkflowProcessDetailsBloc
             projectId: event.projectId,
           ),
         );
+        emit(WorkflowProcessStarted());
       } else {
-        emit(
-          const WorkflowProcessDetailsFailure(
-            message: 'Failed to start process',
-          ),
-        );
+        emit(const WorkflowProcessStartFailure());
       }
     } catch (e) {
-      emit(
-        const WorkflowProcessDetailsFailure(message: 'Failed to start process'),
-      );
+      emit(const WorkflowProcessStartFailure());
     }
   }
 

@@ -39,8 +39,5 @@ class DocCommentsEditing extends DocCommentsState {
 
 /// Error loading/editing/deleting comments
 class DocCommentsFailure extends DocCommentsState {
-  final String message;
-
-  const DocCommentsFailure({required this.message});
+  const DocCommentsFailure();
 }
-

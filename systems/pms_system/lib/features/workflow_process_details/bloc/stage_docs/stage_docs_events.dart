@@ -4,12 +4,12 @@ abstract class StageDocsEvent {
 }
 
 /// Load current step documents
-class LoadCurrentStepDocs extends StageDocsEvent {
+class CreateCurrentStepDocs extends StageDocsEvent {
   final int processId;
   final int projectId;
   final int projectStepId;
 
-  const LoadCurrentStepDocs({
+  const CreateCurrentStepDocs({
     required this.processId,
     required this.projectId,
     required this.projectStepId,
@@ -23,4 +23,3 @@ class AddDocumentComment extends StageDocsEvent {
 
   const AddDocumentComment({required this.stepDocumentId, required this.text});
 }
-

@@ -6,6 +6,7 @@ import 'package:pms_system/features/workflow_process_details/model/document_comm
 import 'package:pms_system/features/workflow_process_details/model/history_model.dart';
 import 'package:pms_system/features/workflow_process_details/model/stage_doc_model.dart';
 import 'package:pms_system/features/workflow_process_details/model/workflow_process_details_model.dart';
+import 'package:pms_system/shared/model/default_response_model.dart';
 
 abstract class WorkflowProcessDetailsRepo {
   static Future<WorkflowProcessDetailsModel> getWorkflowProcessDetails({
@@ -50,7 +51,7 @@ abstract class WorkflowProcessDetailsRepo {
     );
   }
 
-  static Future<dynamic> addDocComment({
+  static Future<DefaultResponseModel> addDocComment({
     required int documentId,
     required String text,
   }) async {
@@ -58,17 +59,21 @@ abstract class WorkflowProcessDetailsRepo {
       ApiNames.documentComment,
       method: ServerMethods.POST,
       body: {'documentDataId': documentId, 'text': text},
+      model: DefaultResponseModel(),
     );
   }
 
-  static Future<dynamic> deleteDocComment({required int documentId}) async {
+  static Future<DefaultResponseModel> deleteDocComment({
+    required int documentId,
+  }) async {
     return await Network().request(
       ApiNames.documentCommentActions(documentId),
       method: ServerMethods.DELETE,
+      model: DefaultResponseModel(),
     );
   }
 
-  static Future<dynamic> editDocComment({
+  static Future<DefaultResponseModel> editDocComment({
     required int documentId,
     required int documentDataId,
     required String text,
@@ -77,6 +82,7 @@ abstract class WorkflowProcessDetailsRepo {
       ApiNames.documentCommentActions(documentId),
       method: ServerMethods.PUT,
       body: {'documentDataId': documentDataId, 'text': text},
+      model: DefaultResponseModel(),
     );
   }
 

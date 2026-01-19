@@ -1,4 +1,6 @@
 import 'package:pms_system/core/utility/pms_exports.dart';
+import 'package:pms_system/features/workflow_process_details/bloc/stage_docs/stage_docs_bloc.dart';
+import 'package:pms_system/features/workflow_process_details/bloc/stage_docs/stage_docs_events.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/workflow_process_details/workflow_process_details_bloc.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/workflow_process_details/workflow_process_details_events.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/workflow_process_details/workflow_process_details_state.dart';
@@ -10,24 +12,11 @@ class WorkflowProcessDetailsView extends StatelessWidget {
     required this.processId,
     required this.projectId,
     required this.processName,
-    // required this.projectName,
-    // required this.stageName,
-    // required this.projectStartDate,
-    // required this.projectEndDate,
-    // required this.projectManagerName,
-    // required this.projectBudget,
   });
 
   final int processId;
   final int projectId;
   final String processName;
-
-  // final String projectName;
-  // final String stageName;
-  // final String projectManagerName;
-  // final double projectBudget;
-  // final DateTime? projectStartDate;
-  // final DateTime? projectEndDate;
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +24,8 @@ class WorkflowProcessDetailsView extends StatelessWidget {
       create: (context) {
         return WorkflowProcessDetailsBloc()..add(
           LoadWorkflowProcessDetails(
-            processId: 305 ?? processId,
-            projectId: 249 ?? projectId,
+            processId: processId,
+            projectId: projectId,
           ),
         );
       },
@@ -45,17 +34,23 @@ class WorkflowProcessDetailsView extends StatelessWidget {
           title: processName,
           withBottomBorder: false,
           action:
-              BlocBuilder<
+              BlocConsumer<
                 WorkflowProcessDetailsBloc,
                 WorkflowProcessDetailsState
               >(
-                buildWhen: (previous, current) =>
-                    (previous is! WorkflowProcessDetailsLoaded &&
-                        current is WorkflowProcessDetailsLoaded) ||
-                    (previous is WorkflowProcessDetailsLoaded &&
-                        current is WorkflowProcessDetailsLoading) ||
-                    (previous is WorkflowProcessDetailsLoading &&
-                        current is WorkflowProcessDetailsLoaded),
+                listener: (context, state) {
+                  if (state is WorkflowProcessStarted) {
+                    final bloc = context.read<WorkflowProcessDetailsBloc>();
+                    // Reload process details after starting
+                    context.read<StageDocsBloc>().add(
+                      CreateCurrentStepDocs(
+                        processId: processId,
+                        projectId: projectId,
+                        projectStepId: bloc.stageDocsData?.currentStep?.id ?? 0,
+                      ),
+                    );
+                  }
+                },
                 builder: (context, state) {
                   final bloc = context.read<WorkflowProcessDetailsBloc>();
                   // Only show button if data is loaded
@@ -65,7 +60,7 @@ class WorkflowProcessDetailsView extends StatelessWidget {
                     final isStart = workflowStatus == 'NotStarted';
 
                     return InkWell(
-                      onTap: isStart && state is! WorkflowProcessDetailsLoading
+                      onTap: isStart && state is! WorkflowProcessStarting
                           ? () {
                               YesNoDialogHelper.showStartProcessConfirmationDialog(
                                 context: context,
@@ -120,47 +115,7 @@ class WorkflowProcessDetailsView extends StatelessWidget {
               ),
         ),
         body: SafeArea(
-          child: ProcessDetailsBody(
-            projectId: projectId,
-            processId: processId,
-            // projectDetailsModel: ProjectDetailsModel(
-            //   id: projectId,
-            //   title: context
-            //       .read<WorkflowProcessDetailsBloc>()
-            //       .stageDocsData
-            //       ?.processTitle,
-            //   managerName: context
-            //       .read<WorkflowProcessDetailsBloc>()
-            //       .stageDocsData
-            //       ?.projectManager,
-            //   budget: context
-            //       .read<WorkflowProcessDetailsBloc>()
-            //       .stageDocsData
-            //       ?.projectBudget,
-            //   startDate: DateTime.tryParse(
-            //     context
-            //             .read<WorkflowProcessDetailsBloc>()
-            //             .stageDocsData
-            //             ?.projectStartDate ??
-            //         '',
-            //   ),
-            //   endDate: DateTime.tryParse(
-            //     context
-            //             .read<WorkflowProcessDetailsBloc>()
-            //             .stageDocsData
-            //             ?.projectEndDate ??
-            //         '',
-            //   ),
-            // ),
-
-            // stageName:
-            //     context
-            //         .read<WorkflowProcessDetailsBloc>()
-            //         .stageDocsData
-            //         ?.processStageTitle ??
-            //     '',
-            // processName: processName,
-          ),
+          child: ProcessDetailsBody(projectId: projectId, processId: processId),
         ),
       ),
     );
@@ -178,3 +133,11 @@ String getStatusName(String workflowStatus) => switch (workflowStatus) {
   'InProgress' => allTranslations.text(LocaleKeys.in_progress),
   _ => allTranslations.text(LocaleKeys.done),
 };
+
+// buildWhen: (previous, current) =>
+//     (previous is! WorkflowProcessDetailsLoaded &&
+//         current is WorkflowProcessDetailsLoaded) ||
+//     (previous is WorkflowProcessDetailsLoaded &&
+//         current is WorkflowProcessDetailsLoading) ||
+//     (previous is WorkflowProcessDetailsLoading &&
+//         current is WorkflowProcessDetailsLoaded),

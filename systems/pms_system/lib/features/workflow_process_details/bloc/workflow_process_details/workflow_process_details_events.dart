@@ -33,4 +33,3 @@ class SelectWorkflowProcessTab extends WorkflowProcessDetailsEvent {
 
   const SelectWorkflowProcessTab({required this.tab});
 }
-

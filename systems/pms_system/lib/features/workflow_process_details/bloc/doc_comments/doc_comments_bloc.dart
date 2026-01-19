@@ -3,6 +3,7 @@ import 'package:pms_system/features/workflow_process_details/bloc/doc_comments/d
 import 'package:pms_system/features/workflow_process_details/bloc/doc_comments/doc_comments_state.dart';
 import 'package:pms_system/features/workflow_process_details/model/document_comments_model.dart';
 import 'package:pms_system/features/workflow_process_details/repo/workflow_process_details_repo.dart';
+import 'package:pms_system/shared/model/default_response_model.dart';
 
 class DocCommentsBloc extends Bloc<DocCommentsEvent, DocCommentsState> {
   DocCommentsBloc() : super(const DocCommentsInitial()) {
@@ -44,9 +45,7 @@ class DocCommentsBloc extends Bloc<DocCommentsEvent, DocCommentsState> {
         emit(const DocCommentsEmpty());
       }
     } catch (e) {
-      emit(
-        const DocCommentsFailure(message: 'Failed to load document comments'),
-      );
+      emit(const DocCommentsFailure());
     }
   }
 
@@ -57,24 +56,31 @@ class DocCommentsBloc extends Bloc<DocCommentsEvent, DocCommentsState> {
     emit(const DocCommentsDeleting());
     try {
       // Delete comment using the document ID
-      Response response = await WorkflowProcessDetailsRepo.deleteDocComment(
-        documentId: event.commentId,
-      );
+      DefaultResponseModel response =
+          await WorkflowProcessDetailsRepo.deleteDocComment(
+            documentId: event.commentId,
+          );
 
-      if (response.statusCode == 200) {
+      if (response.succeeded == true) {
+        AppCore.successToastMessage(
+          response.data?.message ?? 'Comment deleted successfully',
+        );
         add(LoadDocComments(documentId: event.documentId));
       } else {
+        AppCore.errorToastMessage(
+          response.data?.message ?? 'Failed to delete comment',
+        );
         if (_commentsData != null) {
           emit(DocCommentsLoaded(commentsData: _commentsData!));
         } else {
-          emit(const DocCommentsFailure(message: 'Failed to delete comment'));
+          emit(const DocCommentsFailure());
         }
       }
     } catch (e) {
       if (_commentsData != null) {
         emit(DocCommentsLoaded(commentsData: _commentsData!));
       } else {
-        emit(const DocCommentsFailure(message: 'Failed to delete comment'));
+        emit(const DocCommentsFailure());
       }
     }
   }
@@ -86,28 +92,35 @@ class DocCommentsBloc extends Bloc<DocCommentsEvent, DocCommentsState> {
     if (!formKey.currentState!.validate()) return;
     emit(const DocCommentsEditing());
     try {
-      Response response = await WorkflowProcessDetailsRepo.editDocComment(
-        documentId: event.documentId,
-        documentDataId: event.documentDataId,
-        text: event.comment,
-      );
+      DefaultResponseModel response =
+          await WorkflowProcessDetailsRepo.editDocComment(
+            documentId: event.documentId,
+            documentDataId: event.documentDataId,
+            text: event.comment,
+          );
 
-      if (response.statusCode == 200) {
+      if (response.succeeded == true) {
         add(LoadDocComments(documentId: event.documentDataId));
         editCommentCtrl.clear();
         _editingCommentId = null;
+        AppCore.successToastMessage(
+          response.data?.message ?? 'Comment edited successfully',
+        );
       } else {
+        AppCore.errorToastMessage(
+          response.data?.message ?? 'Failed to edit comment',
+        );
         if (_commentsData != null) {
           emit(DocCommentsLoaded(commentsData: _commentsData!));
         } else {
-          emit(const DocCommentsFailure(message: 'Failed to edit comment'));
+          emit(const DocCommentsFailure());
         }
       }
     } catch (e) {
       if (_commentsData != null) {
         emit(DocCommentsLoaded(commentsData: _commentsData!));
       } else {
-        emit(const DocCommentsFailure(message: 'Failed to edit comment'));
+        emit(const DocCommentsFailure());
       }
     }
   }

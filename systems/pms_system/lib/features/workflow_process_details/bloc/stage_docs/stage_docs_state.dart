@@ -1,5 +1,3 @@
-import 'package:pms_system/features/workflow_process_details/model/current_step_document_model.dart';
-
 /// Base state for StageDocsBloc
 abstract class StageDocsState {
   const StageDocsState();
@@ -17,9 +15,7 @@ class StageDocsLoading extends StageDocsState {
 
 /// Current step documents loaded successfully
 class StageDocsLoaded extends StageDocsState {
-  final CurrentStepDocumentData documentsData;
-
-  const StageDocsLoaded({required this.documentsData});
+  const StageDocsLoaded();
 }
 
 /// No documents found (empty result)
@@ -34,8 +30,5 @@ class StageDocsAdding extends StageDocsState {
 
 /// Error loading/adding documents
 class StageDocsFailure extends StageDocsState {
-  final String message;
-
-  const StageDocsFailure({required this.message});
+  const StageDocsFailure();
 }
-

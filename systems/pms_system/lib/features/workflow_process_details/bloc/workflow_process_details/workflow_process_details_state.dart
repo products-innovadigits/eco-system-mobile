@@ -34,3 +34,14 @@ class WorkflowProcessDetailsFailure extends WorkflowProcessDetailsState {
   const WorkflowProcessDetailsFailure({required this.message});
 }
 
+class WorkflowProcessStarting extends WorkflowProcessDetailsState {
+  const WorkflowProcessStarting();
+}
+
+class WorkflowProcessStarted extends WorkflowProcessDetailsState {
+  const WorkflowProcessStarted();
+}
+
+class WorkflowProcessStartFailure extends WorkflowProcessDetailsState {
+  const WorkflowProcessStartFailure();
+}

@@ -111,7 +111,7 @@ class WorkflowStep extends SingleMapper {
   String? deadLineDate;
   String? toTopLevel;
   List<int>? stepDocumentIds;
-  List<StageDocument?>? stepDocuments;
+  List<StageDocument>? stepDocuments;
   List<dynamic>? complaintFollowerIds;
   List<dynamic>? complaintTopLevelIds;
   bool? isActive;
@@ -186,12 +186,12 @@ class WorkflowStep extends SingleMapper {
     }
 
     if (json['stepDocuments'] != null && json['stepDocuments'] is List) {
-      stepDocuments = <StageDocument?>[];
+      stepDocuments = <StageDocument>[];
       for (var v in (json['stepDocuments'] as List)) {
-        if (v != null && v is Map) {
-          stepDocuments!.add(StageDocument.fromJson(v.cast<String, dynamic>()));
-        } else {
-          stepDocuments!.add(null);
+        if (v != null) {
+          stepDocuments!.add(
+            StageDocument.fromJson((v as Map).cast<String, dynamic>()),
+          );
         }
       }
     }
@@ -239,7 +239,7 @@ class WorkflowStep extends SingleMapper {
     map['toTopLevel'] = toTopLevel;
     if (stepDocumentIds != null) map['stepDocumentIds'] = stepDocumentIds;
     if (stepDocuments != null) {
-      map['stepDocuments'] = stepDocuments!.map((e) => e?.toJson()).toList();
+      map['stepDocuments'] = stepDocuments!.map((e) => e.toJson()).toList();
     }
     if (complaintFollowerIds != null) {
       map['complaintFollowerIds'] = complaintFollowerIds;
@@ -268,6 +268,8 @@ class WorkflowStep extends SingleMapper {
 
 class StageDocument {
   int? id;
+  int? stepDocumentId;
+  int? documentCopyId;
   String? documentTitle;
   bool? isActive;
   String? symbol;
@@ -277,6 +279,8 @@ class StageDocument {
 
   StageDocument({
     this.id,
+    this.stepDocumentId,
+    this.documentCopyId,
     this.documentTitle,
     this.isActive,
     this.symbol,
@@ -287,6 +291,8 @@ class StageDocument {
 
   StageDocument.fromJson(Map<String, dynamic> json) {
     id = (json['id'] as num?)?.toInt();
+    stepDocumentId = (json['stepDocumentId'] as num?)?.toInt();
+    documentCopyId = (json['documentCopyId'] as num?)?.toInt();
     documentTitle = json['documentTitle']?.toString();
     isActive = json['isActive'] as bool?;
     symbol = json['symbol']?.toString();
@@ -302,6 +308,8 @@ class StageDocument {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> map = <String, dynamic>{};
     map['id'] = id;
+    map['stepDocumentId'] = stepDocumentId;
+    map['documentCopyId'] = documentCopyId;
     map['documentTitle'] = documentTitle;
     map['isActive'] = isActive;
     map['symbol'] = symbol;

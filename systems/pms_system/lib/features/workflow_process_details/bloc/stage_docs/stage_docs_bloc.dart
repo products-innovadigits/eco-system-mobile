@@ -3,11 +3,12 @@ import 'package:pms_system/features/workflow_process_details/bloc/stage_docs/sta
 import 'package:pms_system/features/workflow_process_details/bloc/stage_docs/stage_docs_state.dart';
 import 'package:pms_system/features/workflow_process_details/model/current_step_document_model.dart';
 import 'package:pms_system/features/workflow_process_details/repo/workflow_process_details_repo.dart';
+import 'package:pms_system/shared/model/default_response_model.dart';
 
 class StageDocsBloc extends Bloc<StageDocsEvent, StageDocsState> {
   StageDocsBloc() : super(const StageDocsInitial()) {
     on<AddDocumentComment>(_onAddDocumentComment);
-    on<LoadCurrentStepDocs>(_onLoadCurrentStepDocs);
+    on<CreateCurrentStepDocs>(_onCreateCurrentStepDocs);
   }
 
   // Map to store TextEditingController for each document
@@ -15,11 +16,12 @@ class StageDocsBloc extends Bloc<StageDocsEvent, StageDocsState> {
 
   // Map to store FormKey for each document
   final Map<int, GlobalKey<FormState>> _formKeys = {};
-  CurrentStepDocumentData? currentStepDocumentData;
+
+  // CurrentStepDocumentData? currentStepDocumentData;
   int addingDocumentId = 0;
 
-  Future<void> _onLoadCurrentStepDocs(
-    LoadCurrentStepDocs event,
+  Future<void> _onCreateCurrentStepDocs(
+    CreateCurrentStepDocs event,
     Emitter<StageDocsState> emit,
   ) async {
     emit(const StageDocsLoading());
@@ -35,19 +37,15 @@ class StageDocsBloc extends Bloc<StageDocsEvent, StageDocsState> {
           res.data != null &&
           res.data!.items != null &&
           res.data!.items!.isNotEmpty) {
-        currentStepDocumentData = res.data;
+        // currentStepDocumentData = res.data;
         // Initialize controllers for each document
-        _initializeCommentControllers();
-        emit(StageDocsLoaded(documentsData: res.data!));
+        // _initializeCommentControllers();
+        emit(StageDocsLoaded());
       } else {
         emit(const StageDocsEmpty());
       }
     } catch (e) {
-      emit(
-        const StageDocsFailure(
-          message: 'Failed to load current step documents',
-        ),
-      );
+      emit(const StageDocsFailure());
     }
   }
 
@@ -65,45 +63,47 @@ class StageDocsBloc extends Bloc<StageDocsEvent, StageDocsState> {
     emit(const StageDocsAdding());
     try {
       // Add comment using the document ID
-      Response response = await WorkflowProcessDetailsRepo.addDocComment(
-        documentId: event.stepDocumentId,
-        text: comment,
-      );
+      DefaultResponseModel response =
+          await WorkflowProcessDetailsRepo.addDocComment(
+            documentId: event.stepDocumentId,
+            text: comment,
+          );
 
-      if (response.statusCode == 200) {
+      if (response.succeeded == true) {
         // Clear the controller for this specific document
         _commentControllers[event.stepDocumentId]?.clear();
         addingDocumentId = 0;
-        if (currentStepDocumentData != null) {
-          emit(StageDocsLoaded(documentsData: currentStepDocumentData!));
-        } else {
-          emit(const StageDocsInitial());
-        }
+        AppCore.successToastMessage(
+          response.data?.message ?? 'Comment added successfully',
+        );
+        emit(StageDocsLoaded());
       } else {
+        AppCore.errorToastMessage(
+          response.data?.message ?? 'Failed to add comment',
+        );
         addingDocumentId = 0;
-        emit(const StageDocsFailure(message: 'Failed to add document comment'));
+        emit(const StageDocsFailure());
       }
     } catch (e) {
       addingDocumentId = 0;
-      emit(const StageDocsFailure(message: 'Failed to add document comment'));
+      emit(const StageDocsFailure());
     }
   }
 
-  /// Initialize TextEditingController and FormKey for each document
-  void _initializeCommentControllers() {
-    _disposeControllers();
-
-    if (currentStepDocumentData?.items != null) {
-      for (CurrentStepDocumentItem? document
-          in currentStepDocumentData!.items!) {
-        if (document?.id != null) {
-          final documentId = document!.id!;
-          _commentControllers[documentId] = TextEditingController();
-          _formKeys[documentId] = GlobalKey<FormState>();
-        }
-      }
-    }
-  }
+  // /// Initialize TextEditingController and FormKey for each document
+  // void initializeCommentControllers({List<StageDocument>? documents}) {
+  //   _disposeControllers();
+  //
+  //   if (documents != null) {
+  //     for (StageDocument? document in documents) {
+  //       if (document?.documentCopyId != null) {
+  //         final documentId = document!.documentCopyId!;
+  //         _commentControllers[documentId] = TextEditingController();
+  //         _formKeys[documentId] = GlobalKey<FormState>();
+  //       }
+  //     }
+  //   }
+  // }
 
   /// Get TextEditingController for a specific document
   /// Creates one if it doesn't exist (lazy initialization)

@@ -4,6 +4,8 @@ import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/actions_tab/actions_tab_bloc.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/actions_tab/actions_tab_events.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/actions_tab/actions_tab_state.dart';
+import 'package:pms_system/features/workflow_process_details/bloc/stage_docs/stage_docs_bloc.dart';
+import 'package:pms_system/features/workflow_process_details/bloc/stage_docs/stage_docs_events.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/workflow_process_details/workflow_process_details_bloc.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/workflow_process_details/workflow_process_details_events.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/workflow_process_details/workflow_process_details_state.dart';
@@ -48,6 +50,15 @@ class _ActionsTabContent extends StatelessWidget {
               LoadWorkflowProcessDetails(
                 projectId: projectId,
                 processId: processId,
+              ),
+            );
+            context.read<StageDocsBloc>().add(
+              CreateCurrentStepDocs(
+                processId: processId,
+                projectId: projectId,
+                projectStepId:
+                    workFlowProcessDetailsBloc.stageDocsData?.currentStep?.id ??
+                    0,
               ),
             );
             // Reset the flag after triggering reload
