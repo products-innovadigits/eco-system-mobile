@@ -2,7 +2,7 @@ import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/stage_docs/stage_docs_events.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/stage_docs/stage_docs_state.dart';
 import 'package:pms_system/features/workflow_process_details/model/current_step_document_model.dart';
-import 'package:pms_system/features/workflow_process_details/repo/workflow_process_details_repo.dart';
+import 'package:pms_system/features/workflow_process_details/repo/process_details_repo.dart';
 import 'package:pms_system/shared/model/default_response_model.dart';
 
 class StageDocsBloc extends Bloc<StageDocsEvent, StageDocsState> {
@@ -27,7 +27,7 @@ class StageDocsBloc extends Bloc<StageDocsEvent, StageDocsState> {
     emit(const StageDocsLoading());
     try {
       CurrentStepDocumentModel res =
-          await WorkflowProcessDetailsRepo.getCurrentStepDocs(
+          await ProcessDetailsRepo.getCurrentStepDocs(
             processId: event.processId,
             projectId: event.projectId,
             projectStepId: event.projectStepId,
@@ -63,11 +63,10 @@ class StageDocsBloc extends Bloc<StageDocsEvent, StageDocsState> {
     emit(const StageDocsAdding());
     try {
       // Add comment using the document ID
-      DefaultResponseModel response =
-          await WorkflowProcessDetailsRepo.addDocComment(
-            documentId: event.stepDocumentId,
-            text: comment,
-          );
+      DefaultResponseModel response = await ProcessDetailsRepo.addDocComment(
+        documentId: event.stepDocumentId,
+        text: comment,
+      );
 
       if (response.succeeded == true) {
         // Clear the controller for this specific document

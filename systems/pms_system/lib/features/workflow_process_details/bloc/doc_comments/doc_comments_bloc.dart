@@ -2,7 +2,7 @@ import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/doc_comments/doc_comments_events.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/doc_comments/doc_comments_state.dart';
 import 'package:pms_system/features/workflow_process_details/model/document_comments_model.dart';
-import 'package:pms_system/features/workflow_process_details/repo/workflow_process_details_repo.dart';
+import 'package:pms_system/features/workflow_process_details/repo/process_details_repo.dart';
 import 'package:pms_system/shared/model/default_response_model.dart';
 
 class DocCommentsBloc extends Bloc<DocCommentsEvent, DocCommentsState> {
@@ -27,10 +27,9 @@ class DocCommentsBloc extends Bloc<DocCommentsEvent, DocCommentsState> {
   ) async {
     emit(const DocCommentsLoading());
     try {
-      DocumentCommentsModel res =
-          await WorkflowProcessDetailsRepo.getDocComments(
-            documentId: event.documentId,
-          );
+      DocumentCommentsModel res = await ProcessDetailsRepo.getDocComments(
+        documentId: event.documentId,
+      );
 
       if (res.succeeded == true && res.data != null) {
         _commentsData = res.data;
@@ -56,10 +55,9 @@ class DocCommentsBloc extends Bloc<DocCommentsEvent, DocCommentsState> {
     emit(const DocCommentsDeleting());
     try {
       // Delete comment using the document ID
-      DefaultResponseModel response =
-          await WorkflowProcessDetailsRepo.deleteDocComment(
-            documentId: event.commentId,
-          );
+      DefaultResponseModel response = await ProcessDetailsRepo.deleteDocComment(
+        documentId: event.commentId,
+      );
 
       if (response.succeeded == true) {
         AppCore.successToastMessage(
@@ -92,12 +90,11 @@ class DocCommentsBloc extends Bloc<DocCommentsEvent, DocCommentsState> {
     if (!formKey.currentState!.validate()) return;
     emit(const DocCommentsEditing());
     try {
-      DefaultResponseModel response =
-          await WorkflowProcessDetailsRepo.editDocComment(
-            documentId: event.documentId,
-            documentDataId: event.documentDataId,
-            text: event.comment,
-          );
+      DefaultResponseModel response = await ProcessDetailsRepo.editDocComment(
+        documentId: event.documentId,
+        documentDataId: event.documentDataId,
+        text: event.comment,
+      );
 
       if (response.succeeded == true) {
         add(LoadDocComments(documentId: event.documentDataId));

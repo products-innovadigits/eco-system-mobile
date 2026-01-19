@@ -1,8 +1,8 @@
 import 'package:pms_system/core/utility/pms_exports.dart';
-import 'package:pms_system/features/workflow_process_details/bloc/workflow_process_details/workflow_process_details_bloc.dart';
-import 'package:pms_system/features/workflow_process_details/bloc/workflow_process_details/workflow_process_details_state.dart';
+import 'package:pms_system/features/workflow_process_details/bloc/process_details/process_details_bloc.dart';
+import 'package:pms_system/features/workflow_process_details/bloc/process_details/process_details_state.dart';
+import 'package:pms_system/features/workflow_process_details/model/process_details_model.dart';
 import 'package:pms_system/features/workflow_process_details/model/stage_doc_model.dart';
-import 'package:pms_system/features/workflow_process_details/model/workflow_process_details_model.dart';
 import 'package:pms_system/features/workflow_process_details/widgets/process_header_card.dart';
 import 'package:pms_system/features/workflow_process_details/widgets/tabs/actions_tab/actions_tab.dart';
 import 'package:pms_system/features/workflow_process_details/widgets/tabs/follow_process_tab/follow_process_tab.dart';
@@ -25,43 +25,41 @@ class ProcessDetailsBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        BlocBuilder<WorkflowProcessDetailsBloc, WorkflowProcessDetailsState>(
+        BlocBuilder<ProcessDetailsBloc, ProcessDetailsState>(
           buildWhen: (previous, current) =>
-              (previous is WorkflowProcessDetailsLoading) !=
-              (current is WorkflowProcessDetailsLoading),
+              (previous is ProcessDetailsLoading) !=
+              (current is ProcessDetailsLoading),
           builder: (context, state) {
-            return state is WorkflowProcessDetailsLoading
+            return state is ProcessDetailsLoading
                 ? SizedBox.shrink()
                 : ProcessHeaderCard();
           },
         ),
-        BlocBuilder<WorkflowProcessDetailsBloc, WorkflowProcessDetailsState>(
+        BlocBuilder<ProcessDetailsBloc, ProcessDetailsState>(
           buildWhen: (previous, current) =>
               previous.runtimeType != current.runtimeType ||
-              (previous is WorkflowProcessDetailsLoaded &&
-                  current is WorkflowProcessDetailsLoaded &&
+              (previous is ProcessDetailsLoaded &&
+                  current is ProcessDetailsLoaded &&
                   previous.processDetails != current.processDetails),
           builder: (context, state) {
             final selectedTab = context.select(
-              (WorkflowProcessDetailsBloc bloc) => bloc.selectedTab,
+              (ProcessDetailsBloc bloc) => bloc.selectedTab,
             );
             return switch (state) {
               // ── Loading ─────────────────────────
-              WorkflowProcessDetailsLoading() =>
-                const CustomDetailsShimmerLoading(),
+              ProcessDetailsLoading() => const CustomDetailsShimmerLoading(),
 
               // ── Loaded ────────────────────────────
-              WorkflowProcessDetailsLoaded(:final processDetails) =>
-                _buildProcessBody(
-                  context: context,
-                  model: processDetails,
-                  selectedTab: selectedTab,
-                  processId: processId,
-                  projectId: projectId,
-                ),
+              ProcessDetailsLoaded(:final processDetails) => _buildProcessBody(
+                context: context,
+                model: processDetails,
+                selectedTab: selectedTab,
+                processId: processId,
+                projectId: projectId,
+              ),
 
               // ── Empty ───────────────────────────
-              WorkflowProcessDetailsEmpty() => const EmptyContainer(),
+              ProcessDetailsEmpty() => const EmptyContainer(),
 
               // ── Error / fallback ────────────────
               _ => EmptyContainer(
@@ -77,7 +75,7 @@ class ProcessDetailsBody extends StatelessWidget {
 }
 
 class _ProcessBody extends StatelessWidget {
-  final List<WorkflowProcessGroupModel> processList;
+  final List<GroupStepsModel> processList;
   final int projectId;
   final ProcessTabsEnum selectedTab;
   final int processId;
@@ -93,8 +91,7 @@ class _ProcessBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final workflowProcessDetailsBloc = context
-        .read<WorkflowProcessDetailsBloc>();
+    final workflowProcessDetailsBloc = context.read<ProcessDetailsBloc>();
     final stageDocsData = workflowProcessDetailsBloc.stageDocsData;
     return Expanded(
       child: Column(
@@ -126,12 +123,12 @@ class _ProcessBody extends StatelessWidget {
 
 Widget _buildProcessBody({
   required BuildContext context,
-  required WorkflowProcessDetailsModel model,
+  required ProcessDetailsModel model,
   required ProcessTabsEnum selectedTab,
   required int processId,
   required int projectId,
 }) {
-  final workflowProcessDetailsBloc = context.read<WorkflowProcessDetailsBloc>();
+  final workflowProcessDetailsBloc = context.read<ProcessDetailsBloc>();
   final stageDocsData = workflowProcessDetailsBloc.stageDocsData;
 
   return _ProcessBody(
@@ -145,7 +142,7 @@ Widget _buildProcessBody({
 
 Widget _getTabSection({
   required ProcessTabsEnum selectedTab,
-  required List<WorkflowProcessGroupModel> processList,
+  required List<GroupStepsModel> processList,
   required int processId,
   required int projectId,
   required int projectStepId,

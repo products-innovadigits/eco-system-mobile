@@ -1,9 +1,9 @@
 import 'package:pms_system/core/utility/pms_exports.dart';
-import 'package:pms_system/features/workflow_process_details/model/workflow_process_details_model.dart';
+import 'package:pms_system/features/workflow_process_details/model/process_details_model.dart';
 import 'package:pms_system/features/workflow_process_details/widgets/tabs/follow_process_tab/process_expansion_card_widget.dart';
 
 class FollowProcessTab extends StatelessWidget {
-  final List<WorkflowProcessGroupModel> processList;
+  final List<GroupStepsModel> processList;
 
   const FollowProcessTab({super.key, required this.processList});
 

@@ -1,6 +1,6 @@
 import 'package:pms_system/core/utility/pms_exports.dart';
-import 'package:pms_system/features/workflow_process_details/bloc/workflow_process_details/workflow_process_details_bloc.dart';
-import 'package:pms_system/features/workflow_process_details/bloc/workflow_process_details/workflow_process_details_events.dart';
+import 'package:pms_system/features/workflow_process_details/bloc/process_details/process_details_bloc.dart';
+import 'package:pms_system/features/workflow_process_details/bloc/process_details/process_details_events.dart';
 
 class ProcessDetailsTabsSection extends StatelessWidget {
   const ProcessDetailsTabsSection({super.key});
@@ -16,7 +16,7 @@ class ProcessDetailsTabsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final selectedTab = context.select(
-      (WorkflowProcessDetailsBloc bloc) => bloc.selectedTab,
+      (ProcessDetailsBloc bloc) => bloc.selectedTab,
     );
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -28,8 +28,8 @@ class ProcessDetailsTabsSection extends StatelessWidget {
               title: tabs[tab] ?? '',
               isSelected: selectedTab == tab,
               onTap: () {
-                context.read<WorkflowProcessDetailsBloc>().add(
-                  SelectWorkflowProcessTab(tab: tab),
+                context.read<ProcessDetailsBloc>().add(
+                  SelectProcessTab(tab: tab),
                 );
               },
             );

@@ -1,15 +1,15 @@
 import 'package:core_system/core/model/meta.dart';
 import 'package:pms_system/core/utility/pms_exports.dart';
 
-class WorkflowProcessDetailsModel extends SingleMapper {
-  List<WorkflowProcessGroupModel>? data;
+class ProcessDetailsModel extends SingleMapper {
+  List<GroupStepsModel>? data;
   bool? succeeded;
   String? message;
   Meta? meta;
   dynamic warningErrors;
   List<dynamic>? validationErrors;
 
-  WorkflowProcessDetailsModel({
+  ProcessDetailsModel({
     this.data,
     this.succeeded,
     this.meta,
@@ -18,13 +18,13 @@ class WorkflowProcessDetailsModel extends SingleMapper {
     this.validationErrors,
   });
 
-  WorkflowProcessDetailsModel.fromJson(Map<String, dynamic> json) {
+  ProcessDetailsModel.fromJson(Map<String, dynamic> json) {
     succeeded = json['succeeded'];
     // data is a direct List of groups
     if (json['data'] != null && json['data'] is List) {
-      data = <WorkflowProcessGroupModel>[];
+      data = <GroupStepsModel>[];
       for (var v in (json['data'] as List)) {
-        data!.add(WorkflowProcessGroupModel.fromJson(v));
+        data!.add(GroupStepsModel.fromJson(v));
       }
     }
     meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
@@ -60,24 +60,19 @@ class WorkflowProcessDetailsModel extends SingleMapper {
 
   @override
   Mapper fromJson(Map<String, dynamic> json) {
-    return WorkflowProcessDetailsModel.fromJson(json);
+    return ProcessDetailsModel.fromJson(json);
   }
 }
 
-class WorkflowProcessGroupModel extends SingleMapper {
+class GroupStepsModel extends SingleMapper {
   int? groupId;
   String? groupName;
   double? progress;
   List<WorkflowProcessStepModel>? steps;
 
-  WorkflowProcessGroupModel({
-    this.groupId,
-    this.groupName,
-    this.progress,
-    this.steps,
-  });
+  GroupStepsModel({this.groupId, this.groupName, this.progress, this.steps});
 
-  WorkflowProcessGroupModel.fromJson(Map<String, dynamic> json) {
+  GroupStepsModel.fromJson(Map<String, dynamic> json) {
     groupId = json['groupId'];
     groupName = json['groupName'];
     progress = double.tryParse(json['progress']?.toString() ?? '0');
@@ -103,7 +98,7 @@ class WorkflowProcessGroupModel extends SingleMapper {
 
   @override
   Mapper fromJson(Map<String, dynamic> json) {
-    return WorkflowProcessGroupModel.fromJson(json);
+    return GroupStepsModel.fromJson(json);
   }
 }
 

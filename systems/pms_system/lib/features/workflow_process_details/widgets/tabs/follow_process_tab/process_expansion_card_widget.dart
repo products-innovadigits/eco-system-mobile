@@ -1,9 +1,9 @@
-import 'package:pms_system/features/workflow_process_details/model/workflow_process_details_model.dart';
+import 'package:pms_system/features/workflow_process_details/model/process_details_model.dart';
 
 import '../../../../../core/utility/pms_exports.dart';
 
 class ProcessExpansionCardWidget extends StatelessWidget {
-  final List<WorkflowProcessGroupModel> processList;
+  final List<GroupStepsModel> processList;
   final int index;
 
   const ProcessExpansionCardWidget({

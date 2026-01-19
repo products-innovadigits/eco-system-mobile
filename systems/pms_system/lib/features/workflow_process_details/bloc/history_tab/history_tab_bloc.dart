@@ -2,7 +2,7 @@ import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/history_tab/history_tab_events.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/history_tab/history_tab_state.dart';
 import 'package:pms_system/features/workflow_process_details/model/history_model.dart';
-import 'package:pms_system/features/workflow_process_details/repo/workflow_process_details_repo.dart';
+import 'package:pms_system/features/workflow_process_details/repo/process_details_repo.dart';
 
 class HistoryTabBloc extends Bloc<HistoryTabEvent, HistoryTabState> {
   HistoryTabBloc() : super(const HistoryTabInitial()) {
@@ -17,11 +17,10 @@ class HistoryTabBloc extends Bloc<HistoryTabEvent, HistoryTabState> {
   ) async {
     emit(const HistoryTabLoading());
     try {
-      HistoryResponseModel res =
-          await WorkflowProcessDetailsRepo.getHistoryData(
-            processId: event.processId,
-            projectId: event.projectId,
-          );
+      HistoryResponseModel res = await ProcessDetailsRepo.getHistoryData(
+        processId: event.processId,
+        projectId: event.projectId,
+      );
 
       if (res.data != null && res.data!.isNotEmpty) {
         _cachedModel = res;

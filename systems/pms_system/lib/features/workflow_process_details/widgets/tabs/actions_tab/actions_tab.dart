@@ -4,11 +4,11 @@ import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/actions_tab/actions_tab_bloc.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/actions_tab/actions_tab_events.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/actions_tab/actions_tab_state.dart';
+import 'package:pms_system/features/workflow_process_details/bloc/process_details/process_details_bloc.dart';
+import 'package:pms_system/features/workflow_process_details/bloc/process_details/process_details_events.dart';
+import 'package:pms_system/features/workflow_process_details/bloc/process_details/process_details_state.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/stage_docs/stage_docs_bloc.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/stage_docs/stage_docs_events.dart';
-import 'package:pms_system/features/workflow_process_details/bloc/workflow_process_details/workflow_process_details_bloc.dart';
-import 'package:pms_system/features/workflow_process_details/bloc/workflow_process_details/workflow_process_details_events.dart';
-import 'package:pms_system/features/workflow_process_details/bloc/workflow_process_details/workflow_process_details_state.dart';
 
 class ActionsTab extends StatelessWidget {
   final int processId;
@@ -45,12 +45,9 @@ class _ActionsTabContent extends StatelessWidget {
           // Only trigger reload if this was a compliance action, not a save action
           if (actionsTabBloc.isComplianceCompleted) {
             final workFlowProcessDetailsBloc = context
-                .read<WorkflowProcessDetailsBloc>();
+                .read<ProcessDetailsBloc>();
             workFlowProcessDetailsBloc.add(
-              LoadWorkflowProcessDetails(
-                projectId: projectId,
-                processId: processId,
-              ),
+              LoadProcessDetails(projectId: projectId, processId: processId),
             );
             context.read<StageDocsBloc>().add(
               CreateCurrentStepDocs(
@@ -101,13 +98,9 @@ class _ActionsTabContent extends StatelessWidget {
             // Action Buttons Section
             BlocBuilder<ActionsTabBloc, ActionsTabState>(
               builder: (context, actionsTabState) {
-                return BlocBuilder<
-                  WorkflowProcessDetailsBloc,
-                  WorkflowProcessDetailsState
-                >(
+                return BlocBuilder<ProcessDetailsBloc, ProcessDetailsState>(
                   builder: (context, workFlowProcessDetailsState) {
-                    final workflowBloc = context
-                        .read<WorkflowProcessDetailsBloc>();
+                    final workflowBloc = context.read<ProcessDetailsBloc>();
                     final nextStep = workflowBloc.stageDocsData?.nextStep;
                     final nextStepText =
                         (nextStep != null && nextStep.isNotEmpty)
@@ -123,8 +116,7 @@ class _ActionsTabContent extends StatelessWidget {
                     final isComplianceLoading =
                         (actionsTabState is ActionsTabLoading &&
                             actionsTabBloc.isComplianceActionLoading) ||
-                        (workFlowProcessDetailsState
-                            is WorkflowProcessDetailsLoading);
+                        (workFlowProcessDetailsState is ProcessDetailsLoading);
 
                     return _ActionButtonsSection(
                       onSave: () => _onSave(context),
@@ -144,7 +136,7 @@ class _ActionsTabContent extends StatelessWidget {
   }
 
   void _onSave(BuildContext context) {
-    final workflowBloc = context.read<WorkflowProcessDetailsBloc>();
+    final workflowBloc = context.read<ProcessDetailsBloc>();
     final projectStepId = workflowBloc.stageDocsData?.currentStep?.id;
 
     // Validate that projectStepId is not null
@@ -167,8 +159,7 @@ class _ActionsTabContent extends StatelessWidget {
 
   void _onCompliance(BuildContext context) {
     // Read the nextStepId from StageDocsBloc to get the most current value
-    final workflowProcessDetailsBloc = context
-        .read<WorkflowProcessDetailsBloc>();
+    final workflowProcessDetailsBloc = context.read<ProcessDetailsBloc>();
     final nextStep = workflowProcessDetailsBloc.stageDocsData?.nextStep;
     final nextStepId = (nextStep != null && nextStep.isNotEmpty)
         ? nextStep[0].id

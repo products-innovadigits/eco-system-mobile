@@ -1,4 +1,4 @@
-import 'package:pms_system/features/workflow_process_details/bloc/workflow_process_details/workflow_process_details_bloc.dart';
+import 'package:pms_system/features/workflow_process_details/bloc/process_details/process_details_bloc.dart';
 import 'package:pms_system/features/workflow_process_details/model/stage_doc_model.dart';
 
 import '../../../core/utility/pms_exports.dart';
@@ -16,7 +16,7 @@ class ProcessHeaderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final StageDocData? stageDocsData = context
-        .read<WorkflowProcessDetailsBloc>()
+        .read<ProcessDetailsBloc>()
         .stageDocsData;
     return Container(
       padding: EdgeInsets.all(16.w),
@@ -86,7 +86,7 @@ class ProcessHeaderCard extends StatelessWidget {
                       ),
                       SizedBox(height: 4.h),
                       Text(
-                        '${allTranslations.text(LocaleKeys.current_step)} : ${context.read<WorkflowProcessDetailsBloc>().stageDocsData?.currentStep?.text ?? ''}',
+                        '${allTranslations.text(LocaleKeys.current_step)} : ${context.read<ProcessDetailsBloc>().stageDocsData?.currentStep?.text ?? ''}',
                         style: context.textTheme.labelSmall?.copyWith(
                           fontSize: FontSizes.f10,
                           color: context.color.secondary,

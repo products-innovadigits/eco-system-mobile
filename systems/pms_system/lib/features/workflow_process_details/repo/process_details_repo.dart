@@ -4,12 +4,12 @@ import 'package:core_system/core/utility/export.dart';
 import 'package:pms_system/features/workflow_process_details/model/current_step_document_model.dart';
 import 'package:pms_system/features/workflow_process_details/model/document_comments_model.dart';
 import 'package:pms_system/features/workflow_process_details/model/history_model.dart';
+import 'package:pms_system/features/workflow_process_details/model/process_details_model.dart';
 import 'package:pms_system/features/workflow_process_details/model/stage_doc_model.dart';
-import 'package:pms_system/features/workflow_process_details/model/workflow_process_details_model.dart';
 import 'package:pms_system/shared/model/default_response_model.dart';
 
-abstract class WorkflowProcessDetailsRepo {
-  static Future<WorkflowProcessDetailsModel> getWorkflowProcessDetails({
+abstract class ProcessDetailsRepo {
+  static Future<ProcessDetailsModel> getProcessDetails({
     required int processId,
     required int projectId,
   }) async {
@@ -17,7 +17,7 @@ abstract class WorkflowProcessDetailsRepo {
       ApiNames.workflowProcessDetails,
       query: {'processId': processId, 'projectId': projectId},
       method: ServerMethods.GET,
-      model: WorkflowProcessDetailsModel(),
+      model: ProcessDetailsModel(),
     );
   }
 

@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/actions_tab/actions_tab_events.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/actions_tab/actions_tab_state.dart';
-import 'package:pms_system/features/workflow_process_details/repo/workflow_process_details_repo.dart';
+import 'package:pms_system/features/workflow_process_details/repo/process_details_repo.dart';
 
 class ActionsTabBloc extends Bloc<ActionsTabEvent, ActionsTabState> {
   ActionsTabBloc() : super(const ActionsTabInitial()) {
@@ -58,14 +58,13 @@ class ActionsTabBloc extends Bloc<ActionsTabEvent, ActionsTabState> {
       // Get text from controller
       final text = commentController.text.trim();
 
-      final Response response =
-          await WorkflowProcessDetailsRepo.addProjectStepComment(
-            projectId: event.projectId,
-            projectStepId: event.projectStepId,
-            processId: event.processId,
-            text: text,
-            file: selectedFile,
-          );
+      final Response response = await ProcessDetailsRepo.addProjectStepComment(
+        projectId: event.projectId,
+        projectStepId: event.projectStepId,
+        processId: event.processId,
+        text: text,
+        file: selectedFile,
+      );
 
       if (response.statusCode == 200) {
         AppCore.successToastMessage(
@@ -98,7 +97,7 @@ class ActionsTabBloc extends Bloc<ActionsTabEvent, ActionsTabState> {
       _isComplianceActionLoading = true; // This is a compliance action
       emit(const ActionsTabLoading());
 
-      final Response response = await WorkflowProcessDetailsRepo.moveToNextStep(
+      final Response response = await ProcessDetailsRepo.moveToNextStep(
         processId: event.processId,
         projectId: event.projectId,
         nextStepId: event.nextStepId,
