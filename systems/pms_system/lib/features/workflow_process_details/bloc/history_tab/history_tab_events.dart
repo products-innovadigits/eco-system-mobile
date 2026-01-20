@@ -11,3 +11,4 @@ class LoadHistoryData extends HistoryTabEvent {
   const LoadHistoryData({required this.processId, required this.projectId});
 }
 
+

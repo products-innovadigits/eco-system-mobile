@@ -559,5 +559,6 @@ abstract class  LocaleKeys {
   static const specialized_section = 'specialized_section';
   static const specialized_kpi = 'specialized_kpi';
   static const specialized_initiative = 'specialized_initiative';
+  static const start_process_first = 'start_process_first';
 
 }

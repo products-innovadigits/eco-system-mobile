@@ -11,27 +11,27 @@ class ProcessDetailsInitial extends ProcessDetailsState {
 }
 
 /// Loading workflow process details
-class ProcessDetailsLoading extends ProcessDetailsState {
-  const ProcessDetailsLoading();
+class GroupStepsLoading extends ProcessDetailsState {
+  const GroupStepsLoading();
 }
 
 /// Workflow process details loaded successfully
-class ProcessDetailsLoaded extends ProcessDetailsState {
-  final ProcessDetailsModel processDetails;
+class GroupStepsLoaded extends ProcessDetailsState {
+  final GroupStepsModel processDetails;
 
-  const ProcessDetailsLoaded({required this.processDetails});
+  const GroupStepsLoaded({required this.processDetails});
 }
 
 /// No workflow process details found (empty result)
-class ProcessDetailsEmpty extends ProcessDetailsState {
-  const ProcessDetailsEmpty();
+class GroupStepsEmpty extends ProcessDetailsState {
+  const GroupStepsEmpty();
 }
 
 /// Error loading workflow process details
-class ProcessDetailsFailure extends ProcessDetailsState {
+class GroupStepsFailure extends ProcessDetailsState {
   final String message;
 
-  const ProcessDetailsFailure({required this.message});
+  const GroupStepsFailure({required this.message});
 }
 
 class ProcessStarting extends ProcessDetailsState {

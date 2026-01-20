@@ -8,14 +8,24 @@ class ActionsTabInitial extends ActionsTabState {
   const ActionsTabInitial();
 }
 
-/// Loading action (save or compliance)
-class ActionsTabLoading extends ActionsTabState {
-  const ActionsTabLoading();
+/// Loading saving comment
+class SaveCommentLoading extends ActionsTabState {
+  const SaveCommentLoading();
 }
 
-/// Action completed successfully
-class ActionsTabSuccess extends ActionsTabState {
-  const ActionsTabSuccess();
+/// Saving comment completed successfully
+class SaveCommentSuccess extends ActionsTabState {
+  const SaveCommentSuccess();
+}
+
+/// Loading move to next step
+class MoveToNextStepLoading extends ActionsTabState {
+  const MoveToNextStepLoading();
+}
+
+/// Move to next step completed successfully
+class MoveToNextStepSuccess extends ActionsTabState {
+  const MoveToNextStepSuccess();
 }
 
 /// File selected
@@ -34,4 +44,5 @@ class ActionsTabFailure extends ActionsTabState {
 
   const ActionsTabFailure({required this.message});
 }
+
 

@@ -24,32 +24,22 @@ class WorkflowProcessDetailsView extends StatelessWidget {
     return BlocProvider(
       create: (context) {
         return ProcessDetailsBloc()
-          ..add(LoadProcessDetails(processId: processId, projectId: projectId));
+          ..add(LoadGroupSteps(processId: processId, projectId: projectId));
       },
       child: Scaffold(
         appBar: CustomAppBar(
           title: processName,
           withBottomBorder: false,
-          action: BlocConsumer<ProcessDetailsBloc, ProcessDetailsState>(
-            listener: (context, state) {
-              if (state is ProcessStarted) {
-                final bloc = context.read<ProcessDetailsBloc>();
-                // Reload process details after starting
-                context.read<StageDocsBloc>().add(
-                  CreateCurrentStepDocs(
-                    processId: processId,
-                    projectId: projectId,
-                    projectStepId: bloc.stageDocsData?.currentStep?.id ?? 0,
-                  ),
-                );
-              }
-            },
+          action: BlocBuilder<ProcessDetailsBloc, ProcessDetailsState>(
             builder: (context, state) {
               final bloc = context.read<ProcessDetailsBloc>();
-              // Only show button if data is loaded
-              if (state is ProcessDetailsLoaded &&
-                  bloc.stageDocsData?.workFlowStatus != null) {
-                final workflowStatus = bloc.stageDocsData?.workFlowStatus;
+              final workflowStatus = bloc.stageDocsData?.workFlowStatus;
+
+              // Show button if data is loaded OR in start process flow
+              if (workflowStatus != null &&
+                  (state is GroupStepsLoaded ||
+                      state is ProcessStarted ||
+                      state is ProcessStarting)) {
                 final isStart = workflowStatus == 'NotStarted';
 
                 return InkWell(

@@ -8,14 +8,16 @@ import 'package:pms_system/features/workflow_process_details/repo/process_detail
 class ProcessDetailsBloc
     extends Bloc<ProcessDetailsEvent, ProcessDetailsState> {
   ProcessDetailsBloc() : super(const ProcessDetailsInitial()) {
-    on<LoadProcessDetails>(_onLoadWorkflowProcessDetails);
+    on<LoadGroupSteps>(_onLoadGroupSteps);
     on<StartProcess>(_onStartProcess);
     on<SelectProcessTab>(_onSelectTab);
   }
 
   ProcessTabsEnum selectedTab = ProcessTabsEnum.followProcess;
-  ProcessDetailsModel? _cachedModel;
+  GroupStepsModel? _cachedModel;
   StageDocData? stageDocsData;
+
+  GroupStepsModel? get getGroupStepsModel => _cachedModel;
 
   Future<void> getCurrentNextStep({
     required int projectId,
@@ -35,30 +37,33 @@ class ProcessDetailsBloc
     }
   }
 
-  Future<void> _onLoadWorkflowProcessDetails(
-    LoadProcessDetails event,
+  Future<void> _onLoadGroupSteps(
+    LoadGroupSteps event,
     Emitter<ProcessDetailsState> emit,
   ) async {
-    emit(const ProcessDetailsLoading());
+    emit(const GroupStepsLoading());
     try {
-      ProcessDetailsModel res = await ProcessDetailsRepo.getProcessDetails(
+      GroupStepsModel res = await ProcessDetailsRepo.getGroupSteps(
         processId: event.processId,
         projectId: event.projectId,
       );
 
       if (res.data != null && res.data!.isNotEmpty) {
-        await getCurrentNextStep(
-          projectId: event.projectId,
-          processId: event.processId,
-        );
         _cachedModel = res;
-        emit(ProcessDetailsLoaded(processDetails: res));
+
+        // Refresh current/next step info when loading steps
+        await getCurrentNextStep(
+          processId: event.processId,
+          projectId: event.projectId,
+        );
+
+        emit(GroupStepsLoaded(processDetails: res));
       } else {
-        emit(const ProcessDetailsEmpty());
+        emit(const GroupStepsEmpty());
       }
     } catch (e) {
       emit(
-        const ProcessDetailsFailure(
+        const GroupStepsFailure(
           message: 'Failed to load workflow process details',
         ),
       );
@@ -78,16 +83,32 @@ class ProcessDetailsBloc
       );
 
       if (response.statusCode == 200) {
+        final int? currentStepId = stageDocsData?.currentStep?.id;
         AppCore.successMessage(
           allTranslations.text(LocaleKeys.process_started_successfully),
         );
-        add(
-          LoadProcessDetails(
-            processId: event.processId,
+
+        if (currentStepId != null) {
+          await ProcessDetailsRepo.getCurrentStepDocs(
             projectId: event.projectId,
-          ),
-        );
+            processId: event.processId,
+            projectStepId: currentStepId,
+          );
+
+          add(
+            LoadGroupSteps(
+              processId: event.processId,
+              projectId: event.projectId,
+            ),
+          );
+        }
+
         emit(ProcessStarted());
+
+        // 6. Signal loaded state for builders
+        if (_cachedModel != null && _cachedModel!.data != null) {
+          emit(GroupStepsLoaded(processDetails: _cachedModel!));
+        }
       } else {
         emit(const ProcessStartFailure());
       }
@@ -107,10 +128,10 @@ class ProcessDetailsBloc
 
     // Emit Loaded with the cached model
     if (_cachedModel != null) {
-      emit(ProcessDetailsLoaded(processDetails: _cachedModel!));
+      emit(GroupStepsLoaded(processDetails: _cachedModel!));
     } else {
       // If no cached model, emit failure
-      emit(const ProcessDetailsFailure(message: 'No cached process details'));
+      emit(const GroupStepsFailure(message: 'No cached process details'));
     }
   }
 }

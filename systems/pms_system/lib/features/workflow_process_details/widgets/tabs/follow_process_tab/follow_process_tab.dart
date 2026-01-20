@@ -3,7 +3,7 @@ import 'package:pms_system/features/workflow_process_details/model/process_detai
 import 'package:pms_system/features/workflow_process_details/widgets/tabs/follow_process_tab/process_expansion_card_widget.dart';
 
 class FollowProcessTab extends StatelessWidget {
-  final List<GroupStepsModel> processList;
+  final List<GroupStepsData> processList;
 
   const FollowProcessTab({super.key, required this.processList});
 

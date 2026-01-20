@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/actions_tab/actions_tab_events.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/actions_tab/actions_tab_state.dart';
+import 'package:pms_system/features/workflow_process_details/bloc/stage_docs/stage_docs_bloc.dart';
+import 'package:pms_system/features/workflow_process_details/bloc/stage_docs/stage_docs_events.dart';
 import 'package:pms_system/features/workflow_process_details/repo/process_details_repo.dart';
 
 class ActionsTabBloc extends Bloc<ActionsTabEvent, ActionsTabState> {
@@ -25,23 +27,6 @@ class ActionsTabBloc extends Bloc<ActionsTabEvent, ActionsTabState> {
   String? fileName;
   String? fileSize;
 
-  // Flag to track if compliance was just completed (for reload trigger)
-  bool _isComplianceCompleted = false;
-
-  // Flag to track which action is currently loading
-  bool _isComplianceActionLoading = false;
-
-  // Getter to check if compliance was just completed
-  bool get isComplianceCompleted => _isComplianceCompleted;
-
-  // Getter to check if compliance action is currently loading
-  bool get isComplianceActionLoading => _isComplianceActionLoading;
-
-  // Method to reset the compliance completed flag
-  void resetComplianceFlag() {
-    _isComplianceCompleted = false;
-  }
-
   Future<void> _onSaveComment(
     SaveComment event,
     Emitter<ActionsTabState> emit,
@@ -52,8 +37,7 @@ class ActionsTabBloc extends Bloc<ActionsTabEvent, ActionsTabState> {
     }
 
     try {
-      _isComplianceActionLoading = false; // This is a save action
-      emit(const ActionsTabLoading());
+      emit(const SaveCommentLoading());
 
       // Get text from controller
       final text = commentController.text.trim();
@@ -73,18 +57,14 @@ class ActionsTabBloc extends Bloc<ActionsTabEvent, ActionsTabState> {
         // Clear form after successful submission
         commentController.clear();
         _clearFile();
-        _isComplianceCompleted = false; // This is a save action, not compliance
-        _isComplianceActionLoading = false;
-        emit(const ActionsTabSuccess());
+        emit(const SaveCommentSuccess());
       } else {
         AppCore.errorToastMessage(
           allTranslations.text(LocaleKeys.something_went_wrong),
         );
-        _isComplianceActionLoading = false;
         emit(const ActionsTabFailure(message: 'Failed to save comment'));
       }
     } catch (e) {
-      _isComplianceActionLoading = false;
       emit(const ActionsTabFailure(message: 'Failed to save comment'));
     }
   }
@@ -94,8 +74,7 @@ class ActionsTabBloc extends Bloc<ActionsTabEvent, ActionsTabState> {
     Emitter<ActionsTabState> emit,
   ) async {
     try {
-      _isComplianceActionLoading = true; // This is a compliance action
-      emit(const ActionsTabLoading());
+      emit(const MoveToNextStepLoading());
 
       final Response response = await ProcessDetailsRepo.moveToNextStep(
         processId: event.processId,
@@ -104,23 +83,28 @@ class ActionsTabBloc extends Bloc<ActionsTabEvent, ActionsTabState> {
       );
 
       if (response.statusCode == 200) {
-        AppCore.successMessage(
-          allTranslations.text(LocaleKeys.process_done_successfully),
+        // Create/Fetch docs for the new step before signaling success
+        final docRes = await ProcessDetailsRepo.getCurrentStepDocs(
+          projectId: event.projectId,
+          processId: event.processId,
+          projectStepId: event.nextStepId,
         );
-        _isComplianceCompleted = true; // Mark that compliance was completed
-        _isComplianceActionLoading = false; // Compliance action is done
-        emit(const ActionsTabSuccess());
+
+        if (docRes.succeeded == true) {
+          AppCore.successMessage(
+            allTranslations.text(LocaleKeys.process_done_successfully),
+          );
+          emit(const MoveToNextStepSuccess());
+        } else {
+          emit(const ActionsTabFailure(message: 'Failed to create step docs'));
+        }
       } else {
         AppCore.errorMessage(
           allTranslations.text(LocaleKeys.something_went_wrong),
         );
-        _isComplianceCompleted = false; // Reset on error
-        _isComplianceActionLoading = false;
         emit(const ActionsTabFailure(message: 'Failed to move to next step'));
       }
     } catch (e) {
-      _isComplianceCompleted = false; // Reset on error
-      _isComplianceActionLoading = false;
       emit(const ActionsTabFailure(message: 'Failed to move to next step'));
     }
   }

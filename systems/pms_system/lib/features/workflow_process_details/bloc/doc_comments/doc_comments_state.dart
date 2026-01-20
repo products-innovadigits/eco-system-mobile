@@ -41,3 +41,4 @@ class DocCommentsEditing extends DocCommentsState {
 class DocCommentsFailure extends DocCommentsState {
   const DocCommentsFailure();
 }
+

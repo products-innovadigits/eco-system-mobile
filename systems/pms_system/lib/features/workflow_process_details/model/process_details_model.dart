@@ -1,15 +1,15 @@
 import 'package:core_system/core/model/meta.dart';
 import 'package:pms_system/core/utility/pms_exports.dart';
 
-class ProcessDetailsModel extends SingleMapper {
-  List<GroupStepsModel>? data;
+class GroupStepsModel extends SingleMapper {
+  List<GroupStepsData>? data;
   bool? succeeded;
   String? message;
   Meta? meta;
   dynamic warningErrors;
   List<dynamic>? validationErrors;
 
-  ProcessDetailsModel({
+  GroupStepsModel({
     this.data,
     this.succeeded,
     this.meta,
@@ -18,13 +18,13 @@ class ProcessDetailsModel extends SingleMapper {
     this.validationErrors,
   });
 
-  ProcessDetailsModel.fromJson(Map<String, dynamic> json) {
+  GroupStepsModel.fromJson(Map<String, dynamic> json) {
     succeeded = json['succeeded'];
     // data is a direct List of groups
     if (json['data'] != null && json['data'] is List) {
-      data = <GroupStepsModel>[];
+      data = <GroupStepsData>[];
       for (var v in (json['data'] as List)) {
-        data!.add(GroupStepsModel.fromJson(v));
+        data!.add(GroupStepsData.fromJson(v));
       }
     }
     meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
@@ -60,19 +60,19 @@ class ProcessDetailsModel extends SingleMapper {
 
   @override
   Mapper fromJson(Map<String, dynamic> json) {
-    return ProcessDetailsModel.fromJson(json);
+    return GroupStepsModel.fromJson(json);
   }
 }
 
-class GroupStepsModel extends SingleMapper {
+class GroupStepsData extends SingleMapper {
   int? groupId;
   String? groupName;
   double? progress;
   List<WorkflowProcessStepModel>? steps;
 
-  GroupStepsModel({this.groupId, this.groupName, this.progress, this.steps});
+  GroupStepsData({this.groupId, this.groupName, this.progress, this.steps});
 
-  GroupStepsModel.fromJson(Map<String, dynamic> json) {
+  GroupStepsData.fromJson(Map<String, dynamic> json) {
     groupId = json['groupId'];
     groupName = json['groupName'];
     progress = double.tryParse(json['progress']?.toString() ?? '0');
@@ -98,7 +98,7 @@ class GroupStepsModel extends SingleMapper {
 
   @override
   Mapper fromJson(Map<String, dynamic> json) {
-    return GroupStepsModel.fromJson(json);
+    return GroupStepsData.fromJson(json);
   }
 }
 

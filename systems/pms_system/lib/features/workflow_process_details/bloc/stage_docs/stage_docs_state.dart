@@ -32,3 +32,4 @@ class StageDocsAdding extends StageDocsState {
 class StageDocsFailure extends StageDocsState {
   const StageDocsFailure();
 }
+

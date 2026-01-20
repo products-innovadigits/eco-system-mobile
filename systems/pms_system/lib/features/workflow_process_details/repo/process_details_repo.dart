@@ -9,15 +9,15 @@ import 'package:pms_system/features/workflow_process_details/model/stage_doc_mod
 import 'package:pms_system/shared/model/default_response_model.dart';
 
 abstract class ProcessDetailsRepo {
-  static Future<ProcessDetailsModel> getProcessDetails({
+  static Future<GroupStepsModel> getGroupSteps({
     required int processId,
     required int projectId,
   }) async {
     return await Network().request(
-      ApiNames.workflowProcessDetails,
+      ApiNames.workflowGroupSteps,
       query: {'processId': processId, 'projectId': projectId},
       method: ServerMethods.GET,
-      model: ProcessDetailsModel(),
+      model: GroupStepsModel(),
     );
   }
 

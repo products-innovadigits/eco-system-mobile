@@ -33,13 +33,7 @@ class StageDocsBloc extends Bloc<StageDocsEvent, StageDocsState> {
             projectStepId: event.projectStepId,
           );
 
-      if (res.succeeded == true &&
-          res.data != null &&
-          res.data!.items != null &&
-          res.data!.items!.isNotEmpty) {
-        // currentStepDocumentData = res.data;
-        // Initialize controllers for each document
-        // _initializeCommentControllers();
+      if (res.succeeded == true) {
         emit(StageDocsLoaded());
       } else {
         emit(const StageDocsEmpty());
@@ -88,21 +82,6 @@ class StageDocsBloc extends Bloc<StageDocsEvent, StageDocsState> {
       emit(const StageDocsFailure());
     }
   }
-
-  // /// Initialize TextEditingController and FormKey for each document
-  // void initializeCommentControllers({List<StageDocument>? documents}) {
-  //   _disposeControllers();
-  //
-  //   if (documents != null) {
-  //     for (StageDocument? document in documents) {
-  //       if (document?.documentCopyId != null) {
-  //         final documentId = document!.documentCopyId!;
-  //         _commentControllers[documentId] = TextEditingController();
-  //         _formKeys[documentId] = GlobalKey<FormState>();
-  //       }
-  //     }
-  //   }
-  // }
 
   /// Get TextEditingController for a specific document
   /// Creates one if it doesn't exist (lazy initialization)

@@ -3,7 +3,7 @@ import 'package:pms_system/features/workflow_process_details/model/process_detai
 import '../../../../../core/utility/pms_exports.dart';
 
 class ProcessExpansionCardWidget extends StatelessWidget {
-  final List<GroupStepsModel> processList;
+  final List<GroupStepsData> processList;
   final int index;
 
   const ProcessExpansionCardWidget({

@@ -30,7 +30,7 @@ abstract class ApiNames {
       "Project/$id/progress-summary";
   static String projectTimeline(int id) =>
       "ProjectTimeLine/GetAllActivitiesByProjectId/$id";
-  static String workflowProcessDetails = "WorkFlow/GroupSteps";
+  static String workflowGroupSteps = "WorkFlow/GroupSteps";
   static String currentNextSteps = "WorkFlow/CurrentAndNext_Mobile";
   // static String currentNextSteps = "WorkFlow/CurrentAndNext";
   static String currentStepDocs = "Documents/CurrentStepDocuments";

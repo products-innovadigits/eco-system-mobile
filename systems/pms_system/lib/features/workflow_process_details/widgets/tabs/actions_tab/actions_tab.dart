@@ -7,8 +7,6 @@ import 'package:pms_system/features/workflow_process_details/bloc/actions_tab/ac
 import 'package:pms_system/features/workflow_process_details/bloc/process_details/process_details_bloc.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/process_details/process_details_events.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/process_details/process_details_state.dart';
-import 'package:pms_system/features/workflow_process_details/bloc/stage_docs/stage_docs_bloc.dart';
-import 'package:pms_system/features/workflow_process_details/bloc/stage_docs/stage_docs_events.dart';
 
 class ActionsTab extends StatelessWidget {
   final int processId;
@@ -37,101 +35,63 @@ class _ActionsTabContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool workflowInProgress =
+        context.read<ProcessDetailsBloc>().stageDocsData?.workFlowStatus ==
+        'InProgress';
     return BlocListener<ActionsTabBloc, ActionsTabState>(
       listener: (context, state) {
-        // When compliance is successful, refresh the WorkflowProcessDetailsBloc to update nextStep
-        if (state is ActionsTabSuccess) {
-          final actionsTabBloc = context.read<ActionsTabBloc>();
-          // Only trigger reload if this was a compliance action, not a save action
-          if (actionsTabBloc.isComplianceCompleted) {
-            final workFlowProcessDetailsBloc = context
-                .read<ProcessDetailsBloc>();
-            workFlowProcessDetailsBloc.add(
-              LoadProcessDetails(projectId: projectId, processId: processId),
-            );
-            context.read<StageDocsBloc>().add(
-              CreateCurrentStepDocs(
-                processId: processId,
-                projectId: projectId,
-                projectStepId:
-                    workFlowProcessDetailsBloc.stageDocsData?.currentStep?.id ??
-                    0,
-              ),
-            );
-            // Reset the flag after triggering reload
-            actionsTabBloc.resetComplianceFlag();
-          }
+        // When move to next step is successful, refresh the ProcessDetailsBloc to update nextStep
+        if (state is MoveToNextStepSuccess) {
+          final processDetailsBloc = context.read<ProcessDetailsBloc>();
+          processDetailsBloc.add(
+            LoadGroupSteps(projectId: projectId, processId: processId),
+          );
         }
       },
-      child: Form(
-        key: context.read<ActionsTabBloc>().formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            // Internal Comments Section
-            BlocBuilder<ActionsTabBloc, ActionsTabState>(
-              builder: (context, state) {
-                final bloc = context.read<ActionsTabBloc>();
-                return _InternalCommentsSection(
-                  controller: bloc.commentController,
-                  validation: NotEmptyValidator.notEmptyValidator,
-                );
-              },
+      child: workflowInProgress
+          ? Form(
+              key: context.read<ActionsTabBloc>().formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  // Internal Comments Section
+                  BlocBuilder<ActionsTabBloc, ActionsTabState>(
+                    builder: (context, state) {
+                      final bloc = context.read<ActionsTabBloc>();
+                      return _InternalCommentsSection(
+                        controller: bloc.commentController,
+                        validation: NotEmptyValidator.notEmptyValidator,
+                      );
+                    },
+                  ),
+
+                  // File Upload Section
+                  BlocBuilder<ActionsTabBloc, ActionsTabState>(
+                    builder: (context, state) {
+                      final bloc = context.read<ActionsTabBloc>();
+                      return _FileUploadSection(
+                        selectedFile: bloc.selectedFile,
+                        fileName: bloc.fileName,
+                        fileSize: bloc.fileSize,
+                        onPickFile: () => bloc.add(const PickFile()),
+                        onRemoveFile: () => bloc.add(const RemoveFile()),
+                      );
+                    },
+                  ),
+
+                  SizedBox(height: 16.h),
+
+                  // Save Button Section
+                  _SaveButton(onSave: () => _onSave(context)),
+
+                  // Next Step Button Section
+                  _NextStepButton(onCompliance: () => _onCompliance(context)),
+                ],
+              ),
+            )
+          : EmptyContainer(
+              txt: allTranslations.text(LocaleKeys.start_process_first),
             ),
-
-            // File Upload Section
-            BlocBuilder<ActionsTabBloc, ActionsTabState>(
-              builder: (context, state) {
-                final bloc = context.read<ActionsTabBloc>();
-                return _FileUploadSection(
-                  selectedFile: bloc.selectedFile,
-                  fileName: bloc.fileName,
-                  fileSize: bloc.fileSize,
-                  onPickFile: () => bloc.add(const PickFile()),
-                  onRemoveFile: () => bloc.add(const RemoveFile()),
-                );
-              },
-            ),
-
-            SizedBox(height: 16.h),
-
-            // Action Buttons Section
-            BlocBuilder<ActionsTabBloc, ActionsTabState>(
-              builder: (context, actionsTabState) {
-                return BlocBuilder<ProcessDetailsBloc, ProcessDetailsState>(
-                  builder: (context, workFlowProcessDetailsState) {
-                    final workflowBloc = context.read<ProcessDetailsBloc>();
-                    final nextStep = workflowBloc.stageDocsData?.nextStep;
-                    final nextStepText =
-                        (nextStep != null && nextStep.isNotEmpty)
-                        ? (nextStep[0].text ?? '')
-                        : '';
-
-                    final actionsTabBloc = context.read<ActionsTabBloc>();
-                    // Save button loading: from ActionsTabBloc when SaveComment event is processing (loading but not compliance)
-                    final isSaveLoading =
-                        actionsTabState is ActionsTabLoading &&
-                        !actionsTabBloc.isComplianceActionLoading;
-                    // Compliance button loading: from ActionsTabBloc when MoveToNextStep is processing OR from WorkflowProcessDetailsBloc when reloading after compliance
-                    final isComplianceLoading =
-                        (actionsTabState is ActionsTabLoading &&
-                            actionsTabBloc.isComplianceActionLoading) ||
-                        (workFlowProcessDetailsState is ProcessDetailsLoading);
-
-                    return _ActionButtonsSection(
-                      onSave: () => _onSave(context),
-                      onCompliance: () => _onCompliance(context),
-                      isSaveLoading: isSaveLoading,
-                      isComplianceLoading: isComplianceLoading,
-                      nextStepText: nextStepText,
-                    );
-                  },
-                );
-              },
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -296,30 +256,19 @@ class _FileUploadSection extends StatelessWidget {
   }
 }
 
-class _ActionButtonsSection extends StatelessWidget {
+class _SaveButton extends StatelessWidget {
   final VoidCallback onSave;
-  final VoidCallback onCompliance;
-  final bool isSaveLoading;
-  final bool isComplianceLoading;
-  final String nextStepText;
 
-  const _ActionButtonsSection({
-    required this.onSave,
-    required this.onCompliance,
-    required this.isSaveLoading,
-    required this.isComplianceLoading,
-    required this.nextStepText,
-  });
+  const _SaveButton({required this.onSave});
 
   @override
   Widget build(BuildContext context) {
-    // Disable both buttons if either is loading
-    final isAnyLoading = isSaveLoading || isComplianceLoading;
+    return BlocBuilder<ActionsTabBloc, ActionsTabState>(
+      builder: (context, state) {
+        final isLoading = state is SaveCommentLoading;
+        final isOtherLoading = state is MoveToNextStepLoading;
 
-    return Column(
-      children: [
-        // Save Button (Outlined)
-        CustomBtn(
+        return CustomBtn(
           text: allTranslations.text(LocaleKeys.save),
           color: Colors.transparent,
           textColor: context.color.primary,
@@ -328,30 +277,59 @@ class _ActionButtonsSection extends StatelessWidget {
           height: 34,
           fontSize: 12,
           borderRadius: 8,
-          loading: isSaveLoading,
-          onPressed: isAnyLoading ? null : onSave,
-        ),
+          loading: isLoading,
+          onPressed: (isLoading || isOtherLoading) ? null : onSave,
+        );
+      },
+    );
+  }
+}
 
-        // Only show Next Step button if there's a next step available
-        if (nextStepText.isNotEmpty) ...[
-          SizedBox(height: 16.h),
+class _NextStepButton extends StatelessWidget {
+  final VoidCallback onCompliance;
 
-          // Primary Action Button
-          SizedBox(
-            width: double.infinity,
-            child: CustomBtn(
-              text: nextStepText,
-              color: context.color.primary,
-              textColor: context.color.onPrimary,
-              height: 34,
-              fontSize: 12,
-              borderRadius: 8,
-              loading: isComplianceLoading,
-              onPressed: isAnyLoading ? null : onCompliance,
-            ),
-          ),
-        ],
-      ],
+  const _NextStepButton({required this.onCompliance});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ActionsTabBloc, ActionsTabState>(
+      builder: (context, actionsTabState) {
+        return BlocBuilder<ProcessDetailsBloc, ProcessDetailsState>(
+          builder: (context, processDetailsState) {
+            final workflowBloc = context.read<ProcessDetailsBloc>();
+            final nextStep = workflowBloc.stageDocsData?.nextStep;
+            final nextStepText = (nextStep != null && nextStep.isNotEmpty)
+                ? (nextStep[0].text ?? '')
+                : '';
+
+            if (nextStepText.isEmpty) return const SizedBox.shrink();
+
+            final isLoading =
+                actionsTabState is MoveToNextStepLoading ||
+                processDetailsState is GroupStepsLoading;
+            final isOtherLoading = actionsTabState is SaveCommentLoading;
+
+            return Padding(
+              padding: EdgeInsets.only(top: 16.h),
+              child: SizedBox(
+                width: double.infinity,
+                child: CustomBtn(
+                  text: nextStepText,
+                  color: context.color.primary,
+                  textColor: context.color.onPrimary,
+                  height: 34,
+                  fontSize: 12,
+                  borderRadius: 8,
+                  loading: isLoading,
+                  onPressed: (isLoading || isOtherLoading)
+                      ? null
+                      : onCompliance,
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

@@ -6,11 +6,11 @@ abstract class ProcessDetailsEvent {
 }
 
 /// Load workflow process details
-class LoadProcessDetails extends ProcessDetailsEvent {
+class LoadGroupSteps extends ProcessDetailsEvent {
   final int processId;
   final int projectId;
 
-  const LoadProcessDetails({required this.processId, required this.projectId});
+  const LoadGroupSteps({required this.processId, required this.projectId});
 }
 
 /// Start workflow process

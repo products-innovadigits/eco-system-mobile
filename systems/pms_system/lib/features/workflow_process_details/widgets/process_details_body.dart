@@ -27,10 +27,9 @@ class ProcessDetailsBody extends StatelessWidget {
       children: [
         BlocBuilder<ProcessDetailsBloc, ProcessDetailsState>(
           buildWhen: (previous, current) =>
-              (previous is ProcessDetailsLoading) !=
-              (current is ProcessDetailsLoading),
+              (previous is GroupStepsLoading) != (current is GroupStepsLoading),
           builder: (context, state) {
-            return state is ProcessDetailsLoading
+            return (state is GroupStepsLoading || state is ProcessStarting)
                 ? SizedBox.shrink()
                 : ProcessHeaderCard();
           },
@@ -38,8 +37,8 @@ class ProcessDetailsBody extends StatelessWidget {
         BlocBuilder<ProcessDetailsBloc, ProcessDetailsState>(
           buildWhen: (previous, current) =>
               previous.runtimeType != current.runtimeType ||
-              (previous is ProcessDetailsLoaded &&
-                  current is ProcessDetailsLoaded &&
+              (previous is GroupStepsLoaded &&
+                  current is GroupStepsLoaded &&
                   previous.processDetails != current.processDetails),
           builder: (context, state) {
             final selectedTab = context.select(
@@ -47,19 +46,23 @@ class ProcessDetailsBody extends StatelessWidget {
             );
             return switch (state) {
               // ── Loading ─────────────────────────
-              ProcessDetailsLoading() => const CustomDetailsShimmerLoading(),
+              GroupStepsLoading() ||
+              ProcessStarting() => const CustomDetailsShimmerLoading(),
 
               // ── Loaded ────────────────────────────
-              ProcessDetailsLoaded(:final processDetails) => _buildProcessBody(
+              GroupStepsLoaded() || ProcessStarted() => _buildProcessBody(
                 context: context,
-                model: processDetails,
+                model: (state is GroupStepsLoaded)
+                    ? state.processDetails
+                    : context.read<ProcessDetailsBloc>().getGroupStepsModel ??
+                          GroupStepsModel(),
                 selectedTab: selectedTab,
                 processId: processId,
                 projectId: projectId,
               ),
 
               // ── Empty ───────────────────────────
-              ProcessDetailsEmpty() => const EmptyContainer(),
+              GroupStepsEmpty() => const EmptyContainer(),
 
               // ── Error / fallback ────────────────
               _ => EmptyContainer(
@@ -75,7 +78,7 @@ class ProcessDetailsBody extends StatelessWidget {
 }
 
 class _ProcessBody extends StatelessWidget {
-  final List<GroupStepsModel> processList;
+  final List<GroupStepsData> processList;
   final int projectId;
   final ProcessTabsEnum selectedTab;
   final int processId;
@@ -123,7 +126,7 @@ class _ProcessBody extends StatelessWidget {
 
 Widget _buildProcessBody({
   required BuildContext context,
-  required ProcessDetailsModel model,
+  required GroupStepsModel model,
   required ProcessTabsEnum selectedTab,
   required int processId,
   required int projectId,
@@ -142,7 +145,7 @@ Widget _buildProcessBody({
 
 Widget _getTabSection({
   required ProcessTabsEnum selectedTab,
-  required List<GroupStepsModel> processList,
+  required List<GroupStepsData> processList,
   required int processId,
   required int projectId,
   required int projectStepId,
