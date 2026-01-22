@@ -45,7 +45,7 @@ class ProcessHeaderCard extends StatelessWidget {
                           children: [
                             RichText(
                               text: TextSpan(
-                                text: stageDocsData?.processTitle,
+                                text: stageDocsData.processTitle,
                                 style: context.textTheme.displaySmall?.copyWith(
                                   fontSize: FontSizes.f14,
                                 ),
@@ -72,7 +72,7 @@ class ProcessHeaderCard extends StatelessWidget {
                             // ),
                             SizedBox(height: 4.h),
                             Text(
-                              '${allTranslations.text(LocaleKeys.stage_name)} : ${stageDocsData?.processStageTitle ?? ''}',
+                              '${allTranslations.text(LocaleKeys.stage_name)} : ${stageDocsData.processStageTitle ?? ''}',
                               style: context.textTheme.labelSmall?.copyWith(
                                 fontSize: FontSizes.f10,
                                 color: context.color.secondary,
@@ -91,7 +91,7 @@ class ProcessHeaderCard extends StatelessWidget {
 
                               text: TextSpan(
                                 text:
-                                    "${allTranslations.text(LocaleKeys.start_time)} ${(stageDocsData?.projectStartDate?.substring(0, 10) ?? '')}",
+                                    "${allTranslations.text(LocaleKeys.start_time)} ${(stageDocsData.projectStartDate?.substring(0, 10) ?? '')}",
                                 style: context.textTheme.labelSmall?.copyWith(
                                   color: context.color.outlineVariant,
                                   fontSize: FontSizes.f10,
@@ -106,7 +106,7 @@ class ProcessHeaderCard extends StatelessWidget {
                                   ),
                                   TextSpan(
                                     text:
-                                        "${allTranslations.text(LocaleKeys.end_time)}: ${stageDocsData?.projectEndDate?.substring(0, 10) ?? ''}",
+                                        "${allTranslations.text(LocaleKeys.end_time)}: ${stageDocsData.projectEndDate?.substring(0, 10) ?? ''}",
                                     style: context.textTheme.labelSmall
                                         ?.copyWith(
                                           color: context.color.outlineVariant,
@@ -131,7 +131,7 @@ class ProcessHeaderCard extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(6),
                                   ),
                                   child: Text(
-                                    '${allTranslations.text(LocaleKeys.project_fund)}: ${stageDocsData?.projectBudget ?? ''}',
+                                    '${allTranslations.text(LocaleKeys.project_fund)}: ${stageDocsData.projectBudget ?? ''}',
                                     style: context.textTheme.bodySmall
                                         ?.copyWith(
                                           color: context.color.tertiary,
@@ -151,7 +151,7 @@ class ProcessHeaderCard extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(6),
                                   ),
                                   child: Text(
-                                    '${allTranslations.text(LocaleKeys.project_manager)}:  ${stageDocsData?.projectManager ?? ''}',
+                                    '${allTranslations.text(LocaleKeys.project_manager)}:  ${stageDocsData.projectManager ?? ''}',
                                     style: context.textTheme.bodySmall
                                         ?.copyWith(
                                           color: context.color.tertiary,

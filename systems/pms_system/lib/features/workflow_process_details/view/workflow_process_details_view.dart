@@ -1,8 +1,6 @@
 import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/process_details/process_details_bloc.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/process_details/process_details_events.dart';
-import 'package:pms_system/features/workflow_process_details/bloc/stage_docs/stage_docs_bloc.dart';
-import 'package:pms_system/features/workflow_process_details/bloc/stage_docs/stage_docs_events.dart';
 import 'package:pms_system/features/workflow_process_details/widgets/process_details_body.dart';
 
 import '../bloc/process_details/process_details_state.dart';
@@ -65,7 +63,7 @@ class WorkflowProcessDetailsView extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       color: getStatusColor(
-                        workflowStatus!,
+                        workflowStatus,
                       ).withValues(alpha: isStart ? null : 0.1),
                       borderRadius: BorderRadius.circular(isStart ? 8 : 25),
                       border: Border.all(

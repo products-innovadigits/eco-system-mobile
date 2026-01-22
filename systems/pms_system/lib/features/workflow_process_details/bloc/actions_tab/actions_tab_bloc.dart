@@ -4,8 +4,6 @@ import 'dart:io';
 import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/actions_tab/actions_tab_events.dart';
 import 'package:pms_system/features/workflow_process_details/bloc/actions_tab/actions_tab_state.dart';
-import 'package:pms_system/features/workflow_process_details/bloc/stage_docs/stage_docs_bloc.dart';
-import 'package:pms_system/features/workflow_process_details/bloc/stage_docs/stage_docs_events.dart';
 import 'package:pms_system/features/workflow_process_details/repo/process_details_repo.dart';
 
 class ActionsTabBloc extends Bloc<ActionsTabEvent, ActionsTabState> {
