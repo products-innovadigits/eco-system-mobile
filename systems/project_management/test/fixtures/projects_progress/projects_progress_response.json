@@ -1,0 +1,25 @@
+{
+    "succeeded": true,
+    "data": [
+        {
+            "categoryName": "Planning",
+            "value": 90.5,
+            "count": 5,
+            "color": "#4CAF50"
+        },
+        {
+            "categoryName": "Implementation",
+            "value": 45.0,
+            "count": 12,
+            "color": "#2196F3"
+        },
+        {
+            "categoryName": "Closing",
+            "value": 10.0,
+            "count": 2,
+            "color": "#F44336"
+        }
+    ],
+    "warningErrors": null,
+    "validationErrors": null
+}

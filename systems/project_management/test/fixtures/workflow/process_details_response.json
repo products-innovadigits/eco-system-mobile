@@ -1,0 +1,20 @@
+{
+    "succeeded": true,
+    "data": [
+        {
+            "groupId": 1,
+            "groupName": "Phase 1: Preparation",
+            "progress": 50.0,
+            "steps": [
+                {
+                    "id": 10,
+                    "stepName": "Gather Requirements",
+                    "status": 1
+                }
+            ]
+        }
+    ],
+    "message": "Success",
+    "warningErrors": null,
+    "validationErrors": null
+}

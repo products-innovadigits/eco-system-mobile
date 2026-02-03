@@ -17,8 +17,8 @@ dependencies:
     path: systems/ats_system
   strategy_system:
     path: systems/strategy_system
-  pms_system:
-    path: systems/pms_system
+  project_management:
+    path: systems/project_management
 
   flutter_localizations:
     sdk: flutter

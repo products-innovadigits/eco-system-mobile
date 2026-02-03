@@ -1,0 +1,17 @@
+{
+  "succeeded": true,
+  "data": [
+    {
+      "objectValue": "Objective 1",
+      "kpisValue": 75.5,
+      "initiativesValue": 80.0
+    },
+    {
+      "objectValue": "Objective 2",
+      "kpisValue": 60.0,
+      "initiativesValue": 45.5
+    }
+  ],
+  "warningErrors": null,
+  "validationErrors": null
+}

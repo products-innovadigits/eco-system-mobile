@@ -1,0 +1,25 @@
+{
+    "succeeded": true,
+    "data": [
+        {
+            "name": "On Track",
+            "hexColor": "#4CAF50",
+            "percentage": 60,
+            "count": 12
+        },
+        {
+            "name": "Delayed",
+            "hexColor": "#F44336",
+            "percentage": 25,
+            "count": 5
+        },
+        {
+            "name": "At Risk",
+            "hexColor": "#FFC107",
+            "percentage": 15,
+            "count": 3
+        }
+    ],
+    "warningErrors": null,
+    "validationErrors": null
+}

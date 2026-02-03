@@ -1,0 +1,91 @@
+{
+    "succeeded": true,
+    "data": {
+        "id": 101,
+        "title": "Eco-System Mobile Expansion",
+        "description": "A strategic project to expand the eco-system mobile platform features.",
+        "riskLevelName": "Low",
+        "deliveredOutputs": 5,
+        "startDate": "2023-01-15T00:00:00.000Z",
+        "endDate": "2024-01-15T00:00:00.000Z",
+        "weight": 1.0,
+        "lifeCycleId": 1,
+        "projectLifeCycle": {
+            "id": 1,
+            "title": "Standard Lifecycle",
+            "description": "Standard project development lifecycle",
+            "projectStages": [
+                {
+                    "id": 1,
+                    "title": "Initiation",
+                    "description": "Project startup phase",
+                    "lifeCycleId": 1,
+                    "progress": 100.0,
+                    "projectProcesses": [
+                        {
+                            "id": 1,
+                            "title": "Requirements Gathering",
+                            "description": "Define project scope",
+                            "stageId": 1,
+                            "progress": 100.0,
+                            "isRunningWorkflow": false,
+                            "isCompletedWorkflow": true
+                        }
+                    ]
+                }
+            ]
+        },
+        "projectCategoryId": 1,
+        "budget": 500000,
+        "progressRation": 0.65,
+        "teamIds": [
+            "team-1",
+            "team-2"
+        ],
+        "sectionDepartment": {
+            "id": 10,
+            "name": "IT Department",
+            "description": "Information Technology",
+            "manager": "John Doe",
+            "projectCount": 5
+        },
+        "teamName": [
+            {
+                "id": "team-1",
+                "name": "Mobile Developers"
+            }
+        ],
+        "implementorDepartmentId": 10,
+        "implementorDepartmentName": "IT Department",
+        "managerId": "user-1",
+        "status": "In Progress",
+        "managerName": "John Doe",
+        "periortyLevelName": "High",
+        "projectCategoryName": "Infrastructure",
+        "periortyLevelId": 1,
+        "riskLevelId": 1,
+        "outputCount": 10,
+        "mobileDetails": {
+            "status": "Healthy",
+            "progress": {
+                "averageProgress": 65.0,
+                "bars": [
+                    {
+                        "key": "time",
+                        "label": "Time Elapsed",
+                        "background": "#2196F3",
+                        "value": 50.0
+                    },
+                    {
+                        "key": "tasks",
+                        "label": "Tasks Completed",
+                        "background": "#4CAF50",
+                        "value": 75.0
+                    }
+                ]
+            }
+        }
+    },
+    "warningErrors": null,
+    "validationErrors": null
+}

@@ -1,0 +1,19 @@
+{
+    "succeeded": true,
+    "data": [
+        {
+            "id": 1,
+            "name": "Category A",
+            "progress": 75.0,
+            "color": "0xFF2196F3"
+        },
+        {
+            "id": 2,
+            "name": "Category B",
+            "progress": 45.0,
+            "color": "0xFF4CAF50"
+        }
+    ],
+    "warningErrors": null,
+    "validationErrors": null
+}

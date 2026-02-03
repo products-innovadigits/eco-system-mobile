@@ -1,0 +1,23 @@
+{
+  "succeeded": true,
+  "data": [
+    {
+      "id": 501,
+      "processId": 1,
+      "process": {
+        "id": 1,
+        "title": "Initial Review",
+        "description": "Reviewing initial submission"
+      },
+      "projectId": 101,
+      "project": {
+        "id": 101,
+        "name": "Project Alpha"
+      },
+      "isRuningWorkflow": true,
+      "isCompletedWorkflow": false
+    }
+  ],
+  "warningErrors": null,
+  "validationErrors": null
+}

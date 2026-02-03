@@ -14,8 +14,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'app/core/auth_interceptor.dart';
 import 'app/modules/modules_registry.dart';
-// Local imports
 import 'firebase_options.dart';
 import 'navigation/custom_navigation.dart';
 
@@ -45,6 +45,9 @@ void main() async {
   // Initialize connectivity service
   final connectivityService = ConnectivityService();
   connectivityService.initConnectivity();
+
+  // Register auth interceptor for 401 handling
+  Network.addInterceptor(AuthInterceptor());
 
   runApp(const MyApp());
 }

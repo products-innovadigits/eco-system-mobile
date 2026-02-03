@@ -1,82 +1,81 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 
-import '../../helpers/shared_helper.dart';
-import '../../helpers/translation/all_translation.dart';
+import 'network_exception.dart';
 
+/// Pure error handler that maps DioException to NetworkException.
+/// Does NOT perform logout, navigation, or any side-effects.
 class ApiErrorHandler {
-  static Future<dynamic> getMessage(dynamic error) async {
-    dynamic errorDescription = "";
-    if (error is Exception) {
-      try {
-        if (error is DioException) {
-          switch (error.type) {
-            case DioExceptionType.cancel:
-              errorDescription = "Request to API server was cancelled";
-              break;
-            case DioExceptionType.connectionTimeout:
-              errorDescription = "Connection timeout with API server";
-              break;
-            case DioExceptionType.unknown:
-              errorDescription =
-                  "Connection to API server failed due to internet connection";
-              break;
-            case DioExceptionType.receiveTimeout:
-              errorDescription =
-                  "Receive timeout in connection with API server";
-              break;
-            case DioExceptionType.badResponse:
-              switch (error.response!.statusCode) {
-                case 404:
-                  errorDescription = error.response!.data["message"];
-                  break;
-                case 401:
-                  if (await SharedHelper.sharedHelper?.readBoolean(
-                        CachingKey.isLogin,
-                      ) ==
-                      true) {
-                    SharedHelper.sharedHelper?.logout();
-                  }
-                  errorDescription = allTranslations.text(
-                    "your_session_has_been_expired",
-                  );
-                  break;
-                case 500:
-                  errorDescription = error.response!.data["message"];
-                  break;
-                case 503:
-                  errorDescription = error.response!.statusMessage;
-                  break;
-                default:
-                  log(error.response!.data.toString());
-
-                  try {
-                    errorDescription = error.response!.data["message"];
-                  } catch (e) {
-                    errorDescription = error.response!.data['data']["message"];
-                  }
-              }
-              break;
-            case DioExceptionType.sendTimeout:
-              errorDescription = "Send timeout with server";
-              break;
-            case DioExceptionType.badCertificate:
-              errorDescription = "Bad Certificate with server";
-              break;
-            case DioExceptionType.connectionError:
-              errorDescription = "Connection Error with server";
-              break;
-          }
-        } else {
-          errorDescription = "Unexpected error occurred";
-        }
-      } on FormatException catch (e) {
-        errorDescription = e.toString();
-      }
-    } else {
-      errorDescription = error.toString();
+  /// Maps a DioException or other error to a NetworkException.
+  static NetworkException getException(dynamic error) {
+    if (error is DioException) {
+      return _handleDioException(error);
     }
-    return errorDescription;
+    return NetworkException(error.toString());
+  }
+
+  /// Legacy method for backwards compatibility — returns message string.
+  /// @deprecated Use [getException] instead.
+  static Future<String> getMessage(dynamic error) async {
+    return getException(error).message;
+  }
+
+  static NetworkException _handleDioException(DioException error) {
+    switch (error.type) {
+      case DioExceptionType.cancel:
+        return const NetworkException(
+          'Request cancelled',
+          type: NetworkExceptionType.cancelled,
+        );
+      case DioExceptionType.connectionTimeout:
+      case DioExceptionType.sendTimeout:
+      case DioExceptionType.receiveTimeout:
+        return const NetworkException.timeout();
+      case DioExceptionType.connectionError:
+      case DioExceptionType.unknown:
+        return const NetworkException.noConnection();
+      case DioExceptionType.badCertificate:
+        return const NetworkException(
+          'Certificate error',
+          type: NetworkExceptionType.unknown,
+        );
+      case DioExceptionType.badResponse:
+        return _handleBadResponse(error);
+    }
+  }
+
+  static NetworkException _handleBadResponse(DioException error) {
+    final statusCode = error.response?.statusCode;
+    final data = error.response?.data;
+
+    String message = 'Request failed';
+    if (data is Map<String, dynamic>) {
+      message = data['message'] as String? ??
+          (data['data'] as Map<String, dynamic>?)?['message'] as String? ??
+          message;
+    }
+
+    switch (statusCode) {
+      case 401:
+        return NetworkException.unauthorized(message: message);
+      case 404:
+        return NetworkException(
+          message,
+          type: NetworkExceptionType.badRequest,
+          statusCode: 404,
+        );
+      case 500:
+      case 503:
+        return NetworkException(
+          message,
+          type: NetworkExceptionType.serverError,
+          statusCode: statusCode,
+        );
+      default:
+        return NetworkException(
+          message,
+          type: NetworkExceptionType.unknown,
+          statusCode: statusCode,
+        );
+    }
   }
 }

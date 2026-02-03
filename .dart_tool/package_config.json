@@ -651,7 +651,7 @@
     },
     {
       "name": "get_it",
-      "rootUri": "file:///Users/macbook/.pub-cache/hosted/pub.dev/get_it-9.1.0",
+      "rootUri": "file:///Users/macbook/.pub-cache/hosted/pub.dev/get_it-8.3.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -1088,12 +1088,6 @@
       "languageVersion": "3.0"
     },
     {
-      "name": "pms_system",
-      "rootUri": "../systems/pms_system",
-      "packageUri": "lib/",
-      "languageVersion": "3.8"
-    },
-    {
       "name": "pool",
       "rootUri": "file:///Users/macbook/.pub-cache/hosted/pub.dev/pool-1.5.2",
       "packageUri": "lib/",
@@ -1104,6 +1098,12 @@
       "rootUri": "file:///Users/macbook/.pub-cache/hosted/pub.dev/posix-6.0.3",
       "packageUri": "lib/",
       "languageVersion": "3.0"
+    },
+    {
+      "name": "project_management",
+      "rootUri": "../systems/project_management",
+      "packageUri": "lib/",
+      "languageVersion": "3.8"
     },
     {
       "name": "provider",

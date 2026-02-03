@@ -638,9 +638,9 @@ class FeatureItemModel {
 **Example Bloc:**
 ```dart
 // latest_request_bloc.dart
-import 'package:pms_system/latest_request/model/latest_request_models.dart';
-import 'package:pms_system/latest_request/repo/latest_request_repo.dart';
-import 'package:pms_system/shared/pms_exports.dart';
+import 'package:project_management/latest_request/model/latest_request_models.dart';
+import 'package:project_management/latest_request/repo/latest_request_repo.dart';
+import 'package:project_management/shared/pms_exports.dart';
 
 class LatestRequestBloc extends Bloc<AppEvent, AppState> {
   LatestRequestBloc() : super(Start()) {

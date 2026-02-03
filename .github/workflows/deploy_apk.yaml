@@ -192,7 +192,7 @@ jobs:
 
           for i in "${ADDR[@]}"; do
             case "$i" in
-              pms) echo "import 'package:pms_system/core/module/pms_module.dart';" >> "$OUT_FILE" ;;
+              pms) echo "import 'package:project_management/core/module/pms_module.dart';" >> "$OUT_FILE" ;;
               ats) echo "import 'package:ats_system/ats_module.dart';" >> "$OUT_FILE" ;;
               strategy) echo "import 'package:strategy_system/strategy_module.dart';" >> "$OUT_FILE" ;;
               *) echo "❌ Error: Unknown system key '$i'. Valid keys: pms, ats, strategy." ; exit 1 ;;
