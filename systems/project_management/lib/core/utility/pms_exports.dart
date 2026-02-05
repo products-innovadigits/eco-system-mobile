@@ -14,7 +14,8 @@ export 'package:project_management/features/latest_request/bloc/latest_request/l
 export 'package:project_management/features/latest_request/bloc/sorting/latest_request_sorting_cubit.dart';
 export 'package:project_management/features/latest_request/bloc/sorting/latest_request_sorting_state.dart';
 export 'package:project_management/features/latest_request/model/latest_request_models.dart';
-export 'package:project_management/features/latest_request/repo/latest_request_repo.dart';
+export 'package:project_management/features/latest_request/domain/repositories/latest_request_repo.dart';
+export 'package:project_management/features/latest_request/data/repositories/latest_request_repo_impl.dart';
 export 'package:project_management/features/latest_request/view/latest_request_view.dart';
 export 'package:project_management/features/latest_request/widgets/latest_request_app_bar_widget.dart';
 export 'package:project_management/features/latest_request/widgets/latest_request_sorting_bottom_sheet.dart';
@@ -35,7 +36,8 @@ export 'package:project_management/features/project_categories_progress/bloc/pro
 export 'package:project_management/features/project_categories_progress/bloc/project_categories_progress_state.dart';
 export 'package:project_management/features/project_categories_progress/model/project_categories_progress_model.dart';
 export 'package:project_management/features/project_categories_progress/model/projects_progress_model.dart';
-export 'package:project_management/features/project_categories_progress/repo/project_categories_progress_repo.dart';
+export 'package:project_management/features/project_categories_progress/domain/repositories/project_categories_progress_repo.dart';
+export 'package:project_management/features/project_categories_progress/data/repositories/project_categories_progress_repo_impl.dart';
 export 'package:project_management/features/project_categories_progress/view/project_category_progress_section.dart';
 // project_details exports
 export 'package:project_management/features/project_details/bloc/general_progress/project_general_progress_summary_bloc.dart';
@@ -48,7 +50,8 @@ export 'package:project_management/features/project_details/model/general_progre
 export 'package:project_management/features/project_details/model/project_details_model.dart';
 export 'package:project_management/features/project_details/model/project_timeline_model.dart';
 export 'package:project_management/features/project_details/model/timeline_project_model.dart';
-export 'package:project_management/features/project_details/repo/project_details_repo.dart';
+export 'package:project_management/features/project_details/domain/repositories/project_details_repo.dart';
+export 'package:project_management/features/project_details/data/repositories/project_details_repo_impl.dart';
 export 'package:project_management/features/project_details/view/project_details_view.dart';
 export 'package:project_management/features/project_details/widgets/general_progress_section.dart';
 export 'package:project_management/features/project_details/widgets/output_card_widget.dart';
@@ -81,7 +84,8 @@ export 'package:project_management/features/project_report/bloc/project_report_c
 export 'package:project_management/features/project_report/bloc/project_report_state.dart';
 export 'package:project_management/features/project_report/model/project_report_model.dart';
 export 'package:project_management/features/project_report/model/report_objective_percentage_model.dart';
-export 'package:project_management/features/project_report/repo/project_report_repo.dart';
+export 'package:project_management/features/project_report/domain/repositories/project_report_repo.dart';
+export 'package:project_management/features/project_report/data/repositories/project_report_repo_impl.dart';
 export 'package:project_management/features/project_report/view/project_report_view.dart';
 export 'package:project_management/features/project_report/widgets/custom_info_container_widget.dart';
 export 'package:project_management/features/project_report/widgets/project_report_activities_chart.dart';
@@ -120,7 +124,8 @@ export 'package:project_management/features/workflow_process_details/model/docum
 export 'package:project_management/features/workflow_process_details/model/history_model.dart';
 export 'package:project_management/features/workflow_process_details/model/process_details_model.dart';
 export 'package:project_management/features/workflow_process_details/model/stage_doc_model.dart';
-export 'package:project_management/features/workflow_process_details/repo/process_details_repo.dart';
+export 'package:project_management/features/workflow_process_details/domain/repositories/process_details_repo.dart';
+export 'package:project_management/features/workflow_process_details/data/repositories/process_details_repo_impl.dart';
 export 'package:project_management/features/workflow_process_details/view/workflow_process_details_view.dart';
 export 'package:project_management/features/workflow_process_details/widgets/process_details_body.dart';
 export 'package:project_management/features/workflow_process_details/widgets/process_header_card.dart';
@@ -147,7 +152,8 @@ export 'package:project_management/features/projects/bloc/sorting/projects_sorti
 export 'package:project_management/features/projects/bloc/sorting/projects_sorting_states.dart';
 export 'package:project_management/features/projects/model/projects_filters_model.dart';
 export 'package:project_management/features/projects/model/projects_model.dart';
-export 'package:project_management/features/projects/repo/projects_repo.dart';
+export 'package:project_management/features/projects/domain/repositories/projects_repo.dart';
+export 'package:project_management/features/projects/data/repositories/projects_repo_impl.dart';
 export 'package:project_management/features/projects/view/projects_view.dart';
 export 'package:project_management/features/projects/widgets/projects_app_bar_widget.dart';
 export 'package:project_management/features/projects/widgets/projects_body_mobile_portrait_view.dart';
@@ -162,7 +168,8 @@ export 'package:project_management/features/projects/widgets/projects_sorting/cu
 // projects_progress exports
 export 'package:project_management/features/projects_progress/bloc/projects_progress_cubit.dart';
 export 'package:project_management/features/projects_progress/bloc/projects_progress_state.dart';
-export 'package:project_management/features/projects_progress/repo/projects_progress_repo.dart';
+export 'package:project_management/features/projects_progress/domain/repositories/projects_progress_repo.dart';
+export 'package:project_management/features/projects_progress/data/repositories/projects_progress_repo_impl.dart';
 export 'package:project_management/features/projects_progress/view/project_management_section.dart';
 export 'package:project_management/features/projects_progress/widgets/project_progress_section.dart';
 export 'package:project_management/features/projects_progress/widgets/half_circle_analatic_chart.dart';

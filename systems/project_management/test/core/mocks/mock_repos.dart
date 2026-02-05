@@ -1,11 +1,11 @@
 import 'package:mocktail/mocktail.dart';
-import 'package:project_management/features/latest_request/repo/latest_request_repo.dart';
-import 'package:project_management/features/project_categories_progress/repo/project_categories_progress_repo.dart';
-import 'package:project_management/features/project_details/repo/project_details_repo.dart';
-import 'package:project_management/features/project_report/repo/project_report_repo.dart';
-import 'package:project_management/features/projects/repo/projects_repo.dart';
-import 'package:project_management/features/projects_progress/repo/projects_progress_repo.dart';
-import 'package:project_management/features/workflow_process_details/repo/process_details_repo.dart';
+import 'package:project_management/features/latest_request/domain/repositories/latest_request_repo.dart';
+import 'package:project_management/features/project_categories_progress/domain/repositories/project_categories_progress_repo.dart';
+import 'package:project_management/features/project_details/domain/repositories/project_details_repo.dart';
+import 'package:project_management/features/project_report/domain/repositories/project_report_repo.dart';
+import 'package:project_management/features/projects/domain/repositories/projects_repo.dart';
+import 'package:project_management/features/projects_progress/domain/repositories/projects_progress_repo.dart';
+import 'package:project_management/features/workflow_process_details/domain/repositories/process_details_repo.dart';
 
 class MockLatestRequestRepo extends Mock implements LatestRequestRepo {}
 

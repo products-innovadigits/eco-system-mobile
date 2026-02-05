@@ -1,8 +1,6 @@
-import 'package:project_management/core/utility/pms_exports.dart';
-
-abstract class ProjectCategoriesProgressRepo {
-  Future<dynamic> getProjectCategoriesProgress();
-}
+import 'package:core_system/core/config/api_names.dart';
+import 'package:core_system/core/network/network_layer.dart';
+import 'package:project_management/features/project_categories_progress/domain/repositories/project_categories_progress_repo.dart';
 
 class ProjectCategoriesProgressRepoImpl
     implements ProjectCategoriesProgressRepo {

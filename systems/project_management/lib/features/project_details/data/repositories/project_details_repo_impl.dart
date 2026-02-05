@@ -1,13 +1,7 @@
-import 'package:project_management/core/utility/pms_exports.dart';
-
-abstract class ProjectDetailsRepo {
-  Future<dynamic> getProjectDetails(int id);
-  Future<dynamic> getProjectGeneralProgressSummary(
-    int id, {
-    ChartTime chartType = ChartTime.monthly,
-  });
-  Future<dynamic> projectTimeline(int projectId);
-}
+import 'package:core_system/core/config/api_names.dart';
+import 'package:core_system/core/network/network_layer.dart';
+import 'package:project_management/features/pms_home/model/kpis_initiatives_progress_model.dart';
+import 'package:project_management/features/project_details/domain/repositories/project_details_repo.dart';
 
 class ProjectDetailsRepoImpl implements ProjectDetailsRepo {
   final Network network;

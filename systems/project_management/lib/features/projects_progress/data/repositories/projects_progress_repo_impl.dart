@@ -1,8 +1,6 @@
-import '../../../core/utility/pms_exports.dart';
-
-abstract class ProjectProgressRepo {
-  Future<dynamic> getProjectProgress();
-}
+import 'package:core_system/core/config/api_names.dart';
+import 'package:core_system/core/network/network_layer.dart';
+import 'package:project_management/features/projects_progress/domain/repositories/projects_progress_repo.dart';
 
 class ProjectProgressRepoImpl implements ProjectProgressRepo {
   final Network network;

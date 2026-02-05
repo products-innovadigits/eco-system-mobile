@@ -1,8 +1,8 @@
-import 'package:project_management/core/utility/pms_exports.dart';
-
-abstract class LatestRequestRepo {
-  Future<LatestRequestModel> getLatestRequest(SearchEngine data);
-}
+import 'package:core_system/core/config/api_names.dart';
+import 'package:core_system/core/model/search_engine.dart';
+import 'package:core_system/core/network/network_layer.dart';
+import 'package:project_management/features/latest_request/domain/repositories/latest_request_repo.dart';
+import 'package:project_management/features/latest_request/model/latest_request_models.dart';
 
 class LatestRequestRepoImpl implements LatestRequestRepo {
   final Network network;

@@ -1,5 +1,4 @@
 import 'package:project_management/core/utility/pms_exports.dart';
-import 'package:project_management/features/project_details/model/project_details_model.dart';
 
 /// Response wrapper for project report API
 class ProjectReportModel extends SingleMapper {
@@ -121,7 +120,9 @@ class ProjectReportDataModel {
       outputsSummary = <MobileOutputsSummaryModel>[];
       for (var v in (json['outputsSummary'] as List)) {
         outputsSummary!.add(
-          MobileOutputsSummaryModel.fromJson((v as Map).cast<String, dynamic>()),
+          MobileOutputsSummaryModel.fromJson(
+            (v as Map).cast<String, dynamic>(),
+          ),
         );
       }
     }

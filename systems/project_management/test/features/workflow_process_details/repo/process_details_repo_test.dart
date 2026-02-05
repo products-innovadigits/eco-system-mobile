@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:project_management/features/workflow_process_details/model/document_comments_model.dart';
 import 'package:project_management/features/workflow_process_details/model/process_details_model.dart';
-import 'package:project_management/features/workflow_process_details/repo/process_details_repo.dart';
+import 'package:project_management/features/workflow_process_details/data/repositories/process_details_repo_impl.dart';
 
 import '../../../core/mocks/fallbacks.dart';
 import '../../../core/mocks/mock_network.dart';
