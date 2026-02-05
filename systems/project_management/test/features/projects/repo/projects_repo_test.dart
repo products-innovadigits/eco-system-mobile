@@ -158,5 +158,79 @@ void main() {
         ).called(1);
       });
     });
+
+    group('getProjectSortingOptions', () {
+      test(
+        'returns ProjectSortingOptionsModel on success with correct endpoint and method',
+        () async {
+          final expectedModel = ProjectSortingOptionsModel(
+            succeeded: true,
+            data: [
+              ProjectSortingOptionModel(id: 1, nameAr: 'أ', nameEn: 'A'),
+            ],
+          );
+
+          when(
+            () => mockNetwork.requestOrThrow(
+              any(),
+              body: any(named: 'body'),
+              baseUrl: any(named: 'baseUrl'),
+              systemTypeEnum: any(named: 'systemTypeEnum'),
+              model: any(named: 'model'),
+              query: any(named: 'query'),
+              header: any(named: 'header'),
+              method: any(named: 'method'),
+            ),
+          ).thenAnswer((_) async => expectedModel);
+
+          final result = await repo.getProjectSortingOptions();
+
+          expect(result, isNotNull,
+              reason: 'repo.getProjectSortingOptions returned null unexpectedly');
+          expect(result, isA<ProjectSortingOptionsModel>(),
+              reason: 'Expected ProjectSortingOptionsModel, got ${result.runtimeType}');
+          expect(result.succeeded, isTrue,
+              reason: 'Expected ProjectSortingOptionsModel.succeeded to be true');
+          expect(result.data, isNotEmpty);
+
+          verify(
+            () => mockNetwork.requestOrThrow(
+              ApiNames.projectSortingOptions,
+              method: ServerMethods.GET,
+              model: any(named: 'model'),
+            ),
+          ).called(1);
+        },
+      );
+
+      test('throws NetworkException on error', () async {
+        when(
+          () => mockNetwork.requestOrThrow(
+            any(),
+            body: any(named: 'body'),
+            baseUrl: any(named: 'baseUrl'),
+            systemTypeEnum: any(named: 'systemTypeEnum'),
+            model: any(named: 'model'),
+            query: any(named: 'query'),
+            header: any(named: 'header'),
+            method: any(named: 'method'),
+          ),
+        ).thenThrow(NetworkException('Network error'));
+
+        expect(
+          () => repo.getProjectSortingOptions(),
+          throwsA(isA<NetworkException>()),
+          reason: 'Expected getProjectSortingOptions to rethrow NetworkException',
+        );
+
+        verify(
+          () => mockNetwork.requestOrThrow(
+            ApiNames.projectSortingOptions,
+            method: ServerMethods.GET,
+            model: any(named: 'model'),
+          ),
+        ).called(1);
+      });
+    });
   });
 }

@@ -150,6 +150,7 @@ export 'package:project_management/features/projects/bloc/projects/projects_stat
 export 'package:project_management/features/projects/bloc/sorting/projects_sorting_bloc.dart';
 export 'package:project_management/features/projects/bloc/sorting/projects_sorting_events.dart';
 export 'package:project_management/features/projects/bloc/sorting/projects_sorting_states.dart';
+export 'package:project_management/features/projects/model/project_sorting_options_model.dart';
 export 'package:project_management/features/projects/model/projects_filters_model.dart';
 export 'package:project_management/features/projects/model/projects_model.dart';
 export 'package:project_management/features/projects/domain/repositories/projects_repo.dart';

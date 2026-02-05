@@ -1,15 +1,8 @@
 import 'dart:io';
 
-import 'package:core_system/core/config/api_names.dart';
-import 'package:core_system/core/network/network_layer.dart';
-import 'package:dio/dio.dart';
-import 'package:project_management/features/workflow_process_details/domain/repositories/process_details_repo.dart';
-import 'package:project_management/features/workflow_process_details/model/current_step_document_model.dart';
-import 'package:project_management/features/workflow_process_details/model/document_comments_model.dart';
-import 'package:project_management/features/workflow_process_details/model/history_model.dart';
-import 'package:project_management/features/workflow_process_details/model/process_details_model.dart';
-import 'package:project_management/features/workflow_process_details/model/stage_doc_model.dart';
 import 'package:project_management/shared/model/default_response_model.dart';
+
+import '../../../../core/utility/pms_exports.dart';
 
 class ProcessDetailsRepoImpl implements ProcessDetailsRepo {
   final Network network;

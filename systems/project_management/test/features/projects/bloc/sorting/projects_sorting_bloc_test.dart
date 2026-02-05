@@ -1,14 +1,15 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:core_system/core/network/error/network_exception.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:project_management/features/projects/bloc/sorting/projects_sorting_bloc.dart';
 import 'package:project_management/features/projects/bloc/sorting/projects_sorting_events.dart';
 import 'package:project_management/features/projects/bloc/sorting/projects_sorting_states.dart';
+import 'package:project_management/features/projects/model/project_sorting_options_model.dart';
 
 import '../../../../core/mocks/fallbacks.dart';
 import '../../../../core/mocks/mock_repos.dart';
+import '../../../../helpers/fixture_reader.dart';
 
 void main() {
   late MockProjectsRepo mockRepo;
@@ -29,18 +30,14 @@ void main() {
   group('ProjectsSortingBloc', () {
     group('LoadSortingOptions', () {
       blocTest<ProjectsSortingBloc, ProjectsSortingState>(
-        'emits [SortingLoading, SortingOptionsLoaded] when repo returns success response',
+        'emits [SortingLoading, SortingOptionsLoaded] when repo returns success (fixture: contract tied to project_sorting_options_response.json)',
         build: () {
+          final fixtureJson =
+              readJsonFixture('projects/project_sorting_options_response.json');
+          final model =
+              ProjectSortingOptionsModel.fromJson(fixtureJson);
           when(() => mockRepo.getProjectSortingOptions()).thenAnswer(
-            (_) async => Response(
-              requestOptions: RequestOptions(path: ''),
-              statusCode: 200,
-              data: {
-                'data': [
-                  {'id': 1, 'nameAr': 'Test Sort'},
-                ],
-              },
-            ),
+            (_) async => model,
           );
           return bloc;
         },

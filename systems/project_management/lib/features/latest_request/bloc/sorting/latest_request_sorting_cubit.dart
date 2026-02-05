@@ -32,16 +32,16 @@ class LatestRequestSortingCubit extends Cubit<LatestRequestSortingState> {
     try {
       emit(const LatestRequestSortingLoading());
 
-      Response model = await repo.getProjectSortingOptions();
+      final model = await repo.getProjectSortingOptions();
 
-      if (model.statusCode == 200 && model.data != null) {
-        if ((model.data['data'] as List).isNotEmpty) {
-          _sortingOptions = (model.data['data'] as List)
+      if (model.succeeded == true && model.data != null) {
+        if (model.data!.isNotEmpty) {
+          _sortingOptions = model.data!
               .map(
                 (item) => DropListModel(
-                  id: item['id'],
-                  name: item['nameAr'],
-                  key: item['key'] ?? item['id'].toString(),
+                  id: item.id,
+                  name: item.nameAr,
+                  key: item.id?.toString() ?? '',
                 ),
               )
               .toList();
