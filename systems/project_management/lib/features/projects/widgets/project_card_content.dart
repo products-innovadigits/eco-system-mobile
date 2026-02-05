@@ -87,10 +87,13 @@ class ProjectCardContent extends StatelessWidget {
                   ),
                 ),
               ),
-              if (project.status != null && isDetails)
+              if (project.statusAr != null && isDetails)
                 CustomInfoContainerWidget(
-                  color: context.color.secondary,
-                  title: project.status ?? '',
+                  color: LightColor.statusColors(
+                    project.statusAr ?? '',
+                    isLineProgress: true,
+                  ),
+                  title: project.statusAr ?? '',
                   radius: 16,
                 ),
             ],
@@ -131,16 +134,6 @@ class ProjectCardContent extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  double getProgressBar() {
-    return ((project.startDate ?? DateTime.now())
-                .difference(DateTime.now())
-                .inDays /
-            (project.startDate ?? DateTime.now())
-                .difference(project.endDate ?? DateTime.now())
-                .inDays) *
-        100;
   }
 }
 
@@ -200,11 +193,11 @@ class _ActivitiesProgressSection extends StatelessWidget {
               value: (project.progressRatio ?? 0.0).toDouble() / 100,
               minHeight: 8.h,
               color: LightColor.statusColors(
-                project.status ?? '',
+                project.statusAr ?? '',
                 isLineProgress: true,
               ),
               backgroundColor: LightColor.statusColors(
-                project.status ?? '',
+                project.statusAr ?? '',
                 isLineProgress: true,
               ).withValues(alpha: 0.1),
             ),

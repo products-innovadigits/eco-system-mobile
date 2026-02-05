@@ -52,11 +52,12 @@ abstract class LauncherHelper {
   static Future<void> downloadFiles({
     required BuildContext context,
     required String filePath,
+    String? fullLink,
   }) async {
     log('FilePath :: $filePath');
 
     final String originalUrl = 'https://194.163.168.5:447$filePath';
-    final Uri originalUri = Uri.parse(originalUrl);
+    final Uri originalUri = Uri.parse(fullLink ?? originalUrl);
 
     // show modal loading dialog
     showDialog(

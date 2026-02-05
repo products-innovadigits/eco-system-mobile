@@ -101,7 +101,6 @@ class _ProcessBody extends StatelessWidget {
                 processId: processId,
                 projectStepId: projectStepId,
                 processList: processList,
-                pdfFilePath: stageDocsData?.pdfFilePath ?? '',
                 stepDocumentId: (stageDocsData?.stepDocumentId ?? 0).toInt(),
                 processName: stageDocsData?.processTitle ?? '',
                 documents: stageDocsData?.currentStep?.stepDocuments ?? [],
@@ -139,7 +138,6 @@ Widget _getTabSection({
   required int processId,
   required int projectId,
   required int projectStepId,
-  required String pdfFilePath,
   required int stepDocumentId,
   required String processName,
   required List<StageDocument> documents,
@@ -150,7 +148,6 @@ Widget _getTabSection({
     ProcessTabsEnum.stageDocs => StageDocsTab(
       projectId: projectId,
       processId: processId,
-      pdfFilePath: pdfFilePath,
       processName: processName,
       documents: documents,
     ),

@@ -1,4 +1,5 @@
 import 'package:project_management/core/utility/pms_exports.dart';
+import 'package:project_management/features/project_details/model/project_details_model.dart';
 
 /// Response wrapper for project report API
 class ProjectReportModel extends SingleMapper {
@@ -46,153 +47,153 @@ class ProjectReportModel extends SingleMapper {
 /// Main data model for project report
 class ProjectReportDataModel {
   ProjectReportDetailsModel? details;
-  String? description;
-  String? descriptionStageAr;
   List<BudgetItemModel>? budget;
-  OutputsModel? outputs;
-  ActivitiesModel? activities;
-  ActivitiesPercentModel? activitiesPercent;
+  List<BudgetTotalsModel>? budgetTotals;
   ProgressModel? progress;
-  String? statusAr;
-  String? statusEn;
   String? status;
-  int? statusEnum;
-  int? challengesCount;
-
+  dynamic workflow;
+  List<MobileOutputsSummaryModel>? outputsSummary;
   MobileChallengesModel? challenges;
   List<MobileRiskModel>? risks;
-  List<MobileOutputsSummaryModel>? outputsSummary;
+  int? daysLeft;
+  String? statusAr;
+  String? statusEn;
+  String? statusEnum;
   int? risksCount;
   int? activitiesCount;
   int? outputsCount;
-  int? daysLeft;
   List<RelatedItemModel>? relatedItems;
+  ActivitiesPercentModel? activitiesPercent;
   String? pdfFileUrl;
 
   ProjectReportDataModel({
     this.details,
-    this.description,
-    this.descriptionStageAr,
     this.budget,
-    this.outputs,
-    this.activities,
-    this.activitiesPercent,
+    this.budgetTotals,
     this.progress,
+    this.status,
+    this.workflow,
+    this.outputsSummary,
+    this.challenges,
+    this.risks,
+    this.daysLeft,
     this.statusAr,
     this.statusEn,
     this.statusEnum,
-    this.status,
-    this.challenges,
-    this.challengesCount,
-    this.risks,
-    this.outputsSummary,
     this.risksCount,
     this.activitiesCount,
     this.outputsCount,
-    this.daysLeft,
     this.relatedItems,
+    this.activitiesPercent,
     this.pdfFileUrl,
   });
 
   ProjectReportDataModel.fromJson(Map<String, dynamic> json) {
     details = json['details'] != null
-        ? ProjectReportDetailsModel.fromJson(json['details'])
+        ? ProjectReportDetailsModel.fromJson(
+            (json['details'] as Map).cast<String, dynamic>(),
+          )
         : null;
-    description = json['description'];
-    pdfFileUrl = json['pdfFileUrl'];
-    status = json['status'];
-    descriptionStageAr = json['descriptionStageAr'];
-    if (json['budget'] != null) {
+    if (json['budget'] != null && json['budget'] is List) {
       budget = <BudgetItemModel>[];
-      json['budget'].forEach((v) {
-        budget!.add(BudgetItemModel.fromJson(v));
-      });
+      for (var v in (json['budget'] as List)) {
+        budget!.add(
+          BudgetItemModel.fromJson((v as Map).cast<String, dynamic>()),
+        );
+      }
     }
-
-    outputs = json['outputs'] != null
-        ? OutputsModel.fromJson(json['outputs'])
-        : null;
-    activities = json['activities'] != null
-        ? ActivitiesModel.fromJson(json['activities'])
-        : null;
-    activitiesPercent = json['activitiesPercent'] != null
-        ? ActivitiesPercentModel.fromJson(json['activitiesPercent'])
-        : null;
+    if (json['budgetTotals'] != null && json['budgetTotals'] is List) {
+      budgetTotals = <BudgetTotalsModel>[];
+      for (var v in (json['budgetTotals'] as List)) {
+        budgetTotals!.add(
+          BudgetTotalsModel.fromJson((v as Map).cast<String, dynamic>()),
+        );
+      }
+    }
     progress = json['progress'] != null
-        ? ProgressModel.fromJson(json['progress'])
+        ? ProgressModel.fromJson(
+            (json['progress'] as Map).cast<String, dynamic>(),
+          )
         : null;
+    status = json['status'];
+    workflow = json['workflow'];
+    if (json['outputsSummary'] != null && json['outputsSummary'] is List) {
+      outputsSummary = <MobileOutputsSummaryModel>[];
+      for (var v in (json['outputsSummary'] as List)) {
+        outputsSummary!.add(
+          MobileOutputsSummaryModel.fromJson((v as Map).cast<String, dynamic>()),
+        );
+      }
+    }
+    challenges = json['challenges'] != null
+        ? MobileChallengesModel.fromJson(
+            (json['challenges'] as Map).cast<String, dynamic>(),
+          )
+        : null;
+    if (json['risks'] != null && json['risks'] is List) {
+      risks = <MobileRiskModel>[];
+      for (var v in (json['risks'] as List)) {
+        risks!.add(
+          MobileRiskModel.fromJson((v as Map).cast<String, dynamic>()),
+        );
+      }
+    }
+    daysLeft = (json['daysLeft'] as num?)?.toInt();
     statusAr = json['statusAr'];
     statusEn = json['statusEn'];
-    statusEnum = json['statusEnum'];
-    challenges = json['challenges'] != null
-        ? MobileChallengesModel.fromJson(json['challenges'])
-        : null;
-    if (json['risks'] != null) {
-      risks = <MobileRiskModel>[];
-      json['risks'].forEach((v) {
-        risks!.add(MobileRiskModel.fromJson(v));
-      });
-    }
-    if (json['outputsSummary'] != null) {
-      outputsSummary = <MobileOutputsSummaryModel>[];
-      json['outputsSummary'].forEach((v) {
-        outputsSummary!.add(MobileOutputsSummaryModel.fromJson(v));
-      });
-    }
-    challengesCount = json['challengesCount'];
-    risksCount = json['risksCount'];
-    activitiesCount = json['activitiesCount'];
-    outputsCount = json['outputsCount'];
-    daysLeft = json['daysLeft'];
-    if (json['relatedItems'] != null) {
+    statusEnum = json['statusEnum']?.toString();
+    risksCount = (json['risksCount'] as num?)?.toInt();
+    activitiesCount = (json['activitiesCount'] as num?)?.toInt();
+    outputsCount = (json['outputsCount'] as num?)?.toInt();
+    if (json['relatedItems'] != null && json['relatedItems'] is List) {
       relatedItems = <RelatedItemModel>[];
-      json['relatedItems'].forEach((v) {
-        relatedItems!.add(RelatedItemModel.fromJson(v));
-      });
+      for (var v in (json['relatedItems'] as List)) {
+        relatedItems!.add(
+          RelatedItemModel.fromJson((v as Map).cast<String, dynamic>()),
+        );
+      }
     }
+    activitiesPercent = json['activitiesPercent'] != null
+        ? ActivitiesPercentModel.fromJson(
+            (json['activitiesPercent'] as Map).cast<String, dynamic>(),
+          )
+        : null;
+    pdfFileUrl = json['pdfFileUrl'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> map = {};
+    final Map<String, dynamic> map = <String, dynamic>{};
     if (details != null) map['details'] = details!.toJson();
-    if (description != null) map['description'] = description;
-    if (status != null) map['status'] = status;
-    if (pdfFileUrl != null) map['pdfFileUrl'] = pdfFileUrl;
-    if (descriptionStageAr != null) {
-      map['descriptionStageAr'] = descriptionStageAr;
-    }
     if (budget != null) {
       map['budget'] = budget!.map((v) => v.toJson()).toList();
     }
-    if (outputs != null) map['outputs'] = outputs!.toJson();
-    if (activities != null) map['activities'] = activities!.toJson();
-    if (activitiesPercent != null) {
-      map['activitiesPercent'] = activitiesPercent!.toJson();
+    if (budgetTotals != null) {
+      map['budgetTotals'] = budgetTotals!.map((v) => v.toJson()).toList();
     }
     if (progress != null) map['progress'] = progress!.toJson();
-    if (statusAr != null) map['statusAr'] = statusAr;
-    if (statusEn != null) map['statusEn'] = statusEn;
-    if (statusEnum != null) map['statusEnum'] = statusEnum;
-    challenges = map['challenges'] != null
-        ? MobileChallengesModel.fromJson(map['challenges'])
-        : null;
-    if (map['risks'] != null) {
-      risks = <MobileRiskModel>[];
-      map['risks'].forEach((v) {
-        risks!.add(MobileRiskModel.fromJson(v));
-      });
-    }
+    if (status != null) map['status'] = status;
+    if (workflow != null) map['workflow'] = workflow;
     if (outputsSummary != null) {
       map['outputsSummary'] = outputsSummary!.map((v) => v.toJson()).toList();
     }
-    if (challengesCount != null) map['challengesCount'] = challengesCount;
+    if (challenges != null) map['challenges'] = challenges!.toJson();
+    if (risks != null) {
+      map['risks'] = risks!.map((v) => v.toJson()).toList();
+    }
+    if (daysLeft != null) map['daysLeft'] = daysLeft;
+    if (statusAr != null) map['statusAr'] = statusAr;
+    if (statusEn != null) map['statusEn'] = statusEn;
+    if (statusEnum != null) map['statusEnum'] = statusEnum;
     if (risksCount != null) map['risksCount'] = risksCount;
     if (activitiesCount != null) map['activitiesCount'] = activitiesCount;
     if (outputsCount != null) map['outputsCount'] = outputsCount;
-    if (daysLeft != null) map['daysLeft'] = daysLeft;
     if (relatedItems != null) {
       map['relatedItems'] = relatedItems!.map((v) => v.toJson()).toList();
     }
+    if (activitiesPercent != null) {
+      map['activitiesPercent'] = activitiesPercent!.toJson();
+    }
+    if (pdfFileUrl != null) map['pdfFileUrl'] = pdfFileUrl;
     return map;
   }
 }
@@ -208,6 +209,7 @@ class ProjectReportDetailsModel {
   String? departmentName;
   String? categoryName;
   String? description;
+  String? statusAr;
 
   ProjectReportDetailsModel({
     this.projectName,
@@ -219,6 +221,7 @@ class ProjectReportDetailsModel {
     this.departmentName,
     this.categoryName,
     this.description,
+    this.statusAr,
   });
 
   ProjectReportDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -233,6 +236,7 @@ class ProjectReportDetailsModel {
     departmentName = json['departmentName'];
     categoryName = json['categoryName'];
     description = json['description'];
+    statusAr = json['statusAr'];
   }
 
   Map<String, dynamic> toJson() {
@@ -246,6 +250,7 @@ class ProjectReportDetailsModel {
     if (departmentName != null) map['departmentName'] = departmentName;
     if (categoryName != null) map['categoryName'] = categoryName;
     if (description != null) map['description'] = description;
+    if (statusAr != null) map['statusAr'] = statusAr;
     return map;
   }
 }

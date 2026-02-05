@@ -14,6 +14,7 @@ class DocCommentsBloc extends Bloc<DocCommentsEvent, DocCommentsState> {
     on<DeleteDocComment>(_onDeleteDocumentComment);
     on<EditDocComment>(_onEditDocumentComment);
     on<LoadDocComments>(_onLoadDocComments);
+    on<LoadMoreDocComments>(_onLoadMoreDocComments);
     on<ToggleEditComment>(_onToggleEditDocumentComment);
   }
 
@@ -21,6 +22,10 @@ class DocCommentsBloc extends Bloc<DocCommentsEvent, DocCommentsState> {
   final TextEditingController commentTEC;
   int? _editingCommentId; // Track which comment is being edited
   CommentsData? _commentsData;
+  final List<DocumentComment> _comments = [];
+  SearchEngine _engine = SearchEngine();
+  int? _currentDocId;
+  bool _isLoadingMore = false;
 
   // Check if a specific comment is being edited
   bool isCommentBeingEdited(int commentId) => _editingCommentId == commentId;
@@ -29,26 +34,122 @@ class DocCommentsBloc extends Bloc<DocCommentsEvent, DocCommentsState> {
     LoadDocComments event,
     Emitter<DocCommentsState> emit,
   ) async {
+    _currentDocId = event.documentId;
+    _comments.clear();
+    _engine = SearchEngine(currentPage: 0, maxPages: 1);
+    
     emit(const DocCommentsLoading());
+    await _fetchComments(emit);
+  }
+
+  Future<void> _onLoadMoreDocComments(
+    LoadMoreDocComments event,
+    Emitter<DocCommentsState> emit,
+  ) async {
+    if (_isLoadingMore || !_engine.hasMorePages || _currentDocId == null) {
+      return;
+    }
+
+    _isLoadingMore = true;
+    _engine.updateCurrentPage(_engine.currentPage + 1);
+    
+    // Emit loaded state with isLoadingMore: true to show bottom indicator
+    if (_commentsData != null) {
+      emit(DocCommentsLoaded(
+        commentsData: _commentsData!.copyWith(items: _comments),
+        isLoadingMore: true,
+        currentPage: _engine.currentPage,
+        totalPages: _engine.maxPages,
+        hasMore: _engine.hasMorePages,
+      ));
+    }
+
+    await _fetchComments(emit);
+  }
+
+  Future<void> _fetchComments(Emitter<DocCommentsState> emit) async {
+    if (_currentDocId == null) return;
+
     try {
       DocumentCommentsModel res = await repo.getDocComments(
-        documentId: event.documentId,
+        documentId: _currentDocId!,
+        pageIndex: _engine.nextPageIndex,
+        pageSize: _engine.limit,
       );
 
+      _isLoadingMore = false;
+
       if (res.succeeded == true && res.data != null) {
+        final newItems = res.data!.items ?? [];
+        
+        if (_engine.currentPage == 0) {
+          _comments.clear();
+        }
+        _comments.addAll(newItems);
         _commentsData = res.data;
-        if ((res.data!.items ?? []).isNotEmpty) {
-          _editingCommentId = null;
-          commentTEC.clear();
-          emit(DocCommentsLoaded(commentsData: res.data!));
+
+        // Sync pagination info from API response
+        if (res.data!.currentPage != null && res.data!.totalPages != null) {
+          _engine.syncPaginationFromApi(
+            apiCurrentPage: res.data!.currentPage!,
+            totalPages: res.data!.totalPages!,
+            totalCount: res.data!.totalCount ?? 0,
+            pageSize: res.data!.pageSize,
+            isLastPage: res.data!.isLastPage,
+          );
+        }
+
+        if (_comments.isNotEmpty) {
+          if (_engine.currentPage == 0) {
+            _editingCommentId = null;
+            commentTEC.clear();
+          }
+          emit(DocCommentsLoaded(
+            commentsData: _commentsData!.copyWith(items: _comments),
+            isLoadingMore: false,
+            currentPage: _engine.currentPage,
+            totalPages: _engine.maxPages,
+            hasMore: _engine.hasMorePages,
+          ));
         } else {
-          emit(const DocCommentsEmpty());
+          if (_engine.currentPage == 0) {
+            emit(const DocCommentsEmpty());
+          } else {
+             emit(DocCommentsLoaded(
+                commentsData: _commentsData!.copyWith(items: _comments),
+                isLoadingMore: false,
+                currentPage: _engine.currentPage,
+                totalPages: _engine.maxPages,
+                hasMore: _engine.hasMorePages,
+              ));
+          }
         }
       } else {
-        emit(const DocCommentsEmpty());
+        if (_comments.isEmpty) {
+          emit(const DocCommentsEmpty());
+        } else {
+          emit(DocCommentsLoaded(
+            commentsData: _commentsData!.copyWith(items: _comments),
+            isLoadingMore: false,
+            currentPage: _engine.currentPage,
+            totalPages: _engine.maxPages,
+            hasMore: _engine.hasMorePages,
+          ));
+        }
       }
     } catch (e) {
-      emit(const DocCommentsFailure());
+      _isLoadingMore = false;
+      if (_comments.isEmpty) {
+        emit(const DocCommentsFailure());
+      } else {
+        emit(DocCommentsLoaded(
+          commentsData: _commentsData!.copyWith(items: _comments),
+          isLoadingMore: false,
+          currentPage: _engine.currentPage,
+          totalPages: _engine.maxPages,
+          hasMore: _engine.hasMorePages,
+        ));
+      }
     }
   }
 
@@ -72,18 +173,10 @@ class DocCommentsBloc extends Bloc<DocCommentsEvent, DocCommentsState> {
         AppCore.errorToastMessage(
           response.data?.message ?? 'Failed to delete comment',
         );
-        if (_commentsData != null) {
-          emit(DocCommentsLoaded(commentsData: _commentsData!));
-        } else {
-          emit(const DocCommentsFailure());
-        }
+        _reEmitLoaded(emit);
       }
     } catch (e) {
-      if (_commentsData != null) {
-        emit(DocCommentsLoaded(commentsData: _commentsData!));
-      } else {
-        emit(const DocCommentsFailure());
-      }
+      _reEmitLoaded(emit);
     }
   }
 
@@ -111,18 +204,10 @@ class DocCommentsBloc extends Bloc<DocCommentsEvent, DocCommentsState> {
         AppCore.errorToastMessage(
           response.data?.message ?? 'Failed to edit comment',
         );
-        if (_commentsData != null) {
-          emit(DocCommentsLoaded(commentsData: _commentsData!));
-        } else {
-          emit(const DocCommentsFailure());
-        }
+        _reEmitLoaded(emit);
       }
     } catch (e) {
-      if (_commentsData != null) {
-        emit(DocCommentsLoaded(commentsData: _commentsData!));
-      } else {
-        emit(const DocCommentsFailure());
-      }
+      _reEmitLoaded(emit);
     }
   }
 
@@ -140,15 +225,25 @@ class DocCommentsBloc extends Bloc<DocCommentsEvent, DocCommentsState> {
       // If a different comment is being edited, switch to this one
       _editingCommentId = commentId;
       // Set the current text in the controller
-      final comment = _commentsData?.items?.firstWhere(
+      final comment = _comments.firstWhere(
         (c) => c.id == commentId,
         orElse: () => DocumentComment(),
       );
-      commentTEC.text = comment?.text ?? '';
+      commentTEC.text = comment.text ?? '';
     }
 
+    _reEmitLoaded(emit);
+  }
+
+  void _reEmitLoaded(Emitter<DocCommentsState> emit) {
     if (_commentsData != null) {
-      emit(DocCommentsLoaded(commentsData: _commentsData!));
+      emit(DocCommentsLoaded(
+        commentsData: _commentsData!.copyWith(items: _comments),
+        isLoadingMore: false,
+                currentPage: _engine.currentPage,
+                totalPages: _engine.maxPages,
+                hasMore: _engine.hasMorePages,
+      ));
     } else {
       emit(const DocCommentsInitial());
     }
@@ -160,5 +255,20 @@ class DocCommentsBloc extends Bloc<DocCommentsEvent, DocCommentsState> {
       commentTEC.dispose();
     }
     return super.close();
+  }
+}
+
+extension on CommentsData {
+  CommentsData copyWith({List<DocumentComment>? items}) {
+    return CommentsData(
+      items: items ?? this.items,
+      currentPage: currentPage,
+      pageSize: pageSize,
+      totalPages: totalPages,
+      nextPage: nextPage,
+      previousPage: previousPage,
+      isLastPage: isLastPage,
+      totalCount: totalCount,
+    );
   }
 }

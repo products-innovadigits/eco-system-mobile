@@ -18,8 +18,18 @@ class DocCommentsLoading extends DocCommentsState {
 /// Document comments loaded successfully
 class DocCommentsLoaded extends DocCommentsState {
   final CommentsData commentsData;
+  final bool isLoadingMore;
+  final int currentPage;
+  final int totalPages;
+  final bool hasMore;
 
-  const DocCommentsLoaded({required this.commentsData});
+  const DocCommentsLoaded({
+    required this.commentsData,
+    this.isLoadingMore = false,
+    this.currentPage = 0,
+    this.totalPages = 1,
+    this.hasMore = false,
+  });
 }
 
 /// No comments found (empty result)

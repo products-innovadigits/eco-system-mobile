@@ -1,51 +1,63 @@
 import 'package:project_management/core/utility/pms_exports.dart';
 
 class GeneralProgressChartModel extends SingleMapper {
-  int? projectId;
-  String? type;
-  int? totalOutputs;
-  List<ProgressSeriesItem>? series;
-  ProgressSeriesItem? latest;
+  double? totalProgress;
+  int? currentMonth;
+  int? currentYear;
+  List<ProgressItem>? monthProgress;
+  List<ProgressItem>? yearProgress;
 
   GeneralProgressChartModel({
-    this.projectId,
-    this.type,
-    this.totalOutputs,
-    this.series,
-    this.latest,
+    this.totalProgress,
+    this.currentMonth,
+    this.currentYear,
+    this.monthProgress,
+    this.yearProgress,
   });
 
   GeneralProgressChartModel.fromJson(Map<String, dynamic> json) {
-    projectId = (json['projectId'] as num?)?.toInt();
-    type = json['type'];
-    totalOutputs = (json['totalOutputs'] as num?)?.toInt();
-    if (json['series'] != null && json['series'] is List) {
-      series = <ProgressSeriesItem>[];
-      for (var v in (json['series'] as List)) {
-        series!.add(
-          ProgressSeriesItem.fromJson((v as Map).cast<String, dynamic>()),
+    totalProgress = (json['totalProgress'] as num?)?.toDouble();
+    currentMonth = (json['currentMonth'] as num?)?.toInt();
+    currentYear = (json['currentYear'] as num?)?.toInt();
+
+    if (json['monthProgress'] != null && json['monthProgress'] is List) {
+      monthProgress = <ProgressItem>[];
+      for (var v in (json['monthProgress'] as List)) {
+        monthProgress!.add(
+          ProgressItem.fromJson((v as Map).cast<String, dynamic>()),
         );
       }
     }
-    latest = json['latest'] == null
-        ? null
-        : ProgressSeriesItem.fromJson(
-            (json['latest'] as Map).cast<String, dynamic>(),
-          );
+
+    if (json['yearProgress'] != null && json['yearProgress'] is List) {
+      yearProgress = <ProgressItem>[];
+      for (var v in (json['yearProgress'] as List)) {
+        yearProgress!.add(
+          ProgressItem.fromJson((v as Map).cast<String, dynamic>()),
+        );
+      }
+    }
   }
 
   @override
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['projectId'] = projectId;
-    data['type'] = type;
-    data['totalOutputs'] = totalOutputs;
-    if (series != null) {
-      data['series'] = series!.map((e) => e.toJson()).toList();
+    data['totalProgress'] = totalProgress;
+    data['currentMonth'] = currentMonth;
+    data['currentYear'] = currentYear;
+
+    if (monthProgress != null) {
+      data['monthProgress'] = monthProgress!.map((e) => e.toJson()).toList();
+    } else {
+      data['monthProgress'] = null;
     }
-    if (latest != null) {
-      data['latest'] = latest!.toJson();
+
+    if (yearProgress != null) {
+      data['yearProgress'] = yearProgress!.map((e) => e.toJson()).toList();
+    } else {
+      data['yearProgress'] = null;
     }
+
     return data;
   }
 
@@ -55,24 +67,24 @@ class GeneralProgressChartModel extends SingleMapper {
   }
 }
 
-class ProgressSeriesItem {
-  String? period;
-  int? delivered;
-  int? percent;
+class ProgressItem {
+  int? month;
+  int? year;
+  double? progress;
 
-  ProgressSeriesItem({this.period, this.delivered, this.percent});
+  ProgressItem({this.month, this.year, this.progress});
 
-  ProgressSeriesItem.fromJson(Map<String, dynamic> json) {
-    period = json['period'];
-    delivered = (json['delivered'] as num?)?.toInt();
-    percent = (json['percent'] as num?)?.toInt();
+  ProgressItem.fromJson(Map<String, dynamic> json) {
+    month = (json['month'] as num?)?.toInt();
+    year = (json['year'] as num?)?.toInt();
+    progress = (json['progress'] as num?)?.toDouble();
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['period'] = period;
-    data['delivered'] = delivered;
-    data['percent'] = percent;
+    data['month'] = month;
+    data['year'] = year;
+    data['progress'] = progress;
     return data;
   }
 }

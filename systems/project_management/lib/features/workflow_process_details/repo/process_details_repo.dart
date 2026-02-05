@@ -23,6 +23,8 @@ abstract class ProcessDetailsRepo {
 
   Future<DocumentCommentsModel> getDocComments({
     required int documentId,
+    int pageIndex = 1,
+    int pageSize = 10,
   });
 
   Future<DefaultResponseModel> addDocComment({
@@ -30,9 +32,7 @@ abstract class ProcessDetailsRepo {
     required String text,
   });
 
-  Future<DefaultResponseModel> deleteDocComment({
-    required int documentId,
-  });
+  Future<DefaultResponseModel> deleteDocComment({required int documentId});
 
   Future<DefaultResponseModel> editDocComment({
     required int documentId,
@@ -109,10 +109,16 @@ class ProcessDetailsRepoImpl implements ProcessDetailsRepo {
   @override
   Future<DocumentCommentsModel> getDocComments({
     required int documentId,
+    int pageIndex = 1,
+    int pageSize = 10,
   }) async {
     final res = await network.requestOrThrow(
       ApiNames.documentComment,
-      query: {'documentDataId': documentId},
+      query: {
+        'documentDataId': documentId,
+        'PageIndex': pageIndex,
+        'pageSize': pageSize,
+      },
       method: ServerMethods.GET,
       model: DocumentCommentsModel(),
     );

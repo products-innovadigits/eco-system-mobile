@@ -23,6 +23,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   hydrated_bloc: ^10.0.0
+  dio: ^5.9.1
   pin_code_text_field: ^1.8.0
   scroll_to_index: ^3.0.1
   font_awesome_flutter: ^10.8.0

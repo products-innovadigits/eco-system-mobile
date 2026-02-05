@@ -4,7 +4,6 @@ import 'package:project_management/core/utility/pms_exports.dart';
 class StageDocsTab extends StatelessWidget {
   final int processId;
   final int projectId;
-  final String pdfFilePath;
   final String processName;
   final List<StageDocument> documents;
 
@@ -12,7 +11,6 @@ class StageDocsTab extends StatelessWidget {
     super.key,
     required this.processId,
     required this.projectId,
-    required this.pdfFilePath,
     required this.processName,
     required this.documents,
   });
@@ -20,8 +18,7 @@ class StageDocsTab extends StatelessWidget {
   void _showHtmlContent(BuildContext context, StageDocument document) {
     showDialog(
       context: context,
-      builder: (context) =>
-          HtmlContentDialog(document: document, pdfFilePath: pdfFilePath),
+      builder: (context) => HtmlContentDialog(document: document),
     );
   }
 

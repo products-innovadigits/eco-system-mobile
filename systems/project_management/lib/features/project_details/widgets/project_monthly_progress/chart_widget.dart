@@ -1,7 +1,7 @@
 import '../../../../core/utility/pms_exports.dart';
 
 class MonthlyProgressChart extends StatelessWidget {
-  final List<ProjectCategoriesProgressModel> data;
+  final List<ProgressItem> data;
   final double chartWidth;
 
   const MonthlyProgressChart({

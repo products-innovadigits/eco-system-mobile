@@ -275,6 +275,7 @@ class StageDocument {
   String? symbol;
   StageDocPayload? data;
   String? updatedBy;
+  String? exportUrl;
   String? updatedAt;
 
   StageDocument({
@@ -286,6 +287,7 @@ class StageDocument {
     this.symbol,
     this.data,
     this.updatedBy,
+    this.exportUrl,
     this.updatedAt,
   });
 
@@ -302,6 +304,7 @@ class StageDocument {
       );
     }
     updatedBy = json['updatedBy']?.toString();
+    exportUrl = json['exportUrl']?.toString();
     updatedAt = json['updatedAt']?.toString();
   }
 
@@ -315,6 +318,7 @@ class StageDocument {
     map['symbol'] = symbol;
     if (data != null) map['data'] = data!.toJson();
     map['updatedBy'] = updatedBy;
+    map['exportUrl'] = exportUrl;
     map['updatedAt'] = updatedAt;
     return map;
   }

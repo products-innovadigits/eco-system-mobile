@@ -10,6 +10,11 @@ class LoadDocComments extends DocCommentsEvent {
   const LoadDocComments({required this.documentId});
 }
 
+/// Load the next page of document comments
+class LoadMoreDocComments extends DocCommentsEvent {
+  const LoadMoreDocComments();
+}
+
 /// Delete a document comment
 class DeleteDocComment extends DocCommentsEvent {
   final int documentId;

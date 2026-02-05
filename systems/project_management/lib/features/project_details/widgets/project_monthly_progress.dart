@@ -9,12 +9,14 @@ import 'project_monthly_progress/y_axis_widget.dart';
 class ProjectMonthlyProgress extends StatefulWidget {
   const ProjectMonthlyProgress({
     super.key,
-    required this.data,
-    this.latestProgressItem,
+    required this.progressItems,
+    this.currentMonth,
+    this.isMonthly = true,
   });
 
-  final List<ProjectCategoriesProgressModel> data;
-  final ProgressSeriesItem? latestProgressItem;
+  final List<ProgressItem> progressItems;
+  final String? currentMonth;
+  final bool isMonthly;
 
   @override
   State<ProjectMonthlyProgress> createState() => _ProjectMonthlyProgressState();
@@ -39,9 +41,8 @@ class _ProjectMonthlyProgressState extends State<ProjectMonthlyProgress> {
   void didUpdateWidget(ProjectMonthlyProgress oldWidget) {
     super.didUpdateWidget(oldWidget);
     // Reset scroll flag if data or latestProgressItem changed
-    if (oldWidget.data != widget.data ||
-        oldWidget.latestProgressItem?.period !=
-            widget.latestProgressItem?.period) {
+    if (oldWidget.progressItems != widget.progressItems ||
+        oldWidget.currentMonth != widget.currentMonth) {
       _hasScrolled = false;
     }
   }
@@ -57,27 +58,25 @@ class _ProjectMonthlyProgressState extends State<ProjectMonthlyProgress> {
   void _scrollToLatestProgress() {
     if (_hasScrolled ||
         !mounted ||
-        widget.latestProgressItem?.period == null ||
-        widget.data.isEmpty) {
+        widget.currentMonth == null ||
+        widget.progressItems.isEmpty) {
       return;
     }
 
-    final String? latestPeriod = widget.latestProgressItem?.period
-        ?.split('-')
-        .last;
-    if (latestPeriod == null) return;
+    // final String? widget.currentMonth = widget.currentMonth;
+    if (widget.currentMonth == null) return;
 
     // Find the index of the data item that matches the latest progress period
     int? targetIndex;
-    for (int i = 0; i < widget.data.length; i++) {
-      final String? dataName = widget.data[i].name;
+    for (int i = 0; i < widget.progressItems.length; i++) {
+      final String? dataName = widget.progressItems[i].month?.toString();
       if (dataName == null) continue;
 
-      if (latestPeriod == dataName ||
-          latestPeriod.endsWith(dataName) ||
-          (latestPeriod.length > 5 && dataName == latestPeriod.substring(5))) {
+      if (widget.currentMonth == dataName ||
+          (int.tryParse(widget.currentMonth!)! > 5 &&
+              dataName == widget.currentMonth)) {
         log(
-          'Scrolling to index $i for period $latestPeriod matching name $dataName',
+          'Scrolling to index $i for period $widget.currentMonth matching name $dataName',
         );
         targetIndex = i;
         break;
@@ -143,7 +142,7 @@ class _ProjectMonthlyProgressState extends State<ProjectMonthlyProgress> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.data.isEmpty) {
+    if (widget.progressItems.isEmpty) {
       return const SizedBox.shrink();
     }
 
@@ -151,7 +150,7 @@ class _ProjectMonthlyProgressState extends State<ProjectMonthlyProgress> {
     final double perPointWidth = 60.w;
     final double chartWidth = math.max(
       screenWidth,
-      widget.data.length * perPointWidth,
+      widget.progressItems.length * perPointWidth,
     );
     const double leftAxisReservedSize = 60;
     const double bottomAxisReservedSize = 30;
@@ -181,7 +180,7 @@ class _ProjectMonthlyProgressState extends State<ProjectMonthlyProgress> {
                     controller: _scrollController,
                     scrollDirection: Axis.horizontal,
                     child: MonthlyProgressChart(
-                      data: widget.data,
+                      data: widget.progressItems,
                       chartWidth: chartWidth,
                     ),
                   ),
@@ -206,7 +205,8 @@ class _ProjectMonthlyProgressState extends State<ProjectMonthlyProgress> {
                     child: SizedBox(
                       width: chartWidth,
                       child: MonthlyProgressXAxis(
-                        data: widget.data,
+                        data: widget.progressItems,
+                        isMonthly: widget.isMonthly,
                         perPointWidth: perPointWidth,
                       ),
                     ),

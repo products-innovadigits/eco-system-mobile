@@ -21,6 +21,7 @@ class ProjectDetailsModel extends SingleMapper {
   String? implementorDepartmentName;
   String? managerId;
   String? status;
+  String? statusAr;
   String? managerName;
   String? periortyLevelName;
   String? projectCategoryName;
@@ -56,6 +57,7 @@ class ProjectDetailsModel extends SingleMapper {
     this.implementorDepartmentName,
     this.managerId,
     this.status,
+    this.statusAr,
     this.progressRatio,
     this.managerName,
     this.projectCategoryName,
@@ -107,6 +109,7 @@ class ProjectDetailsModel extends SingleMapper {
     implementorDepartmentName = json['implementorDepartmentName'];
     managerId = json['managerId'];
     status = json['status'];
+    statusAr = json['statusAr'];
     managerName = json['managerName'];
     periortyLevelName = json['periortyLevelName'];
     projectCategoryName = json['projectCategoryName'];
@@ -148,6 +151,7 @@ class ProjectDetailsModel extends SingleMapper {
     data['implementorDepartmentName'] = implementorDepartmentName;
     data['managerId'] = managerId;
     data['status'] = status;
+    data['statusAr'] = statusAr;
     data['progressRation'] = progressRatio;
     data['managerName'] = managerName;
     data['periortyLevelName'] = periortyLevelName;

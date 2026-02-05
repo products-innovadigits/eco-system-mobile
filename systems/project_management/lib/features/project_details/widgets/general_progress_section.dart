@@ -38,14 +38,13 @@ class GeneralProgressSection extends StatelessWidget {
                         },
                       )
                     : null,
-                child: (bloc.chartModel?.series ?? []).isNotEmpty
+                child: (bloc.chartModel != null)
                     ? bloc.selectedChartType == ChartTime.monthly
                           ? ProjectMonthlyProgressSection(
-                              chartSeries: bloc.chartModel?.series ?? [],
-                              latestProgressItem: bloc.chartModel?.latest,
+                              progressModel: bloc.chartModel!,
                             )
                           : ProjectMonthlyProgressSection(
-                              chartSeries: bloc.chartModel?.series ?? [],
+                              progressModel: bloc.chartModel!,
                               isMonthly: false,
                             )
                     : Center(

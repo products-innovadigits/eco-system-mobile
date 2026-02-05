@@ -16,7 +16,6 @@ class ProjectGeneralProgressSummaryBloc
   }
 
   GeneralProgressChartModel? chartModel;
-  ProgressSeriesItem? latestProgressItem;
   ChartTime selectedChartType = ChartTime.monthly;
 
   Future<void> _onLoadGeneralProgressSummary(
@@ -41,7 +40,7 @@ class ProjectGeneralProgressSummaryBloc
           res.data,
         );
         chartModel = model;
-        latestProgressItem = model.latest;
+        // latestProgressItem = model.latest;
         emit(ProjectGeneralProgressSummaryLoaded(chartModel: model));
       } else {
         emit(

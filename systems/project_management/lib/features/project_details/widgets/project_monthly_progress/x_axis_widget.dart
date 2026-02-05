@@ -1,13 +1,15 @@
 import '../../../../core/utility/pms_exports.dart';
 
 class MonthlyProgressXAxis extends StatelessWidget {
-  final List<ProjectCategoriesProgressModel> data;
+  final List<ProgressItem> data;
   final double perPointWidth;
+  final bool isMonthly;
 
   const MonthlyProgressXAxis({
     super.key,
     required this.data,
     required this.perPointWidth,
+    this.isMonthly = true,
   });
 
   @override
@@ -15,7 +17,9 @@ class MonthlyProgressXAxis extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: List.generate(data.length, (index) {
-        final label = data[index].name ?? '';
+        final label = isMonthly
+            ? data[index].month.toString()
+            : data[index].year.toString();
         return SizedBox(
           width: perPointWidth,
           child: Text(

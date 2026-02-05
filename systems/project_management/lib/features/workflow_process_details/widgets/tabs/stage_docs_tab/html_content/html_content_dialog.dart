@@ -9,14 +9,7 @@ class HtmlContentDialog extends StatefulWidget {
   /// The document containing HTML content and field definitions
   final StageDocument document;
 
-  /// Path to the PDF file for download
-  final String pdfFilePath;
-
-  const HtmlContentDialog({
-    super.key,
-    required this.document,
-    required this.pdfFilePath,
-  });
+  const HtmlContentDialog({super.key, required this.document});
 
   @override
   State<HtmlContentDialog> createState() => _HtmlContentDialogState();
@@ -83,7 +76,7 @@ class _HtmlContentDialogState extends State<HtmlContentDialog> {
             _buildHeader(context),
             const Divider(height: 1),
             _buildContent(htmlContent, fields),
-            // _buildDownloadButton(),
+            _buildDownloadButton(),
           ],
         ),
       ),
@@ -130,22 +123,23 @@ class _HtmlContentDialogState extends State<HtmlContentDialog> {
   }
 
   /// Builds the download button section.
-  // Widget _buildDownloadButton() {
-  //   return Container(
-  //     padding: const EdgeInsets.all(HtmlContentHelper.dialogPadding),
-  //     child: Row(
-  //       children: [
-  //         Expanded(
-  //           child: CustomBtn(
-  //             text: allTranslations.text(LocaleKeys.download),
-  //             onPressed: () => LauncherHelper.downloadFiles(
-  //               filePath: widget.pdfFilePath,
-  //               context: context,
-  //             ),
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
+  Widget _buildDownloadButton() {
+    return Container(
+      padding: const EdgeInsets.all(HtmlContentHelper.dialogPadding),
+      child: Row(
+        children: [
+          Expanded(
+            child: CustomBtn(
+              text: allTranslations.text(LocaleKeys.download),
+              onPressed: () => LauncherHelper.downloadFiles(
+                filePath: '',
+                fullLink: widget.document.exportUrl ?? '',
+                context: context,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

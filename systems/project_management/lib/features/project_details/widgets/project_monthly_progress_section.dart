@@ -1,31 +1,23 @@
-
 import '../../../core/utility/pms_exports.dart';
 
 class ProjectMonthlyProgressSection extends StatelessWidget {
-  final List<ProgressSeriesItem> chartSeries;
-  final ProgressSeriesItem? latestProgressItem;
+  final GeneralProgressChartModel progressModel;
   final bool isMonthly;
 
   const ProjectMonthlyProgressSection({
     super.key,
-    required this.chartSeries,
-    this.latestProgressItem,
+    required this.progressModel,
     this.isMonthly = true,
   });
 
   @override
   Widget build(BuildContext context) {
+    final List<ProgressItem> chartSeries = isMonthly
+        ? progressModel.monthProgress ?? []
+        : progressModel.yearProgress ?? [];
     return ProjectMonthlyProgress(
-      data: List.generate(
-        chartSeries.length,
-        (index) => ProjectCategoriesProgressModel(
-          name: isMonthly
-              ? chartSeries[index].period?.substring(5)
-              : chartSeries[index].period ?? '',
-          progress: chartSeries[index].percent?.toDouble(),
-        ),
-      ),
-      latestProgressItem: latestProgressItem,
+      progressItems: chartSeries,
+      isMonthly: isMonthly,
     );
   }
 }
