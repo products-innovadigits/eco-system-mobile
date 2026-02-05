@@ -53,6 +53,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  bloc_test:
+  mocktail:
   build_runner:
   flutter_gen_runner:
   injectable_generator:

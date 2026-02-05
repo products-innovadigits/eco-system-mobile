@@ -1,0 +1,13 @@
+{
+  "totalProgress": 72.5,
+  "currentMonth": 3,
+  "currentYear": 2025,
+  "monthProgress": [
+    { "month": 1, "year": 2025, "progress": 45.0 },
+    { "month": 2, "year": 2025, "progress": 60.0 },
+    { "month": 3, "year": 2025, "progress": 72.5 }
+  ],
+  "yearProgress": [
+    { "month": 1, "year": 2025, "progress": 72.5 }
+  ]
+}
