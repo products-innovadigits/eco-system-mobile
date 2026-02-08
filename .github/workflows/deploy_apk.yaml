@@ -9,9 +9,9 @@ on:
         default: 'Enter the client email...'
 
       systems:
-        description: 'Comma-separated list of active systems (e.g. strategy,ats,pms)'
+        description: 'Comma-separated list of active systems (e.g. strategy,ats,project_management)'
         required: true
-        default: 'strategy,ats,pms'
+        default: 'strategy,ats,project_management'
 
       release_name:
         description: 'Release name (e.g. v1.2.3-clientX)'
@@ -134,13 +134,29 @@ jobs:
       - name: Install Root Dependencies
         run: flutter pub get
 
-      - name: Install Core Dependencies
-        working-directory: systems/core_system
-        run: flutter pub get
+      # ✅ Optional (won't fail if folder is missing)
+      - name: Install Core Dependencies (optional)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -d "systems/core_system" ]; then
+            echo "📦 systems/core_system detected → flutter pub get"
+            (cd systems/core_system && flutter pub get)
+          else
+            echo "ℹ️ systems/core_system not found → skipping"
+          fi
 
-      - name: Generate Envied Code
-        working-directory: systems/core_system
-        run: flutter pub run build_runner build --delete-conflicting-outputs
+      # ✅ Optional (won't fail if folder is missing)
+      - name: Generate Envied Code (optional)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -d "systems/core_system" ]; then
+            echo "🧩 systems/core_system detected → build_runner"
+            (cd systems/core_system && flutter pub run build_runner build --delete-conflicting-outputs)
+          else
+            echo "ℹ️ systems/core_system not found → skipping"
+          fi
 
       - name: Set Gradle Heap Size
         run: |
@@ -171,7 +187,7 @@ jobs:
             CLEAN_KEY="$(echo "$i" | xargs | tr '[:upper:]' '[:lower:]')"
             if [ -z "$CLEAN_KEY" ]; then
               echo "❌ Error: Empty system key detected (double comma or trailing comma)."
-              echo "✅ Example valid input: strategy,ats,pms"
+              echo "✅ Example valid input: strategy,ats,project_management"
               exit 1
             fi
             if [[ -n "${SEEN[$CLEAN_KEY]+x}" ]]; then
@@ -183,7 +199,7 @@ jobs:
           done
 
           if [ "${#ADDR[@]}" -eq 0 ]; then
-            echo "❌ Error: systems input is empty. Valid keys: pms, ats, strategy."
+            echo "❌ Error: systems input is empty. Valid keys: project_management, ats, strategy."
             exit 1
           fi
 
@@ -192,10 +208,10 @@ jobs:
 
           for i in "${ADDR[@]}"; do
             case "$i" in
-              pms) echo "import 'package:project_management/core/module/pms_module.dart';" >> "$OUT_FILE" ;;
+              project_management) echo "import 'package:project_management/core/module/pms_module.dart';" >> "$OUT_FILE" ;;
               ats) echo "import 'package:ats_system/ats_module.dart';" >> "$OUT_FILE" ;;
               strategy) echo "import 'package:strategy_system/strategy_module.dart';" >> "$OUT_FILE" ;;
-              *) echo "❌ Error: Unknown system key '$i'. Valid keys: pms, ats, strategy." ; exit 1 ;;
+              *) echo "❌ Error: Unknown system key '$i'. Valid keys: project_management, ats, strategy." ; exit 1 ;;
             esac
           done
 
@@ -210,7 +226,7 @@ jobs:
 
           for i in "${ADDR[@]}"; do
             case "$i" in
-              pms) echo "    PmsModule()," >> "$OUT_FILE" ;;
+              project_management) echo "    PmsModule()," >> "$OUT_FILE" ;;
               ats) echo "    AtsModule()," >> "$OUT_FILE" ;;
               strategy) echo "    StrategyModule()," >> "$OUT_FILE" ;;
             esac
@@ -229,7 +245,7 @@ jobs:
         run: |
           set -euo pipefail
           echo "Checking for illegal feature imports in app shell..."
-          MATCHES=$(grep -rE "package:(ats|pms|strategy)_system" lib --exclude="enabled_modules.dart" || true)
+          MATCHES=$(grep -rE "package:(ats_system|strategy_system|project_management)" lib --exclude="enabled_modules.dart" || true)
           if [ -n "$MATCHES" ]; then
             echo "❌ Modularity Violation: Direct feature imports found outside generated registry!"
             echo "$MATCHES"
@@ -250,6 +266,61 @@ jobs:
 
       - name: Flutter Analyze
         run: flutter analyze
+
+      # ✅ NEW: Run flutter test inside each selected system folder (with mapping)
+      - name: Flutter Test (selected systems)
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          SYSTEMS_RAW="${{ github.event.inputs.systems }}"
+          echo "🧪 Selected systems: '$SYSTEMS_RAW'"
+
+          declare -A DIR_MAP=(
+            ["ats"]="ats_system"
+            ["project_management"]="project_management"
+            ["strategy"]="strategy_system"
+          )
+
+          IFS=',' read -ra SYSTEMS <<< "$SYSTEMS_RAW"
+
+          for sys in "${SYSTEMS[@]}"; do
+            KEY="$(echo "$sys" | xargs | tr '[:upper:]' '[:lower:]')"
+
+            if [ -z "$KEY" ]; then
+              echo "❌ Empty system key detected."
+              exit 1
+            fi
+
+            DIR_NAME="${DIR_MAP[$KEY]:-}"
+            if [ -z "$DIR_NAME" ]; then
+              echo "❌ Unknown system key: '$KEY'"
+              echo "✅ Valid keys: ats, project_management, strategy"
+              exit 1
+            fi
+
+            DIR="systems/$DIR_NAME"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "➡️  Entering: $DIR"
+
+            if [ ! -d "$DIR" ]; then
+              echo "❌ Folder not found: $DIR"
+              echo "📂 Available under systems/:"
+              ls -la systems || true
+              exit 1
+            fi
+
+            pushd "$DIR" >/dev/null
+
+            echo "📦 flutter pub get (in $DIR)"
+            flutter pub get
+
+            echo "🧪 flutter test (in $DIR)"
+            flutter test
+
+            popd >/dev/null
+            echo "✅ Done tests for: $KEY"
+          done
 
       # ✅ Speed: --no-pub (pub get already done), no verbose
       - name: Build APK
@@ -313,13 +384,13 @@ jobs:
 
           declare -A SYSTEM_PACKAGES=(
             ["ats"]="package:ats_system"
-            ["pms"]="package:pms_system"
+            ["project_management"]="package:project_management"
             ["strategy"]="package:strategy_system"
           )
 
           VIOLATIONS=0
 
-          for system in ats pms strategy; do
+          for system in ats project_management strategy; do
             PKG="${SYSTEM_PACKAGES[$system]}"
             COUNT=$(strings "$LIBAPP" | grep -c "$PKG" || true)
 
