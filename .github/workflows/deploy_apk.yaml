@@ -8,10 +8,24 @@ on:
         required: false
         default: 'Enter the client email...'
 
-      systems:
-        description: 'Comma-separated list of active systems (e.g. strategy,ats,project_management)'
-        required: true
-        default: 'strategy,ats,project_management'
+      # ✅ Checkboxes (booleans) instead of a comma-separated field
+      strategy:
+        description: 'Include Strategy system'
+        required: false
+        default: true
+        type: boolean
+
+      ats:
+        description: 'Include ATS system'
+        required: false
+        default: true
+        type: boolean
+
+      project_management:
+        description: 'Include Project Management system'
+        required: false
+        default: true
+        type: boolean
 
       release_name:
         description: 'Release name (e.g. v1.2.3-clientX)'
@@ -151,8 +165,35 @@ jobs:
             echo "org.gradle.configureondemand=true"
           } >> android/gradle.properties
 
-      - name: Debug systems input
-        run: echo "🚀 ACTIVE_SYSTEMS='${{ github.event.inputs.systems }}'"
+      # ✅ Build ACTIVE_SYSTEMS from checkboxes (creates SYSTEMS_RAW env var)
+      - name: Build ACTIVE_SYSTEMS from checkboxes
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          systems=()
+
+          if [ "${{ github.event.inputs.strategy }}" = "true" ]; then
+            systems+=("strategy")
+          fi
+
+          if [ "${{ github.event.inputs.ats }}" = "true" ]; then
+            systems+=("ats")
+          fi
+
+          if [ "${{ github.event.inputs.project_management }}" = "true" ]; then
+            systems+=("project_management")
+          fi
+
+          if [ "${#systems[@]}" -eq 0 ]; then
+            echo "❌ No systems selected. Enable at least one system."
+            exit 1
+          fi
+
+          SYSTEMS_RAW="$(IFS=,; echo "${systems[*]}")"
+          echo "✅ ACTIVE_SYSTEMS='$SYSTEMS_RAW'"
+
+          echo "SYSTEMS_RAW=$SYSTEMS_RAW" >> "$GITHUB_ENV"
 
       - name: Generate Enabled Modules
         shell: bash
@@ -160,7 +201,7 @@ jobs:
           set -euo pipefail
 
           mkdir -p lib/app/modules/generated
-          SYSTEMS_RAW="${{ github.event.inputs.systems }}"
+          SYSTEMS_RAW="${SYSTEMS_RAW:-}"
           echo "Generating enabled_modules.dart for systems: '$SYSTEMS_RAW'"
 
           IFS=',' read -ra RAW_ADDR <<< "$SYSTEMS_RAW"
@@ -248,18 +289,17 @@ jobs:
             echo "⚠️  key.properties not found - release build may fail if signing is required"
           fi
 
-#      - name: Flutter Analyze
-#        run: flutter analyze
+      # - name: Flutter Analyze
+      #   run: flutter analyze
 
       - name: Flutter Test (selected systems)
         shell: bash
         run: |
           set -euo pipefail
 
-          SYSTEMS_RAW="${{ github.event.inputs.systems }}"
+          SYSTEMS_RAW="${SYSTEMS_RAW:-}"
           echo "🧪 Selected systems: '$SYSTEMS_RAW'"
 
-          # input key -> folder name under systems/
           declare -A DIR_MAP=(
             ["ats"]="ats_system"
             ["project_management"]="project_management"
@@ -316,7 +356,7 @@ jobs:
           flutter build apk \
             --release \
             --no-pub \
-            --dart-define=ACTIVE_SYSTEMS="${{ github.event.inputs.systems }}" \
+            --dart-define=ACTIVE_SYSTEMS="$SYSTEMS_RAW" \
             --dart-define=ENABLE_PROXY="${{ github.event.inputs.enable_proxy }}"
 
           APK_PATH="build/app/outputs/flutter-apk/app-release.apk"
@@ -364,7 +404,7 @@ jobs:
           echo "✅ Found libapp.so at: lib/$ARCH/libapp.so"
           echo ""
 
-          IFS=',' read -ra ENABLED_SYSTEMS <<< "${{ github.event.inputs.systems }}"
+          IFS=',' read -ra ENABLED_SYSTEMS <<< "$SYSTEMS_RAW"
 
           declare -A SYSTEM_PACKAGES=(
             ["ats"]="package:ats_system"
@@ -421,11 +461,10 @@ jobs:
         working-directory: android
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-          ACTIVE_SYSTEMS: ${{ github.event.inputs.systems }}
+          ACTIVE_SYSTEMS: ${{ env.SYSTEMS_RAW }}
         run: |
           bundle exec fastlane android distribute_ci \
             apk_path:"${{ github.workspace }}/${{ steps.build_apk.outputs.apk_path }}" \
             release_name:"${{ github.event.inputs.release_name }}" \
             test_email:"${{ github.event.inputs.test_email }}" \
             release_notes:"${{ github.event.inputs.release_notes }}"
-
