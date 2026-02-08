@@ -1,5 +1,5 @@
 import 'package:intl/intl.dart';
-import 'package:project_management/core/utility/pms_exports.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
 
 class ProjectReportBudgetChart extends StatelessWidget {
   final List<ProjectsOverviewData> data;

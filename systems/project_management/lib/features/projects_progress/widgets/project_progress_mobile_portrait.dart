@@ -1,12 +1,12 @@
-import 'package:project_management/core/utility/pms_exports.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
 
 class ProjectProgressMobilePortrait extends StatelessWidget {
-  final bool isPmsHome;
+  final bool isProjectManagementHome;
   final List<ProjectsOverviewData> data;
 
   const ProjectProgressMobilePortrait({
     super.key,
-    required this.isPmsHome,
+    required this.isProjectManagementHome,
     required this.data,
   });
 
@@ -17,18 +17,18 @@ class ProjectProgressMobilePortrait extends StatelessWidget {
         MainCardWidget(
           height: 260.h,
           title: allTranslations.text(LocaleKeys.project_progress_rate),
-          moreBtnTxt: isPmsHome
+          moreBtnTxt: isProjectManagementHome
               ? allTranslations.text(LocaleKeys.view_projects)
               : null,
           onViewMoreTap: () {
-            if (!isPmsHome) {
-              UserBloc.currentActiveSystem = ActiveSystemEnum.pms;
+            if (!isProjectManagementHome) {
+              UserBloc.currentActiveSystem = ActiveSystemEnum.projectManagement;
             }
-            isPmsHome
+            isProjectManagementHome
                 ? CustomNavigator.push(Routes.PROJECTS)
                 : CustomNavigator.push(
                     Routes.SYSTEM_SWITCHER,
-                    arguments: ActiveSystemEnum.pms,
+                    arguments: ActiveSystemEnum.projectManagement,
                   );
           },
           child: _ChartDetails(projects: data),

@@ -1,5 +1,5 @@
 import 'package:mocktail/mocktail.dart';
-import 'package:project_management/core/utility/pms_exports.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
 
 class MockNetwork extends Mock implements Network {}
 

@@ -23,7 +23,7 @@ class Routes {
   static const BSC = "BSC";
   static const OKR = "OKR";
   static const STRATEGIC_AXES = "STRATEGIC_AXES";
-  static const PMS_LAYOUT = "PMS_LAYOUT";
+  static const PROJECT_MANAGEMENT_LAYOUT = "PROJECT_MANAGEMENT_LAYOUT";
   static const PROJECTS = "PROJECTS";
   static const PROJECT_DETAILS = "PROJECT_DETAILS";
   static const PROJECT_REPORT = "PROJECT_REPORT";

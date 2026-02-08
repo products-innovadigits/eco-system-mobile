@@ -1,17 +1,19 @@
-import 'package:project_management/core/utility/pms_exports.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
 
 class ProjectManagementSection extends StatelessWidget {
-  final bool isPmsHome;
+  final bool isProjectManagementHome;
 
-  const ProjectManagementSection({super.key, this.isPmsHome = false});
+  const ProjectManagementSection(
+      {super.key, this.isProjectManagementHome = false});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ProjectProgressSection(isPmsHome: isPmsHome),
+        ProjectProgressSection(isProjectManagementHome: isProjectManagementHome),
         SizedBox(height: 16.h),
-        ProjectCategoryProgressSection(isPmsHome: isPmsHome),
+        ProjectCategoryProgressSection(
+            isProjectManagementHome: isProjectManagementHome),
       ],
     );
   }

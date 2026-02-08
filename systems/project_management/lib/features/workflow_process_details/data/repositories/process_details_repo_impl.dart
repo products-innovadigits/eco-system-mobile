@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:project_management/shared/model/default_response_model.dart';
 
-import '../../../../core/utility/pms_exports.dart';
+import '../../../../core/utility/project_management_exports.dart';
 
 class ProcessDetailsRepoImpl implements ProcessDetailsRepo {
   final Network network;

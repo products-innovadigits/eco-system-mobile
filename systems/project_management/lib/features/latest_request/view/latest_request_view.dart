@@ -1,6 +1,6 @@
 import 'package:project_management/core/di/project_management_locator.dart';
-import 'package:project_management/core/utility/pms_exports.dart';
-import 'package:project_management/shared/widgets/pms_bottom_nav_bar.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
+import 'package:project_management/shared/widgets/project_management_bottom_nav_bar.dart';
 
 class LatestRequestView extends StatefulWidget {
   const LatestRequestView({super.key});
@@ -106,7 +106,7 @@ class _LatestRequestViewState extends State<LatestRequestView> {
                 },
               ),
             ),
-            bottomNavigationBar: PmsBottomNavBar(
+            bottomNavigationBar: ProjectManagementBottomNavBar(
               index: _selectedIndex,
               isSubPage: true,
               onSelect: (index) {

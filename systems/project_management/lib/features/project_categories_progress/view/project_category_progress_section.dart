@@ -1,10 +1,13 @@
 import 'package:project_management/core/di/project_management_locator.dart';
-import 'package:project_management/core/utility/pms_exports.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
 
 class ProjectCategoryProgressSection extends StatelessWidget {
-  final bool isPmsHome;
+  final bool isProjectManagementHome;
 
-  const ProjectCategoryProgressSection({super.key, this.isPmsHome = false});
+  const ProjectCategoryProgressSection({
+    super.key,
+    this.isProjectManagementHome = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,10 @@ class ProjectCategoryProgressSection extends StatelessWidget {
 
                 // ── Loaded ────────────────────────────
                 ProjectCategoriesProgressLoaded(:final categories) =>
-                  _CategoriesChart(data: categories, isPmsHome: isPmsHome),
+                  _CategoriesChart(
+                    data: categories,
+                    isProjectManagementHome: isProjectManagementHome,
+                  ),
 
                 // ── Empty ───────────────────────────
                 ProjectCategoriesProgressEmpty() => const EmptyContainer(),
@@ -53,9 +59,12 @@ class ProjectCategoryProgressSection extends StatelessWidget {
 
 class _CategoriesChart extends StatelessWidget {
   final List<ProjectCategoriesProgressModel> data;
-  final bool isPmsHome;
+  final bool isProjectManagementHome;
 
-  const _CategoriesChart({required this.data, required this.isPmsHome});
+  const _CategoriesChart({
+    required this.data,
+    required this.isProjectManagementHome,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -63,30 +72,30 @@ class _CategoriesChart extends StatelessWidget {
       title: allTranslations.text(
         LocaleKeys.project_progress_rate_in_each_category,
       ),
-      moreBtnTxt: isPmsHome
+      moreBtnTxt: isProjectManagementHome
           ? allTranslations.text(LocaleKeys.view_projects)
           : null,
       onViewMoreTap: () {
-        if (!isPmsHome) {
-          UserBloc.currentActiveSystem = ActiveSystemEnum.pms;
+        if (!isProjectManagementHome) {
+          UserBloc.currentActiveSystem = ActiveSystemEnum.projectManagement;
         }
-        isPmsHome
+        isProjectManagementHome
             ? CustomNavigator.push(Routes.PROJECTS)
             : CustomNavigator.push(
                 Routes.SYSTEM_SWITCHER,
-                arguments: ActiveSystemEnum.pms,
+                arguments: ActiveSystemEnum.projectManagement,
               );
       },
       // child: SizedBox(
-      //   height: isPmsHome ? data.length * 18.h : 250.h,
+      //   height: isProjectManagementHome ? data.length * 18.h : 250.h,
       //   child: SingleChildScrollView(
       //     child: SizedBox(
-      //       height: isPmsHome ? data.length * 50.h : 250.h,
-      //       child: ProjectCategoriesChart(data: data, isPmsHome: isPmsHome),
+      //       height: isProjectManagementHome ? data.length * 50.h : 250.h,
+      //       child: ProjectCategoriesChart(data: data, isProjectManagementHome: isProjectManagementHome),
       //     ),
       //   ),
       // ),
-      child: CustomBarChart(data: data, showAll: isPmsHome),
+      child: CustomBarChart(data: data, showAll: isProjectManagementHome),
     );
   }
 }

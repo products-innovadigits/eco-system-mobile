@@ -1,4 +1,4 @@
-import 'package:project_management/core/utility/pms_exports.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
 
 class RiskChallengeCardWidget extends StatelessWidget {
   final String title, value;

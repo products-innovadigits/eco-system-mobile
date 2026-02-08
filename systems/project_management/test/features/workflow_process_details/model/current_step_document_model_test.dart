@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:project_management/features/workflow_process_details/model/current_step_document_model.dart';
+
 import '../../../helpers/json_fixtures.dart';
 
 void main() {
@@ -23,18 +24,33 @@ void main() {
 
     test('round-trip does not throw', () {
       final json = JsonFixtures.wrapperResponse(data: {});
-      final m = CurrentStepDocumentModel().fromJson(json) as CurrentStepDocumentModel;
+      final m =
+          CurrentStepDocumentModel().fromJson(json) as CurrentStepDocumentModel;
       expect(() => m.toJson(), returnsNormally);
     });
 
-    test('Contract: fromJson accepts wrapper with "succeeded" and "data" keys', () {
-      final json = JsonFixtures.wrapperResponse(data: {});
-      expect(json.containsKey('succeeded'), isTrue,
-          reason: 'Contract expects input key "succeeded". Keys: ${json.keys.toList()}');
-      expect(json.containsKey('data'), isTrue,
-          reason: 'Contract expects input key "data". Keys: ${json.keys.toList()}');
-      expect(() => CurrentStepDocumentModel().fromJson(json), returnsNormally);
-    });
+    test(
+      'Contract: fromJson accepts wrapper with "succeeded" and "data" keys',
+      () {
+        final json = JsonFixtures.wrapperResponse(data: {});
+        expect(
+          json.containsKey('succeeded'),
+          isTrue,
+          reason:
+              'Contract expects input key "succeeded". Keys: ${json.keys.toList()}',
+        );
+        expect(
+          json.containsKey('data'),
+          isTrue,
+          reason:
+              'Contract expects input key "data". Keys: ${json.keys.toList()}',
+        );
+        expect(
+          () => CurrentStepDocumentModel().fromJson(json),
+          returnsNormally,
+        );
+      },
+    );
   });
 
   group('CurrentStepDocumentData', () {
@@ -57,7 +73,8 @@ void main() {
 
     test('round-trip does not throw', () {
       final json = JsonFixtures.minimalMap();
-      final m = CurrentStepDocumentData().fromJson(json) as CurrentStepDocumentData;
+      final m =
+          CurrentStepDocumentData().fromJson(json) as CurrentStepDocumentData;
       expect(() => m.toJson(), returnsNormally);
     });
   });
@@ -82,7 +99,8 @@ void main() {
 
     test('round-trip does not throw', () {
       final json = JsonFixtures.minimalMap();
-      final m = CurrentStepDocumentItem().fromJson(json) as CurrentStepDocumentItem;
+      final m =
+          CurrentStepDocumentItem().fromJson(json) as CurrentStepDocumentItem;
       expect(() => m.toJson(), returnsNormally);
     });
   });

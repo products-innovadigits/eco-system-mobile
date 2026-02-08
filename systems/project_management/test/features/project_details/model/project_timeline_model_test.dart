@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:project_management/features/project_details/model/project_timeline_model.dart';
+
 import '../../../helpers/json_fixtures.dart';
 
 void main() {

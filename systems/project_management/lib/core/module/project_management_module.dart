@@ -1,25 +1,25 @@
 import 'package:core_system/core/modules/home_section.dart';
 import 'package:core_system/core/modules/system_module.dart';
 import 'package:project_management/core/di/project_management_locator.dart';
-import 'package:project_management/core/utility/pms_exports.dart';
-import 'package:project_management/pms_layout.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
+import 'package:project_management/project_management_layout.dart';
 
-/// PMS System module implementation.
+/// Project Management System module implementation.
 ///
-/// Registers all Bloc providers required by the PMS (Project Management System) module.
+/// Registers all Bloc providers required by the Project Management module.
 class ProjectManagementModule implements SystemModule {
   ProjectManagementModule() {
-    setupPmsLocator();
+    setupProjectManagementLocator();
   }
 
   @override
   String get id => 'project_management';
 
   @override
-  String get name => 'PMS System';
+  String get name => 'Project Management System';
 
   @override
-  ActiveSystemEnum get system => ActiveSystemEnum.pms;
+  ActiveSystemEnum get system => ActiveSystemEnum.projectManagement;
 
   @override
   List<BlocProvider> get providers => [
@@ -45,14 +45,16 @@ class ProjectManagementModule implements SystemModule {
 
   @override
   Map<String, RouteFactory> get routes => {
-    Routes.PMS_LAYOUT: (settings) {
+    Routes.PROJECT_MANAGEMENT_LAYOUT: (settings) {
       final args =
-          settings.arguments as PmsLayoutArgs? ??
-          const PmsLayoutArgs(showSwitcher: true);
+          settings.arguments as ProjectManagementLayoutArgs? ??
+          const ProjectManagementLayoutArgs(showSwitcher: true);
       return MaterialPageRoute(
         settings: settings,
-        builder: (_) =>
-            PmsLayout(index: args.index, showSwitcher: args.showSwitcher),
+        builder: (_) => ProjectManagementLayout(
+          index: args.index,
+          showSwitcher: args.showSwitcher,
+        ),
       );
     },
     Routes.PROJECTS: (settings) =>
@@ -89,7 +91,9 @@ class ProjectManagementModule implements SystemModule {
       id: 'project_management',
       order: 20,
       builder: (context) {
-        if (UserBloc.activeSystems.contains(ActiveSystemEnum.pms)) {
+        if (UserBloc.activeSystems.contains(
+          ActiveSystemEnum.projectManagement,
+        )) {
           return const ProjectManagementSection();
         }
         return const SizedBox.shrink();

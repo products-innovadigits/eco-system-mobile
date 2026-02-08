@@ -1,9 +1,9 @@
 import 'package:get_it/get_it.dart';
-import 'package:project_management/core/utility/pms_exports.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
 
 final GetIt projectManagementSl = GetIt.asNewInstance();
 
-void setupPmsLocator() {
+void setupProjectManagementLocator() {
   // Network
   if (!projectManagementSl.isRegistered<Network>()) {
     projectManagementSl.registerLazySingleton<Network>(() => Network());

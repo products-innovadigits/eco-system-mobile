@@ -1,4 +1,4 @@
-import 'package:project_management/core/utility/pms_exports.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
 import 'package:project_management/shared/widgets/monthly_annaul_chart_filter_widget.dart';
 
 class GeneralProgressSection extends StatelessWidget {

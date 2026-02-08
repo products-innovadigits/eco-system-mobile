@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:project_management/core/di/project_management_locator.dart';
-import 'package:project_management/core/utility/pms_exports.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
 
 class ActionsTab extends StatelessWidget {
   final int processId;

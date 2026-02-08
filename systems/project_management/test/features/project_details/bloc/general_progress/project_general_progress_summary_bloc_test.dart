@@ -2,7 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:core_system/core/network/error/network_exception.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:project_management/core/utility/pms_exports.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
 
 import '../../../../core/mocks/fallbacks.dart';
 import '../../../../core/mocks/mock_repos.dart';

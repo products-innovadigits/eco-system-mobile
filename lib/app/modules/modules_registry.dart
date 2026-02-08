@@ -66,8 +66,8 @@ class ModulesRegistry {
   /// ensuring the shell has zero knowledge of feature layout classes.
   static Route<dynamic>? getLayoutRoute(ActiveSystemEnum system) {
     String? routeName;
-    if (system == ActiveSystemEnum.pms) {
-      routeName = Routes.PMS_LAYOUT;
+    if (system == ActiveSystemEnum.projectManagement) {
+      routeName = Routes.PROJECT_MANAGEMENT_LAYOUT;
     } else if (system == ActiveSystemEnum.strategy) {
       routeName = Routes.STRATEGY_LAYOUT;
     }

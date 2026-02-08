@@ -1,6 +1,6 @@
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../../../core/utility/pms_exports.dart';
+import '../../../core/utility/project_management_exports.dart';
 
 class HalfCircleAnalyticChart extends StatelessWidget {
   final double? height;

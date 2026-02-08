@@ -1,4 +1,4 @@
-import 'package:project_management/core/utility/pms_exports.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
 
 /// Months header row (dynamically sized based on project months).
 class TimelineMonthsHeader extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'package:project_management/features/workflow_process_details/widgets/tabs/technical_log_tab/technical_log_tab_comments_section.dart';
 
-import '../../../../../core/utility/pms_exports.dart';
+import '../../../../../core/utility/project_management_exports.dart';
 
 class TechnicalLogTimelineCard extends StatelessWidget {
   final String processGroup;

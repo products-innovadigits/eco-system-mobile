@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:project_management/core/utility/pms_exports.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
 import 'package:project_management/features/projects/bloc/filtration/projects_filter_provider.dart';
 
 import '../../../../core/mocks/fallbacks.dart';

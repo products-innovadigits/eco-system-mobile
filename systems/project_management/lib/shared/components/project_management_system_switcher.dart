@@ -1,15 +1,17 @@
-import 'package:project_management/core/utility/pms_exports.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
 
-class PmsSystemSwitcher extends StatefulWidget {
+class ProjectManagementSystemSwitcher extends StatefulWidget {
   final VoidCallback? onComplete;
 
-  const PmsSystemSwitcher({super.key, this.onComplete});
+  const ProjectManagementSystemSwitcher({super.key, this.onComplete});
 
   @override
-  State<PmsSystemSwitcher> createState() => _PmsSystemSwitcherState();
+  State<ProjectManagementSystemSwitcher> createState() =>
+      _ProjectManagementSystemSwitcherState();
 }
 
-class _PmsSystemSwitcherState extends State<PmsSystemSwitcher>
+class _ProjectManagementSystemSwitcherState
+    extends State<ProjectManagementSystemSwitcher>
     with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _progressAnimation;
@@ -92,12 +94,12 @@ class _PmsSystemSwitcherState extends State<PmsSystemSwitcher>
               ),
               SizedBox(height: 24.h),
               Text(
-                'الانتقال الي ${SystemHelper.getSystemName(ActiveSystemEnum.pms)}',
+                'الانتقال الي ${SystemHelper.getSystemName(ActiveSystemEnum.projectManagement)}',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               SizedBox(height: 8.h),
               Text(
-                'أنت الآن تنتقل  إلى ${SystemHelper.getSystemName(ActiveSystemEnum.pms)}  — لتجربة أكثر تركيزًا وسلاسة في التخطيط والمتابعة وإنجاز المشاريع.',
+                'أنت الآن تنتقل  إلى ${SystemHelper.getSystemName(ActiveSystemEnum.projectManagement)}  — لتجربة أكثر تركيزًا وسلاسة في التخطيط والمتابعة وإنجاز المشاريع.',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: context.color.outlineVariant,
                 ),

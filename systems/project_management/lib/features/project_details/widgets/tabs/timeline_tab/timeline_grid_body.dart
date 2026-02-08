@@ -1,4 +1,4 @@
-import 'package:project_management/core/utility/pms_exports.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
 
 /// Grid body (rows × dynamic weeks). Optionally builds custom cells via cellBuilder.
 class TimelineGridBody extends StatelessWidget {

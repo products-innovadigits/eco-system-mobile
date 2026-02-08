@@ -1,4 +1,4 @@
-import 'package:project_management/core/utility/pms_exports.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
 import 'package:project_management/shared/model/default_response_model.dart';
 
 class DocCommentsBloc extends Bloc<DocCommentsEvent, DocCommentsState> {

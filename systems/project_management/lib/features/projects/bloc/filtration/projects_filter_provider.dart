@@ -1,4 +1,4 @@
-import 'package:project_management/core/utility/pms_exports.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
 
 /// Abstract interface for providing filter parameters to ProjectsBloc.
 /// This decouples the bloc from the specific filter implementation.

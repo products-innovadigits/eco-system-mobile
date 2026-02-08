@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:project_management/core/utility/pms_exports.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
 
 class ActionsTabBloc extends Bloc<ActionsTabEvent, ActionsTabState> {
   final ProcessDetailsRepo repo;

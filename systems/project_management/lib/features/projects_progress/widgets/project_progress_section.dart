@@ -3,12 +3,13 @@ import 'package:project_management/core/di/project_management_locator.dart';
 import 'package:project_management/features/projects_progress/widgets/project_progress_mobile_landscape.dart';
 import 'package:project_management/features/projects_progress/widgets/project_progress_mobile_portrait.dart';
 
-import '../../../core/utility/pms_exports.dart';
+import '../../../core/utility/project_management_exports.dart';
 
 class ProjectProgressSection extends StatelessWidget {
-  final bool isPmsHome;
+  final bool isProjectManagementHome;
 
-  const ProjectProgressSection({super.key, required this.isPmsHome});
+  const ProjectProgressSection(
+      {super.key, required this.isProjectManagementHome});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class ProjectProgressSection extends StatelessWidget {
 
             // ── Loaded ────────────────────────────
             ProjectsProgressLoaded(:final projects) => _ProjectProgressSection(
-              isPmsHome: isPmsHome,
+              isProjectManagementHome: isProjectManagementHome,
               data: projects,
             ),
 
@@ -34,7 +35,7 @@ class ProjectProgressSection extends StatelessWidget {
             // ── Default (error/unknown) ─────────
             _ => MainCardWidget(
               title: allTranslations.text(LocaleKeys.project_progress_rate),
-              moreBtnTxt: isPmsHome
+              moreBtnTxt: isProjectManagementHome
                   ? allTranslations.text(LocaleKeys.view_projects)
                   : null,
               child: TryAgainWidget(
@@ -51,18 +52,20 @@ class ProjectProgressSection extends StatelessWidget {
 }
 
 class _ProjectProgressSection extends StatelessWidget {
-  final bool isPmsHome;
+  final bool isProjectManagementHome;
   final List<ProjectsOverviewData> data;
 
-  const _ProjectProgressSection({required this.isPmsHome, required this.data});
+  const _ProjectProgressSection(
+      {required this.isProjectManagementHome, required this.data});
 
   @override
   Widget build(BuildContext context) {
     return CustomScreenTypeLayoutWidget(
       mobilePortrait: (ctx) =>
-          ProjectProgressMobilePortrait(isPmsHome: isPmsHome, data: data),
-      mobileLandscape: (ctx) =>
-          ProjectProgressMobileLandscape(isPmsHome: isPmsHome, data: data),
+          ProjectProgressMobilePortrait(
+          isProjectManagementHome: isProjectManagementHome, data: data),
+      mobileLandscape: (ctx) => ProjectProgressMobileLandscape(
+          isProjectManagementHome: isProjectManagementHome, data: data),
     );
   }
 }

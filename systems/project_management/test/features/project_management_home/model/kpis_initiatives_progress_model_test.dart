@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:project_management/features/pms_home/model/kpis_initiatives_progress_model.dart';
+import 'package:project_management/features/project_management_home/model/kpis_initiatives_progress_model.dart';
 
 import '../../../helpers/contract_asserts.dart';
 import '../../../helpers/fixture_reader.dart';
@@ -9,13 +9,13 @@ void main() {
   group('KpisInitiativesProgressModel', () {
     test('Contract: fromJson accepts wrapper with "succeeded" and "data" keys (List)', () {
       final fixtureJson =
-          readJsonFixture('pms_home/pms_home_kpis_response.json');
+          readJsonFixture('project_management_home/project_management_home_kpis_response.json');
       expectWrapperContract(fixtureJson, dataShape: DataShape.list);
     });
 
     test('fromJson correctly maps critical fields from fixture item', () {
       final fixtureJson =
-          readJsonFixture('pms_home/pms_home_kpis_response.json');
+          readJsonFixture('project_management_home/project_management_home_kpis_response.json');
       expectWrapperContract(fixtureJson, dataShape: DataShape.list);
       final dataList = fixtureJson['data'] as List;
       expect(dataList, isNotEmpty);
@@ -32,7 +32,7 @@ void main() {
 
     test('toJson returns Map with essential fields', () {
       final fixtureJson =
-          readJsonFixture('pms_home/pms_home_kpis_response.json');
+          readJsonFixture('project_management_home/project_management_home_kpis_response.json');
       final firstItem = (fixtureJson['data'] as List).first as Map<String, dynamic>;
       final model = KpisInitiativesProgressModel.fromJson(firstItem);
       final json = model.toJson();

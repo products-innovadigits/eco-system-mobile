@@ -69,10 +69,12 @@ class AtsModule implements SystemModule {
   List<HomeSection> get homeSections => [
     HomeSection(
       id: 'available_jobs',
-      order: 30, // Positioned after PMS management sections
+      order: 30, // Positioned after Project Management sections
       builder: (context) {
-        // Only show if both PMS and ATS are active, as per original logic
-        if (UserBloc.activeSystems.contains(ActiveSystemEnum.pms) &&
+        // Only show if both Project Management and ATS are active, as per original logic
+        if (UserBloc.activeSystems.contains(
+              ActiveSystemEnum.projectManagement,
+            ) &&
             UserBloc.activeSystems.contains(ActiveSystemEnum.ats)) {
           return const AvailableJobsSection();
         }
@@ -83,7 +85,9 @@ class AtsModule implements SystemModule {
       id: 'talent_pool',
       order: 31,
       builder: (context) {
-        if (UserBloc.activeSystems.contains(ActiveSystemEnum.pms) &&
+        if (UserBloc.activeSystems.contains(
+              ActiveSystemEnum.projectManagement,
+            ) &&
             UserBloc.activeSystems.contains(ActiveSystemEnum.ats)) {
           return const TalentPoolSection();
         }

@@ -1,11 +1,11 @@
-import 'package:project_management/core/utility/pms_exports.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
 
 class ProjectStagesChart extends StatefulWidget {
   const ProjectStagesChart({
     super.key,
     this.withIntervals = true,
     required this.data,
-    this.isPmsHome = false,
+    this.isProjectManagementHome = false,
     this.textColor,
     this.barColor,
   });
@@ -13,7 +13,7 @@ class ProjectStagesChart extends StatefulWidget {
   final List<ProjectCategoriesProgressModel> data;
   final Color? textColor, barColor;
   final bool withIntervals;
-  final bool isPmsHome;
+  final bool isProjectManagementHome;
 
   @override
   State<ProjectStagesChart> createState() => _ProjectStagesChartState();

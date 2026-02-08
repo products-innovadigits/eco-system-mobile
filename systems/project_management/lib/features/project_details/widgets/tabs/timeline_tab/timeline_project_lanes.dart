@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:project_management/core/utility/pms_exports.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
 
 class TimelineProjectLanes extends StatelessWidget {
   final LayoutResult layout;

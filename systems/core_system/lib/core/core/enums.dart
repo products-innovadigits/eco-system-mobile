@@ -57,15 +57,23 @@ class SearchEnum extends Enum<String> {
 class ActiveSystemEnum extends Enum<String> {
   const ActiveSystemEnum(super.value);
 
-  static const ActiveSystemEnum pms = ActiveSystemEnum('pms');
+  static const ActiveSystemEnum projectManagement = ActiveSystemEnum(
+    'project_management',
+  );
   static const ActiveSystemEnum strategy = ActiveSystemEnum('strategy');
   static const ActiveSystemEnum ats = ActiveSystemEnum('ats');
 
-  static const List<ActiveSystemEnum> values = [pms, strategy, ats];
+  static const List<ActiveSystemEnum> values = [
+    projectManagement,
+    strategy,
+    ats,
+  ];
 
   factory ActiveSystemEnum.fromString(String value) {
+    // Backward compatibility: accept legacy 'pms' from API/config
+    final normalized = value == 'pms' ? 'project_management' : value;
     return values.firstWhere(
-      (e) => e.value == value,
+      (e) => e.value == normalized,
       orElse: () => values.first,
     );
   }

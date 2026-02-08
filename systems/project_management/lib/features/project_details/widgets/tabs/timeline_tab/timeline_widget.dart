@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:project_management/core/utility/pms_exports.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
 
 /// Project timeline grid with months/weeks headers and auto-placed milestone lanes.
 /// - Dynamic months based on projectStart to projectEnd.

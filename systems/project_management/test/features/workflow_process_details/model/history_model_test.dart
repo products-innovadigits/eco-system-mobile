@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:project_management/features/workflow_process_details/model/history_model.dart';
+
 import '../../../helpers/json_fixtures.dart';
 
 void main() {
@@ -27,14 +28,25 @@ void main() {
       expect(() => m.toJson(), returnsNormally);
     });
 
-    test('Contract: fromJson accepts wrapper with "succeeded" and "data" keys', () {
-      final json = JsonFixtures.wrapperResponse(data: []);
-      expect(json.containsKey('succeeded'), isTrue,
-          reason: 'Contract expects input key "succeeded". Keys: ${json.keys.toList()}');
-      expect(json.containsKey('data'), isTrue,
-          reason: 'Contract expects input key "data". Keys: ${json.keys.toList()}');
-      expect(() => HistoryResponseModel().fromJson(json), returnsNormally);
-    });
+    test(
+      'Contract: fromJson accepts wrapper with "succeeded" and "data" keys',
+      () {
+        final json = JsonFixtures.wrapperResponse(data: []);
+        expect(
+          json.containsKey('succeeded'),
+          isTrue,
+          reason:
+              'Contract expects input key "succeeded". Keys: ${json.keys.toList()}',
+        );
+        expect(
+          json.containsKey('data'),
+          isTrue,
+          reason:
+              'Contract expects input key "data". Keys: ${json.keys.toList()}',
+        );
+        expect(() => HistoryResponseModel().fromJson(json), returnsNormally);
+      },
+    );
   });
 
   group('HistoryItemModel', () {

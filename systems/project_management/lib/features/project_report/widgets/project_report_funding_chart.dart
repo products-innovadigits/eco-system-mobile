@@ -1,4 +1,4 @@
-import 'package:project_management/core/utility/pms_exports.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class ProjectReportFundingChart extends StatelessWidget {

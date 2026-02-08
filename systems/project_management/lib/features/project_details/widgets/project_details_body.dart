@@ -1,4 +1,4 @@
-import 'package:project_management/core/utility/pms_exports.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
 import 'package:project_management/shared/widgets/shimmer/custom_details_shimmer_loading.dart';
 
 class ProjectDetailsBody extends StatelessWidget {

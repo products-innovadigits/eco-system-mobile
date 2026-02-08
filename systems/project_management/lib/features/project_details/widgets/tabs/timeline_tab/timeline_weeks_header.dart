@@ -1,4 +1,4 @@
-import 'package:project_management/core/utility/pms_exports.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
 
 /// Weeks header row (4 week cells per month, with optional grid lines).
 class TimelineWeeksHeader extends StatelessWidget {

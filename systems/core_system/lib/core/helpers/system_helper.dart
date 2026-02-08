@@ -3,7 +3,7 @@ import 'package:core_system/core/utility/export.dart';
 class SystemHelper {
   // System display names
   static const Map<ActiveSystemEnum, String> systemNames = {
-    ActiveSystemEnum.pms: 'نظام إدارة المشاريع',
+    ActiveSystemEnum.projectManagement: 'نظام إدارة المشاريع',
     ActiveSystemEnum.strategy: 'نظام الأداء الاستراتيجي',
     ActiveSystemEnum.ats: 'نظام إدارة الموظفين',
   };

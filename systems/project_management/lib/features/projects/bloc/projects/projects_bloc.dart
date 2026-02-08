@@ -1,5 +1,5 @@
 import 'package:core_system/core/network/error/network_exception.dart';
-import 'package:project_management/core/utility/pms_exports.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
 import 'package:project_management/features/projects/bloc/filtration/projects_filter_provider.dart';
 
 class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {

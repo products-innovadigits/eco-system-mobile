@@ -1,7 +1,7 @@
 import 'package:project_management/features/workflow_process_details/widgets/tabs/stage_docs_tab/html_content/editable_html_renderer.dart';
 import 'package:project_management/features/workflow_process_details/widgets/tabs/stage_docs_tab/html_content/html_content_helper.dart';
 
-import '../../../../../../core/utility/pms_exports.dart';
+import '../../../../../../core/utility/project_management_exports.dart';
 
 /// Dialog that displays HTML content with read-only fields.
 /// Allows users to view document fields and download the PDF.

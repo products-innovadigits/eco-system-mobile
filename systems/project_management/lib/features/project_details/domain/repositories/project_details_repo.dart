@@ -1,4 +1,4 @@
-import 'package:project_management/features/pms_home/model/kpis_initiatives_progress_model.dart';
+import 'package:project_management/features/project_management_home/model/kpis_initiatives_progress_model.dart';
 
 abstract class ProjectDetailsRepo {
   Future<dynamic> getProjectDetails(int id);

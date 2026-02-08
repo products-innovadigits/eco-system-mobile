@@ -1,12 +1,12 @@
-import 'package:project_management/core/utility/pms_exports.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
 
 class ProjectProgressMobileLandscape extends StatelessWidget {
-  final bool isPmsHome;
+  final bool isProjectManagementHome;
   final List<ProjectsOverviewData> data;
 
   const ProjectProgressMobileLandscape({
     super.key,
-    required this.isPmsHome,
+    required this.isProjectManagementHome,
     required this.data,
   });
 
@@ -18,7 +18,7 @@ class ProjectProgressMobileLandscape extends StatelessWidget {
           height: 520.h,
           title: allTranslations.text(LocaleKeys.project_progress_rate),
           onViewMoreTap: () => CustomNavigator.push(
-            isPmsHome ? Routes.PROJECTS : Routes.PMS_LAYOUT,
+            isProjectManagementHome ? Routes.PROJECTS : Routes.PROJECT_MANAGEMENT_LAYOUT,
           ),
           child: _ChartDetails(projects: data),
         ),
