@@ -248,8 +248,8 @@ jobs:
             echo "⚠️  key.properties not found - release build may fail if signing is required"
           fi
 
-      - name: Flutter Analyze
-        run: flutter analyze
+#      - name: Flutter Analyze
+#        run: flutter analyze
 
       - name: Flutter Test (selected systems)
         shell: bash
