@@ -251,6 +251,61 @@ jobs:
       - name: Flutter Analyze
         run: flutter analyze
 
+      - name: Flutter Test (selected systems)
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          SYSTEMS_RAW="${{ github.event.inputs.systems }}"
+          echo "🧪 Selected systems: '$SYSTEMS_RAW'"
+
+          # input key -> folder name under systems/
+          declare -A DIR_MAP=(
+            ["ats"]="ats_system"
+            ["project_management"]="project_management"
+            ["strategy"]="strategy_system"
+          )
+
+          IFS=',' read -ra SYSTEMS <<< "$SYSTEMS_RAW"
+
+          for sys in "${SYSTEMS[@]}"; do
+            KEY="$(echo "$sys" | xargs | tr '[:upper:]' '[:lower:]')"
+
+            if [ -z "$KEY" ]; then
+              echo "❌ Empty system key detected."
+              exit 1
+            fi
+
+            DIR_NAME="${DIR_MAP[$KEY]:-}"
+            if [ -z "$DIR_NAME" ]; then
+              echo "❌ Unknown system key: '$KEY'"
+              echo "✅ Valid keys: ats, project_management, strategy"
+              exit 1
+            fi
+
+            DIR="systems/$DIR_NAME"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "➡️  Entering: $DIR"
+
+            if [ ! -d "$DIR" ]; then
+              echo "❌ Folder not found: $DIR"
+              echo "📂 Available under systems/:"
+              ls -la systems || true
+              exit 1
+            fi
+
+            pushd "$DIR" >/dev/null
+
+            echo "📦 flutter pub get (in $DIR)"
+            flutter pub get
+
+            echo "🧪 flutter test (in $DIR)"
+            flutter test
+
+            popd >/dev/null
+            echo "✅ Done tests for: $KEY"
+          done
+
       # ✅ Speed: --no-pub (pub get already done), no verbose
       - name: Build APK
         id: build_apk
