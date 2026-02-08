@@ -90,9 +90,7 @@ class ProjectDetailsModel extends SingleMapper {
     projectCategoryId = json['projectCategoryId'];
     weight = (json['weight'] as num?)?.toDouble();
     budget = json['budget'];
-
-    /// TEST IN PIPELINE
-    progressRatio = (json['pro'] as num?)?.toDouble(); // safe cast
+    progressRatio = (json['progressRation'] as num?)?.toDouble(); // safe cast
     teamIds = json['teamIds'] != null
         ? List<String>.from(json['teamIds'])
         : null;
