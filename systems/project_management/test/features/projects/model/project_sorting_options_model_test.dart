@@ -4,6 +4,7 @@ import 'package:project_management/features/projects/model/project_sorting_optio
 import '../../../helpers/contract_asserts.dart';
 import '../../../helpers/fixture_reader.dart';
 import '../../../helpers/json_fixtures.dart';
+import '../../../helpers/model_field_asserts.dart';
 
 void main() {
   group('ProjectSortingOptionsModel', () {
@@ -31,18 +32,20 @@ void main() {
       expect(firstItem['nameEn'], 'Newest');
     });
 
-    test('fromJson correctly maps full fixture to model', () {
+    test('fromJson correctly maps full fixture to model (fails if model key changes)', () {
       final fixtureJson =
           readJsonFixture('projects/project_sorting_options_response.json');
       final model = ProjectSortingOptionsModel.fromJson(fixtureJson);
-      expect(model.succeeded, isTrue);
-      expect(model.data, isNotNull);
-      expect(model.data, isNotEmpty);
-      expect(model.data!.length, 3);
+      expect(model.succeeded, isTrue, reason: 'Key "succeeded"');
+      expect(model.data, isNotNull, reason: 'Key "data"');
+      expect(model.data, isNotEmpty, reason: 'Key "data"');
+      expect(model.data!.length, 3, reason: 'Key "data" length');
       final first = model.data!.first;
-      expect(first.id, 1);
-      expect(first.nameAr, 'الأحدث');
-      expect(first.nameEn, 'Newest');
+      expectModelFields([
+        (key: 'data[].id', actual: first.id, expected: 1),
+        (key: 'data[].nameAr', actual: first.nameAr, expected: 'الأحدث'),
+        (key: 'data[].nameEn', actual: first.nameEn, expected: 'Newest'),
+      ]);
     });
 
     test('fails if required wrapper key is missing: fixture contract guards model', () {

@@ -4,6 +4,7 @@ import 'package:project_management/features/project_management_home/model/kpis_i
 import '../../../helpers/contract_asserts.dart';
 import '../../../helpers/fixture_reader.dart';
 import '../../../helpers/json_fixtures.dart';
+import '../../../helpers/model_field_asserts.dart';
 
 void main() {
   group('KpisInitiativesProgressModel', () {
@@ -13,7 +14,7 @@ void main() {
       expectWrapperContract(fixtureJson, dataShape: DataShape.list);
     });
 
-    test('fromJson correctly maps critical fields from fixture item', () {
+    test('fromJson correctly maps critical fields from fixture item (fails if model key changes)', () {
       final fixtureJson =
           readJsonFixture('project_management_home/project_management_home_kpis_response.json');
       expectWrapperContract(fixtureJson, dataShape: DataShape.list);
@@ -25,9 +26,11 @@ void main() {
       expect(firstItem.containsKey('initiativesValue'), isTrue);
 
       final model = KpisInitiativesProgressModel.fromJson(firstItem);
-      expect(model.objective, 'Objective 1');
-      expect(model.kpisValue, 75.5);
-      expect(model.initiativesValue, 80.0);
+      expectModelFields([
+        (key: 'objectValue -> objective', actual: model.objective, expected: 'Objective 1'),
+        (key: 'kpisValue', actual: model.kpisValue, expected: 75.5),
+        (key: 'initiativesValue', actual: model.initiativesValue, expected: 80.0),
+      ]);
     });
 
     test('toJson returns Map with essential fields', () {

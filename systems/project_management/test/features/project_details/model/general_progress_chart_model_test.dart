@@ -3,6 +3,7 @@ import 'package:project_management/features/project_details/model/general_progre
 
 import '../../../helpers/fixture_reader.dart';
 import '../../../helpers/json_fixtures.dart';
+import '../../../helpers/model_field_asserts.dart';
 
 void main() {
   group('GeneralProgressChartModel', () {
@@ -43,40 +44,27 @@ void main() {
       );
     });
 
-    test('fromJson correctly maps critical fields from fixture', () {
+    test('fromJson correctly maps critical fields from fixture (fails if model key changes)', () {
       expect(fixtureJson, isNotNull,
           reason: 'Test setup: general progress chart fixture JSON is null');
 
       final model = GeneralProgressChartModel.fromJson(fixtureJson);
 
-      expect(
-        model.totalProgress,
-        equals(72.5),
-        reason:
-            'Expected "totalProgress" from fixture. Fix mapping or fixture.',
-      );
-      expect(
-        model.currentMonth,
-        equals(3),
-        reason: 'Expected "currentMonth" from fixture. Fix mapping or fixture.',
-      );
-      expect(
-        model.currentYear,
-        equals(2025),
-        reason: 'Expected "currentYear" from fixture. Fix mapping or fixture.',
-      );
-
-      expect(model.monthProgress, isNotNull);
-      expect(model.monthProgress, isNotEmpty);
-      expect(model.monthProgress!.first.month, 1);
-      expect(model.monthProgress!.first.year, 2025);
-      expect(model.monthProgress!.first.progress, 45.0);
-
-      expect(model.yearProgress, isNotNull);
-      expect(model.yearProgress, isNotEmpty);
-      expect(model.yearProgress!.first.month, 1);
-      expect(model.yearProgress!.first.year, 2025);
-      expect(model.yearProgress!.first.progress, 72.5);
+      expectModelFields([
+        (key: 'totalProgress', actual: model.totalProgress, expected: 72.5),
+        (key: 'currentMonth', actual: model.currentMonth, expected: 3),
+        (key: 'currentYear', actual: model.currentYear, expected: 2025),
+        (key: 'monthProgress[].month', actual: model.monthProgress?.first.month, expected: 1),
+        (key: 'monthProgress[].year', actual: model.monthProgress?.first.year, expected: 2025),
+        (key: 'monthProgress[].progress', actual: model.monthProgress?.first.progress, expected: 45.0),
+        (key: 'yearProgress[].month', actual: model.yearProgress?.first.month, expected: 1),
+        (key: 'yearProgress[].year', actual: model.yearProgress?.first.year, expected: 2025),
+        (key: 'yearProgress[].progress', actual: model.yearProgress?.first.progress, expected: 72.5),
+      ]);
+      expect(model.monthProgress, isNotNull, reason: 'Key "monthProgress"');
+      expect(model.monthProgress, isNotEmpty, reason: 'Key "monthProgress"');
+      expect(model.yearProgress, isNotNull, reason: 'Key "yearProgress"');
+      expect(model.yearProgress, isNotEmpty, reason: 'Key "yearProgress"');
     });
 
     group('Negative Contract Tests', () {

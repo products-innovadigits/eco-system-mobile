@@ -4,6 +4,7 @@ import 'package:project_management/features/latest_request/model/latest_request_
 import '../../../helpers/contract_asserts.dart';
 import '../../../helpers/fixture_reader.dart';
 import '../../../helpers/json_fixtures.dart';
+import '../../../helpers/model_field_asserts.dart';
 
 void main() {
   group('LatestRequestModel', () {
@@ -18,14 +19,18 @@ void main() {
       },
     );
 
-    test('fromJson correctly maps critical fields from fixture', () {
+    test('fromJson correctly maps critical fields from fixture (fails if model key changes)', () {
       expectWrapperContract(fixtureJson, dataShape: DataShape.list);
       final model = LatestRequestModel.fromJson(fixtureJson);
 
-      expect(model.succeeded, isTrue);
-      expect(model.data, isNotEmpty);
-      expect(model.data!.first.id, 501);
-      expect(model.data!.first.project?.name, 'Project Alpha');
+      expect(model.succeeded, isTrue, reason: 'Key "succeeded"');
+      expect(model.data, isNotEmpty, reason: 'Key "data"');
+      final first = model.data!.first;
+      expectModelFields([
+        (key: 'data[].id', actual: first.id, expected: 501),
+        (key: 'data[].project.name', actual: first.project?.name, expected: 'Project Alpha'),
+        (key: 'data[].process.title', actual: first.process?.title, expected: 'Initial Review'),
+      ]);
     });
 
     group('Negative Contract Tests', () {

@@ -4,6 +4,7 @@ import 'package:project_management/features/projects/model/projects_model.dart';
 import '../../../helpers/contract_asserts.dart';
 import '../../../helpers/fixture_reader.dart';
 import '../../../helpers/json_fixtures.dart';
+import '../../../helpers/model_field_asserts.dart';
 
 void main() {
   group('ProjectsModel', () {
@@ -54,12 +55,10 @@ void main() {
       );
 
       final firstItem = items?.first;
-      expect(
-        firstItem?.title,
-        equals('Project Alpha'),
-        reason:
-            'First project title mismatch. Expected "Project Alpha", got ${firstItem?.title}',
-      );
+      expectModelFields([
+        (key: 'data.items[].id', actual: firstItem?.id, expected: 101),
+        (key: 'data.items[].name -> title', actual: firstItem?.title, expected: 'Project Alpha'),
+      ]);
     });
 
     group('Negative Contract Tests', () {

@@ -4,6 +4,7 @@ import 'package:project_management/features/projects_progress/model/project_prog
 import '../../../helpers/contract_asserts.dart';
 import '../../../helpers/fixture_reader.dart';
 import '../../../helpers/json_fixtures.dart';
+import '../../../helpers/model_field_asserts.dart';
 
 void main() {
   group('ProjectProgressModel', () {
@@ -13,7 +14,7 @@ void main() {
       expectWrapperContract(fixtureJson, dataShape: DataShape.list);
     });
 
-    test('fromJson correctly maps critical fields from fixture item', () {
+    test('fromJson correctly maps critical fields from fixture item (fails if model key changes)', () {
       final fixtureJson =
           readJsonFixture('projects_progress/projects_progress_response.json');
       expectWrapperContract(fixtureJson, dataShape: DataShape.list);
@@ -26,10 +27,12 @@ void main() {
       expect(firstItem.containsKey('color'), isTrue);
 
       final model = ProjectProgressModel.fromJson(firstItem);
-      expect(model.categoryName, 'Planning');
-      expect(model.value, 90.5);
-      expect(model.count, 5);
-      expect(model.color, '#4CAF50');
+      expectModelFields([
+        (key: 'categoryName', actual: model.categoryName, expected: 'Planning'),
+        (key: 'value', actual: model.value, expected: 90.5),
+        (key: 'count', actual: model.count, expected: 5),
+        (key: 'color', actual: model.color, expected: '#4CAF50'),
+      ]);
     });
 
     test('toJson returns Map with essential fields', () {

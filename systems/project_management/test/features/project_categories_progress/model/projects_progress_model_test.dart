@@ -1,10 +1,27 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:project_management/features/project_categories_progress/model/projects_progress_model.dart';
 
+import '../../../helpers/fixture_reader.dart';
 import '../../../helpers/json_fixtures.dart';
+import '../../../helpers/model_field_asserts.dart';
 
 void main() {
   group('ProjectsOverviewModel', () {
+    test('fromJson correctly maps critical fields from fixture (fails if model key changes)', () {
+      final fixtureJson =
+          readJsonFixture('project_categories_progress/projects_overview_response.json');
+      final model = ProjectsOverviewModel.fromJson(fixtureJson);
+      expect(model.succeeded, isTrue, reason: 'Key "succeeded"');
+      expect(model.data, isNotNull, reason: 'Key "data"');
+      expect(model.data, isNotEmpty, reason: 'Key "data"');
+      expectModelFields([
+        (key: 'data[].name', actual: model.data!.first.name, expected: 'On Track'),
+        (key: 'data[].hexColor', actual: model.data!.first.hexColor, expected: '#4CAF50'),
+        (key: 'data[].percentage', actual: model.data!.first.percentage, expected: 60),
+        (key: 'data[].count', actual: model.data!.first.count, expected: 12),
+      ]);
+    });
+
     test('fromJson parses minimal valid JSON without throwing', () {
       final json = JsonFixtures.wrapperResponse(data: []);
       expect(() => ProjectsOverviewModel.fromJson(json), returnsNormally);

@@ -4,6 +4,7 @@ import 'package:project_management/features/workflow_process_details/model/proce
 import '../../../helpers/contract_asserts.dart';
 import '../../../helpers/fixture_reader.dart';
 import '../../../helpers/json_fixtures.dart';
+import '../../../helpers/model_field_asserts.dart';
 
 void main() {
   group('GroupStepsModel', () {
@@ -18,14 +19,22 @@ void main() {
       },
     );
 
-    test('fromJson correctly maps critical fields from fixture', () {
+    test('fromJson correctly maps critical fields from fixture (fails if model key changes)', () {
       expectWrapperContract(fixtureJson, dataShape: DataShape.list);
       final model = GroupStepsModel.fromJson(fixtureJson);
 
-      expect(model.succeeded, isTrue);
-      expect(model.data, isNotEmpty);
-      expect(model.data!.first.groupName, 'Phase 1: Preparation');
-      expect(model.data!.first.steps, isNotEmpty);
+      expect(model.succeeded, isTrue, reason: 'Key "succeeded"');
+      expect(model.data, isNotEmpty, reason: 'Key "data"');
+      final first = model.data!.first;
+      expect(first.steps, isNotEmpty, reason: 'Key "data[].steps"');
+      expectModelFields([
+        (key: 'data[].groupId', actual: first.groupId, expected: 1),
+        (key: 'data[].groupName', actual: first.groupName, expected: 'Phase 1: Preparation'),
+        (key: 'data[].progress', actual: first.progress, expected: 50),
+        (key: 'data[].steps[].id', actual: first.steps!.first.id, expected: 10),
+        (key: 'data[].steps[].stepName', actual: first.steps!.first.stepName, expected: 'Gather Requirements'),
+        (key: 'data[].steps[].status', actual: first.steps!.first.status, expected: 1),
+      ]);
     });
 
     group('Negative Contract Tests', () {
