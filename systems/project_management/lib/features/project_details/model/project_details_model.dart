@@ -83,7 +83,7 @@ class ProjectDetailsModel extends SingleMapper {
         ? DateTime.parse(json['startDate'])
         : null;
     endDate = json['endDate'] != null ? DateTime.parse(json['endDate']) : null;
-    lifeCycleId = json['lifeC'];
+    lifeCycleId = json['lifeCycleId'];
     projectLifeCycle = json['projectLifeCycle'] != null
         ? ProjectLifeCycleModel.fromJson(json['projectLifeCycle'])
         : null;
