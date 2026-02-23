@@ -1,0 +1,159 @@
+SYSTEM ARCHITECTURE CURSOR RULES
+
+You are working inside a modular Flutter architecture called “Systems”.
+
+Strictly follow these architectural constraints when creating or
+modifying any system.
+
+  ---------------------------
+  GLOBAL ARCHITECTURE RULES
+  ---------------------------
+
+1.  Every system MUST be a separate Flutter package inside: systems//
+
+2.  Each system MUST implement SystemModule.
+
+3.  Each system MUST use GetIt.asNewInstance() for dependency isolation.
+
+4.  Systems MUST depend only on:
+
+    -   core_system
+    -   Their own internal files
+
+5.  Direct system-to-system dependency is strictly forbidden.
+
+  -------------------------
+  REQUIRED FILE STRUCTURE
+  -------------------------
+
+systems// │ ├── lib/ │ ├── core/ │ │ ├── di/ │ │ │ └── _locator.dart │ │
+└── module/ │ │ └── _module.dart │ │ │ ├── features/ │ │ └── / │ │ ├──
+bloc/ │ │ ├── data/ │ │ ├── domain/ │ │ ├── model/ │ │ ├── view/ │ │ └──
+widgets/ │ │ │ ├── shared/ │ │ │ └── _layout.dart │ ├── pubspec.yaml └──
+test/
+
+  ------------------------
+  SYSTEM MODULE CONTRACT
+  ------------------------
+
+Each system MUST implement:
+
+class Module implements SystemModule
+
+Required overrides:
+
+-   String get id
+-   String get name
+-   ActiveSystemEnum get system
+-   List get providers
+-   Map<String, RouteFactory> get routes
+-   List get homeSections
+
+The constructor MUST call setupLocator().
+
+  ---------------------------
+  DEPENDENCY ISOLATION RULE
+  ---------------------------
+
+final GetIt Locator = GetIt.asNewInstance();
+
+Never use global GetIt. Never register services outside the system
+locator.
+
+  -------------------------
+  REGISTRATION FLOW RULES
+  -------------------------
+
+1.  Add the system package inside systems/
+2.  Add it to root pubspec.yaml dependencies.
+3.  Register the module inside:
+    lib/app/modules/generated/enabled_modules.dart
+4.  Ensure ActiveSystemEnum includes the new system.
+5.  Verify routes are exposed via ModulesRegistry.
+
+  ----------------------------------------------
+  CI/CD INTEGRATION RULE (Deploy APK Workflow)
+  ----------------------------------------------
+
+When adding a new system, you MUST also update:
+
+.github/workflows/deploy_apk.yml
+
+Required updates:
+
+1.  Add a new workflow_dispatch boolean input: enable_
+
+2.  Update ACTIVE_SYSTEMS builder step: Add conditional block to append
+    system key.
+
+3.  Update enabled_modules.dart generator case block:
+
+    -   Add import mapping
+    -   Add module instantiation mapping
+
+4.  Update DIR_MAP inside “Flutter Test (selected systems)” step:
+    [“”]=“”
+
+5.  Update SYSTEM_PACKAGES map in Tree-Shaking Verification step:
+    [“”]=“package:”
+
+6.  Ensure tree-shaking validation includes the new system.
+
+Failure to update CI/CD workflow will cause: - System not selectable
+during release - Tests not executed - Tree-shaking validation to fail -
+Build pipeline inconsistency
+
+  -------------------------------
+  MINIMAL EMPTY SYSTEM TEMPLATE
+  -------------------------------
+
+pubspec.yaml:
+
+name:
+
+dependencies: flutter: sdk: flutter core_system: path: ../core_system
+get_it: any
+
+------------------------------------------------------------------------
+
+_module.dart:
+
+class Module implements SystemModule {
+
+Module() { setupLocator(); }
+
+@override String get id => ‘’;
+
+@override String get name => ‘’;
+
+@override ActiveSystemEnum get system => ActiveSystemEnum.;
+
+@override List get providers => [];
+
+@override Map<String, RouteFactory> get routes => {};
+
+@override List get homeSections => []; }
+
+------------------------------------------------------------------------
+
+_locator.dart:
+
+final GetIt Locator = GetIt.asNewInstance();
+
+void setupLocator() { // Register services here }
+
+  ----------------------
+  VALIDATION CHECKLIST
+  ----------------------
+
+✔ System folder created ✔ pubspec.yaml configured ✔ Module implements
+SystemModule ✔ Locator uses GetIt.asNewInstance() ✔ Enum updated ✔
+Module registered in enabled_modules.dart ✔ CI/CD workflow updated ✔ No
+cross-system imports
+
+  ------------------------
+  ARCHITECTURE PRINCIPLE
+  ------------------------
+
+The main application must only interact with SystemModule. Feature
+details must remain inside the system package.
