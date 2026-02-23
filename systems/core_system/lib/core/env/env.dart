@@ -2,7 +2,7 @@ import 'package:envied/envied.dart';
 
 part 'env.g.dart';
 
-@Envied(requireEnvFile: false)
+@Envied(path: '../../.env', requireEnvFile: false)
 abstract class Env {
   @EnviedField(varName: 'DOMAIN_PRO', obfuscate: true)
   static final String domainPro = _Env.domainPro;
