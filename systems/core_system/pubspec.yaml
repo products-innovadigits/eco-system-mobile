@@ -9,7 +9,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  # Provider registrations have been removed from core_system (moved to SystemModule pattern).
   
   # Network & HTTP
   dio: ^5.9.1

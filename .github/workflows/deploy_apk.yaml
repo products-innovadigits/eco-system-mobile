@@ -86,19 +86,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pub-
 
-      - name: Verify .env exists
-        shell: bash
-        run: |
-          set -euo pipefail
-          if [ ! -f ".env" ]; then
-            echo "❌ .env not found in repo root."
-            echo "Expected: project_root/.env"
-            exit 1
-          fi
-          echo "✅ .env found."
+      - name: Install Root Dependencies
+        run: flutter pub get
 
-      - name: Apply .env overrides from secrets (optional)
-        shell: bash
+      - name: Install Core Dependencies
+        working-directory: systems/core_system
+        run: flutter pub get
+
+      - name: Generate Envied Code
+        working-directory: systems/core_system
         env:
           DOMAIN_DEV: ${{ secrets.DOMAIN_DEV }}
           DOMAIN_PRO: ${{ secrets.DOMAIN_PRO }}
@@ -110,50 +106,6 @@ jobs:
           GOOGLE_MAPS_BASE_URL: ${{ secrets.GOOGLE_MAPS_BASE_URL }}
           SHARED_PREFERENCES_NAME: ${{ secrets.SHARED_PREFERENCES_NAME }}
           API_KEY: ${{ secrets.API_KEY }}
-        run: |
-          set -euo pipefail
-
-          upsert_env () {
-            local key="$1"
-            local value="$2"
-            if [ -z "${value:-}" ]; then
-              return 0
-            fi
-            local escaped
-            escaped="$(printf '%s' "$value" | sed -e 's/[\/&]/\\&/g')"
-            if grep -qE "^${key}=" .env; then
-              sed -i "s/^${key}=.*/${key}=${escaped}/" .env
-            else
-              echo "${key}=${value}" >> .env
-            fi
-          }
-
-          upsert_env "DOMAIN_DEV" "${DOMAIN_DEV:-}"
-          upsert_env "DOMAIN_PRO" "${DOMAIN_PRO:-}"
-          upsert_env "BASE_URL_PRO" "${BASE_URL_PRO:-}"
-          upsert_env "BASE_URL_DEV" "${BASE_URL_DEV:-}"
-          upsert_env "STRATEGY_BASE_URL_DEV" "${STRATEGY_BASE_URL_DEV:-}"
-          upsert_env "AUTH_BASE_URL_DEV" "${AUTH_BASE_URL_DEV:-}"
-          upsert_env "ATS_BASE_URL_DEV" "${ATS_BASE_URL_DEV:-}"
-          upsert_env "GOOGLE_MAPS_BASE_URL" "${GOOGLE_MAPS_BASE_URL:-}"
-          upsert_env "SHARED_PREFERENCES_NAME" "${SHARED_PREFERENCES_NAME:-}"
-          upsert_env "API_KEY" "${API_KEY:-}"
-
-          echo "✅ Effective .env (safe preview):"
-          grep -E "^(DOMAIN_DEV|DOMAIN_PRO|BASE_URL_PRO|BASE_URL_DEV|STRATEGY_BASE_URL_DEV|AUTH_BASE_URL_DEV|ATS_BASE_URL_DEV|GOOGLE_MAPS_BASE_URL|SHARED_PREFERENCES_NAME)=" .env || true
-          if grep -qE "^API_KEY=" .env; then
-            echo "API_KEY=*** (hidden)"
-          fi
-
-      - name: Install Root Dependencies
-        run: flutter pub get
-
-      - name: Install Core Dependencies
-        working-directory: systems/core_system
-        run: flutter pub get
-
-      - name: Generate Envied Code
-        working-directory: systems/core_system
         run: flutter pub run build_runner build --delete-conflicting-outputs
 
       - name: Set Gradle Heap Size

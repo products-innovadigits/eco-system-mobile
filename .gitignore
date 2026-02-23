@@ -65,5 +65,10 @@ android/app/.cxx/
 **/generated_plugins.cmake
 **/package_config.json
 
+# Environment secrets (use system env vars or local .env for dev)
+.env
+.env.*
+!.env.example
+
 # Generated files
 *.g.dart
