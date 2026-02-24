@@ -130,6 +130,31 @@ jobs:
 
           echo "✅ .env generated from GitHub Secrets (never committed to git)"
 
+      - name: Verify .env values are non-empty
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          MISSING=0
+          while IFS='=' read -r key value; do
+            [[ "$key" =~ ^#.*$ || -z "$key" ]] && continue
+            key="$(echo "$key" | xargs)"
+            value="$(echo "$value" | xargs)"
+            if [ -z "$value" ]; then
+              echo "❌ $key is empty — check GitHub secret"
+              MISSING=$((MISSING + 1))
+            else
+              echo "✅ $key is set (${#value} chars)"
+            fi
+          done < .env
+
+          if [ "$MISSING" -gt 0 ]; then
+            echo ""
+            echo "❌ $MISSING secret(s) missing. Backend requests will fail in the release APK."
+            exit 1
+          fi
+          echo "✅ All .env values verified."
+
       - name: Generate Envied Code
         working-directory: systems/core_system
         run: flutter pub run build_runner build --delete-conflicting-outputs
