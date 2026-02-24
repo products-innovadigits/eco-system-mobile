@@ -1,4 +1,5 @@
 import 'package:core_system/core/modules/system_module.dart';
+import 'package:pms_system/core/module/pms_module.dart';
 import 'package:project_management/core/module/project_management_module.dart';
 
 /// GENERATED FILE - DO NOT EDIT MANUALLY
@@ -8,6 +9,7 @@ List<SystemModule> buildEnabledModules() {
   return [
     // AtsModule(),
     ProjectManagementModule(),
+    PmsModule(),
     // StrategyModule(),
   ];
 }

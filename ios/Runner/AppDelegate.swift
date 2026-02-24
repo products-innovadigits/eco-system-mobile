@@ -1,6 +1,6 @@
 import UIKit
 import Flutter
-import GoogleMaps
+// import GoogleMaps
 import Firebase
 import FirebaseMessaging
 // import app_links
@@ -12,7 +12,7 @@ import FirebaseMessaging
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-    GMSServices.provideAPIKey("AIzaSyDyM8Lfbquk6En-eI4FJs3df-tbjFfICos")
+    // GMSServices.provideAPIKey("AIzaSyDyM8Lfbquk6En-eI4FJs3df-tbjFfICos")
     GeneratedPluginRegistrant.register(with: self)
 // Retrieve the link from parameters
 //         if let url = AppLinks.shared.getLink(launchOptions: launchOptions) {

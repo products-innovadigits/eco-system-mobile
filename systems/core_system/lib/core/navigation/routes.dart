@@ -30,4 +30,5 @@ class Routes {
   static const WORKFLOW_PROCESS_DETAILS = "WORKFLOW_PROCESS_DETAILS";
   static const LATEST_REQUEST = "LATEST_REQUEST";
   static const PDF = "PDF";
+  static const PMS_LAYOUT = "PMS_LAYOUT";
 }

@@ -559,5 +559,6 @@
   "specialized_section": "القسم المختص",
   "specialized_kpi": "المؤشر المختص",
   "specialized_initiative": "المبادرة المختصة",
-  "start_process_first": "يجب بدأ العملية لاتخاذ الإجراءات!"
+  "start_process_first": "يجب بدأ العملية لاتخاذ الإجراءات!",
+  "process_done": "لا يمكن إتخاذ الإجراءات بعد اتمام العملية"
 }

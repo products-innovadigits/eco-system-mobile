@@ -62,18 +62,18 @@ class ActiveSystemEnum extends Enum<String> {
   );
   static const ActiveSystemEnum strategy = ActiveSystemEnum('strategy');
   static const ActiveSystemEnum ats = ActiveSystemEnum('ats');
+  static const ActiveSystemEnum pms = ActiveSystemEnum('pms');
 
   static const List<ActiveSystemEnum> values = [
     projectManagement,
     strategy,
     ats,
+    pms,
   ];
 
   factory ActiveSystemEnum.fromString(String value) {
-    // Backward compatibility: accept legacy 'pms' from API/config
-    final normalized = value == 'pms' ? 'project_management' : value;
     return values.firstWhere(
-      (e) => e.value == normalized,
+      (e) => e.value == value,
       orElse: () => values.first,
     );
   }

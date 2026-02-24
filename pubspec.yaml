@@ -19,6 +19,8 @@ dependencies:
     path: systems/strategy_system
   project_management:
     path: systems/project_management
+  pms_system:
+    path: systems/pms_system
 
   flutter_localizations:
     sdk: flutter
@@ -32,7 +34,7 @@ dependencies:
   smooth_page_indicator: ^1.2.0+3
   app_settings: ^6.1.1
   share_plus: ^10.0.2
-  google_maps_flutter: ^2.10.0
+#  google_maps_flutter: ^2.10.0
   geolocator: ^14.0.1
 #  flutter_native_splash: ^2.4.4
   flutter_animate: ^4.5.2

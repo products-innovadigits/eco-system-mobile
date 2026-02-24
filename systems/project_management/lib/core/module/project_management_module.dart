@@ -91,12 +91,12 @@ class ProjectManagementModule implements SystemModule {
       id: 'project_management',
       order: 20,
       builder: (context) {
-        if (UserBloc.activeSystems.contains(
-          ActiveSystemEnum.projectManagement,
-        )) {
-          return const ProjectManagementSection();
-        }
-        return const SizedBox.shrink();
+        // if (UserBloc.activeSystems.contains(
+        //   ActiveSystemEnum.projectManagement,
+        // )) {
+        return const ProjectManagementSection();
+        // }
+        // return const SizedBox.shrink();
       },
     ),
   ];

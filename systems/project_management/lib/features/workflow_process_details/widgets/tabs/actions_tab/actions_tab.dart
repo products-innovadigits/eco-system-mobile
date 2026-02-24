@@ -33,6 +33,9 @@ class _ActionsTabContent extends StatelessWidget {
     final bool workflowInProgress =
         context.read<ProcessDetailsBloc>().stageDocsData?.workFlowStatus ==
         'InProgress';
+    final bool workflowCompleted =
+        context.read<ProcessDetailsBloc>().stageDocsData?.workFlowStatus ==
+        'Completed';
     return BlocListener<ActionsTabBloc, ActionsTabState>(
       listener: (context, state) {
         // When move to next step is successful, refresh the ProcessDetailsBloc to update nextStep
@@ -84,6 +87,8 @@ class _ActionsTabContent extends StatelessWidget {
                 ],
               ),
             )
+          : workflowCompleted
+          ? EmptyContainer(txt: allTranslations.text(LocaleKeys.process_done))
           : EmptyContainer(
               txt: allTranslations.text(LocaleKeys.start_process_first),
             ),

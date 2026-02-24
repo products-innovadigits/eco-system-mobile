@@ -6,6 +6,7 @@ class SystemHelper {
     ActiveSystemEnum.projectManagement: 'نظام إدارة المشاريع',
     ActiveSystemEnum.strategy: 'نظام الأداء الاستراتيجي',
     ActiveSystemEnum.ats: 'نظام إدارة الموظفين',
+    ActiveSystemEnum.pms: 'نظام PMS',
   };
 
   static const String allSystemsName = 'كل الانظمة';
