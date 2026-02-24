@@ -102,30 +102,14 @@ jobs:
       - name: Generate .env from secrets
         shell: bash
         env:
-          DOMAIN_DEV: ${{ secrets.DOMAIN_DEV }}
-          DOMAIN_PRO: ${{ secrets.DOMAIN_PRO }}
-          BASE_URL_PRO: ${{ secrets.BASE_URL_PRO }}
-          BASE_URL_DEV: ${{ secrets.BASE_URL_DEV }}
           STRATEGY_BASE_URL_DEV: ${{ secrets.STRATEGY_BASE_URL_DEV }}
-          AUTH_BASE_URL_DEV: ${{ secrets.AUTH_BASE_URL_DEV }}
           ATS_BASE_URL_DEV: ${{ secrets.ATS_BASE_URL_DEV }}
-          GOOGLE_MAPS_BASE_URL: ${{ secrets.GOOGLE_MAPS_BASE_URL }}
-          SHARED_PREFERENCES_NAME: ${{ secrets.SHARED_PREFERENCES_NAME }}
-          API_KEY: ${{ secrets.API_KEY }}
         run: |
           set -euo pipefail
 
           cat > .env << EOF
-          DOMAIN_DEV=${DOMAIN_DEV}
-          DOMAIN_PRO=${DOMAIN_PRO}
-          BASE_URL_PRO=${BASE_URL_PRO}
-          BASE_URL_DEV=${BASE_URL_DEV}
           STRATEGY_BASE_URL_DEV=${STRATEGY_BASE_URL_DEV}
-          AUTH_BASE_URL_DEV=${AUTH_BASE_URL_DEV}
           ATS_BASE_URL_DEV=${ATS_BASE_URL_DEV}
-          GOOGLE_MAPS_BASE_URL=${GOOGLE_MAPS_BASE_URL}
-          SHARED_PREFERENCES_NAME=${SHARED_PREFERENCES_NAME}
-          API_KEY=${API_KEY}
           EOF
 
           echo "✅ .env generated from GitHub Secrets (never committed to git)"
