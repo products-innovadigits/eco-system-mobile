@@ -38,7 +38,7 @@ class ProjectReportName extends StatelessWidget {
           SizedBox(width: 16.w),
           if (status.isNotEmpty)
             CustomInfoContainerWidget(
-              color: context.color.secondary,
+              color: LightColor.statusColors(status, isLineProgress: true),
               title: status,
               radius: 16,
             ),
