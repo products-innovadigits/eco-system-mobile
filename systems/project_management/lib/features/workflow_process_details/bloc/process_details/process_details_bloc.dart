@@ -5,7 +5,7 @@ class ProcessDetailsBloc
   final ProcessDetailsRepo repo;
 
   ProcessDetailsBloc({required this.repo})
-      : super(const ProcessDetailsInitial()) {
+    : super(const ProcessDetailsInitial()) {
     on<LoadGroupSteps>(_onLoadGroupSteps);
     on<StartProcess>(_onStartProcess);
     on<SelectProcessTab>(_onSelectProcessTab);
@@ -16,7 +16,9 @@ class ProcessDetailsBloc
   ProcessTabsEnum _selectedTab = ProcessTabsEnum.followProcess;
 
   ProcessTabsEnum get selectedTab => _selectedTab;
+
   GroupStepsModel? get getGroupStepsModel => _groupStepsData;
+
   StageDocData? get stageDocsData => _stageDocsData;
 
   Future<void> _onLoadGroupSteps(
@@ -64,7 +66,15 @@ class ProcessDetailsBloc
         processId: event.processId,
       );
       emit(const ProcessStarted());
-      add(LoadGroupSteps(projectId: event.projectId, processId: event.processId));
+      // Create/Fetch docs for the new step before signaling success
+      await repo.getCurrentStepDocs(
+        projectId: event.projectId,
+        processId: event.processId,
+        projectStepId: _stageDocsData?.currentStep?.id ?? 0,
+      );
+      add(
+        LoadGroupSteps(projectId: event.projectId, processId: event.processId),
+      );
     } catch (e) {
       emit(const ProcessStartFailure());
     }
