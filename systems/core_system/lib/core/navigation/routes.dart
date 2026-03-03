@@ -31,4 +31,7 @@ class Routes {
   static const LATEST_REQUEST = "LATEST_REQUEST";
   static const PDF = "PDF";
   static const PMS_LAYOUT = "PMS_LAYOUT";
+  static const CYCLES = "CYCLES";
+  static const CYCLE_REVIEW = "CYCLE_REVIEW";
+  static const EMPLOYEES_LEARNING = "EMPLOYEES_LEARNING";
 }

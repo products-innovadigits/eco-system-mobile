@@ -1,10 +1,34 @@
 import 'package:get_it/get_it.dart';
 import 'package:pms_system/core/utility/pms_exports.dart';
+import 'package:pms_system/features/cycle_review/data/cycle_review_repo_impl.dart';
+import 'package:pms_system/features/cycle_review/domain/cycle_review_repo.dart';
+import 'package:pms_system/features/cycles/data/cycles_repo_impl.dart';
+import 'package:pms_system/features/cycles/domain/cycles_repo.dart';
+import 'package:pms_system/features/employees_learning/data/employees_learning_repo_impl.dart';
+import 'package:pms_system/features/employees_learning/domain/employees_learning_repo.dart';
 
 final GetIt pmsSl = GetIt.asNewInstance();
 
 void setupPmsLocator() {
   if (!pmsSl.isRegistered<Network>()) {
     pmsSl.registerLazySingleton<Network>(() => Network());
+  }
+
+  if (!pmsSl.isRegistered<CyclesRepo>()) {
+    pmsSl.registerLazySingleton<CyclesRepo>(
+      () => CyclesRepoImpl(network: pmsSl()),
+    );
+  }
+
+  if (!pmsSl.isRegistered<CycleReviewRepo>()) {
+    pmsSl.registerLazySingleton<CycleReviewRepo>(
+      () => CycleReviewRepoImpl(network: pmsSl()),
+    );
+  }
+
+  if (!pmsSl.isRegistered<EmployeesLearningRepo>()) {
+    pmsSl.registerLazySingleton<EmployeesLearningRepo>(
+      () => EmployeesLearningRepoImpl(network: pmsSl()),
+    );
   }
 }

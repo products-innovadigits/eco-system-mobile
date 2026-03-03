@@ -58,7 +58,7 @@ class LightColor {
       case "InProgress":
         return LightColor.secondary;
       case "Upcoming":
-        return LightColor.greyLight;
+        return LightColor.grey;
       case "Delayed":
         return LightColor.warning;
       default:
