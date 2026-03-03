@@ -51,6 +51,21 @@ class LightColor {
     }
   }
 
+  static Color projectStatusColors(String value) {
+    switch (value) {
+      case "Completed":
+        return LightColor.tertiary;
+      case "InProgress":
+        return LightColor.secondary;
+      case "Upcoming":
+        return LightColor.greyLight;
+      case "Delayed":
+        return LightColor.warning;
+      default:
+        return LightColor.secondary;
+    }
+  }
+
   static Color strategicTypeColors(String value) {
     switch (value) {
       case "تشغيلي":

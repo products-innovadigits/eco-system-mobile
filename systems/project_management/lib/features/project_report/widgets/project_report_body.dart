@@ -18,7 +18,7 @@ class ProjectReportBody extends StatelessWidget {
           if (model.details?.projectName != null)
             ProjectReportName(
               name: model.details?.projectName ?? '',
-              status: model.statusAr ?? '',
+              status: model.status ?? '',
             ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),

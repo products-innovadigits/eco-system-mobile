@@ -1,4 +1,5 @@
 import 'package:project_management/core/utility/project_management_exports.dart';
+import 'package:project_management/core/utility/project_management_utility.dart';
 
 class ProjectCardContent extends StatelessWidget {
   const ProjectCardContent({
@@ -7,7 +8,7 @@ class ProjectCardContent extends StatelessWidget {
     this.isDetails = false,
   });
 
-  final ProjectDetailsModel project;
+  final ProjectDetailsDataModel project;
   final bool isDetails;
 
   @override
@@ -89,11 +90,10 @@ class ProjectCardContent extends StatelessWidget {
               ),
               if (project.statusAr != null && isDetails)
                 CustomInfoContainerWidget(
-                  color: LightColor.statusColors(
-                    project.statusAr ?? '',
-                    isLineProgress: true,
+                  color: LightColor.projectStatusColors(project.status ?? ''),
+                  title: ProjectManagementUtility.projectStatusText(
+                    project.status ?? '',
                   ),
-                  title: project.statusAr ?? '',
                   radius: 16,
                 ),
             ],
@@ -176,7 +176,7 @@ class _RiskPriorityWidget extends StatelessWidget {
 }
 
 class _ActivitiesProgressSection extends StatelessWidget {
-  final ProjectDetailsModel project;
+  final ProjectDetailsDataModel project;
 
   const _ActivitiesProgressSection({required this.project});
 

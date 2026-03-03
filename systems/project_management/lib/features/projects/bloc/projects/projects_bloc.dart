@@ -37,7 +37,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
   }
 
   SearchEngine _engine = SearchEngine();
-  final List<ProjectDetailsModel> _projects = [];
+  final List<ProjectDetailsDataModel> _projects = [];
   String _searchKeyword = '';
   bool _isLoadingMore = false;
 

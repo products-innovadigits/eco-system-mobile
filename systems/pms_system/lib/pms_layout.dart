@@ -1,8 +1,9 @@
 import 'package:core_system/core/helpers/font_sizes.dart';
 import 'package:core_system/core/utility/export.dart';
 import 'package:core_system/core/widgets/nav_app.dart';
-import 'package:pms_system/pms_home/view/pms_home_view.dart';
 import 'package:pms_system/shared/components/pms_system_switcher.dart';
+
+import 'features/pms_home/view/pms_home_view.dart';
 
 class PmsLayout extends StatefulWidget {
   final int index;

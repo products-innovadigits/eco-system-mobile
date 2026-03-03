@@ -1,11 +1,11 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:core_system/core/network/error/network_exception.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:project_management/features/project_details/bloc/project_details/project_details_bloc.dart';
 import 'package:project_management/features/project_details/bloc/project_details/project_details_events.dart';
 import 'package:project_management/features/project_details/bloc/project_details/project_details_state.dart';
+import 'package:project_management/features/project_details/model/project_details_model.dart';
 
 import '../../../../core/mocks/fallbacks.dart';
 import '../../../../core/mocks/mock_repos.dart';
@@ -32,12 +32,12 @@ void main() {
         'emits [ProjectDetailsLoading, ProjectDetailsLoaded] when repo returns success response',
         build: () {
           when(() => mockRepo.getProjectDetails(any())).thenAnswer(
-            (_) async => Response(
-              requestOptions: RequestOptions(path: ''),
-              statusCode: 200,
-              data: {
-                'data': {'id': 1, 'title': 'Test Project'},
-              },
+            (_) async => ProjectDetailsModel(
+              succeeded: true,
+              data: ProjectDetailsDataModel(
+                id: 1,
+                title: 'Test Project',
+              ),
             ),
           );
           return bloc;
@@ -50,6 +50,24 @@ void main() {
         verify: (_) {
           verify(() => mockRepo.getProjectDetails(1)).called(1);
         },
+      );
+
+      blocTest<ProjectDetailsBloc, ProjectDetailsState>(
+        'emits [ProjectDetailsLoading, ProjectDetailsFailure] when repo returns succeeded=false',
+        build: () {
+          when(() => mockRepo.getProjectDetails(any())).thenAnswer(
+            (_) async => ProjectDetailsModel(
+              succeeded: false,
+              data: null,
+            ),
+          );
+          return bloc;
+        },
+        act: (bloc) => bloc.add(const LoadProjectDetails(projectId: 1)),
+        expect: () => [
+          const ProjectDetailsLoading(),
+          isA<ProjectDetailsFailure>(),
+        ],
       );
 
       blocTest<ProjectDetailsBloc, ProjectDetailsState>(

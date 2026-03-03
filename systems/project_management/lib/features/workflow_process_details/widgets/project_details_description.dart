@@ -3,7 +3,7 @@ import 'package:project_management/core/utility/project_management_exports.dart'
 class ProjectDetailsDescription extends StatelessWidget {
   const ProjectDetailsDescription({super.key, required this.model});
 
-  final ProjectDetailsModel model;
+  final ProjectDetailsDataModel model;
 
   @override
   Widget build(BuildContext context) {

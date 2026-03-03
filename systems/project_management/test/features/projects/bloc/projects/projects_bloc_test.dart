@@ -35,7 +35,7 @@ void main() {
             (_) async => ProjectsModel(
               succeeded: true,
               data: ProjectsDataModel(
-                items: [ProjectDetailsModel(id: 1, title: 'Test Project')],
+                items: [ProjectDetailsDataModel(id: 1, title: 'Test Project')],
                 currentPage: 1,
                 totalPages: 1,
                 totalCount: 1,
@@ -109,7 +109,7 @@ void main() {
             (_) async => ProjectsModel(
               succeeded: true,
               data: ProjectsDataModel(
-                items: [ProjectDetailsModel(id: 1)],
+                items: [ProjectDetailsDataModel(id: 1)],
                 currentPage: 1,
                 totalPages: 2,
                 totalCount: 10,
@@ -142,7 +142,7 @@ void main() {
             (_) async => ProjectsModel(
               succeeded: true,
               data: ProjectsDataModel(
-                items: [ProjectDetailsModel(id: 1)],
+                items: [ProjectDetailsDataModel(id: 1)],
                 currentPage: 1,
                 totalPages: 1,
                 totalCount: 1,

@@ -1,6 +1,7 @@
 import 'package:core_system/core/config/api_names.dart';
 import 'package:core_system/core/network/network_layer.dart';
 import 'package:project_management/features/project_details/domain/repositories/project_details_repo.dart';
+import 'package:project_management/features/project_details/model/project_details_model.dart';
 import 'package:project_management/features/project_management_home/model/kpis_initiatives_progress_model.dart';
 
 class ProjectDetailsRepoImpl implements ProjectDetailsRepo {
@@ -9,11 +10,13 @@ class ProjectDetailsRepoImpl implements ProjectDetailsRepo {
   ProjectDetailsRepoImpl({required this.network});
 
   @override
-  Future<dynamic> getProjectDetails(int id) async {
-    return await network.requestOrThrow(
+  Future<ProjectDetailsModel> getProjectDetails(int id) async {
+    final res = await network.requestOrThrow(
       ApiNames.projectDetails(id),
       method: ServerMethods.GET,
+      model: ProjectDetailsModel(),
     );
+    return res;
   }
 
   @override

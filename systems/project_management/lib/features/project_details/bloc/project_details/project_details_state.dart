@@ -17,7 +17,7 @@ class ProjectDetailsLoading extends ProjectDetailsState {
 
 /// Project details loaded successfully
 class ProjectDetailsLoaded extends ProjectDetailsState {
-  final ProjectDetailsModel projectDetails;
+  final ProjectDetailsDataModel projectDetails;
 
   const ProjectDetailsLoaded({required this.projectDetails});
 }

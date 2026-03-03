@@ -1,4 +1,5 @@
 import 'package:pms_system/core/utility/pms_exports.dart';
+import 'package:pms_system/features/pms_home/widgets/cycles_summary_card.dart';
 
 class PmsHomeView extends StatelessWidget {
   const PmsHomeView({super.key});
@@ -21,19 +22,17 @@ class PmsHomeBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 150, left: 16.w, right: 16.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 20.h),
-          Center(
-            child: Text(
-              'PMS Home',
-              style: context.textTheme.headlineMedium,
-            ),
-          ),
-        ],
+    return SafeArea(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        child: Column(
+          spacing: 16.h,
+          children: [
+            SizedBox(height: 80.h),
+            const CyclesSummaryCard(),
+            SizedBox(height: 16.h),
+          ],
+        ),
       ),
     );
   }

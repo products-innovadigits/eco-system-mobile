@@ -12,10 +12,9 @@ class ProjectDetailsBloc
   }
 
   ProjectDetailsEnum selectedTab = ProjectDetailsEnum.mainInfo;
-  ProjectDetailsModel? _cachedModel;
+  ProjectDetailsDataModel? _cachedModel;
   List<MilestoneModel>? _cachedMilestonesList;
 
-  // Getter to access cached milestones
   List<MilestoneModel>? get cachedMilestones => _cachedMilestonesList;
 
   Future<void> _onLoadProjectDetails(
@@ -25,16 +24,11 @@ class ProjectDetailsBloc
     try {
       emit(const ProjectDetailsLoading());
 
-      Response res = await repo.getProjectDetails(event.projectId);
+      ProjectDetailsModel res = await repo.getProjectDetails(event.projectId);
 
-      if (res.statusCode == 200 &&
-          res.data != null &&
-          res.data["data"] != null) {
-        ProjectDetailsModel model = ProjectDetailsModel.fromJson(
-          res.data["data"],
-        );
-        _cachedModel = model; // Cache the model
-        emit(ProjectDetailsLoaded(projectDetails: model));
+      if (res.succeeded == true && res.data != null) {
+        _cachedModel = res.data;
+        emit(ProjectDetailsLoaded(projectDetails: res.data!));
       } else {
         emit(
           const ProjectDetailsFailure(

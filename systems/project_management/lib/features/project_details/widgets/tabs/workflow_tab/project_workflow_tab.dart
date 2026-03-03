@@ -1,7 +1,7 @@
 import 'package:project_management/core/utility/project_management_exports.dart';
 
 class ProjectWorkflowTab extends StatelessWidget {
-  final ProjectDetailsModel projectDetailsModel;
+  final ProjectDetailsDataModel projectDetailsModel;
 
   const ProjectWorkflowTab({super.key, required this.projectDetailsModel});
 

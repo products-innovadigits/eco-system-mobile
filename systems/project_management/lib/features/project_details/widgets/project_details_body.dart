@@ -39,7 +39,7 @@ class ProjectDetailsBody extends StatelessWidget {
 }
 
 class _ProjectBody extends StatelessWidget {
-  final ProjectDetailsModel model;
+  final ProjectDetailsDataModel model;
   final ProjectDetailsEnum selectedTab;
 
   const _ProjectBody({required this.model, required this.selectedTab});
@@ -68,7 +68,7 @@ class _ProjectBody extends StatelessWidget {
 
 Widget _getTabSection(
   ProjectDetailsEnum selectedTab,
-  ProjectDetailsModel model,
+  ProjectDetailsDataModel model,
 ) {
   return switch (selectedTab) {
     ProjectDetailsEnum.mainInfo => ProjectMainInfoTab(

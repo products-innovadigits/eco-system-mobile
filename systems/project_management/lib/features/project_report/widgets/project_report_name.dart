@@ -1,5 +1,7 @@
 import 'package:project_management/core/utility/project_management_exports.dart';
 
+import '../../../core/utility/project_management_utility.dart';
+
 class ProjectReportName extends StatelessWidget {
   final String name;
   final String status;
@@ -38,8 +40,8 @@ class ProjectReportName extends StatelessWidget {
           SizedBox(width: 16.w),
           if (status.isNotEmpty)
             CustomInfoContainerWidget(
-              color: LightColor.statusColors(status, isLineProgress: true),
-              title: status,
+              color: LightColor.projectStatusColors(status),
+              title: ProjectManagementUtility.projectStatusText(status),
               radius: 16,
             ),
         ],

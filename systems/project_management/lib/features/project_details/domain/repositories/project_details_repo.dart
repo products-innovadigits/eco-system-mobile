@@ -1,7 +1,7 @@
-import 'package:project_management/features/project_management_home/model/kpis_initiatives_progress_model.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
 
 abstract class ProjectDetailsRepo {
-  Future<dynamic> getProjectDetails(int id);
+  Future<ProjectDetailsModel> getProjectDetails(int id);
   Future<dynamic> getProjectGeneralProgressSummary(
     int id, {
     ChartTime chartType = ChartTime.monthly,

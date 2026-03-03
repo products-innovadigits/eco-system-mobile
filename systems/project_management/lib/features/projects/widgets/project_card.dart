@@ -3,7 +3,7 @@ import 'package:project_management/core/utility/project_management_exports.dart'
 class ProjectCard extends StatelessWidget {
   const ProjectCard({super.key, required this.project});
 
-  final ProjectDetailsModel project;
+  final ProjectDetailsDataModel project;
 
   @override
   Widget build(BuildContext context) {

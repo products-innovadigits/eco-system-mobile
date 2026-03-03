@@ -1,6 +1,46 @@
 import 'package:project_management/core/utility/project_management_exports.dart';
 
 class ProjectDetailsModel extends SingleMapper {
+  bool? succeeded;
+  ProjectDetailsDataModel? data;
+  dynamic warningErrors;
+  List<dynamic>? validationErrors;
+
+  ProjectDetailsModel({
+    this.succeeded,
+    this.data,
+    this.warningErrors,
+    this.validationErrors,
+  });
+
+  ProjectDetailsModel.fromJson(Map<String, dynamic> json) {
+    succeeded = json['succeeded'];
+    data = json['data'] != null
+        ? ProjectDetailsDataModel.fromJson(json['data'])
+        : null;
+    warningErrors = json['warningErrors'];
+    validationErrors = json['validationErrors'] != null
+        ? List<dynamic>.from(json['validationErrors'])
+        : null;
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> result = <String, dynamic>{};
+    result['succeeded'] = succeeded;
+    if (data != null) result['data'] = data!.toJson();
+    result['warningErrors'] = warningErrors;
+    if (validationErrors != null) result['validationErrors'] = validationErrors;
+    return result;
+  }
+
+  @override
+  Mapper fromJson(Map<String, dynamic> json) {
+    return ProjectDetailsModel.fromJson(json);
+  }
+}
+
+class ProjectDetailsDataModel {
   int? id;
   String? title;
   String? riskLevelName;
@@ -13,7 +53,7 @@ class ProjectDetailsModel extends SingleMapper {
   int? projectCategoryId;
   num? budget;
   double? weight;
-  double? progressRatio; // changed to double?
+  double? progressRatio;
   List<String>? teamIds;
   SectionDepartmentModel? sectionDepartment;
   List<TeamModel>? teamName;
@@ -22,8 +62,10 @@ class ProjectDetailsModel extends SingleMapper {
   String? managerId;
   String? status;
   String? statusAr;
+  String? statusEn;
   String? managerName;
   String? periortyLevelName;
+  String? priorityLevelName;
   String? projectCategoryName;
   int? priorityLevelId;
   int? riskLevelId;
@@ -35,8 +77,18 @@ class ProjectDetailsModel extends SingleMapper {
   String? updatedBy;
   String? updatedAt;
   MobileDetailsModel? mobileDetails;
+  int? sectionDepartmentId;
+  dynamic archivedBy;
+  dynamic dateArchiving;
+  List<dynamic>? projectComments;
+  List<SavedDocumentModel>? savedDocuments;
+  List<dynamic>? risks;
+  List<dynamic>? challenges;
+  List<ProjectOutputModel>? outputs;
+  dynamic sortOption;
+  int? daysLeft;
 
-  ProjectDetailsModel({
+  ProjectDetailsDataModel({
     this.id,
     this.title,
     this.description,
@@ -53,11 +105,13 @@ class ProjectDetailsModel extends SingleMapper {
     this.sectionDepartment,
     this.teamName,
     this.periortyLevelName,
+    this.priorityLevelName,
     this.implementorDepartmentId,
     this.implementorDepartmentName,
     this.managerId,
     this.status,
     this.statusAr,
+    this.statusEn,
     this.progressRatio,
     this.managerName,
     this.projectCategoryName,
@@ -71,9 +125,19 @@ class ProjectDetailsModel extends SingleMapper {
     this.updatedBy,
     this.updatedAt,
     this.mobileDetails,
+    this.sectionDepartmentId,
+    this.archivedBy,
+    this.dateArchiving,
+    this.projectComments,
+    this.savedDocuments,
+    this.risks,
+    this.challenges,
+    this.outputs,
+    this.sortOption,
+    this.daysLeft,
   });
 
-  ProjectDetailsModel.fromJson(Map<String, dynamic> json) {
+  ProjectDetailsDataModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'] ?? json['name'];
     description = json['description'];
@@ -90,10 +154,11 @@ class ProjectDetailsModel extends SingleMapper {
     projectCategoryId = json['projectCategoryId'];
     weight = (json['weight'] as num?)?.toDouble();
     budget = json['budget'];
-    progressRatio = (json['progressRation'] as num?)?.toDouble(); // safe cast
+    progressRatio = (json['progressRation'] as num?)?.toDouble();
     teamIds = json['teamIds'] != null
         ? List<String>.from(json['teamIds'])
         : null;
+    sectionDepartmentId = json['sectionDepartmentId'];
     sectionDepartment = json['sectionDepartment'] != null
         ? SectionDepartmentModel.fromJson(json['sectionDepartment'])
         : null;
@@ -110,12 +175,17 @@ class ProjectDetailsModel extends SingleMapper {
     managerId = json['managerId'];
     status = json['status'];
     statusAr = json['statusAr'];
+    statusEn = json['statusEn'];
     managerName = json['managerName'];
     periortyLevelName = json['periortyLevelName'];
+    priorityLevelName = json['priorityLevelName'];
     projectCategoryName = json['projectCategoryName'];
     priorityLevelId = json['periortyLevelId'];
     riskLevelId = json['riskLevelId'];
     outputCount = json['outputCount'];
+    archivedBy = json['archivedBy'];
+    dateArchiving = json['dateArchiving'];
+    sortOption = json['sortOption'];
     createdBy = json['createdBy'];
     createdAt = json['createdAt'];
     updatedBy = json['updatedBy'];
@@ -123,9 +193,38 @@ class ProjectDetailsModel extends SingleMapper {
     mobileDetails = json['mobileDetails'] != null
         ? MobileDetailsModel.fromJson(json['mobileDetails'])
         : null;
+
+    projectComments = json['projectComments'] != null
+        ? List<dynamic>.from(json['projectComments'])
+        : null;
+
+    if (json['savedDocuments'] != null) {
+      savedDocuments = <SavedDocumentModel>[];
+      json['savedDocuments'].forEach((v) {
+        savedDocuments!.add(SavedDocumentModel.fromJson(v));
+      });
+    }
+
+    risks = json['risks'] != null
+        ? List<dynamic>.from(json['risks'])
+        : null;
+
+    challenges = json['challenges'] != null
+        ? List<dynamic>.from(json['challenges'])
+        : null;
+
+    if (json['outputs'] != null) {
+      outputs = <ProjectOutputModel>[];
+      json['outputs'].forEach((v) {
+        outputs!.add(ProjectOutputModel.fromJson(v));
+      });
+    }
+
+    daysLeft = json['mobileDetails'] != null
+        ? json['mobileDetails']['daysLeft']
+        : null;
   }
 
-  @override
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
@@ -133,8 +232,8 @@ class ProjectDetailsModel extends SingleMapper {
     data['riskLevelName'] = riskLevelName;
     data['deliveredOutputs'] = deliveredOutputs;
     data['description'] = description;
-    data['startDate'] = startDate;
-    data['endDate'] = endDate;
+    data['startDate'] = startDate?.toIso8601String();
+    data['endDate'] = endDate?.toIso8601String();
     data['lifeCycleId'] = lifeCycleId;
     if (projectLifeCycle != null) {
       data['projectLifeCycle'] = projectLifeCycle!.toJson();
@@ -143,6 +242,7 @@ class ProjectDetailsModel extends SingleMapper {
     data['weight'] = weight;
     data['budget'] = budget;
     data['teamIds'] = teamIds;
+    data['sectionDepartmentId'] = sectionDepartmentId;
     data['sectionDepartment'] = sectionDepartment?.toJson();
     if (teamName != null) {
       data['teamName'] = teamName!.map((v) => v.toJson()).toList();
@@ -152,24 +252,33 @@ class ProjectDetailsModel extends SingleMapper {
     data['managerId'] = managerId;
     data['status'] = status;
     data['statusAr'] = statusAr;
+    data['statusEn'] = statusEn;
     data['progressRation'] = progressRatio;
     data['managerName'] = managerName;
     data['periortyLevelName'] = periortyLevelName;
+    data['priorityLevelName'] = priorityLevelName;
     data['projectCategoryName'] = projectCategoryName;
     data['periortyLevelId'] = priorityLevelId;
     data['riskLevelId'] = riskLevelId;
     data['outputCount'] = outputCount;
+    data['archivedBy'] = archivedBy;
+    data['dateArchiving'] = dateArchiving;
+    data['sortOption'] = sortOption;
+    data['projectComments'] = projectComments;
     data['createdBy'] = createdBy;
     data['createdAt'] = createdAt;
     data['updatedBy'] = updatedBy;
     data['updatedAt'] = updatedAt;
     data['mobileDetails'] = mobileDetails?.toJson();
+    if (savedDocuments != null) {
+      data['savedDocuments'] = savedDocuments!.map((v) => v.toJson()).toList();
+    }
+    data['risks'] = risks;
+    data['challenges'] = challenges;
+    if (outputs != null) {
+      data['outputs'] = outputs!.map((v) => v.toJson()).toList();
+    }
     return data;
-  }
-
-  @override
-  Mapper fromJson(Map<String, dynamic> json) {
-    return ProjectDetailsModel.fromJson(json);
   }
 }
 
@@ -533,29 +642,33 @@ class MobileBudgetModel {
 class MobileBudgetTotalsModel {
   double? approved;
   double? spent;
+  double? penalties;
+  double? spentWithPenalties;
   double? remaining;
-  double? variance;
 
   MobileBudgetTotalsModel({
     this.approved,
     this.spent,
+    this.penalties,
+    this.spentWithPenalties,
     this.remaining,
-    this.variance,
   });
 
   MobileBudgetTotalsModel.fromJson(Map<String, dynamic> json) {
     approved = (json['approved'] as num?)?.toDouble();
     spent = (json['spent'] as num?)?.toDouble();
+    penalties = (json['penalties'] as num?)?.toDouble();
+    spentWithPenalties = (json['spentWithPenalties'] as num?)?.toDouble();
     remaining = (json['remaining'] as num?)?.toDouble();
-    variance = (json['variance'] as num?)?.toDouble();
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['approved'] = approved;
     data['spent'] = spent;
+    data['penalties'] = penalties;
+    data['spentWithPenalties'] = spentWithPenalties;
     data['remaining'] = remaining;
-    data['variance'] = variance;
     return data;
   }
 }
@@ -830,5 +943,169 @@ class MobileRiskModel {
     data['value'] = value;
     data['background'] = background;
     return data;
+  }
+}
+
+class ProjectOutputModel {
+  int? id;
+  String? title;
+  String? description;
+  String? filePath;
+  int? projectId;
+  bool? isDelivered;
+  int? workflowId;
+  bool? isRuningWorkflow;
+  bool? isCompletedWorkflow;
+  String? updatedAt;
+  String? createdAt;
+  String? deliveredAt;
+  bool? isHavepenalty;
+  dynamic penaltyValue;
+
+  ProjectOutputModel({
+    this.id,
+    this.title,
+    this.description,
+    this.filePath,
+    this.projectId,
+    this.isDelivered,
+    this.workflowId,
+    this.isRuningWorkflow,
+    this.isCompletedWorkflow,
+    this.updatedAt,
+    this.createdAt,
+    this.deliveredAt,
+    this.isHavepenalty,
+    this.penaltyValue,
+  });
+
+  ProjectOutputModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+    description = json['description'];
+    filePath = json['filePath'];
+    projectId = json['projectId'];
+    isDelivered = json['isDelivered'];
+    workflowId = json['workflowId'];
+    isRuningWorkflow = json['isRuningWorkflow'];
+    isCompletedWorkflow = json['isCompletedWorkflow'];
+    updatedAt = json['updatedAt'];
+    createdAt = json['createdAt'];
+    deliveredAt = json['deliveredAt'];
+    isHavepenalty = json['isHavepenalty'];
+    penaltyValue = json['penaltyValue'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['description'] = description;
+    data['filePath'] = filePath;
+    data['projectId'] = projectId;
+    data['isDelivered'] = isDelivered;
+    data['workflowId'] = workflowId;
+    data['isRuningWorkflow'] = isRuningWorkflow;
+    data['isCompletedWorkflow'] = isCompletedWorkflow;
+    data['updatedAt'] = updatedAt;
+    data['createdAt'] = createdAt;
+    data['deliveredAt'] = deliveredAt;
+    data['isHavepenalty'] = isHavepenalty;
+    data['penaltyValue'] = penaltyValue;
+    return data;
+  }
+}
+
+class SavedDocumentModel {
+  int? id;
+  int? projectId;
+  int? processId;
+  int? stepDocumentId;
+  String? data;
+  DocumentItemModel? document;
+
+  SavedDocumentModel({
+    this.id,
+    this.projectId,
+    this.processId,
+    this.stepDocumentId,
+    this.data,
+    this.document,
+  });
+
+  SavedDocumentModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    projectId = json['projectId'];
+    processId = json['processId'];
+    stepDocumentId = json['stepDocumentId'];
+    data = json['data']?.toString();
+    document = json['document'] != null
+        ? DocumentItemModel.fromJson(json['document'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> result = <String, dynamic>{};
+    result['id'] = id;
+    result['projectId'] = projectId;
+    result['processId'] = processId;
+    result['stepDocumentId'] = stepDocumentId;
+    result['data'] = data;
+    result['document'] = document?.toJson();
+    return result;
+  }
+}
+
+class DocumentItemModel {
+  int? id;
+  int? stepDocumentId;
+  int? documentCopyId;
+  String? documentTitle;
+  bool? isActive;
+  String? symbol;
+  dynamic data;
+  String? updatedBy;
+  String? updatedAt;
+  dynamic exportUrl;
+
+  DocumentItemModel({
+    this.id,
+    this.stepDocumentId,
+    this.documentCopyId,
+    this.documentTitle,
+    this.isActive,
+    this.symbol,
+    this.data,
+    this.updatedBy,
+    this.updatedAt,
+    this.exportUrl,
+  });
+
+  DocumentItemModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    stepDocumentId = json['stepDocumentId'];
+    documentCopyId = json['documentCopyId'];
+    documentTitle = json['documentTitle'];
+    isActive = json['isActive'];
+    symbol = json['symbol'];
+    data = json['data'];
+    updatedBy = json['updatedBy'];
+    updatedAt = json['updatedAt'];
+    exportUrl = json['exportUrl'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> result = <String, dynamic>{};
+    result['id'] = id;
+    result['stepDocumentId'] = stepDocumentId;
+    result['documentCopyId'] = documentCopyId;
+    result['documentTitle'] = documentTitle;
+    result['isActive'] = isActive;
+    result['symbol'] = symbol;
+    result['data'] = data;
+    result['updatedBy'] = updatedBy;
+    result['updatedAt'] = updatedAt;
+    result['exportUrl'] = exportUrl;
+    return result;
   }
 }

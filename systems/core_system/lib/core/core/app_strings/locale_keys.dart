@@ -333,6 +333,7 @@ abstract class  LocaleKeys {
   static const not_completed = 'not_completed';
   static const advanced = 'advanced';
   static const late = 'late';
+  static const upcoming = 'upcoming';
   static const filtration = 'filtration';
   static const strategic_axis = 'strategic_axis';
   static const available_jobs = 'available_jobs';
@@ -561,5 +562,10 @@ abstract class  LocaleKeys {
   static const specialized_initiative = 'specialized_initiative';
   static const start_process_first = 'start_process_first';
   static const process_done = 'process_done';
+  static const cycles_summary = 'cycles_summary';
+  static const view_all_cycles = 'view_all_cycles';
+  static const active_cycles = 'active_cycles';
+  static const overdue = 'overdue';
+  static const enter_system = 'enter_system';
 
 }

@@ -17,7 +17,7 @@ class ProjectsLoading extends ProjectsState {
 
 /// Successfully loaded projects
 class ProjectsLoaded extends ProjectsState {
-  final List<ProjectDetailsModel> projects;
+  final List<ProjectDetailsDataModel> projects;
   final bool isLoadingMore;
   final int currentPage;
   final int totalPages;
@@ -32,7 +32,7 @@ class ProjectsLoaded extends ProjectsState {
   });
 
   ProjectsLoaded copyWith({
-    List<ProjectDetailsModel>? projects,
+    List<ProjectDetailsDataModel>? projects,
     bool? isLoadingMore,
     int? currentPage,
     int? totalPages,

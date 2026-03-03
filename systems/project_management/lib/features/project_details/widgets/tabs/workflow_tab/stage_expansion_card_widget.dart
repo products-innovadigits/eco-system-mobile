@@ -1,7 +1,7 @@
 import 'package:project_management/core/utility/project_management_exports.dart';
 
 class StageExpansionCardWidget extends StatelessWidget {
-  final ProjectDetailsModel projectDetailsModel;
+  final ProjectDetailsDataModel projectDetailsModel;
   final int index;
 
   const StageExpansionCardWidget({

@@ -45,7 +45,7 @@ class ProjectsModel extends SingleMapper {
 }
 
 class ProjectsDataModel {
-  List<ProjectDetailsModel>? items;
+  List<ProjectDetailsDataModel>? items;
   int? currentPage;
   int? pageSize;
   int? totalPages;
@@ -67,9 +67,9 @@ class ProjectsDataModel {
 
   ProjectsDataModel.fromJson(Map<String, dynamic> json) {
     if (json['items'] != null) {
-      items = <ProjectDetailsModel>[];
+      items = <ProjectDetailsDataModel>[];
       json['items'].forEach((v) {
-        items!.add(ProjectDetailsModel.fromJson(v));
+        items!.add(ProjectDetailsDataModel.fromJson(v));
       });
     }
     currentPage = json['currentPage'];

@@ -334,6 +334,7 @@
   "not_completed": "غير مكتمل",
   "advanced": "متقدم",
   "late": "متأخر",
+  "upcoming": "قادم",
   "filtration": "تصفية النتائج",
   "available_jobs": "الوظائف المتاحة",
   "talent_pool": "مجموعة المواهب",
@@ -560,5 +561,10 @@
   "specialized_kpi": "المؤشر المختص",
   "specialized_initiative": "المبادرة المختصة",
   "start_process_first": "يجب بدأ العملية لاتخاذ الإجراءات!",
-  "process_done": "لا يمكن إتخاذ الإجراءات بعد اتمام العملية"
+  "process_done": "لا يمكن إتخاذ الإجراءات بعد اتمام العملية",
+  "cycles_summary": "ملخص الدورات",
+  "view_all_cycles": "عرض كل الدورات",
+  "active_cycles": "الدورات النشطة",
+  "overdue": "متأخر",
+  "enter_system": "ادخل النظام"
 }
