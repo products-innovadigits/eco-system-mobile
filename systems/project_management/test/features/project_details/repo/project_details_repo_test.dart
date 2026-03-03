@@ -22,9 +22,12 @@ void main() {
   group('ProjectDetailsRepoImpl', () {
     group('getProjectDetails', () {
       test(
-        'returns dynamic on success with correct endpoint and method',
+        'returns ProjectDetailsModel on success with correct endpoint and method',
         () async {
-          final expectedData = {'id': 1, 'title': 'Test Project'};
+          final expectedModel = ProjectDetailsModel(
+            succeeded: true,
+            data: ProjectDetailsDataModel(id: 1, title: 'Test Project'),
+          );
           const testId = 1;
 
           when(
@@ -38,15 +41,18 @@ void main() {
               header: any(named: 'header'),
               method: any(named: 'method'),
             ),
-          ).thenAnswer((_) async => expectedData);
+          ).thenAnswer((_) async => expectedModel);
 
           final result = await repo.getProjectDetails(testId);
 
-          expect(result, expectedData);
+          expect(result, isA<ProjectDetailsModel>());
+          expect(result.succeeded, isTrue);
+          expect(result.data?.id, 1);
           verify(
             () => mockNetwork.requestOrThrow(
               ApiNames.projectDetails(testId),
               method: ServerMethods.GET,
+              model: any(named: 'model'),
             ),
           ).called(1);
         },
@@ -76,6 +82,7 @@ void main() {
           () => mockNetwork.requestOrThrow(
             ApiNames.projectDetails(testId),
             method: ServerMethods.GET,
+            model: any(named: 'model'),
           ),
         ).called(1);
       });
