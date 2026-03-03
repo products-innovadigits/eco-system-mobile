@@ -6,6 +6,11 @@ import 'package:core_system/core/widgets/connectivity_widget.dart';
 class ConnectivityWrapper extends StatefulWidget {
   final Widget child;
 
+  static const _enableProxy = bool.fromEnvironment(
+    'ENABLE_PROXY',
+    defaultValue: false,
+  );
+
   const ConnectivityWrapper({super.key, required this.child});
 
   @override
@@ -13,11 +18,6 @@ class ConnectivityWrapper extends StatefulWidget {
 }
 
 class _ConnectivityWrapperState extends State<ConnectivityWrapper> {
-  final _enableProxy = bool.fromEnvironment(
-    'ENABLE_PROXY',
-    defaultValue: false,
-  );
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<String>(
@@ -35,7 +35,8 @@ class _ConnectivityWrapperState extends State<ConnectivityWrapper> {
               return Stack(
                 children: [
                   widget.child,
-                  if (!_enableProxy && !isConnected) const ConnectivityWidget(),
+                  if (!ConnectivityWrapper._enableProxy && !isConnected)
+                    const ConnectivityWidget(),
                 ],
               );
             },

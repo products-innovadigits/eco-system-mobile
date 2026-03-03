@@ -1,7 +1,8 @@
-import 'package:project_management/core/utility/project_management_exports.dart';
+import '../../../core/utility/pms_exports.dart';
+import 'cycles_summary_card.dart';
 
-class ProjectManagementHomeBody extends StatelessWidget {
-  const ProjectManagementHomeBody({super.key});
+class PmsHomeBody extends StatelessWidget {
+  const PmsHomeBody({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,8 +13,7 @@ class ProjectManagementHomeBody extends StatelessWidget {
           spacing: 16.h,
           children: [
             SizedBox(height: 70.h),
-            ProjectManagementSection(isProjectManagementHome: true),
-            const LatestRequestsSection(),
+            const CyclesSummaryCard(),
             SizedBox(height: 16.h),
           ],
         ),
