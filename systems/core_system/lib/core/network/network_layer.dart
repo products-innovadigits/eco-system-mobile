@@ -66,8 +66,7 @@ class Network {
     String token = await SecureStorageHelper().getToken();
 
     _dio.options.headers = {
-      if (systemTypeEnum == ActiveSystemEnum.strategy)
-        'Authorization': 'Bearer $token',
+      'Authorization': 'Bearer $token',
       'Accept': 'application/json',
       "User-Agent": "Dart",
       'Lang': mainAppBloc.lang.value,
@@ -77,11 +76,7 @@ class Network {
     }
     try {
       Response response = await _dio.request(
-        (baseUrl ??
-                (systemTypeEnum == ActiveSystemEnum.strategy
-                    ? AppConfig.strategyBaseUrl
-                    : AppConfig.atsBaseUrl)) +
-            endpoint,
+        (baseUrl ?? AppConfig.getBaseUrl(systemTypeEnum)) + endpoint,
         data: body,
         queryParameters: query,
         options: Options(method: method.name),
@@ -111,7 +106,7 @@ class Network {
     String endpoint, {
     body,
     String? baseUrl,
-    ActiveSystemEnum systemTypeEnum = ActiveSystemEnum.strategy,
+    ActiveSystemEnum systemTypeEnum = ActiveSystemEnum.projectManagement,
     Mapper? model,
     Map<String, dynamic>? query,
     Map<String, dynamic>? header,
@@ -120,8 +115,7 @@ class Network {
     String token = await SecureStorageHelper().getToken();
 
     _dio.options.headers = {
-      if (systemTypeEnum == ActiveSystemEnum.strategy)
-        'Authorization': 'Bearer $token',
+      'Authorization': 'Bearer $token',
       'Accept': 'application/json',
       "User-Agent": "Dart",
       'Lang': mainAppBloc.lang.value,
@@ -131,11 +125,7 @@ class Network {
     }
     try {
       Response response = await _dio.request(
-        (baseUrl ??
-                (systemTypeEnum == ActiveSystemEnum.strategy
-                    ? AppConfig.strategyBaseUrl
-                    : AppConfig.atsBaseUrl)) +
-            endpoint,
+        (baseUrl ?? AppConfig.getBaseUrl(systemTypeEnum)) + endpoint,
         data: body,
         queryParameters: query,
         options: Options(method: method.name),

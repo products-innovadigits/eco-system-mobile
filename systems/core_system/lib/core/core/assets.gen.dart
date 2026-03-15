@@ -780,7 +780,6 @@ class $AssetsSvgsGen {
 class Assets {
   const Assets._();
 
-  static const String aEnv = '.env';
   static const AssetGenImage appIconPng = AssetGenImage('assets/app-icon.png');
   static const AssetGenImage appIconPng_ = AssetGenImage('assets/app_icon.png');
   static const $AssetsImagesGen images = $AssetsImagesGen();
@@ -791,8 +790,7 @@ class Assets {
   static const $AssetsSvgsGen svgs = $AssetsSvgsGen();
 
   /// List of all assets
-  static List<dynamic> get values => [
-    aEnv,
+  static List<AssetGenImage> get values => [
     appIconPng,
     appIconPng_,
     logo,

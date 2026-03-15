@@ -1,3 +1,4 @@
+import 'package:core_system/core/config/app_config.dart';
 import 'package:core_system/core/utility/export.dart';
 import 'package:eco_system/features/auth/login/repo/login_repo.dart';
 
@@ -19,25 +20,55 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
   TextEditingController mailTEC = TextEditingController();
   TextEditingController passwordTEC = TextEditingController();
 
+  String? selectedSystemId;
+
+  void setSelectedSystem(String systemId) {
+    selectedSystemId = systemId;
+    AppConfig.activeSystem = ActiveSystemEnum.fromModuleId(systemId);
+  }
+
   void clear() {
     mailTEC.clear();
     passwordTEC.clear();
   }
 
   Future<void> onClick(AppEvent event, Emitter emit) async {
+    // if (selectedSystemId == null) {
+    //   AppCore.errorMessage(allTranslations.text('please_select_system'));
+    //   return;
+    // }
     emit(Loading());
     try {
-      Response res = await LoginRepo.login(
+      final system = AppConfig.activeSystem;
+      final result = await LoginRepo.login(
         password: passwordTEC.text.trim(),
         username: mailTEC.text.trim(),
+        // systemTypeEnum: system,
       );
+      if (result is! Response) {
+        AppCore.errorMessage(
+          result is String
+              ? result
+              : allTranslations.text('invalid_credentials'),
+        );
+        emit(Start());
+        return;
+      }
+      final res = result;
       if (res.statusCode == 200) {
         UserModel model = UserModel.fromJson(res.data['data']);
-        await SecureStorageHelper.secureStorageHelper!.saveUser(model).then((
-          v,
-        ) {
-          UserBloc.instance.add(Click());
-        });
+        await SecureStorageHelper.secureStorageHelper!
+            .saveUser(
+              model,
+              token:
+                  // system == ActiveSystemEnum.pms
+                  //     ? model.token
+                  //     :
+                  model.accessToken,
+            )
+            .then((v) {
+              UserBloc.instance.add(Click());
+            });
         await SharedHelper.sharedHelper!.saveUser();
         // if (UserBloc.activeSystems.contains(ActiveSystemEnum.strategy)) {
         //   log('Strategy system is active==================');
@@ -55,9 +86,8 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
         emit(Start());
       }
     } catch (e) {
-      cprint('Something went wrong: $e');
-      AppCore.errorMessage(allTranslations.text('invalid_credentials'));
-      emit(Error());
+      AppCore.errorMessage(e.toString().replaceFirst('Exception: ', ''));
+      emit(Start());
     }
   }
 

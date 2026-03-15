@@ -1,0 +1,15 @@
+{
+  "succeeded": true,
+  "data": {
+    "teams": [
+      { "id": 1, "name": "Designing" },
+      { "id": 2, "name": "Engineering" }
+    ],
+    "seniorityLevels": [
+      { "id": 1, "name": "Junior" },
+      { "id": 2, "name": "Mid-Level" }
+    ]
+  },
+  "warningErrors": null,
+  "validationErrors": null
+}

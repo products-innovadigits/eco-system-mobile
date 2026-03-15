@@ -116,7 +116,7 @@ class _RevieweesStatCard extends StatelessWidget {
           Icon(Icons.groups_outlined, size: 22.w, color: LightColor.error),
           SizedBox(height: 8.h),
           Text(
-            allTranslations.text(LocaleKeys.reviewees),
+            allTranslations.text(LocaleKeys.reviewers),
             style: context.textTheme.bodySmall?.copyWith(
               color: context.color.outlineVariant,
             ),

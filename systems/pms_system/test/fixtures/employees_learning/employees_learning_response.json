@@ -1,0 +1,27 @@
+{
+  "succeeded": true,
+  "data": {
+    "items": [
+      {
+        "id": 1,
+        "name": "Hassan Aziz",
+        "jobTitle": "Product Designer",
+        "email": "hassan@gmail.com",
+        "phone": "+201029840986",
+        "seniority": "Team Leader",
+        "team": "Designing",
+        "imageUrl": null,
+        "initials": "HA"
+      }
+    ],
+    "currentPage": 1,
+    "pageSize": 10,
+    "totalPages": 1,
+    "nextPage": null,
+    "previousPage": null,
+    "isLastPage": true,
+    "totalCount": 1
+  },
+  "warningErrors": null,
+  "validationErrors": null
+}

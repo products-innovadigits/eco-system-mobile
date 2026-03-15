@@ -10,12 +10,13 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          toolbarHeight: 100.h,
-          leadingWidth: 110.w,
-          leading: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
-            child: Styles.logo(color: context.color.primary),
-          )),
+        toolbarHeight: 100.h,
+        leadingWidth: 110.w,
+        leading: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
+          child: Styles.logo(color: context.color.primary),
+        ),
+      ),
       body: SafeArea(
         child: BlocProvider(
           create: (context) => LoginBloc(),
@@ -32,12 +33,49 @@ class LoginView extends StatelessWidget {
                           data: [
                             const WelcomeWidget(),
                             SizedBox(height: 32.h),
+                            // Column(
+                            //   crossAxisAlignment: CrossAxisAlignment.start,
+                            //   children: [
+                            //     Padding(
+                            //       padding: const EdgeInsets.only(bottom: 6.0),
+                            //       child: Text(
+                            //         allTranslations.text("login_to"),
+                            //         style: context.textTheme.labelSmall,
+                            //       ),
+                            //     ),
+                            //     CustomDropList(
+                            //       list: ModulesRegistry.enabledModules
+                            //           .map(
+                            //             (module) => DropListModel(
+                            //               id:
+                            //                   ModulesRegistry.enabledModules
+                            //                       .indexOf(module) +
+                            //                   1,
+                            //               name: module.name,
+                            //               key: module.id,
+                            //             ),
+                            //           )
+                            //           .toList(),
+                            //       hint: allTranslations.text("select_system"),
+                            //       onChanged: (value) {
+                            //         if (value.key != null) {
+                            //           context
+                            //               .read<LoginBloc>()
+                            //               .setSelectedSystem(value.key!);
+                            //         }
+                            //       },
+                            //       bgColor: LightColor.white,
+                            //     ),
+                            //   ],
+                            // ),
+                            // SizedBox(height: 16.h),
                             CustomTextField(
                               // hint: allTranslations.text("enter_username"),
                               hint: allTranslations.text("enter_email"),
                               // label: allTranslations.text("username"),
                               label: allTranslations.text("email"),
                               type: TextInputType.emailAddress,
+                              validation: NotEmptyValidator.notEmptyValidator,
                               // validation: EmailValidator.emailValidator,
                               controller: context.read<LoginBloc>().mailTEC,
                             ),
@@ -54,7 +92,9 @@ class LoginView extends StatelessWidget {
                             ///Forget Password && Remember me
                             Padding(
                               padding: EdgeInsets.symmetric(
-                                  vertical: 8.h, horizontal: 8.w),
+                                vertical: 8.h,
+                                horizontal: 8.w,
+                              ),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
@@ -86,7 +126,7 @@ class LoginView extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),

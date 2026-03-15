@@ -26,6 +26,17 @@ abstract class Env {
   @EnviedField(varName: 'ATS_BASE_URL_DEV', obfuscate: true)
   static final String atsBaseUrlDev = _Env.atsBaseUrlDev;
 
+  @EnviedField(varName: 'PMS_BASE_URL_DEV', obfuscate: true)
+  static final String pmsBaseUrlDev = _Env.pmsBaseUrlDev;
+
+  @EnviedField(
+    varName: 'PROJECT_MANAGEMENT_BASE_URL_DEV',
+    obfuscate: true,
+    defaultValue: 'https://194.163.168.5:447/api/',
+  )
+  static final String projectManagementBaseUrlDev =
+      _Env.projectManagementBaseUrlDev;
+
   // Currently unused — uncomment when needed
   // @EnviedField(varName: 'GOOGLE_MAPS_BASE_URL', obfuscate: true)
   // static final String googleMapsBaseUrl = _Env.googleMapsBaseUrl;

@@ -4,15 +4,12 @@ abstract class LoginRepo {
   static Future<dynamic> login({
     required String username,
     required String password,
+    ActiveSystemEnum systemTypeEnum = ActiveSystemEnum.projectManagement,
   }) async {
     return await Network().request(
       ApiNames.login,
-      // baseUrl: AppConfig.authBaseUrl,
-      body: {
-        "login": username,
-        // "email": username,
-        "password": password,
-      },
+      body: {"login": username, "password": password},
+      systemTypeEnum: systemTypeEnum,
       method: ServerMethods.POST,
     );
   }

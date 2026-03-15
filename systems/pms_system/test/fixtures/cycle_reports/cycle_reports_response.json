@@ -1,0 +1,16 @@
+{
+  "items": [
+    {
+      "id": 1,
+      "name": "Hassan Aziz",
+      "jobTitle": "Senior Product Designer",
+      "imageUrl": null
+    },
+    {
+      "id": 2,
+      "name": "Sarah Jenkins",
+      "jobTitle": "Product Manager",
+      "imageUrl": null
+    }
+  ]
+}

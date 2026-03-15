@@ -9,7 +9,7 @@ class CycleReviewHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
           padding: EdgeInsets.all(10.w),
@@ -28,33 +28,29 @@ class CycleReviewHeader extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Flexible(
-                    child: Text(
-                      detail.title ?? '',
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: context.textTheme.displaySmall?.copyWith(
-                        fontSize: FontSizes.f16,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 8.w),
-                  _StatusBadge(status: detail.status ?? ''),
-                ],
-              ),
-              SizedBox(height: 4.h),
               Text(
-                detail.subtitle ?? '',
-                style: context.textTheme.bodySmall?.copyWith(
-                  color: context.color.outlineVariant,
+                detail.title ?? '',
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: context.textTheme.displaySmall?.copyWith(
+                  fontSize: FontSizes.f16,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
+              if (detail.subtitle != null && detail.subtitle!.isNotEmpty) ...[
+                SizedBox(height: 4.h),
+                Text(
+                  detail.subtitle ?? '',
+                  style: context.textTheme.bodySmall?.copyWith(
+                    color: context.color.outlineVariant,
+                  ),
+                ),
+              ],
             ],
           ),
         ),
+        SizedBox(width: 12.w),
+        _StatusBadge(status: detail.status ?? ''),
       ],
     );
   }

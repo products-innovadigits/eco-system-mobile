@@ -577,7 +577,7 @@ abstract class  LocaleKeys {
   static const direct_report_review = 'direct_report_review';
   static const peer_review = 'peer_review';
   static const cycle_details = 'cycle_details';
-  static const reviewees = 'reviewees';
+  static const reviewers = 'reviewers';
   static const view_all = 'view_all';
   static const total_score = 'total_score';
   static const cycle_overview = 'cycle_overview';
@@ -589,5 +589,25 @@ abstract class  LocaleKeys {
   static const select_seniority_level = 'select_seniority_level';
   static const no_employees_found = 'no_employees_found';
   static const no_employees_match = 'no_employees_match';
+  static const top_3_performers = 'top_3_performers';
+  static const top_employees = 'top_employees';
+  static const performance = 'performance';
+  static const employee_of_the_month = 'employee_of_the_month';
+  static const employee_of_the_year = 'employee_of_the_year';
+  static const top_10 = 'top_10';
+  static const employee_report = 'employee_report';
+  static const make_top_1 = 'make_top_1';
+  static const cycle_reports = 'cycle_reports';
+  static const cycle_colon = 'cycle_colon';
+  static const view_report = 'view_report';
+  static const download_report = 'download_report';
+  static const employee_learning_details = 'employee_learning_details';
+  static const request_for_learning_path = 'request_for_learning_path';
+  static const highest = 'highest';
+  static const lowest = 'lowest';
+  static const competency = 'competency';
+  static const review_cycles = 'review_cycles';
+  static const date_of_cycle = 'date_of_cycle';
+  static const preview_report = 'preview_report';
 
 }

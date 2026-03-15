@@ -8,8 +8,8 @@ class SecureStorageHelper {
     secureStorageHelper ??= SecureStorageHelper();
   }
 
-  Future<void> saveUser(UserModel model) async {
-    await _storage.write(key: CachingKey.token.value, value: model.accessToken);
+  Future<void> saveUser(UserModel model , {String? token}) async {
+    await _storage.write(key: CachingKey.token.value, value: token);
     await _storage.write(
       key: CachingKey.user.value,
       value: json.encode(model.toJson()),

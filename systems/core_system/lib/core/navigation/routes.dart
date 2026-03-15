@@ -33,5 +33,8 @@ class Routes {
   static const PMS_LAYOUT = "PMS_LAYOUT";
   static const CYCLES = "CYCLES";
   static const CYCLE_REVIEW = "CYCLE_REVIEW";
+  static const CYCLE_REPORT = "CYCLE_REPORT";
   static const EMPLOYEES_LEARNING = "EMPLOYEES_LEARNING";
+  static const EMPLOYEES_PERFORMANCE = "EMPLOYEES_PERFORMANCE";
+  static const EMPLOYEE_LEARNING_DETAILS = "EMPLOYEE_LEARNING_DETAILS";
 }

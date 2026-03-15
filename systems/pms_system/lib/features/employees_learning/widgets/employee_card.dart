@@ -2,13 +2,28 @@ import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/employees_learning/model/employees_learning_model.dart';
 
 class EmployeeCard extends StatelessWidget {
-  const EmployeeCard({super.key, required this.employee});
+  const EmployeeCard({
+    super.key,
+    required this.employee,
+    this.onTap,
+  });
 
   final EmployeeItemModel employee;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return InkWell(
+      onTap: onTap ??
+          () => CustomNavigator.push(
+                Routes.EMPLOYEE_LEARNING_DETAILS,
+                arguments: {
+                  'employeeId': employee.id ?? 0,
+                  'employeeName': employee.name,
+                },
+              ),
+      borderRadius: BorderRadius.circular(12.w),
+      child: Container(
       margin: EdgeInsets.symmetric(vertical: 8.h),
       decoration: BoxDecoration(
         color: context.color.surfaceContainer,
@@ -23,6 +38,7 @@ class EmployeeCard extends StatelessWidget {
           _EmployeeInfoGrid(employee: employee),
         ],
       ),
+    ),
     );
   }
 }

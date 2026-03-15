@@ -104,12 +104,16 @@ jobs:
         env:
           STRATEGY_BASE_URL_DEV: ${{ secrets.STRATEGY_BASE_URL_DEV }}
           ATS_BASE_URL_DEV: ${{ secrets.ATS_BASE_URL_DEV }}
+          PMS_BASE_URL_DEV: ${{ secrets.PMS_BASE_URL_DEV }}
+          PROJECT_MANAGEMENT_BASE_URL_DEV: ${{ secrets.PROJECT_MANAGEMENT_BASE_URL_DEV }}
         run: |
           set -euo pipefail
 
           cat > .env << EOF
           STRATEGY_BASE_URL_DEV=${STRATEGY_BASE_URL_DEV}
           ATS_BASE_URL_DEV=${ATS_BASE_URL_DEV}
+          PMS_BASE_URL_DEV=${PMS_BASE_URL_DEV}
+          PROJECT_MANAGEMENT_BASE_URL_DEV=${PROJECT_MANAGEMENT_BASE_URL_DEV}
           EOF
 
           echo "✅ .env generated from GitHub Secrets (never committed to git)"

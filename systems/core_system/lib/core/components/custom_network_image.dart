@@ -92,6 +92,7 @@ class CustomNetworkImage {
   static Widget circleNewWorkImage({
     String? image,
     double? radius,
+    EdgeInsets padding = const EdgeInsets.all(8),
     String? defaultImage,
     bool isDefaultSvg = true,
     backGroundColor,
@@ -101,7 +102,7 @@ class CustomNetworkImage {
       imageUrl: image == "" || image == null ? "https://" : image,
       repeat: ImageRepeat.noRepeat,
       errorWidget: (a, c, b) => Container(
-        padding: EdgeInsets.all(8),
+        padding: padding,
         height: radius != null ? radius * 2 : null,
         width: radius != null ? radius * 2 : null,
         decoration: BoxDecoration(

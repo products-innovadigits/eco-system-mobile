@@ -6,6 +6,7 @@ class CustomDropList extends StatefulWidget {
   final List<DropListModel>? list;
   final DropListModel? initialValue;
   final List<DropListModel>? selectedList;
+  final Color? bgColor;
 
   const CustomDropList({
     super.key,
@@ -14,6 +15,7 @@ class CustomDropList extends StatefulWidget {
     this.initialValue,
     this.hint,
     this.selectedList,
+    this.bgColor,
   });
 
   @override
@@ -38,6 +40,7 @@ class _CustomDropListState extends State<CustomDropList> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: context.color.outline),
+        color: widget.bgColor,
       ),
       child: DropdownButton<DropListModel>(
         icon: Padding(

@@ -1,11 +1,15 @@
 import 'package:core_system/core/modules/home_section.dart';
 import 'package:core_system/core/modules/system_module.dart';
 import 'package:core_system/core/utility/export.dart';
-import 'package:core_system/core/widgets/main_card_widget.dart';
 import 'package:pms_system/core/di/pms_locator.dart';
+import 'package:pms_system/features/cycle_reports/view/cycle_reports_view.dart';
 import 'package:pms_system/features/cycle_review/view/cycle_review_view.dart';
 import 'package:pms_system/features/cycles/view/cycles_view.dart';
+import 'package:pms_system/features/employee_learning_details/view/employee_learning_details_view.dart';
 import 'package:pms_system/features/employees_learning/view/employees_learning_view.dart';
+import 'package:pms_system/features/employees_performance/view/employees_performance_view.dart';
+import 'package:pms_system/features/pms_home/widgets/cycles_summary_card.dart';
+import 'package:pms_system/features/pms_home/widgets/employee_of_the_month_card.dart';
 import 'package:pms_system/pms_layout.dart';
 
 class PmsModule implements SystemModule {
@@ -50,10 +54,34 @@ class PmsModule implements SystemModule {
         builder: (_) => CycleReviewView(cycleId: cycleId),
       );
     },
+    Routes.CYCLE_REPORT: (settings) {
+      final cycleId = settings.arguments as int? ?? 0;
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => CycleReportsView(cycleId: cycleId, cycleName: ''),
+      );
+    },
     Routes.EMPLOYEES_LEARNING: (settings) {
       return MaterialPageRoute(
         settings: settings,
         builder: (_) => const EmployeesLearningView(),
+      );
+    },
+    Routes.EMPLOYEES_PERFORMANCE: (settings) {
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const EmployeesPerformanceView(),
+      );
+    },
+    Routes.EMPLOYEE_LEARNING_DETAILS: (settings) {
+      final args = settings.arguments as Map<String, dynamic>?;
+      final employeeId = args?['employeeId'] as int? ?? 0;
+      final employeeName = args?['employeeName'] as String?;
+      return MaterialPageRoute(
+        builder: (_) => EmployeeLearningDetailsView(
+          employeeId: employeeId,
+          employeeName: employeeName,
+        ),
       );
     },
   };
@@ -63,18 +91,12 @@ class PmsModule implements SystemModule {
     HomeSection(
       id: 'pms',
       order: 21,
-      builder: (context) => MainCardWidget(
-        height: 260.h,
-        title: 'PMS',
-        onViewMoreTap: () {
-          UserBloc.currentActiveSystem = ActiveSystemEnum.pms;
-
-          CustomNavigator.push(
-            Routes.SYSTEM_SWITCHER,
-            arguments: ActiveSystemEnum.pms,
-          );
-        },
-        child: SizedBox.shrink(),
+      builder: (context) => const Column(
+        children: [
+          CyclesSummaryCard(),
+          SizedBox(height: 16),
+          EmployeeOfTheMonthCard(),
+        ],
       ),
     ),
   ];

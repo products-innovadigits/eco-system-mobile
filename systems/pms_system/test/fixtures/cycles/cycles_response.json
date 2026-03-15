@@ -1,0 +1,30 @@
+{
+  "succeeded": true,
+  "data": {
+    "items": [
+      {
+        "id": 1,
+        "title": "Bi-Annual Review",
+        "status": "Active",
+        "dueDate": "Feb 15, 2025",
+        "assignees": [
+          { "id": 1, "name": "Ahmed Ali", "imageUrl": null },
+          { "id": 2, "name": "Sara Hassan", "imageUrl": null }
+        ],
+        "reviews": [
+          { "name": "Manager Review", "percentage": 50.0 },
+          { "name": "Peer Review", "percentage": 60.0 }
+        ]
+      }
+    ],
+    "currentPage": 1,
+    "pageSize": 10,
+    "totalPages": 1,
+    "nextPage": null,
+    "previousPage": null,
+    "isLastPage": true,
+    "totalCount": 1
+  },
+  "warningErrors": null,
+  "validationErrors": null
+}

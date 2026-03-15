@@ -9,10 +9,8 @@ class CycleCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => CustomNavigator.push(
-        Routes.CYCLE_REVIEW,
-        arguments: cycle.id,
-      ),
+      onTap: () =>
+          CustomNavigator.push(Routes.CYCLE_REVIEW, arguments: cycle.id),
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       hoverColor: Colors.transparent,
@@ -57,11 +55,7 @@ class _CycleCardHeader extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(8)),
             border: Border.all(color: context.color.outline),
           ),
-          child: Icon(
-            Icons.sync,
-            size: 24.w,
-            color: LightColor.secondary,
-          ),
+          child: Icon(Icons.sync, size: 24.w, color: LightColor.secondary),
         ),
         SizedBox(width: 12.w),
         Expanded(
@@ -87,12 +81,12 @@ class _CycleCardHeader extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(width: 8.w),
-        Icon(
-          Icons.more_horiz,
-          size: 20.w,
-          color: context.color.outlineVariant,
-        ),
+        // SizedBox(width: 8.w),
+        // Icon(
+        //   Icons.more_horiz,
+        //   size: 20.w,
+        //   color: context.color.outlineVariant,
+        // ),
       ],
     );
   }
@@ -241,7 +235,9 @@ class _CycleCardReviews extends StatelessWidget {
             ? _reviewColors[index]
             : LightColor.secondary;
         return Padding(
-          padding: EdgeInsets.only(bottom: index < reviews.length - 1 ? 10.h : 0),
+          padding: EdgeInsets.only(
+            bottom: index < reviews.length - 1 ? 10.h : 0,
+          ),
           child: _ReviewProgressItem(
             label: review.name ?? '',
             percentage: (review.percentage ?? 0).toInt(),
@@ -300,9 +296,7 @@ class _ReviewProgressItem extends StatelessWidget {
                 child: Text(
                   '$progress%',
                   textAlign: TextAlign.end,
-                  style: context.textTheme.labelSmall?.copyWith(
-                    fontSize: 11,
-                  ),
+                  style: context.textTheme.labelSmall?.copyWith(fontSize: 11),
                 ),
               ),
             ],

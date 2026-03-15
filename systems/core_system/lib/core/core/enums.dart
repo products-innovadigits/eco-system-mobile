@@ -77,4 +77,20 @@ class ActiveSystemEnum extends Enum<String> {
       orElse: () => values.first,
     );
   }
+
+  /// Maps module id (e.g. pms_system, ats_system) to ActiveSystemEnum.
+  static ActiveSystemEnum fromModuleId(String moduleId) {
+    switch (moduleId) {
+      case 'pms_system':
+        return pms;
+      case 'ats_system':
+        return ats;
+      case 'strategy_system':
+        return strategy;
+      case 'project_management':
+        return projectManagement;
+      default:
+        return ActiveSystemEnum.fromString(moduleId);
+    }
+  }
 }

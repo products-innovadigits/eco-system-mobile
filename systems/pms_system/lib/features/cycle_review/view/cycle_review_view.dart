@@ -86,7 +86,7 @@ class _CycleReviewBody extends StatelessWidget {
                 SizedBox(height: 20.h),
                 OverallProgressSection(detail: detail),
                 SizedBox(height: 24.h),
-                RevieweesSection(reviewees: detail.reviewees ?? []),
+                ReviewersSection(reviewers: detail.reviewees ?? []),
                 SizedBox(height: 24.h),
                 CycleOverviewSection(detail: detail),
                 SizedBox(height: 24.h),
@@ -94,7 +94,31 @@ class _CycleReviewBody extends StatelessWidget {
             ),
           ),
         ),
-        _CloseButton(),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 24.0, left: 16, right: 16),
+          child: Row(
+            children: [
+              Expanded(
+                child: CustomBtn(
+                  text: allTranslations.text(LocaleKeys.close_review_cycle),
+                  onPressed: () {},
+                ),
+              ),
+              SizedBox(width: 16.w),
+              Expanded(
+                child: CustomBtn(
+                  text: allTranslations.text(LocaleKeys.reports),
+                  onPressed: () {
+                    CustomNavigator.push(Routes.CYCLE_REPORT);
+                  },
+                  color: context.color.surfaceContainer,
+                  textColor: context.color.primary,
+                  borderColor: context.color.primary,
+                ),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
