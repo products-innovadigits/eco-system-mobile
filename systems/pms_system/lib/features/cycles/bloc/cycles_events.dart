@@ -23,3 +23,9 @@ class SearchChanged extends CyclesEvent {
 class LoadMoreCycles extends CyclesEvent {
   const LoadMoreCycles();
 }
+
+class FilterCycles extends CyclesEvent {
+  final String? status;
+
+  const FilterCycles({this.status});
+}

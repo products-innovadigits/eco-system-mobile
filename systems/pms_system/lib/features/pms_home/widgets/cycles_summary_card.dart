@@ -2,15 +2,30 @@ import 'package:core_system/core/widgets/main_card_widget.dart';
 import 'package:pms_system/core/utility/pms_exports.dart';
 
 class CyclesSummaryCard extends StatelessWidget {
-  const CyclesSummaryCard({super.key});
+  final bool isPMSHome;
+  const CyclesSummaryCard({super.key, this.isPMSHome = false});
 
   @override
   Widget build(BuildContext context) {
     return MainCardWidget(
       title: allTranslations.text(LocaleKeys.cycles_summary),
-      moreBtnTxt: allTranslations.text(LocaleKeys.view_all_cycles),
+      // moreBtnTxt: allTranslations.text(LocaleKeys.view_all_cycles),
+      // onViewMoreTap: () {
+      //   CustomNavigator.push(Routes.CYCLES);
+      // },
+      moreBtnTxt: isPMSHome
+          ? allTranslations.text(LocaleKeys.view_all_cycles)
+          : null,
       onViewMoreTap: () {
-        CustomNavigator.push(Routes.CYCLES);
+        if (!isPMSHome) {
+          UserBloc.currentActiveSystem = ActiveSystemEnum.pms;
+        }
+        isPMSHome
+            ? CustomNavigator.push(Routes.CYCLES)
+            : CustomNavigator.push(
+                Routes.SYSTEM_SWITCHER,
+                arguments: ActiveSystemEnum.pms,
+              );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

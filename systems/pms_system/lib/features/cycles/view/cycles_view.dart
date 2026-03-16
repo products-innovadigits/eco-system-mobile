@@ -3,6 +3,7 @@ import 'package:pms_system/core/di/pms_locator.dart';
 import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/cycles/bloc/cycles_bloc.dart';
 import 'package:pms_system/features/cycles/bloc/cycles_events.dart';
+import 'package:pms_system/features/cycles/bloc/filtration/cycles_filtration_bloc.dart';
 import 'package:pms_system/features/cycles/widgets/cycles_app_bar_widget.dart';
 import 'package:pms_system/features/cycles/widgets/cycles_body_mobile_landscape_view.dart';
 import 'package:pms_system/features/cycles/widgets/cycles_body_mobile_portrait_view.dart';
@@ -16,6 +17,7 @@ class CyclesView extends StatefulWidget {
 
 class _CyclesViewState extends State<CyclesView> {
   late CyclesBloc _cyclesBloc;
+  late CyclesFiltrationBloc _filtrationBloc;
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
 
@@ -24,6 +26,7 @@ class _CyclesViewState extends State<CyclesView> {
     super.initState();
     _cyclesBloc = CyclesBloc(repo: pmsSl())
       ..add(LoadCycles(searchEngine: SearchEngine()));
+    _filtrationBloc = CyclesFiltrationBloc();
     _scrollController.addListener(_onScroll);
   }
 
@@ -40,13 +43,17 @@ class _CyclesViewState extends State<CyclesView> {
     _scrollController.dispose();
     _searchController.dispose();
     _cyclesBloc.close();
+    _filtrationBloc.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<CyclesBloc>.value(
-      value: _cyclesBloc,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<CyclesBloc>.value(value: _cyclesBloc),
+        BlocProvider<CyclesFiltrationBloc>.value(value: _filtrationBloc),
+      ],
       child: Builder(
         builder: (context) {
           final isPortrait =

@@ -38,7 +38,6 @@ class _EmployeesPerformanceViewState extends State<EmployeesPerformanceView> {
     return BlocProvider<EmployeesPerformanceBloc>.value(
       value: _bloc,
       child: Scaffold(
-        backgroundColor: LightColor.scaffoldBg,
         appBar: CustomAppBar(
           title: allTranslations.text(LocaleKeys.performance),
           withCancelBtn: false,
@@ -47,18 +46,18 @@ class _EmployeesPerformanceViewState extends State<EmployeesPerformanceView> {
           builder: (context, state) {
             return switch (state) {
               PerformanceLoading() => const Center(
-                  child: CircularProgressIndicator(),
-                ),
+                child: CircularProgressIndicator(),
+              ),
               PerformanceLoaded(:final data) => _PerformanceBody(
-                  data: data,
-                  selectedTab: _selectedTab,
-                  onTabChanged: (index) {
-                    setState(() => _selectedTab = index);
-                  },
-                ),
+                data: data,
+                selectedTab: _selectedTab,
+                onTabChanged: (index) {
+                  setState(() => _selectedTab = index);
+                },
+              ),
               PerformanceFailure(:final message) => Center(
-                  child: EmptyContainer(txt: message),
-                ),
+                child: EmptyContainer(txt: message),
+              ),
               _ => const SizedBox.shrink(),
             };
           },
@@ -81,8 +80,9 @@ class _PerformanceBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final topEmployees =
-        selectedTab == 0 ? (data.topMonthly ?? []) : (data.topYearly ?? []);
+    final topEmployees = selectedTab == 0
+        ? (data.topMonthly ?? [])
+        : (data.topYearly ?? []);
 
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),

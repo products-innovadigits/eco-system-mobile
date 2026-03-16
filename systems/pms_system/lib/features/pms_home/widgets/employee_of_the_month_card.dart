@@ -3,15 +3,29 @@ import 'package:core_system/core/widgets/main_card_widget.dart';
 import '../../../core/utility/pms_exports.dart';
 
 class EmployeeOfTheMonthCard extends StatelessWidget {
-  const EmployeeOfTheMonthCard({super.key});
+  final bool isPMSHome;
+
+  const EmployeeOfTheMonthCard({super.key, this.isPMSHome = false});
 
   @override
   Widget build(BuildContext context) {
     return MainCardWidget(
       title: allTranslations.text(LocaleKeys.top_employees),
-      moreBtnTxt: allTranslations.text(LocaleKeys.view_all),
+      // moreBtnTxt: allTranslations.text(LocaleKeys.view_all),
+      // onViewMoreTap: () {
+      //   CustomNavigator.push(Routes.EMPLOYEES_PERFORMANCE);
+      // },
+      moreBtnTxt: isPMSHome ? allTranslations.text(LocaleKeys.view_all) : null,
       onViewMoreTap: () {
-        CustomNavigator.push(Routes.EMPLOYEES_PERFORMANCE);
+        if (!isPMSHome) {
+          UserBloc.currentActiveSystem = ActiveSystemEnum.pms;
+        }
+        isPMSHome
+            ? CustomNavigator.push(Routes.EMPLOYEES_PERFORMANCE)
+            : CustomNavigator.push(
+                Routes.SYSTEM_SWITCHER,
+                arguments: ActiveSystemEnum.pms,
+              );
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

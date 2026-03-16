@@ -16,9 +16,9 @@ class PmsHomeBody extends StatelessWidget {
           spacing: 16.h,
           children: [
             SizedBox(height: 70.h),
-            const CyclesSummaryCard(),
+            CyclesSummaryCard(isPMSHome: true),
             const EmployeesLearningCard(),
-            const EmployeeOfTheMonthCard(),
+            EmployeeOfTheMonthCard(isPMSHome: true),
             const SizedBox(height: 16),
           ],
         ),
