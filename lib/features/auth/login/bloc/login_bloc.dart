@@ -33,17 +33,17 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
   }
 
   Future<void> onClick(AppEvent event, Emitter emit) async {
-    // if (selectedSystemId == null) {
-    //   AppCore.errorMessage(allTranslations.text('please_select_system'));
-    //   return;
-    // }
+    if (selectedSystemId == null) {
+      AppCore.errorMessage(allTranslations.text('please_select_system'));
+      return;
+    }
     emit(Loading());
     try {
       final system = AppConfig.activeSystem;
       final result = await LoginRepo.login(
         password: passwordTEC.text.trim(),
         username: mailTEC.text.trim(),
-        // systemTypeEnum: system,
+        systemTypeEnum: system,
       );
       if (result is! Response) {
         AppCore.errorMessage(
@@ -60,11 +60,9 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
         await SecureStorageHelper.secureStorageHelper!
             .saveUser(
               model,
-              token:
-                  // system == ActiveSystemEnum.pms
-                  //     ? model.token
-                  //     :
-                  model.accessToken,
+              token: system == ActiveSystemEnum.pms
+                  ? model.token
+                  : model.accessToken,
             )
             .then((v) {
               UserBloc.instance.add(Click());

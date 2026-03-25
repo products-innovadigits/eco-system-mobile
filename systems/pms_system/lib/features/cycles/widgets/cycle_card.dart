@@ -46,7 +46,7 @@ class _CycleCardHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
           padding: EdgeInsets.all(8.w),
@@ -99,12 +99,14 @@ class _StatusBadge extends StatelessWidget {
 
   Color _statusColor() {
     switch (status) {
-      case 'Active':
-        return LightColor.tertiary;
       case 'Completed':
+        return LightColor.tertiary;
+      case 'Active':
         return LightColor.secondary;
       case 'Overdue':
         return LightColor.error;
+      case 'Not Started':
+        return LightColor.grey;
       default:
         return LightColor.secondary;
     }

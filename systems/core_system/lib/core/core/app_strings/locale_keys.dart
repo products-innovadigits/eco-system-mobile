@@ -510,7 +510,7 @@ abstract class  LocaleKeys {
   static const high_effect = 'high_effect';
   static const have_been_processing = 'have_been_processing';
   static const challenges = 'challenges';
-  static const total = 'total';
+  static const totally = 'totally';
   static const completed_outputs = 'completed_outputs';
   static const in_progress_outputs = 'in_progress_outputs';
   static const not_started_outputs = 'not_started_outputs';
@@ -610,5 +610,8 @@ abstract class  LocaleKeys {
   static const review_cycles = 'review_cycles';
   static const date_of_cycle = 'date_of_cycle';
   static const preview_report = 'preview_report';
+  static const total = 'total';
+  static const login_to = 'login_to';
+  static const please_select_system = 'please_select_system';
 
 }

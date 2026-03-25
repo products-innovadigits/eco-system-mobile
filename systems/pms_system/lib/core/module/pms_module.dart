@@ -1,3 +1,4 @@
+import 'package:core_system/core/config/app_config.dart';
 import 'package:core_system/core/modules/home_section.dart';
 import 'package:core_system/core/modules/system_module.dart';
 import 'package:core_system/core/utility/export.dart';
@@ -91,13 +92,18 @@ class PmsModule implements SystemModule {
     HomeSection(
       id: 'pms',
       order: 21,
-      builder: (context) => const Column(
-        children: [
-          CyclesSummaryCard(),
-          SizedBox(height: 16),
-          EmployeeOfTheMonthCard(),
-        ],
-      ),
+      builder: (context) {
+        if (AppConfig.activeSystem == ActiveSystemEnum.pms) {
+          return const Column(
+            children: [
+              CyclesSummaryCard(),
+              SizedBox(height: 16),
+              EmployeeOfTheMonthCard(),
+            ],
+          );
+        }
+        return const SizedBox.shrink();
+      },
     ),
   ];
 }

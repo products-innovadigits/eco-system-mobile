@@ -12,7 +12,7 @@ class MainBodyMobilePortraitView extends StatelessWidget {
         child: Column(
           spacing: 16.h,
           children: [
-            const SizedBox(height: 70),
+            const SizedBox(height: 50),
             ...ModulesRegistry.appSections.map(
               (section) => section.builder(context),
             ),

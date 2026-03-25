@@ -509,7 +509,7 @@
   "high_effect": "High Effect",
   "have_been_processing": "Have been processing",
   "challenges": "challenges",
-  "total": "Total",
+  "totally": "Total",
   "completed_outputs": "Completed",
   "in_progress_outputs": "In Progress",
   "not_started_outputs": "Not Started",
@@ -609,5 +609,7 @@
   "review_cycles": "Review Cycles",
   "date_of_cycle": "Date of cycle:",
   "preview_report": "Preview Report",
-  "total": "Total"
+  "total": "Total",
+  "login_to": "Login to",
+  "please_select_system": "Please select a system"
 }

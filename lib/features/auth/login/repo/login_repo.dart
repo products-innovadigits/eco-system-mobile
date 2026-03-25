@@ -7,8 +7,18 @@ abstract class LoginRepo {
     ActiveSystemEnum systemTypeEnum = ActiveSystemEnum.projectManagement,
   }) async {
     return await Network().request(
-      ApiNames.login,
-      body: {"login": username, "password": password},
+      // ApiNames.login,
+      systemTypeEnum == ActiveSystemEnum.projectManagement
+          ? ApiNames.login
+          : ApiNames.pmsLogin,
+      // body: {"login": username, "password": password},
+      body: {
+        (systemTypeEnum == ActiveSystemEnum.projectManagement
+                ? "login"
+                : "email"):
+            username,
+        "password": password,
+      },
       systemTypeEnum: systemTypeEnum,
       method: ServerMethods.POST,
     );

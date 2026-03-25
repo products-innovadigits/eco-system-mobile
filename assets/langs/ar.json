@@ -510,7 +510,7 @@
   "high_effect": "عالي التأثير",
   "have_been_processing": "لقد تم معالجة",
   "challenges": "تحديات",
-  "total": "الكلي",
+  "totally": "الكلي",
   "completed_outputs": "تم التسليم",
   "in_progress_outputs": "جاري التسليم",
   "not_started_outputs": "لم يتم التسليم",
@@ -610,5 +610,7 @@
   "review_cycles": "دورات المراجعة",
   "date_of_cycle": "تاريخ الدورة:",
   "preview_report": "معاينة التقرير",
-  "total": "الإجمالي"
+  "total": "الإجمالي",
+  "login_to": "تسجيل الدخول إلى",
+  "please_select_system": "يرجى اختيار النظام الذي تريد تسجيل الدخول إليه"
 }
