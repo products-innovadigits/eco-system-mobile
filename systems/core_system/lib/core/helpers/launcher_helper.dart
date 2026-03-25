@@ -56,7 +56,10 @@ abstract class LauncherHelper {
   }) async {
     log('FilePath :: $filePath');
 
-    final String originalUrl = 'https://194.163.168.5:447$filePath';
+    // final String originalUrl = 'https://194.163.168.5:447$filePath';
+    final String originalUrl = filePath.toLowerCase().startsWith('http')
+        ? filePath
+        : 'https://194.163.168.5:447$filePath';
     final Uri originalUri = Uri.parse(fullLink ?? originalUrl);
 
     // show modal loading dialog

@@ -46,6 +46,9 @@ abstract class ApiNames {
   // Jobs APIs ====================
   static const jobs = "chances";
 
+  // PMS APIs ====================
+  static const appraisalReviewCycles = "appraisal/review-cycles";
+
   // Talent Pool APIs ====================
   static const talents = "candidates";
   static const exportZipFile = "candidates/export-resumes";

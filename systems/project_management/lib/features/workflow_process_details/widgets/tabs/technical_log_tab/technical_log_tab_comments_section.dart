@@ -1,4 +1,3 @@
-
 import '../../../../../core/utility/project_management_exports.dart';
 
 class TechnicalLogTabCommentsSection extends StatelessWidget {
@@ -147,6 +146,7 @@ class _AttachmentItem extends StatelessWidget {
       onTap: () {
         LauncherHelper.downloadFiles(
           filePath: attachmentFilePath,
+          // fullLink: attachmentFilePath,
           context: context,
         );
       },

@@ -130,7 +130,7 @@ class ProjectCardContent extends StatelessWidget {
           ],
 
           /// Activities Progress
-          _ActivitiesProgressSection(project: project),
+          _ActivitiesProgressSection(project: project, isDetails: isDetails),
         ],
       ),
     );
@@ -177,8 +177,12 @@ class _RiskPriorityWidget extends StatelessWidget {
 
 class _ActivitiesProgressSection extends StatelessWidget {
   final ProjectDetailsDataModel project;
+  final bool isDetails;
 
-  const _ActivitiesProgressSection({required this.project});
+  const _ActivitiesProgressSection({
+    required this.project,
+    required this.isDetails,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -190,7 +194,13 @@ class _ActivitiesProgressSection extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(100)),
             child: LinearProgressIndicator(
               // value: getProgressBar() / 100,
-              value: (project.progressRatio ?? 0.0).toDouble() / 100,
+              value:
+                  (isDetails
+                          ? (project.mobileDetails?.progress?.bars?[2].value ??
+                                0.0)
+                          : (project.progressRatio ?? 0.0))
+                      .toDouble() /
+                  100,
               minHeight: 8.h,
               color: LightColor.statusColors(
                 project.statusAr ?? '',
@@ -207,7 +217,11 @@ class _ActivitiesProgressSection extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                allTranslations.text(LocaleKeys.activities_progress),
+                allTranslations.text(
+                  isDetails
+                      ? LocaleKeys.activities_progress
+                      : LocaleKeys.progress_outputs,
+                ),
                 style: context.textTheme.bodySmall?.copyWith(
                   color: context.color.outlineVariant,
                 ),
@@ -216,7 +230,7 @@ class _ActivitiesProgressSection extends StatelessWidget {
             SizedBox(width: 6.w),
             Text(
               // "${getProgressBar().toStringAsFixed(1)}%",
-              "${((project.progressRatio ?? 0.0).toDouble()).toStringAsFixed(1)}%",
+              "${((isDetails ? (project.mobileDetails?.progress?.bars?[2].value ?? 0.0) : (project.progressRatio ?? 0.0)).toDouble()).toStringAsFixed(1)}%",
               style: context.textTheme.labelSmall,
             ),
           ],

@@ -308,6 +308,7 @@ abstract class  LocaleKeys {
   static const outputs = 'outputs';
   static const output = 'output';
   static const activities_progress = 'activities_progress';
+  static const progress_outputs = 'progress_outputs';
   static const activities_number = 'activities_number';
   static const the_activities = 'the_activities';
   static const activity = 'activity';

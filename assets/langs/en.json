@@ -307,6 +307,7 @@
   "outputs": "outputs",
   "output": "output",
   "activities_progress": "activities progress",
+  "progress_outputs": "outputs progress",
   "activities_number": "Activities Number",
   "the_activities": "Activities",
   "activity": "Activity",
