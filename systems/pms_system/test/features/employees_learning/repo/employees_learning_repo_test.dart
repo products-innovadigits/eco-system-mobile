@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/employees_learning/data/employees_learning_repo_impl.dart';
 import 'package:pms_system/features/employees_learning/model/employees_filters_model.dart';
@@ -6,6 +7,7 @@ import 'package:pms_system/features/employees_learning/model/employees_learning_
 
 import '../../../core/mocks/fallbacks.dart';
 import '../../../core/mocks/mock_network.dart';
+import '../../../helpers/fixture_reader.dart';
 
 void main() {
   setUpAll(() {
@@ -15,6 +17,9 @@ void main() {
   late MockNetwork mockNetwork;
   late EmployeesLearningRepoImpl repo;
 
+  final usersListFixture =
+      readJsonFixture('employees_learning/employees_learning_response.json');
+
   setUp(() {
     mockNetwork = MockNetwork();
     repo = EmployeesLearningRepoImpl(network: mockNetwork);
@@ -22,60 +27,74 @@ void main() {
 
   group('EmployeesLearningRepoImpl', () {
     group('getEmployees', () {
-      test('returns EmployeesLearningModel with succeeded=true', () async {
+      test('calls users endpoint and returns EmployeesLearningModel', () async {
+        when(
+          () => mockNetwork.requestOrThrow(
+            ApiNames.users,
+            query: any(named: 'query'),
+            method: ServerMethods.GET,
+            systemTypeEnum: ActiveSystemEnum.pms,
+            model: any(named: 'model'),
+          ),
+        ).thenAnswer((_) async {
+          return EmployeesLearningModel.fromJson(usersListFixture);
+        });
+
         final searchEngine = SearchEngine();
 
         final result = await repo.getEmployees(searchEngine);
 
-        expect(result, isNotNull,
-            reason: 'repo.getEmployees returned null');
-        expect(result, isA<EmployeesLearningModel>(),
-            reason: 'Expected EmployeesLearningModel');
-        expect(result.succeeded, isTrue,
-            reason: 'Expected succeeded to be true');
+        expect(result, isNotNull);
+        expect(result, isA<EmployeesLearningModel>());
+        expect(result.succeeded, isTrue);
+        expect(result.data?.items, isNotEmpty);
+
+        verify(
+          () => mockNetwork.requestOrThrow(
+            ApiNames.users,
+            query: <String, dynamic>{
+              'page': 1,
+              'per_page': 10,
+            },
+            method: ServerMethods.GET,
+            systemTypeEnum: ActiveSystemEnum.pms,
+            model: any(named: 'model'),
+          ),
+        ).called(1);
       });
 
-      test('returns data with items and pagination', () async {
-        final searchEngine = SearchEngine();
+      test('passes keyword in query when present', () async {
+        when(
+          () => mockNetwork.requestOrThrow(
+            any(),
+            query: any(named: 'query'),
+            method: any(named: 'method'),
+            systemTypeEnum: any(named: 'systemTypeEnum'),
+            model: any(named: 'model'),
+          ),
+        ).thenAnswer((_) async {
+          return EmployeesLearningModel.fromJson(usersListFixture);
+        });
 
-        final result = await repo.getEmployees(searchEngine);
-
-        expect(result.data, isNotNull);
-        expect(result.data?.items, isNotNull);
-        expect(result.data!.items!, isNotEmpty,
-            reason: 'Expected non-empty employees');
-        expect(result.data?.currentPage, isNotNull);
-        expect(result.data?.totalPages, isNotNull);
-      });
-
-      test('filters by search keyword', () async {
         final searchEngine = SearchEngine(
-          query: <String, dynamic>{'searchKeyword': 'Hassan'},
+          query: <String, dynamic>{'keyword': 'Nsry'},
         );
 
-        final result = await repo.getEmployees(searchEngine);
+        await repo.getEmployees(searchEngine);
 
-        expect(result.data?.items, isNotNull);
-        for (final item in result.data!.items!) {
-          expect(
-            item.name!.toLowerCase().contains('hassan'),
-            isTrue,
-            reason: 'Item "${item.name}" should contain "hassan"',
-          );
-        }
-      });
-
-      test('returns empty items for non-matching search', () async {
-        final searchEngine = SearchEngine(
-          query: <String, dynamic>{
-            'searchKeyword': 'zzz_nonexistent_zzz',
-          },
-        );
-
-        final result = await repo.getEmployees(searchEngine);
-
-        expect(result.data?.items, isNotNull);
-        expect(result.data!.items!, isEmpty);
+        verify(
+          () => mockNetwork.requestOrThrow(
+            ApiNames.users,
+            query: <String, dynamic>{
+              'page': 1,
+              'per_page': 10,
+              'keyword': 'Nsry',
+            },
+            method: ServerMethods.GET,
+            systemTypeEnum: ActiveSystemEnum.pms,
+            model: any(named: 'model'),
+          ),
+        ).called(1);
       });
     });
 

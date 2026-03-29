@@ -12,23 +12,23 @@ void main() {
         readJsonFixture('employees_learning/employees_learning_response.json');
 
     test(
-      'Contract: fromJson accepts wrapper with "succeeded" and "data" keys (Map)',
+      'Contract: fromJson accepts Laravel wrapper with "data" list and "meta"',
       () {
-        expectWrapperContract(fixtureJson, dataShape: DataShape.map);
+        expect(fixtureJson.containsKey('data'), isTrue);
+        expect(fixtureJson['data'], isA<List>());
+        expect(fixtureJson.containsKey('meta'), isTrue);
+        expect(fixtureJson['status'], 200);
       },
     );
 
-    test('fromJson correctly maps critical fields from fixture', () {
-      expectWrapperContract(fixtureJson, dataShape: DataShape.map);
-
+    test('fromJson correctly maps critical fields from Laravel fixture', () {
       final model = EmployeesLearningModel.fromJson(fixtureJson);
 
       expect(model.succeeded, isTrue,
-          reason: 'Expected "succeeded" to be true from fixture');
+          reason: 'Expected succeeded derived from status 200');
 
       final data = model.data;
-      expect(data, isNotNull,
-          reason: 'Expected "data" to be non-null');
+      expect(data, isNotNull, reason: 'Expected "data" to be non-null');
 
       final items = data?.items;
       expect(items, isNotNull, reason: 'Expected "items" list');
@@ -36,42 +36,47 @@ void main() {
 
       final firstItem = items?.first;
       expectModelFields([
-        (key: 'data.items[].id', actual: firstItem?.id, expected: 1),
+        (key: 'data[].id', actual: firstItem?.id, expected: 74),
         (
-          key: 'data.items[].name',
+          key: 'data[].name',
           actual: firstItem?.name,
-          expected: 'Hassan Aziz'
+          expected: 'Nsry Alahmry'
         ),
         (
-          key: 'data.items[].jobTitle',
+          key: 'data[].jobTitle',
           actual: firstItem?.jobTitle,
-          expected: 'Product Designer'
+          expected: 'employee'
         ),
         (
-          key: 'data.items[].team',
+          key: 'data[].team',
           actual: firstItem?.team,
-          expected: 'Designing'
+          expected: 'Product'
+        ),
+        (
+          key: 'data[].seniority',
+          actual: firstItem?.seniority,
+          expected: 'Mid-Level'
         ),
       ]);
     });
 
     group('Negative Contract Tests', () {
-      test('fails if "succeeded" key is missing', () {
-        final invalidJson = Map<String, dynamic>.from(fixtureJson)
-          ..remove('succeeded');
-        expect(
-          () => expectWrapperContract(invalidJson, dataShape: DataShape.map),
-          throwsA(isA<TestFailure>()),
-        );
-      });
-
-      test('fails if "data" key is missing', () {
+      test('fails legacy contract if "data" key is missing', () {
         final invalidJson = Map<String, dynamic>.from(fixtureJson)
           ..remove('data');
         expect(
           () => expectWrapperContract(invalidJson, dataShape: DataShape.map),
           throwsA(isA<TestFailure>()),
         );
+      });
+
+      test('fails legacy contract if "succeeded" key is missing for map data',
+          () {
+        final invalidJson = Map<String, dynamic>.from(fixtureJson)
+          ..remove('status');
+        expect(invalidJson.containsKey('succeeded'), isFalse);
+        final model = EmployeesLearningModel.fromJson(invalidJson);
+        expect(model.succeeded, isFalse);
       });
     });
 
@@ -91,6 +96,34 @@ void main() {
       expect(parsed, isA<EmployeesLearningModel>());
       expect((parsed as EmployeesLearningModel).succeeded, isTrue);
     });
+
+    test('fromJson supports legacy succeeded + data.items shape', () {
+      final legacy = {
+        'succeeded': true,
+        'data': {
+          'items': [
+            {
+              'id': 1,
+              'name': 'Legacy User',
+              'jobTitle': 'Dev',
+              'email': 'l@test.com',
+              'phone': '+1',
+              'seniority': 'Senior',
+              'team': 'Engineering',
+              'initials': 'LU',
+            }
+          ],
+          'currentPage': 1,
+          'pageSize': 10,
+          'totalPages': 1,
+          'isLastPage': true,
+          'totalCount': 1,
+        },
+      };
+      final m = EmployeesLearningModel.fromJson(legacy);
+      expect(m.data?.items?.first.name, 'Legacy User');
+      expect(m.data?.currentPage, 1);
+    });
   });
 
   group('EmployeesDataModel', () {
@@ -101,18 +134,18 @@ void main() {
       );
     });
 
-    test('fromJson parses pagination fields', () {
+    test('fromJson parses pagination fields from legacy map', () {
       final fixtureJson =
           readJsonFixture('employees_learning/employees_learning_response.json');
-      final dataJson = fixtureJson['data'] as Map<String, dynamic>;
-      final data = EmployeesDataModel.fromJson(dataJson);
+      final model = EmployeesLearningModel.fromJson(fixtureJson);
+      final data = model.data!;
 
       expectModelFields([
         (key: 'currentPage', actual: data.currentPage, expected: 1),
-        (key: 'pageSize', actual: data.pageSize, expected: 10),
-        (key: 'totalPages', actual: data.totalPages, expected: 1),
-        (key: 'isLastPage', actual: data.isLastPage, expected: true),
-        (key: 'totalCount', actual: data.totalCount, expected: 1),
+        (key: 'pageSize', actual: data.pageSize, expected: 9),
+        (key: 'totalPages', actual: data.totalPages, expected: 8),
+        (key: 'isLastPage', actual: data.isLastPage, expected: false),
+        (key: 'totalCount', actual: data.totalCount, expected: 69),
       ]);
     });
   });

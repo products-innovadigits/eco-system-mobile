@@ -87,7 +87,7 @@ class EmployeesLearningBloc
       };
 
       if (_searchKeyword.isNotEmpty) {
-        query["searchKeyword"] = _searchKeyword;
+        query["keyword"] = _searchKeyword;
       }
 
       _engine.query = query;

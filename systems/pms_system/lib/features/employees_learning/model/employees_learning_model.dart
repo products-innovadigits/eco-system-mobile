@@ -3,21 +3,22 @@ import 'package:pms_system/core/utility/pms_exports.dart';
 class EmployeesLearningModel extends SingleMapper {
   bool? succeeded;
   EmployeesDataModel? data;
+  int? status;
   dynamic warningErrors;
   List<dynamic>? validationErrors;
 
   EmployeesLearningModel({
     this.succeeded,
     this.data,
+    this.status,
     this.warningErrors,
     this.validationErrors,
   });
 
   EmployeesLearningModel.fromJson(Map<String, dynamic> json) {
-    succeeded = json['succeeded'];
-    data = json['data'] != null
-        ? EmployeesDataModel.fromJson(json['data'])
-        : null;
+    status = json['status'] is int ? json['status'] as int : null;
+    succeeded = json['succeeded'] ?? (status == 200);
+    data = EmployeesDataModel.fromResponse(json);
     warningErrors = json['warningErrors'];
     validationErrors = json['validationErrors'] != null
         ? List<dynamic>.from(json['validationErrors'])
@@ -29,6 +30,7 @@ class EmployeesLearningModel extends SingleMapper {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['succeeded'] = succeeded;
     if (this.data != null) data['data'] = this.data!.toJson();
+    data['status'] = status;
     data['warningErrors'] = warningErrors;
     if (validationErrors != null) data['validationErrors'] = validationErrors;
     return data;
@@ -77,6 +79,59 @@ class EmployeesDataModel {
     totalCount = json['totalCount'];
   }
 
+  /// Supports legacy `{ data: { items, ... } }` and Laravel
+  /// `{ data: [...], meta: { current_page, ... } }`.
+  factory EmployeesDataModel.fromResponse(Map<String, dynamic> json) {
+    final rawData = json['data'];
+    final rawMeta = json['meta'] as Map<String, dynamic>?;
+
+    if (rawData is Map<String, dynamic>) {
+      return EmployeesDataModel.fromJson(rawData);
+    }
+
+    if (rawData is List) {
+      final items = rawData
+          .whereType<Map<String, dynamic>>()
+          .map(EmployeeItemModel.fromJson)
+          .toList();
+      return EmployeesDataModel(
+        items: items,
+        currentPage: rawMeta?['current_page'] as int?,
+        pageSize: rawMeta?['per_page'] as int?,
+        totalPages: rawMeta?['last_page'] as int?,
+        nextPage: _resolveNextPage(rawMeta),
+        previousPage: _resolvePreviousPage(rawMeta),
+        isLastPage: _resolveIsLastPage(rawMeta),
+        totalCount: rawMeta?['total'] as int?,
+      );
+    }
+
+    return EmployeesDataModel();
+  }
+
+  static int? _resolveNextPage(Map<String, dynamic>? meta) {
+    if (meta == null) return null;
+    final current = meta['current_page'] as int?;
+    final last = meta['last_page'] as int?;
+    if (current == null || last == null) return null;
+    return current < last ? current + 1 : null;
+  }
+
+  static int? _resolvePreviousPage(Map<String, dynamic>? meta) {
+    if (meta == null) return null;
+    final current = meta['current_page'] as int?;
+    if (current == null || current <= 1) return null;
+    return current - 1;
+  }
+
+  static bool? _resolveIsLastPage(Map<String, dynamic>? meta) {
+    if (meta == null) return null;
+    final current = meta['current_page'] as int?;
+    final last = meta['last_page'] as int?;
+    if (current == null || last == null) return null;
+    return current >= last;
+  }
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     if (items != null) data['items'] = items!.map((v) => v.toJson()).toList();
@@ -117,13 +172,15 @@ class EmployeeItemModel {
   EmployeeItemModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
-    jobTitle = json['jobTitle'];
+    jobTitle = json['jobTitle'] as String? ?? json['role_name'] as String?;
     email = json['email'];
-    phone = json['phone'];
-    seniority = json['seniority'];
+    final rawPhone = json['phone'];
+    phone = rawPhone?.toString();
+    seniority =
+        json['seniority'] as String? ?? json['seniority_level'] as String?;
     team = json['team'];
-    imageUrl = json['imageUrl'];
-    initials = json['initials'];
+    imageUrl = json['imageUrl'] as String? ?? json['profile_photo'] as String?;
+    initials = json['initials'] as String? ?? initialsFromEmployeeName(name);
   }
 
   Map<String, dynamic> toJson() {
@@ -139,4 +196,29 @@ class EmployeeItemModel {
     data['initials'] = initials;
     return data;
   }
+}
+
+/// Builds initials for avatar fallback when API does not send [initials].
+String? initialsFromEmployeeName(String? name) {
+  if (name == null || name.trim().isEmpty) return null;
+  final parts = name
+      .trim()
+      .split(RegExp(r'\s+'))
+      .where((p) => p.isNotEmpty)
+      .toList();
+  if (parts.isEmpty) return null;
+  String firstChar(String s) {
+    if (s.isEmpty) return '';
+    final i = s.runes.first;
+    return String.fromCharCode(i);
+  }
+
+  if (parts.length >= 2) {
+    return '${firstChar(parts[0])}${firstChar(parts[1])}'.toUpperCase();
+  }
+  final first = parts[0];
+  if (first.length >= 2) {
+    return first.substring(0, 2).toUpperCase();
+  }
+  return first.toUpperCase();
 }

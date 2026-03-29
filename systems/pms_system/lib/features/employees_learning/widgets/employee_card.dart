@@ -2,11 +2,7 @@ import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/employees_learning/model/employees_learning_model.dart';
 
 class EmployeeCard extends StatelessWidget {
-  const EmployeeCard({
-    super.key,
-    required this.employee,
-    this.onTap,
-  });
+  const EmployeeCard({super.key, required this.employee, this.onTap});
 
   final EmployeeItemModel employee;
   final VoidCallback? onTap;
@@ -14,31 +10,32 @@ class EmployeeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap ??
+      onTap:
+          onTap ??
           () => CustomNavigator.push(
-                Routes.EMPLOYEE_LEARNING_DETAILS,
-                arguments: {
-                  'employeeId': employee.id ?? 0,
-                  'employeeName': employee.name,
-                },
-              ),
+            Routes.EMPLOYEE_LEARNING_DETAILS,
+            arguments: {
+              'employeeId': employee.id ?? 0,
+              'employeeName': employee.name,
+            },
+          ),
       borderRadius: BorderRadius.circular(12.w),
       child: Container(
-      margin: EdgeInsets.symmetric(vertical: 8.h),
-      decoration: BoxDecoration(
-        color: context.color.surfaceContainer,
-        border: Border.all(color: context.color.outline),
-        borderRadius: BorderRadius.circular(12.w),
+        margin: EdgeInsets.symmetric(vertical: 8.h),
+        decoration: BoxDecoration(
+          color: context.color.surfaceContainer,
+          border: Border.all(color: context.color.outline),
+          borderRadius: BorderRadius.circular(12.w),
+        ),
+        padding: EdgeInsets.all(16.w),
+        child: Column(
+          children: [
+            _EmployeeHeader(employee: employee),
+            SizedBox(height: 16.h),
+            _EmployeeInfoGrid(employee: employee),
+          ],
+        ),
       ),
-      padding: EdgeInsets.all(16.w),
-      child: Column(
-        children: [
-          _EmployeeHeader(employee: employee),
-          SizedBox(height: 16.h),
-          _EmployeeInfoGrid(employee: employee),
-        ],
-      ),
-    ),
     );
   }
 }
@@ -204,15 +201,25 @@ class _InfoItem extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 2.h),
-              Text(
-                value,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: context.textTheme.bodySmall?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  fontSize: FontSizes.f12,
-                ),
-              ),
+              value.isNotEmpty
+                  ? Text(
+                      value,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: context.textTheme.bodySmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        fontSize: FontSizes.f12,
+                      ),
+                    )
+                  : Padding(
+                      padding: EdgeInsetsDirectional.only(start: 16.w),
+                      child: Text(
+                        '--',
+                        style: context.textTheme.headlineLarge?.copyWith(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
             ],
           ),
         ),

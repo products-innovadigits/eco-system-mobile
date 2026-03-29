@@ -48,6 +48,7 @@ abstract class ApiNames {
 
   // PMS APIs ====================
   static const appraisalReviewCycles = "appraisal/review-cycles";
+  static const users = "users";
 
   // Talent Pool APIs ====================
   static const talents = "candidates";
