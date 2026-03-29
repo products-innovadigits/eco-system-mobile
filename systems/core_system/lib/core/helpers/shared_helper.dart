@@ -11,6 +11,10 @@ class CachingKey extends Enum<String> {
   static const CachingKey deviceToken = CachingKey('deviceToken');
   static const CachingKey isLogin = CachingKey('isLogin');
   static const CachingKey skipBoarding = CachingKey('skipBoarding');
+
+  /// Module id from [SystemModule.id] chosen at login (e.g. `pms_system`).
+  /// Used to restore [AppConfig.activeSystem] after app restart.
+  static const CachingKey chosenSystemModuleId = CachingKey('chosenSystemModuleId');
 }
 
 class SharedHelper {

@@ -1,4 +1,5 @@
 import 'package:core_system/core/bloc/theme_cubit.dart';
+import 'package:core_system/core/config/app_config.dart';
 import 'package:core_system/core/helpers/permissions.dart';
 import 'package:core_system/core/utility/export.dart';
 import 'package:eco_system/app/modules/modules_registry.dart';
@@ -13,13 +14,6 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
     UserBloc.activeSystems = ModulesRegistry.enabledModules
         .map((m) => m.system)
         .toList();
-
-    // /// Check if Proxy is enabled from compile-time flag
-    // final raw = const String.fromEnvironment(
-    //   'ENABLE_PROXY',
-    //   defaultValue: 'false',
-    // );
-    // UserBloc.enableProxy = raw.toLowerCase().trim() == 'true';
   }
 
   Future<void> getColorScheme() async {
@@ -43,6 +37,7 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
       getActiveSystem();
 
       if (isLogin) {
+        await _restoreChosenSystem(helper);
         UserBloc.instance.add(Click());
       }
 
@@ -54,5 +49,19 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
         CustomNavigator.push(Routes.MAIN_PAGE, clean: true);
       }
     });
+  }
+
+  /// Restores [AppConfig.activeSystem] from Hive after cold start (login dropdown is in-memory only).
+  Future<void> _restoreChosenSystem(SharedHelper helper) async {
+    final moduleId = await helper.readString(CachingKey.chosenSystemModuleId);
+    if (moduleId.isNotEmpty) {
+      AppConfig.activeSystem = ActiveSystemEnum.fromModuleId(moduleId);
+      UserBloc.currentActiveSystem = AppConfig.activeSystem;
+      return;
+    }
+    if (ModulesRegistry.enabledModules.isNotEmpty) {
+      AppConfig.activeSystem = ModulesRegistry.enabledModules.first.system;
+      UserBloc.currentActiveSystem = AppConfig.activeSystem;
+    }
   }
 }

@@ -68,6 +68,12 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
               UserBloc.instance.add(Click());
             });
         await SharedHelper.sharedHelper!.saveUser();
+        if (selectedSystemId != null) {
+          await SharedHelper.sharedHelper!.writeData(
+            CachingKey.chosenSystemModuleId,
+            selectedSystemId!,
+          );
+        }
         // if (UserBloc.activeSystems.contains(ActiveSystemEnum.strategy)) {
         //   log('Strategy system is active==================');
         //   await LoginRepo.strategyLogin(token: model.accessToken.toString());
