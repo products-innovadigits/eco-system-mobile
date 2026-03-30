@@ -606,10 +606,12 @@ abstract class  LocaleKeys {
   static const request_for_learning_path = 'request_for_learning_path';
   static const highest = 'highest';
   static const lowest = 'lowest';
+  static const lowest_competency = 'lowest_competency';
   static const competency = 'competency';
   static const review_cycles = 'review_cycles';
   static const date_of_cycle = 'date_of_cycle';
   static const preview_report = 'preview_report';
+  static const competency_highlights_from_last_review = 'competency_highlights_from_last_review';
   static const total = 'total';
   static const login_to = 'login_to';
   static const please_select_system = 'please_select_system';

@@ -5,6 +5,8 @@ import 'package:pms_system/features/cycle_review/data/cycle_review_repo_impl.dar
 import 'package:pms_system/features/cycle_review/domain/cycle_review_repo.dart';
 import 'package:pms_system/features/cycles/data/cycles_repo_impl.dart';
 import 'package:pms_system/features/cycles/domain/cycles_repo.dart';
+import 'package:pms_system/features/employee_learning_details/data/employee_learning_details_repo_impl.dart';
+import 'package:pms_system/features/employee_learning_details/domain/employee_learning_details_repo.dart';
 import 'package:pms_system/features/employees_learning/data/employees_learning_repo_impl.dart';
 import 'package:pms_system/features/employees_learning/domain/employees_learning_repo.dart';
 import 'package:pms_system/features/employees_performance/data/employees_performance_repo_impl.dart';
@@ -34,6 +36,12 @@ void setupPmsLocator() {
   if (!pmsSl.isRegistered<CycleReportsRepo>()) {
     pmsSl.registerLazySingleton<CycleReportsRepo>(
       () => CycleReportsRepoImpl(network: pmsSl()),
+    );
+  }
+
+  if (!pmsSl.isRegistered<EmployeeLearningDetailsRepo>()) {
+    pmsSl.registerLazySingleton<EmployeeLearningDetailsRepo>(
+      () => EmployeeLearningDetailsRepoImpl(network: pmsSl()),
     );
   }
 

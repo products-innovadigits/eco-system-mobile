@@ -2,6 +2,8 @@ import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/employees_learning/domain/employees_learning_repo.dart';
 import 'package:pms_system/features/employees_learning/model/employees_filters_model.dart';
 import 'package:pms_system/features/employees_learning/model/employees_learning_model.dart';
+import 'package:pms_system/features/employees_learning/model/seniority_levels_model.dart';
+import 'package:pms_system/features/employees_learning/model/teams_model.dart';
 
 class EmployeesLearningRepoImpl implements EmployeesLearningRepo {
   final Network network;
@@ -24,6 +26,16 @@ class EmployeesLearningRepoImpl implements EmployeesLearningRepo {
       apiQuery['keyword'] = keyword;
     }
 
+    final teamId = query['teamId'];
+    if (teamId != null) {
+      apiQuery['team_id'] = teamId;
+    }
+
+    final seniorityLevelId = query['seniorityLevelId'];
+    if (seniorityLevelId != null) {
+      apiQuery['seniority_level_id'] = seniorityLevelId;
+    }
+
     return await network.requestOrThrow(
       ApiNames.users,
       query: apiQuery,
@@ -34,29 +46,51 @@ class EmployeesLearningRepoImpl implements EmployeesLearningRepo {
   }
 
   @override
-  Future<EmployeesFiltersModel> getFilterOptions() async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    return _simulatedFilters();
+  Future<SeniorityLevelsModel> getSeniorityLevels() async {
+    return await network.requestOrThrow(
+      ApiNames.seniorityLevels,
+      method: ServerMethods.GET,
+      systemTypeEnum: ActiveSystemEnum.pms,
+      model: SeniorityLevelsModel(),
+    ) as SeniorityLevelsModel;
   }
 
-  EmployeesFiltersModel _simulatedFilters() {
+  @override
+  Future<TeamsModel> getTeams() async {
+    return await network.requestOrThrow(
+      ApiNames.allTeams,
+      method: ServerMethods.GET,
+      systemTypeEnum: ActiveSystemEnum.pms,
+      model: TeamsModel(),
+    ) as TeamsModel;
+  }
+
+  @override
+  Future<EmployeesFiltersModel> getFilterOptions() async {
+    final results = await Future.wait([
+      getSeniorityLevels(),
+      getTeams(),
+    ]);
+
+    final seniorityModel = results[0] as SeniorityLevelsModel;
+    final teamsModel = results[1] as TeamsModel;
+
+    final seniorityItems = seniorityModel.data
+        ?.map((item) => FilterOptionItem(id: item.id, name: item.name))
+        .toList();
+
+    final teamItems = teamsModel.data
+        ?.map((item) => FilterOptionItem(id: item.id, name: item.name))
+        .toList();
+
+    final allSucceeded =
+        (seniorityModel.succeeded ?? false) && (teamsModel.succeeded ?? false);
+
     return EmployeesFiltersModel(
-      succeeded: true,
+      succeeded: allSucceeded,
       data: EmployeesFiltersData(
-        teams: [
-          FilterOptionItem(id: 1, name: 'Designing'),
-          FilterOptionItem(id: 2, name: 'Engineering'),
-          FilterOptionItem(id: 3, name: 'Management'),
-          FilterOptionItem(id: 4, name: 'Human Resources'),
-          FilterOptionItem(id: 5, name: 'Marketing'),
-        ],
-        seniorityLevels: [
-          FilterOptionItem(id: 1, name: 'Junior'),
-          FilterOptionItem(id: 2, name: 'Mid-Level'),
-          FilterOptionItem(id: 3, name: 'Senior'),
-          FilterOptionItem(id: 4, name: 'Team Leader'),
-          FilterOptionItem(id: 5, name: 'Manager'),
-        ],
+        seniorityLevels: seniorityItems,
+        teams: teamItems,
       ),
     );
   }

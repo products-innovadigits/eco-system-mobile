@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/employees_learning/bloc/employees_learning_bloc.dart';
 import 'package:pms_system/features/employees_learning/bloc/employees_learning_events.dart';
@@ -11,7 +13,7 @@ class EmployeesFiltrationBloc
   final EmployeesLearningRepo repo;
 
   EmployeesFiltrationBloc({required this.repo})
-      : super(const EmployeesFiltrationInitial()) {
+    : super(const EmployeesFiltrationInitial()) {
     on<LoadEmployeesFilterOptions>(_onLoadFilterOptions);
     on<ApplyEmployeesFilters>(_onApplyFilters);
     on<ResetEmployeesFilters>(_onResetFilters);
@@ -96,6 +98,7 @@ class EmployeesFiltrationBloc
         ),
       ),
     );
+    log("Filter Applied ${selectedTeam?.name} - ${selectedSeniority?.name}");
 
     add(const ApplyEmployeesFilters());
     CustomNavigator.pop();

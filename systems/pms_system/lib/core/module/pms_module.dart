@@ -6,6 +6,7 @@ import 'package:pms_system/core/di/pms_locator.dart';
 import 'package:pms_system/features/cycle_reports/view/cycle_reports_view.dart';
 import 'package:pms_system/features/cycle_review/view/cycle_review_view.dart';
 import 'package:pms_system/features/cycles/view/cycles_view.dart';
+import 'package:pms_system/features/employee_learning_details/domain/employee_learning_details_repo.dart';
 import 'package:pms_system/features/employee_learning_details/view/employee_learning_details_view.dart';
 import 'package:pms_system/features/employees_learning/view/employees_learning_view.dart';
 import 'package:pms_system/features/employees_performance/view/employees_performance_view.dart';
@@ -81,6 +82,7 @@ class PmsModule implements SystemModule {
       return MaterialPageRoute(
         builder: (_) => EmployeeLearningDetailsView(
           employeeId: employeeId,
+          repo: pmsSl<EmployeeLearningDetailsRepo>(),
           employeeName: employeeName,
         ),
       );

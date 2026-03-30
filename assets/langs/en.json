@@ -605,10 +605,12 @@
   "request_for_learning_path": "Request for learning path",
   "highest": "Highest",
   "lowest": "Lowest",
+  "lowest_competency": "Lowest\nCompetency",
   "competency": "Competency",
   "review_cycles": "Review Cycles",
   "date_of_cycle": "Date of cycle:",
   "preview_report": "Preview Report",
+  "competency_highlights_from_last_review": "Competency Highlights from Last Review",
   "total": "Total",
   "login_to": "Login to",
   "please_select_system": "Please select a system"

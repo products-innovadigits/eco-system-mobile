@@ -4,6 +4,8 @@ import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/employees_learning/data/employees_learning_repo_impl.dart';
 import 'package:pms_system/features/employees_learning/model/employees_filters_model.dart';
 import 'package:pms_system/features/employees_learning/model/employees_learning_model.dart';
+import 'package:pms_system/features/employees_learning/model/seniority_levels_model.dart';
+import 'package:pms_system/features/employees_learning/model/teams_model.dart';
 
 import '../../../core/mocks/fallbacks.dart';
 import '../../../core/mocks/mock_network.dart';
@@ -98,28 +100,141 @@ void main() {
       });
     });
 
-    group('getFilterOptions', () {
-      test('returns EmployeesFiltersModel with succeeded=true', () async {
-        final result = await repo.getFilterOptions();
+    group('getSeniorityLevels', () {
+      test('calls seniority-levels endpoint and returns SeniorityLevelsModel',
+          () async {
+        when(
+          () => mockNetwork.requestOrThrow(
+            ApiNames.seniorityLevels,
+            method: ServerMethods.GET,
+            systemTypeEnum: ActiveSystemEnum.pms,
+            model: any(named: 'model'),
+          ),
+        ).thenAnswer((_) async {
+          return SeniorityLevelsModel.fromJson({
+            'data': [
+              {'id': 1, 'name': 'Senior-Level', 'sort_order': 1},
+              {'id': 2, 'name': 'Mid-Level', 'sort_order': 2},
+            ],
+            'status': 200,
+          });
+        });
 
-        expect(result, isNotNull,
-            reason: 'repo.getFilterOptions returned null');
-        expect(result, isA<EmployeesFiltersModel>(),
-            reason: 'Expected EmployeesFiltersModel');
-        expect(result.succeeded, isTrue,
-            reason: 'Expected succeeded to be true');
-      });
+        final result = await repo.getSeniorityLevels();
 
-      test('returns teams and seniority levels', () async {
-        final result = await repo.getFilterOptions();
-
+        expect(result, isA<SeniorityLevelsModel>());
+        expect(result.succeeded, isTrue);
         expect(result.data, isNotNull);
-        expect(result.data?.teams, isNotNull);
-        expect(result.data!.teams!, isNotEmpty,
-            reason: 'Expected non-empty teams');
+        expect(result.data!.length, 2);
+
+        verify(
+          () => mockNetwork.requestOrThrow(
+            ApiNames.seniorityLevels,
+            method: ServerMethods.GET,
+            systemTypeEnum: ActiveSystemEnum.pms,
+            model: any(named: 'model'),
+          ),
+        ).called(1);
+      });
+    });
+
+    group('getTeams', () {
+      test('calls all-teams endpoint and returns TeamsModel', () async {
+        when(
+          () => mockNetwork.requestOrThrow(
+            ApiNames.allTeams,
+            method: ServerMethods.GET,
+            systemTypeEnum: ActiveSystemEnum.pms,
+            model: any(named: 'model'),
+          ),
+        ).thenAnswer((_) async {
+          return TeamsModel.fromJson({
+            'data': [
+              {'id': 1, 'name': 'Development', 'color': null},
+              {'id': 3, 'name': 'Mobile', 'color': '20, 35, 49'},
+            ],
+            'status': 200,
+            'message': 'Fetched Successfully',
+          });
+        });
+
+        final result = await repo.getTeams();
+
+        expect(result, isA<TeamsModel>());
+        expect(result.succeeded, isTrue);
+        expect(result.data, isNotNull);
+        expect(result.data!.length, 2);
+        expect(result.data!.first.name, 'Development');
+
+        verify(
+          () => mockNetwork.requestOrThrow(
+            ApiNames.allTeams,
+            method: ServerMethods.GET,
+            systemTypeEnum: ActiveSystemEnum.pms,
+            model: any(named: 'model'),
+          ),
+        ).called(1);
+      });
+    });
+
+    group('getFilterOptions', () {
+      void mockBothFilterApis() {
+        when(
+          () => mockNetwork.requestOrThrow(
+            ApiNames.seniorityLevels,
+            method: ServerMethods.GET,
+            systemTypeEnum: ActiveSystemEnum.pms,
+            model: any(named: 'model'),
+          ),
+        ).thenAnswer((_) async {
+          return SeniorityLevelsModel.fromJson({
+            'data': [
+              {'id': 1, 'name': 'Senior-Level', 'sort_order': 1},
+              {'id': 18, 'name': 'Junior-Level', 'sort_order': 5},
+            ],
+            'status': 200,
+          });
+        });
+
+        when(
+          () => mockNetwork.requestOrThrow(
+            ApiNames.allTeams,
+            method: ServerMethods.GET,
+            systemTypeEnum: ActiveSystemEnum.pms,
+            model: any(named: 'model'),
+          ),
+        ).thenAnswer((_) async {
+          return TeamsModel.fromJson({
+            'data': [
+              {'id': 1, 'name': 'Development', 'color': null},
+              {'id': 3, 'name': 'Mobile', 'color': '20, 35, 49'},
+            ],
+            'status': 200,
+            'message': 'Fetched Successfully',
+          });
+        });
+      }
+
+      test('returns EmployeesFiltersModel with both teams and seniority levels',
+          () async {
+        mockBothFilterApis();
+
+        final result = await repo.getFilterOptions();
+
+        expect(result, isNotNull);
+        expect(result, isA<EmployeesFiltersModel>());
+        expect(result.succeeded, isTrue);
+        expect(result.data, isNotNull);
+
         expect(result.data?.seniorityLevels, isNotNull);
-        expect(result.data!.seniorityLevels!, isNotEmpty,
-            reason: 'Expected non-empty seniority levels');
+        expect(result.data!.seniorityLevels!.length, 2);
+        expect(result.data!.seniorityLevels!.first.id, 1);
+        expect(result.data!.seniorityLevels!.first.name, 'Senior-Level');
+
+        expect(result.data?.teams, isNotNull);
+        expect(result.data!.teams!.length, 2);
+        expect(result.data!.teams!.first.id, 1);
+        expect(result.data!.teams!.first.name, 'Development');
       });
     });
   });

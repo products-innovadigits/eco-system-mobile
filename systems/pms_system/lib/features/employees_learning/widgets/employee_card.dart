@@ -2,9 +2,15 @@ import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/employees_learning/model/employees_learning_model.dart';
 
 class EmployeeCard extends StatelessWidget {
-  const EmployeeCard({super.key, required this.employee, this.onTap});
+  const EmployeeCard({
+    super.key,
+    required this.employee,
+    this.appraisalId,
+    this.onTap,
+  });
 
   final EmployeeItemModel employee;
+  final int? appraisalId;
   final VoidCallback? onTap;
 
   @override
@@ -17,6 +23,7 @@ class EmployeeCard extends StatelessWidget {
             arguments: {
               'employeeId': employee.id ?? 0,
               'employeeName': employee.name,
+              if (appraisalId != null) 'appraisalId': appraisalId,
             },
           ),
       borderRadius: BorderRadius.circular(12.w),

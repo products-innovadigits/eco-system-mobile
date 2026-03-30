@@ -49,6 +49,12 @@ abstract class ApiNames {
   // PMS APIs ====================
   static const appraisalReviewCycles = "appraisal/review-cycles";
   static const users = "users";
+  static const seniorityLevels = "seniority-levels";
+  static const allTeams = "all-teams";
+  static String userReviewCycles(int userId) =>
+      'users/$userId/review-cycles';
+  static String userLastReviewCycleReport(int userId) =>
+      'users/$userId/last-review-cycle-report';
 
   // Talent Pool APIs ====================
   static const talents = "candidates";

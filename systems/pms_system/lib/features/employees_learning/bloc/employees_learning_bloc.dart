@@ -46,6 +46,7 @@ class EmployeesLearningBloc
     Emitter<EmployeesLearningState> emit,
   ) async {
     if (_isLoadingMore || !_engine.hasMorePages) return;
+    _isLoadingMore = true;
     _engine.updateCurrentPage(_engine.currentPage + 1);
     add(LoadEmployees(searchEngine: _engine));
   }
@@ -139,10 +140,34 @@ class EmployeesLearningBloc
       }
     } on NetworkException catch (e) {
       _isLoadingMore = false;
-      emit(EmployeesFailure(message: e.message));
+      if (_employees.isNotEmpty) {
+        emit(
+          EmployeesLoaded(
+            employees: _employees,
+            isLoadingMore: false,
+            currentPage: _engine.currentPage,
+            totalPages: _engine.maxPages,
+            hasMore: _engine.hasMorePages,
+          ),
+        );
+      } else {
+        emit(EmployeesFailure(message: e.message));
+      }
     } catch (e) {
       _isLoadingMore = false;
-      emit(EmployeesFailure(message: e.toString()));
+      if (_employees.isNotEmpty) {
+        emit(
+          EmployeesLoaded(
+            employees: _employees,
+            isLoadingMore: false,
+            currentPage: _engine.currentPage,
+            totalPages: _engine.maxPages,
+            hasMore: _engine.hasMorePages,
+          ),
+        );
+      } else {
+        emit(EmployeesFailure(message: e.toString()));
+      }
     }
   }
 
