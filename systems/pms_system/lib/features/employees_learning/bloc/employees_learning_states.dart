@@ -17,6 +17,7 @@ class EmployeesLoaded extends EmployeesLearningState {
   final bool isLoadingMore;
   final int currentPage;
   final int totalPages;
+  final int totalCount;
   final bool hasMore;
 
   const EmployeesLoaded({
@@ -24,6 +25,7 @@ class EmployeesLoaded extends EmployeesLearningState {
     this.isLoadingMore = false,
     this.currentPage = 0,
     this.totalPages = 1,
+    this.totalCount = 0,
     this.hasMore = false,
   });
 }

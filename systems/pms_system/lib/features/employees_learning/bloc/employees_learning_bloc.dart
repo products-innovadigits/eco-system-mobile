@@ -70,6 +70,7 @@ class EmployeesLearningBloc
             isLoadingMore: true,
             currentPage: _engine.currentPage,
             totalPages: _engine.maxPages,
+            totalCount: _engine.totalCount,
             hasMore: _engine.hasMorePages,
           ),
         );
@@ -120,6 +121,7 @@ class EmployeesLearningBloc
             isLoadingMore: false,
             currentPage: _engine.currentPage,
             totalPages: _engine.maxPages,
+            totalCount: _engine.totalCount,
             hasMore: _engine.hasMorePages,
           ),
         );
@@ -133,6 +135,7 @@ class EmployeesLearningBloc
               isLoadingMore: false,
               currentPage: _engine.currentPage,
               totalPages: _engine.maxPages,
+              totalCount: _engine.totalCount,
               hasMore: _engine.hasMorePages,
             ),
           );
@@ -147,6 +150,7 @@ class EmployeesLearningBloc
             isLoadingMore: false,
             currentPage: _engine.currentPage,
             totalPages: _engine.maxPages,
+            totalCount: _engine.totalCount,
             hasMore: _engine.hasMorePages,
           ),
         );
@@ -162,6 +166,7 @@ class EmployeesLearningBloc
             isLoadingMore: false,
             currentPage: _engine.currentPage,
             totalPages: _engine.maxPages,
+            totalCount: _engine.totalCount,
             hasMore: _engine.hasMorePages,
           ),
         );
