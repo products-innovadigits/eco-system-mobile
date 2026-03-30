@@ -1,9 +1,12 @@
+import 'package:core_system/core/model/search_engine.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:pms_system/features/cycle_review/data/cycle_review_repo_impl.dart';
 import 'package:pms_system/features/cycle_review/model/cycle_review_model.dart';
 
 import '../../../core/mocks/fallbacks.dart';
 import '../../../core/mocks/mock_network.dart';
+import '../../../helpers/fixture_reader.dart';
 
 void main() {
   setUpAll(() {
@@ -20,45 +23,127 @@ void main() {
 
   group('CycleReviewRepoImpl', () {
     group('getCycleDetail', () {
-      test('returns CycleDetailModel with succeeded=true for known id', () async {
+      test('calls network.requestOrThrow and returns CycleDetailModel',
+          () async {
+        final fixtureJson = readJsonFixture(
+          'cycle_review/cycle_review_response.json',
+        );
+        when(
+          () => mockNetwork.requestOrThrow(
+            any(),
+            method: any(named: 'method'),
+            systemTypeEnum: any(named: 'systemTypeEnum'),
+            model: any(named: 'model'),
+          ),
+        ).thenAnswer(
+          (_) async => CycleDetailModel.fromJson(fixtureJson),
+        );
+
         final result = await repo.getCycleDetail(1);
 
-        expect(result, isNotNull,
-            reason: 'repo.getCycleDetail returned null');
-        expect(result, isA<CycleDetailModel>(),
-            reason: 'Expected CycleDetailModel');
-        expect(result.succeeded, isTrue,
-            reason: 'Expected succeeded to be true');
-      });
-
-      test('returns data with all required fields for cycle 1', () async {
-        final result = await repo.getCycleDetail(1);
-
-        final data = result.data;
-        expect(data, isNotNull, reason: 'Expected data to be non-null');
-        expect(data?.id, equals(1));
-        expect(data?.title, isNotNull);
-        expect(data?.reviewees, isNotNull);
-        expect(data?.reviewees, isNotEmpty,
-            reason: 'Expected non-empty reviewees');
-        expect(data?.roleGroups, isNotNull);
-        expect(data?.roleGroups, isNotEmpty,
-            reason: 'Expected non-empty roleGroups');
-      });
-
-      test('returns data for cycle 2 with different title', () async {
-        final result = await repo.getCycleDetail(2);
-
-        expect(result.data?.id, equals(2));
-        expect(result.data?.title, equals('Annual Performance Cycle'));
-      });
-
-      test('returns fallback data for unknown cycle id', () async {
-        final result = await repo.getCycleDetail(999);
-
-        expect(result.succeeded, isTrue,
-            reason: 'Should return fallback data for unknown id');
+        expect(result, isA<CycleDetailModel>());
+        expect(result.succeeded, isTrue);
         expect(result.data, isNotNull);
+        expect(result.data?.id, equals(1));
+        verify(
+          () => mockNetwork.requestOrThrow(
+            any(),
+            method: any(named: 'method'),
+            systemTypeEnum: any(named: 'systemTypeEnum'),
+            model: any(named: 'model'),
+          ),
+        ).called(1);
+      });
+    });
+
+    group('getReviewCycleSummary', () {
+      test('returns CycleSummaryResponseModel with parsed data', () async {
+        final fixtureJson = readJsonFixture(
+          'cycle_review/cycle_summary_response.json',
+        );
+        when(
+          () => mockNetwork.requestOrThrow(
+            any(),
+            method: any(named: 'method'),
+            systemTypeEnum: any(named: 'systemTypeEnum'),
+            model: any(named: 'model'),
+          ),
+        ).thenAnswer(
+          (_) async => CycleSummaryResponseModel.fromJson(fixtureJson),
+        );
+
+        final result = await repo.getReviewCycleSummary(cycleId: 171);
+
+        expect(result, isA<CycleSummaryResponseModel>());
+        expect(result.status, equals(200));
+        expect(result.data, isNotNull);
+        expect(result.data?.id, equals(171));
+        expect(result.data?.overallProgress, equals(50));
+      });
+    });
+
+    group('getRevieweeStatus', () {
+      test('returns RevieweeStatusResponseModel with items', () async {
+        final fixtureJson = readJsonFixture(
+          'cycle_review/reviewee_status_response.json',
+        );
+        when(
+          () => mockNetwork.requestOrThrow(
+            any(),
+            method: any(named: 'method'),
+            systemTypeEnum: any(named: 'systemTypeEnum'),
+            model: any(named: 'model'),
+          ),
+        ).thenAnswer(
+          (_) async => RevieweeStatusResponseModel.fromJson(fixtureJson),
+        );
+
+        final result = await repo.getRevieweeStatus(cycleId: 171);
+
+        expect(result, isA<RevieweeStatusResponseModel>());
+        expect(result.data, isNotNull);
+        expect(result.data!.length, equals(2));
+        expect(result.total, equals(2));
+        expect(result.currentPage, equals(1));
+      });
+    });
+
+    group('getRevieweeStatusPaginated', () {
+      test('passes query params from engine', () async {
+        final fixtureJson = readJsonFixture(
+          'cycle_review/reviewee_status_response.json',
+        );
+        when(
+          () => mockNetwork.requestOrThrow(
+            any(),
+            method: any(named: 'method'),
+            query: any(named: 'query'),
+            systemTypeEnum: any(named: 'systemTypeEnum'),
+            model: any(named: 'model'),
+          ),
+        ).thenAnswer(
+          (_) async => RevieweeStatusResponseModel.fromJson(fixtureJson),
+        );
+
+        final engine = SearchEngine();
+        engine.query = {'page': 1, 'per_page': 10};
+
+        final result = await repo.getRevieweeStatusPaginated(
+          cycleId: 171,
+          engine: engine,
+        );
+
+        expect(result, isA<RevieweeStatusResponseModel>());
+        expect(result.data, isNotNull);
+        verify(
+          () => mockNetwork.requestOrThrow(
+            any(),
+            method: any(named: 'method'),
+            query: any(named: 'query'),
+            systemTypeEnum: any(named: 'systemTypeEnum'),
+            model: any(named: 'model'),
+          ),
+        ).called(1);
       });
     });
   });

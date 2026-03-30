@@ -18,24 +18,24 @@ class CycleOverviewSection extends StatelessWidget {
             fontWeight: FontWeight.w700,
           ),
         ),
-        SizedBox(height: 14.h),
-        Row(
-          children: [
-            Expanded(
-              child: _StatCard(
-                icon: Icons.star_rounded,
-                iconColor: LightColor.secondary,
-                label: allTranslations.text(LocaleKeys.total_score),
-                value: '${detail.totalScore?.toInt() ?? 0}%',
-              ),
-            ),
-            SizedBox(width: 12.w),
-            Expanded(
-              child: _RevieweesStatCard(count: detail.revieweesCount ?? 0),
-            ),
-          ],
-        ),
-        SizedBox(height: 16.h),
+        // SizedBox(height: 14.h),
+        // Row(
+        //   children: [
+        //     Expanded(
+        //       child: _StatCard(
+        //         icon: Icons.star_rounded,
+        //         iconColor: LightColor.secondary,
+        //         label: allTranslations.text(LocaleKeys.total_score),
+        //         value: '${detail.totalScore?.toInt() ?? 0}%',
+        //       ),
+        //     ),
+        //     SizedBox(width: 12.w),
+        //     Expanded(
+        //       child: _RevieweesStatCard(count: detail.revieweesCount ?? 0),
+        //     ),
+        //   ],
+        // ),
+        // SizedBox(height: 16.h),
         ...roleGroups.map(
           (group) => Padding(
             padding: EdgeInsets.only(bottom: 4.h),

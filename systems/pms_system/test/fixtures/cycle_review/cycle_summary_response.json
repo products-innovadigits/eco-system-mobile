@@ -1,0 +1,28 @@
+{
+  "status": 200,
+  "message": "Fetched Successfully",
+  "data": {
+    "id": 171,
+    "name": "2 reviewers 2026-03-30 ----> 2",
+    "state": "canceled",
+    "overall_progress": 50,
+    "completed_count": 1,
+    "total_count": 2,
+    "reviewers_count": 2,
+    "managers": {
+      "count": 2,
+      "deadline": 5,
+      "deadline_date": "2026-04-04"
+    },
+    "direct_reports": {
+      "count": 0,
+      "deadline": 5,
+      "deadline_date": "2026-04-04"
+    },
+    "peers": {
+      "count": 0,
+      "deadline": 5,
+      "deadline_date": "2026-04-04"
+    }
+  }
+}

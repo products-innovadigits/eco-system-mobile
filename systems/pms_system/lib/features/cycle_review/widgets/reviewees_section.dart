@@ -4,8 +4,15 @@ import 'package:pms_system/features/cycle_review/widgets/reviewee_card.dart';
 
 class ReviewersSection extends StatelessWidget {
   final List<CycleRevieweeModel> reviewers;
+  final int? cycleId;
+  final int totalReviewees;
 
-  const ReviewersSection({super.key, required this.reviewers});
+  const ReviewersSection({
+    super.key,
+    required this.reviewers,
+    this.cycleId,
+    required this.totalReviewees,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +22,33 @@ class ReviewersSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              allTranslations.text(LocaleKeys.reviewers),
-              style: context.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
+            Row(
+              children: [
+                Text(
+                  allTranslations.text(LocaleKeys.reviewers),
+                  style: context.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                SizedBox(width: 6.w),
+                Text(
+                  '($totalReviewees)',
+                  style: context.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: context.color.outlineVariant,
+                  ),
+                ),
+              ],
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                if (cycleId != null) {
+                  CustomNavigator.push(
+                    Routes.CYCLE_REVIEWEES,
+                    arguments: cycleId,
+                  );
+                }
+              },
               child: Text(
                 allTranslations.text(LocaleKeys.view_all),
                 style: context.textTheme.bodySmall?.copyWith(
@@ -35,7 +61,7 @@ class ReviewersSection extends StatelessWidget {
         ),
         SizedBox(height: 12.h),
         ...List.generate(
-          reviewers.length,
+          reviewers.length > 3 ? 3 : reviewers.length,
           (index) => Padding(
             padding: EdgeInsets.only(bottom: 10.h),
             child: ReviewCard(

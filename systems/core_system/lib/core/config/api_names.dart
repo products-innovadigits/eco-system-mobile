@@ -55,6 +55,10 @@ abstract class ApiNames {
       'users/$userId/review-cycles';
   static String userLastReviewCycleReport(int userId) =>
       'users/$userId/last-review-cycle-report';
+  static String reviewCycleSummary(int cycleId) =>
+      'appraisal/review-cycles/$cycleId/summary';
+  static String reviewCycleRevieweeStatus(int cycleId) =>
+      'appraisal/review-cycles/$cycleId/reviewee-status';
 
   // Talent Pool APIs ====================
   static const talents = "candidates";

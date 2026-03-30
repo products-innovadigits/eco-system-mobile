@@ -5,6 +5,7 @@ import 'package:core_system/core/utility/export.dart';
 import 'package:pms_system/core/di/pms_locator.dart';
 import 'package:pms_system/features/cycle_reports/view/cycle_reports_view.dart';
 import 'package:pms_system/features/cycle_review/view/cycle_review_view.dart';
+import 'package:pms_system/features/cycle_review/view/cycle_reviewees_view.dart';
 import 'package:pms_system/features/cycles/view/cycles_view.dart';
 import 'package:pms_system/features/employee_learning_details/domain/employee_learning_details_repo.dart';
 import 'package:pms_system/features/employee_learning_details/view/employee_learning_details_view.dart';
@@ -73,6 +74,13 @@ class PmsModule implements SystemModule {
       return MaterialPageRoute(
         settings: settings,
         builder: (_) => const EmployeesPerformanceView(),
+      );
+    },
+    Routes.CYCLE_REVIEWEES: (settings) {
+      final cycleId = settings.arguments as int? ?? 0;
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => CycleRevieweesView(cycleId: cycleId),
       );
     },
     Routes.EMPLOYEE_LEARNING_DETAILS: (settings) {

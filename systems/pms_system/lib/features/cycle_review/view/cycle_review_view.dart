@@ -5,6 +5,7 @@ import 'package:pms_system/features/cycle_review/bloc/cycle_review_events.dart';
 import 'package:pms_system/features/cycle_review/bloc/cycle_review_states.dart';
 import 'package:pms_system/features/cycle_review/widgets/cycle_overview_section.dart';
 import 'package:pms_system/features/cycle_review/widgets/cycle_review_header.dart';
+import 'package:pms_system/features/cycle_review/widgets/cycle_review_shimmer.dart';
 import 'package:pms_system/features/cycle_review/widgets/overall_progress_section.dart';
 import 'package:pms_system/features/cycle_review/widgets/reviewees_section.dart';
 
@@ -26,7 +27,7 @@ class _CycleReviewViewState extends State<CycleReviewView> {
   void initState() {
     super.initState();
     _bloc = CycleReviewBloc(repo: pmsSl())
-      ..add(LoadCycleReview(cycleId: widget.cycleId));
+      ..add(LoadReviewCycleSummary(cycleId: widget.cycleId));
   }
 
   @override
@@ -47,13 +48,28 @@ class _CycleReviewViewState extends State<CycleReviewView> {
         body: BlocBuilder<CycleReviewBloc, CycleReviewState>(
           builder: (context, state) {
             return switch (state) {
-              CycleReviewLoading() => const Center(
-                child: CircularProgressIndicator(),
-              ),
+              CycleReviewLoading() ||
+              ReviewCycleSummaryLoading() => const CycleReviewShimmer(),
               CycleReviewLoaded(:final detail) => _CycleReviewBody(
                 detail: detail,
               ),
+              ReviewCycleSummaryLoaded(
+                :final summary,
+                :final revieweeStatusItems,
+                :final totalReviewees,
+              ) =>
+                _CycleReviewBody(
+                  detail: summary.toCycleDetailDataModel(
+                    reviewees: revieweeStatusItems
+                        .map((e) => e.toCycleRevieweeModel())
+                        .toList(),
+                  ),
+                  totalReviewees: totalReviewees,
+                ),
               CycleReviewFailure(:final message) => Center(
+                child: EmptyContainer(txt: message),
+              ),
+              ReviewCycleSummaryFailure(:final message) => Center(
                 child: EmptyContainer(txt: message),
               ),
               _ => const SizedBox.shrink(),
@@ -67,8 +83,9 @@ class _CycleReviewViewState extends State<CycleReviewView> {
 
 class _CycleReviewBody extends StatelessWidget {
   final CycleDetailDataModel detail;
+  final int? totalReviewees;
 
-  const _CycleReviewBody({required this.detail});
+  const _CycleReviewBody({required this.detail, this.totalReviewees});
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +103,11 @@ class _CycleReviewBody extends StatelessWidget {
                 SizedBox(height: 20.h),
                 OverallProgressSection(detail: detail),
                 SizedBox(height: 24.h),
-                ReviewersSection(reviewers: detail.reviewees ?? []),
+                ReviewersSection(
+                  reviewers: detail.reviewees ?? [],
+                  cycleId: detail.id,
+                  totalReviewees: totalReviewees ?? detail.revieweesCount ?? 0,
+                ),
                 SizedBox(height: 24.h),
                 CycleOverviewSection(detail: detail),
                 SizedBox(height: 24.h),

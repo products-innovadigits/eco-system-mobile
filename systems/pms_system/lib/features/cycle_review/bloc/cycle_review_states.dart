@@ -23,3 +23,55 @@ class CycleReviewFailure extends CycleReviewState {
 
   const CycleReviewFailure({required this.message});
 }
+
+class ReviewCycleSummaryLoading extends CycleReviewState {
+  const ReviewCycleSummaryLoading();
+}
+
+class ReviewCycleSummaryLoaded extends CycleReviewState {
+  final CycleSummaryDataModel summary;
+  final List<RevieweeStatusItemModel> revieweeStatusItems;
+  final int? totalReviewees;
+
+  const ReviewCycleSummaryLoaded({
+    required this.summary,
+    required this.revieweeStatusItems,
+    this.totalReviewees,
+  });
+}
+
+class ReviewCycleSummaryFailure extends CycleReviewState {
+  final String message;
+
+  const ReviewCycleSummaryFailure({required this.message});
+}
+
+class RevieweesLoading extends CycleReviewState {
+  const RevieweesLoading();
+}
+
+class RevieweesLoaded extends CycleReviewState {
+  final List<CycleRevieweeModel> reviewees;
+  final bool isLoadingMore;
+  final int currentPage;
+  final int totalPages;
+  final bool hasMore;
+
+  const RevieweesLoaded({
+    required this.reviewees,
+    this.isLoadingMore = false,
+    this.currentPage = 0,
+    this.totalPages = 1,
+    this.hasMore = false,
+  });
+}
+
+class RevieweesEmpty extends CycleReviewState {
+  const RevieweesEmpty();
+}
+
+class RevieweesFailure extends CycleReviewState {
+  final String message;
+
+  const RevieweesFailure({required this.message});
+}
