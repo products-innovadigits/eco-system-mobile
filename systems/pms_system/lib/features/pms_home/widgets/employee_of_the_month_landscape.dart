@@ -2,19 +2,15 @@ import 'package:core_system/core/widgets/main_card_widget.dart';
 
 import '../../../core/utility/pms_exports.dart';
 
-class EmployeeOfTheMonthCard extends StatelessWidget {
+class EmployeeOfTheMonthLandscapeCard extends StatelessWidget {
   final bool isPMSHome;
 
-  const EmployeeOfTheMonthCard({super.key, this.isPMSHome = false});
+  const EmployeeOfTheMonthLandscapeCard({super.key, this.isPMSHome = false});
 
   @override
   Widget build(BuildContext context) {
     return MainCardWidget(
       title: allTranslations.text(LocaleKeys.top_employees),
-      // moreBtnTxt: allTranslations.text(LocaleKeys.view_all),
-      // onViewMoreTap: () {
-      //   CustomNavigator.push(Routes.EMPLOYEES_PERFORMANCE);
-      // },
       moreBtnTxt: isPMSHome ? allTranslations.text(LocaleKeys.view_all) : null,
       onViewMoreTap: () {
         if (!isPMSHome) {
@@ -35,38 +31,23 @@ class EmployeeOfTheMonthCard extends StatelessWidget {
             rank: 2,
             name: 'Mohamed',
             score: '98.2%',
-            avatarSize: 70,
+            avatarSize: 56,
             color: const Color(0xffC0C0C0),
-            // scoreTextColor: const Color(0xffBFC1C2),
-            // borderColor: const Color(0xffA0AEC0),
-            // badgeColor: const Color(0xffA0AEC0),
-            // scoreBgColor: const Color(0xffEDF2F7),
-            // scoreTextColor: const Color(0xff4A5568),
           ),
           _PerformerItem(
             rank: 1,
             name: 'Sarah',
             score: '99.8%',
-            avatarSize: 90,
+            avatarSize: 70,
             color: const Color(0xffE6C16B),
-            // scoreTextColor: const Color(0xffFFC107),
-            // borderColor: LightColor.warning,
-            // badgeColor: LightColor.warning,
-            // scoreBgColor: const Color(0xffFEF3C7),
-            // scoreTextColor: LightColor.warning,
             isFirst: true,
           ),
           _PerformerItem(
             rank: 3,
             name: 'David',
             score: '97.5%',
-            avatarSize: 70,
+            avatarSize: 56,
             color: const Color(0xffCD7F32),
-            // scoreTextColor: const Color(0xffFFC107),
-            // borderColor: const Color(0xffE8722B),
-            // badgeColor: const Color(0xffE8722B),
-            // scoreBgColor: const Color(0xffFEEDD8),
-            // scoreTextColor: const Color(0xffE8722B),
           ),
         ],
       ),
@@ -79,11 +60,6 @@ class _PerformerItem extends StatelessWidget {
   final String name;
   final String score;
   final double avatarSize;
-
-  // final Color borderColor;
-  // final Color badgeColor;
-  // final Color scoreBgColor;
-  // final Color scoreTextColor;
   final Color color;
   final bool isFirst;
 
@@ -92,10 +68,6 @@ class _PerformerItem extends StatelessWidget {
     required this.name,
     required this.score,
     required this.avatarSize,
-    // required this.borderColor,
-    // required this.badgeColor,
-    // required this.scoreBgColor,
-    // required this.scoreTextColor,
     required this.color,
     this.isFirst = false,
   });
@@ -130,31 +102,31 @@ class _PerformerItem extends StatelessWidget {
                 height: avatarSize,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(color: color, width: 5),
+                  border: Border.all(color: color, width: 3.5),
                 ),
                 child: CustomNetworkImage.circleNewWorkImage(
                   radius: avatarSize,
                   backGroundColor: context.color.primary,
-                  padding: EdgeInsets.all(4),
+                  padding: EdgeInsets.all(3),
                 ),
               ),
               PositionedDirectional(
                 top: -4,
                 end: -2,
                 child: Container(
-                  width: 30.w,
-                  height: 30.w,
+                  width: 22,
+                  height: 22,
                   decoration: BoxDecoration(
                     color: color,
                     shape: BoxShape.circle,
-                    border: Border.all(color: Colors.white, width: 2),
+                    border: Border.all(color: Colors.white, width: 1.5),
                   ),
                   alignment: Alignment.center,
                   child: Text(
                     _rankLabel,
                     style: context.textTheme.labelSmall?.copyWith(
                       color: Colors.white,
-                      fontSize: 11,
+                      fontSize: 9,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -163,7 +135,7 @@ class _PerformerItem extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 4.h),
+        SizedBox(height: 4),
         Text(
           name,
           style: isFirst
@@ -174,10 +146,11 @@ class _PerformerItem extends StatelessWidget {
               : context.textTheme.bodySmall?.copyWith(
                   color: context.color.onSurface,
                 ),
+          overflow: TextOverflow.ellipsis,
         ),
-        SizedBox(height: 12.h),
+        SizedBox(height: 6),
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: color),

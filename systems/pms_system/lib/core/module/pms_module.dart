@@ -12,7 +12,7 @@ import 'package:pms_system/features/employee_learning_details/view/employee_lear
 import 'package:pms_system/features/employees_learning/view/employees_learning_view.dart';
 import 'package:pms_system/features/employees_performance/view/employees_performance_view.dart';
 import 'package:pms_system/features/pms_home/widgets/cycles_summary_card.dart';
-import 'package:pms_system/features/pms_home/widgets/employee_of_the_month_card.dart';
+import 'package:pms_system/features/pms_home/widgets/employee_of_the_month_portrait.dart';
 import 'package:pms_system/pms_layout.dart';
 
 class PmsModule implements SystemModule {
@@ -108,7 +108,7 @@ class PmsModule implements SystemModule {
             children: [
               CyclesSummaryCard(),
               SizedBox(height: 16),
-              EmployeeOfTheMonthCard(),
+              EmployeeOfTheMonthPortraitCard(),
             ],
           );
         }
