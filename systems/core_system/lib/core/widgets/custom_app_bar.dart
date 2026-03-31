@@ -1,3 +1,4 @@
+import 'package:core_system/core/components/custom_screen_type_layout_widget.dart';
 import 'package:core_system/core/utility/export.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -48,10 +49,14 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   State<CustomAppBar> createState() => _CustomAppBarState();
 
   @override
-  Size get preferredSize => Size(
-    CustomNavigator.navigatorState.currentContext!.w,
-    (withSearch ?? false) ? 122.h : 55.h,
-  );
+  Size get preferredSize {
+    final ctx = CustomNavigator.navigatorState.currentContext!;
+    final isLandscape = MediaQuery.of(ctx).orientation == Orientation.landscape;
+    final height = (withSearch ?? false)
+        ? (isLandscape ? 90.0 : 122.h)
+        : (isLandscape ? 44.0 : 55.h);
+    return Size(double.infinity, height);
+  }
 }
 
 class _CustomAppBarState extends State<CustomAppBar> {
@@ -80,17 +85,78 @@ class _CustomAppBarState extends State<CustomAppBar> {
     super.dispose();
   }
 
+  void _onSearchChanged(String v) {
+    if (_debounceTimer?.isActive ?? false) {
+      _debounceTimer?.cancel();
+    }
+    _debounceTimer = Timer(
+      const Duration(milliseconds: 600),
+      () => widget.onSearching!(v),
+    );
+  }
+
+  void _onClearSearch() {
+    bool hasText = widget.searchController?.text.isNotEmpty == true;
+    widget.searchController?.clear();
+    _focusNode.unfocus();
+    if (hasText && widget.onCanceling != null) {
+      widget.onCanceling!();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomScreenTypeLayoutWidget(
+      mobilePortrait: (ctx) => CustomAppBarPortrait(
+        appBar: widget,
+        focusNode: _focusNode,
+        isSearchFocused: _isSearchFocused,
+        onSearchChanged: _onSearchChanged,
+        onClearSearch: _onClearSearch,
+      ),
+      mobileLandscape: (ctx) => CustomAppBarLandscape(
+        appBar: widget,
+        focusNode: _focusNode,
+        isSearchFocused: _isSearchFocused,
+        onSearchChanged: _onSearchChanged,
+        onClearSearch: _onClearSearch,
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Portrait – uses .w / .h (screenutil) sizing
+// ---------------------------------------------------------------------------
+
+class CustomAppBarPortrait extends StatelessWidget {
+  final CustomAppBar appBar;
+  final FocusNode focusNode;
+  final bool isSearchFocused;
+  final ValueChanged<String> onSearchChanged;
+  final VoidCallback onClearSearch;
+
+  const CustomAppBarPortrait({
+    super.key,
+    required this.appBar,
+    required this.focusNode,
+    required this.isSearchFocused,
+    required this.onSearchChanged,
+    required this.onClearSearch,
+  });
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       bottom: false,
       child: Container(
+        width: double.infinity,
         padding: EdgeInsets.only(right: 16.w, left: 16.w, top: 16.h),
         decoration: BoxDecoration(
           color: context.color.surfaceContainer,
           border: Border(
             bottom: BorderSide(
-              color: widget.withBottomBorder
+              color: appBar.withBottomBorder
                   ? context.color.outline
                   : Colors.transparent,
             ),
@@ -102,10 +168,10 @@ class _CustomAppBarState extends State<CustomAppBar> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                if (widget.withBackBtn == true) ...[
+                if (appBar.withBackBtn == true) ...[
                   InkWell(
                     onTap: () {
-                      widget.onBackBtn?.call();
+                      appBar.onBackBtn?.call();
                       CustomNavigator.pop();
                     },
                     child: RotatedBox(
@@ -124,17 +190,17 @@ class _CustomAppBarState extends State<CustomAppBar> {
                 ],
                 Expanded(
                   child: Text(
-                    widget.title ?? "",
+                    appBar.title ?? "",
                     maxLines: 2,
                     style: context.textTheme.titleLarge,
-                    textAlign: widget.textAlign,
+                    textAlign: appBar.textAlign,
                   ),
                 ),
                 SizedBox(width: 8),
-                widget.action ?? SizedBox(width: 16.w),
+                appBar.action ?? SizedBox(width: 16.w),
               ],
             ),
-            if (widget.withSearch ?? false)
+            if (appBar.withSearch ?? false)
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -142,46 +208,17 @@ class _CustomAppBarState extends State<CustomAppBar> {
                     child: Padding(
                       padding: EdgeInsets.only(top: 16.h),
                       child: TextField(
-                        controller: widget.searchController,
-                        focusNode: _focusNode,
+                        controller: appBar.searchController,
+                        focusNode: focusNode,
                         textInputAction: TextInputAction.done,
-                        onSubmitted: (_) {
-                          _focusNode.unfocus();
-                        },
-                        onChanged: (v) {
-                          if (_debounceTimer?.isActive ?? false) {
-                            _debounceTimer?.cancel();
-                          }
-                          _debounceTimer = Timer(
-                            const Duration(milliseconds: 600),
-                            () {
-                              widget.onSearching!(v);
-                            },
-                          );
-                        },
-                        onTap: widget.onTapSearch,
-                        readOnly: widget.onSearching == null,
+                        onSubmitted: (_) => focusNode.unfocus(),
+                        onChanged: onSearchChanged,
+                        onTap: appBar.onTapSearch,
+                        readOnly: appBar.onSearching == null,
                         decoration: InputDecoration(
-                          suffixIcon: _isSearchFocused
+                          suffixIcon: isSearchFocused
                               ? GestureDetector(
-                                  onTap: () {
-                                    // Check if search controller has text before clearing
-                                    bool hasText =
-                                        widget
-                                            .searchController
-                                            ?.text
-                                            .isNotEmpty ==
-                                        true;
-
-                                    // Always clear and unfocus
-                                    widget.searchController?.clear();
-                                    _focusNode.unfocus();
-
-                                    // Only call the canceling function if the search controller had text
-                                    if (hasText && widget.onCanceling != null) {
-                                      widget.onCanceling!();
-                                    }
-                                  },
+                                  onTap: onClearSearch,
                                   child: Padding(
                                     padding: const EdgeInsets.all(12.0),
                                     child: Images(
@@ -203,7 +240,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                               color: context.color.outline,
                             ),
                           ),
-                          hintText: widget.searchHintText,
+                          hintText: appBar.searchHintText,
                           hintStyle: context.textTheme.bodySmall?.copyWith(
                             color: context.color.outlineVariant,
                           ),
@@ -222,18 +259,14 @@ class _CustomAppBarState extends State<CustomAppBar> {
                   ),
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 500),
-                    width: _isSearchFocused ? 0 : null,
+                    width: isSearchFocused ? 0 : null,
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        if (widget.withSorting ?? false) ...[
+                        if (appBar.withSorting ?? false) ...[
                           SizedBox(width: 8.w),
                           GestureDetector(
-                            onTap: () {
-                              if (widget.onSorting != null) {
-                                widget.onSorting!();
-                              }
-                            },
+                            onTap: appBar.onSorting,
                             child: Container(
                               padding: EdgeInsets.all(12),
                               decoration: BoxDecoration(
@@ -253,7 +286,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                                       width: 20.w,
                                     ),
                                   ),
-                                  if (widget.isSorted == true)
+                                  if (appBar.isSorted == true)
                                     PositionedDirectional(
                                       top: 2.h,
                                       start: 1.w,
@@ -268,14 +301,10 @@ class _CustomAppBarState extends State<CustomAppBar> {
                             ),
                           ),
                         ],
-                        if (widget.withFilter ?? false) ...[
+                        if (appBar.withFilter ?? false) ...[
                           SizedBox(width: 8.w),
                           GestureDetector(
-                            onTap: () {
-                              if (widget.onFiltering != null) {
-                                widget.onFiltering!();
-                              }
-                            },
+                            onTap: appBar.onFiltering,
                             child: Container(
                               padding: EdgeInsets.all(12),
                               decoration: BoxDecoration(
@@ -295,7 +324,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                                       width: 20.w,
                                     ),
                                   ),
-                                  if (widget.isFiltered == true)
+                                  if (appBar.isFiltered == true)
                                     PositionedDirectional(
                                       top: 0,
                                       start: 2.w,
@@ -317,6 +346,248 @@ class _CustomAppBarState extends State<CustomAppBar> {
               ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Landscape – fully fixed sizing, compact layout
+// ---------------------------------------------------------------------------
+
+class CustomAppBarLandscape extends StatelessWidget {
+  final CustomAppBar appBar;
+  final FocusNode focusNode;
+  final bool isSearchFocused;
+  final ValueChanged<String> onSearchChanged;
+  final VoidCallback onClearSearch;
+
+  const CustomAppBarLandscape({
+    super.key,
+    required this.appBar,
+    required this.focusNode,
+    required this.isSearchFocused,
+    required this.onSearchChanged,
+    required this.onClearSearch,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      bottom: false,
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.only(right: 16, left: 16, top: 16, bottom: 16),
+        decoration: BoxDecoration(
+          color: context.color.surfaceContainer,
+          border: Border(
+            bottom: BorderSide(
+              color: appBar.withBottomBorder
+                  ? context.color.outline
+                  : Colors.transparent,
+            ),
+          ),
+        ),
+        child: (appBar.withSearch ?? false)
+            ? Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  if (appBar.withBackBtn == true) ...[
+                    InkWell(
+                      onTap: () {
+                        appBar.onBackBtn?.call();
+                        CustomNavigator.pop();
+                      },
+                      child: RotatedBox(
+                        quarterTurns: mainAppBloc.lang.valueOrNull == "en"
+                            ? 2
+                            : 0,
+                        child: Images(
+                          image: Assets.svgs.arrowBack.path,
+                          color: context.color.primary,
+                          width: 20,
+                          height: 20,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                  ],
+                  Flexible(
+                    flex: 0,
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: 160),
+                      child: Text(
+                        appBar.title ?? "",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: context.textTheme.titleMedium,
+                        textAlign: appBar.textAlign,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 12),
+                  Expanded(
+                    child: SizedBox(
+                      height: 40,
+                      child: TextField(
+                        controller: appBar.searchController,
+                        focusNode: focusNode,
+                        textInputAction: TextInputAction.done,
+                        onSubmitted: (_) => focusNode.unfocus(),
+                        onChanged: onSearchChanged,
+                        onTap: appBar.onTapSearch,
+                        readOnly: appBar.onSearching == null,
+                        decoration: InputDecoration(
+                          isDense: true,
+                          suffixIcon: isSearchFocused
+                              ? GestureDetector(
+                                  onTap: onClearSearch,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: Images(
+                                      image: Assets.svgs.closeCircle.path,
+                                      color: context.color.outlineVariant,
+                                    ),
+                                  ),
+                                )
+                              : null,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(
+                              color: context.color.outline,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(
+                              color: context.color.outline,
+                            ),
+                          ),
+                          hintText: appBar.searchHintText,
+                          hintStyle: context.textTheme.bodySmall?.copyWith(
+                            color: context.color.outlineVariant,
+                          ),
+                          prefixIcon: Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Images(image: Assets.svgs.search.path),
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 0,
+                          ),
+                        ),
+                        style: context.textTheme.titleSmall,
+                      ),
+                    ),
+                  ),
+                  if (appBar.withSorting ?? false) ...[
+                    SizedBox(width: 8),
+                    GestureDetector(
+                      onTap: appBar.onSorting,
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: context.color.outline),
+                        ),
+                        child: Stack(
+                          children: [
+                            Images(
+                              image: Assets.svgs.sort.path,
+                              color: context.color.outlineVariant,
+                              height: 20,
+                              width: 20,
+                            ),
+                            if (appBar.isSorted == true)
+                              PositionedDirectional(
+                                top: 0,
+                                start: 0,
+                                child: Icon(
+                                  Icons.circle,
+                                  color: context.color.secondary,
+                                  size: 7,
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                  if (appBar.withFilter ?? false) ...[
+                    SizedBox(width: 8),
+                    GestureDetector(
+                      onTap: appBar.onFiltering,
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: context.color.outline),
+                        ),
+                        child: Stack(
+                          children: [
+                            Images(
+                              image: Assets.svgs.filter.path,
+                              color: context.color.outlineVariant,
+                              height: 20,
+                              width: 20,
+                            ),
+                            if (appBar.isFiltered == true)
+                              PositionedDirectional(
+                                top: 0,
+                                start: 0,
+                                child: Icon(
+                                  Icons.circle,
+                                  color: context.color.secondary,
+                                  size: 7,
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                  if (appBar.action != null) ...[
+                    SizedBox(width: 8),
+                    appBar.action!,
+                  ],
+                ],
+              )
+            : Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  if (appBar.withBackBtn == true) ...[
+                    InkWell(
+                      onTap: () {
+                        appBar.onBackBtn?.call();
+                        CustomNavigator.pop();
+                      },
+                      child: RotatedBox(
+                        quarterTurns: mainAppBloc.lang.valueOrNull == "en"
+                            ? 2
+                            : 0,
+                        child: Images(
+                          image: Assets.svgs.arrowBack.path,
+                          color: context.color.primary,
+                          width: 20,
+                          height: 20,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                  ],
+                  Expanded(
+                    child: Text(
+                      appBar.title ?? "",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: context.textTheme.titleLarge,
+                      textAlign: appBar.textAlign,
+                    ),
+                  ),
+                  SizedBox(width: 8),
+                  appBar.action ?? SizedBox(width: 16),
+                ],
+              ),
       ),
     );
   }

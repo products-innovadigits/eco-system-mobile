@@ -12,14 +12,14 @@ class CycleReviewHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
-          padding: EdgeInsets.all(10.w),
+          padding: EdgeInsets.all(10.r),
           decoration: BoxDecoration(
             color: LightColor.primary,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Icon(
             Icons.assessment_outlined,
-            size: 22.w,
+            size: 22.r,
             color: Colors.white,
           ),
         ),

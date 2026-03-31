@@ -49,44 +49,33 @@ class _CycleCardHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
-          padding: EdgeInsets.all(8.w),
+          padding: EdgeInsets.all(8.r),
           decoration: BoxDecoration(
             color: context.color.surfaceContainer,
             borderRadius: const BorderRadius.all(Radius.circular(8)),
             border: Border.all(color: context.color.outline),
           ),
-          child: Icon(Icons.sync, size: 24.w, color: LightColor.secondary),
+          child: Icon(Icons.sync, size: 24.h, color: LightColor.secondary),
         ),
         SizedBox(width: 12.w),
         Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Row(
             children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      cycle.title ?? '',
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: context.textTheme.displaySmall?.copyWith(
-                        fontSize: FontSizes.f14,
-                      ),
-                    ),
+              Expanded(
+                child: Text(
+                  cycle.title ?? '',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: context.textTheme.displaySmall?.copyWith(
+                    fontSize: FontSizes.f14,
                   ),
-                  SizedBox(width: 8.w),
-                  _StatusBadge(status: cycle.status ?? ''),
-                ],
+                ),
               ),
+              SizedBox(width: 8.w),
+              _StatusBadge(status: cycle.status ?? ''),
             ],
           ),
         ),
-        // SizedBox(width: 8.w),
-        // Icon(
-        //   Icons.more_horiz,
-        //   size: 20.w,
-        //   color: context.color.outlineVariant,
-        // ),
       ],
     );
   }

@@ -39,12 +39,12 @@ class _ReviewCardState extends State<ReviewCard> {
             onTap: () => setState(() => _isExpanded = !_isExpanded),
             borderRadius: BorderRadius.circular(12),
             child: Padding(
-              padding: EdgeInsets.all(14.w),
+              padding: EdgeInsets.all(14.r),
               child: Row(
                 children: [
                   Container(
                     width: 40.w,
-                    height: 40.w,
+                    height: 40.h,
                     decoration: BoxDecoration(
                       color: context.color.primary,
                       shape: BoxShape.circle,
@@ -70,7 +70,7 @@ class _ReviewCardState extends State<ReviewCard> {
                           review.jobTitle ?? '',
                           style: context.textTheme.bodySmall?.copyWith(
                             color: context.color.outlineVariant,
-                            fontSize: 11,
+                            fontSize: 11.spMin,
                           ),
                         ),
                       ],
@@ -92,7 +92,7 @@ class _ReviewCardState extends State<ReviewCard> {
                     duration: const Duration(milliseconds: 200),
                     child: Icon(
                       Icons.keyboard_arrow_down,
-                      size: 22.w,
+                      size: 22.r,
                       color: context.color.outlineVariant,
                     ),
                   ),
@@ -131,7 +131,7 @@ class _PercentageBadge extends StatelessWidget {
         '$percentage%',
         style: context.textTheme.labelSmall?.copyWith(
           fontWeight: FontWeight.w700,
-          fontSize: 11,
+          fontSize: 11.spMin,
         ),
       ),
     );
@@ -190,7 +190,7 @@ class _ReviewTypeCard extends StatelessWidget {
         : 0.0;
 
     return Container(
-      padding: EdgeInsets.all(12.w),
+      padding: EdgeInsets.all(12.r),
       decoration: BoxDecoration(
         color: context.color.surfaceContainer,
         border: Border.all(color: context.color.outline),
@@ -203,7 +203,7 @@ class _ReviewTypeCard extends StatelessWidget {
             children: [
               Icon(
                 _iconForType(review.type),
-                size: 18.w,
+                size: 18.r,
                 color: context.color.outlineVariant,
               ),
               SizedBox(width: 8.w),
@@ -249,7 +249,7 @@ class _ReviewTypeCard extends StatelessWidget {
                 '${(progressRatio * 100).toInt()}% (${review.completedCount}/${review.totalCount})',
                 style: context.textTheme.bodySmall?.copyWith(
                   color: context.color.outlineVariant,
-                  fontSize: 10,
+                  fontSize: FontSizes.f10,
                 ),
               ),
             ),
@@ -285,7 +285,7 @@ class _ReviewerRow extends StatelessWidget {
       children: [
         Container(
           width: 24.w,
-          height: 24.w,
+          height: 24.h,
           decoration: BoxDecoration(
             color: context.color.primary,
             shape: BoxShape.circle,
@@ -309,7 +309,7 @@ class _ReviewerRow extends StatelessWidget {
             (reviewer.status ?? '').toUpperCase(),
             style: context.textTheme.labelSmall?.copyWith(
               color: color,
-              fontSize: 9,
+              fontSize: 9.spMin,
               fontWeight: FontWeight.w700,
             ),
           ),

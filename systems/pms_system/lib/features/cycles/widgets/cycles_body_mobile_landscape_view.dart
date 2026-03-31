@@ -26,7 +26,6 @@ class CyclesBodyMobileLandscapeView extends StatelessWidget {
               children: [
                 Expanded(
                   child: ListAnimator(
-                    customPadding: EdgeInsets.symmetric(horizontal: 24.w),
                     controller: scrollController,
                     data: cycles
                         .map((cycle) => CycleCard(cycle: cycle))
@@ -68,8 +67,8 @@ class _HandleEmptyList extends StatelessWidget {
         txt: initial == true
             ? null
             : searchController.text.isEmpty
-                ? allTranslations.text(LocaleKeys.no_cycles_found)
-                : '${allTranslations.text(LocaleKeys.no_cycles_match)} \'${searchController.text}\'',
+            ? allTranslations.text(LocaleKeys.no_cycles_found)
+            : '${allTranslations.text(LocaleKeys.no_cycles_match)} \'${searchController.text}\'',
       ),
     );
   }
@@ -88,10 +87,7 @@ class _HandleErrorState extends StatelessWidget {
       },
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
-        child: SizedBox(
-          height: context.h * 0.6,
-          child: const ErrorContainer(),
-        ),
+        child: SizedBox(height: context.h * 0.6, child: const ErrorContainer()),
       ),
     );
   }

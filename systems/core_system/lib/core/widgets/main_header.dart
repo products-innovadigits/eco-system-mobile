@@ -77,7 +77,8 @@ class MainHeader extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        " ${UserBloc.instance.userModel?.welcomeMessage ?? "صباح الخير "} "
+                        " صباح الخير ${UserBloc.instance.userModel?.name ?? "صباح الخير "} "
+                        // " ${UserBloc.instance.userModel?.welcomeMessage ?? "صباح الخير "} "
                         "${DateTime.now().format("a") == "AM" ? "🌤" : "🌤"}",
                         style: context.textTheme.headlineSmall?.copyWith(
                           color: context.color.onPrimary,
@@ -87,7 +88,7 @@ class MainHeader extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (UserBloc.activeSystems.length > 1) SystemSelectionWidget(),
+                // if (UserBloc.activeSystems.length > 1) SystemSelectionWidget(),
               ],
             ),
           ],

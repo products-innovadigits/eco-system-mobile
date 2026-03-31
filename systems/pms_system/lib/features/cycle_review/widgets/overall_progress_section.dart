@@ -13,7 +13,7 @@ class OverallProgressSection extends StatelessWidget {
     final total = detail.totalCount ?? 0;
 
     return Container(
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
         color: context.color.surfaceContainer,
         border: Border.all(color: context.color.outline),

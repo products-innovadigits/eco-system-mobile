@@ -38,7 +38,7 @@ class CycleOverviewSection extends StatelessWidget {
         // SizedBox(height: 16.h),
         ...roleGroups.map(
           (group) => Padding(
-            padding: EdgeInsets.only(bottom: 4.h),
+            padding: EdgeInsets.only(bottom: 4.r),
             child: _RoleGroupItem(group: group),
           ),
         ),
@@ -72,7 +72,7 @@ class _StatCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 22.w, color: iconColor),
+          Icon(icon, size: 22.r, color: iconColor),
           SizedBox(height: 8.h),
           Text(
             label,
@@ -196,7 +196,7 @@ class _RoleGroupItem extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(_iconForRole(group.role), size: 20.w, color: LightColor.primary),
+          Icon(_iconForRole(group.role), size: 20.r, color: LightColor.primary),
           SizedBox(width: 12.w),
           Expanded(
             child: Column(
@@ -213,7 +213,7 @@ class _RoleGroupItem extends StatelessWidget {
                   '${allTranslations.text(LocaleKeys.due).toUpperCase()} ${group.dueDate ?? ''}',
                   style: context.textTheme.bodySmall?.copyWith(
                     color: context.color.outlineVariant,
-                    fontSize: 10,
+                    fontSize: FontSizes.f10,
                   ),
                 ),
               ],
