@@ -148,7 +148,7 @@ class _PodiumItem extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    '${employee.score?.toInt() ?? 0}%',
+                    '${employee.percentage?.toStringAsFixed(1) ?? '0'}%',
                     style: context.textTheme.labelSmall?.copyWith(
                       color: Colors.white,
                       fontSize: 10,

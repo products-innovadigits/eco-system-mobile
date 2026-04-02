@@ -25,16 +25,12 @@ void main() {
       blocTest<EmployeesPerformanceBloc, EmployeesPerformanceState>(
         'emits [PerformanceLoading, PerformanceLoaded] when repo returns data',
         build: () {
-          when(() => mockRepo.getPerformanceData()).thenAnswer(
+          when(() => mockRepo.getPerformanceData(type: any(named: 'type')))
+              .thenAnswer(
             (_) async => EmployeesPerformanceModel(
-              succeeded: true,
-              data: EmployeesPerformanceDataModel(
-                topMonthly: [
-                  PerformanceEmployeeModel(id: 1, name: 'Test', score: 99),
-                ],
-                topYearly: [],
-                top10: [],
-              ),
+              data: [
+                PerformanceEmployeeModel(id: 1, name: 'Test', score: 99),
+              ],
             ),
           );
           return EmployeesPerformanceBloc(repo: mockRepo);
@@ -45,25 +41,20 @@ void main() {
           isA<PerformanceLoaded>(),
         ],
         verify: (_) {
-          verify(() => mockRepo.getPerformanceData()).called(1);
+          verify(() => mockRepo.getPerformanceData(type: null)).called(1);
         },
       );
 
       blocTest<EmployeesPerformanceBloc, EmployeesPerformanceState>(
-        'PerformanceLoaded contains correct data',
+        'PerformanceLoaded assigns ranks and splits top3 / top10',
         build: () {
-          when(() => mockRepo.getPerformanceData()).thenAnswer(
+          when(() => mockRepo.getPerformanceData(type: any(named: 'type')))
+              .thenAnswer(
             (_) async => EmployeesPerformanceModel(
-              succeeded: true,
-              data: EmployeesPerformanceDataModel(
-                topMonthly: [
-                  PerformanceEmployeeModel(id: 1, name: 'Mohamed', score: 99),
-                ],
-                topYearly: [
-                  PerformanceEmployeeModel(id: 4, name: 'Sara', score: 97),
-                ],
-                top10: [],
-              ),
+              data: [
+                PerformanceEmployeeModel(id: 1, name: 'Mohamed', score: 99),
+                PerformanceEmployeeModel(id: 2, name: 'Sara', score: 97),
+              ],
             ),
           );
           return EmployeesPerformanceBloc(repo: mockRepo);
@@ -71,38 +62,61 @@ void main() {
         act: (bloc) => bloc.add(const LoadPerformanceData()),
         expect: () => [
           isA<PerformanceLoading>(),
-          isA<PerformanceLoaded>().having(
-            (s) => s.data.topMonthly?.first.name,
-            'topMonthly[0].name',
-            'Mohamed',
-          ),
+          isA<PerformanceLoaded>()
+              .having((s) => s.top10.length, 'top10.length', 2)
+              .having((s) => s.top3.length, 'top3.length', 2)
+              .having((s) => s.top10.first.rank, 'top10[0].rank', 1)
+              .having((s) => s.top10.last.rank, 'top10[1].rank', 2)
+              .having((s) => s.top3.first.name, 'top3[0].name', 'Mohamed'),
         ],
       );
 
       blocTest<EmployeesPerformanceBloc, EmployeesPerformanceState>(
-        'emits [PerformanceLoading, PerformanceFailure] when data is null',
+        'passes type=yearly to repo when event has type',
         build: () {
-          when(() => mockRepo.getPerformanceData()).thenAnswer(
-            (_) async =>
-                EmployeesPerformanceModel(succeeded: true, data: null),
+          when(() => mockRepo.getPerformanceData(type: any(named: 'type')))
+              .thenAnswer(
+            (_) async => EmployeesPerformanceModel(
+              data: [
+                PerformanceEmployeeModel(id: 1, name: 'Test', score: 90),
+              ],
+            ),
+          );
+          return EmployeesPerformanceBloc(repo: mockRepo);
+        },
+        act: (bloc) =>
+            bloc.add(const LoadPerformanceData(type: 'yearly')),
+        expect: () => [
+          isA<PerformanceLoading>(),
+          isA<PerformanceLoaded>(),
+        ],
+        verify: (_) {
+          verify(() => mockRepo.getPerformanceData(type: 'yearly')).called(1);
+        },
+      );
+
+      blocTest<EmployeesPerformanceBloc, EmployeesPerformanceState>(
+        'emits PerformanceLoaded with empty lists when data is null',
+        build: () {
+          when(() => mockRepo.getPerformanceData(type: any(named: 'type')))
+              .thenAnswer(
+            (_) async => EmployeesPerformanceModel(data: null),
           );
           return EmployeesPerformanceBloc(repo: mockRepo);
         },
         act: (bloc) => bloc.add(const LoadPerformanceData()),
         expect: () => [
           isA<PerformanceLoading>(),
-          isA<PerformanceFailure>().having(
-            (s) => s.message,
-            'message',
-            'No data found',
-          ),
+          isA<PerformanceLoaded>()
+              .having((s) => s.top3, 'top3', isEmpty)
+              .having((s) => s.top10, 'top10', isEmpty),
         ],
       );
 
       blocTest<EmployeesPerformanceBloc, EmployeesPerformanceState>(
         'emits [PerformanceLoading, PerformanceFailure] on exception',
         build: () {
-          when(() => mockRepo.getPerformanceData())
+          when(() => mockRepo.getPerformanceData(type: any(named: 'type')))
               .thenThrow(Exception('Network error'));
           return EmployeesPerformanceBloc(repo: mockRepo);
         },
@@ -112,7 +126,8 @@ void main() {
           isA<PerformanceFailure>(),
         ],
         verify: (_) {
-          verify(() => mockRepo.getPerformanceData()).called(1);
+          verify(() => mockRepo.getPerformanceData(type: any(named: 'type')))
+              .called(1);
         },
       );
     });

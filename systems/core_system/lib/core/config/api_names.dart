@@ -60,6 +60,10 @@ abstract class ApiNames {
   static String reviewCycleRevieweeStatus(int cycleId) =>
       'appraisal/review-cycles/$cycleId/reviewee-status';
 
+  // Employees Performance APIs ====================
+  static const employeesTopTen = "employees/get-top-ten/";
+  static const setEmployeeOfTheMonth = "employees/set-employee-of-the-month/";
+
   // Talent Pool APIs ====================
   static const talents = "candidates";
   static const exportZipFile = "candidates/export-resumes";

@@ -1,16 +1,48 @@
 {
-  "succeeded": true,
-  "data": {
-    "topMonthly": [
-      { "id": 1, "name": "Mohamed Ismail", "jobTitle": "Backend Dev", "imageUrl": null, "score": 99.0, "rank": 1, "reportUrl": null }
-    ],
-    "topYearly": [
-      { "id": 4, "name": "Sara Ahmed", "jobTitle": "Product Designer", "imageUrl": null, "score": 97.0, "rank": 1, "reportUrl": null }
-    ],
-    "top10": [
-      { "id": 7, "name": "Mohamed Khaled", "jobTitle": "Backend Dev", "imageUrl": null, "score": 90.0, "rank": 1, "reportUrl": "#" }
-    ]
-  },
-  "warningErrors": null,
-  "validationErrors": null
+  "data": [
+    {
+      "id": 39,
+      "name": "Lbna Alsaml",
+      "email": "lbna.alsaml@innovadigits.com",
+      "job_title": "Full stack developer",
+      "score": 4.145,
+      "percentage": 82.9,
+      "review_cycle_id": 3,
+      "review_cycle_name": "Mid - Level | Full Stack Developer | Development 2025-06-17",
+      "closed_date": null
+    },
+    {
+      "id": 14,
+      "name": "Hmdallh Almtrfy",
+      "email": "hmdallh.almtrfy@innovadigits.com",
+      "job_title": "Full stack developer",
+      "score": 4.0558499999999995,
+      "percentage": 81.12,
+      "review_cycle_id": 3,
+      "review_cycle_name": "Mid - Level | Full Stack Developer | Development 2025-06-17",
+      "closed_date": null
+    },
+    {
+      "id": 16,
+      "name": "Alsyd Asyl Brmaoy",
+      "email": "alsyd.asyl.brmaoy@innovadigits.com",
+      "job_title": "Full stack developer",
+      "score": 3.86015,
+      "percentage": 77.2,
+      "review_cycle_id": 3,
+      "review_cycle_name": "Mid - Level | Full Stack Developer | Development 2025-06-17",
+      "closed_date": null
+    },
+    {
+      "id": 12,
+      "name": "Nhyd Basha",
+      "email": "nhyd.basha@innovadigits.com",
+      "job_title": "Full stack developer",
+      "score": 3.619499999999999,
+      "percentage": 72.39,
+      "review_cycle_id": 3,
+      "review_cycle_name": "Mid - Level | Full Stack Developer | Development 2025-06-17",
+      "closed_date": null
+    }
+  ]
 }

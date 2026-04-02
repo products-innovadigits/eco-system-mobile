@@ -598,6 +598,7 @@ abstract class  LocaleKeys {
   static const top_10 = 'top_10';
   static const employee_report = 'employee_report';
   static const make_top_1 = 'make_top_1';
+  static const employee_of_the_month_set_successfully = 'employee_of_the_month_set_successfully';
   static const cycle_reports = 'cycle_reports';
   static const cycle_colon = 'cycle_colon';
   static const view_report = 'view_report';

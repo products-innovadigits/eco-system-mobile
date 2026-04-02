@@ -8,157 +8,36 @@ class EmployeesPerformanceRepoImpl implements EmployeesPerformanceRepo {
   EmployeesPerformanceRepoImpl({required this.network});
 
   @override
-  Future<EmployeesPerformanceModel> getPerformanceData() async {
-    // TODO: Replace with real API call when endpoint is available
-    // return await network.requestOrThrow(
-    //   ApiNames.employeesPerformance,
-    //   method: ServerMethods.GET,
-    //   model: EmployeesPerformanceModel(),
-    // ) as EmployeesPerformanceModel;
+  Future<EmployeesPerformanceModel> getPerformanceData({String? type}) async {
+    final query = <String, dynamic>{};
+    if (type != null) {
+      query['type'] = type;
+    }
 
-    await Future.delayed(const Duration(milliseconds: 800));
-    return _simulatedData();
+    return await network.requestOrThrow(
+      ApiNames.employeesTopTen,
+      method: ServerMethods.GET,
+      query: query.isNotEmpty ? query : null,
+      systemTypeEnum: ActiveSystemEnum.pms,
+      model: EmployeesPerformanceModel(),
+    ) as EmployeesPerformanceModel;
   }
 
-  EmployeesPerformanceModel _simulatedData() {
-    final topMonthly = <PerformanceEmployeeModel>[
-      PerformanceEmployeeModel(
-        id: 1,
-        name: 'Mohamed Ismail',
-        jobTitle: 'Backend Dev',
-        score: 99,
-        rank: 1,
-      ),
-      PerformanceEmployeeModel(
-        id: 2,
-        name: 'Mohamed Ismail',
-        jobTitle: 'Backend Dev',
-        score: 99,
-        rank: 2,
-      ),
-      PerformanceEmployeeModel(
-        id: 3,
-        name: 'Mohamed Ismail',
-        jobTitle: 'Backend Dev',
-        score: 99,
-        rank: 3,
-      ),
-    ];
-
-    final topYearly = <PerformanceEmployeeModel>[
-      PerformanceEmployeeModel(
-        id: 4,
-        name: 'Sara Ahmed',
-        jobTitle: 'Product Designer',
-        score: 97,
-        rank: 1,
-      ),
-      PerformanceEmployeeModel(
-        id: 5,
-        name: 'Khalid Saeed',
-        jobTitle: 'Software Engineer',
-        score: 96,
-        rank: 2,
-      ),
-      PerformanceEmployeeModel(
-        id: 6,
-        name: 'Nora Abdullah',
-        jobTitle: 'QA Engineer',
-        score: 95,
-        rank: 3,
-      ),
-    ];
-
-    final top10 = <PerformanceEmployeeModel>[
-      PerformanceEmployeeModel(
-        id: 7,
-        name: 'Mohamed Khaled',
-        jobTitle: 'Backend Dev',
-        score: 90,
-        rank: 1,
-        reportUrl: '#',
-      ),
-      PerformanceEmployeeModel(
-        id: 8,
-        name: 'Mohamed Ismail',
-        jobTitle: 'Backend Dev',
-        score: 90,
-        rank: 2,
-        reportUrl: '#',
-      ),
-      PerformanceEmployeeModel(
-        id: 9,
-        name: 'Mohamed Ismail',
-        jobTitle: 'Backend Dev',
-        score: 90,
-        rank: 3,
-        reportUrl: '#',
-      ),
-      PerformanceEmployeeModel(
-        id: 10,
-        name: 'Mohamed Ismail',
-        jobTitle: 'Backend Dev',
-        score: 90,
-        rank: 4,
-        reportUrl: '#',
-      ),
-      PerformanceEmployeeModel(
-        id: 11,
-        name: 'Mohamed Ismail',
-        jobTitle: 'Backend Dev',
-        score: 88,
-        rank: 5,
-        reportUrl: '#',
-      ),
-      PerformanceEmployeeModel(
-        id: 12,
-        name: 'Sara Ahmed',
-        jobTitle: 'Product Designer',
-        score: 87,
-        rank: 6,
-        reportUrl: '#',
-      ),
-      PerformanceEmployeeModel(
-        id: 13,
-        name: 'Hassan Aziz',
-        jobTitle: 'UI Designer',
-        score: 86,
-        rank: 7,
-        reportUrl: '#',
-      ),
-      PerformanceEmployeeModel(
-        id: 14,
-        name: 'Rawan Adel',
-        jobTitle: 'UX Researcher',
-        score: 85,
-        rank: 8,
-        reportUrl: '#',
-      ),
-      PerformanceEmployeeModel(
-        id: 15,
-        name: 'Youssef Ibrahim',
-        jobTitle: 'DevOps Engineer',
-        score: 84,
-        rank: 9,
-        reportUrl: '#',
-      ),
-      PerformanceEmployeeModel(
-        id: 16,
-        name: 'Ahmed Ali',
-        jobTitle: 'Backend Developer',
-        score: 83,
-        rank: 10,
-        reportUrl: '#',
-      ),
-    ];
-
-    return EmployeesPerformanceModel(
-      succeeded: true,
-      data: EmployeesPerformanceDataModel(
-        topMonthly: topMonthly,
-        topYearly: topYearly,
-        top10: top10,
-      ),
+  @override
+  Future<void> setEmployeeOfTheMonth({
+    required int userId,
+    required int reviewCycleId,
+    required double score,
+  }) async {
+    await network.requestOrThrow(
+      ApiNames.setEmployeeOfTheMonth,
+      method: ServerMethods.POST,
+      query: {
+        'user_id': userId,
+        'review_cycle_id': reviewCycleId,
+        'score': score,
+      },
+      systemTypeEnum: ActiveSystemEnum.pms,
     );
   }
 }

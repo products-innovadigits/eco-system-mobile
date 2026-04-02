@@ -1,9 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/employees_performance/data/employees_performance_repo_impl.dart';
 import 'package:pms_system/features/employees_performance/model/employees_performance_model.dart';
 
 import '../../../core/mocks/fallbacks.dart';
 import '../../../core/mocks/mock_network.dart';
+import '../../../helpers/fixture_reader.dart';
 
 void main() {
   setUpAll(() {
@@ -20,51 +23,101 @@ void main() {
 
   group('EmployeesPerformanceRepoImpl', () {
     group('getPerformanceData', () {
-      test('returns EmployeesPerformanceModel with succeeded=true', () async {
+      test('calls network and returns EmployeesPerformanceModel with data list',
+          () async {
+        final fixtureJson = readJsonFixture(
+          'employees_performance/employees_performance_response.json',
+        );
+        when(
+          () => mockNetwork.requestOrThrow(
+            any(),
+            method: any(named: 'method'),
+            query: any(named: 'query'),
+            systemTypeEnum: any(named: 'systemTypeEnum'),
+            model: any(named: 'model'),
+          ),
+        ).thenAnswer(
+          (_) async => EmployeesPerformanceModel.fromJson(fixtureJson),
+        );
+
         final result = await repo.getPerformanceData();
 
-        expect(result, isNotNull,
-            reason: 'repo.getPerformanceData returned null');
-        expect(result, isA<EmployeesPerformanceModel>(),
-            reason: 'Expected EmployeesPerformanceModel');
-        expect(result.succeeded, isTrue,
-            reason: 'Expected succeeded to be true');
+        expect(result, isA<EmployeesPerformanceModel>());
+        expect(result.data, isNotNull);
+        expect(result.data!.length, equals(4));
+        expect(result.data!.first.name, equals('Lbna Alsaml'));
+
+        verify(
+          () => mockNetwork.requestOrThrow(
+            ApiNames.employeesTopTen,
+            method: ServerMethods.GET,
+            query: any(named: 'query'),
+            systemTypeEnum: ActiveSystemEnum.pms,
+            model: any(named: 'model'),
+          ),
+        ).called(1);
       });
 
-      test('returns data with all three ranking lists', () async {
-        final result = await repo.getPerformanceData();
+      test('passes type query when provided', () async {
+        final fixtureJson = readJsonFixture(
+          'employees_performance/employees_performance_response.json',
+        );
+        when(
+          () => mockNetwork.requestOrThrow(
+            any(),
+            method: any(named: 'method'),
+            query: any(named: 'query'),
+            systemTypeEnum: any(named: 'systemTypeEnum'),
+            model: any(named: 'model'),
+          ),
+        ).thenAnswer(
+          (_) async => EmployeesPerformanceModel.fromJson(fixtureJson),
+        );
 
-        final data = result.data;
-        expect(data, isNotNull, reason: 'Expected data to be non-null');
+        await repo.getPerformanceData(type: 'yearly');
 
-        expect(data?.topMonthly, isNotNull,
-            reason: 'Expected topMonthly list');
-        expect(data!.topMonthly!, isNotEmpty,
-            reason: 'Expected non-empty topMonthly');
+        final captured = verify(
+          () => mockNetwork.requestOrThrow(
+            ApiNames.employeesTopTen,
+            method: ServerMethods.GET,
+            query: captureAny(named: 'query'),
+            systemTypeEnum: ActiveSystemEnum.pms,
+            model: any(named: 'model'),
+          ),
+        ).captured;
 
-        expect(data.topYearly, isNotNull,
-            reason: 'Expected topYearly list');
-        expect(data.topYearly!, isNotEmpty,
-            reason: 'Expected non-empty topYearly');
-
-        expect(data.top10, isNotNull, reason: 'Expected top10 list');
-        expect(data.top10!, isNotEmpty,
-            reason: 'Expected non-empty top10');
+        final query = captured.first as Map<String, dynamic>;
+        expect(query['type'], equals('yearly'));
       });
 
-      test('top employees have required fields', () async {
-        final result = await repo.getPerformanceData();
-        final topMonthly = result.data!.topMonthly!;
+      test('employees have required fields from fixture', () async {
+        final fixtureJson = readJsonFixture(
+          'employees_performance/employees_performance_response.json',
+        );
+        when(
+          () => mockNetwork.requestOrThrow(
+            any(),
+            method: any(named: 'method'),
+            query: any(named: 'query'),
+            systemTypeEnum: any(named: 'systemTypeEnum'),
+            model: any(named: 'model'),
+          ),
+        ).thenAnswer(
+          (_) async => EmployeesPerformanceModel.fromJson(fixtureJson),
+        );
 
-        for (final employee in topMonthly) {
+        final result = await repo.getPerformanceData();
+        final employees = result.data!;
+
+        for (final employee in employees) {
           expect(employee.id, isNotNull,
               reason: 'Each employee should have an id');
           expect(employee.name, isNotNull,
               reason: 'Each employee should have a name');
           expect(employee.score, isNotNull,
               reason: 'Each employee should have a score');
-          expect(employee.rank, isNotNull,
-              reason: 'Each employee should have a rank');
+          expect(employee.percentage, isNotNull,
+              reason: 'Each employee should have a percentage');
         }
       });
     });

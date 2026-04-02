@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pms_system/features/employees_performance/model/employees_performance_model.dart';
 
-import '../../../helpers/contract_asserts.dart';
 import '../../../helpers/fixture_reader.dart';
 import '../../../helpers/json_fixtures.dart';
 import '../../../helpers/model_field_asserts.dart';
@@ -11,80 +10,54 @@ void main() {
     final fixtureJson = readJsonFixture(
         'employees_performance/employees_performance_response.json');
 
-    test(
-      'Contract: fromJson accepts wrapper with "succeeded" and "data" keys (Map)',
-      () {
-        expectWrapperContract(fixtureJson, dataShape: DataShape.map);
-      },
-    );
-
-    test('fromJson correctly maps critical fields from fixture', () {
-      expectWrapperContract(fixtureJson, dataShape: DataShape.map);
-
-      final model = EmployeesPerformanceModel.fromJson(fixtureJson);
-
-      expect(model.succeeded, isTrue,
-          reason: 'Expected "succeeded" to be true');
-
-      final data = model.data;
-      expect(data, isNotNull,
-          reason: 'Expected "data" to be non-null');
-
-      expect(data?.topMonthly, isNotNull,
-          reason: 'Expected topMonthly list');
-      expect(data?.topMonthly, isNotEmpty,
-          reason: 'Expected non-empty topMonthly');
-      expect(data?.topYearly, isNotNull,
-          reason: 'Expected topYearly list');
-      expect(data?.topYearly, isNotEmpty,
-          reason: 'Expected non-empty topYearly');
-      expect(data?.top10, isNotNull, reason: 'Expected top10 list');
-      expect(data?.top10, isNotEmpty, reason: 'Expected non-empty top10');
+    test('Contract: JSON has "data" as a non-empty List', () {
+      expect(fixtureJson.containsKey('data'), isTrue);
+      expect(fixtureJson['data'], isA<List>());
+      expect((fixtureJson['data'] as List).isNotEmpty, isTrue);
     });
 
-    test('fromJson parses first topMonthly employee', () {
+    test('fromJson correctly maps critical fields from fixture', () {
       final model = EmployeesPerformanceModel.fromJson(fixtureJson);
-      final first = model.data?.topMonthly?.first;
+
+      final data = model.data;
+      expect(data, isNotNull, reason: 'Expected "data" to be non-null');
+      expect(data, isNotEmpty, reason: 'Expected non-empty employee list');
+    });
+
+    test('fromJson parses first employee', () {
+      final model = EmployeesPerformanceModel.fromJson(fixtureJson);
+      final first = model.data?.first;
 
       expectModelFields([
-        (key: 'topMonthly[0].id', actual: first?.id, expected: 1),
+        (key: 'data[0].id', actual: first?.id, expected: 39),
         (
-          key: 'topMonthly[0].name',
+          key: 'data[0].name',
           actual: first?.name,
-          expected: 'Mohamed Ismail'
+          expected: 'Lbna Alsaml'
         ),
-        (key: 'topMonthly[0].score', actual: first?.score, expected: 99.0),
-        (key: 'topMonthly[0].rank', actual: first?.rank, expected: 1),
+        (key: 'data[0].score', actual: first?.score, expected: 4.145),
+        (key: 'data[0].percentage', actual: first?.percentage, expected: 82.9),
+        (
+          key: 'data[0].job_title',
+          actual: first?.jobTitle,
+          expected: 'Full stack developer'
+        ),
       ]);
     });
 
-    group('Negative Contract Tests', () {
-      test('fails if "succeeded" key is missing', () {
-        final invalidJson = Map<String, dynamic>.from(fixtureJson)
-          ..remove('succeeded');
-        expect(
-          () => expectWrapperContract(invalidJson, dataShape: DataShape.map),
-          throwsA(isA<TestFailure>()),
-        );
-      });
-
-      test('fails if "data" key is missing', () {
-        final invalidJson = Map<String, dynamic>.from(fixtureJson)
-          ..remove('data');
-        expect(
-          () => expectWrapperContract(invalidJson, dataShape: DataShape.map),
-          throwsA(isA<TestFailure>()),
-        );
-      });
+    test('fromJson leaves data null when "data" key is missing', () {
+      final json = <String, dynamic>{};
+      final model = EmployeesPerformanceModel.fromJson(json);
+      expect(model.data, isNull);
     });
 
-    test('toJson returns Map with essential fields', () {
+    test('toJson returns Map with data list', () {
       final model = EmployeesPerformanceModel.fromJson(fixtureJson);
       final json = model.toJson();
 
       expect(json, isA<Map<String, dynamic>>());
-      expect(json['succeeded'], isTrue);
-      expect(json['data'], isNotNull);
+      expect(json['data'], isA<List>());
+      expect((json['data'] as List).length, equals(4));
     });
 
     test('fromJson round-trip via Mapper interface', () {
@@ -92,29 +65,23 @@ void main() {
       final parsed = model.fromJson(fixtureJson);
 
       expect(parsed, isA<EmployeesPerformanceModel>());
-      expect((parsed as EmployeesPerformanceModel).succeeded, isTrue);
-    });
-  });
-
-  group('EmployeesPerformanceDataModel', () {
-    test('fromJson parses minimal valid JSON without throwing', () {
-      expect(
-        () => EmployeesPerformanceDataModel.fromJson(JsonFixtures.minimalMap()),
-        returnsNormally,
-      );
+      expect((parsed as EmployeesPerformanceModel).data, isNotNull);
+      expect(parsed.data!.length, equals(4));
     });
   });
 
   group('PerformanceEmployeeModel', () {
-    test('fromJson/toJson round-trip', () {
+    test('fromJson/toJson round-trip for API-shaped payload', () {
       final json = {
         'id': 1,
         'name': 'Test',
-        'jobTitle': 'Dev',
-        'imageUrl': null,
-        'score': 95.5,
-        'rank': 1,
-        'reportUrl': '#',
+        'email': 't@test.com',
+        'job_title': 'Dev',
+        'score': 4.1,
+        'percentage': 82.5,
+        'review_cycle_id': 1,
+        'review_cycle_name': 'Cycle A',
+        'closed_date': null,
       };
       final model = PerformanceEmployeeModel.fromJson(json);
       final output = model.toJson();
@@ -122,9 +89,16 @@ void main() {
       expectModelFields([
         (key: 'id', actual: output['id'], expected: 1),
         (key: 'name', actual: output['name'], expected: 'Test'),
-        (key: 'score', actual: output['score'], expected: 95.5),
-        (key: 'rank', actual: output['rank'], expected: 1),
-        (key: 'reportUrl', actual: output['reportUrl'], expected: '#'),
+        (key: 'email', actual: output['email'], expected: 't@test.com'),
+        (key: 'job_title', actual: output['job_title'], expected: 'Dev'),
+        (key: 'score', actual: output['score'], expected: 4.1),
+        (key: 'percentage', actual: output['percentage'], expected: 82.5),
+        (key: 'review_cycle_id', actual: output['review_cycle_id'], expected: 1),
+        (
+          key: 'review_cycle_name',
+          actual: output['review_cycle_name'],
+          expected: 'Cycle A'
+        ),
       ]);
     });
 
