@@ -36,7 +36,7 @@ class MainCardWidget extends StatelessWidget {
             onViewTap: onViewMoreTap,
           ),
           Divider(color: context.color.outline),
-          const SizedBox(height: 12),
+          SizedBox(height: 12.h),
           child,
         ],
       ),

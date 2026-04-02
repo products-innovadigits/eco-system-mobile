@@ -11,8 +11,8 @@ class ProjectManagementSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        SizedBox(height: 20.h),
         ProjectProgressSection(
           isProjectManagementHome: isProjectManagementHome,
         ),

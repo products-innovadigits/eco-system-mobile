@@ -1,7 +1,9 @@
+import 'package:pms_system/core/pms_prototype_data.dart';
 import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/cycle_review/domain/cycle_review_repo.dart';
 import 'package:pms_system/features/cycle_review/model/cycle_review_model.dart';
 
+/// Prototype: simulated cycle review — no API.
 class CycleReviewRepoImpl implements CycleReviewRepo {
   final Network network;
 
@@ -9,36 +11,24 @@ class CycleReviewRepoImpl implements CycleReviewRepo {
 
   @override
   Future<CycleDetailModel> getCycleDetail(int cycleId) async {
-    return await network.requestOrThrow(
-      ApiNames.reviewCycleSummary(cycleId),
-      method: ServerMethods.GET,
-      systemTypeEnum: ActiveSystemEnum.pms,
-      model: CycleDetailModel(),
-    );
+    await Future.delayed(const Duration(milliseconds: 220));
+    return buildPrototypeCycleDetail(cycleId);
   }
 
   @override
   Future<CycleSummaryResponseModel> getReviewCycleSummary({
     required int cycleId,
   }) async {
-    return await network.requestOrThrow(
-      ApiNames.reviewCycleSummary(cycleId),
-      method: ServerMethods.GET,
-      systemTypeEnum: ActiveSystemEnum.pms,
-      model: CycleSummaryResponseModel(),
-    );
+    await Future.delayed(const Duration(milliseconds: 200));
+    return buildPrototypeCycleSummary(cycleId);
   }
 
   @override
   Future<RevieweeStatusResponseModel> getRevieweeStatus({
     required int cycleId,
   }) async {
-    return await network.requestOrThrow(
-      ApiNames.reviewCycleRevieweeStatus(cycleId),
-      method: ServerMethods.GET,
-      systemTypeEnum: ActiveSystemEnum.pms,
-      model: RevieweeStatusResponseModel(),
-    );
+    await Future.delayed(const Duration(milliseconds: 200));
+    return buildPrototypeRevieweeStatus();
   }
 
   @override
@@ -46,12 +36,7 @@ class CycleReviewRepoImpl implements CycleReviewRepo {
     required int cycleId,
     required SearchEngine engine,
   }) async {
-    return await network.requestOrThrow(
-      ApiNames.reviewCycleRevieweeStatus(cycleId),
-      method: ServerMethods.GET,
-      query: engine.query,
-      systemTypeEnum: ActiveSystemEnum.pms,
-      model: RevieweeStatusResponseModel(),
-    );
+    await Future.delayed(const Duration(milliseconds: 200));
+    return buildPrototypeRevieweeStatus();
   }
 }

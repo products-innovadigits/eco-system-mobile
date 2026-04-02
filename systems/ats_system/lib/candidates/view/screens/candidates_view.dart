@@ -32,11 +32,7 @@ class Candidates extends StatelessWidget {
               LocaleKeys.searching_for_candidate,
             ),
           ),
-          body: SingleChildScrollView(
-            controller: bloc.scrollController,
-            padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 16.h),
-            child: AllCandidatesSection(),
-          ),
+          body: AllCandidatesSection(),
         );
       },
     );

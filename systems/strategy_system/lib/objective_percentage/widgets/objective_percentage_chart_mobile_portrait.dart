@@ -18,13 +18,19 @@ class _ObjectivePercentageChartMobilePortraitState
   int touchedIndex = -1;
   bool isEmpty = true;
 
+  static double _totalPercentageFromState(Done state) {
+    final raw = state.data;
+    if (raw == null) return 0;
+    if (raw is num) return raw.toDouble();
+    return double.tryParse(raw.toString().replaceAll('%', '').trim()) ?? 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ObjectivePercentageBloc, AppState>(
       builder: (context, state) {
         if (state is Done) {
-          isEmpty =
-              double.parse((state.data as String).replaceAll('%', '')) <= 0;
+          isEmpty = _totalPercentageFromState(state) <= 0;
         }
         return AspectRatio(
           aspectRatio: 1.4,

@@ -1,4 +1,3 @@
-import 'package:core_system/core/config/app_config.dart';
 import 'package:core_system/core/modules/home_section.dart';
 import 'package:core_system/core/modules/system_module.dart';
 import 'package:core_system/core/utility/export.dart';
@@ -103,12 +102,13 @@ class PmsModule implements SystemModule {
       id: 'pms',
       order: 21,
       builder: (context) {
-        if (AppConfig.activeSystem == ActiveSystemEnum.pms) {
-          return const Column(
+        if (UserBloc.activeSystems.contains(ActiveSystemEnum.pms)) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              CyclesSummaryCard(),
-              SizedBox(height: 16),
-              EmployeeOfTheMonthPortraitCard(),
+              const CyclesSummaryCard(),
+              SizedBox(height: 16.h),
+              const EmployeeOfTheMonthPortraitCard(),
             ],
           );
         }

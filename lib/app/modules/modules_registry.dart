@@ -72,6 +72,8 @@ class ModulesRegistry {
       routeName = Routes.STRATEGY_LAYOUT;
     } else if (system == ActiveSystemEnum.pms) {
       routeName = Routes.PMS_LAYOUT;
+    } else if (system == ActiveSystemEnum.ats) {
+      routeName = Routes.ATS_LAYOUT;
     }
 
     if (routeName != null) {

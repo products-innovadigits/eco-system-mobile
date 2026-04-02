@@ -109,7 +109,7 @@ class ReviewCycleCard extends StatelessWidget {
 class _WeakestFactorCard extends StatelessWidget {
   final ReviewCycleItem cycle;
 
-  const _WeakestFactorCard({super.key, required this.cycle});
+  const _WeakestFactorCard({required this.cycle});
 
   @override
   Widget build(BuildContext context) {

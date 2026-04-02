@@ -1,9 +1,8 @@
 import 'package:core_system/core/helpers/font_sizes.dart';
 import 'package:core_system/core/utility/export.dart';
 import 'package:eco_system/features/auth/login/bloc/login_bloc.dart';
+import 'package:eco_system/features/auth/login/widgets/multi_select_systems_field.dart';
 import 'package:eco_system/features/auth/login/widgets/welcome_widget.dart';
-
-import '../../../../app/modules/modules_registry.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
@@ -24,8 +23,9 @@ class LoginView extends StatelessWidget {
           create: (context) => LoginBloc(),
           child: BlocBuilder<LoginBloc, AppState>(
             builder: (context, state) {
+              final bloc = context.read<LoginBloc>();
               return Form(
-                key: context.read<LoginBloc>().globalKey,
+                key: bloc.globalKey,
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 24.w),
                   child: Column(
@@ -35,51 +35,158 @@ class LoginView extends StatelessWidget {
                           data: [
                             const WelcomeWidget(),
                             SizedBox(height: 32.h),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 6.0),
-                                  child: Text(
-                                    allTranslations.text("login_to"),
-                                    style: context.textTheme.labelSmall,
-                                  ),
-                                ),
-                                CustomDropList(
-                                  list: ModulesRegistry.enabledModules
-                                      .map(
-                                        (module) => DropListModel(
-                                          id:
-                                              ModulesRegistry.enabledModules
-                                                  .indexOf(module) +
-                                              1,
-                                          name: module.name,
-                                          key: module.id,
+                            StreamBuilder<LoginSystemPickMode>(
+                              stream: bloc.systemPickMode.stream,
+                              initialData: LoginSystemPickMode.allEnabled,
+                              builder: (context, modeSnap) {
+                                final mode = modeSnap.data!;
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(bottom: 8.0),
+                                      child: Text(
+                                        allTranslations.text(LocaleKeys.login_to),
+                                        style: context.textTheme.labelSmall,
+                                      ),
+                                    ),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                          child: InkWell(
+                                            onTap: () => bloc.setSystemPickMode(
+                                              LoginSystemPickMode.allEnabled,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            child: Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                vertical: 4.h,
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  Radio<LoginSystemPickMode>(
+                                                    visualDensity:
+                                                        VisualDensity.compact,
+                                                    materialTapTargetSize:
+                                                        MaterialTapTargetSize
+                                                            .shrinkWrap,
+                                                    value: LoginSystemPickMode
+                                                        .allEnabled,
+                                                    groupValue: mode,
+                                                    onChanged: (v) {
+                                                      if (v != null) {
+                                                        bloc.setSystemPickMode(
+                                                          v,
+                                                        );
+                                                      }
+                                                    },
+                                                  ),
+                                                  Expanded(
+                                                    child: Text(
+                                                      allTranslations.text(
+                                                        LocaleKeys
+                                                            .login_all_systems,
+                                                      ),
+                                                      style: context
+                                                          .textTheme.bodyMedium,
+                                                      maxLines: 2,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
                                         ),
-                                      )
-                                      .toList(),
-                                  hint: allTranslations.text("select_system"),
-                                  onChanged: (value) {
-                                    if (value.key != null) {
-                                      context
-                                          .read<LoginBloc>()
-                                          .setSelectedSystem(value.key!);
-                                    }
-                                  },
-                                  bgColor: LightColor.white,
-                                ),
-                              ],
+                                        SizedBox(width: 8.w),
+                                        Expanded(
+                                          child: InkWell(
+                                            onTap: () => bloc.setSystemPickMode(
+                                              LoginSystemPickMode.customize,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            child: Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                vertical: 4.h,
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  Radio<LoginSystemPickMode>(
+                                                    visualDensity:
+                                                        VisualDensity.compact,
+                                                    materialTapTargetSize:
+                                                        MaterialTapTargetSize
+                                                            .shrinkWrap,
+                                                    value: LoginSystemPickMode
+                                                        .customize,
+                                                    groupValue: mode,
+                                                    onChanged: (v) {
+                                                      if (v != null) {
+                                                        bloc.setSystemPickMode(
+                                                          v,
+                                                        );
+                                                      }
+                                                    },
+                                                  ),
+                                                  Expanded(
+                                                    child: Text(
+                                                      allTranslations.text(
+                                                        LocaleKeys
+                                                            .login_customize_systems,
+                                                      ),
+                                                      style: context
+                                                          .textTheme.bodyMedium,
+                                                      maxLines: 2,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    if (mode == LoginSystemPickMode.customize) ...[
+                                      SizedBox(height: 12.h),
+                                      Padding(
+                                        padding: const EdgeInsets.only(bottom: 6.0),
+                                        child: Text(
+                                          allTranslations.text(
+                                            LocaleKeys.login_pick_systems,
+                                          ),
+                                          style: context.textTheme.labelSmall,
+                                        ),
+                                      ),
+                                      StreamBuilder<Set<String>>(
+                                        stream: bloc.customizedModuleIds.stream,
+                                        initialData: const {},
+                                        builder: (context, setSnap) {
+                                          final ids = setSnap.data ?? {};
+                                          return MultiSelectSystemsField(
+                                            selectedModuleIds: ids,
+                                            onChanged: bloc.setCustomizedModuleIds,
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  ],
+                                );
+                              },
                             ),
                             SizedBox(height: 16.h),
                             CustomTextField(
-                              // hint: allTranslations.text("enter_username"),
                               hint: allTranslations.text("enter_email"),
-                              // label: allTranslations.text("username"),
                               label: allTranslations.text("email"),
                               type: TextInputType.emailAddress,
                               validation: NotEmptyValidator.notEmptyValidator,
-                              // validation: EmailValidator.emailValidator,
-                              controller: context.read<LoginBloc>().mailTEC,
+                              controller: bloc.mailTEC,
                             ),
                             SizedBox(height: 16.h),
                             CustomTextField(
@@ -88,10 +195,8 @@ class LoginView extends StatelessWidget {
                               type: TextInputType.visiblePassword,
                               validation: PasswordValidator.passwordValidator,
                               isPassword: true,
-                              controller: context.read<LoginBloc>().passwordTEC,
+                              controller: bloc.passwordTEC,
                             ),
-
-                            ///Forget Password && Remember me
                             Padding(
                               padding: EdgeInsets.symmetric(
                                 vertical: 8.h,
@@ -100,19 +205,6 @@ class LoginView extends StatelessWidget {
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  // StreamBuilder<bool?>(
-                                  //   stream: context
-                                  //       .read<LoginBloc>()
-                                  //       .rememberMeStream,
-                                  //   builder: (_, snapshot) {
-                                  //     return RememberMe(
-                                  //       check: snapshot.data ?? false,
-                                  //       onChange: (v) => context
-                                  //           .read<LoginBloc>()
-                                  //           .updateRememberMe(v),
-                                  //     );
-                                  //   },
-                                  // ),
                                   const Expanded(child: SizedBox()),
                                   InkWell(
                                     onTap: () {
@@ -136,12 +228,8 @@ class LoginView extends StatelessWidget {
                         text: allTranslations.text("login"),
                         loading: state is Loading,
                         onPressed: () {
-                          if (context
-                              .read<LoginBloc>()
-                              .globalKey
-                              .currentState!
-                              .validate()) {
-                            context.read<LoginBloc>().add(Click());
+                          if (bloc.globalKey.currentState!.validate()) {
+                            bloc.add(Click());
                           }
                         },
                       ),

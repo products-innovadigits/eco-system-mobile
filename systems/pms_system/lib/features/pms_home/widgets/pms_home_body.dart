@@ -17,6 +17,7 @@ class PmsHomeBody extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           spacing: 16.h,
           children: [
             SizedBox(height: 70.h),
@@ -36,7 +37,7 @@ class PmsHomeBody extends StatelessWidget {
                   EmployeeOfTheMonthLandscapeCard(isPMSHome: true),
             ),
 
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
           ],
         ),
       ),

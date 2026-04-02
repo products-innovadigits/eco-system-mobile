@@ -4,6 +4,7 @@ import 'package:project_management/shared/model/default_response_model.dart';
 
 import '../../../../core/utility/project_management_exports.dart';
 
+/// Prototype: simulated workflow / documents / history — no API.
 class ProcessDetailsRepoImpl implements ProcessDetailsRepo {
   final Network network;
 
@@ -14,13 +15,29 @@ class ProcessDetailsRepoImpl implements ProcessDetailsRepo {
     required int processId,
     required int projectId,
   }) async {
-    final res = await network.requestOrThrow(
-      ApiNames.workflowGroupSteps,
-      query: {'processId': processId, 'projectId': projectId},
-      method: ServerMethods.GET,
-      model: GroupStepsModel(),
-    );
-    return res as GroupStepsModel;
+    await Future.delayed(const Duration(milliseconds: 200));
+    return GroupStepsModel.fromJson({
+      'succeeded': true,
+      'data': [
+        {
+          'groupId': 1,
+          'groupName': 'Intake & planning',
+          'progress': 75.0,
+          'steps': [
+            {'id': 10, 'stepName': 'Kickoff', 'status': 2},
+            {'id': 11, 'stepName': 'Requirements', 'status': 1},
+          ],
+        },
+        {
+          'groupId': 2,
+          'groupName': 'Approval',
+          'progress': 30.0,
+          'steps': [
+            {'id': 12, 'stepName': 'Steering committee', 'status': 0},
+          ],
+        },
+      ],
+    });
   }
 
   @override
@@ -30,13 +47,37 @@ class ProcessDetailsRepoImpl implements ProcessDetailsRepo {
     int pageIndex = 1,
     int pageSize = 10,
   }) async {
-    final res = await network.requestOrThrow(
-      ApiNames.currentNextSteps,
-      query: {'processId': processId, 'projectId': projectId},
-      method: ServerMethods.GET,
-      model: StageDocResponseModel(),
-    );
-    return res as StageDocResponseModel;
+    await Future.delayed(const Duration(milliseconds: 200));
+    return StageDocResponseModel.fromJson({
+      'succeeded': true,
+      'data': {
+        'workFlowStatus': 'Running',
+        'processTitle': 'Budget approval',
+        'projectTitle': 'Customer experience platform',
+        'projectManager': 'Demo PM',
+        'projectBudget': 420000.0,
+        'projectStartDate': '2026-01-15',
+        'projectEndDate': '2026-11-30',
+        'processStageTitle': 'Technical review',
+        'stepDocumentId': 9001,
+        'currentStep': {
+          'id': 11,
+          'text': 'Technical review',
+          'status': 1,
+          'isActiveStep': true,
+          'isStartStep': false,
+          'isLastStep': false,
+        },
+        'nextStep': [
+          {
+            'id': 12,
+            'text': 'Steering sign-off',
+            'status': 0,
+            'isActiveStep': false,
+          },
+        ],
+      },
+    });
   }
 
   @override
@@ -45,17 +86,26 @@ class ProcessDetailsRepoImpl implements ProcessDetailsRepo {
     int pageIndex = 1,
     int pageSize = 10,
   }) async {
-    final res = await network.requestOrThrow(
-      ApiNames.documentComment,
-      query: {
-        'documentDataId': documentId,
-        'PageIndex': pageIndex,
+    await Future.delayed(const Duration(milliseconds: 180));
+    return DocumentCommentsModel.fromJson({
+      'succeeded': true,
+      'data': {
+        'items': [
+          {
+            'id': 1,
+            'documentDataId': documentId,
+            'text': 'Prototype comment — ready for stakeholder review.',
+          },
+        ],
+        'currentPage': 1,
         'pageSize': pageSize,
+        'totalPages': 1,
+        'nextPage': null,
+        'previousPage': null,
+        'isLastPage': true,
+        'totalCount': 1,
       },
-      method: ServerMethods.GET,
-      model: DocumentCommentsModel(),
-    );
-    return res as DocumentCommentsModel;
+    });
   }
 
   @override
@@ -63,25 +113,25 @@ class ProcessDetailsRepoImpl implements ProcessDetailsRepo {
     required int documentId,
     required String text,
   }) async {
-    final res = await network.requestOrThrow(
-      ApiNames.documentComment,
-      method: ServerMethods.POST,
-      body: {'documentDataId': documentId, 'text': text},
-      model: DefaultResponseModel(),
+    await Future.delayed(const Duration(milliseconds: 150));
+    return DefaultResponseModel(
+      succeeded: true,
+      data: DefaultResponseData(
+        message: 'Comment saved (prototype)',
+        messageEn: 'Comment saved (prototype)',
+      ),
     );
-    return res as DefaultResponseModel;
   }
 
   @override
   Future<DefaultResponseModel> deleteDocComment({
     required int documentId,
   }) async {
-    final res = await network.requestOrThrow(
-      ApiNames.documentCommentActions(documentId),
-      method: ServerMethods.DELETE,
-      model: DefaultResponseModel(),
+    await Future.delayed(const Duration(milliseconds: 150));
+    return DefaultResponseModel(
+      succeeded: true,
+      data: DefaultResponseData(message: 'Deleted', messageEn: 'Deleted'),
     );
-    return res as DefaultResponseModel;
   }
 
   @override
@@ -90,13 +140,11 @@ class ProcessDetailsRepoImpl implements ProcessDetailsRepo {
     required int documentDataId,
     required String text,
   }) async {
-    final res = await network.requestOrThrow(
-      ApiNames.documentCommentActions(documentId),
-      method: ServerMethods.PUT,
-      body: {'documentDataId': documentDataId, 'text': text},
-      model: DefaultResponseModel(),
+    await Future.delayed(const Duration(milliseconds: 150));
+    return DefaultResponseModel(
+      succeeded: true,
+      data: DefaultResponseData(message: 'Updated', messageEn: 'Updated'),
     );
-    return res as DefaultResponseModel;
   }
 
   @override
@@ -104,17 +152,20 @@ class ProcessDetailsRepoImpl implements ProcessDetailsRepo {
     required int processId,
     required int projectId,
   }) async {
-    final res = await network.requestOrThrow(
-      ApiNames.projectProcessTechnicalLog,
-      query: {
-        'processId': processId,
-        'projectId': projectId,
-        'ignoreDeleted': true,
-      },
-      method: ServerMethods.GET,
-      model: HistoryResponseModel(),
-    );
-    return res as HistoryResponseModel;
+    await Future.delayed(const Duration(milliseconds: 200));
+    return HistoryResponseModel.fromJson({
+      'succeeded': true,
+      'data': [
+        {
+          'id': 1,
+          'name': 'Kickoff workshop completed',
+          'lastChangeTime': '2026-02-10T10:00:00',
+          'stepGroup': {'id': 1, 'groupName': 'Intake & planning'},
+          'stepComments': <dynamic>[],
+          'slicesData': <dynamic>[],
+        },
+      ],
+    });
   }
 
   @override
@@ -125,22 +176,11 @@ class ProcessDetailsRepoImpl implements ProcessDetailsRepo {
     required String text,
     File? file,
   }) async {
-    FormData formData = FormData.fromMap({
-      'projectId': projectId,
-      'projectStepId': projectStepId,
-      'processId': processId,
-      'text': text.trim(),
-      if (file != null)
-        'file': await MultipartFile.fromFile(
-          file.path,
-          filename: file.path.split('/').last,
-        ),
-    });
-
-    return await network.requestOrThrow(
-      ApiNames.projectStepComment,
-      method: ServerMethods.POST,
-      body: formData,
+    await Future.delayed(const Duration(milliseconds: 200));
+    return Response(
+      requestOptions: RequestOptions(path: 'stepComment'),
+      statusCode: 200,
+      data: <String, dynamic>{'succeeded': true},
     );
   }
 
@@ -149,10 +189,11 @@ class ProcessDetailsRepoImpl implements ProcessDetailsRepo {
     required int processId,
     required int projectId,
   }) async {
-    return await network.requestOrThrow(
-      ApiNames.projectProcessStart,
-      method: ServerMethods.POST,
-      body: {'projectId': projectId, 'processId': processId},
+    await Future.delayed(const Duration(milliseconds: 250));
+    return Response(
+      requestOptions: RequestOptions(path: 'startProcess'),
+      statusCode: 200,
+      data: <String, dynamic>{'succeeded': true},
     );
   }
 
@@ -162,10 +203,11 @@ class ProcessDetailsRepoImpl implements ProcessDetailsRepo {
     required int projectId,
     required int nextStepId,
   }) async {
-    return await network.requestOrThrow(
-      ApiNames.projectProcessNext,
-      method: ServerMethods.POST,
-      body: {'id': processId, 'projectId': projectId, 'nextStepId': nextStepId},
+    await Future.delayed(const Duration(milliseconds: 250));
+    return Response(
+      requestOptions: RequestOptions(path: 'nextStep'),
+      statusCode: 200,
+      data: <String, dynamic>{'succeeded': true},
     );
   }
 
@@ -175,16 +217,26 @@ class ProcessDetailsRepoImpl implements ProcessDetailsRepo {
     required int projectStepId,
     required int processId,
   }) async {
-    final res = await network.requestOrThrow(
-      ApiNames.currentStepDocs,
-      method: ServerMethods.GET,
-      query: {
-        'projectId': projectId,
-        'stepId': projectStepId,
-        'processId': processId,
+    await Future.delayed(const Duration(milliseconds: 180));
+    return CurrentStepDocumentModel.fromJson({
+      'succeeded': true,
+      'data': {
+        'totalCount': 1,
+        'items': [
+          {
+            'id': 1,
+            'projectId': projectId,
+            'processId': processId,
+            'stepDocumentId': projectStepId,
+            'document': {
+              'id': 100,
+              'documentTitle': 'Checklist — prototype',
+              'isActive': true,
+              'symbol': 'CHK',
+            },
+          },
+        ],
       },
-      model: CurrentStepDocumentModel(),
-    );
-    return res as CurrentStepDocumentModel;
+    });
   }
 }

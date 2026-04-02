@@ -9,11 +9,31 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
     on<Click>(onClick);
   }
 
-  void getActiveSystem() async {
-    /// Selected Systems derived from compile-time enabled modules (Single Source of Truth)
-    UserBloc.activeSystems = ModulesRegistry.enabledModules
-        .map((m) => m.system)
-        .toList();
+  Future<void> getActiveSystem(SharedHelper helper) async {
+    final raw = await helper.readString(CachingKey.allowedSystemModuleIds);
+    final enabledIds =
+        ModulesRegistry.enabledModules.map((m) => m.id).toSet();
+
+    if (raw.isNotEmpty) {
+      try {
+        final decoded = jsonDecode(raw);
+        if (decoded is List && decoded.isNotEmpty) {
+          final filtered = decoded
+              .map((e) => '$e')
+              .where(enabledIds.contains)
+              .toList();
+          if (filtered.isNotEmpty) {
+            UserBloc.activeSystems = filtered
+                .map(ActiveSystemEnum.fromModuleId)
+                .toList();
+            return;
+          }
+        }
+      } catch (_) {}
+    }
+
+    UserBloc.activeSystems =
+        ModulesRegistry.enabledModules.map((m) => m.system).toList();
   }
 
   Future<void> getColorScheme() async {
@@ -23,18 +43,13 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
   Future<void> onClick(Click event, Emitter<AppState> emit) async {
     await getColorScheme();
     Future.delayed(const Duration(milliseconds: 3000), () async {
-      ///Ask Notification Permission
       PermissionHandler.checkNotificationsPermission();
-
-      ///Ask Location Permission
-      // Geolocator.requestPermission();
 
       SharedHelper helper = SharedHelper();
       bool? isLogin = await helper.readBoolean(CachingKey.isLogin);
       bool? skip = await helper.readBoolean(CachingKey.skipBoarding);
 
-      ///Get Selected Active System
-      getActiveSystem();
+      await getActiveSystem(helper);
 
       if (isLogin) {
         await _restoreChosenSystem(helper);
@@ -51,17 +66,28 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
     });
   }
 
-  /// Restores [AppConfig.activeSystem] from Hive after cold start (login dropdown is in-memory only).
   Future<void> _restoreChosenSystem(SharedHelper helper) async {
     final moduleId = await helper.readString(CachingKey.chosenSystemModuleId);
-    if (moduleId.isNotEmpty) {
-      AppConfig.activeSystem = ActiveSystemEnum.fromModuleId(moduleId);
-      UserBloc.currentActiveSystem = AppConfig.activeSystem;
+    if (moduleId.isEmpty) {
+      if (ModulesRegistry.enabledModules.isNotEmpty) {
+        AppConfig.activeSystem = ModulesRegistry.enabledModules.first.system;
+        UserBloc.currentActiveSystem =
+            UserBloc.activeSystems.length > 1 ? null : AppConfig.activeSystem;
+      }
       return;
     }
-    if (ModulesRegistry.enabledModules.isNotEmpty) {
-      AppConfig.activeSystem = ModulesRegistry.enabledModules.first.system;
-      UserBloc.currentActiveSystem = AppConfig.activeSystem;
+
+    if (moduleId == SystemHelper.allSystemsUiModuleId) {
+      if (UserBloc.activeSystems.isNotEmpty) {
+        AppConfig.activeSystem = UserBloc.activeSystems.first;
+      } else if (ModulesRegistry.enabledModules.isNotEmpty) {
+        AppConfig.activeSystem = ModulesRegistry.enabledModules.first.system;
+      }
+      UserBloc.currentActiveSystem = null;
+      return;
     }
+
+    AppConfig.activeSystem = ActiveSystemEnum.fromModuleId(moduleId);
+    UserBloc.currentActiveSystem = AppConfig.activeSystem;
   }
 }

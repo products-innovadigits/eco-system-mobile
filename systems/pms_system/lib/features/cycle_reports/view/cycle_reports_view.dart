@@ -64,7 +64,7 @@ class _CycleReportsViewState extends State<CycleReportsView> {
                     SizedBox(height: 16.h),
                     CycleReviewHeader(
                       detail: CycleDetailDataModel(
-                        title: 'Bi-Annual Review' ?? widget.cycleName,
+                        title: 'Bi-Annual Review',
                         status: 'active',
                       ),
                     ),

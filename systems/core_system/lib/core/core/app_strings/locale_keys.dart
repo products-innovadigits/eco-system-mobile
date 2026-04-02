@@ -615,5 +615,11 @@ abstract class  LocaleKeys {
   static const total = 'total';
   static const login_to = 'login_to';
   static const please_select_system = 'please_select_system';
+  static const login_all_systems = 'login_all_systems';
+  static const login_customize_systems = 'login_customize_systems';
+  static const login_pick_systems = 'login_pick_systems';
+  static const login_select_systems_hint = 'login_select_systems_hint';
+  static const login_select_systems_first = 'login_select_systems_first';
+  static const all_systems = 'all_systems';
 
 }

@@ -88,7 +88,7 @@ class MainHeader extends StatelessWidget {
                     ],
                   ),
                 ),
-                // if (UserBloc.activeSystems.length > 1) SystemSelectionWidget(),
+                if (UserBloc.activeSystems.length > 1) SystemSelectionWidget(),
               ],
             ),
           ],

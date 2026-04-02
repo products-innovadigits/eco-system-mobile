@@ -12,23 +12,24 @@ class StrategyHomeBody extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: BlocProvider<StrategyBloc>(
           create: (_) => StrategyBloc(),
-          child: _buildContent(),
+          child: _buildContent(context),
         ),
       ),
     );
   }
 
-  Widget _buildContent() {
-    return const Column(
-      spacing: 16,
+  Widget _buildContent(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: 16.h,
       children: [
-        SizedBox(height: 80),
-        ObjectivePercentageSection(isStrategyHome: true),
-        BscCardSection(),
-        OkrCardSection(),
-        KpiInitiativesProgressSection(),
-        StrategicAxisCardSection(),
-        SizedBox(height: 16),
+        SizedBox(height: 70.h),
+        const ObjectivePercentageSection(isStrategyHome: true),
+        const BscCardSection(),
+        const OkrCardSection(),
+        const KpiInitiativesProgressSection(),
+        const StrategicAxisCardSection(),
+        SizedBox(height: 16.h),
       ],
     );
   }

@@ -15,7 +15,7 @@ class ObjectivePercentageBloc extends Bloc<AppEvent, AppState> {
           res.data != null &&
           res.data["data"] != null &&
           res.data["data"]["totalPercentage"] != null) {
-        emit(Done(data: res.data["data"]["totalPercentage"]));
+        emit(Done(data: _parseTotalPercentage(res.data["data"]["totalPercentage"])));
       } else {
         AppCore.errorMessage(allTranslations.text('something_went_wrong'));
         emit(Error());
@@ -25,5 +25,12 @@ class ObjectivePercentageBloc extends Bloc<AppEvent, AppState> {
 
       emit(Error());
     }
+  }
+
+  /// JSON may deliver total as [num] or percentage [String]; charts expect a [double].
+  static double _parseTotalPercentage(dynamic raw) {
+    if (raw == null) return 0;
+    if (raw is num) return raw.toDouble();
+    return double.tryParse(raw.toString().replaceAll('%', '').trim()) ?? 0;
   }
 }

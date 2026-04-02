@@ -16,6 +16,7 @@ class Routes {
   static const SEARCH = "SEARCH";
   static const TALENT_POOL = "TALENT_POOL";
   static const JOBS = "JOBS";
+  static const ATS_LAYOUT = "ATS_LAYOUT";
   static const CANDIDATES = "CANDIDATES";
   static const STRATEGY_LAYOUT = "STRATEGY_LAYOUT";
   static const OBJECTIVES = "OBJECTIVES";

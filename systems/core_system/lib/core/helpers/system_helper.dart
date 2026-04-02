@@ -9,11 +9,25 @@ class SystemHelper {
     ActiveSystemEnum.pms: 'نظام PMS',
   };
 
-  static const String allSystemsName = 'كل الانظمة';
+  /// Hive value for [CachingKey.chosenSystemModuleId] when default view is combined home.
+  static const String allSystemsUiModuleId = '__all_systems_ui__';
+
+  /// [ActiveSystemEnum] → [SystemModule.id] for persistence.
+  static String moduleIdForActiveSystem(ActiveSystemEnum system) {
+    if (system == ActiveSystemEnum.pms) return 'pms_system';
+    if (system == ActiveSystemEnum.ats) return 'ats_system';
+    if (system == ActiveSystemEnum.strategy) return 'strategy_system';
+    if (system == ActiveSystemEnum.projectManagement) {
+      return 'project_management';
+    }
+    return system.value;
+  }
 
   /// Get the display name for a system
   static String getSystemName(ActiveSystemEnum? system) {
-    if (system == null) return allSystemsName;
+    if (system == null) {
+      return allTranslations.text(LocaleKeys.all_systems);
+    }
     return systemNames[system] ?? system.value;
   }
 
@@ -22,8 +36,7 @@ class SystemHelper {
     ActiveSystemEnum? currentSystem,
   ) {
     final options = <Map<String, dynamic>>[
-      // Always include "all systems" option
-      {'name': allSystemsName, 'enum': null},
+      {'name': allTranslations.text(LocaleKeys.all_systems), 'enum': null},
     ];
 
     // Add active systems, excluding current system
@@ -36,9 +49,9 @@ class SystemHelper {
     return options;
   }
 
-  /// Check if we should show the system selection widget
+  /// Show switcher when the user has more than one allowed system (login customize or all-enabled with 2+ modules).
   static bool shouldShowSystemWidget() {
-    return UserBloc.currentActiveSystem != null;
+    return UserBloc.activeSystems.length > 1;
   }
 
   /// Handle system selection

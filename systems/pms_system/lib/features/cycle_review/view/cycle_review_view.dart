@@ -144,36 +144,3 @@ class _CycleReviewBody extends StatelessWidget {
     );
   }
 }
-
-class _CloseButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 12.h),
-        child: SizedBox(
-          width: double.infinity,
-          height: 50.h,
-          child: ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: LightColor.primary,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              elevation: 0,
-            ),
-            child: Text(
-              allTranslations.text(LocaleKeys.close_review_cycle),
-              style: context.textTheme.titleSmall?.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}

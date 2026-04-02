@@ -5,6 +5,7 @@ import 'package:pms_system/features/employees_learning/model/employees_learning_
 import 'package:pms_system/features/employees_learning/model/seniority_levels_model.dart';
 import 'package:pms_system/features/employees_learning/model/teams_model.dart';
 
+/// Prototype: simulated employee directory & filters — no API.
 class EmployeesLearningRepoImpl implements EmployeesLearningRepo {
   final Network network;
 
@@ -12,57 +13,76 @@ class EmployeesLearningRepoImpl implements EmployeesLearningRepo {
 
   @override
   Future<EmployeesLearningModel> getEmployees(SearchEngine data) async {
-    final query = data.query as Map<String, dynamic>? ?? <String, dynamic>{};
-    final page = (query['pageIndex'] as int?) ?? data.nextPageIndex;
-    final perPage = (query['pageSize'] as int?) ?? data.limit;
-
-    final apiQuery = <String, dynamic>{
-      'page': page,
-      'per_page': perPage,
-    };
-
-    final keyword = query['keyword'] as String?;
-    if (keyword != null && keyword.isNotEmpty) {
-      apiQuery['keyword'] = keyword;
-    }
-
-    final teamId = query['teamId'];
-    if (teamId != null) {
-      apiQuery['team_id'] = teamId;
-    }
-
-    final seniorityLevelId = query['seniorityLevelId'];
-    if (seniorityLevelId != null) {
-      apiQuery['seniority_level_id'] = seniorityLevelId;
-    }
-
-    return await network.requestOrThrow(
-      ApiNames.users,
-      query: apiQuery,
-      method: ServerMethods.GET,
-      systemTypeEnum: ActiveSystemEnum.pms,
-      model: EmployeesLearningModel(),
-    ) as EmployeesLearningModel;
+    await Future.delayed(const Duration(milliseconds: 220));
+    return EmployeesLearningModel.fromJson({
+      'succeeded': true,
+      'status': 200,
+      'data': {
+        'items': [
+          {
+            'id': 1,
+            'name': 'Hala Ibrahim',
+            'jobTitle': 'People Operations',
+            'email': 'hala@prototype.eco',
+            'phone': '+966501111111',
+            'seniority': 'Senior',
+            'team': 'People',
+          },
+          {
+            'id': 2,
+            'name': 'Yousef Karim',
+            'jobTitle': 'Software Engineer',
+            'email': 'yousef@prototype.eco',
+            'seniority': 'Mid',
+            'team': 'Platform',
+          },
+          {
+            'id': 3,
+            'name': 'Reem Saud',
+            'jobTitle': 'UX Researcher',
+            'email': 'reem@prototype.eco',
+            'seniority': 'Lead',
+            'team': 'Design',
+          },
+        ],
+        'currentPage': 1,
+        'pageSize': 20,
+        'totalPages': 1,
+        'nextPage': null,
+        'previousPage': null,
+        'isLastPage': true,
+        'totalCount': 3,
+      },
+    });
   }
 
   @override
   Future<SeniorityLevelsModel> getSeniorityLevels() async {
-    return await network.requestOrThrow(
-      ApiNames.seniorityLevels,
-      method: ServerMethods.GET,
-      systemTypeEnum: ActiveSystemEnum.pms,
-      model: SeniorityLevelsModel(),
-    ) as SeniorityLevelsModel;
+    await Future.delayed(const Duration(milliseconds: 120));
+    return SeniorityLevelsModel.fromJson({
+      'succeeded': true,
+      'status': 200,
+      'data': [
+        {'id': 1, 'name': 'Junior', 'sort_order': 1},
+        {'id': 2, 'name': 'Mid', 'sort_order': 2},
+        {'id': 3, 'name': 'Senior', 'sort_order': 3},
+        {'id': 4, 'name': 'Lead', 'sort_order': 4},
+      ],
+    });
   }
 
   @override
   Future<TeamsModel> getTeams() async {
-    return await network.requestOrThrow(
-      ApiNames.allTeams,
-      method: ServerMethods.GET,
-      systemTypeEnum: ActiveSystemEnum.pms,
-      model: TeamsModel(),
-    ) as TeamsModel;
+    await Future.delayed(const Duration(milliseconds: 120));
+    return TeamsModel.fromJson({
+      'succeeded': true,
+      'status': 200,
+      'data': [
+        {'id': 1, 'name': 'Platform', 'color': '#1565C0'},
+        {'id': 2, 'name': 'Design', 'color': '#00897B'},
+        {'id': 3, 'name': 'People', 'color': '#F9A825'},
+      ],
+    });
   }
 
   @override

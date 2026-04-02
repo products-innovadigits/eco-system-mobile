@@ -9,10 +9,11 @@ class ProjectManagementHomeBody extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           spacing: 16.h,
           children: [
             SizedBox(height: 70.h),
-            ProjectManagementSection(isProjectManagementHome: true),
+            const ProjectManagementSection(isProjectManagementHome: true),
             const LatestRequestsSection(),
             SizedBox(height: 16.h),
           ],

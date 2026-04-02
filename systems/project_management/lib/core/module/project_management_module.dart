@@ -1,4 +1,3 @@
-import 'package:core_system/core/config/app_config.dart';
 import 'package:core_system/core/modules/home_section.dart';
 import 'package:core_system/core/modules/system_module.dart';
 import 'package:project_management/core/di/project_management_locator.dart';
@@ -92,7 +91,9 @@ class ProjectManagementModule implements SystemModule {
       id: 'project_management',
       order: 20,
       builder: (context) {
-        if (AppConfig.activeSystem == ActiveSystemEnum.projectManagement) {
+        if (UserBloc.activeSystems.contains(
+          ActiveSystemEnum.projectManagement,
+        )) {
           return const ProjectManagementSection();
         }
         return const SizedBox.shrink();

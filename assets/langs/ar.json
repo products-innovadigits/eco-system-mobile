@@ -614,5 +614,11 @@
   "competency_highlights_from_last_review": "أبرز الكفاءات من آخر مراجعة",
   "total": "الإجمالي",
   "login_to": "تسجيل الدخول إلى",
-  "please_select_system": "يرجى اختيار النظام الذي تريد تسجيل الدخول إليه"
+  "please_select_system": "يرجى اختيار النظام الذي تريد تسجيل الدخول إليه",
+  "login_all_systems": "كل الأنظمة",
+  "login_customize_systems": "تخصيص",
+  "login_pick_systems": "الأنظمة المستخدمة",
+  "login_select_systems_hint": "اضغط لاختيار الأنظمة",
+  "login_select_systems_first": "اختر نظاماً واحداً على الأقل أعلاه",
+  "all_systems": "كل الأنظمة"
 }

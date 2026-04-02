@@ -17,7 +17,19 @@ class ProjectCategoriesProgressModel extends SingleMapper {
     id = json['id'];
     name = json['name'];
     progress = (json['progress'] is! double) ? 0.0 : json['progress'];
-    color = json['color'];
+    final raw = json['color'];
+    if (raw is Color) {
+      color = raw;
+    } else if (raw is int) {
+      color = Color(raw);
+    } else if (raw is String && raw.isNotEmpty) {
+      final hex = raw.replaceAll('#', '');
+      color = Color(
+        int.parse(hex.length == 6 ? 'ff$hex' : hex, radix: 16),
+      );
+    } else {
+      color = null;
+    }
   }
 
   @override

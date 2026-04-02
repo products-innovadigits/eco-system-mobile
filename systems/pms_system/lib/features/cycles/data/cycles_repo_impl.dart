@@ -1,7 +1,9 @@
+import 'package:pms_system/core/pms_prototype_data.dart';
 import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/cycles/domain/cycles_repo.dart';
 import 'package:pms_system/features/cycles/model/cycles_model.dart';
 
+/// Prototype: simulated appraisal cycles — no API.
 class CyclesRepoImpl implements CyclesRepo {
   final Network network;
 
@@ -9,18 +11,7 @@ class CyclesRepoImpl implements CyclesRepo {
 
   @override
   Future<CyclesModel> getCycles(SearchEngine data) async {
-    final query = data.query as Map<String, dynamic>? ?? <String, dynamic>{};
-    final page =
-        (query['page'] as int?) ??
-        (query['pageIndex'] as int?) ??
-        data.nextPageIndex;
-
-    return await network.requestOrThrow(
-      ApiNames.appraisalReviewCycles,
-      query: <String, dynamic>{'page': page},
-      method: ServerMethods.GET,
-      systemTypeEnum: ActiveSystemEnum.pms,
-      model: CyclesModel(),
-    );
+    await Future.delayed(const Duration(milliseconds: 220));
+    return buildPrototypeCyclesModel();
   }
 }

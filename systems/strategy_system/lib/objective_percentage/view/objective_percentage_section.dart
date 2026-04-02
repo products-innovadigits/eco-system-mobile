@@ -84,7 +84,7 @@ class _PercentageChartSection extends StatelessWidget {
       },
       child: Column(
         children: [
-          const SizedBox(height: 12),
+          // const SizedBox(height: 12),
           CustomScreenTypeLayoutWidget(
             mobilePortrait: (ctx) =>
                 ObjectivePercentageChartMobilePortrait(objectives: objectives),
@@ -92,7 +92,7 @@ class _PercentageChartSection extends StatelessWidget {
                 ObjectivePercentageChartMobileLandscape(objectives: objectives),
           ),
 
-          const SizedBox(height: 24),
+          SizedBox(height: 12.h),
           ChartCategoriesSection(objectives: objectives),
         ],
       ),

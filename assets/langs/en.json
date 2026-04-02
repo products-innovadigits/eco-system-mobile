@@ -613,5 +613,11 @@
   "competency_highlights_from_last_review": "Competency Highlights from Last Review",
   "total": "Total",
   "login_to": "Login to",
-  "please_select_system": "Please select a system"
+  "please_select_system": "Please select a system",
+  "login_all_systems": "All systems",
+  "login_customize_systems": "Customize",
+  "login_pick_systems": "Systems to use",
+  "login_select_systems_hint": "Tap to choose systems",
+  "login_select_systems_first": "Choose at least one system above",
+  "all_systems": "All systems"
 }
