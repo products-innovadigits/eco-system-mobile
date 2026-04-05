@@ -593,6 +593,7 @@ abstract class  LocaleKeys {
   static const top_3_performers = 'top_3_performers';
   static const top_employees = 'top_employees';
   static const performance = 'performance';
+  static const employee_of_the_month_history = 'employee_of_the_month_history';
   static const employee_of_the_month = 'employee_of_the_month';
   static const employee_of_the_year = 'employee_of_the_year';
   static const top_10 = 'top_10';
@@ -601,6 +602,7 @@ abstract class  LocaleKeys {
   static const employee_of_the_month_set_successfully = 'employee_of_the_month_set_successfully';
   static const cycle_reports = 'cycle_reports';
   static const cycle_colon = 'cycle_colon';
+  static const view_history = 'view_history';
   static const view_report = 'view_report';
   static const download_report = 'download_report';
   static const employee_learning_details = 'employee_learning_details';

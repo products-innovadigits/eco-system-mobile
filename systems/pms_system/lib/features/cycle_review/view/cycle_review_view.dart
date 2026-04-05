@@ -117,28 +117,32 @@ class _CycleReviewBody extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(bottom: 24.0, left: 16, right: 16),
-          child: Row(
-            children: [
-              Expanded(
-                child: CustomBtn(
-                  text: allTranslations.text(LocaleKeys.close_review_cycle),
-                  onPressed: () {},
-                ),
-              ),
-              SizedBox(width: 16.w),
-              Expanded(
-                child: CustomBtn(
-                  text: allTranslations.text(LocaleKeys.reports),
-                  onPressed: () {
-                    CustomNavigator.push(Routes.CYCLE_REPORT);
-                  },
-                  color: context.color.surfaceContainer,
-                  textColor: context.color.primary,
-                  borderColor: context.color.primary,
-                ),
-              ),
-            ],
+          child: CustomBtn(
+            text: allTranslations.text(LocaleKeys.close_review_cycle),
+            onPressed: () {},
           ),
+          // Row(
+          //   children: [
+          //     Expanded(
+          //       child: CustomBtn(
+          //         text: allTranslations.text(LocaleKeys.close_review_cycle),
+          //         onPressed: () {},
+          //       ),
+          //     ),
+          //     SizedBox(width: 16.w),
+          //     Expanded(
+          //       child: CustomBtn(
+          //         text: allTranslations.text(LocaleKeys.reports),
+          //         onPressed: () {
+          //           CustomNavigator.push(Routes.CYCLE_REPORT);
+          //         },
+          //         color: context.color.surfaceContainer,
+          //         textColor: context.color.primary,
+          //         borderColor: context.color.primary,
+          //       ),
+          //     ),
+          //   ],
+          // ),
         ),
       ],
     );

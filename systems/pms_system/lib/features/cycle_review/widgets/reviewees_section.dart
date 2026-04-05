@@ -67,6 +67,7 @@ class ReviewersSection extends StatelessWidget {
             child: ReviewCard(
               review: reviewers[index],
               initiallyExpanded: index == 0,
+              cycleId: cycleId,
             ),
           ),
         ),

@@ -63,6 +63,7 @@ abstract class ApiNames {
   // Employees Performance APIs ====================
   static const employeesTopTen = "employees/get-top-ten/";
   static const setEmployeeOfTheMonth = "employees/set-employee-of-the-month/";
+  static const employeeOfTheMonthHistory = "employees/employee-of-the-month-history";
 
   // Talent Pool APIs ====================
   static const talents = "candidates";

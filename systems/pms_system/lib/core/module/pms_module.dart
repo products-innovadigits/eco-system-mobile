@@ -9,6 +9,7 @@ import 'package:pms_system/features/cycle_review/view/cycle_reviewees_view.dart'
 import 'package:pms_system/features/cycles/view/cycles_view.dart';
 import 'package:pms_system/features/employee_learning_details/domain/employee_learning_details_repo.dart';
 import 'package:pms_system/features/employee_learning_details/view/employee_learning_details_view.dart';
+import 'package:pms_system/features/employee_of_month_history/view/employee_of_month_history_view.dart';
 import 'package:pms_system/features/employees_learning/view/employees_learning_view.dart';
 import 'package:pms_system/features/employees_performance/view/employees_performance_view.dart';
 import 'package:pms_system/features/pms_home/widgets/cycles_summary_card.dart';
@@ -74,6 +75,12 @@ class PmsModule implements SystemModule {
       return MaterialPageRoute(
         settings: settings,
         builder: (_) => const EmployeesPerformanceView(),
+      );
+    },
+    Routes.EMPLOYEE_OF_MONTH_HISTORY: (settings) {
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const EmployeeOfMonthHistoryView(),
       );
     },
     Routes.CYCLE_REVIEWEES: (settings) {

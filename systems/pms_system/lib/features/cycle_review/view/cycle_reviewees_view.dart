@@ -61,6 +61,7 @@ class _CycleRevieweesViewState extends State<CycleRevieweesView> {
               RevieweesLoading() => const CycleRevieweesShimmer(),
               RevieweesLoaded(:final reviewees, :final isLoadingMore) =>
                 _RevieweesList(
+                  cycleId: widget.cycleId,
                   reviewees: reviewees,
                   isLoadingMore: isLoadingMore,
                   scrollController: _scrollController,
@@ -83,11 +84,13 @@ class _CycleRevieweesViewState extends State<CycleRevieweesView> {
 }
 
 class _RevieweesList extends StatelessWidget {
+  final int cycleId;
   final List<CycleRevieweeModel> reviewees;
   final bool isLoadingMore;
   final ScrollController scrollController;
 
   const _RevieweesList({
+    required this.cycleId,
     required this.reviewees,
     required this.isLoadingMore,
     required this.scrollController,
@@ -108,7 +111,11 @@ class _RevieweesList extends StatelessWidget {
             child: const Center(child: CircularProgressIndicator()),
           );
         }
-        return ReviewCard(review: reviewees[index], initiallyExpanded: false);
+        return ReviewCard(
+          review: reviewees[index],
+          initiallyExpanded: false,
+          cycleId: cycleId,
+        );
       },
     );
   }

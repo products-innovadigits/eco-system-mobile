@@ -5,10 +5,14 @@ class ReviewCard extends StatefulWidget {
   final CycleRevieweeModel review;
   final bool initiallyExpanded;
 
+  /// When set (e.g. from [CycleRevieweesView]), shows "Download report" in the expanded section.
+  final int? cycleId;
+
   const ReviewCard({
     super.key,
     required this.review,
     this.initiallyExpanded = false,
+    this.cycleId,
   });
 
   @override
@@ -102,7 +106,10 @@ class _ReviewCardState extends State<ReviewCard> {
           ),
           AnimatedCrossFade(
             firstChild: const SizedBox.shrink(),
-            secondChild: _ExpandedContent(reviewee: review),
+            secondChild: _ExpandedContent(
+              reviewee: review,
+              cycleId: widget.cycleId,
+            ),
             crossFadeState: _isExpanded
                 ? CrossFadeState.showSecond
                 : CrossFadeState.showFirst,
@@ -140,8 +147,9 @@ class _PercentageBadge extends StatelessWidget {
 
 class _ExpandedContent extends StatelessWidget {
   final CycleRevieweeModel reviewee;
+  final int? cycleId;
 
-  const _ExpandedContent({required this.reviewee});
+  const _ExpandedContent({required this.reviewee, this.cycleId});
 
   @override
   Widget build(BuildContext context) {
@@ -149,14 +157,31 @@ class _ExpandedContent extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.fromLTRB(14.w, 0, 14.w, 14.w),
       child: Column(
-        children: reviews
-            .map(
-              (review) => Padding(
-                padding: EdgeInsets.only(top: 10.h),
-                child: _ReviewTypeCard(review: review),
-              ),
-            )
-            .toList(),
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          ...reviews.map(
+            (review) => Padding(
+              padding: EdgeInsets.only(top: 10.h),
+              child: _ReviewTypeCard(review: review),
+            ),
+          ),
+          if (cycleId != null &&
+              reviewee.completedReviews == reviewee.totalReviews) ...[
+            SizedBox(height: reviews.isEmpty ? 8.h : 14.h),
+            CustomBtn(
+              text: allTranslations.text(LocaleKeys.download_report),
+              onPressed: () {
+                // TODO: wire download when reviewee report endpoint is available
+                // (cycleId: $cycleId, revieweeId: ${reviewee.id})
+              },
+              height: 40,
+              fontSize: FontSizes.f14,
+              color: context.color.surfaceContainer,
+              textColor: context.color.secondary,
+              borderColor: context.color.outline,
+            ),
+          ],
+        ],
       ),
     );
   }
