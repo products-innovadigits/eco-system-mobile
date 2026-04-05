@@ -1,4 +1,4 @@
-import 'package:core_system/features/settings/view/settings_view.dart';
+import 'package:core_system/features/notifications/view/notifications_view.dart';
 import 'package:project_management/core/utility/project_management_exports.dart';
 import 'package:project_management/shared/components/project_management_system_switcher.dart';
 import 'package:project_management/shared/widgets/project_management_bottom_nav_bar.dart';
@@ -32,7 +32,7 @@ class _ProjectManagementLayoutState extends State<ProjectManagementLayout>
         1 => const Center(
             child: Text('التقارير', style: TextStyle(fontSize: FontSizes.f32)),
           ),
-        2 => const SettingsView(),
+        2 => const NotificationsView(),
         _ => SizedBox(),
       };
 

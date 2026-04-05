@@ -38,7 +38,7 @@ class ProjectManagementBottomNavBar extends StatelessWidget {
         // Navigate to reports if needed
         break;
       case 2:
-        CustomNavigator.push(Routes.SETTINGS);
+        CustomNavigator.push(Routes.NOTIFICATIONS);
         break;
     }
   }

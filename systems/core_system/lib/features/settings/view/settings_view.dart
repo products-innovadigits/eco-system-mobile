@@ -1,5 +1,4 @@
 import 'package:core_system/core/utility/export.dart';
-import 'package:core_system/core/widgets/settings_header.dart';
 import 'package:core_system/features/settings/bloc/settings_bloc.dart';
 
 class SettingsView extends StatelessWidget {
@@ -20,15 +19,15 @@ class _SettingsScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: context.color.surface,
+      appBar: CustomAppBar(title: allTranslations.text(LocaleKeys.settings)),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SettingsHeader(
-            onEditPressed: () {
-              // Wire to profile / edit screen when a shell route is available.
-            },
-          ),
+          // SettingsHeader(
+          //   onEditPressed: () {
+          //     // Wire to profile / edit screen when a shell route is available.
+          //   },
+          // ),
           Expanded(
             child: SafeArea(
               top: false,

@@ -62,6 +62,16 @@ class SettingsHeader extends StatelessWidget {
             const SizedBox(height: 30),
             Row(
               children: [
+                InkWell(
+                  onTap: () {
+                    CustomNavigator.pop();
+                  },
+                  child: Assets.svgs.arrowBack.svg(
+                    color: LightColor.white,
+                    width: 24,
+                    height: 24,
+                  ),
+                ),
                 Container(
                   padding: EdgeInsets.all(4.w),
                   width: 35.w,

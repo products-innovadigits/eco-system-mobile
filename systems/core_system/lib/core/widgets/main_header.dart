@@ -90,12 +90,12 @@ class MainHeader extends StatelessWidget {
                 ),
                 if (UserBloc.activeSystems.length > 1) SystemSelectionWidget(),
                 InkWell(
-                  onTap: () => CustomNavigator.push(Routes.NOTIFICATIONS),
+                  onTap: () => CustomNavigator.push(Routes.SETTINGS),
                   borderRadius: BorderRadius.circular(20),
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8.w),
                     child: Images(
-                      image: Assets.svgs.notification.path,
+                      image: Assets.svgs.setting.path,
                       color: LightColor.white,
                       width: 24,
                       height: 24,

@@ -3,7 +3,7 @@ import 'package:ats_system/shared/components/ats_system_switcher.dart';
 import 'package:core_system/core/helpers/font_sizes.dart';
 import 'package:core_system/core/utility/export.dart';
 import 'package:core_system/core/widgets/nav_app.dart';
-import 'package:core_system/features/settings/view/settings_view.dart';
+import 'package:core_system/features/notifications/view/notifications_view.dart';
 
 class AtsLayout extends StatefulWidget {
   final int index;
@@ -31,7 +31,7 @@ class _AtsLayoutState extends State<AtsLayout> with WidgetsBindingObserver {
         1 => const Center(
             child: Text('التقارير', style: TextStyle(fontSize: FontSizes.f32)),
           ),
-        2 => const SettingsView(),
+        2 => const NotificationsView(),
         _ => const SizedBox(),
       };
 
