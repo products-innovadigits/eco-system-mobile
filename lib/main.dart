@@ -1,6 +1,7 @@
 // Flutter core imports
 // Third-party imports
 import 'package:core_system/core/bloc/theme_cubit.dart';
+import 'package:core_system/core/bloc/theme_mode_cubit.dart';
 import 'package:core_system/core/helpers/notification_helper/notification_helper.dart';
 import 'package:core_system/core/helpers/translation/translations.dart';
 import 'package:core_system/core/navigation/routes.dart';
@@ -91,9 +92,11 @@ class _MyAppState extends State<MyApp> {
           builder: (context, lang) {
             return lang.hasData
                 ? ConnectivityWrapper(
-                    child: BlocBuilder<ThemeCubit, ThemeState>(
-                      builder: (context, state) {
-                        return MaterialApp(
+                    child: BlocBuilder<ThemeModeCubit, ThemeMode>(
+                      builder: (context, themeMode) {
+                        return BlocBuilder<ThemeCubit, ThemeState>(
+                          builder: (context, state) {
+                            return MaterialApp(
                           builder: (context, child) {
                             return MediaQuery(
                               data: MediaQuery.of(context).copyWith(
@@ -119,7 +122,8 @@ class _MyAppState extends State<MyApp> {
                             GlobalCupertinoLocalizations.delegate,
                           ],
                           title: "Nawah",
-                          themeMode: ThemeMode.light,
+                          themeMode: themeMode,
+                          darkTheme: Themes.darkTheme().themeData,
                           // theme: Themes.lightTheme().themeData
                           theme: state.themeData,
                           // .copyWith(
@@ -156,6 +160,8 @@ class _MyAppState extends State<MyApp> {
                           //                 : Styles.FONT_AR,
                           //           ),
                           // ),
+                            );
+                          },
                         );
                       },
                     ),

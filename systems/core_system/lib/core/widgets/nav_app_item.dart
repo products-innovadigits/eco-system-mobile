@@ -21,7 +21,12 @@ class NavAppItem extends StatelessWidget {
     return Column(
       children: [
         SizedBox(height: 12.h),
-        Images(image: isSelected ? activeIcon : icon, color: color),
+        Images(
+          image: isSelected ? activeIcon : icon,
+          color: color,
+          width: 22.w,
+          height: 22.w,
+        ),
         SizedBox(height: 2.h),
         Text(
           allTranslations.text(title),

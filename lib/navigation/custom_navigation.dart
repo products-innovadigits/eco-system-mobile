@@ -1,4 +1,6 @@
 import 'package:core_system/core/utility/export.dart';
+import 'package:core_system/features/notifications/view/notifications_view.dart';
+import 'package:core_system/features/settings/view/settings_view.dart';
 import 'package:eco_system/app/modules/modules_registry.dart';
 import 'package:eco_system/features/auth/login/view/login.dart';
 import 'package:eco_system/features/auth/otp/view/otp_view.dart';
@@ -34,6 +36,12 @@ class AppRouter {
 
       case Routes.MAIN_PAGE:
         return MaterialPageRoute(builder: (_) => const MainPage());
+
+      case Routes.SETTINGS:
+        return MaterialPageRoute(builder: (_) => const SettingsView());
+
+      case Routes.NOTIFICATIONS:
+        return MaterialPageRoute(builder: (_) => const NotificationsView());
 
       case Routes.SYSTEM_SWITCHER:
         final systemEnum =

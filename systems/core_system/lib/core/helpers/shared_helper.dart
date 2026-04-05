@@ -14,10 +14,14 @@ class CachingKey extends Enum<String> {
 
   /// Module id from [SystemModule.id] chosen at login (e.g. `pms_system`).
   /// Used to restore [AppConfig.activeSystem] after app restart.
-  static const CachingKey chosenSystemModuleId = CachingKey('chosenSystemModuleId');
+  static const CachingKey chosenSystemModuleId = CachingKey(
+    'chosenSystemModuleId',
+  );
 
   /// JSON array of module ids the user chose at login (customize mode). Empty/absent = all enabled modules.
-  static const CachingKey allowedSystemModuleIds = CachingKey('allowedSystemModuleIds');
+  static const CachingKey allowedSystemModuleIds = CachingKey(
+    'allowedSystemModuleIds',
+  );
 }
 
 class SharedHelper {
@@ -69,7 +73,7 @@ class SharedHelper {
   Future<void> logout() async {
     String currentLang = await allTranslations.getPreferredLanguage();
     box!.clear();
-    CustomNavigator.push(Routes.SPLASH, clean: true);
+    CustomNavigator.push(Routes.LOGIN, clean: true);
 
     SharedHelper.sharedHelper!.writeData(CachingKey.skipBoarding, true);
     allTranslations.setNewLanguage(currentLang, true);

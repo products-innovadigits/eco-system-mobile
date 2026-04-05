@@ -55,10 +55,10 @@ class _NavAppState extends State<NavApp> {
         ),
         BottomNavigationBarItem(
           icon: NavAppItem(
-            title: LocaleKeys.notifications,
+            title: LocaleKeys.settings,
             isSelected: widget.index == 2,
-            icon: Assets.svgs.notification.path,
-            activeIcon: Assets.svgs.notification.path,
+            icon: Assets.svgs.setting.path,
+            activeIcon: Assets.svgs.setting.path,
             color: _selectedColor(2),
           ),
           label: '',

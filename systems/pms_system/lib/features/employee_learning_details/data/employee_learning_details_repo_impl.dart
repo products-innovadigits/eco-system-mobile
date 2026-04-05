@@ -1,3 +1,4 @@
+import 'package:pms_system/core/pms_prototype_employees.dart';
 import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/employee_learning_details/domain/employee_learning_details_repo.dart';
 import 'package:pms_system/features/employee_learning_details/model/employee_learning_details_model.dart';
@@ -11,6 +12,7 @@ class EmployeeLearningDetailsRepoImpl implements EmployeeLearningDetailsRepo {
   @override
   Future<ReviewCyclesModel> getReviewCycles({required int userId}) async {
     await Future.delayed(const Duration(milliseconds: 220));
+    final isTopPerformer = userId == PmsPrototypeEmployees.linaId;
     return ReviewCyclesModel.fromJson({
       'data': [
         {
@@ -20,11 +22,17 @@ class EmployeeLearningDetailsRepoImpl implements EmployeeLearningDetailsRepo {
           'closed_date': '2026-06-30',
           'is_learning_assignment_sent': true,
           'report': {
-            'final_score': 4.3,
-            'weakest_area': {'avg': 3.1, 'name': 'Stakeholder management'},
-            'strongest_area': {'avg': 4.8, 'name': 'Execution'},
-            'weakest_factor': {'avg': 3.4, 'name': 'Communication'},
-            'strongest_factor': {'avg': 4.6, 'name': 'Ownership'},
+            'final_score': isTopPerformer ? 4.85 : 4.3,
+            'weakest_area': {
+              'avg': isTopPerformer ? 4.2 : 3.1,
+              'name': isTopPerformer ? 'Strategic planning' : 'Stakeholder management',
+            },
+            'strongest_area': {'avg': 4.9, 'name': 'Execution'},
+            'weakest_factor': {
+              'avg': isTopPerformer ? 4.3 : 3.4,
+              'name': isTopPerformer ? 'Documentation' : 'Communication',
+            },
+            'strongest_factor': {'avg': 4.8, 'name': 'Ownership'},
           },
         },
         {
@@ -43,16 +51,23 @@ class EmployeeLearningDetailsRepoImpl implements EmployeeLearningDetailsRepo {
     required int userId,
   }) async {
     await Future.delayed(const Duration(milliseconds: 200));
+    final isTopPerformer = userId == PmsPrototypeEmployees.linaId;
     return LastReviewCycleReportModel.fromJson({
       'id': 99,
       'created_at': '2026-02-01',
       'name': 'Latest summary',
       'report_data': {
-        'final_score': 4.4,
-        'weakest_area': {'avg': 3.5, 'name': 'Strategic thinking'},
-        'strongest_area': {'avg': 4.7, 'name': 'Delivery'},
-        'weakest_factor': {'avg': 3.6, 'name': 'Planning'},
-        'strongest_factor': {'avg': 4.5, 'name': 'Collaboration'},
+        'final_score': isTopPerformer ? 4.9 : 4.4,
+        'weakest_area': {
+          'avg': isTopPerformer ? 4.4 : 3.5,
+          'name': isTopPerformer ? 'Influence without authority' : 'Strategic thinking',
+        },
+        'strongest_area': {'avg': 4.95, 'name': 'Delivery'},
+        'weakest_factor': {
+          'avg': isTopPerformer ? 4.5 : 3.6,
+          'name': isTopPerformer ? 'Meeting facilitation' : 'Planning',
+        },
+        'strongest_factor': {'avg': 4.85, 'name': 'Collaboration'},
       },
     });
   }

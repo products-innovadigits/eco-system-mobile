@@ -1,3 +1,4 @@
+import 'package:pms_system/core/pms_prototype_employees.dart';
 import 'package:pms_system/features/cycle_review/model/cycle_review_model.dart';
 import 'package:pms_system/features/cycles/model/cycles_model.dart';
 
@@ -56,6 +57,25 @@ Map<String, dynamic> prototypeCycleDetailBody(int cycleId) => {
         'revieweesCount': 25,
         'reviewees': [
           {
+            'id': PmsPrototypeEmployees.linaId,
+            'name': PmsPrototypeEmployees.linaFullName,
+            'jobTitle': PmsPrototypeEmployees.linaJobTitle,
+            'completedReviews': 3,
+            'totalReviews': 3,
+            'overallPercentage': 98.0,
+            'reviews': [
+              {
+                'type': 'Manager',
+                'percentage': 98.0,
+                'completedCount': 1,
+                'totalCount': 1,
+                'reviewers': [
+                  {'id': 1, 'name': 'Director', 'status': 'Completed'},
+                ],
+              },
+            ],
+          },
+          {
             'id': 101,
             'name': 'Omar Khalil',
             'jobTitle': 'Engineering Manager',
@@ -106,6 +126,26 @@ RevieweeStatusResponseModel buildPrototypeRevieweeStatus() =>
     RevieweeStatusResponseModel.fromJson({
       'data': [
         {
+          'id': PmsPrototypeEmployees.linaId,
+          'name': PmsPrototypeEmployees.linaFullName,
+          'job_title': PmsPrototypeEmployees.linaJobTitle,
+          'avatar': null,
+          'overall_progress': 98,
+          'completed_count': 3,
+          'total_count': 3,
+          'types': [
+            {
+              'name': 'Peer',
+              'progress': 100,
+              'completed_count': 2,
+              'total_count': 2,
+              'reviewers': [
+                {'id': 3, 'name': 'Alex', 'status': 'completed', 'overdue': false},
+              ],
+            },
+          ],
+        },
+        {
           'id': 201,
           'name': 'Nour Hassan',
           'job_title': 'Product Designer',
@@ -137,6 +177,6 @@ RevieweeStatusResponseModel buildPrototypeRevieweeStatus() =>
       ],
       'current_page': 1,
       'last_page': 1,
-      'total': 2,
+      'total': 3,
       'per_page': 20,
     });

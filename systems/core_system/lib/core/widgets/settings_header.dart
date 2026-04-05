@@ -1,10 +1,12 @@
 import 'package:core_system/core/utility/export.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
-class MainHeader extends StatelessWidget {
-  final bool? withBackButton;
+/// Header for the settings screen: same shell as [MainHeader] (background, sizing)
+/// but shows user icon + name, optional system switcher, and edit (no greeting, no bell).
+class SettingsHeader extends StatelessWidget {
+  const SettingsHeader({super.key, this.onEditPressed});
 
-  const MainHeader({super.key, this.withBackButton = true});
+  final VoidCallback? onEditPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +40,11 @@ class MainHeader extends StatelessWidget {
       height = orientation == Orientation.portrait ? 170 : 160;
     }
 
+    final name = UserBloc.instance.userModel?.name;
+    final displayName = (name != null && name.trim().isNotEmpty)
+        ? name.trim()
+        : allTranslations.text(LocaleKeys.username);
+
     return Container(
       width: context.w,
       height: height,
@@ -53,49 +60,37 @@ class MainHeader extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             const SizedBox(height: 30),
-            // withBackButton == true
-            //     ? Padding(
-            //         padding: const EdgeInsets.only(top: 10, bottom: 15),
-            //         child: Row(
-            //           mainAxisAlignment: MainAxisAlignment.start,
-            //           children: [
-            //             InkWell(
-            //               onTap: () => CustomNavigator.pop(),
-            //               child: Images(
-            //                 image: Assets.svgs.arrowBack.path,
-            //                 color: LightColor.white,
-            //               ),
-            //             ),
-            //           ],
-            //         ),
-            //       )
-            //     : const SizedBox(height: 25),
             Row(
               children: [
+                Container(
+                  padding: EdgeInsets.all(4.w),
+                  width: 35.w,
+                  height: 35.w,
+                  decoration: BoxDecoration(
+                    color: LightColor.white,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Images(image: Assets.svgs.user.path),
+                ),
+                SizedBox(width: 12.w),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        " صباح الخير ${UserBloc.instance.userModel?.name ?? "صباح الخير "} "
-                        // " ${UserBloc.instance.userModel?.welcomeMessage ?? "صباح الخير "} "
-                        "${DateTime.now().format("a") == "AM" ? "🌤" : "🌤"}",
-                        style: context.textTheme.headlineSmall?.copyWith(
-                          color: context.color.onPrimary,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
+                  child: Text(
+                    displayName,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: context.textTheme.headlineSmall?.copyWith(
+                      color: context.color.onPrimary,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
-                if (UserBloc.activeSystems.length > 1) SystemSelectionWidget(),
                 InkWell(
-                  onTap: () => CustomNavigator.push(Routes.NOTIFICATIONS),
+                  onTap: onEditPressed,
                   borderRadius: BorderRadius.circular(20),
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8.w),
                     child: Images(
-                      image: Assets.svgs.notification.path,
+                      image: Assets.svgs.editOutline.path,
                       color: LightColor.white,
                       width: 24,
                       height: 24,

@@ -1,5 +1,6 @@
 import 'package:core_system/core/widgets/main_card_widget.dart';
 
+import '../../../core/pms_prototype_employees.dart';
 import '../../../core/utility/pms_exports.dart';
 
 class EmployeeOfTheMonthPortraitCard extends StatelessWidget {
@@ -33,8 +34,8 @@ class EmployeeOfTheMonthPortraitCard extends StatelessWidget {
         children: [
           _PerformerItem(
             rank: 2,
-            name: 'Mohamed',
-            score: '98.2%',
+            name: PmsPrototypePodiumDisplay.rank2FirstName,
+            score: PmsPrototypePodiumDisplay.rank2ScoreLabel,
             avatarSize: 70,
             color: const Color(0xffC0C0C0),
             // scoreTextColor: const Color(0xffBFC1C2),
@@ -45,8 +46,8 @@ class EmployeeOfTheMonthPortraitCard extends StatelessWidget {
           ),
           _PerformerItem(
             rank: 1,
-            name: 'Sarah',
-            score: '99.8%',
+            name: PmsPrototypePodiumDisplay.rank1FirstName,
+            score: PmsPrototypePodiumDisplay.rank1ScoreLabel,
             avatarSize: 90,
             color: const Color(0xffE6C16B),
             // scoreTextColor: const Color(0xffFFC107),
@@ -58,8 +59,8 @@ class EmployeeOfTheMonthPortraitCard extends StatelessWidget {
           ),
           _PerformerItem(
             rank: 3,
-            name: 'David',
-            score: '97.5%',
+            name: PmsPrototypePodiumDisplay.rank3FirstName,
+            score: PmsPrototypePodiumDisplay.rank3ScoreLabel,
             avatarSize: 70,
             color: const Color(0xffCD7F32),
             // scoreTextColor: const Color(0xffFFC107),

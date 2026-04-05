@@ -1,6 +1,7 @@
 import 'package:core_system/core/helpers/font_sizes.dart';
 import 'package:core_system/core/utility/export.dart';
 import 'package:core_system/core/widgets/nav_app.dart';
+import 'package:core_system/features/settings/view/settings_view.dart';
 import 'package:pms_system/core/di/pms_locator.dart';
 import 'package:pms_system/features/employees_learning/bloc/employees_learning_bloc.dart';
 import 'package:pms_system/features/employees_learning/bloc/employees_learning_events.dart';
@@ -43,9 +44,7 @@ class _PmsLayoutState extends State<PmsLayout> with WidgetsBindingObserver {
     1 => const Center(
       child: Text('التقارير', style: TextStyle(fontSize: FontSizes.f32)),
     ),
-    2 => const Center(
-      child: Text('الإشعارات', style: TextStyle(fontSize: FontSizes.f32)),
-    ),
+    2 => const SettingsView(),
     _ => SizedBox(),
   };
 

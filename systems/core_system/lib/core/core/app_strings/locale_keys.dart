@@ -51,6 +51,9 @@ abstract class  LocaleKeys {
   static const reports = 'reports';
   static const project_report = 'project_report';
   static const notifications = 'notifications';
+  static const settings = 'settings';
+  static const dark_theme = 'dark_theme';
+  static const employees = 'employees';
   static const menu = 'menu';
   static const morning = 'morning';
   static const evening = 'evening';
@@ -78,6 +81,8 @@ abstract class  LocaleKeys {
   static const perdiem_request = 'perdiem_request';
   static const requests_des = 'requests_des';
   static const change_lang = 'change_lang';
+  static const language_english = 'language_english';
+  static const language_arabic = 'language_arabic';
   static const self_service = 'self_service';
   static const find_user = 'find_user';
   static const roles = 'roles';

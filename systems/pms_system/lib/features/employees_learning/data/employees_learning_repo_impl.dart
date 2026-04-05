@@ -1,3 +1,4 @@
+import 'package:pms_system/core/pms_prototype_employees.dart';
 import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/employees_learning/domain/employees_learning_repo.dart';
 import 'package:pms_system/features/employees_learning/model/employees_filters_model.dart';
@@ -14,44 +15,19 @@ class EmployeesLearningRepoImpl implements EmployeesLearningRepo {
   @override
   Future<EmployeesLearningModel> getEmployees(SearchEngine data) async {
     await Future.delayed(const Duration(milliseconds: 220));
+    final items = prototypeEmployeesLearningItems();
     return EmployeesLearningModel.fromJson({
       'succeeded': true,
       'status': 200,
       'data': {
-        'items': [
-          {
-            'id': 1,
-            'name': 'Hala Ibrahim',
-            'jobTitle': 'People Operations',
-            'email': 'hala@prototype.eco',
-            'phone': '+966501111111',
-            'seniority': 'Senior',
-            'team': 'People',
-          },
-          {
-            'id': 2,
-            'name': 'Yousef Karim',
-            'jobTitle': 'Software Engineer',
-            'email': 'yousef@prototype.eco',
-            'seniority': 'Mid',
-            'team': 'Platform',
-          },
-          {
-            'id': 3,
-            'name': 'Reem Saud',
-            'jobTitle': 'UX Researcher',
-            'email': 'reem@prototype.eco',
-            'seniority': 'Lead',
-            'team': 'Design',
-          },
-        ],
+        'items': items,
         'currentPage': 1,
         'pageSize': 20,
         'totalPages': 1,
         'nextPage': null,
         'previousPage': null,
         'isLastPage': true,
-        'totalCount': 3,
+        'totalCount': items.length,
       },
     });
   }
@@ -81,6 +57,7 @@ class EmployeesLearningRepoImpl implements EmployeesLearningRepo {
         {'id': 1, 'name': 'Platform', 'color': '#1565C0'},
         {'id': 2, 'name': 'Design', 'color': '#00897B'},
         {'id': 3, 'name': 'People', 'color': '#F9A825'},
+        {'id': 4, 'name': 'Product', 'color': '#6A1B9A'},
       ],
     });
   }
