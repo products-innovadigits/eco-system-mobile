@@ -13,9 +13,10 @@ class PerformanceLoading extends EmployeesPerformanceState {
 }
 
 class PerformanceLoaded extends EmployeesPerformanceState {
-  final EmployeesPerformanceDataModel data;
+  final List<PerformanceEmployeeModel> top3;
+  final List<PerformanceEmployeeModel> top10;
 
-  const PerformanceLoaded({required this.data});
+  const PerformanceLoaded({required this.top3, required this.top10});
 }
 
 class PerformanceFailure extends EmployeesPerformanceState {

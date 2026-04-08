@@ -1,6 +1,10 @@
 import 'package:core_system/core/widgets/main_card_widget.dart';
+import 'package:pms_system/core/di/pms_locator.dart';
+import 'package:pms_system/features/employees_performance/bloc/employees_performance_bloc.dart';
+import 'package:pms_system/features/employees_performance/bloc/employees_performance_events.dart';
+import 'package:pms_system/features/employees_performance/bloc/employees_performance_states.dart';
+import 'package:pms_system/features/employees_performance/model/employees_performance_model.dart';
 
-import '../../../core/pms_prototype_employees.dart';
 import '../../../core/utility/pms_exports.dart';
 
 class EmployeeOfTheMonthLandscapeCard extends StatelessWidget {
@@ -10,48 +14,142 @@ class EmployeeOfTheMonthLandscapeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MainCardWidget(
-      title: allTranslations.text(LocaleKeys.top_employees),
-      moreBtnTxt: isPMSHome ? allTranslations.text(LocaleKeys.view_all) : null,
-      onViewMoreTap: () {
-        if (!isPMSHome) {
-          UserBloc.currentActiveSystem = ActiveSystemEnum.pms;
-        }
-        isPMSHome
-            ? CustomNavigator.push(Routes.EMPLOYEES_PERFORMANCE)
-            : CustomNavigator.push(
-                Routes.SYSTEM_SWITCHER,
-                arguments: ActiveSystemEnum.pms,
-              );
+    if (isPMSHome) {
+      return _CardContent(isPMSHome: isPMSHome);
+    }
+    return BlocProvider(
+      create: (_) => EmployeesPerformanceBloc(repo: pmsSl())
+        ..add(const LoadPerformanceData()),
+      child: _CardContent(isPMSHome: isPMSHome),
+    );
+  }
+}
+
+class _CardContent extends StatelessWidget {
+  final bool isPMSHome;
+
+  const _CardContent({required this.isPMSHome});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<EmployeesPerformanceBloc, EmployeesPerformanceState>(
+      builder: (context, state) {
+        return MainCardWidget(
+          title: allTranslations.text(LocaleKeys.top_employees),
+          moreBtnTxt:
+              isPMSHome ? allTranslations.text(LocaleKeys.view_all) : null,
+          onViewMoreTap: () {
+            if (!isPMSHome) {
+              UserBloc.currentActiveSystem = ActiveSystemEnum.pms;
+            }
+            isPMSHome
+                ? CustomNavigator.push(Routes.EMPLOYEES_PERFORMANCE)
+                : CustomNavigator.push(
+                    Routes.SYSTEM_SWITCHER,
+                    arguments: ActiveSystemEnum.pms,
+                  );
+          },
+          child: switch (state) {
+            PerformanceLoading() => const _ShimmerContent(),
+            PerformanceLoaded(:final top3) => _LoadedContent(top3: top3),
+            _ => const SizedBox.shrink(),
+          },
+        );
       },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
+    );
+  }
+}
+
+class _ShimmerContent extends StatelessWidget {
+  const _ShimmerContent();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        _ShimmerPodiumItem(avatarSize: 56),
+        _ShimmerPodiumItem(avatarSize: 70),
+        _ShimmerPodiumItem(avatarSize: 56),
+      ],
+    );
+  }
+}
+
+class _ShimmerPodiumItem extends StatelessWidget {
+  final double avatarSize;
+
+  const _ShimmerPodiumItem({required this.avatarSize});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        CustomShimmerCircleImage(radius: avatarSize),
+        SizedBox(height: 4),
+        CustomShimmerContainer(
+          height: 12,
+          width: 50,
+          borderRadius: 4,
+          padding: EdgeInsets.zero,
+        ),
+        SizedBox(height: 6),
+        CustomShimmerContainer(
+          height: 20,
+          width: 50,
+          borderRadius: 20,
+          padding: EdgeInsets.zero,
+        ),
+      ],
+    );
+  }
+}
+
+class _LoadedContent extends StatelessWidget {
+  final List<PerformanceEmployeeModel> top3;
+
+  const _LoadedContent({required this.top3});
+
+  @override
+  Widget build(BuildContext context) {
+    if (top3.isEmpty) return const SizedBox.shrink();
+
+    final first = top3.length > 0 ? top3[0] : null;
+    final second = top3.length > 1 ? top3[1] : null;
+    final third = top3.length > 2 ? top3[2] : null;
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        if (second != null)
           _PerformerItem(
             rank: 2,
-            name: PmsPrototypePodiumDisplay.rank2FirstName,
-            score: PmsPrototypePodiumDisplay.rank2ScoreLabel,
+            name: second.name ?? '',
+            score: '${second.percentage?.toStringAsFixed(1) ?? '0'}%',
             avatarSize: 56,
             color: const Color(0xffC0C0C0),
           ),
+        if (first != null)
           _PerformerItem(
             rank: 1,
-            name: PmsPrototypePodiumDisplay.rank1FirstName,
-            score: PmsPrototypePodiumDisplay.rank1ScoreLabel,
+            name: first.name ?? '',
+            score: '${first.percentage?.toStringAsFixed(1) ?? '0'}%',
             avatarSize: 70,
             color: const Color(0xffE6C16B),
             isFirst: true,
           ),
+        if (third != null)
           _PerformerItem(
             rank: 3,
-            name: PmsPrototypePodiumDisplay.rank3FirstName,
-            score: PmsPrototypePodiumDisplay.rank3ScoreLabel,
+            name: third.name ?? '',
+            score: '${third.percentage?.toStringAsFixed(1) ?? '0'}%',
             avatarSize: 56,
             color: const Color(0xffCD7F32),
           ),
-        ],
-      ),
+      ],
     );
   }
 }

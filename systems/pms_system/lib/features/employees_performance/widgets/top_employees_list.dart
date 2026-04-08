@@ -1,4 +1,6 @@
 import 'package:pms_system/core/utility/pms_exports.dart';
+import 'package:pms_system/features/employees_performance/bloc/employees_performance_bloc.dart';
+import 'package:pms_system/features/employees_performance/bloc/employees_performance_events.dart';
 import 'package:pms_system/features/employees_performance/model/employees_performance_model.dart';
 
 class TopEmployeesList extends StatelessWidget {
@@ -104,63 +106,78 @@ class _TopEmployeeCard extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                if (employee.reportUrl != null) ...[
+                if (employee.reviewCycleName != null) ...[
                   SizedBox(height: 2.h),
                   Text(
-                    allTranslations.text(LocaleKeys.employee_report),
+                    employee.reviewCycleName!,
                     style: context.textTheme.bodySmall?.copyWith(
-                      color: LightColor.secondary,
-                      fontSize: 11,
-                      decoration: TextDecoration.underline,
-                      decorationColor: LightColor.secondary,
+                      color: LightColor.grey,
+                      fontSize: 10,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ],
             ),
           ),
           SizedBox(width: 8.w),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-            decoration: BoxDecoration(
-              color: LightColor.secondary,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  '${employee.score?.toInt() ?? 0}%',
-                  style: context.textTheme.labelSmall?.copyWith(
-                    color: LightColor.white,
-                    fontWeight: FontWeight.w600,
+          Column(
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.r),
+                  color: context.color.secondary.withValues(alpha: 0.1),
+                  border: Border.all(color: LightColor.border),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      '${employee.percentage?.toStringAsFixed(1) ?? '0'}%',
+                      style: context.textTheme.labelSmall?.copyWith(
+                        color: LightColor.secondary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(width: 4.w),
+                    Icon(
+                      Icons.category_outlined,
+                      color: LightColor.secondary,
+                      size: 14,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 8.h),
+              InkWell(
+                onTap: () {
+                  context.read<EmployeesPerformanceBloc>().add(
+                    SetEmployeeOfTheMonth(employee: employee),
+                  );
+                },
+                borderRadius: BorderRadius.circular(8),
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12.w,
+                    vertical: 6.h,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.r),
+                    color: context.color.primary,
+                  ),
+                  child: Text(
+                    allTranslations.text(LocaleKeys.make_top_1),
+                    style: context.textTheme.labelSmall?.copyWith(
+                      color: context.color.onPrimary,
+                      fontWeight: FontWeight.w500,
+                      fontSize: FontSizes.f12,
+                    ),
                   ),
                 ),
-                SizedBox(width: 4.w),
-                Icon(
-                  Icons.category_outlined,
-                  color: LightColor.white,
-                  size: 14,
-                ),
-              ],
-            ),
-          ),
-          SizedBox(width: 8.w),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: context.color.secondary.withValues(alpha: 0.1),
-              border: Border.all(color: LightColor.border),
-            ),
-            child: Text(
-              allTranslations.text(LocaleKeys.make_top_1),
-              style: context.textTheme.labelSmall?.copyWith(
-                color: context.color.secondary,
-                fontWeight: FontWeight.w500,
-                fontSize: 11,
               ),
-            ),
+            ],
           ),
         ],
       ),

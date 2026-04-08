@@ -32,164 +32,64 @@ abstract final class PmsPrototypePodiumDisplay {
   static const String rank3ScoreLabel = '94.2%';
 }
 
-PerformanceEmployeeModel _perf({
-  required int id,
-  required String name,
-  required String jobTitle,
-  required double score,
-  required int rank,
-  String? reportUrl,
-}) =>
-    PerformanceEmployeeModel(
-      id: id,
-      name: name,
-      jobTitle: jobTitle,
-      score: score,
-      rank: rank,
-      reportUrl: reportUrl,
+/// Prototype performance list for the **pms** employees-performance UI (flat `data` list).
+///
+/// [type] `yearly` nudges scores slightly upward; monthly is the default.
+EmployeesPerformanceModel buildPrototypeEmployeesPerformanceModel({String? type}) {
+  final isYearly = type == 'yearly';
+  final bump = isYearly ? 0.5 : 0.0;
+
+  final rows = <(int id, String name, String email, String job, double base)>[
+    (
+      PmsPrototypeEmployees.linaId,
+      PmsPrototypeEmployees.linaFullName,
+      PmsPrototypeEmployees.linaEmail,
+      PmsPrototypeEmployees.linaJobTitle,
+      97.5,
+    ),
+    (
+      PmsPrototypeEmployees.faisalId,
+      PmsPrototypeEmployees.faisalFullName,
+      'faisal.alotaibi@prototype.eco',
+      PmsPrototypeEmployees.faisalJobTitle,
+      96.0,
+    ),
+    (
+      PmsPrototypeEmployees.mahaId,
+      PmsPrototypeEmployees.mahaFullName,
+      'maha.alqahtani@prototype.eco',
+      PmsPrototypeEmployees.mahaJobTitle,
+      94.0,
+    ),
+    (4, 'Omar Khalil', 'omar.khalil@prototype.eco', 'Engineering Manager', 92.5),
+    (5, 'Dina Mansour', 'dina.mansour@prototype.eco', 'Scrum Master', 91.5),
+    (6, 'Khalid Al-Saeed', 'khalid.alsaeed@prototype.eco', 'Software Engineer', 90.5),
+    (7, 'Nora Abdullah', 'nora.abdullah@prototype.eco', 'QA Engineer', 89.5),
+    (8, 'Tariq Al-Mutairi', 'tariq.almutairi@prototype.eco', 'Mobile Engineer', 88.5),
+    (9, 'Huda Saleh', 'huda.saleh@prototype.eco', 'QA Lead', 87.5),
+    (10, 'Bandar Al-Rashid', 'bandar.alrashid@prototype.eco', 'DevOps Engineer', 86.5),
+  ];
+
+  final data = <PerformanceEmployeeModel>[];
+  for (var i = 0; i < rows.length; i++) {
+    final r = rows[i];
+    final pct = (r.$5 + bump).clamp(0.0, 100.0);
+    data.add(
+      PerformanceEmployeeModel(
+        id: r.$1,
+        name: r.$2,
+        email: r.$3,
+        jobTitle: r.$4,
+        score: pct,
+        percentage: pct,
+        reviewCycleId: 1,
+        reviewCycleName: isYearly ? 'FY 2026 Annual' : 'March 2026 Review',
+        closedDate: isYearly ? '2026-03-31' : '2026-03-28',
+      ),
     );
+  }
 
-/// Same person is **rank 1** on monthly, yearly, and overall top 10 (scores differ by context).
-EmployeesPerformanceModel buildPrototypeEmployeesPerformanceModel() {
-  final topMonthly = <PerformanceEmployeeModel>[
-    _perf(
-      id: PmsPrototypeEmployees.linaId,
-      name: PmsPrototypeEmployees.linaFullName,
-      jobTitle: PmsPrototypeEmployees.linaJobTitle,
-      score: 97.0,
-      rank: 1,
-    ),
-    _perf(
-      id: PmsPrototypeEmployees.faisalId,
-      name: PmsPrototypeEmployees.faisalFullName,
-      jobTitle: PmsPrototypeEmployees.faisalJobTitle,
-      score: 95.5,
-      rank: 2,
-    ),
-    _perf(
-      id: PmsPrototypeEmployees.mahaId,
-      name: PmsPrototypeEmployees.mahaFullName,
-      jobTitle: PmsPrototypeEmployees.mahaJobTitle,
-      score: 93.0,
-      rank: 3,
-    ),
-  ];
-
-  final topYearly = <PerformanceEmployeeModel>[
-    _perf(
-      id: PmsPrototypeEmployees.linaId,
-      name: PmsPrototypeEmployees.linaFullName,
-      jobTitle: PmsPrototypeEmployees.linaJobTitle,
-      score: 98.0,
-      rank: 1,
-    ),
-    _perf(
-      id: PmsPrototypeEmployees.faisalId,
-      name: PmsPrototypeEmployees.faisalFullName,
-      jobTitle: PmsPrototypeEmployees.faisalJobTitle,
-      score: 96.0,
-      rank: 2,
-    ),
-    _perf(
-      id: PmsPrototypeEmployees.mahaId,
-      name: PmsPrototypeEmployees.mahaFullName,
-      jobTitle: PmsPrototypeEmployees.mahaJobTitle,
-      score: 94.5,
-      rank: 3,
-    ),
-  ];
-
-  final top10 = <PerformanceEmployeeModel>[
-    _perf(
-      id: 1,
-      name: 'Lina Al-Harbi',
-      jobTitle: 'Product Manager',
-      score: 97.5,
-      rank: 1,
-      reportUrl: '#',
-    ),
-    _perf(
-      id: 2,
-      name: 'Faisal Al-Otaibi',
-      jobTitle: 'Senior Backend Engineer',
-      score: 96.0,
-      rank: 2,
-      reportUrl: '#',
-    ),
-    _perf(
-      id: 3,
-      name: 'Maha Al-Qahtani',
-      jobTitle: 'UX Lead',
-      score: 94.0,
-      rank: 3,
-      reportUrl: '#',
-    ),
-    _perf(
-      id: 4,
-      name: 'Omar Khalil',
-      jobTitle: 'Engineering Manager',
-      score: 92.5,
-      rank: 4,
-      reportUrl: '#',
-    ),
-    _perf(
-      id: 5,
-      name: 'Dina Mansour',
-      jobTitle: 'Scrum Master',
-      score: 91.5,
-      rank: 5,
-      reportUrl: '#',
-    ),
-    _perf(
-      id: 6,
-      name: 'Khalid Al-Saeed',
-      jobTitle: 'Software Engineer',
-      score: 90.5,
-      rank: 6,
-      reportUrl: '#',
-    ),
-    _perf(
-      id: 7,
-      name: 'Nora Abdullah',
-      jobTitle: 'QA Engineer',
-      score: 89.5,
-      rank: 7,
-      reportUrl: '#',
-    ),
-    _perf(
-      id: 8,
-      name: 'Tariq Al-Mutairi',
-      jobTitle: 'Mobile Engineer',
-      score: 88.5,
-      rank: 8,
-      reportUrl: '#',
-    ),
-    _perf(
-      id: 9,
-      name: 'Huda Saleh',
-      jobTitle: 'QA Lead',
-      score: 87.5,
-      rank: 9,
-      reportUrl: '#',
-    ),
-    _perf(
-      id: 10,
-      name: 'Bandar Al-Rashid',
-      jobTitle: 'DevOps Engineer',
-      score: 86.5,
-      rank: 10,
-      reportUrl: '#',
-    ),
-  ];
-
-  return EmployeesPerformanceModel(
-    succeeded: true,
-    data: EmployeesPerformanceDataModel(
-      topMonthly: topMonthly,
-      topYearly: topYearly,
-      top10: top10,
-    ),
-  );
+  return EmployeesPerformanceModel(data: data);
 }
 
 /// Directory rows for [EmployeesLearningRepoImpl] — IDs match performance where applicable.

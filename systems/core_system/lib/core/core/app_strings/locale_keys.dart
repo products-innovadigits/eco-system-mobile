@@ -600,6 +600,9 @@ abstract class  LocaleKeys {
   static const performance = 'performance';
   static const employee_of_the_month = 'employee_of_the_month';
   static const employee_of_the_year = 'employee_of_the_year';
+  static const employee_of_the_month_history = 'employee_of_the_month_history';
+  static const employee_of_the_month_set_successfully = 'employee_of_the_month_set_successfully';
+  static const view_history = 'view_history';
   static const top_10 = 'top_10';
   static const employee_report = 'employee_report';
   static const make_top_1 = 'make_top_1';

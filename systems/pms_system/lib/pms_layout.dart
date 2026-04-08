@@ -5,6 +5,8 @@ import 'package:core_system/features/notifications/view/notifications_view.dart'
 import 'package:pms_system/core/di/pms_locator.dart';
 import 'package:pms_system/features/employees_learning/bloc/employees_learning_bloc.dart';
 import 'package:pms_system/features/employees_learning/bloc/employees_learning_events.dart';
+import 'package:pms_system/features/employees_performance/bloc/employees_performance_bloc.dart';
+import 'package:pms_system/features/employees_performance/bloc/employees_performance_events.dart';
 import 'package:pms_system/shared/components/pms_system_switcher.dart';
 
 import 'features/pms_home/view/pms_home_view.dart';
@@ -23,6 +25,7 @@ class _PmsLayoutState extends State<PmsLayout> with WidgetsBindingObserver {
   int _index = 0;
   late bool _showSwitcher;
   late final EmployeesLearningBloc _employeesLearningBloc;
+  late final EmployeesPerformanceBloc _employeesPerformanceBloc;
 
   @override
   void initState() {
@@ -30,12 +33,15 @@ class _PmsLayoutState extends State<PmsLayout> with WidgetsBindingObserver {
     _showSwitcher = widget.showSwitcher;
     _employeesLearningBloc = EmployeesLearningBloc(repo: pmsSl())
       ..add(LoadEmployees(searchEngine: SearchEngine()));
+    _employeesPerformanceBloc = EmployeesPerformanceBloc(repo: pmsSl())
+      ..add(const LoadPerformanceData());
     super.initState();
   }
 
   @override
   void dispose() {
     _employeesLearningBloc.close();
+    _employeesPerformanceBloc.close();
     super.dispose();
   }
 
@@ -50,8 +56,15 @@ class _PmsLayoutState extends State<PmsLayout> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<EmployeesLearningBloc>.value(
-      value: _employeesLearningBloc,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<EmployeesLearningBloc>.value(
+          value: _employeesLearningBloc,
+        ),
+        BlocProvider<EmployeesPerformanceBloc>.value(
+          value: _employeesPerformanceBloc,
+        ),
+      ],
       child: PopScope(
         canPop: false,
         child: Stack(

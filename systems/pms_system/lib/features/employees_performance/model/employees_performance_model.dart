@@ -1,37 +1,26 @@
 import 'package:pms_system/core/utility/pms_exports.dart';
 
 class EmployeesPerformanceModel extends SingleMapper {
-  bool? succeeded;
-  EmployeesPerformanceDataModel? data;
-  dynamic warningErrors;
-  List<dynamic>? validationErrors;
+  List<PerformanceEmployeeModel>? data;
 
-  EmployeesPerformanceModel({
-    this.succeeded,
-    this.data,
-    this.warningErrors,
-    this.validationErrors,
-  });
+  EmployeesPerformanceModel({this.data});
 
   EmployeesPerformanceModel.fromJson(Map<String, dynamic> json) {
-    succeeded = json['succeeded'];
-    data = json['data'] != null
-        ? EmployeesPerformanceDataModel.fromJson(json['data'])
-        : null;
-    warningErrors = json['warningErrors'];
-    validationErrors = json['validationErrors'] != null
-        ? List<dynamic>.from(json['validationErrors'])
-        : null;
+    if (json['data'] != null) {
+      data = <PerformanceEmployeeModel>[];
+      json['data'].forEach((v) {
+        data!.add(PerformanceEmployeeModel.fromJson(v));
+      });
+    }
   }
 
   @override
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['succeeded'] = succeeded;
-    if (this.data != null) data['data'] = this.data!.toJson();
-    data['warningErrors'] = warningErrors;
-    if (validationErrors != null) data['validationErrors'] = validationErrors;
-    return data;
+    final Map<String, dynamic> map = <String, dynamic>{};
+    if (data != null) {
+      map['data'] = data!.map((v) => v.toJson()).toList();
+    }
+    return map;
   }
 
   @override
@@ -40,91 +29,54 @@ class EmployeesPerformanceModel extends SingleMapper {
   }
 }
 
-class EmployeesPerformanceDataModel {
-  List<PerformanceEmployeeModel>? topMonthly;
-  List<PerformanceEmployeeModel>? topYearly;
-  List<PerformanceEmployeeModel>? top10;
-
-  EmployeesPerformanceDataModel({
-    this.topMonthly,
-    this.topYearly,
-    this.top10,
-  });
-
-  EmployeesPerformanceDataModel.fromJson(Map<String, dynamic> json) {
-    if (json['topMonthly'] != null) {
-      topMonthly = <PerformanceEmployeeModel>[];
-      json['topMonthly'].forEach((v) {
-        topMonthly!.add(PerformanceEmployeeModel.fromJson(v));
-      });
-    }
-    if (json['topYearly'] != null) {
-      topYearly = <PerformanceEmployeeModel>[];
-      json['topYearly'].forEach((v) {
-        topYearly!.add(PerformanceEmployeeModel.fromJson(v));
-      });
-    }
-    if (json['top10'] != null) {
-      top10 = <PerformanceEmployeeModel>[];
-      json['top10'].forEach((v) {
-        top10!.add(PerformanceEmployeeModel.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (topMonthly != null) {
-      data['topMonthly'] = topMonthly!.map((v) => v.toJson()).toList();
-    }
-    if (topYearly != null) {
-      data['topYearly'] = topYearly!.map((v) => v.toJson()).toList();
-    }
-    if (top10 != null) {
-      data['top10'] = top10!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
 class PerformanceEmployeeModel {
   int? id;
   String? name;
+  String? email;
   String? jobTitle;
-  String? imageUrl;
   double? score;
+  double? percentage;
+  int? reviewCycleId;
+  String? reviewCycleName;
+  String? closedDate;
   int? rank;
-  String? reportUrl;
 
   PerformanceEmployeeModel({
     this.id,
     this.name,
+    this.email,
     this.jobTitle,
-    this.imageUrl,
     this.score,
+    this.percentage,
+    this.reviewCycleId,
+    this.reviewCycleName,
+    this.closedDate,
     this.rank,
-    this.reportUrl,
   });
 
   PerformanceEmployeeModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
-    jobTitle = json['jobTitle'];
-    imageUrl = json['imageUrl'];
+    email = json['email'];
+    jobTitle = json['job_title'];
     score = (json['score'] as num?)?.toDouble();
-    rank = json['rank'];
-    reportUrl = json['reportUrl'];
+    percentage = (json['percentage'] as num?)?.toDouble();
+    reviewCycleId = json['review_cycle_id'];
+    reviewCycleName = json['review_cycle_name'];
+    closedDate = json['closed_date'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
-    data['jobTitle'] = jobTitle;
-    data['imageUrl'] = imageUrl;
+    data['email'] = email;
+    data['job_title'] = jobTitle;
     data['score'] = score;
-    data['rank'] = rank;
-    data['reportUrl'] = reportUrl;
+    data['percentage'] = percentage;
+    data['review_cycle_id'] = reviewCycleId;
+    data['review_cycle_name'] = reviewCycleName;
+    data['closed_date'] = closedDate;
     return data;
   }
 }

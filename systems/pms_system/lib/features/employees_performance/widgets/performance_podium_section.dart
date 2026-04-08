@@ -10,50 +10,91 @@ class PerformancePodiumSection extends StatelessWidget {
   Widget build(BuildContext context) {
     if (topEmployees.isEmpty) return const SizedBox.shrink();
 
-    final first = topEmployees.length > 0 ? topEmployees[0] : null;
+    final first = topEmployees.isNotEmpty ? topEmployees[0] : null;
     final second = topEmployees.length > 1 ? topEmployees[1] : null;
     final third = topEmployees.length > 2 ? topEmployees[2] : null;
 
-    return Padding(
+    return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.end,
+      margin: EdgeInsets.symmetric(horizontal: 16.w),
+      decoration: BoxDecoration(
+        color: LightColor.white,
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (second != null)
-            Expanded(
-              child: _PodiumItem(
-                employee: second,
-                rank: 2,
-                avatarSize: 70,
-                podiumHeight: 80,
-                color: const Color(0xffC0C0C0),
-                podiumColor: const Color(0xffF1F5F9),
+          Align(
+            alignment: AlignmentDirectional.topEnd,
+            child: InkWell(
+              onTap: () =>
+                  CustomNavigator.push(Routes.EMPLOYEE_OF_MONTH_HISTORY),
+              borderRadius: BorderRadius.circular(8.r),
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 4.w),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      allTranslations.text(LocaleKeys.view_history),
+                      style: context.textTheme.bodySmall?.copyWith(
+                        color: context.color.secondary,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(width: 4.w),
+                    Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      size: 10,
+                      color: context.color.secondary,
+                    ),
+                  ],
+                ),
               ),
             ),
-          if (first != null)
-            Expanded(
-              child: _PodiumItem(
-                employee: first,
-                rank: 1,
-                avatarSize: 90,
-                podiumHeight: 120,
-                color: const Color(0xffE6C16B),
-                podiumColor: const Color(0xffFFF9E6),
-                isFirst: true,
-              ),
-            ),
-          if (third != null)
-            Expanded(
-              child: _PodiumItem(
-                employee: third,
-                rank: 3,
-                avatarSize: 70,
-                podiumHeight: 60,
-                color: const Color(0xffCD7F32),
-                podiumColor: const Color(0xffFEF3E6),
-              ),
-            ),
+          ),
+          SizedBox(height: 12.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              if (second != null)
+                Expanded(
+                  child: _PodiumItem(
+                    employee: second,
+                    rank: 2,
+                    avatarSize: 70,
+                    podiumHeight: 80,
+                    color: const Color(0xffC0C0C0),
+                    podiumColor: const Color(0xffF1F5F9),
+                  ),
+                ),
+              if (first != null)
+                Expanded(
+                  child: _PodiumItem(
+                    employee: first,
+                    rank: 1,
+                    avatarSize: 90,
+                    podiumHeight: 120,
+                    color: const Color(0xffE6C16B),
+                    podiumColor: const Color(0xffFFF9E6),
+                    isFirst: true,
+                  ),
+                ),
+              if (third != null)
+                Expanded(
+                  child: _PodiumItem(
+                    employee: third,
+                    rank: 3,
+                    avatarSize: 70,
+                    podiumHeight: 60,
+                    color: const Color(0xffCD7F32),
+                    podiumColor: const Color(0xffFEF3E6),
+                  ),
+                ),
+            ],
+          ),
         ],
       ),
     );
@@ -148,7 +189,7 @@ class _PodiumItem extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    '${employee.score?.toInt() ?? 0}%',
+                    '${employee.percentage?.toStringAsFixed(1) ?? '0'}%',
                     style: context.textTheme.labelSmall?.copyWith(
                       color: Colors.white,
                       fontSize: 10,
@@ -202,7 +243,7 @@ class _PodiumItem extends StatelessWidget {
           child: Text(
             _rankLabel,
             style: context.textTheme.titleLarge?.copyWith(
-              color: color.withOpacity(0.6),
+              color: color.withValues(alpha: 0.6),
               fontWeight: FontWeight.w700,
             ),
           ),
