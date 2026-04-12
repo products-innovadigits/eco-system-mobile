@@ -6,8 +6,11 @@ class ProjectManagementLayout extends StatefulWidget {
   final int index;
   final bool showSwitcher;
 
-  const ProjectManagementLayout(
-      {super.key, this.index = 0, this.showSwitcher = false});
+  const ProjectManagementLayout({
+    super.key,
+    this.index = 0,
+    this.showSwitcher = false,
+  });
 
   @override
   State<ProjectManagementLayout> createState() =>
@@ -27,16 +30,29 @@ class _ProjectManagementLayoutState extends State<ProjectManagementLayout>
   }
 
   Widget layout(int index) => switch (index) {
-        0 => const ProjectManagementHomeView(),
-        1 => const Center(
-            child: Text('التقارير', style: TextStyle(fontSize: FontSizes.f32)),
-          ),
-        2 => const Center(
-            child:
-                Text('الإشعارات', style: TextStyle(fontSize: FontSizes.f32)),
-          ),
-        _ => SizedBox(),
-      };
+    0 => const ProjectManagementHomeView(),
+    1 => const Center(
+      child: Text(
+        '...Coming Soon',
+        style: TextStyle(
+          fontSize: FontSizes.f20,
+          color: Colors.grey,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ),
+    2 => const Center(
+      child: Text(
+        'لا يوجد إشعارات',
+        style: TextStyle(
+          fontSize: FontSizes.f20,
+          color: Colors.grey,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ),
+    _ => SizedBox(),
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +88,8 @@ class ProjectManagementLayoutArgs {
   final int index;
   final bool showSwitcher;
 
-  const ProjectManagementLayoutArgs(
-      {this.index = 0, this.showSwitcher = false});
+  const ProjectManagementLayoutArgs({
+    this.index = 0,
+    this.showSwitcher = false,
+  });
 }

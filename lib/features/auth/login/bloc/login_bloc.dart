@@ -33,17 +33,17 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
   }
 
   Future<void> onClick(AppEvent event, Emitter emit) async {
-    if (selectedSystemId == null) {
-      AppCore.errorMessage(allTranslations.text('please_select_system'));
-      return;
-    }
+    // if (selectedSystemId == null) {
+    //   AppCore.errorMessage(allTranslations.text('please_select_system'));
+    //   return;
+    // }
     emit(Loading());
     try {
-      final system = AppConfig.activeSystem;
+      // final system = AppConfig.activeSystem;
       final result = await LoginRepo.login(
         password: passwordTEC.text.trim(),
         username: mailTEC.text.trim(),
-        systemTypeEnum: system,
+        // systemTypeEnum: system,
       );
       if (result is! Response) {
         AppCore.errorMessage(
@@ -58,27 +58,24 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
       if (res.statusCode == 200) {
         UserModel model = UserModel.fromJson(res.data['data']);
         await SecureStorageHelper.secureStorageHelper!
-            .saveUser(
-              model,
-              token: system == ActiveSystemEnum.pms
-                  ? model.token
-                  : model.accessToken,
-            )
+            .saveUser(model, token: model.accessToken)
             .then((v) {
               UserBloc.instance.add(Click());
             });
         await SharedHelper.sharedHelper!.saveUser();
-        if (selectedSystemId != null) {
-          await SharedHelper.sharedHelper!.writeData(
-            CachingKey.chosenSystemModuleId,
-            selectedSystemId!,
-          );
-        }
+        // if (selectedSystemId != null) {
+        //   await SharedHelper.sharedHelper!.writeData(
+        //     CachingKey.chosenSystemModuleId,
+        //     selectedSystemId!,
+        //   );
+        // }
         // if (UserBloc.activeSystems.contains(ActiveSystemEnum.strategy)) {
         //   log('Strategy system is active==================');
         //   await LoginRepo.strategyLogin(token: model.accessToken.toString());
         // }
-        CustomNavigator.push(Routes.MAIN_PAGE, clean: true);
+        // Strategy-only shell: navigation is handled from [LoginView] (BlocConsumer)
+        // after success (Loading → Done). Restore for multi-system builds:
+        // CustomNavigator.push(Routes.MAIN_PAGE, clean: true);
         AppCore.successMessage(
           allTranslations.text('you_logged_in_successfully'),
         );

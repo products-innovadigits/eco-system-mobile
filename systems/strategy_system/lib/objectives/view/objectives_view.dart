@@ -22,7 +22,7 @@ class ObjectivesView extends StatelessWidget {
               withFilter: true,
               isFiltered: objectivesFiltrationBloc.isFilterApplied,
               // isSorted: bloc.appliedSorting != null,
-              withSorting: true,
+              // withSorting: true,
               withCancelBtn: true,
               onSearching: (value) =>
                   bloc.add(Click(arguments: SearchEngine())),

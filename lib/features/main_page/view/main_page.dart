@@ -43,7 +43,10 @@ class _MainPageState extends State<MainPage> {
           physics: BouncingScrollPhysics(),
           child: Stack(
             children: [
-              MainHeader(withBackButton: false),
+              MainHeader(
+                withBackButton: false,
+                showSystemSelection: false,
+              ),
               CustomScreenTypeLayoutWidget(
                 mobilePortrait: (ctx) => MainBodyMobilePortraitView(),
                 mobileLandscape: (ctx) => MainBodyMobileLandscapeView(),

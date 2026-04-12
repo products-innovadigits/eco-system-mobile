@@ -16,7 +16,11 @@ abstract class Env {
   // @EnviedField(varName: 'BASE_URL_PRO', obfuscate: true)
   // static final String baseUrlPro = _Env.baseUrlPro;
 
-  @EnviedField(varName: 'STRATEGY_BASE_URL_DEV', obfuscate: true)
+  @EnviedField(
+    varName: 'STRATEGY_BASE_URL_DEV',
+    obfuscate: true,
+    defaultValue: 'https://strategy-api-bsc-ar.nawahtech.com/api/',
+  )
   static final String strategyBaseUrlDev = _Env.strategyBaseUrlDev;
 
   // Currently unused — uncomment when needed

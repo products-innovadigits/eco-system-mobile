@@ -54,7 +54,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
     final isLandscape = MediaQuery.of(ctx).orientation == Orientation.landscape;
     final height = (withSearch ?? false)
         ? (isLandscape ? 90.0 : 122.h)
-        : (isLandscape ? 44.0 : 55.h);
+        : (isLandscape ? 44.0 : 60.h);
     return Size(double.infinity, height);
   }
 }
@@ -306,7 +306,7 @@ class CustomAppBarPortrait extends StatelessWidget {
                           GestureDetector(
                             onTap: appBar.onFiltering,
                             child: Container(
-                              padding: EdgeInsets.all(12),
+                              padding: EdgeInsets.all(10.h),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
                                 border: Border.all(

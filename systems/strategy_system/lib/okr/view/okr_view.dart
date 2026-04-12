@@ -1,5 +1,6 @@
 import 'package:strategy_system/okr/bloc/okr_bloc.dart';
 import 'package:strategy_system/okr/model/okr_model.dart';
+import 'package:strategy_system/okr/okr_demo_football_club_data.dart';
 import 'package:strategy_system/okr/widgets/okr_organizational_objectives_section.dart';
 import 'package:strategy_system/okr/widgets/okr_vision_section.dart';
 
@@ -56,58 +57,8 @@ class _OkrBody extends StatelessWidget {
         OkrVisionSection(visionTitle: visionData.title ?? ''),
         SizedBox(height: 16.h),
 
-        /// Organizational Objectives Section (example hardcoded list here)
         OkrOrganizationalObjectivesSection(
-          objectivesList: [
-            OkrObjectivesModel(
-              title: 'تميز تجربة العملاء',
-              keyResults: [
-                IndicatorModel(
-                  title: 'مركز اتصال وخدمة موحدة ',
-                  status: 'متقدم',
-                  percentage: '70',
-                ),
-                IndicatorModel(
-                  title: 'رفع مؤشر رضا المستفيد الي 90% ',
-                  status: 'مكتمل',
-                  percentage: '100',
-                ),
-                IndicatorModel(
-                  title: 'اتاحة الوصول لذوي الاعاقة ',
-                  status: 'متأخر',
-                  percentage: '40',
-                ),
-              ],
-              id: 1,
-            ),
-            OkrObjectivesModel(
-              title: 'تعزيز الابتكار ونمو القدرات البشرية',
-              keyResults: [
-                IndicatorModel(
-                  title: 'تقليص وقت انجاز الخدمة',
-                  status: 'متقدم',
-                  percentage: '85',
-                ),
-              ],
-              id: 2,
-            ),
-            OkrObjectivesModel(
-              title: 'تعظيم القيمة المستفيدة',
-              keyResults: [
-                IndicatorModel(
-                  title: 'تعزيز تقافة الاهتمام بالمستفيد',
-                  status: 'مكتمل',
-                  percentage: '100',
-                ),
-                IndicatorModel(
-                  title: 'تحسين جودة المحتوي الرقمي',
-                  status: 'متأخر',
-                  percentage: '30',
-                ),
-              ],
-              id: 3,
-            ),
-          ],
+          objectivesList: okrFootballClubDemoObjectives(),
         ),
       ],
     );

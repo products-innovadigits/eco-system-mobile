@@ -37,16 +37,17 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
       getActiveSystem();
 
       if (isLogin) {
-        await _restoreChosenSystem(helper);
+        // await _restoreChosenSystem(helper);
         UserBloc.instance.add(Click());
       }
 
       if (!skip) {
-        CustomNavigator.push(Routes.INTRO, clean: true);
+        // CustomNavigator.push(Routes.INTRO, clean: true);
+        CustomNavigator.push(Routes.LOGIN, clean: true);
       } else if (!isLogin) {
         CustomNavigator.push(Routes.LOGIN, clean: true);
       } else {
-        CustomNavigator.push(Routes.MAIN_PAGE, clean: true);
+        CustomNavigator.push(Routes.LOGIN, clean: true);
       }
     });
   }

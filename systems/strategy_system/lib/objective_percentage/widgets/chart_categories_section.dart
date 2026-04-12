@@ -41,7 +41,7 @@ class ChartCategoriesSection extends StatelessWidget {
             ),
             SizedBox(width: 4.w),
             Text(
-              '(${objectives[i].count})',
+              '${(objectives[i].value ?? 0).toStringAsFixed(1)}%',
               style: context.textTheme.bodyMedium?.copyWith(
                 color: context.color.outlineVariant,
               ),

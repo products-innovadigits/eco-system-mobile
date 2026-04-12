@@ -4,14 +4,22 @@ import 'package:strategy_system/bsc/widgets/strategic_categories_list.dart';
 
 class StrategicAxesSection extends StatefulWidget {
   final bool isStrategicAxes;
+  /// Axes from the API (e.g. [VisionDataModel.strategicAxises]).
   final List<StrategicAxisModel> axes;
+  /// When [axes] is empty, these demo axes are shown so chips / «النتيجة الاستراتيجية»
+  /// stay aligned with [StrategicAxesView] + [resolveStrategicAxisObjectives] fallbacks.
+  final List<StrategicAxisModel>? axesDemoWhenEmpty;
   final int selectedAxes;
+  /// Notifies parent when the user selects another axis (e.g. to refresh linked objectives).
+  final ValueChanged<int>? onAxisIndexChanged;
 
   const StrategicAxesSection({
     super.key,
     required this.axes,
     required this.selectedAxes,
     this.isStrategicAxes = false,
+    this.axesDemoWhenEmpty,
+    this.onAxisIndexChanged,
   });
 
   @override
@@ -21,10 +29,31 @@ class StrategicAxesSection extends StatefulWidget {
 class _StrategicAxesSectionState extends State<StrategicAxesSection> {
   late int _selectedAxes;
 
+  List<StrategicAxisModel> get _effectiveAxes {
+    if (widget.axes.isNotEmpty) return widget.axes;
+    return widget.axesDemoWhenEmpty ?? const [];
+  }
+
   @override
   void initState() {
     _selectedAxes = widget.selectedAxes;
     super.initState();
+  }
+
+  @override
+  void didUpdateWidget(StrategicAxesSection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.selectedAxes != oldWidget.selectedAxes) {
+      _selectedAxes = widget.selectedAxes;
+    }
+  }
+
+  int get _safeAxisIndex {
+    final n = _effectiveAxes.length;
+    if (n == 0) return 0;
+    if (_selectedAxes < 0) return 0;
+    if (_selectedAxes >= n) return n - 1;
+    return _selectedAxes;
   }
 
   @override
@@ -42,12 +71,13 @@ class _StrategicAxesSectionState extends State<StrategicAxesSection> {
         ),
         const SizedBox(height: 12),
         StrategicCategoriesList(
-          axes: widget.axes,
-          selectedAxes: _selectedAxes,
+          axes: _effectiveAxes,
+          selectedAxes: _safeAxisIndex,
           onSelectAxes: (index) {
             setState(() {
               _selectedAxes = index;
             });
+            widget.onAxisIndexChanged?.call(index);
           },
         ),
         const SizedBox(height: 16),
@@ -84,7 +114,9 @@ class _StrategicAxesSectionState extends State<StrategicAxesSection> {
               child: Align(
                 alignment: AlignmentDirectional.centerStart,
                 child: Text(
-                  widget.axes[_selectedAxes].description ?? '',
+                  _effectiveAxes.isEmpty
+                      ? ''
+                      : (_effectiveAxes[_safeAxisIndex].description ?? ''),
                   style: context.textTheme.bodySmall?.copyWith(
                     color: context.color.outlineVariant,
                   ),

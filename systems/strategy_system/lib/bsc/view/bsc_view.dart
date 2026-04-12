@@ -5,32 +5,30 @@ class BscView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => BscBloc()..add(Click()),
-      child: Scaffold(
-        appBar: CustomAppBar(title: allTranslations.text(LocaleKeys.bsc)),
-        body: BlocBuilder<BscBloc, AppState>(
-          builder: (context, state) {
-            return switch (state) {
-              // Loading
-              Loading() => const ShimmerCardsList(),
+    // [BscBloc] is provided app-wide from [StrategyModule] (same instance as strategy home).
+    return Scaffold(
+      appBar: CustomAppBar(title: allTranslations.text(LocaleKeys.bsc)),
+      body: BlocBuilder<BscBloc, AppState>(
+        builder: (context, state) {
+          return switch (state) {
+            // Loading
+            Loading() => const ShimmerCardsList(),
 
-              // Done
-              Done(:final data) => _BscBody(
-                visionData: data as VisionDataModel,
-              ),
+            // Done
+            Done(:final data) => _BscBody(
+              visionData: data as VisionDataModel,
+            ),
 
-              // Empty
-              Empty() => const EmptyContainer(),
+            // Empty
+            Empty() => const EmptyContainer(),
 
-              // error / anything else
-              _ => EmptyContainer(
-                txt: allTranslations.text(LocaleKeys.something_went_wrong),
-                img: Assets.svgs.error.path,
-              ),
-            };
-          },
-        ),
+            // error / anything else
+            _ => EmptyContainer(
+              txt: allTranslations.text(LocaleKeys.something_went_wrong),
+              img: Assets.svgs.error.path,
+            ),
+          };
+        },
       ),
     );
   }

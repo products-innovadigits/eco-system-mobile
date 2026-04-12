@@ -20,6 +20,11 @@ class GeneralProgressSection extends StatelessWidget {
       builder: (context, state) {
         final ProjectGeneralProgressSummaryBloc bloc = context
             .read<ProjectGeneralProgressSummaryBloc>();
+        final GeneralProgressChartModel? chart = bloc.chartModel;
+        final bool hasData = chart != null &&
+            (bloc.selectedChartType == ChartTime.monthly
+                ? (chart.monthProgress ?? []).isNotEmpty
+                : (chart.yearProgress ?? []).isNotEmpty);
         return state is ProjectGeneralProgressSummaryLoading
             ? CustomShimmerContainer(height: 300)
             : CustomExpansionCard(
@@ -38,13 +43,13 @@ class GeneralProgressSection extends StatelessWidget {
                         },
                       )
                     : null,
-                child: (bloc.chartModel != null)
+                child: hasData
                     ? bloc.selectedChartType == ChartTime.monthly
                           ? ProjectMonthlyProgressSection(
-                              progressModel: bloc.chartModel!,
+                              progressModel: chart!,
                             )
                           : ProjectMonthlyProgressSection(
-                              progressModel: bloc.chartModel!,
+                              progressModel: chart!,
                               isMonthly: false,
                             )
                     : Center(

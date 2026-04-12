@@ -71,6 +71,9 @@ class _PercentageChartSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return MainCardWidget(
       title: allTranslations.text(LocaleKeys.objective_percentage_rate),
+      moreBtnTxt: isStrategyHome
+          ? allTranslations.text(LocaleKeys.view_more)
+          : allTranslations.text(LocaleKeys.enter_system),
       onViewMoreTap: () {
         if (!isStrategyHome) {
           UserBloc.currentActiveSystem = ActiveSystemEnum.strategy;

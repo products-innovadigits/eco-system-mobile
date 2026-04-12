@@ -10,9 +10,23 @@ class ObjectivePercentageModel extends SingleMapper {
   ObjectivePercentageModel({this.categoryName, this.value , this.count});
 
   ObjectivePercentageModel.fromJson(Map<String, dynamic> json) {
-    categoryName = json['categoryName'];
-    value = json['value'];
-    count = json['count'] ?? 0;
+    categoryName = json['categoryName']?.toString();
+    final rawValue = json['value'];
+    if (rawValue == null) {
+      value = null;
+    } else if (rawValue is num) {
+      value = rawValue.toDouble();
+    } else {
+      value = double.tryParse(rawValue.toString());
+    }
+    final rawCount = json['count'];
+    if (rawCount == null) {
+      count = null;
+    } else if (rawCount is num) {
+      count = rawCount;
+    } else {
+      count = num.tryParse(rawCount.toString());
+    }
   }
 
   @override

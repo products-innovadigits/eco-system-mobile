@@ -56,15 +56,18 @@ class ObjectiveIndicatorsCardWidget extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: 8.w),
-                    Text(
-                      objectiveTitle,
-                      style: context.textTheme.labelMedium?.copyWith(
-                        color: bscBloc.expandedObjectiveId == index
-                            ? context.color.secondary
-                            : context.color.primary,
-                        fontWeight: bscBloc.expandedObjectiveId == index
-                            ? FontWeight.w700
-                            : FontWeight.w500,
+                    Expanded(
+                      child: Text(
+                        objectiveTitle,
+                        maxLines: 2,
+                        style: context.textTheme.labelMedium?.copyWith(
+                          color: bscBloc.expandedObjectiveId == index
+                              ? context.color.secondary
+                              : context.color.primary,
+                          fontWeight: bscBloc.expandedObjectiveId == index
+                              ? FontWeight.w700
+                              : FontWeight.w500,
+                        ),
                       ),
                     ),
                     const Spacer(),
@@ -82,7 +85,7 @@ class ObjectiveIndicatorsCardWidget extends StatelessWidget {
                   child: Column(
                     children: [
                       IndicatorsCardWidget(
-                        objectiveTitle: LocaleKeys.kpis,
+                        objectiveTitle: allTranslations.text(LocaleKeys.kpis),
                         indicators: kpis,
                         onTap: () => bscBloc.add(ToggleKpis(arguments: index)),
                         isExpanded: bscBloc.isKpisExpanded,
@@ -90,7 +93,9 @@ class ObjectiveIndicatorsCardWidget extends StatelessWidget {
                       ),
                       SizedBox(height: 16.h),
                       IndicatorsCardWidget(
-                        objectiveTitle: LocaleKeys.initiatives,
+                        objectiveTitle: allTranslations.text(
+                          LocaleKeys.initiatives,
+                        ),
                         indicators: initiatives,
                         onTap: () =>
                             bscBloc.add(ToggleInitiatives(arguments: index)),

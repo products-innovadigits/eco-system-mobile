@@ -1,6 +1,7 @@
 import 'package:core_system/core/modules/home_section.dart';
 import 'package:core_system/core/modules/system_module.dart';
 import 'package:core_system/core/utility/export.dart'; // BlocProvider
+import 'package:strategy_system/bsc/bloc/bsc_bloc.dart';
 import 'package:strategy_system/bsc/view/bsc_view.dart';
 import 'package:strategy_system/objective_details/view/objective_details_view.dart';
 import 'package:strategy_system/objective_percentage/view/objective_percentage_section.dart';
@@ -25,6 +26,9 @@ class StrategyModule implements SystemModule {
 
   @override
   List<BlocProvider> get providers => [
+    BlocProvider<BscBloc>(
+      create: (_) => BscBloc()..add(Click()),
+    ),
     // Objectives Filtration Bloc - used for filtering objectives
     BlocProvider<ObjectivesFiltrationBloc>(
       create: (_) => ObjectivesFiltrationBloc(),

@@ -101,7 +101,7 @@ class _ObjectivePercentageChartMobileLandscapeState
       final double radius = isTouched ? 60 : 50;
       return PieChartSectionData(
         color: LightColor.statusColors(widget.objectives[i].categoryName ?? ""),
-        // title: '${widget.objectives[i].value?.toStringAsFixed(2)}%',
+        // title: '${widget.objectives[i].value?.toStringAsFixed(1)}%',
         title: "",
         value: widget.objectives[i].value ?? 0,
         radius: radius,
@@ -114,7 +114,7 @@ class _ObjectivePercentageChartMobileLandscapeState
             shape: BoxShape.circle,
           ),
           child: Text(
-            '${widget.objectives[i].value?.toStringAsFixed(0)}%',
+            '${(widget.objectives[i].value ?? 0).toStringAsFixed(1)}%',
             style: AppTextStyles.w600.copyWith(
               fontSize: 12,
               color: Styles.header,

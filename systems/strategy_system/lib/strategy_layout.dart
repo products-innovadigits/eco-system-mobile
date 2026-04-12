@@ -29,10 +29,24 @@ class _StrategyLayoutState extends State<StrategyLayout>
   Widget layout(int index) => switch (index) {
     0 => const StrategyHomeView(),
     1 => const Center(
-      child: Text('التقارير', style: TextStyle(fontSize: FontSizes.f32)),
+      child: Text(
+        '...Coming Soon',
+        style: TextStyle(
+          fontSize: FontSizes.f20,
+          color: Colors.grey,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
     ),
     2 => const Center(
-      child: Text('الإشعارات', style: TextStyle(fontSize: FontSizes.f32)),
+      child: Text(
+        'لا يوجد إشعارات',
+        style: TextStyle(
+          fontSize: FontSizes.f20,
+          color: Colors.grey,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
     ),
     _ => SizedBox(),
   };
@@ -71,8 +85,5 @@ class StrategyLayoutArgs {
   final int index;
   final bool showSwitcher;
 
-  const StrategyLayoutArgs({
-    this.index = 0,
-    this.showSwitcher = false,
-  });
+  const StrategyLayoutArgs({this.index = 0, this.showSwitcher = false});
 }

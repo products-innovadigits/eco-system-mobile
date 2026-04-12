@@ -3,10 +3,18 @@ import 'package:strategy_system/bsc/model/bsc_model.dart';
 import 'package:strategy_system/bsc/widgets/strategic_axes_section.dart';
 import 'package:strategy_system/bsc/widgets/vision_section.dart';
 import 'package:strategy_system/strategic_axes/bloc/strategic_axes_bloc.dart';
+import 'package:strategy_system/strategic_axes/strategic_axes_objectives_resolver.dart';
 import 'package:strategy_system/strategic_axes/widgets/strategic_axis_objectives_section.dart';
 
-class StrategicAxesView extends StatelessWidget {
+class StrategicAxesView extends StatefulWidget {
   const StrategicAxesView({super.key});
+
+  @override
+  State<StrategicAxesView> createState() => _StrategicAxesViewState();
+}
+
+class _StrategicAxesViewState extends State<StrategicAxesView> {
+  int _selectedAxisIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +25,7 @@ class StrategicAxesView extends StatelessWidget {
           title: allTranslations.text(LocaleKeys.strategic_axis),
         ),
         body: BlocBuilder<StrategicAxesBloc, AppState>(
-          // buildWhen: (previous, current) => previous is! Done,
           builder: (context, state) {
-            final bloc = context.read<StrategicAxesBloc>();
             if (state is Loading || state is Start) {
               return ListAnimator(
                 customPadding: EdgeInsets.symmetric(
@@ -40,21 +46,26 @@ class StrategicAxesView extends StatelessWidget {
             }
             if (state is Done) {
               final VisionDataModel visionData = state.data as VisionDataModel;
+              final apiAxes = visionData.strategicAxises ?? [];
+              final demoAxes = footballClubDemoStrategicAxes();
+              final axisCount =
+                  apiAxes.isNotEmpty ? apiAxes.length : demoAxes.length;
+              final safeAxisIndex = axisCount == 0
+                  ? 0
+                  : _selectedAxisIndex.clamp(0, axisCount - 1);
+
               return ListAnimator(
                 customPadding: EdgeInsets.symmetric(
                   horizontal: 16.w,
                   vertical: 16.h,
                 ),
                 data: [
-                  /// Vision, Mission, Values
                   VisionSection(
                     visionTitle: visionData.title ?? '',
                     values: visionData.values ?? [],
                     messages: visionData.missions ?? [],
                   ),
                   SizedBox(height: 24.h),
-
-                  /// Strategic Axes Section
                   Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: 16.w,
@@ -72,50 +83,20 @@ class StrategicAxesView extends StatelessWidget {
                     child: Column(
                       children: [
                         StrategicAxesSection(
-                          axes: visionData.strategicAxises ?? [],
-                          selectedAxes: bloc.selectedAxes,
+                          axes: apiAxes,
+                          axesDemoWhenEmpty: demoAxes,
+                          selectedAxes: safeAxisIndex,
                           isStrategicAxes: true,
+                          onAxisIndexChanged: (index) {
+                            setState(() => _selectedAxisIndex = index);
+                          },
                         ),
                         SizedBox(height: 8.h),
-
-                        /// Objectives Section
                         StrategicAxisObjectivesSection(
-                          objectivesList: [
-                            ObjectActiveModel(
-                              title: 'OBJ 1',
-                              description: 'Description 1',
-                              initiatives: [
-                                IndicatorModel(
-                                  title: 'Initiative 1',
-                                  description: 'Description of Initiative 1',
-                                ),
-                              ],
-                              kpIs: [
-                                IndicatorModel(
-                                  title: 'KPI 1',
-                                  description: 'Description of KPI 1',
-                                ),
-                              ],
-                              id: 1,
-                            ),
-                            ObjectActiveModel(
-                              title: 'OBJ 2',
-                              description: 'Description 2',
-                              initiatives: [
-                                IndicatorModel(
-                                  title: 'Initiative 2',
-                                  description: 'Description of Initiative 2',
-                                ),
-                              ],
-                              kpIs: [
-                                IndicatorModel(
-                                  title: 'KPI 2',
-                                  description: 'Description of KPI 2',
-                                ),
-                              ],
-                              id: 2,
-                            ),
-                          ],
+                          objectivesList: resolveStrategicAxisObjectives(
+                            visionData,
+                            safeAxisIndex,
+                          ),
                         ),
                       ],
                     ),

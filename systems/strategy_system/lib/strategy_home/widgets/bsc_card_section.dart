@@ -1,36 +1,51 @@
 import 'package:core_system/core/widgets/custom_expansion_card.dart';
+import 'package:strategy_system/bsc/bsc_perspective_home_mapper.dart';
 
 import '../../shared/strategy_exports.dart';
+
+List<ObjectiveKPIModel> _bscHomeCardRowsForState(AppState state) {
+  if (state is Done) {
+    final raw = state.data;
+    if (raw is VisionDataModel) {
+      final fromApi = objectiveKpiModelsFromManzors(raw.manzors);
+      if (fromApi.isNotEmpty) return fromApi;
+    }
+  }
+  return simulatedBscHomeCardPlaceholders();
+}
 
 class BscCardSection extends StatelessWidget {
   const BscCardSection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<StrategyBloc, AppState>(
+    return BlocBuilder<BscBloc, AppState>(
       builder: (context, state) {
-        final List<ObjectiveKPIModel> list = [
-          ObjectiveKPIModel(
-            kpiTitle: 'المنظور المالي',
-            color: '#175CD3',
-            value: 80,
-          ),
-          ObjectiveKPIModel(
-            kpiTitle: 'المنظور العملاء',
-            value: 70,
-            color: '#079455',
-          ),
-          ObjectiveKPIModel(
-            kpiTitle: 'المنظور العمليات الداخلية',
-            value: 60,
-            color: '#DC6803',
-          ),
-          ObjectiveKPIModel(
-            kpiTitle: 'المنظور التعلم والنمو',
-            value: 90,
-            color: '#175CD3',
-          ),
-        ];
+        // Old static preview (kept for reference — was shown for all states):
+        // final List<ObjectiveKPIModel> list = [
+        //   ObjectiveKPIModel(
+        //     kpiTitle: 'المنظور المالي',
+        //     color: '#175CD3',
+        //     value: 80,
+        //   ),
+        //   ObjectiveKPIModel(
+        //     kpiTitle: 'المنظور العملاء',
+        //     value: 70,
+        //     color: '#079455',
+        //   ),
+        //   ObjectiveKPIModel(
+        //     kpiTitle: 'المنظور العمليات الداخلية',
+        //     value: 60,
+        //     color: '#DC6803',
+        //   ),
+        //   ObjectiveKPIModel(
+        //     kpiTitle: 'المنظور التعلم والنمو',
+        //     value: 90,
+        //     color: '#175CD3',
+        //   ),
+        // ];
+
+        final List<ObjectiveKPIModel> list = _bscHomeCardRowsForState(state);
         return CustomExpansionCard(
           title: allTranslations.text("bsc"),
           action: InkWell(
@@ -89,3 +104,4 @@ class BscCardSection extends StatelessWidget {
     );
   }
 }
+

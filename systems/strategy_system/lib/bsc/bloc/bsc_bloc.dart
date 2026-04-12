@@ -3,7 +3,7 @@ import '../../shared/strategy_exports.dart';
 class BscBloc extends Bloc<AppEvent, AppState> {
   BscBloc() : super(Start()) {
     on<Click>(_getBscData);
-    add(Click());
+    // Load is triggered once from [StrategyModule] providers (`..add(Click())`).
   }
 
   int selectedAxes = 0;

@@ -76,7 +76,8 @@ class Network {
     }
     try {
       Response response = await _dio.request(
-        (baseUrl ?? AppConfig.getBaseUrl(systemTypeEnum)) + endpoint,
+        // (baseUrl ?? AppConfig.getBaseUrl(systemTypeEnum)) + endpoint,
+        (AppConfig.getBaseUrl(systemTypeEnum)) + endpoint,
         data: body,
         queryParameters: query,
         options: Options(method: method.name),
@@ -125,7 +126,8 @@ class Network {
     }
     try {
       Response response = await _dio.request(
-        (baseUrl ?? AppConfig.getBaseUrl(systemTypeEnum)) + endpoint,
+        // (baseUrl ?? AppConfig.getBaseUrl(systemTypeEnum)) + endpoint,
+        (AppConfig.getBaseUrl(systemTypeEnum)) + endpoint,
         data: body,
         queryParameters: query,
         options: Options(method: method.name),

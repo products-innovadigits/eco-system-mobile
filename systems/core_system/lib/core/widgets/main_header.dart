@@ -3,8 +3,14 @@ import 'package:responsive_builder/responsive_builder.dart';
 
 class MainHeader extends StatelessWidget {
   final bool? withBackButton;
+  /// When false, hides [SystemSelectionWidget] (e.g. on app main hub before a system is focused).
+  final bool showSystemSelection;
 
-  const MainHeader({super.key, this.withBackButton = true});
+  const MainHeader({
+    super.key,
+    this.withBackButton = true,
+    this.showSystemSelection = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -77,8 +83,8 @@ class MainHeader extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        " صباح الخير ${UserBloc.instance.userModel?.name ?? "صباح الخير "} "
-                        // " ${UserBloc.instance.userModel?.welcomeMessage ?? "صباح الخير "} "
+                        // " صباح الخير ${UserBloc.instance.userModel?.name ?? "صباح الخير "} "
+                        " ${UserBloc.instance.userModel?.welcomeMessage ?? "صباح الخير "} "
                         "${DateTime.now().format("a") == "AM" ? "🌤" : "🌤"}",
                         style: context.textTheme.headlineSmall?.copyWith(
                           color: context.color.onPrimary,
@@ -88,7 +94,9 @@ class MainHeader extends StatelessWidget {
                     ],
                   ),
                 ),
-                // if (UserBloc.activeSystems.length > 1) SystemSelectionWidget(),
+                if (showSystemSelection &&
+                    UserBloc.activeSystems.length > 1)
+                  SystemSelectionWidget(),
               ],
             ),
           ],

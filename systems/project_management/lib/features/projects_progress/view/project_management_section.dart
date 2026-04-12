@@ -12,7 +12,7 @@ class ProjectManagementSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 20.h),
+        // SizedBox(height: 20.h),
         ProjectProgressSection(
           isProjectManagementHome: isProjectManagementHome,
         ),

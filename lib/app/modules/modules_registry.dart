@@ -70,6 +70,7 @@ class ModulesRegistry {
       routeName = Routes.PROJECT_MANAGEMENT_LAYOUT;
     } else if (system == ActiveSystemEnum.strategy) {
       routeName = Routes.STRATEGY_LAYOUT;
+      // routeName = Routes.STRATEGY_LAYOUT;
     } else if (system == ActiveSystemEnum.pms) {
       routeName = Routes.PMS_LAYOUT;
     }

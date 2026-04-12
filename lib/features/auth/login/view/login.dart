@@ -1,9 +1,9 @@
+import 'package:core_system/core/config/app_config.dart';
 import 'package:core_system/core/helpers/font_sizes.dart';
 import 'package:core_system/core/utility/export.dart';
 import 'package:eco_system/features/auth/login/bloc/login_bloc.dart';
 import 'package:eco_system/features/auth/login/widgets/welcome_widget.dart';
-
-import '../../../../app/modules/modules_registry.dart';
+import 'package:strategy_system/strategy_layout.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
@@ -22,7 +22,19 @@ class LoginView extends StatelessWidget {
       body: SafeArea(
         child: BlocProvider(
           create: (context) => LoginBloc(),
-          child: BlocBuilder<LoginBloc, AppState>(
+          child: BlocConsumer<LoginBloc, AppState>(
+            listenWhen: (previous, current) =>
+                previous is Loading && current is Done,
+            listener: (context, state) {
+              // Strategy-only: open strategy shell directly (skip main / system picker).
+              AppConfig.activeSystem = ActiveSystemEnum.strategy;
+              UserBloc.currentActiveSystem = ActiveSystemEnum.strategy;
+              CustomNavigator.push(
+                Routes.MAIN_PAGE,
+                clean: true,
+                arguments: const StrategyLayoutArgs(showSwitcher: true),
+              );
+            },
             builder: (context, state) {
               return Form(
                 key: context.read<LoginBloc>().globalKey,
@@ -35,42 +47,42 @@ class LoginView extends StatelessWidget {
                           data: [
                             const WelcomeWidget(),
                             SizedBox(height: 32.h),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 6.0),
-                                  child: Text(
-                                    allTranslations.text("login_to"),
-                                    style: context.textTheme.labelSmall,
-                                  ),
-                                ),
-                                CustomDropList(
-                                  list: ModulesRegistry.enabledModules
-                                      .map(
-                                        (module) => DropListModel(
-                                          id:
-                                              ModulesRegistry.enabledModules
-                                                  .indexOf(module) +
-                                              1,
-                                          name: module.name,
-                                          key: module.id,
-                                        ),
-                                      )
-                                      .toList(),
-                                  hint: allTranslations.text("select_system"),
-                                  onChanged: (value) {
-                                    if (value.key != null) {
-                                      context
-                                          .read<LoginBloc>()
-                                          .setSelectedSystem(value.key!);
-                                    }
-                                  },
-                                  bgColor: LightColor.white,
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 16.h),
+                            // Column(
+                            //   crossAxisAlignment: CrossAxisAlignment.start,
+                            //   children: [
+                            //     Padding(
+                            //       padding: const EdgeInsets.only(bottom: 6.0),
+                            //       child: Text(
+                            //         allTranslations.text("login_to"),
+                            //         style: context.textTheme.labelSmall,
+                            //       ),
+                            //     ),
+                            //     CustomDropList(
+                            //       list: ModulesRegistry.enabledModules
+                            //           .map(
+                            //             (module) => DropListModel(
+                            //               id:
+                            //                   ModulesRegistry.enabledModules
+                            //                       .indexOf(module) +
+                            //                   1,
+                            //               name: module.name,
+                            //               key: module.id,
+                            //             ),
+                            //           )
+                            //           .toList(),
+                            //       hint: allTranslations.text("select_system"),
+                            //       onChanged: (value) {
+                            //         if (value.key != null) {
+                            //           context
+                            //               .read<LoginBloc>()
+                            //               .setSelectedSystem(value.key!);
+                            //         }
+                            //       },
+                            //       bgColor: LightColor.white,
+                            //     ),
+                            //   ],
+                            // ),
+                            // SizedBox(height: 16.h),
                             CustomTextField(
                               // hint: allTranslations.text("enter_username"),
                               hint: allTranslations.text("enter_email"),

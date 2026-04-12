@@ -442,6 +442,7 @@ abstract class  LocaleKeys {
   static const experience = 'experience';
   static const certificates = 'certificates';
   static const years = 'years';
+  static const year = 'year';
   static const bsc = 'bsc';
   static const vision = 'vision';
   static const the_message = 'the_message';

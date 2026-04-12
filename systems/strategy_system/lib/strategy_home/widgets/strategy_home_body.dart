@@ -10,10 +10,7 @@ class StrategyHomeBody extends StatelessWidget {
     return SafeArea(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
-        child: BlocProvider<StrategyBloc>(
-          create: (_) => StrategyBloc(),
-          child: _buildContent(),
-        ),
+        child: _buildContent(),
       ),
     );
   }
@@ -22,7 +19,7 @@ class StrategyHomeBody extends StatelessWidget {
     return const Column(
       spacing: 16,
       children: [
-        SizedBox(height: 80),
+        SizedBox(height: 65),
         ObjectivePercentageSection(isStrategyHome: true),
         BscCardSection(),
         OkrCardSection(),

@@ -56,15 +56,18 @@ class StrategicObjectivesCard extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: 8.w),
-                    Text(
-                      objectiveTitle,
-                      style: context.textTheme.labelMedium?.copyWith(
-                        color: bloc.expandedObjectiveId == index
-                            ? context.color.secondary
-                            : context.color.primary,
-                        fontWeight: bloc.expandedObjectiveId == index
-                            ? FontWeight.w700
-                            : FontWeight.w500,
+                    Expanded(
+                      child: Text(
+                        objectiveTitle,
+                        maxLines: 2,
+                        style: context.textTheme.labelMedium?.copyWith(
+                          color: bloc.expandedObjectiveId == index
+                              ? context.color.secondary
+                              : context.color.primary,
+                          fontWeight: bloc.expandedObjectiveId == index
+                              ? FontWeight.w700
+                              : FontWeight.w500,
+                        ),
                       ),
                     ),
                     const Spacer(),
