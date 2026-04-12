@@ -571,6 +571,11 @@ abstract class  LocaleKeys {
   static const employees_leaning = 'employees_leaning';
   static const employee_numbers = 'employee_numbers';
   static const cycles = 'cycles';
+  static const cycle_state_not_started = 'cycle_state_not_started';
+  static const cycle_state_active = 'cycle_state_active';
+  static const cycle_state_canceled = 'cycle_state_canceled';
+  static const cycle_state_completed = 'cycle_state_completed';
+  static const cycle_state_overdue = 'cycle_state_overdue';
   static const done_by = 'done_by';
   static const no_cycles_found = 'no_cycles_found';
   static const no_cycles_match = 'no_cycles_match';
@@ -583,6 +588,10 @@ abstract class  LocaleKeys {
   static const total_score = 'total_score';
   static const cycle_overview = 'cycle_overview';
   static const close_review_cycle = 'close_review_cycle';
+  static const confirm_close_review_cycle = 'confirm_close_review_cycle';
+  static const close_review_cycle_warning = 'close_review_cycle_warning';
+  static const yes_close_review_cycle = 'yes_close_review_cycle';
+  static const review_cycle_closed_successfully = 'review_cycle_closed_successfully';
   static const not_started = 'not_started';
   static const due = 'due';
   static const seniority_level = 'seniority_level';

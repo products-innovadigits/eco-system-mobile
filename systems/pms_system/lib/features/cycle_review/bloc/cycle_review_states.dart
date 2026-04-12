@@ -14,8 +14,23 @@ class CycleReviewLoading extends CycleReviewState {
 
 class CycleReviewLoaded extends CycleReviewState {
   final CycleDetailDataModel detail;
+  final bool isClosingReviewCycle;
 
-  const CycleReviewLoaded({required this.detail});
+  const CycleReviewLoaded({
+    required this.detail,
+    this.isClosingReviewCycle = false,
+  });
+
+  CycleReviewLoaded copyWith({
+    CycleDetailDataModel? detail,
+    bool? isClosingReviewCycle,
+  }) {
+    return CycleReviewLoaded(
+      detail: detail ?? this.detail,
+      isClosingReviewCycle:
+          isClosingReviewCycle ?? this.isClosingReviewCycle,
+    );
+  }
 }
 
 class CycleReviewFailure extends CycleReviewState {
@@ -32,12 +47,29 @@ class ReviewCycleSummaryLoaded extends CycleReviewState {
   final CycleSummaryDataModel summary;
   final List<RevieweeStatusItemModel> revieweeStatusItems;
   final int? totalReviewees;
+  final bool isClosingReviewCycle;
 
   const ReviewCycleSummaryLoaded({
     required this.summary,
     required this.revieweeStatusItems,
     this.totalReviewees,
+    this.isClosingReviewCycle = false,
   });
+
+  ReviewCycleSummaryLoaded copyWith({
+    CycleSummaryDataModel? summary,
+    List<RevieweeStatusItemModel>? revieweeStatusItems,
+    int? totalReviewees,
+    bool? isClosingReviewCycle,
+  }) {
+    return ReviewCycleSummaryLoaded(
+      summary: summary ?? this.summary,
+      revieweeStatusItems: revieweeStatusItems ?? this.revieweeStatusItems,
+      totalReviewees: totalReviewees ?? this.totalReviewees,
+      isClosingReviewCycle:
+          isClosingReviewCycle ?? this.isClosingReviewCycle,
+    );
+  }
 }
 
 class ReviewCycleSummaryFailure extends CycleReviewState {

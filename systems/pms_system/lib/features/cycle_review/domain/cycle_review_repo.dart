@@ -16,4 +16,7 @@ abstract class CycleReviewRepo {
     required int cycleId,
     required SearchEngine engine,
   });
+
+  /// POST `appraisal/review-cycles/{cycleId}/close-review-cycle`
+  Future<void> closeReviewCycle({required int cycleId});
 }

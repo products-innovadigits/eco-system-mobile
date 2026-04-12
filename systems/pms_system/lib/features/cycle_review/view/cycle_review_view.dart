@@ -50,21 +50,27 @@ class _CycleReviewViewState extends State<CycleReviewView> {
             return switch (state) {
               CycleReviewLoading() ||
               ReviewCycleSummaryLoading() => const CycleReviewShimmer(),
-              CycleReviewLoaded(:final detail) => _CycleReviewBody(
-                detail: detail,
-              ),
+              CycleReviewLoaded(:final detail, :final isClosingReviewCycle) =>
+                _CycleReviewBody(
+                  cycleId: widget.cycleId,
+                  detail: detail,
+                  isClosingReviewCycle: isClosingReviewCycle,
+                ),
               ReviewCycleSummaryLoaded(
                 :final summary,
                 :final revieweeStatusItems,
                 :final totalReviewees,
+                :final isClosingReviewCycle,
               ) =>
                 _CycleReviewBody(
+                  cycleId: widget.cycleId,
                   detail: summary.toCycleDetailDataModel(
                     reviewees: revieweeStatusItems
                         .map((e) => e.toCycleRevieweeModel())
                         .toList(),
                   ),
                   totalReviewees: totalReviewees,
+                  isClosingReviewCycle: isClosingReviewCycle,
                 ),
               CycleReviewFailure(:final message) => Center(
                 child: EmptyContainer(txt: message),
@@ -82,10 +88,19 @@ class _CycleReviewViewState extends State<CycleReviewView> {
 }
 
 class _CycleReviewBody extends StatelessWidget {
+  final int cycleId;
   final CycleDetailDataModel detail;
   final int? totalReviewees;
+  final bool isClosingReviewCycle;
 
-  const _CycleReviewBody({required this.detail, this.totalReviewees});
+  const _CycleReviewBody({
+    required this.cycleId,
+    required this.detail,
+    this.totalReviewees,
+    this.isClosingReviewCycle = false,
+  });
+
+  int get _effectiveCycleId => detail.id ?? cycleId;
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +120,7 @@ class _CycleReviewBody extends StatelessWidget {
                 SizedBox(height: 24.h),
                 ReviewersSection(
                   reviewers: detail.reviewees ?? [],
-                  cycleId: detail.id,
+                  cycleId: _effectiveCycleId,
                   totalReviewees: totalReviewees ?? detail.revieweesCount ?? 0,
                 ),
                 SizedBox(height: 24.h),
@@ -115,69 +130,27 @@ class _CycleReviewBody extends StatelessWidget {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 24.0, left: 16, right: 16),
-          child: CustomBtn(
-            text: allTranslations.text(LocaleKeys.close_review_cycle),
-            onPressed: () {},
+        if (detail.status == 'active' || detail.status == 'overdue')
+          Padding(
+            padding: const EdgeInsets.only(bottom: 24.0, left: 16, right: 16),
+            child: CustomBtn(
+              text: allTranslations.text(LocaleKeys.close_review_cycle),
+              loading: isClosingReviewCycle,
+              onPressed: isClosingReviewCycle
+                  ? null
+                  : () {
+                      YesNoDialogHelper.showCloseReviewCycleConfirmationDialog(
+                        context: context,
+                        onClosePressed: () {
+                          context.read<CycleReviewBloc>().add(
+                            CloseReviewCycle(cycleId: _effectiveCycleId),
+                          );
+                        },
+                      );
+                    },
+            ),
           ),
-          // Row(
-          //   children: [
-          //     Expanded(
-          //       child: CustomBtn(
-          //         text: allTranslations.text(LocaleKeys.close_review_cycle),
-          //         onPressed: () {},
-          //       ),
-          //     ),
-          //     SizedBox(width: 16.w),
-          //     Expanded(
-          //       child: CustomBtn(
-          //         text: allTranslations.text(LocaleKeys.reports),
-          //         onPressed: () {
-          //           CustomNavigator.push(Routes.CYCLE_REPORT);
-          //         },
-          //         color: context.color.surfaceContainer,
-          //         textColor: context.color.primary,
-          //         borderColor: context.color.primary,
-          //       ),
-          //     ),
-          //   ],
-          // ),
-        ),
       ],
-    );
-  }
-}
-
-class _CloseButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 12.h),
-        child: SizedBox(
-          width: double.infinity,
-          height: 50.h,
-          child: ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: LightColor.primary,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              elevation: 0,
-            ),
-            child: Text(
-              allTranslations.text(LocaleKeys.close_review_cycle),
-              style: context.textTheme.titleSmall?.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

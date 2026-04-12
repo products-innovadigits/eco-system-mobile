@@ -5,6 +5,31 @@ import 'package:pms_system/features/cycles/bloc/filtration/cycles_filtration_blo
 class CyclesFilterBottomSheetBody extends StatelessWidget {
   const CyclesFilterBottomSheetBody({super.key});
 
+  static List<DropListModel> _stateOptions() {
+    return [
+      DropListModel(
+        name: allTranslations.text(LocaleKeys.cycle_state_not_started),
+        key: 'not started',
+      ),
+      DropListModel(
+        name: allTranslations.text(LocaleKeys.cycle_state_active),
+        key: 'active',
+      ),
+      DropListModel(
+        name: allTranslations.text(LocaleKeys.cycle_state_canceled),
+        key: 'canceled',
+      ),
+      DropListModel(
+        name: allTranslations.text(LocaleKeys.cycle_state_completed),
+        key: 'completed',
+      ),
+      DropListModel(
+        name: allTranslations.text(LocaleKeys.cycle_state_overdue),
+        key: 'overdue',
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<CyclesFiltrationBloc>();
@@ -17,10 +42,10 @@ class CyclesFilterBottomSheetBody extends StatelessWidget {
           CustomFiltersDropList(
             labelText: LocaleKeys.status,
             hintText: LocaleKeys.select_status,
-            options: bloc.statusList,
-            initial: bloc.selectedStatus,
+            options: _stateOptions(),
+            selectedOptionKey: bloc.selectedStateKey,
             onSelect: (s) {
-              bloc.selectedStatus = s;
+              bloc.selectedStateKey = s.key;
             },
           ),
         ],

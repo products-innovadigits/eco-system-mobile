@@ -13,13 +13,8 @@ class CyclesFiltrationBloc
     on<ClearCyclesFilters>(_onClearFilters);
   }
 
-  final List<DropListModel> statusList = [
-    DropListModel(name: 'Active'),
-    DropListModel(name: 'Completed'),
-    DropListModel(name: 'Overdue'),
-  ];
-
-  DropListModel? selectedStatus;
+  /// API `state` query value; UI labels are built in the filter sheet with localization.
+  String? selectedStateKey;
 
   void _onLoadFilterOptions(
     LoadCyclesFilterOptions event,
@@ -39,14 +34,14 @@ class CyclesFiltrationBloc
   }
 
   void applyFilters({required CyclesBloc cyclesBloc}) {
-    if (selectedStatus == null) {
+    if (selectedStateKey == null || selectedStateKey!.isEmpty) {
       AppCore.errorToastMessage(
         allTranslations.text(LocaleKeys.please_select_at_least_one_filter),
       );
       return;
     }
 
-    cyclesBloc.add(FilterCycles(status: selectedStatus?.name));
+    cyclesBloc.add(FilterCycles(state: selectedStateKey));
     add(const ApplyCyclesFilters());
     CustomNavigator.pop();
   }
@@ -59,7 +54,7 @@ class CyclesFiltrationBloc
   }
 
   void resetFilters({required CyclesBloc cyclesBloc}) {
-    selectedStatus = null;
+    selectedStateKey = null;
     add(const ResetCyclesFilters());
     cyclesBloc.add(const RefreshCycles());
     CustomNavigator.pop();
@@ -73,7 +68,7 @@ class CyclesFiltrationBloc
   }
 
   void clearFilters() {
-    selectedStatus = null;
+    selectedStateKey = null;
     add(const ClearCyclesFilters());
   }
 

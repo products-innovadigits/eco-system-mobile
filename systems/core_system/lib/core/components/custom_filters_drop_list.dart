@@ -4,6 +4,9 @@ class CustomFiltersDropList extends StatefulWidget {
   final List<DropListModel> options;
   final ValueChanged<DropListModel> onSelect;
   final DropListModel? initial;
+  /// When set, the selected row is resolved from [options] by matching [DropListModel.key]
+  /// (supports rebuilt option lists, e.g. after locale change).
+  final String? selectedOptionKey;
   final String hintText;
   final String? labelText;
   final double? radius;
@@ -13,6 +16,7 @@ class CustomFiltersDropList extends StatefulWidget {
     required this.options,
     required this.onSelect,
     this.initial,
+    this.selectedOptionKey,
     required this.hintText,
     this.labelText,
     this.radius,
@@ -25,10 +29,33 @@ class CustomFiltersDropList extends StatefulWidget {
 class _CustomFiltersDropListState extends State<CustomFiltersDropList> {
   late DropListModel? _current;
 
+  DropListModel? _resolveCurrent() {
+    final key = widget.selectedOptionKey;
+    if (key != null && key.isNotEmpty) {
+      for (final o in widget.options) {
+        if (o.key == key) return o;
+      }
+    }
+    return widget.initial;
+  }
+
   @override
   void initState() {
     super.initState();
-    _current = widget.initial;
+    _current = _resolveCurrent();
+  }
+
+  @override
+  void didUpdateWidget(CustomFiltersDropList oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.selectedOptionKey != widget.selectedOptionKey ||
+        oldWidget.initial != widget.initial ||
+        oldWidget.options != widget.options) {
+      final next = _resolveCurrent();
+      if (next?.key != _current?.key || next?.name != _current?.name) {
+        setState(() => _current = next);
+      }
+    }
   }
 
   @override

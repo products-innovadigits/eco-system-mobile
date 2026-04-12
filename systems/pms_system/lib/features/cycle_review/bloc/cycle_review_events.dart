@@ -26,3 +26,9 @@ class LoadReviewees extends CycleReviewEvent {
 class LoadMoreReviewees extends CycleReviewEvent {
   const LoadMoreReviewees();
 }
+
+class CloseReviewCycle extends CycleReviewEvent {
+  final int cycleId;
+
+  const CloseReviewCycle({required this.cycleId});
+}

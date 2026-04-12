@@ -19,7 +19,7 @@ class CyclesBloc extends Bloc<CyclesEvent, CyclesState> {
   SearchEngine _engine = SearchEngine();
   final List<CycleItemModel> _cycles = [];
   String _searchKeyword = '';
-  String? _statusFilter;
+  String? _stateFilter;
   bool _isLoadingMore = false;
 
   Future<void> _onSearchChanged(
@@ -78,11 +78,11 @@ class CyclesBloc extends Bloc<CyclesEvent, CyclesState> {
       };
 
       if (_searchKeyword.isNotEmpty) {
-        query["searchKeyword"] = _searchKeyword;
+        query["keyword"] = _searchKeyword;
       }
 
-      if (_statusFilter != null && _statusFilter!.isNotEmpty) {
-        query["status"] = _statusFilter;
+      if (_stateFilter != null && _stateFilter!.isNotEmpty) {
+        query["state"] = _stateFilter;
       }
 
       _engine.query = query;
@@ -146,7 +146,7 @@ class CyclesBloc extends Bloc<CyclesEvent, CyclesState> {
     Emitter<CyclesState> emit,
   ) async {
     _searchKeyword = '';
-    _statusFilter = null;
+    _stateFilter = null;
     _engine = SearchEngine(
       query: <String, dynamic>{},
       currentPage: 0,
@@ -161,7 +161,7 @@ class CyclesBloc extends Bloc<CyclesEvent, CyclesState> {
     FilterCycles event,
     Emitter<CyclesState> emit,
   ) async {
-    _statusFilter = event.status;
+    _stateFilter = event.state;
     _engine = SearchEngine(
       query: <String, dynamic>{},
       currentPage: 0,

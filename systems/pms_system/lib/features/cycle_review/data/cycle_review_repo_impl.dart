@@ -54,4 +54,13 @@ class CycleReviewRepoImpl implements CycleReviewRepo {
       model: RevieweeStatusResponseModel(),
     );
   }
+
+  @override
+  Future<void> closeReviewCycle({required int cycleId}) async {
+    await network.requestOrThrow(
+      ApiNames.reviewCycleClose(cycleId),
+      method: ServerMethods.PUT,
+      systemTypeEnum: ActiveSystemEnum.pms,
+    );
+  }
 }

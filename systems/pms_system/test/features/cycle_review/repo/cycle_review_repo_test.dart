@@ -1,6 +1,7 @@
 import 'package:core_system/core/model/search_engine.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:pms_system/core/utility/pms_exports.dart';
 import 'package:pms_system/features/cycle_review/data/cycle_review_repo_impl.dart';
 import 'package:pms_system/features/cycle_review/model/cycle_review_model.dart';
 
@@ -142,6 +143,28 @@ void main() {
             query: any(named: 'query'),
             systemTypeEnum: any(named: 'systemTypeEnum'),
             model: any(named: 'model'),
+          ),
+        ).called(1);
+      });
+    });
+
+    group('closeReviewCycle', () {
+      test('calls POST close-review-cycle endpoint', () async {
+        when(
+          () => mockNetwork.requestOrThrow(
+            any(),
+            method: any(named: 'method'),
+            systemTypeEnum: any(named: 'systemTypeEnum'),
+          ),
+        ).thenAnswer((_) async => null);
+
+        await repo.closeReviewCycle(cycleId: 175);
+
+        verify(
+          () => mockNetwork.requestOrThrow(
+            'appraisal/review-cycles/175/close-review-cycle',
+            method: ServerMethods.POST,
+            systemTypeEnum: ActiveSystemEnum.pms,
           ),
         ).called(1);
       });

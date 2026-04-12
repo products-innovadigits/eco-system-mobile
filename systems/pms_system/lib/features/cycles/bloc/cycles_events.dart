@@ -25,7 +25,7 @@ class LoadMoreCycles extends CyclesEvent {
 }
 
 class FilterCycles extends CyclesEvent {
-  final String? status;
+  final String? state;
 
-  const FilterCycles({this.status});
+  const FilterCycles({this.state});
 }

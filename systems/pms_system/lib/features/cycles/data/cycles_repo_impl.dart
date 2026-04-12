@@ -9,15 +9,20 @@ class CyclesRepoImpl implements CyclesRepo {
 
   @override
   Future<CyclesModel> getCycles(SearchEngine data) async {
-    final query = data.query as Map<String, dynamic>? ?? <String, dynamic>{};
+    final raw = data.query;
+    final query = Map<String, dynamic>.from(
+      raw is Map<String, dynamic> ? raw : <String, dynamic>{},
+    );
     final page =
         (query['page'] as int?) ??
         (query['pageIndex'] as int?) ??
         data.nextPageIndex;
+    query['page'] = page;
+    query.remove('pageIndex');
 
     return await network.requestOrThrow(
       ApiNames.appraisalReviewCycles,
-      query: <String, dynamic>{'page': page},
+      query: query,
       method: ServerMethods.GET,
       systemTypeEnum: ActiveSystemEnum.pms,
       model: CyclesModel(),

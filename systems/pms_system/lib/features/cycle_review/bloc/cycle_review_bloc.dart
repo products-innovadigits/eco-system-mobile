@@ -18,6 +18,7 @@ class CycleReviewBloc extends Bloc<CycleReviewEvent, CycleReviewState> {
     on<LoadReviewCycleSummary>(_onLoadSummary);
     on<LoadReviewees>(_onLoadReviewees);
     on<LoadMoreReviewees>(_onLoadMoreReviewees);
+    on<CloseReviewCycle>(_onCloseReviewCycle);
   }
 
   Future<void> _onLoad(
@@ -34,8 +35,11 @@ class CycleReviewBloc extends Bloc<CycleReviewEvent, CycleReviewState> {
       } else {
         emit(const CycleReviewFailure(message: 'No data found'));
       }
+    } on NetworkException catch (e) {
+      emit(CycleReviewFailure(message: e.message));
     } catch (e) {
-      emit(CycleReviewFailure(message: e.toString()));
+      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+      emit(const CycleReviewFailure(message: 'Failed to load cycle review'));
     }
   }
 
@@ -199,6 +203,46 @@ class CycleReviewBloc extends Bloc<CycleReviewEvent, CycleReviewState> {
       } else {
         emit(RevieweesFailure(message: e.toString()));
       }
+    }
+  }
+
+  Future<void> _onCloseReviewCycle(
+    CloseReviewCycle event,
+    Emitter<CycleReviewState> emit,
+  ) async {
+    final loaded = state;
+    if (loaded is! ReviewCycleSummaryLoaded && loaded is! CycleReviewLoaded) {
+      return;
+    }
+    if (loaded is ReviewCycleSummaryLoaded && loaded.isClosingReviewCycle) {
+      return;
+    }
+    if (loaded is CycleReviewLoaded && loaded.isClosingReviewCycle) {
+      return;
+    }
+
+    void emitClosing(bool closing) {
+      if (loaded is ReviewCycleSummaryLoaded) {
+        emit(loaded.copyWith(isClosingReviewCycle: closing));
+      } else if (loaded is CycleReviewLoaded) {
+        emit(loaded.copyWith(isClosingReviewCycle: closing));
+      }
+    }
+
+    emitClosing(true);
+
+    try {
+      await repo.closeReviewCycle(cycleId: event.cycleId);
+      AppCore.successMessage(
+        allTranslations.text(LocaleKeys.review_cycle_closed_successfully),
+      );
+      add(LoadReviewCycleSummary(cycleId: event.cycleId));
+    } on NetworkException catch (e) {
+      AppCore.errorMessage(e.message);
+      emitClosing(false);
+    } catch (e) {
+      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+      emitClosing(false);
     }
   }
 }

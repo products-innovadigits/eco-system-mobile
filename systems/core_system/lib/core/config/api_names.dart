@@ -59,6 +59,8 @@ abstract class ApiNames {
       'appraisal/review-cycles/$cycleId/summary';
   static String reviewCycleRevieweeStatus(int cycleId) =>
       'appraisal/review-cycles/$cycleId/reviewee-status';
+  static String reviewCycleClose(int cycleId) =>
+      'appraisal/review-cycles/$cycleId/close-review-cycle';
 
   // Employees Performance APIs ====================
   static const employeesTopTen = "employees/get-top-ten/";

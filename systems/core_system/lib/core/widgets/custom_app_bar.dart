@@ -306,7 +306,7 @@ class CustomAppBarPortrait extends StatelessWidget {
                           GestureDetector(
                             onTap: appBar.onFiltering,
                             child: Container(
-                              padding: EdgeInsets.all(12),
+                              padding: EdgeInsets.all(10.r),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
                                 border: Border.all(

@@ -364,5 +364,127 @@ void main() {
         ],
       );
     });
+
+    group('CloseReviewCycle', () {
+      ReviewCycleSummaryLoaded _seedSummaryLoaded() {
+        return ReviewCycleSummaryLoaded(
+          summary: CycleSummaryDataModel(
+            id: 171,
+            name: 'Test Cycle',
+            state: 'active',
+            overallProgress: 50,
+          ),
+          revieweeStatusItems: const [],
+        );
+      }
+
+      blocTest<CycleReviewBloc, CycleReviewState>(
+        'emits closing then reload summary after close succeeds',
+        build: () {
+          when(() => mockRepo.closeReviewCycle(cycleId: any(named: 'cycleId')))
+              .thenAnswer((_) async {});
+          when(
+            () => mockRepo.getReviewCycleSummary(cycleId: any(named: 'cycleId')),
+          ).thenAnswer(
+            (_) async => CycleSummaryResponseModel(
+              status: 200,
+              message: 'OK',
+              data: CycleSummaryDataModel(
+                id: 171,
+                name: 'Refreshed',
+                state: 'completed',
+                overallProgress: 100,
+              ),
+            ),
+          );
+          when(() => mockRepo.getRevieweeStatus(cycleId: any(named: 'cycleId')))
+              .thenAnswer(
+            (_) async => RevieweeStatusResponseModel(
+              data: const [],
+              currentPage: 1,
+              lastPage: 1,
+              total: 0,
+              perPage: 10,
+            ),
+          );
+          return CycleReviewBloc(repo: mockRepo);
+        },
+        seed: _seedSummaryLoaded,
+        act: (bloc) => bloc.add(const CloseReviewCycle(cycleId: 171)),
+        expect: () => [
+          isA<ReviewCycleSummaryLoaded>().having(
+            (s) => s.isClosingReviewCycle,
+            'isClosingReviewCycle',
+            true,
+          ),
+          isA<ReviewCycleSummaryLoading>(),
+          isA<ReviewCycleSummaryLoaded>()
+              .having(
+                (s) => s.isClosingReviewCycle,
+                'isClosingReviewCycle',
+                false,
+              )
+              .having((s) => s.summary.state, 'summary.state', 'completed')
+              .having((s) => s.summary.name, 'summary.name', 'Refreshed'),
+        ],
+        verify: (_) {
+          verify(() => mockRepo.closeReviewCycle(cycleId: 171)).called(1);
+          verify(() => mockRepo.getReviewCycleSummary(cycleId: 171)).called(1);
+          verify(() => mockRepo.getRevieweeStatus(cycleId: 171)).called(1);
+        },
+      );
+
+      blocTest<CycleReviewBloc, CycleReviewState>(
+        'does nothing when bloc is not in a loaded summary/detail state',
+        build: () => CycleReviewBloc(repo: mockRepo),
+        act: (bloc) => bloc.add(const CloseReviewCycle(cycleId: 1)),
+        expect: () => const <CycleReviewState>[],
+        verify: (_) {
+          verifyNever(
+            () => mockRepo.closeReviewCycle(cycleId: any(named: 'cycleId')),
+          );
+        },
+      );
+
+      blocTest<CycleReviewBloc, CycleReviewState>(
+        'restores loaded state when repo throws NetworkException',
+        build: () {
+          when(() => mockRepo.closeReviewCycle(cycleId: any(named: 'cycleId')))
+              .thenThrow(const NetworkException('Server Error'));
+          return CycleReviewBloc(repo: mockRepo);
+        },
+        seed: _seedSummaryLoaded,
+        act: (bloc) => bloc.add(const CloseReviewCycle(cycleId: 171)),
+        expect: () => [
+          isA<ReviewCycleSummaryLoaded>().having(
+            (s) => s.isClosingReviewCycle,
+            'isClosingReviewCycle',
+            true,
+          ),
+          isA<ReviewCycleSummaryLoaded>().having(
+            (s) => s.isClosingReviewCycle,
+            'isClosingReviewCycle',
+            false,
+          ),
+        ],
+      );
+
+      blocTest<CycleReviewBloc, CycleReviewState>(
+        'ignores duplicate CloseReviewCycle while already closing',
+        build: () {
+          when(() => mockRepo.closeReviewCycle(cycleId: any(named: 'cycleId')))
+              .thenAnswer((_) async {});
+          return CycleReviewBloc(repo: mockRepo);
+        },
+        seed: () => _seedSummaryLoaded().copyWith(isClosingReviewCycle: true),
+        act: (bloc) => bloc.add(const CloseReviewCycle(cycleId: 171)),
+        expect: () => const <CycleReviewState>[],
+        verify: (_) {
+          verifyNever(
+            () => mockRepo.closeReviewCycle(cycleId: any(named: 'cycleId')),
+          );
+        },
+      );
+    });
   });
 }

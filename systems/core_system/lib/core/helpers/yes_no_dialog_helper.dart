@@ -123,6 +123,24 @@ abstract class YesNoDialogHelper {
     );
   }
 
+  /// Convenience method for close review cycle confirmation
+  static Future<void> showCloseReviewCycleConfirmationDialog({
+    required BuildContext context,
+    required VoidCallback onClosePressed,
+    VoidCallback? onCancelPressed,
+  }) {
+    return showYesNoDialog(
+      context: context,
+      title: allTranslations.text(LocaleKeys.confirm_close_review_cycle),
+      subtitle: allTranslations.text(LocaleKeys.close_review_cycle_warning),
+      yesButtonText: allTranslations.text(LocaleKeys.yes_close_review_cycle),
+      noButtonText: allTranslations.text(LocaleKeys.no_later),
+      icon: Images(image: Assets.svgs.rocketCircle.path),
+      onYesPressed: onClosePressed,
+      onNoPressed: onCancelPressed,
+    );
+  }
+
   /// Convenience method for generic confirmation dialog
   static Future<void> showConfirmationDialog({
     required BuildContext context,

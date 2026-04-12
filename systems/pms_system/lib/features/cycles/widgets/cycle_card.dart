@@ -111,7 +111,7 @@ class _StatusBadge extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
       ),
       child: Text(
-        status.toUpperCase(),
+        status,
         style: context.textTheme.labelSmall?.copyWith(
           color: color,
           fontSize: 10,
