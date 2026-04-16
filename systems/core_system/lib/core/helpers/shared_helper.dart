@@ -63,10 +63,11 @@ class SharedHelper {
     box!.clear();
   }
 
-  Future<void> logout() async {
+  /// Clears local session and navigates to [navigateTo] (defaults to splash).
+  Future<void> logout({String navigateTo = Routes.SPLASH}) async {
     String currentLang = await allTranslations.getPreferredLanguage();
     box!.clear();
-    CustomNavigator.push(Routes.SPLASH, clean: true);
+    CustomNavigator.push(navigateTo, clean: true);
 
     SharedHelper.sharedHelper!.writeData(CachingKey.skipBoarding, true);
     allTranslations.setNewLanguage(currentLang, true);

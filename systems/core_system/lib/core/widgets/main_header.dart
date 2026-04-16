@@ -88,7 +88,21 @@ class MainHeader extends StatelessWidget {
                     ],
                   ),
                 ),
-                // if (UserBloc.activeSystems.length > 1) SystemSelectionWidget(),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // const SystemSelectionWidget(),
+                    InkWell(
+                      onTap: () async {
+                        await SharedHelper.sharedHelper?.logout(
+                          navigateTo: Routes.LOGIN,
+                        );
+                      },
+                      borderRadius: BorderRadius.circular(20),
+                      child: Icon(Icons.logout, color: context.color.onPrimary),
+                    ),
+                  ],
+                ),
               ],
             ),
           ],
