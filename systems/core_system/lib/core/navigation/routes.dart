@@ -29,6 +29,7 @@ class Routes {
   static const PROJECT_REPORT = "PROJECT_REPORT";
   static const WORKFLOW_PROCESS_DETAILS = "WORKFLOW_PROCESS_DETAILS";
   static const LATEST_REQUEST = "LATEST_REQUEST";
+  static const AI_ASSISTANT = "AI_ASSISTANT";
   static const PDF = "PDF";
   static const PMS_LAYOUT = "PMS_LAYOUT";
   static const CYCLES = "CYCLES";

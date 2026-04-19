@@ -10,6 +10,11 @@ void setupProjectManagementLocator() {
   }
 
   // Repositories
+  if (!projectManagementSl.isRegistered<AiAssistantRepo>()) {
+    projectManagementSl.registerLazySingleton<AiAssistantRepo>(
+      () => AiAssistantRepoImpl(network: projectManagementSl()),
+    );
+  }
   if (!projectManagementSl.isRegistered<LatestRequestRepo>()) {
     projectManagementSl.registerLazySingleton<LatestRequestRepo>(
       () => LatestRequestRepoImpl(network: projectManagementSl()),

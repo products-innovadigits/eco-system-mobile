@@ -345,6 +345,10 @@ abstract class  LocaleKeys {
   static const total_projects = 'total_projects';
   static const project_progress_rate = 'project_progress_rate';
   static const latest_requests = 'latest_requests';
+  static const ai_assistant = 'ai_assistant';
+  static const ai_assistant_thinking = 'ai_assistant_thinking';
+  static const ai_assistant_input_hint = 'ai_assistant_input_hint';
+  static const ai_assistant_empty_hint = 'ai_assistant_empty_hint';
   static const challenges_risks = 'challenges_risks';
   static const risk = 'risk';
   static const main_data = 'main_data';

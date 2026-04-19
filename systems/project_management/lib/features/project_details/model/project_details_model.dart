@@ -143,10 +143,15 @@ class ProjectDetailsDataModel {
     description = json['description'];
     riskLevelName = json['riskLevelName'];
     deliveredOutputs = json['deliveredOutputs'];
+    if (deliveredOutputs == null && json['deliveredOutputCount'] != null) {
+      deliveredOutputs = json['deliveredOutputCount'];
+    }
     startDate = json['startDate'] != null
-        ? DateTime.parse(json['startDate'])
+        ? DateTime.parse(_normalizeDateString(json['startDate'].toString()))
         : null;
-    endDate = json['endDate'] != null ? DateTime.parse(json['endDate']) : null;
+    endDate = json['endDate'] != null
+        ? DateTime.parse(_normalizeDateString(json['endDate'].toString()))
+        : null;
     lifeCycleId = json['lifeCycleId'];
     projectLifeCycle = json['projectLifeCycle'] != null
         ? ProjectLifeCycleModel.fromJson(json['projectLifeCycle'])
@@ -155,6 +160,9 @@ class ProjectDetailsDataModel {
     weight = (json['weight'] as num?)?.toDouble();
     budget = json['budget'];
     progressRatio = (json['progressRation'] as num?)?.toDouble();
+    if (progressRatio == null && json['progress'] != null) {
+      progressRatio = (json['progress'] as num?)?.toDouble();
+    }
     teamIds = json['teamIds'] != null
         ? List<String>.from(json['teamIds'])
         : null;
@@ -223,6 +231,14 @@ class ProjectDetailsDataModel {
     daysLeft = json['mobileDetails'] != null
         ? json['mobileDetails']['daysLeft']
         : null;
+  }
+
+  static String _normalizeDateString(String raw) {
+    final t = raw.trim();
+    if (t.contains(' ') && !t.contains('T')) {
+      return t.replaceFirst(' ', 'T');
+    }
+    return t;
   }
 
   Map<String, dynamic> toJson() {

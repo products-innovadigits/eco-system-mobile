@@ -84,6 +84,8 @@ class ProjectManagementModule implements SystemModule {
     },
     Routes.LATEST_REQUEST: (settings) =>
         MaterialPageRoute(builder: (_) => const LatestRequestView()),
+    Routes.AI_ASSISTANT: (settings) =>
+        MaterialPageRoute(builder: (_) => const AiAssistantView()),
   };
 
   @override

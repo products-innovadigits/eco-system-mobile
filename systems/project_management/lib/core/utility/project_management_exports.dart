@@ -6,6 +6,12 @@ export 'package:core_system/core/widgets/custom_expansion_card.dart';
 export 'package:core_system/core/widgets/main_card_widget.dart';
 export 'package:fl_chart/fl_chart.dart';
 export 'package:flutter/rendering.dart';
+// ai_assistant exports
+export 'package:project_management/features/ai_assistant/data/repositories/ai_assistant_repo_impl.dart';
+export 'package:project_management/features/ai_assistant/domain/repositories/ai_assistant_repo.dart';
+export 'package:project_management/features/ai_assistant/model/ai_assistant_models.dart';
+export 'package:project_management/features/ai_assistant/view/ai_assistant_view.dart';
+export 'package:project_management/features/ai_assistant/widgets/ai_assistant_body.dart';
 // latest_request exports
 export 'package:project_management/features/latest_request/bloc/filtration/latest_request_filtration_cubit.dart';
 export 'package:project_management/features/latest_request/bloc/filtration/latest_request_filtration_state.dart';
