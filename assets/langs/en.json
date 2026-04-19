@@ -345,7 +345,7 @@
   "project_progress_rate": "Project progress rate",
   "latest_requests": "Latest Requests",
   "ai_assistant": "AI Assistant",
-  "ai_assistant_thinking": "Thinking...",
+  "ai_assistant_thinking": "Retrieving projects",
   "ai_assistant_input_hint": "Ask about your projects...",
   "ai_assistant_empty_hint": "Ask a question to find matching projects.",
   "challenges_risks": "Challenges and Risks",

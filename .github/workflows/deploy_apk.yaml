@@ -117,6 +117,7 @@ jobs:
           EOF
 
           echo "✅ .env generated from GitHub Secrets (never committed to git)"
+          echo "ℹ️  AI assistant uses PROJECT_MANAGEMENT_BASE_URL_DEV + path projects/query (HTTPS). Optional: set AI_ASSISTANT_QUERY_BASE_URL in .env locally for a different AI host."
 
       - name: Verify .env values are non-empty
         shell: bash

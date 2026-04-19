@@ -345,7 +345,7 @@
   "project_progress_rate": "نسبة تقدم المشاريع",
   "latest_requests": "الطلبات الاخيرة",
   "ai_assistant": "المساعد الذكي",
-  "ai_assistant_thinking": "جاري التفكير...",
+  "ai_assistant_thinking": "جاري إسترجاع المشاريع",
   "ai_assistant_input_hint": "اسأل عن مشاريعك...",
   "ai_assistant_empty_hint": "اطرح سؤالاً للعثور على المشاريع المطابقة.",
   "challenges_risks": "التحديات والمخاطر ",

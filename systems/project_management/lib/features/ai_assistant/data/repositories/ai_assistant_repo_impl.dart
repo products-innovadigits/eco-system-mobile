@@ -1,22 +1,42 @@
+import 'package:core_system/core/config/app_config.dart';
+import 'package:core_system/core/env/env.dart';
 import 'package:core_system/core/network/network_layer.dart';
 import 'package:dio/dio.dart';
 import 'package:project_management/features/ai_assistant/domain/repositories/ai_assistant_repo.dart';
 import 'package:project_management/features/project_details/model/project_details_model.dart';
 
 class AiAssistantRepoImpl implements AiAssistantRepo {
-  /// Local / dev AI query service (same host as user-provided endpoint).
-  static const String _queryBaseUrl = 'http://172.16.1.61:8000';
-  static const String _queryPath = '/projects/query';
+  /// Same path as the AI microservice; base URL comes from env (see [_effectiveBaseUrl]).
+  static const String _queryPath = 'projects/query';
 
   final Network network;
 
   AiAssistantRepoImpl({required this.network});
 
+  /// Prefer [Env.aiAssistantQueryBaseUrl] when set (e.g. LAN dev server). Otherwise use
+  /// [AppConfig.projectManagementBaseUrl] from `PROJECT_MANAGEMENT_BASE_URL_DEV` (GitHub Actions / `.env`).
+  ///
+  /// **Release APKs:** Android blocks cleartext HTTP (`network_security_config.xml`). Use HTTPS
+  /// for the default PM base URL. A LAN IP like `http://172.16.x.x:8000` only works on emulators/debug
+  /// or if you add a matching cleartext exception (not recommended for production).
+  String get _effectiveBaseUrl {
+    final override = Env.aiAssistantQueryBaseUrl.trim();
+    if (override.isNotEmpty) {
+      return _ensureTrailingSlash(override);
+    }
+    return AppConfig.projectManagementBaseUrl;
+  }
+
+  static String _ensureTrailingSlash(String url) {
+    if (url.endsWith('/')) return url;
+    return '$url/';
+  }
+
   @override
   Future<List<ProjectDetailsDataModel>> queryProjects(String query) async {
     final raw = await network.requestOrThrow(
       _queryPath,
-      baseUrl: _queryBaseUrl,
+      baseUrl: _effectiveBaseUrl,
       body: {'query': query},
       method: ServerMethods.POST,
       model: null,
