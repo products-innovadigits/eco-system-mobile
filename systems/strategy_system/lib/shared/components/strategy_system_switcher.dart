@@ -68,7 +68,7 @@ class _StrategySystemSwitcherState extends State<StrategySystemSwitcher>
                       shape: BoxShape.circle,
                       color: context.color.secondary.withValues(alpha: 0.1),
                     ),
-                    child: Images(image: Assets.svgs.logo.path),
+                    child: Images(image: 'assets/zulfi_logo.png'),
                   ),
                   AnimatedBuilder(
                     animation: _progressAnimation,

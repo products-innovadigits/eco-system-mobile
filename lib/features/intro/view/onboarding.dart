@@ -32,14 +32,7 @@ class _OnBoardingState extends State<OnBoarding> {
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: Center(
-                        child: Text(
-                          "LOGO",
-                          style: TextStyle(
-                            color: context.color.primary,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                        ),
+                        child: Styles.logo(height: 56, width: 56),
                       ),
                     ),
                   ),

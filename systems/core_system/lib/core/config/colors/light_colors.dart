@@ -5,8 +5,8 @@ class LightColor {
   // static const Color primary = Color(0xff2b6c9f);
   static Color scaffoldBg = Color(0xffFAFAFA);
   static Color cardBg = Color(0xffFFFFFF);
-  static Color primary = Color(0xff020F4C);
-  static Color secondary = Color(0xff175CD3);
+  static Color primary = Color(0xff388A66);
+  static Color secondary = Color(0xffF0922E);
   static Color tertiary = Color(0xff097867);
   static Color tertiaryLight = Color(0xff079455);
   static Color placeHolderText = Color(0xff9DA4AE);
@@ -31,8 +31,8 @@ class LightColor {
 
   // chart colors ====================
 
-  static const Color chartPrimary = Color(0xff020F4C);
-  static const Color chartSecondary = Color(0xffDC6803);
+  static const Color chartPrimary = Color(0xff388A66);
+  static const Color chartSecondary = Color(0xffF0922E);
   static const Color chartTertiary = Color(0xff097867);
 
   static Color statusColors(String value, {bool isLineProgress = false}) {
@@ -79,7 +79,7 @@ class LightColor {
 
   static const List<Color> projectCategoryColors = [
     Color(0xffD92D20),
-    Color(0xff020F4C),
+    Color(0xff388A66),
     Color(0xffF39C12),
     Color(0xFF2FAB86),
     Color(0xff615E83),

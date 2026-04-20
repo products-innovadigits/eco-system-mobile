@@ -16,7 +16,7 @@ class LoginView extends StatelessWidget {
         leadingWidth: 110.w,
         leading: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
-          child: Styles.logo(color: context.color.primary),
+          child: Styles.logo(),
         ),
       ),
       body: SafeArea(

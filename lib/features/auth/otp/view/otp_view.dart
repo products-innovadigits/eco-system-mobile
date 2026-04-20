@@ -32,14 +32,7 @@ class _OtpViewState extends State<OtpView> {
                       tag: "logo",
                       child: Material(
                         child: Center(
-                          child: Text(
-                            "LOGO",
-                            style: TextStyle(
-                              color: context.theme.primaryColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 32,
-                            ),
-                          ),
+                          child: Styles.logo(height: 72, width: 72),
                         ),
                       ),
                     ),

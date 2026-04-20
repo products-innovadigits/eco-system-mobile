@@ -39,10 +39,11 @@ abstract class Styles {
 
   static Widget logo({Color? color, double? height, double? width}) =>
       Image.asset(
-        'assets/nawah_logo.png',
+        'assets/zulfi_logo.png',
         height: height ?? 300.0,
         width: width ?? 300.0,
         color: color,
+        colorBlendMode: color != null ? BlendMode.srcIn : null,
         fit: BoxFit.contain,
       );
   static final Widget splash = Image.asset(
