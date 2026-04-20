@@ -6,10 +6,74 @@ import 'package:eco_system/app/modules/generated/enabled_modules.dart' as gen;
 import 'package:flutter/foundation.dart';
 
 class ModulesRegistry {
+  /// Login-only id when Strategy and Project Management are shown as one dropdown row.
+  /// Persists to [CachingKey.chosenSystemModuleId]; maps to PM auth via [ActiveSystemEnum.fromModuleId].
+  static const String combinedStrategyProjectManagementId =
+      'strategy_pm_combined';
+
   /// List of enabled system modules.
   /// This list is now provided by a generated file to ensure
   /// compile-time modularity and zero shell imports of feature systems.
   static List<SystemModule> get enabledModules => gen.buildEnabledModules();
+
+  /// Localized label for a module row in the login system dropdown.
+  static String localizedLoginModuleName(String moduleId) {
+    switch (moduleId) {
+      case 'strategy_system':
+        return allTranslations.text(LocaleKeys.login_dropdown_strategy_system);
+      case 'project_management':
+        return allTranslations.text(LocaleKeys.login_dropdown_project_management);
+      case 'ats_system':
+        return allTranslations.text(LocaleKeys.login_dropdown_ats_system);
+      case 'pms_system':
+        return allTranslations.text(LocaleKeys.login_dropdown_pms_system);
+      default:
+        return getModuleById(moduleId)?.name ?? moduleId;
+    }
+  }
+
+  /// Dropdown rows for login: merges strategy + project management when both are enabled.
+  static List<DropListModel> loginSystemDropList() {
+    final modules = enabledModules;
+    final hasStrategy =
+        modules.any((m) => m.system == ActiveSystemEnum.strategy);
+    final hasPm =
+        modules.any((m) => m.system == ActiveSystemEnum.projectManagement);
+    final mergePair = hasStrategy && hasPm;
+
+    var pairMerged = false;
+    final list = <DropListModel>[];
+    var index = 0;
+
+    for (final m in modules) {
+      if (mergePair &&
+          (m.system == ActiveSystemEnum.strategy ||
+              m.system == ActiveSystemEnum.projectManagement)) {
+        if (pairMerged) {
+          continue;
+        }
+        pairMerged = true;
+        index++;
+        list.add(
+          DropListModel(
+            id: index,
+            name: allTranslations.text(LocaleKeys.strategy_and_pm_system),
+            key: combinedStrategyProjectManagementId,
+          ),
+        );
+        continue;
+      }
+      index++;
+      list.add(
+        DropListModel(
+          id: index,
+          name: localizedLoginModuleName(m.id),
+          key: m.id,
+        ),
+      );
+    }
+    return list;
+  }
 
   /// Aggregated routes from all enabled modules.
   static Map<String, RouteFactory> get appRoutes {

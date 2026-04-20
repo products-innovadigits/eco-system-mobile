@@ -1,8 +1,22 @@
 import 'package:ats_system/shared/ats_exports.dart';
 import 'package:core_system/core/utility/export.dart';
 
-class AvailableJobsSection extends StatelessWidget {
+class AvailableJobsSection extends StatefulWidget {
   const AvailableJobsSection({super.key});
+
+  @override
+  State<AvailableJobsSection> createState() => _AvailableJobsSectionState();
+}
+
+class _AvailableJobsSectionState extends State<AvailableJobsSection> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      context.read<JobsBloc>().add(Click(arguments: SearchEngine()));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +31,16 @@ class AvailableJobsSection extends StatelessWidget {
           // ── Done ───────────────────────────
           Done() => _JobsCard(child: const JobsListSection(isHome: true)),
 
-          // ── Empty ───────────────────────────
-          Empty() => const EmptyContainer(),
+          // ── Empty (same inner card chrome as [JobCardWidget]) ──
+          Empty() => _JobsCard(
+            child: Text(
+              allTranslations.text(LocaleKeys.no_available_jobs),
+              textAlign: TextAlign.center,
+              style: context.textTheme.bodyMedium?.copyWith(
+                color: context.color.onSurfaceVariant,
+              ),
+            ),
+          ),
 
           // ── Default (error / other states) ─
           _ => _JobsCard(

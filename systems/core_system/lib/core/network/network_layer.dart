@@ -44,11 +44,14 @@ class Network {
     return _instance!;
   }
 
+  /// When [systemTypeEnum] is omitted, uses [AppConfig.activeSystem] (set from
+  /// the login system dropdown and system switcher) so all modules share the
+  /// logged-in host unless a call passes an explicit [systemTypeEnum].
   Future<dynamic> request(
     String endpoint, {
     body,
     String? baseUrl,
-    ActiveSystemEnum systemTypeEnum = ActiveSystemEnum.strategy,
+    ActiveSystemEnum? systemTypeEnum,
     Mapper? model,
     Map<String, dynamic>? query,
     Map<String, dynamic>? header,
@@ -74,9 +77,10 @@ class Network {
     if (header != null) {
       _dio.options.headers.addAll(header);
     }
+    final resolvedSystem = systemTypeEnum ?? AppConfig.activeSystem;
     try {
       Response response = await _dio.request(
-        (baseUrl ?? AppConfig.getBaseUrl(systemTypeEnum)) + endpoint,
+        (baseUrl ?? AppConfig.getBaseUrl(resolvedSystem)) + endpoint,
         data: body,
         queryParameters: query,
         options: Options(method: method.name),
@@ -85,7 +89,11 @@ class Network {
       if (model == null) {
         return response;
       } else {
-        return Mapper(model, response.data);
+        final payload = response.data;
+        if (payload is! Map) {
+          return 'Invalid response: expected JSON object, got ${payload.runtimeType}';
+        }
+        return Mapper(model, Map<String, dynamic>.from(payload));
       }
     } on DioException catch (e) {
       return ApiErrorHandler.getMessage(e);
@@ -106,7 +114,7 @@ class Network {
     String endpoint, {
     body,
     String? baseUrl,
-    ActiveSystemEnum systemTypeEnum = ActiveSystemEnum.projectManagement,
+    ActiveSystemEnum? systemTypeEnum,
     Mapper? model,
     Map<String, dynamic>? query,
     Map<String, dynamic>? header,
@@ -123,9 +131,10 @@ class Network {
     if (header != null) {
       _dio.options.headers.addAll(header);
     }
+    final resolvedSystem = systemTypeEnum ?? AppConfig.activeSystem;
     try {
       Response response = await _dio.request(
-        (baseUrl ?? AppConfig.getBaseUrl(systemTypeEnum)) + endpoint,
+        (baseUrl ?? AppConfig.getBaseUrl(resolvedSystem)) + endpoint,
         data: body,
         queryParameters: query,
         options: Options(method: method.name),
@@ -134,7 +143,13 @@ class Network {
       if (model == null) {
         return response;
       } else {
-        return Mapper(model, response.data);
+        final payload = response.data;
+        if (payload is! Map) {
+          throw FormatException(
+            'Invalid response: expected JSON object, got ${payload.runtimeType}',
+          );
+        }
+        return Mapper(model, Map<String, dynamic>.from(payload));
       }
     } on DioException catch (e) {
       throw ApiErrorHandler.getException(e);

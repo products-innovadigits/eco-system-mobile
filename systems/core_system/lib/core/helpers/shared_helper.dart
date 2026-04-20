@@ -64,8 +64,14 @@ class SharedHelper {
   }
 
   /// Clears local session and navigates to [navigateTo] (defaults to splash).
+  ///
+  /// Clears Hive and the secure-stored auth session ([CachingKey.token] + user
+  /// payload) so the bearer token is removed regardless of which system logged in.
   Future<void> logout({String navigateTo = Routes.SPLASH}) async {
     String currentLang = await allTranslations.getPreferredLanguage();
+    await SecureStorageHelper.secureStorageHelper?.deleteUser();
+    UserBloc.currentActiveSystem = null;
+    UserBloc.linkedStrategyPmLogin = false;
     box!.clear();
     CustomNavigator.push(navigateTo, clean: true);
 

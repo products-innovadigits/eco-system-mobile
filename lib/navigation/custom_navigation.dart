@@ -1,3 +1,4 @@
+import 'package:core_system/core/config/app_config.dart';
 import 'package:core_system/core/utility/export.dart';
 import 'package:eco_system/app/modules/modules_registry.dart';
 import 'package:eco_system/features/auth/login/view/login.dart';
@@ -40,8 +41,9 @@ class AppRouter {
             settings.arguments as ActiveSystemEnum? ??
             ActiveSystemEnum.strategy;
 
-        // Set the current active system
+        // Set the current active system (API base URL follows [AppConfig.activeSystem])
         UserBloc.currentActiveSystem = systemEnum;
+        AppConfig.activeSystem = systemEnum;
 
         // Redirect to the selected system's layout via ModulesRegistry
         final layoutRoute = ModulesRegistry.getLayoutRoute(systemEnum);

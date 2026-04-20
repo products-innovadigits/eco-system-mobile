@@ -5,6 +5,8 @@ class FileModel extends SingleMapper {
   final String? name;
   final String? message;
   final String? url;
+  final String? downloadUrl;
+  final String? fileName;
   final DateTime? createdAt;
   final String? fileType;
   final int? fileSize;
@@ -14,6 +16,8 @@ class FileModel extends SingleMapper {
     this.name,
     this.message,
     this.url,
+    this.downloadUrl,
+    this.fileName,
     this.createdAt,
     this.fileType,
     this.fileSize,
@@ -26,6 +30,8 @@ class FileModel extends SingleMapper {
       name: json['name'] as String?,
       message: json['message'] as String?,
       url: json['url'] as String?,
+      downloadUrl: json['download_url'] as String?,
+      fileName: json['file_name'] as String?,
       createdAt: json['created_at'] != null
           ? DateTime.parse(json['created_at'] as String)
           : null,
@@ -41,6 +47,8 @@ class FileModel extends SingleMapper {
       'name': name,
       'message': message,
       'url': url,
+      'download_url': downloadUrl,
+      'file_name': fileName,
       'created_at': createdAt?.toIso8601String(),
       'file_type': fileType,
       'file_size': fileSize,

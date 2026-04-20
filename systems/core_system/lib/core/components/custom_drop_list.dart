@@ -32,6 +32,25 @@ class _CustomDropListState extends State<CustomDropList> {
   @override
   void initState() {
     super.initState();
+    final initial = widget.initialValue;
+    if (initial != null && initial.id != null && initial.id != 0) {
+      dropdownValue = initial;
+    }
+  }
+
+  @override
+  void didUpdateWidget(CustomDropList oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final next = widget.initialValue;
+    if (next != null &&
+        next.id != null &&
+        next.id != 0 &&
+        (oldWidget.initialValue?.id != next.id ||
+            oldWidget.initialValue?.key != next.key)) {
+      setState(() {
+        dropdownValue = next;
+      });
+    }
   }
 
   @override

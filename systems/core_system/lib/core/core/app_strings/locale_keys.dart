@@ -338,6 +338,7 @@ abstract class  LocaleKeys {
   static const filtration = 'filtration';
   static const strategic_axis = 'strategic_axis';
   static const available_jobs = 'available_jobs';
+  static const no_available_jobs = 'no_available_jobs';
   static const implement_department = 'implement_department';
   static const talent_pool = 'talent_pool';
   static const candidate_with_future_potential = 'candidate_with_future_potential';
@@ -627,5 +628,11 @@ abstract class  LocaleKeys {
   static const total = 'total';
   static const login_to = 'login_to';
   static const please_select_system = 'please_select_system';
+  static const strategy_and_pm_system = 'strategy_and_pm_system';
+  static const login_dropdown_strategy_system = 'login_dropdown_strategy_system';
+  static const login_dropdown_project_management = 'login_dropdown_project_management';
+  static const login_dropdown_ats_system = 'login_dropdown_ats_system';
+  static const login_dropdown_pms_system = 'login_dropdown_pms_system';
+  static const all_systems = 'all_systems';
 
 }

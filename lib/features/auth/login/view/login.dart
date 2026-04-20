@@ -5,8 +5,50 @@ import 'package:eco_system/features/auth/login/widgets/welcome_widget.dart';
 
 import '../../../../app/modules/modules_registry.dart';
 
+/// Login and token persistence: [LoginBloc] saves the user via [UserModel.authTokenForSystem]
+/// (switch per [ActiveSystemEnum], including ATS `token`).
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => LoginBloc(),
+      child: const _LoginViewBody(),
+    );
+  }
+}
+
+/// Restores last chosen module from [CachingKey.chosenSystemModuleId] so the
+/// login dropdown and [AppConfig.activeSystem] match (multi-system / ATS vs PM, etc.).
+class _LoginViewBody extends StatefulWidget {
+  const _LoginViewBody();
+
+  @override
+  State<_LoginViewBody> createState() => _LoginViewBodyState();
+}
+
+class _LoginViewBodyState extends State<_LoginViewBody> {
+  DropListModel? _persistedModuleSelection;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _restoreChosenModule());
+  }
+
+  Future<void> _restoreChosenModule() async {
+    final moduleId = await SharedHelper.sharedHelper!
+        .readString(CachingKey.chosenSystemModuleId);
+    if (!mounted || moduleId.isEmpty) return;
+    final items = ModulesRegistry.loginSystemDropList();
+    final index = items.indexWhere((e) => e.key == moduleId);
+    if (index < 0) return;
+    context.read<LoginBloc>().setSelectedSystem(moduleId);
+    setState(() {
+      _persistedModuleSelection = items[index];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,56 +62,44 @@ class LoginView extends StatelessWidget {
         ),
       ),
       body: SafeArea(
-        child: BlocProvider(
-          create: (context) => LoginBloc(),
-          child: BlocBuilder<LoginBloc, AppState>(
-            builder: (context, state) {
-              return Form(
-                key: context.read<LoginBloc>().globalKey,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24.w),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: ListAnimator(
-                          data: [
-                            const WelcomeWidget(),
-                            SizedBox(height: 32.h),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 6.0),
-                                  child: Text(
-                                    allTranslations.text("login_to"),
-                                    style: context.textTheme.labelSmall,
-                                  ),
+        child: BlocBuilder<LoginBloc, AppState>(
+          builder: (context, state) {
+            return Form(
+              key: context.read<LoginBloc>().globalKey,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: ListAnimator(
+                        data: [
+                          const WelcomeWidget(),
+                          SizedBox(height: 32.h),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 6.0),
+                                child: Text(
+                                  allTranslations.text("login_to"),
+                                  style: context.textTheme.labelSmall,
                                 ),
-                                CustomDropList(
-                                  list: ModulesRegistry.enabledModules
-                                      .map(
-                                        (module) => DropListModel(
-                                          id:
-                                              ModulesRegistry.enabledModules
-                                                  .indexOf(module) +
-                                              1,
-                                          name: module.name,
-                                          key: module.id,
-                                        ),
-                                      )
-                                      .toList(),
-                                  hint: allTranslations.text("select_system"),
-                                  onChanged: (value) {
-                                    if (value.key != null) {
-                                      context
-                                          .read<LoginBloc>()
-                                          .setSelectedSystem(value.key!);
-                                    }
-                                  },
-                                  bgColor: LightColor.white,
-                                ),
-                              ],
-                            ),
+                              ),
+                              CustomDropList(
+                                list: ModulesRegistry.loginSystemDropList(),
+                                initialValue: _persistedModuleSelection,
+                                hint: allTranslations.text("select_system"),
+                                onChanged: (value) {
+                                  if (value.key != null) {
+                                    context
+                                        .read<LoginBloc>()
+                                        .setSelectedSystem(value.key!);
+                                  }
+                                },
+                                bgColor: LightColor.white,
+                              ),
+                            ],
+                          ),
                             SizedBox(height: 16.h),
                             CustomTextField(
                               // hint: allTranslations.text("enter_username"),
@@ -149,9 +179,8 @@ class LoginView extends StatelessWidget {
                     ],
                   ),
                 ),
-              );
-            },
-          ),
+            );
+          },
         ),
       ),
     );

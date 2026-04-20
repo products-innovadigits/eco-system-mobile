@@ -164,14 +164,17 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
       if (talentsList.isNotEmpty) {
         emit(Done());
       } else {
-        if (_engine.query['search'].toString().isEmpty) {
-          emit(Empty(initial: true));
-        } else {
-          emit(Empty(initial: false));
-        }
+        final q = _engine.query;
+        final searchRaw = q is Map<String, dynamic> ? q['search'] : null;
+        final isSearchEmpty =
+            searchRaw == null || searchRaw.toString().trim().isEmpty;
+        emit(Empty(initial: isSearchEmpty));
       }
     } catch (e) {
-      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+      final msg = e is FormatException
+          ? e.message
+          : allTranslations.text('something_went_wrong');
+      AppCore.errorMessage(msg);
       emit(Error());
     }
   }
@@ -214,12 +217,15 @@ class TalentPoolBloc extends Bloc<AppEvent, AppState> {
         isExcel: isExcel,
         selectedTalentsList: selectedTalentsList,
       );
-      if (fileUrl.url != null && fileUrl.url!.isNotEmpty) {
+      if (fileUrl.downloadUrl != null && fileUrl.downloadUrl!.isNotEmpty) {
         CustomNavigator.pop();
         AppCore.successToastMessage(fileUrl.message ?? '');
         emit(Done());
         Future.delayed(Duration(milliseconds: 1500), () {
-          LauncherHelper.openUrl(fileUrl.url!);
+          LauncherHelper.downloadFiles(
+            context: CustomNavigator.navigatorState.currentContext!,
+            filePath: fileUrl.downloadUrl ?? '',
+          );
         });
       }
     } catch (e) {

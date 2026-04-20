@@ -14,7 +14,7 @@ class Meta {
     total = json['total'];
     countPage = json['pages_count'];
     lastPage = json['last_page'];
-    limit = json['limit'];
+    limit = json['limit'] ?? json['per_page'];
   }
 
   Map<String, dynamic> toJson() {

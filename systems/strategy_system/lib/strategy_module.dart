@@ -1,3 +1,4 @@
+import 'package:core_system/core/config/app_config.dart';
 import 'package:core_system/core/modules/home_section.dart';
 import 'package:core_system/core/modules/system_module.dart';
 import 'package:core_system/core/utility/export.dart'; // BlocProvider
@@ -59,7 +60,11 @@ class StrategyModule implements SystemModule {
       id: 'objective_percentage',
       order: 10,
       builder: (context) {
-        if (UserBloc.activeSystems.contains(ActiveSystemEnum.strategy)) {
+        // [UserBloc.activeSystems] = compile-time enabled modules (may include strategy).
+        // [AppConfig.activeSystem] = system chosen at login — only then hit strategy APIs.
+        if (UserBloc.activeSystems.contains(ActiveSystemEnum.strategy) &&
+            (AppConfig.activeSystem == ActiveSystemEnum.strategy ||
+                UserBloc.showLinkedStrategyPmUnifiedHome)) {
           return const ObjectivePercentageSection();
         }
         return const SizedBox.shrink();

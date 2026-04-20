@@ -22,6 +22,14 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
 
   Future<void> onClick(Click event, Emitter<AppState> emit) async {
     await getColorScheme();
+
+    final SharedHelper helper = SharedHelper();
+    final bool isLogin = await helper.readBoolean(CachingKey.isLogin);
+    getActiveSystem();
+    if (isLogin) {
+      await _restoreChosenSystem(helper);
+    }
+
     Future.delayed(const Duration(milliseconds: 3000), () async {
       ///Ask Notification Permission
       PermissionHandler.checkNotificationsPermission();
@@ -29,20 +37,15 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
       ///Ask Location Permission
       // Geolocator.requestPermission();
 
-      SharedHelper helper = SharedHelper();
-      bool? isLogin = await helper.readBoolean(CachingKey.isLogin);
-      bool? skip = await helper.readBoolean(CachingKey.skipBoarding);
-
-      ///Get Selected Active System
-      getActiveSystem();
+      final bool skip = await helper.readBoolean(CachingKey.skipBoarding);
 
       if (isLogin) {
-        await _restoreChosenSystem(helper);
         UserBloc.instance.add(Click());
       }
 
       if (!skip) {
-        CustomNavigator.push(Routes.INTRO, clean: true);
+        CustomNavigator.push(Routes.LOGIN, clean: true);
+        // CustomNavigator.push(Routes.INTRO, clean: true);
       } else if (!isLogin) {
         CustomNavigator.push(Routes.LOGIN, clean: true);
       } else {
@@ -55,8 +58,12 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
   Future<void> _restoreChosenSystem(SharedHelper helper) async {
     final moduleId = await helper.readString(CachingKey.chosenSystemModuleId);
     if (moduleId.isNotEmpty) {
+      final combined = moduleId ==
+          ModulesRegistry.combinedStrategyProjectManagementId;
+      UserBloc.linkedStrategyPmLogin = combined;
       AppConfig.activeSystem = ActiveSystemEnum.fromModuleId(moduleId);
-      UserBloc.currentActiveSystem = AppConfig.activeSystem;
+      UserBloc.currentActiveSystem =
+          combined ? null : AppConfig.activeSystem;
       return;
     }
     if (ModulesRegistry.enabledModules.isNotEmpty) {

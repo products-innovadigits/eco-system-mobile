@@ -337,6 +337,7 @@
   "filtration": "Filtration",
   "strategic_axis": "Strategic Axis",
   "available_jobs": "Available Jobs",
+  "no_available_jobs": "No available jobs at the moment",
   "implement_department": "Implement Department",
   "talent_pool": "Talent Pool",
   "candidate_with_future_potential": "Candidate with future potential",
@@ -625,5 +626,11 @@
   "competency_highlights_from_last_review": "Competency Highlights from Last Review",
   "total": "Total",
   "login_to": "Login to",
-  "please_select_system": "Please select a system"
+  "please_select_system": "Please select a system",
+  "strategy_and_pm_system": "Strategy & Project Management System",
+  "login_dropdown_strategy_system": "Strategy System",
+  "login_dropdown_project_management": "Project Management System",
+  "login_dropdown_ats_system": "ATS System",
+  "login_dropdown_pms_system": "PMS System",
+  "all_systems": "All systems"
 }

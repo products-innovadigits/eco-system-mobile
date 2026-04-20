@@ -15,14 +15,18 @@ class TalentPoolSection extends StatelessWidget {
           final talentPoolBloc = context.read<TalentPoolBloc>();
 
           return switch (state) {
-            // ── Loading ──────────────────────────────────────────────
+            // ── Initial / loading ─────────────────────────────────────
+            Start() => CustomShimmerContainer(
+              height: context.h * 0.2,
+              width: context.w,
+              padding: EdgeInsets.only(top: 12.h),
+            ),
             Loading() => CustomShimmerContainer(
               height: context.h * 0.2,
               width: context.w,
               padding: EdgeInsets.only(top: 12.h),
             ),
 
-            // ── Error ────────────────────────────────────────────────
             Done() => _TalentPoolCard(
               child: TotalCandidatesSection(
                 talentsList: talentPoolBloc.talentsList,
@@ -30,10 +34,16 @@ class TalentPoolSection extends StatelessWidget {
               ),
             ),
 
-            // ── Empty ────────────────────────────────────────────────
             Empty() => const EmptyContainer(),
 
-            // ── Default (error/unknown) ─────────────────────────────
+            Error() => _TalentPoolCard(
+              child: TryAgainWidget(
+                onTryAgain: () {
+                  talentPoolBloc.add(Click(arguments: SearchEngine()));
+                },
+              ),
+            ),
+
             _ => _TalentPoolCard(
               child: TryAgainWidget(
                 onTryAgain: () {

@@ -6,19 +6,19 @@ abstract class LoginRepo {
     required String password,
     ActiveSystemEnum systemTypeEnum = ActiveSystemEnum.projectManagement,
   }) async {
+    final String endpoint;
+    final Map<String, dynamic> body;
+    if (systemTypeEnum == ActiveSystemEnum.projectManagement ||
+        systemTypeEnum == ActiveSystemEnum.strategy) {
+      endpoint = ApiNames.login;
+      body = {'login': username, 'password': password};
+    } else {
+      endpoint = ApiNames.pmsLogin;
+      body = {'email': username, 'password': password};
+    }
     return await Network().request(
-      // ApiNames.login,
-      systemTypeEnum == ActiveSystemEnum.projectManagement
-          ? ApiNames.login
-          : ApiNames.pmsLogin,
-      // body: {"login": username, "password": password},
-      body: {
-        (systemTypeEnum == ActiveSystemEnum.projectManagement
-                ? "login"
-                : "email"):
-            username,
-        "password": password,
-      },
+      endpoint,
+      body: body,
       systemTypeEnum: systemTypeEnum,
       method: ServerMethods.POST,
     );

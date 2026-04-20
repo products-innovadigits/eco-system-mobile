@@ -6,7 +6,7 @@ abstract class BscRepo {
     return await Network().request(
       ApiNames.bsc,
       method: ServerMethods.GET,
-      model: BscModel()
+      model: BscModel(),
     );
   }
 }

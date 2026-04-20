@@ -9,13 +9,16 @@ class TalentPoolService {
     CandidateFilterModel? filters,
     String? sortingKey,
   }) async {
-    Map<String, dynamic> queryParams = {
+    final Map<String, dynamic> queryParams = {
       "page": engine.currentPage + 1,
       "limit": engine.limit,
-      "search": engine.searchText,
       "embed": "profile",
       if (sortingKey != null) "sorting_key": sortingKey,
     };
+    final q = engine.searchText?.trim();
+    if (q != null && q.isNotEmpty) {
+      queryParams["search"] = q;
+    }
 
     if (filters != null) {
       if (filters.salaryMin != null) {
@@ -59,10 +62,19 @@ class TalentPoolService {
 
     engine.query = queryParams;
 
-    final res = await TalentPoolRepo.getTalents(engine);
-
-    engine.currentPage += 1;
-    engine.maxPages += 1;
-    return res;
+    final dynamic raw = await TalentPoolRepo.getTalents(engine);
+    if (raw is! TalentPoolModel) {
+      throw FormatException(
+        raw is String ? raw : 'Unexpected talents response type',
+      );
+    }
+    final TalentPoolModel model = raw;
+    if (model.meta?.lastPage != null) {
+      engine.maxPages = model.meta!.lastPage!;
+    }
+    if (model.data != null && model.data!.isNotEmpty) {
+      engine.currentPage += 1;
+    }
+    return model;
   }
 }

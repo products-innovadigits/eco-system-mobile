@@ -89,6 +89,9 @@ class ActiveSystemEnum extends Enum<String> {
         return strategy;
       case 'project_management':
         return projectManagement;
+      // App shell: merged login row (same API base as project management for auth).
+      case 'strategy_pm_combined':
+        return projectManagement;
       default:
         return ActiveSystemEnum.fromString(moduleId);
     }

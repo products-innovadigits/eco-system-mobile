@@ -2,6 +2,8 @@ import 'package:envied/envied.dart';
 
 part 'env.g.dart';
 
+// Resolved relative to **cwd** when running build_runner (use `systems/core_system` as cwd).
+// That makes `../../.env` the monorepo root `.env` (same as CI `deploy_apk.yaml`).
 @Envied(path: '../../.env', requireEnvFile: false)
 abstract class Env {
   // Currently unused — uncomment when needed
@@ -23,10 +25,21 @@ abstract class Env {
   // @EnviedField(varName: 'AUTH_BASE_URL_DEV', obfuscate: true)
   // static final String authBaseUrlDev = _Env.authBaseUrlDev;
 
-  @EnviedField(varName: 'ATS_BASE_URL_DEV', obfuscate: true)
+  /// Production ATS API base (override via `ATS_BASE_URL_DEV` in `.env` or CI secrets).
+  @EnviedField(
+    varName: 'ATS_BASE_URL_DEV',
+    obfuscate: true,
+    defaultValue: 'https://ats.innoeg.com/api/v1/',
+  )
   static final String atsBaseUrlDev = _Env.atsBaseUrlDev;
 
-  @EnviedField(varName: 'PMS_BASE_URL_DEV', obfuscate: true)
+  /// When empty, [AppConfig] falls back to [projectManagementBaseUrlDev] so local
+  /// builds work without a duplicate secret; CI should still set the real PMS host.
+  @EnviedField(
+    varName: 'PMS_BASE_URL_DEV',
+    obfuscate: true,
+    defaultValue: '',
+  )
   static final String pmsBaseUrlDev = _Env.pmsBaseUrlDev;
 
   @EnviedField(

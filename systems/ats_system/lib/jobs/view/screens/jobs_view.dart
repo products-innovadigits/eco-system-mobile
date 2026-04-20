@@ -1,8 +1,25 @@
 import 'package:ats_system/shared/ats_exports.dart';
 import 'package:core_system/core/utility/export.dart';
 
-class JobsView extends StatelessWidget {
+class JobsView extends StatefulWidget {
   const JobsView({super.key});
+
+  @override
+  State<JobsView> createState() => _JobsViewState();
+}
+
+class _JobsViewState extends State<JobsView> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final bloc = context.read<JobsBloc>();
+      if (bloc.state is Start) {
+        bloc.add(Click(arguments: SearchEngine()));
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +58,9 @@ class JobsView extends StatelessWidget {
           child: BlocBuilder<JobsBloc, AppState>(
               builder: (context, state) {
                 return switch (state) {
+                // ── Initial (before first fetch scheduled) ─
+                  Start() => const ShimmerCardsList(),
+
                 // ── Loading ─────────────────────────
                   Loading() => const ShimmerCardsList(),
 

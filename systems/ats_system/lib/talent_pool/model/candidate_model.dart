@@ -1,6 +1,21 @@
 import 'package:ats_system/shared/ats_exports.dart';
 import 'package:core_system/core/utility/export.dart';
 
+List<CurrencyModel> _parseTagList(dynamic raw) {
+  if (raw == null || raw is! List) return [];
+  final out = <CurrencyModel>[];
+  for (final e in raw) {
+    if (e is Map<String, dynamic>) {
+      out.add(CurrencyModel.fromJson(e));
+    } else if (e is Map) {
+      out.add(CurrencyModel.fromJson(Map<String, dynamic>.from(e)));
+    } else {
+      out.add(CurrencyModel(name: e?.toString()));
+    }
+  }
+  return out;
+}
+
 class TalentPoolModel extends SingleMapper {
   List<CandidateModel>? data;
   int? statusCode;
@@ -15,15 +30,22 @@ class TalentPoolModel extends SingleMapper {
   });
 
   TalentPoolModel.fromJson(Map<String, dynamic> json) {
-    if (json['data'] != null) {
+    final rawData = json['data'];
+    if (rawData is List) {
       data = [];
-      json['data'].forEach((v) {
-        data!.add(CandidateModel.fromJson(v));
-      });
+      for (final v in rawData) {
+        if (v is Map<String, dynamic>) {
+          data!.add(CandidateModel.fromJson(v));
+        } else if (v is Map) {
+          data!.add(CandidateModel.fromJson(Map<String, dynamic>.from(v)));
+        }
+      }
     }
-    statusCode = json['status_code'];
+    statusCode = json['status_code'] ?? json['status'];
     message = json['message'];
-    meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
+    meta = json['meta'] != null
+        ? Meta.fromJson(Map<String, dynamic>.from(json['meta'] as Map))
+        : null;
   }
 
   @override
@@ -98,9 +120,7 @@ class CandidateModel extends SingleMapper {
     createdAtListedView = json['created_at_listed_view'];
     addTag = json['addTag'];
     tagValue = json['tagValue'];
-    tags = json['tags'] != null
-        ? (json['tags'] as List).map((e) => CurrencyModel.fromJson(e)).toList()
-        : [];
+    tags = _parseTagList(json['tags']);
     lastChance = json['last_chance'] != null
         ? LastChanceModel.fromJson(json['last_chance'])
         : null;

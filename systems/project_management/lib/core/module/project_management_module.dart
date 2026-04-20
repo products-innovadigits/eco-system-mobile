@@ -92,7 +92,8 @@ class ProjectManagementModule implements SystemModule {
       id: 'project_management',
       order: 20,
       builder: (context) {
-        if (AppConfig.activeSystem == ActiveSystemEnum.projectManagement) {
+        if (AppConfig.activeSystem == ActiveSystemEnum.projectManagement ||
+            UserBloc.showLinkedStrategyPmUnifiedHome) {
           return const ProjectManagementSection();
         }
         return const SizedBox.shrink();

@@ -16,6 +16,15 @@ class UserBloc extends Bloc<AppEvent, AppState> {
   // static List<String> activeSystems = [];
   static List<ActiveSystemEnum> activeSystems = [];
   static ActiveSystemEnum? currentActiveSystem;
+
+  /// True when the user logged in via the merged Strategy + PM login dropdown row.
+  static bool linkedStrategyPmLogin = false;
+
+  /// Combined Strategy+PM session with header set to "all systems" — show both
+  /// modules' home sections on [MainPage] while [AppConfig.activeSystem] stays PM for auth.
+  static bool get showLinkedStrategyPmUnifiedHome =>
+      linkedStrategyPmLogin && currentActiveSystem == null;
+
   // static bool enableProxy = false;
 
   Future<void> onClick(AppEvent event, Emitter emit) async {

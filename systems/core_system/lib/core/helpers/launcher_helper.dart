@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:core_system/core/config/app_config.dart';
 import 'package:core_system/core/utility/export.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -56,10 +57,11 @@ abstract class LauncherHelper {
   }) async {
     log('FilePath :: $filePath');
 
-    // final String originalUrl = 'https://194.163.168.5:447$filePath';
+    // PM relative paths are served from the same host as [AppConfig.projectManagementBaseUrl]
+    // (origin only — not the ATS host). Do not use [AppConfig.atsBaseUrl] here.
     final String originalUrl = filePath.toLowerCase().startsWith('http')
         ? filePath
-        : 'https://194.163.168.5:447$filePath';
+        : '${AppConfig.projectManagementOrigin}$filePath';
     final Uri originalUri = Uri.parse(fullLink ?? originalUrl);
 
     // show modal loading dialog

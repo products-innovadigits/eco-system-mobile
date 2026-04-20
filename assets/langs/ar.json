@@ -338,6 +338,7 @@
   "upcoming": "قادم",
   "filtration": "تصفية النتائج",
   "available_jobs": "الوظائف المتاحة",
+  "no_available_jobs": "لا توجد وظائف متاحة حاليًا",
   "talent_pool": "مجموعة المواهب",
   "candidate_with_future_potential": "مرشح ذو إمكانيات مستقبلية",
   "total_candidates": "مجموع المرشحين",
@@ -626,5 +627,11 @@
   "competency_highlights_from_last_review": "أبرز الكفاءات من آخر مراجعة",
   "total": "الإجمالي",
   "login_to": "تسجيل الدخول إلى",
-  "please_select_system": "يرجى اختيار النظام الذي تريد تسجيل الدخول إليه"
+  "please_select_system": "يرجى اختيار النظام الذي تريد تسجيل الدخول إليه",
+  "strategy_and_pm_system": "نظام الاستراتيجية وإدارة المشاريع",
+  "login_dropdown_strategy_system": "نظام الاستراتيجية",
+  "login_dropdown_project_management": "نظام إدارة المشاريع",
+  "login_dropdown_ats_system": "نظام التوظيف (ATS)",
+  "login_dropdown_pms_system": "نظام إدارة الأداء (PMS)",
+  "all_systems": "كل الأنظمة"
 }

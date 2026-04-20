@@ -99,6 +99,7 @@ jobs:
         working-directory: systems/core_system
         run: flutter pub get
 
+      # Set ATS_BASE_URL_DEV (e.g. https://ats.innoeg.com/api/v1/) in repo Secrets; written to .env for Envied.
       - name: Generate .env from secrets
         shell: bash
         env:

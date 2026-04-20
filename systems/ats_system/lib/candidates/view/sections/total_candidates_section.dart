@@ -22,7 +22,7 @@ class TotalCandidatesSection extends StatelessWidget {
             Text(
               allTranslations.text(LocaleKeys.total_candidates),
               style: context.textTheme.bodySmall?.copyWith(
-                color: context.color.outline,
+                color: context.color.outlineVariant,
               ),
             ),
             SizedBox(height: 4.h),
@@ -51,6 +51,7 @@ class TotalCandidatesSection extends StatelessWidget {
               ),
               child: (index == 4 && talentsList.length > 5)
                   ? Container(
+                      padding: EdgeInsets.all(2.w),
                       decoration: BoxDecoration(
                         color: Colors.black.withValues(alpha: 0.1),
                         shape: BoxShape.circle,
@@ -58,9 +59,10 @@ class TotalCandidatesSection extends StatelessWidget {
                       child: Center(
                         child: Text(
                           '+${candidatesCount - 5}',
+                          textAlign: TextAlign.center,
                           style: context.textTheme.bodySmall?.copyWith(
                             color: context.color.onPrimary,
-                            fontSize: candidatesCount > 99 ? 10 : 11,
+                            fontSize: candidatesCount > 99 ? 9 : 11,
                           ),
                         ),
                       ),

@@ -1,5 +1,6 @@
 import 'package:core_system/core/config/app_config.dart';
 import 'package:core_system/core/utility/export.dart';
+import 'package:eco_system/app/modules/modules_registry.dart';
 import 'package:eco_system/features/auth/login/repo/login_repo.dart';
 
 class LoginBloc extends Bloc<AppEvent, AppState> {
@@ -24,7 +25,13 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
 
   void setSelectedSystem(String systemId) {
     selectedSystemId = systemId;
-    AppConfig.activeSystem = ActiveSystemEnum.fromModuleId(systemId);
+    if (systemId == ModulesRegistry.combinedStrategyProjectManagementId) {
+      UserBloc.linkedStrategyPmLogin = true;
+      AppConfig.activeSystem = ActiveSystemEnum.projectManagement;
+    } else {
+      UserBloc.linkedStrategyPmLogin = false;
+      AppConfig.activeSystem = ActiveSystemEnum.fromModuleId(systemId);
+    }
   }
 
   void clear() {
@@ -57,13 +64,13 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
       final res = result;
       if (res.statusCode == 200) {
         UserModel model = UserModel.fromJson(res.data['data']);
+        // Combined Strategy+PM: header switcher starts in "all" (null), not PM label.
+        UserBloc.currentActiveSystem =
+            selectedSystemId == ModulesRegistry.combinedStrategyProjectManagementId
+                ? null
+                : system;
         await SecureStorageHelper.secureStorageHelper!
-            .saveUser(
-              model,
-              token: system == ActiveSystemEnum.pms
-                  ? model.token
-                  : model.accessToken,
-            )
+            .saveUser(model, token: model.authTokenForSystem(system))
             .then((v) {
               UserBloc.instance.add(Click());
             });
@@ -78,13 +85,18 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
         //   log('Strategy system is active==================');
         //   await LoginRepo.strategyLogin(token: model.accessToken.toString());
         // }
-        CustomNavigator.push(Routes.MAIN_PAGE, clean: true);
-        AppCore.successMessage(
-          allTranslations.text('you_logged_in_successfully'),
-        );
-        clear();
+        // Emit before navigation: `clean: true` disposes this route and closes
+        // the bloc (disposing [mailTEC] / [passwordTEC]). Do not call [clear] or
+        // emit after await — that causes "TextEditingController was used after
+        // being disposed" when returning to login (e.g. after logout).
         emit(Done());
-        // Future.delayed(const Duration(seconds: 1), () => clear());
+        await CustomNavigator.push(Routes.MAIN_PAGE, clean: true);
+        // Avoid showing SnackBar while the login route is being torn down.
+        // SchedulerBinding.instance.addPostFrameCallback((_) {
+        //   AppCore.successMessage(
+        //     allTranslations.text('you_logged_in_successfully'),
+        //   );
+        // });
       } else {
         AppCore.errorMessage(allTranslations.text('invalid_credentials'));
         emit(Start());

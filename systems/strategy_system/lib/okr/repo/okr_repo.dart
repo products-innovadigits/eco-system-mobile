@@ -6,7 +6,7 @@ abstract class OkrRepo {
     return await Network().request(
       ApiNames.bsc,
       method: ServerMethods.GET,
-      model: OkrModel()
+      model: OkrModel(),
     );
   }
 }
