@@ -12,6 +12,7 @@ export 'package:project_management/features/ai_assistant/domain/repositories/ai_
 export 'package:project_management/features/ai_assistant/model/ai_assistant_models.dart';
 export 'package:project_management/features/ai_assistant/view/ai_assistant_view.dart';
 export 'package:project_management/features/ai_assistant/widgets/ai_assistant_body.dart';
+export 'package:project_management/features/ai_assistant/widgets/ai_assistant_project_result_card.dart';
 // latest_request exports
 export 'package:project_management/features/latest_request/bloc/filtration/latest_request_filtration_cubit.dart';
 export 'package:project_management/features/latest_request/bloc/filtration/latest_request_filtration_state.dart';

@@ -1,7 +1,9 @@
 import 'dart:math' as math;
 
+import 'package:core_system/core/network/error/network_exception.dart';
 import 'package:project_management/core/di/project_management_locator.dart';
 import 'package:project_management/core/utility/project_management_exports.dart';
+import 'package:project_management/features/ai_assistant/exceptions/ai_assistant_query_exception.dart';
 
 class AiAssistantBody extends StatefulWidget {
   const AiAssistantBody({super.key});
@@ -55,16 +57,41 @@ class _AiAssistantBodyState extends State<AiAssistantBody> {
     _scrollToBottom();
 
     try {
-      final projects = await projectManagementSl<AiAssistantRepo>()
+      final result = await projectManagementSl<AiAssistantRepo>()
           .queryProjects(text);
       if (!mounted) return;
       setState(() {
         if (_entries.isNotEmpty && _entries.last.isThinking) {
           _entries.removeLast();
         }
-        _entries.add(_ChatEntry.projects(projects));
+        _entries.add(_ChatEntry.projects(result.items));
         _isSending = false;
       });
+    } on AiAssistantQueryException catch (e) {
+      if (!mounted) return;
+      setState(() {
+        if (_entries.isNotEmpty && _entries.last.isThinking) {
+          _entries.removeLast();
+        }
+        _isSending = false;
+      });
+      await AppCore.errorToastMessage(e.message);
+    } on NetworkException catch (e) {
+      if (!mounted) return;
+      setState(() {
+        if (_entries.isNotEmpty && _entries.last.isThinking) {
+          _entries.removeLast();
+        }
+        _isSending = false;
+      });
+      /// Quick tunnels expire when `cloudflared` stops/restarts — Dio surfaces
+      /// that as connectionError / unknown, i.e. "No internet connection", which misleads users.
+      final msg = (e.isNoConnection || e.isTimeout)
+          ? allTranslations.text(LocaleKeys.ai_assistant_host_unreachable)
+          : (e.message.trim().isNotEmpty
+              ? e.message
+              : allTranslations.text('something_went_wrong'));
+      await AppCore.errorToastMessage(msg);
     } catch (_) {
       if (!mounted) return;
       setState(() {
@@ -73,7 +100,9 @@ class _AiAssistantBodyState extends State<AiAssistantBody> {
         }
         _isSending = false;
       });
-      AppCore.errorMessage(allTranslations.text('something_went_wrong'));
+      await AppCore.errorToastMessage(
+        allTranslations.text('something_went_wrong'),
+      );
     }
     _scrollToBottom();
   }
@@ -316,7 +345,7 @@ class _AiAssistantBodyState extends State<AiAssistantBody> {
                   ),
                 )
               else
-                ...projects.map((p) => ProjectCard(project: p)),
+                ...projects.map((p) => AiAssistantProjectResultCard(item: p)),
             ],
           ),
         ),
@@ -328,7 +357,7 @@ class _AiAssistantBodyState extends State<AiAssistantBody> {
 class _ChatEntry {
   final String? userText;
   final bool isThinking;
-  final List<ProjectDetailsDataModel>? projects;
+  final List<AiAssistantQueryItem>? projects;
 
   _ChatEntry._({this.userText, this.isThinking = false, this.projects});
 
@@ -336,7 +365,7 @@ class _ChatEntry {
 
   factory _ChatEntry.thinking() => _ChatEntry._(isThinking: true);
 
-  factory _ChatEntry.projects(List<ProjectDetailsDataModel> list) =>
+  factory _ChatEntry.projects(List<AiAssistantQueryItem> list) =>
       _ChatEntry._(projects: list);
 }
 

@@ -62,13 +62,10 @@ class ReviewersSection extends StatelessWidget {
         SizedBox(height: 12.h),
         ...List.generate(
           reviewers.length > 3 ? 3 : reviewers.length,
-          (index) => Padding(
-            padding: EdgeInsets.only(bottom: 10.h),
-            child: ReviewCard(
-              review: reviewers[index],
-              initiallyExpanded: index == 0,
-              cycleId: cycleId,
-            ),
+          (index) => ReviewCard(
+            review: reviewers[index],
+            initiallyExpanded: index == 0,
+            cycleId: cycleId,
           ),
         ),
       ],

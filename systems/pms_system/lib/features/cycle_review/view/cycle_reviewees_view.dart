@@ -54,29 +54,31 @@ class _CycleRevieweesViewState extends State<CycleRevieweesView> {
           title: allTranslations.text(LocaleKeys.reviewers),
           withCancelBtn: false,
         ),
-        body: BlocBuilder<CycleReviewBloc, CycleReviewState>(
-          builder: (context, state) {
-            return switch (state) {
-              CycleReviewInitial() ||
-              RevieweesLoading() => const CycleRevieweesShimmer(),
-              RevieweesLoaded(:final reviewees, :final isLoadingMore) =>
-                _RevieweesList(
-                  cycleId: widget.cycleId,
-                  reviewees: reviewees,
-                  isLoadingMore: isLoadingMore,
-                  scrollController: _scrollController,
+        body: SafeArea(
+          child: BlocBuilder<CycleReviewBloc, CycleReviewState>(
+            builder: (context, state) {
+              return switch (state) {
+                CycleReviewInitial() ||
+                RevieweesLoading() => const CycleRevieweesShimmer(),
+                RevieweesLoaded(:final reviewees, :final isLoadingMore) =>
+                  _RevieweesList(
+                    cycleId: widget.cycleId,
+                    reviewees: reviewees,
+                    isLoadingMore: isLoadingMore,
+                    scrollController: _scrollController,
+                  ),
+                RevieweesEmpty() => Center(
+                  child: EmptyContainer(
+                    txt: allTranslations.text(LocaleKeys.there_is_no_data),
+                  ),
                 ),
-              RevieweesEmpty() => Center(
-                child: EmptyContainer(
-                  txt: allTranslations.text(LocaleKeys.there_is_no_data),
+                RevieweesFailure(:final message) => Center(
+                  child: EmptyContainer(txt: message),
                 ),
-              ),
-              RevieweesFailure(:final message) => Center(
-                child: EmptyContainer(txt: message),
-              ),
-              _ => const SizedBox.shrink(),
-            };
-          },
+                _ => const SizedBox.shrink(),
+              };
+            },
+          ),
         ),
       ),
     );
@@ -98,12 +100,11 @@ class _RevieweesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
+    return ListView.builder(
       controller: scrollController,
       physics: const BouncingScrollPhysics(),
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
       itemCount: reviewees.length + (isLoadingMore ? 1 : 0),
-      separatorBuilder: (_, __) => SizedBox(height: 10.h),
       itemBuilder: (context, index) {
         if (index == reviewees.length) {
           return Padding(

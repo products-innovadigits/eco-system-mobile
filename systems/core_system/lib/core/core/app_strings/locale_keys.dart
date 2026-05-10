@@ -349,6 +349,7 @@ abstract class  LocaleKeys {
   static const ai_assistant_thinking = 'ai_assistant_thinking';
   static const ai_assistant_input_hint = 'ai_assistant_input_hint';
   static const ai_assistant_empty_hint = 'ai_assistant_empty_hint';
+  static const ai_assistant_host_unreachable = 'ai_assistant_host_unreachable';
   static const challenges_risks = 'challenges_risks';
   static const risk = 'risk';
   static const main_data = 'main_data';

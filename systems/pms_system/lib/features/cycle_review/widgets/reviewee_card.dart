@@ -32,6 +32,7 @@ class _ReviewCardState extends State<ReviewCard> {
   Widget build(BuildContext context) {
     final review = widget.review;
     return Container(
+      margin: EdgeInsets.only(bottom: 12.h),
       decoration: BoxDecoration(
         color: context.color.surfaceContainer,
         border: Border.all(color: context.color.outline),

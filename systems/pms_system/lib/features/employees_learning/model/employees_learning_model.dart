@@ -1,5 +1,38 @@
 import 'package:pms_system/core/utility/pms_exports.dart';
 
+int? _jsonInt(dynamic value) {
+  if (value == null) return null;
+  if (value is int) return value;
+  if (value is double) return value.round();
+  if (value is String) return int.tryParse(value.trim());
+  return null;
+}
+
+bool? _jsonBool(dynamic value) {
+  if (value == null) return null;
+  if (value is bool) return value;
+  if (value is int) return value != 0;
+  if (value is String) {
+    final s = value.trim().toLowerCase();
+    if (s == 'true' || s == '1' || s == 'yes') return true;
+    if (s == 'false' || s == '0' || s == 'no') return false;
+  }
+  return null;
+}
+
+String? _jsonString(dynamic value) {
+  if (value == null) return null;
+  if (value is String) return value;
+  return value.toString();
+}
+
+Map<String, dynamic>? _jsonMap(dynamic value) {
+  if (value == null) return null;
+  if (value is Map<String, dynamic>) return value;
+  if (value is Map) return Map<String, dynamic>.from(value);
+  return null;
+}
+
 class EmployeesLearningModel extends SingleMapper {
   bool? succeeded;
   EmployeesDataModel? data;
@@ -16,12 +49,13 @@ class EmployeesLearningModel extends SingleMapper {
   });
 
   EmployeesLearningModel.fromJson(Map<String, dynamic> json) {
-    status = json['status'] is int ? json['status'] as int : null;
-    succeeded = json['succeeded'] ?? (status == 200);
+    status = _jsonInt(json['status']);
+    succeeded = _jsonBool(json['succeeded']) ?? (status == 200);
     data = EmployeesDataModel.fromResponse(json);
     warningErrors = json['warningErrors'];
-    validationErrors = json['validationErrors'] != null
-        ? List<dynamic>.from(json['validationErrors'])
+    final rawValidation = json['validationErrors'];
+    validationErrors = rawValidation is List
+        ? List<dynamic>.from(rawValidation)
         : null;
   }
 
@@ -64,45 +98,56 @@ class EmployeesDataModel {
   });
 
   EmployeesDataModel.fromJson(Map<String, dynamic> json) {
-    if (json['items'] != null) {
+    final rawItems = json['items'];
+    if (rawItems is List) {
       items = <EmployeeItemModel>[];
-      json['items'].forEach((v) {
-        items!.add(EmployeeItemModel.fromJson(v));
-      });
+      for (final v in rawItems) {
+        final m = _jsonMap(v);
+        if (m != null) {
+          items!.add(EmployeeItemModel.fromJson(m));
+        }
+      }
     }
-    currentPage = json['currentPage'];
-    pageSize = json['pageSize'];
-    totalPages = json['totalPages'];
-    nextPage = json['nextPage'];
-    previousPage = json['previousPage'];
-    isLastPage = json['isLastPage'];
-    totalCount = json['totalCount'];
+    currentPage = _jsonInt(json['currentPage']);
+    pageSize = _jsonInt(json['pageSize']);
+    totalPages = _jsonInt(json['totalPages']);
+    nextPage = _jsonInt(json['nextPage']);
+    previousPage = _jsonInt(json['previousPage']);
+    isLastPage = _jsonBool(json['isLastPage']);
+    totalCount = _jsonInt(json['totalCount']);
   }
 
   /// Supports legacy `{ data: { items, ... } }` and Laravel
   /// `{ data: [...], meta: { current_page, ... } }`.
   factory EmployeesDataModel.fromResponse(Map<String, dynamic> json) {
     final rawData = json['data'];
-    final rawMeta = json['meta'] as Map<String, dynamic>?;
+    final rawMeta = _jsonMap(json['meta']);
 
     if (rawData is Map<String, dynamic>) {
       return EmployeesDataModel.fromJson(rawData);
     }
 
+    if (rawData is Map) {
+      return EmployeesDataModel.fromJson(Map<String, dynamic>.from(rawData));
+    }
+
     if (rawData is List) {
-      final items = rawData
-          .whereType<Map<String, dynamic>>()
-          .map(EmployeeItemModel.fromJson)
-          .toList();
+      final parsedItems = <EmployeeItemModel>[];
+      for (final v in rawData) {
+        final m = _jsonMap(v);
+        if (m != null) {
+          parsedItems.add(EmployeeItemModel.fromJson(m));
+        }
+      }
       return EmployeesDataModel(
-        items: items,
-        currentPage: rawMeta?['current_page'] as int?,
-        pageSize: rawMeta?['per_page'] as int?,
-        totalPages: rawMeta?['last_page'] as int?,
+        items: parsedItems,
+        currentPage: _jsonInt(rawMeta?['current_page']),
+        pageSize: _jsonInt(rawMeta?['per_page']),
+        totalPages: _jsonInt(rawMeta?['last_page']),
         nextPage: _resolveNextPage(rawMeta),
         previousPage: _resolvePreviousPage(rawMeta),
         isLastPage: _resolveIsLastPage(rawMeta),
-        totalCount: rawMeta?['total'] as int?,
+        totalCount: _jsonInt(rawMeta?['total']),
       );
     }
 
@@ -111,23 +156,23 @@ class EmployeesDataModel {
 
   static int? _resolveNextPage(Map<String, dynamic>? meta) {
     if (meta == null) return null;
-    final current = meta['current_page'] as int?;
-    final last = meta['last_page'] as int?;
+    final current = _jsonInt(meta['current_page']);
+    final last = _jsonInt(meta['last_page']);
     if (current == null || last == null) return null;
     return current < last ? current + 1 : null;
   }
 
   static int? _resolvePreviousPage(Map<String, dynamic>? meta) {
     if (meta == null) return null;
-    final current = meta['current_page'] as int?;
+    final current = _jsonInt(meta['current_page']);
     if (current == null || current <= 1) return null;
     return current - 1;
   }
 
   static bool? _resolveIsLastPage(Map<String, dynamic>? meta) {
     if (meta == null) return null;
-    final current = meta['current_page'] as int?;
-    final last = meta['last_page'] as int?;
+    final current = _jsonInt(meta['current_page']);
+    final last = _jsonInt(meta['last_page']);
     if (current == null || last == null) return null;
     return current >= last;
   }
@@ -170,17 +215,19 @@ class EmployeeItemModel {
   });
 
   EmployeeItemModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    jobTitle = json['jobTitle'] as String? ?? json['role_name'] as String?;
-    email = json['email'];
-    final rawPhone = json['phone'];
-    phone = rawPhone?.toString();
+    id = _jsonInt(json['id']);
+    name = _jsonString(json['name']);
+    jobTitle =
+        _jsonString(json['jobTitle']) ?? _jsonString(json['role_name']);
+    email = _jsonString(json['email']);
+    phone = _jsonString(json['phone']);
     seniority =
-        json['seniority'] as String? ?? json['seniority_level'] as String?;
-    team = json['team'];
-    imageUrl = json['imageUrl'] as String? ?? json['profile_photo'] as String?;
-    initials = json['initials'] as String? ?? initialsFromEmployeeName(name);
+        _jsonString(json['seniority']) ?? _jsonString(json['seniority_level']);
+    team = _jsonString(json['team']);
+    imageUrl =
+        _jsonString(json['imageUrl']) ?? _jsonString(json['profile_photo']);
+    initials =
+        _jsonString(json['initials']) ?? initialsFromEmployeeName(name);
   }
 
   Map<String, dynamic> toJson() {

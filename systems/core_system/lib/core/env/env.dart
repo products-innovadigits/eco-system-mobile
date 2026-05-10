@@ -37,15 +37,6 @@ abstract class Env {
   static final String projectManagementBaseUrlDev =
       _Env.projectManagementBaseUrlDev;
 
-  /// Base URL for AI assistant `POST …/projects/query` (no path suffix; app appends `projects/query`).
-  /// Default: internal dev server. Override in `.env` or set to empty string to fall back to [projectManagementBaseUrlDev].
-  @EnviedField(
-    varName: 'AI_ASSISTANT_QUERY_BASE_URL',
-    obfuscate: true,
-    defaultValue: 'http://172.16.1.61:8000/',
-  )
-  static final String aiAssistantQueryBaseUrl = _Env.aiAssistantQueryBaseUrl;
-
   // Currently unused — uncomment when needed
   // @EnviedField(varName: 'GOOGLE_MAPS_BASE_URL', obfuscate: true)
   // static final String googleMapsBaseUrl = _Env.googleMapsBaseUrl;

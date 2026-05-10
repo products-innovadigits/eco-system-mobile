@@ -17,10 +17,8 @@ class AiAssistantView extends StatelessWidget {
         iconTheme: IconThemeData(color: onPrimary),
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: primary,
-          statusBarIconBrightness:
-              ThemeData.estimateBrightnessForColor(primary) == Brightness.dark
-                  ? Brightness.light
-                  : Brightness.dark,
+          statusBarIconBrightness: Brightness.light,
+          statusBarBrightness: Brightness.dark,
         ),
         title: Text(
           allTranslations.text(LocaleKeys.ai_assistant),

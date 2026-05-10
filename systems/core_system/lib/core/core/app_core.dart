@@ -76,7 +76,7 @@ class AppCore {
       msg: notification.message,
       toastLength: Toast.LENGTH_LONG,
       gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
+      timeInSecForIosWeb: 5,
       backgroundColor: notification.backgroundColor,
       textColor: Colors.white,
       fontSize: notification.fontSize,

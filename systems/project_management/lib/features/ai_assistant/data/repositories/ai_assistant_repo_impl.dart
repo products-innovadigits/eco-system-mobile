@@ -1,143 +1,251 @@
-import 'package:core_system/core/config/app_config.dart';
-import 'package:core_system/core/env/env.dart';
+import 'dart:convert';
+
 import 'package:core_system/core/network/network_layer.dart';
+import 'package:core_system/core/utility/utility.dart';
 import 'package:dio/dio.dart';
 import 'package:project_management/features/ai_assistant/domain/repositories/ai_assistant_repo.dart';
-import 'package:project_management/features/project_details/model/project_details_model.dart';
+import 'package:project_management/features/ai_assistant/exceptions/ai_assistant_query_exception.dart';
+import 'package:project_management/features/ai_assistant/model/ai_assistant_models.dart';
 
 class AiAssistantRepoImpl implements AiAssistantRepo {
-  /// Same path as the AI microservice; base URL comes from env (see [_effectiveBaseUrl]).
+  /// Test / staging tunnel — change here when the host rotates (not read from `.env`).
+  /// Full POST URL: https://strange-wrapping-composition-sent.trycloudflare.com/projects/query
+  static const String _queryBaseUrl =
+      'https://calgary-hardly-various-hewlett.trycloudflare.com/';
+
   static const String _queryPath = 'projects/query';
 
   final Network network;
 
   AiAssistantRepoImpl({required this.network});
 
-  /// Prefer [Env.aiAssistantQueryBaseUrl] when set (e.g. LAN dev server). Otherwise use
-  /// [AppConfig.projectManagementBaseUrl] from `PROJECT_MANAGEMENT_BASE_URL_DEV` (GitHub Actions / `.env`).
-  ///
-  /// **Release APKs:** Android blocks cleartext HTTP (`network_security_config.xml`). Use HTTPS
-  /// for the default PM base URL. A LAN IP like `http://172.16.x.x:8000` only works on emulators/debug
-  /// or if you add a matching cleartext exception (not recommended for production).
-  String get _effectiveBaseUrl {
-    final override = Env.aiAssistantQueryBaseUrl.trim();
-    if (override.isNotEmpty) {
-      return _ensureTrailingSlash(override);
-    }
-    return AppConfig.projectManagementBaseUrl;
-  }
-
-  static String _ensureTrailingSlash(String url) {
-    if (url.endsWith('/')) return url;
-    return '$url/';
-  }
-
   @override
-  Future<List<ProjectDetailsDataModel>> queryProjects(String query) async {
-    final raw = await network.requestOrThrow(
-      _queryPath,
-      baseUrl: _effectiveBaseUrl,
-      body: {'query': query},
-      method: ServerMethods.POST,
-      model: null,
-    );
-    final data = raw is Response ? raw.data : raw;
-    return _parseProjectsList(data);
+  Future<AiAssistantQueryProjectsResult> queryProjects(String query) async {
+    try {
+      final raw = await network.requestOrThrow(
+        _queryPath,
+        baseUrl: _queryBaseUrl,
+        body: {'query': query},
+        method: ServerMethods.POST,
+        model: null,
+      );
+      final data = raw is Response ? raw.data : raw;
+      _logQueryResponse(data);
+      _throwIfQueryFailed(data);
+      return _parseQueryProjectsResult(data);
+    } catch (e, stackTrace) {
+      _logQueryError(e, stackTrace);
+      rethrow;
+    }
   }
 
-  static List<ProjectDetailsDataModel> _parseProjectsList(dynamic data) {
-    if (data == null) return [];
+  static void _logQueryResponse(dynamic data) {
+    try {
+      if (data is Map || data is List) {
+        cprint(jsonEncode(data), label: 'AiAssistantQuery response');
+      } else {
+        cprint(data?.toString() ?? 'null', label: 'AiAssistantQuery response');
+      }
+    } catch (_) {
+      cprint(data?.toString() ?? 'null', label: 'AiAssistantQuery response');
+    }
+  }
+
+  static void _logQueryError(Object error, StackTrace stackTrace) {
+    cprint(
+      error,
+      errorIn: stackTrace.toString(),
+      label: 'AiAssistantQuery',
+    );
+  }
+
+  /// When the server returns HTTP 200 with a failure envelope (`success: false`, non-success `status`, etc.).
+  static void _throwIfQueryFailed(dynamic data) {
+    if (data is! Map) return;
+    final map = data is Map<String, dynamic>
+        ? data
+        : Map<String, dynamic>.from(data);
+    if (!_indicatesQueryFailure(map)) return;
+
+    final msg = _extractResponseMessage(map);
+    throw AiAssistantQueryException(
+      (msg != null && msg.isNotEmpty) ? msg : 'Request failed',
+    );
+  }
+
+  static bool _indicatesQueryFailure(Map<String, dynamic> map) {
+    final success = map['success'];
+    if (success is bool) {
+      return !success;
+    }
+    final status = map['status'];
+    if (status is String) {
+      return status.toLowerCase() != 'success';
+    }
+    return false;
+  }
+
+  static String? _extractResponseMessage(Map<String, dynamic> map) {
+    final message = map['message'];
+    if (message is String && message.trim().isNotEmpty) {
+      return message.trim();
+    }
+    final error = map['error'];
+    if (error is String && error.trim().isNotEmpty) {
+      return error.trim();
+    }
+    final data = map['data'];
+    if (data is Map) {
+      final nested = data is Map<String, dynamic>
+          ? data
+          : Map<String, dynamic>.from(data);
+      final inner = nested['message'];
+      if (inner is String && inner.trim().isNotEmpty) {
+        return inner.trim();
+      }
+    }
+    return null;
+  }
+
+  static AiAssistantQueryProjectsResult _parseQueryProjectsResult(
+    dynamic data,
+  ) {
+    if (data == null) {
+      return AiAssistantQueryProjectsResult(items: []);
+    }
 
     if (data is List) {
-      return data.map(_projectFromDynamic).whereType<ProjectDetailsDataModel>().toList();
+      return AiAssistantQueryProjectsResult(
+        items: data
+            .map((e) => _itemFromDynamic(e, null))
+            .whereType<AiAssistantQueryItem>()
+            .toList(),
+      );
     }
 
     if (data is Map) {
-      final map = Map<String, dynamic>.from(data);
+      final map = data is Map<String, dynamic>
+          ? data
+          : Map<String, dynamic>.from(data);
+      final columnOrder = _columnOrderFromMeta(map['meta']);
 
       if (map['data'] != null) {
-        return _parseProjectsList(map['data']);
+        final inner = map['data'];
+        if (inner is List) {
+          return AiAssistantQueryProjectsResult(
+            items: inner
+                .map((e) => _itemFromDynamic(e, columnOrder))
+                .whereType<AiAssistantQueryItem>()
+                .toList(),
+          );
+        }
       }
       if (map['items'] != null) {
-        return _parseProjectsList(map['items']);
+        return _parseQueryProjectsResult(map['items']);
       }
       if (map['projects'] != null) {
-        return _parseProjectsList(map['projects']);
+        return _parseQueryProjectsResult(map['projects']);
       }
       if (map['results'] != null) {
-        return _parseProjectsList(map['results']);
+        return _parseQueryProjectsResult(map['results']);
       }
 
-      if (map['id'] != null) {
-        final p = _projectFromDynamic(map);
-        return p != null ? [p] : [];
+      if (map['id'] != null || map['projects_id'] != null) {
+        final item = _itemFromDynamic(map, columnOrder);
+        return AiAssistantQueryProjectsResult(
+          items: item != null ? [item] : [],
+        );
       }
     }
 
-    return [];
+    return AiAssistantQueryProjectsResult(items: []);
   }
 
-  static ProjectDetailsDataModel? _projectFromDynamic(dynamic e) {
+  static List<String>? _columnOrderFromMeta(dynamic meta) {
+    if (meta is! Map) return null;
+    final m = meta is Map<String, dynamic>
+        ? meta
+        : Map<String, dynamic>.from(meta);
+    final cols = m['columns'];
+    if (cols is! List) return null;
+    return cols
+        .map((e) => e?.toString() ?? '')
+        .where((s) => s.isNotEmpty)
+        .toList();
+  }
+
+  static AiAssistantQueryItem? _itemFromDynamic(
+    dynamic e,
+    List<String>? columnOrder,
+  ) {
     if (e is! Map) return null;
     final m = e is Map<String, dynamic> ? e : Map<String, dynamic>.from(e);
-    try {
-      return ProjectDetailsDataModel.fromJson(_normalizeAiQueryProjectMap(m));
-    } catch (_) {
-      return null;
+
+    final fields = <String, String>{};
+    for (final entry in m.entries) {
+      final v = entry.value;
+      if (v == null) continue;
+      final s = _stringifyValue(v);
+      fields[entry.key] = s;
     }
+
+    if (fields.isEmpty) return null;
+
+    final projectId = _parseIntId(m['projects_id']) ?? _parseIntId(m['id']);
+
+    final displayKeyOrder = _orderedKeys(fields.keys, columnOrder);
+
+    return AiAssistantQueryItem(
+      projectId: projectId,
+      fields: fields,
+      displayKeyOrder: displayKeyOrder,
+    );
   }
 
-  /// Maps legacy / alternate AI `/projects/query` item keys onto names [ProjectDetailsDataModel.fromJson] expects.
-  ///
-  /// Canonical API shape (camelCase) is parsed directly in the model; this layer only fills gaps for older payloads (`name`, `start_date`, `risk`, etc.).
-  static Map<String, dynamic> _normalizeAiQueryProjectMap(Map<String, dynamic> json) {
-    final out = Map<String, dynamic>.from(json);
-
-    if (out['title'] == null && out['name'] != null) {
-      out['title'] = out['name'];
-    }
-
-    if (out['riskLevelName'] == null && out['risk'] != null) {
-      out['riskLevelName'] = out['risk'];
-    }
-
-    if (out['periortyLevelName'] == null && out['priority'] != null) {
-      out['periortyLevelName'] = out['priority'];
-    }
-    if (out['priorityLevelName'] == null && out['priority'] != null) {
-      out['priorityLevelName'] = out['priority'];
-    }
-
-    if (out['startDate'] == null && out['start_date'] != null) {
-      out['startDate'] = _coerceDateString(out['start_date']);
-    }
-    if (out['endDate'] == null && out['end_date'] != null) {
-      out['endDate'] = _coerceDateString(out['end_date']);
-    }
-
-    if (out['deliveredOutputs'] == null && out['deliveredOutputCount'] != null) {
-      out['deliveredOutputs'] = out['deliveredOutputCount'];
-    }
-
-    if (out['progress'] == null &&
-        out['progressRation'] == null &&
-        out['progressRatio'] == null) {
-      out['progressRation'] = 0;
-    }
-
-    if (out['statusAr'] == null && out['status'] != null) {
-      out['statusAr'] = out['status'];
-    }
-
-    return out;
+  static int? _parseIntId(dynamic v) {
+    if (v is int) return v;
+    if (v is num) return v.toInt();
+    if (v is String) return int.tryParse(v.trim());
+    return null;
   }
 
-  static String _coerceDateString(dynamic value) {
-    if (value is! String) return value.toString();
-    final trimmed = value.trim();
-    if (trimmed.contains(' ') && !trimmed.contains('T')) {
-      return trimmed.replaceFirst(' ', 'T');
+  static String _stringifyValue(dynamic v) {
+    if (v is String) return v;
+    if (v is num || v is bool) return v.toString();
+    if (v is Map || v is List) {
+      try {
+        return jsonEncode(v);
+      } catch (_) {
+        return v.toString();
+      }
     }
-    return trimmed;
+    return v.toString();
+  }
+
+  static List<String> _orderedKeys(
+    Iterable<String> keys,
+    List<String>? columnOrder,
+  ) {
+    final keysList = keys.toList();
+    final keySet = keysList.toSet();
+    final ordered = <String>[];
+    final seen = <String>{};
+
+    if (columnOrder != null) {
+      for (final k in columnOrder) {
+        if (keySet.contains(k) && !seen.contains(k)) {
+          ordered.add(k);
+          seen.add(k);
+        }
+      }
+    }
+
+    for (final k in keysList) {
+      if (!seen.contains(k)) {
+        ordered.add(k);
+        seen.add(k);
+      }
+    }
+    return ordered;
   }
 }
