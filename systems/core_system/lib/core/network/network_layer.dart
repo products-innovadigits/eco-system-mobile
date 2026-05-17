@@ -3,13 +3,16 @@ import 'dart:io';
 
 import 'package:dio/io.dart';
 
-import '../config/app_config.dart';
 import '../utility/export.dart';
 import 'error/api_error_handler.dart';
 import 'error/network_exception.dart';
 import 'network_logger.dart';
 
 enum ServerMethods { GET, POST, UPDATE, DELETE, PUT, PATCH }
+
+/// Default API origin when [request]/[requestOrThrow] omit [baseUrl].
+const String networkDefaultBaseUrl =
+    'https://mohp-egypt-api.nawahtech.com/api/';
 
 class Network {
   static Network? _instance;
@@ -76,7 +79,7 @@ class Network {
     }
     try {
       Response response = await _dio.request(
-        (baseUrl ?? AppConfig.getBaseUrl(systemTypeEnum)) + endpoint,
+        (baseUrl ?? networkDefaultBaseUrl) + endpoint,
         data: body,
         queryParameters: query,
         options: Options(method: method.name),
@@ -125,7 +128,7 @@ class Network {
     }
     try {
       Response response = await _dio.request(
-        (baseUrl ?? AppConfig.getBaseUrl(systemTypeEnum)) + endpoint,
+        (baseUrl ?? networkDefaultBaseUrl) + endpoint,
         data: body,
         queryParameters: query,
         options: Options(method: method.name),

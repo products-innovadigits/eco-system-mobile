@@ -11,7 +11,7 @@ class AiAssistantRepoImpl implements AiAssistantRepo {
   /// Test / staging tunnel — change here when the host rotates (not read from `.env`).
   /// Full POST URL: https://strange-wrapping-composition-sent.trycloudflare.com/projects/query
   static const String _queryBaseUrl =
-      'https://calgary-hardly-various-hewlett.trycloudflare.com/';
+      'https://kinda-doctor-caroline-james.trycloudflare.com /';
 
   static const String _queryPath = 'projects/query';
 
@@ -52,11 +52,7 @@ class AiAssistantRepoImpl implements AiAssistantRepo {
   }
 
   static void _logQueryError(Object error, StackTrace stackTrace) {
-    cprint(
-      error,
-      errorIn: stackTrace.toString(),
-      label: 'AiAssistantQuery',
-    );
+    cprint(error, errorIn: stackTrace.toString(), label: 'AiAssistantQuery');
   }
 
   /// When the server returns HTTP 200 with a failure envelope (`success: false`, non-success `status`, etc.).
