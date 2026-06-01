@@ -9,16 +9,82 @@ class AiAssistantBody extends StatefulWidget {
   const AiAssistantBody({super.key});
 
   @override
-  State<AiAssistantBody> createState() => _AiAssistantBodyState();
+  AiAssistantBodyState createState() => AiAssistantBodyState();
 }
 
-class _AiAssistantBodyState extends State<AiAssistantBody> {
+class AiAssistantBodyState extends State<AiAssistantBody> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _textController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
   final List<_ChatEntry> _entries = [];
   bool _isSending = false;
+
+  /// One id per chat session; regenerated on explicit "new chat".
+  late String _conversationId;
+
+  /// When true, the next outgoing message sends `reset_context: true` once.
+  bool _pendingResetContext = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _conversationId = _newConversationId();
+  }
+
+  /// Visible for [AiAssistantView] app bar actions.
+  void startNewChat() {
+    setState(() {
+      _entries.clear();
+      _conversationId = _newConversationId();
+      _pendingResetContext = false;
+      _textController.clear();
+      _isSending = false;
+    });
+  }
+
+  /// Next user message will send `reset_context: true` with the current [conversationId].
+  void queueResetContextForNextMessage() {
+    setState(() => _pendingResetContext = true);
+    final messenger = ScaffoldMessenger.maybeOf(context);
+    messenger?.showSnackBar(
+      SnackBar(
+        content: Text(
+          allTranslations.text(LocaleKeys.ai_assistant_clear_context_queued),
+        ),
+      ),
+    );
+  }
+
+  static String _newConversationId() {
+    final r = math.Random.secure();
+    final b = List<int>.generate(16, (_) => r.nextInt(256));
+    b[6] = (b[6] & 0x0f) | 0x40;
+    b[8] = (b[8] & 0x3f) | 0x80;
+    final hex = b.map((x) => x.toRadixString(16).padLeft(2, '0')).join();
+    return 'chat_${hex.substring(0, 8)}-${hex.substring(8, 12)}-${hex.substring(12, 16)}-${hex.substring(16, 20)}-${hex.substring(20)}';
+  }
+
+  String _userVisibleAiError(AiAssistantQueryException e) {
+    switch (e.code) {
+      case AiAssistantQueryErrorCode.llmRateLimited:
+        final secs = e.retryAfterSeconds;
+        if (secs != null) {
+          return allTranslations
+              .text(LocaleKeys.ai_assistant_rate_limited_retry_after)
+              .replaceAll('{seconds}', '$secs');
+        }
+        return allTranslations.text(LocaleKeys.ai_assistant_rate_limited);
+      case AiAssistantQueryErrorCode.conversationContextRequired:
+        return allTranslations.text(LocaleKeys.ai_assistant_context_required);
+      case AiAssistantQueryErrorCode.conversationContextConflict:
+      case AiAssistantQueryErrorCode.projectAiPipelineError:
+      case AiAssistantQueryErrorCode.llmProviderError:
+      case AiAssistantQueryErrorCode.requestTimeout:
+      case AiAssistantQueryErrorCode.unknown:
+        return allTranslations.text(LocaleKeys.something_went_wrong);
+    }
+  }
 
   @override
   void dispose() {
@@ -56,9 +122,14 @@ class _AiAssistantBodyState extends State<AiAssistantBody> {
     });
     _scrollToBottom();
 
+    final resetOnce = _pendingResetContext;
+
     try {
-      final result = await projectManagementSl<AiAssistantRepo>()
-          .queryProjects(text);
+      final result = await projectManagementSl<AiAssistantRepo>().queryProjects(
+        text,
+        conversationId: _conversationId,
+        resetContext: resetOnce,
+      );
       if (!mounted) return;
       setState(() {
         if (_entries.isNotEmpty && _entries.last.isThinking) {
@@ -66,6 +137,7 @@ class _AiAssistantBodyState extends State<AiAssistantBody> {
         }
         _entries.add(_ChatEntry.projects(result.items));
         _isSending = false;
+        if (resetOnce) _pendingResetContext = false;
       });
     } on AiAssistantQueryException catch (e) {
       if (!mounted) return;
@@ -74,8 +146,9 @@ class _AiAssistantBodyState extends State<AiAssistantBody> {
           _entries.removeLast();
         }
         _isSending = false;
+        if (resetOnce) _pendingResetContext = false;
       });
-      await AppCore.errorToastMessage(e.message);
+      await AppCore.errorToastMessage(_userVisibleAiError(e));
     } on NetworkException catch (e) {
       if (!mounted) return;
       setState(() {
@@ -83,14 +156,16 @@ class _AiAssistantBodyState extends State<AiAssistantBody> {
           _entries.removeLast();
         }
         _isSending = false;
+        if (resetOnce) _pendingResetContext = false;
       });
+
       /// Quick tunnels expire when `cloudflared` stops/restarts — Dio surfaces
       /// that as connectionError / unknown, i.e. "No internet connection", which misleads users.
       final msg = (e.isNoConnection || e.isTimeout)
           ? allTranslations.text(LocaleKeys.ai_assistant_host_unreachable)
           : (e.message.trim().isNotEmpty
-              ? e.message
-              : allTranslations.text('something_went_wrong'));
+                ? e.message
+                : allTranslations.text(LocaleKeys.something_went_wrong));
       await AppCore.errorToastMessage(msg);
     } catch (_) {
       if (!mounted) return;
@@ -99,9 +174,10 @@ class _AiAssistantBodyState extends State<AiAssistantBody> {
           _entries.removeLast();
         }
         _isSending = false;
+        if (resetOnce) _pendingResetContext = false;
       });
       await AppCore.errorToastMessage(
-        allTranslations.text('something_went_wrong'),
+        allTranslations.text(LocaleKeys.something_went_wrong),
       );
     }
     _scrollToBottom();
@@ -128,7 +204,9 @@ class _AiAssistantBodyState extends State<AiAssistantBody> {
                             Icon(
                               Icons.chat_bubble_outline_rounded,
                               size: 48.sp,
-                              color: context.color.onPrimary.withValues(alpha: 0.55),
+                              color: context.color.onPrimary.withValues(
+                                alpha: 0.55,
+                              ),
                             ),
                             SizedBox(height: 16.h),
                             Text(
@@ -212,7 +290,9 @@ class _AiAssistantBodyState extends State<AiAssistantBody> {
                     icon: Icon(
                       Icons.send_rounded,
                       color: _isSending
-                          ? context.color.onSurfaceVariant.withValues(alpha: 0.5)
+                          ? context.color.onSurfaceVariant.withValues(
+                              alpha: 0.5,
+                            )
                           : context.color.primary,
                     ),
                   ),

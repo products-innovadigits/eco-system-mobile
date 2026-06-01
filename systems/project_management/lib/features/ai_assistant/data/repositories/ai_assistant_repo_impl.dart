@@ -1,50 +1,101 @@
 import 'dart:convert';
 
+import 'package:core_system/core/network/error/network_exception.dart';
 import 'package:core_system/core/network/network_layer.dart';
 import 'package:core_system/core/utility/utility.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:project_management/features/ai_assistant/domain/repositories/ai_assistant_repo.dart';
 import 'package:project_management/features/ai_assistant/exceptions/ai_assistant_query_exception.dart';
 import 'package:project_management/features/ai_assistant/model/ai_assistant_models.dart';
+import 'package:project_management/features/ai_assistant/util/ai_assistant_query_error_mapper.dart';
 
 class AiAssistantRepoImpl implements AiAssistantRepo {
   /// Test / staging tunnel — change here when the host rotates (not read from `.env`).
   /// Full POST URL: https://strange-wrapping-composition-sent.trycloudflare.com/projects/query
   static const String _queryBaseUrl =
-      'https://kinda-doctor-caroline-james.trycloudflare.com /';
+      'https://consult-tract-separately-filed.trycloudflare.com/';
 
   static const String _queryPath = 'projects/query';
+
+  /// JSON `debug` flag: off in release/production builds; on in debug/profile.
+  static bool get _projectsQueryDebugBody => !kReleaseMode;
 
   final Network network;
 
   AiAssistantRepoImpl({required this.network});
 
   @override
-  Future<AiAssistantQueryProjectsResult> queryProjects(String query) async {
+  Future<AiAssistantQueryProjectsResult> queryProjects(
+    String query, {
+    required String conversationId,
+    bool resetContext = false,
+  }) async {
     try {
       final raw = await network.requestOrThrow(
         _queryPath,
         baseUrl: _queryBaseUrl,
-        body: {'query': query},
+        body: {
+          'conversation_id': conversationId,
+          'query': query,
+          'debug': _projectsQueryDebugBody,
+          'reset_context': resetContext,
+        },
         method: ServerMethods.POST,
         model: null,
       );
       final data = raw is Response ? raw.data : raw;
       _logQueryResponse(data);
-      _throwIfQueryFailed(data);
+      _throwIfQueryFailed(data, httpStatusCode: 200);
       return _parseQueryProjectsResult(data);
+    } on NetworkException catch (e, stackTrace) {
+      final mapped = mapNetworkExceptionToAiAssistantQueryException(e);
+      if (mapped != null) {
+        if (!kReleaseMode) _logQueryError(mapped, stackTrace);
+        throw mapped;
+      }
+      if (!kReleaseMode) _logQueryError(e, stackTrace);
+      rethrow;
     } catch (e, stackTrace) {
-      _logQueryError(e, stackTrace);
+      if (!kReleaseMode) _logQueryError(e, stackTrace);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>?> deepHealth() async {
+    try {
+      final raw = await network.requestOrThrow(
+        'health/deep',
+        baseUrl: _queryBaseUrl,
+        method: ServerMethods.GET,
+        model: null,
+      );
+      final data = raw is Response ? raw.data : raw;
+      return normalizeAiAssistantJsonMap(data);
+    } catch (e, stackTrace) {
+      if (!kReleaseMode) _logQueryError(e, stackTrace);
       rethrow;
     }
   }
 
   static void _logQueryResponse(dynamic data) {
+    if (kReleaseMode) return;
     try {
+      String out;
       if (data is Map || data is List) {
-        cprint(jsonEncode(data), label: 'AiAssistantQuery response');
+        out = jsonEncode(data);
       } else {
-        cprint(data?.toString() ?? 'null', label: 'AiAssistantQuery response');
+        out = data?.toString() ?? 'null';
+      }
+      const maxLen = 6000;
+      if (out.length > maxLen) {
+        cprint(
+          '${out.substring(0, maxLen)}…',
+          label: 'AiAssistantQuery response (truncated)',
+        );
+      } else {
+        cprint(out, label: 'AiAssistantQuery response');
       }
     } catch (_) {
       cprint(data?.toString() ?? 'null', label: 'AiAssistantQuery response');
@@ -56,16 +107,25 @@ class AiAssistantRepoImpl implements AiAssistantRepo {
   }
 
   /// When the server returns HTTP 200 with a failure envelope (`success: false`, non-success `status`, etc.).
-  static void _throwIfQueryFailed(dynamic data) {
+  static void _throwIfQueryFailed(dynamic data, {int? httpStatusCode}) {
     if (data is! Map) return;
     final map = data is Map<String, dynamic>
         ? data
         : Map<String, dynamic>.from(data);
     if (!_indicatesQueryFailure(map)) return;
 
-    final msg = _extractResponseMessage(map);
+    final structured = mapBackendFailureEnvelope(
+      map,
+      httpStatusCode: httpStatusCode,
+      retryAfterSeconds: null,
+    );
+    if (structured != null) throw structured;
+
     throw AiAssistantQueryException(
-      (msg != null && msg.isNotEmpty) ? msg : 'Request failed',
+      'UNKNOWN',
+      code: AiAssistantQueryErrorCode.unknown,
+      httpStatusCode: httpStatusCode,
+      rawSafeMessage: _extractResponseMessage(map),
     );
   }
 
@@ -87,6 +147,15 @@ class AiAssistantRepoImpl implements AiAssistantRepo {
       return message.trim();
     }
     final error = map['error'];
+    if (error is Map) {
+      final errMap = error is Map<String, dynamic>
+          ? error
+          : Map<String, dynamic>.from(error);
+      final em = errMap['message'];
+      if (em is String && em.trim().isNotEmpty) {
+        return em.trim();
+      }
+    }
     if (error is String && error.trim().isNotEmpty) {
       return error.trim();
     }

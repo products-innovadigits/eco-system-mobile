@@ -12,7 +12,8 @@ enum ServerMethods { GET, POST, UPDATE, DELETE, PUT, PATCH }
 
 /// Default API origin when [request]/[requestOrThrow] omit [baseUrl].
 const String networkDefaultBaseUrl =
-    'https://mohp-egypt-api.nawahtech.com/api/';
+    // 'https://mohp-egypt-api.nawahtech.com/api/';
+    'https://194.163.168.5:447/api/';
 
 class Network {
   static Network? _instance;

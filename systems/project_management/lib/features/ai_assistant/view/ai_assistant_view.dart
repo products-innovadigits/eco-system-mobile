@@ -1,7 +1,15 @@
 import 'package:project_management/core/utility/project_management_exports.dart';
 
-class AiAssistantView extends StatelessWidget {
+class AiAssistantView extends StatefulWidget {
   const AiAssistantView({super.key});
+
+  @override
+  State<AiAssistantView> createState() => _AiAssistantViewState();
+}
+
+class _AiAssistantViewState extends State<AiAssistantView> {
+  final GlobalKey<AiAssistantBodyState> _chatBodyKey =
+      GlobalKey<AiAssistantBodyState>();
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +35,21 @@ class AiAssistantView extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
+        actions: [
+          IconButton(
+            tooltip: allTranslations.text(LocaleKeys.ai_assistant_reset_context_next),
+            onPressed: () =>
+                _chatBodyKey.currentState?.queueResetContextForNextMessage(),
+            icon: Icon(Icons.layers_clear_outlined, color: onPrimary),
+          ),
+          IconButton(
+            tooltip: allTranslations.text(LocaleKeys.ai_assistant_new_chat),
+            onPressed: () => _chatBodyKey.currentState?.startNewChat(),
+            icon: Icon(Icons.chat_outlined, color: onPrimary),
+          ),
+        ],
       ),
-      body: const SafeArea(child: AiAssistantBody()),
+      body: SafeArea(child: AiAssistantBody(key: _chatBodyKey)),
     );
   }
 }

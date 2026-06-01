@@ -350,6 +350,13 @@ abstract class  LocaleKeys {
   static const ai_assistant_input_hint = 'ai_assistant_input_hint';
   static const ai_assistant_empty_hint = 'ai_assistant_empty_hint';
   static const ai_assistant_host_unreachable = 'ai_assistant_host_unreachable';
+  static const ai_assistant_new_chat = 'ai_assistant_new_chat';
+  static const ai_assistant_reset_context_next = 'ai_assistant_reset_context_next';
+  static const ai_assistant_clear_context_queued = 'ai_assistant_clear_context_queued';
+  static const ai_assistant_rate_limited = 'ai_assistant_rate_limited';
+  static const ai_assistant_rate_limited_retry_after =
+      'ai_assistant_rate_limited_retry_after';
+  static const ai_assistant_context_required = 'ai_assistant_context_required';
   static const challenges_risks = 'challenges_risks';
   static const risk = 'risk';
   static const main_data = 'main_data';

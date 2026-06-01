@@ -4,26 +4,40 @@ class NetworkException implements Exception {
   final NetworkExceptionType type;
   final int? statusCode;
 
+  /// Parsed JSON body when available (e.g. structured API errors on 4xx/5xx).
+  final dynamic responseData;
+
+  /// Response header map (lowercased keys per Dio), when available.
+  final Map<String, List<String>>? responseHeaders;
+
   const NetworkException(
     this.message, {
     this.type = NetworkExceptionType.unknown,
     this.statusCode,
+    this.responseData,
+    this.responseHeaders,
   });
 
   const NetworkException.unauthorized({String? message})
       : message = message ?? 'Unauthorized',
         type = NetworkExceptionType.unauthorized,
-        statusCode = 401;
+        statusCode = 401,
+        responseData = null,
+        responseHeaders = null;
 
   const NetworkException.timeout({String? message})
       : message = message ?? 'Request timed out',
         type = NetworkExceptionType.timeout,
-        statusCode = null;
+        statusCode = null,
+        responseData = null,
+        responseHeaders = null;
 
   const NetworkException.noConnection({String? message})
       : message = message ?? 'No internet connection',
         type = NetworkExceptionType.noConnection,
-        statusCode = null;
+        statusCode = null,
+        responseData = null,
+        responseHeaders = null;
 
   bool get isUnauthorized => type == NetworkExceptionType.unauthorized;
   bool get isTimeout => type == NetworkExceptionType.timeout;
