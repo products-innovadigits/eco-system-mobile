@@ -349,6 +349,7 @@
   "ai_assistant_input_hint": "Ask about your projects...",
   "ai_assistant_empty_hint": "Ask a question to find matching projects.",
   "ai_assistant_host_unreachable": "The AI assistant can't be reached right now.\nQuick Cloudflare tunnels use a temporary URL — if nothing changed on the phone but it stopped working, the tunnel URL may have rotated or your computer may not be exposing the tunnel.\nReconnect: run the rag_first server + cloudflared, update the app base URL if it changed, and rebuild or reinstall.",
+  "ai_assistant_load_more_retry": "Couldn't load more results. Tap to retry.",
   "ai_assistant_new_chat": "New chat",
   "ai_assistant_reset_context_next": "Clear saved context (next message)",
   "ai_assistant_clear_context_queued": "Your next question will reset conversation context.",

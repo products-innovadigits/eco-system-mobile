@@ -15,6 +15,23 @@ bool isAiAssistantQueryIdFieldKey(String rawKey) {
   return k.endsWith('_id');
 }
 
+/// Internal / debug keys — never shown on result cards.
+bool isAiAssistantQueryHiddenFieldKey(String rawKey) {
+  final k = rawKey.trim().toLowerCase();
+  return k == 'debug' ||
+      k == 'parent_ids' ||
+      k == 'active_scope_id' ||
+      k == 'scope_id' ||
+      k == 'scope_uuid' ||
+      k == 'active_scope_uuid' ||
+      k == 'sql' ||
+      k == 'dsn' ||
+      k == 'token' ||
+      k == 'authorization' ||
+      k == 'stack_trace' ||
+      k == 'stacktrace';
+}
+
 /// Localizes a dynamic API column name (`projects_name`, etc.).
 ///
 /// Looks up [`ai_query_field_$rawKey`] in locale JSON; if missing, humanizes segments.

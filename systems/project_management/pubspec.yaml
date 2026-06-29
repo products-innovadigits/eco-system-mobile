@@ -18,6 +18,10 @@ dependencies:
   intl: ^0.20.2
   html: ^0.15.6
   get_it: ^8.0.3
+  # M6-B0 spike only: real on-device validation is opt-in and not registered
+  # in production DI. Newer flutter_gemma lines require a newer local SDK; this
+  # pin resolves with Flutter 3.38 / Dart 3.10.1.
+  flutter_gemma: 0.12.6
 
 
 dev_dependencies:
@@ -26,3 +30,8 @@ dev_dependencies:
   mocktail: ^1.0.4
   bloc_test: ^10.0.0
   dio: any
+
+flutter:
+  assets:
+    - assets/ai/metadata.sample.json
+    - assets/ai/prompts/system_instruction.txt

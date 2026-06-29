@@ -1,0 +1,152 @@
+{
+  "version": "sample-2026-06",
+  "generated_at": "2026-06-29T00:00:00Z",
+  "domains": {
+    "projects": {
+      "label": {
+        "en": "Projects",
+        "ar": "المشاريع"
+      },
+      "terms": [
+        {
+          "key": "delayed",
+          "label": {
+            "en": "Delayed",
+            "ar": "متأخر"
+          }
+        },
+        {
+          "key": "on_track",
+          "label": {
+            "en": "On track",
+            "ar": "على المسار"
+          }
+        }
+      ],
+      "concepts": [
+        {
+          "key": "progress",
+          "label": {
+            "en": "Progress",
+            "ar": "نسبة الإنجاز"
+          },
+          "description": {
+            "en": "High-level completion indicator.",
+            "ar": "مؤشر عام لمستوى الإنجاز."
+          }
+        },
+        {
+          "key": "risk",
+          "label": {
+            "en": "Risk",
+            "ar": "مخاطر"
+          },
+          "description": {
+            "en": "A potential issue that may affect delivery.",
+            "ar": "موضوع محتمل قد يؤثر على التسليم."
+          }
+        }
+      ],
+      "enums": [
+        {
+          "key": "status",
+          "values": [
+            {
+              "key": "not_started",
+              "label": {
+                "en": "Not started",
+                "ar": "لم يبدأ"
+              }
+            },
+            {
+              "key": "in_progress",
+              "label": {
+                "en": "In progress",
+                "ar": "قيد التنفيذ"
+              }
+            },
+            {
+              "key": "completed",
+              "label": {
+                "en": "Completed",
+                "ar": "مكتمل"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "meetings": {
+      "label": {
+        "en": "Meetings",
+        "ar": "الاجتماعات"
+      },
+      "terms": [
+        {
+          "key": "decision",
+          "label": {
+            "en": "Decision",
+            "ar": "قرار"
+          }
+        },
+        {
+          "key": "action_item",
+          "label": {
+            "en": "Action item",
+            "ar": "إجراء مطلوب"
+          }
+        }
+      ],
+      "concepts": [
+        {
+          "key": "follow_up",
+          "label": {
+            "en": "Follow-up",
+            "ar": "متابعة"
+          },
+          "description": {
+            "en": "A topic that needs later attention.",
+            "ar": "موضوع يحتاج إلى متابعة لاحقة."
+          }
+        }
+      ],
+      "enums": []
+    },
+    "strategy": {
+      "label": {
+        "en": "Strategy",
+        "ar": "الاستراتيجية"
+      },
+      "terms": [
+        {
+          "key": "objective",
+          "label": {
+            "en": "Objective",
+            "ar": "هدف"
+          }
+        },
+        {
+          "key": "initiative",
+          "label": {
+            "en": "Initiative",
+            "ar": "مبادرة"
+          }
+        }
+      ],
+      "concepts": [
+        {
+          "key": "priority",
+          "label": {
+            "en": "Priority",
+            "ar": "أولوية"
+          },
+          "description": {
+            "en": "Relative importance for planning.",
+            "ar": "الأهمية النسبية للتخطيط."
+          }
+        }
+      ],
+      "enums": []
+    }
+  }
+}

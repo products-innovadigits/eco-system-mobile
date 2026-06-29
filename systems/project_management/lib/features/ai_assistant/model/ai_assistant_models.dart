@@ -20,9 +20,44 @@ class AiAssistantQueryItem {
   final List<String> displayKeyOrder;
 }
 
-/// Parsed `/projects/query` payload: list of dynamic rows.
+/// Pagination slice from `meta.pagination` on `/projects/query` responses.
+class AiAssistantQueryPagination {
+  AiAssistantQueryPagination({
+    required this.page,
+    required this.pageSize,
+    required this.hasMore,
+    this.nextPage,
+  });
+
+  final int page;
+  final int pageSize;
+  final bool hasMore;
+  final int? nextPage;
+
+  factory AiAssistantQueryPagination.initial({int pageSize = 10}) {
+    return AiAssistantQueryPagination(
+      page: 1,
+      pageSize: pageSize,
+      hasMore: false,
+      nextPage: null,
+    );
+  }
+}
+
+/// Parsed `/projects/query` payload: rows plus pagination meta.
 class AiAssistantQueryProjectsResult {
-  AiAssistantQueryProjectsResult({required this.items});
+  AiAssistantQueryProjectsResult({
+    required this.items,
+    required this.pagination,
+  });
 
   final List<AiAssistantQueryItem> items;
+  final AiAssistantQueryPagination pagination;
+
+  factory AiAssistantQueryProjectsResult.empty() {
+    return AiAssistantQueryProjectsResult(
+      items: [],
+      pagination: AiAssistantQueryPagination.initial(),
+    );
+  }
 }

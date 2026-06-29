@@ -8,18 +8,12 @@ import 'package:flutter/foundation.dart';
 import 'package:project_management/features/ai_assistant/domain/repositories/ai_assistant_repo.dart';
 import 'package:project_management/features/ai_assistant/exceptions/ai_assistant_query_exception.dart';
 import 'package:project_management/features/ai_assistant/model/ai_assistant_models.dart';
+import 'package:project_management/features/ai_assistant/util/ai_assistant_config.dart';
 import 'package:project_management/features/ai_assistant/util/ai_assistant_query_error_mapper.dart';
 
 class AiAssistantRepoImpl implements AiAssistantRepo {
-  /// Test / staging tunnel — change here when the host rotates (not read from `.env`).
-  /// Full POST URL: https://strange-wrapping-composition-sent.trycloudflare.com/projects/query
-  static const String _queryBaseUrl =
-      'https://consult-tract-separately-filed.trycloudflare.com/';
-
+  /// Relative path; full URL is [AiAssistantConfig.queryUrl].
   static const String _queryPath = 'projects/query';
-
-  /// JSON `debug` flag: off in release/production builds; on in debug/profile.
-  static bool get _projectsQueryDebugBody => !kReleaseMode;
 
   final Network network;
 
@@ -30,25 +24,48 @@ class AiAssistantRepoImpl implements AiAssistantRepo {
     String query, {
     required String conversationId,
     bool resetContext = false,
+    int page = 1,
+    int pageSize = 10,
   }) async {
+    final safePage = page < 1 ? 1 : page;
+    final safePageSize = pageSize < 1 ? 10 : pageSize;
+    final url = AiAssistantConfig.queryUrl;
+
+    _logQueryRequest(
+      url: url,
+      conversationId: conversationId,
+      query: query,
+      page: safePage,
+      pageSize: safePageSize,
+      resetContext: resetContext,
+    );
+
     try {
       final raw = await network.requestOrThrow(
         _queryPath,
-        baseUrl: _queryBaseUrl,
+        baseUrl: AiAssistantConfig.queryBaseUrl,
         body: {
           'conversation_id': conversationId,
           'query': query,
-          'debug': _projectsQueryDebugBody,
-          'reset_context': resetContext,
+          'page': safePage,
+          'page_size': safePageSize,
+          'debug': AiAssistantConfig.projectsQueryDebugBody,
+          if (resetContext) 'reset_context': true,
         },
         method: ServerMethods.POST,
         model: null,
       );
-      final data = raw is Response ? raw.data : raw;
+      final response = raw is Response ? raw : null;
+      final data = response?.data ?? raw;
+      final httpStatus = response?.statusCode ?? 200;
+
+      _logQueryOutcome(data, httpStatus: httpStatus);
       _logQueryResponse(data);
-      _throwIfQueryFailed(data, httpStatusCode: 200);
+
+      _throwIfQueryFailed(data, httpStatusCode: httpStatus);
       return _parseQueryProjectsResult(data);
     } on NetworkException catch (e, stackTrace) {
+      _logQueryOutcome(e.responseData, httpStatus: e.statusCode);
       final mapped = mapNetworkExceptionToAiAssistantQueryException(e);
       if (mapped != null) {
         if (!kReleaseMode) _logQueryError(mapped, stackTrace);
@@ -67,7 +84,7 @@ class AiAssistantRepoImpl implements AiAssistantRepo {
     try {
       final raw = await network.requestOrThrow(
         'health/deep',
-        baseUrl: _queryBaseUrl,
+        baseUrl: AiAssistantConfig.queryBaseUrl,
         method: ServerMethods.GET,
         model: null,
       );
@@ -79,12 +96,54 @@ class AiAssistantRepoImpl implements AiAssistantRepo {
     }
   }
 
+  static void _logQueryRequest({
+    required String url,
+    required String conversationId,
+    required String query,
+    required int page,
+    required int pageSize,
+    required bool resetContext,
+  }) {
+    if (kReleaseMode) return;
+    cprint(
+      'url=$url conversation_id=$conversationId query=$query page=$page page_size=$pageSize reset_context=$resetContext debug=${AiAssistantConfig.projectsQueryDebugBody}',
+      label: 'AiAssistantQuery request',
+    );
+  }
+
+  static void _logQueryOutcome(dynamic data, {required int? httpStatus}) {
+    if (kReleaseMode) return;
+    final map = normalizeAiAssistantJsonMap(data);
+    if (map == null) {
+      cprint('http=$httpStatus', label: 'AiAssistantQuery outcome');
+      return;
+    }
+    final status = map['status'];
+    final message = map['message'];
+    final success = map['success'];
+    final pagination = _paginationFromMeta(map['meta']);
+    cprint(
+      'http=$httpStatus success=$success status=$status message=$message has_more=${pagination.hasMore} next_page=${pagination.nextPage}',
+      label: 'AiAssistantQuery outcome',
+    );
+  }
+
   static void _logQueryResponse(dynamic data) {
     if (kReleaseMode) return;
     try {
+      final map = normalizeAiAssistantJsonMap(data);
+      if (map != null && map['debug'] != null) {
+        // Never log backend debug payloads (may contain SQL/DSN).
+        cprint('<debug omitted>', label: 'AiAssistantQuery response debug');
+      }
+
       String out;
       if (data is Map || data is List) {
-        out = jsonEncode(data);
+        final copy = map != null ? Map<String, dynamic>.from(map) : data;
+        if (copy is Map<String, dynamic>) {
+          copy.remove('debug');
+        }
+        out = jsonEncode(copy);
       } else {
         out = data?.toString() ?? 'null';
       }
@@ -176,7 +235,7 @@ class AiAssistantRepoImpl implements AiAssistantRepo {
     dynamic data,
   ) {
     if (data == null) {
-      return AiAssistantQueryProjectsResult(items: []);
+      return AiAssistantQueryProjectsResult.empty();
     }
 
     if (data is List) {
@@ -185,6 +244,7 @@ class AiAssistantRepoImpl implements AiAssistantRepo {
             .map((e) => _itemFromDynamic(e, null))
             .whereType<AiAssistantQueryItem>()
             .toList(),
+        pagination: AiAssistantQueryPagination.initial(),
       );
     }
 
@@ -193,6 +253,7 @@ class AiAssistantRepoImpl implements AiAssistantRepo {
           ? data
           : Map<String, dynamic>.from(data);
       final columnOrder = _columnOrderFromMeta(map['meta']);
+      final pagination = _paginationFromMeta(map['meta']);
 
       if (map['data'] != null) {
         final inner = map['data'];
@@ -202,28 +263,75 @@ class AiAssistantRepoImpl implements AiAssistantRepo {
                 .map((e) => _itemFromDynamic(e, columnOrder))
                 .whereType<AiAssistantQueryItem>()
                 .toList(),
+            pagination: pagination,
           );
         }
       }
       if (map['items'] != null) {
-        return _parseQueryProjectsResult(map['items']);
+        final nested = _parseQueryProjectsResult(map['items']);
+        return AiAssistantQueryProjectsResult(
+          items: nested.items,
+          pagination: pagination.hasMore || pagination.nextPage != null
+              ? pagination
+              : nested.pagination,
+        );
       }
       if (map['projects'] != null) {
-        return _parseQueryProjectsResult(map['projects']);
+        final nested = _parseQueryProjectsResult(map['projects']);
+        return AiAssistantQueryProjectsResult(
+          items: nested.items,
+          pagination: pagination.hasMore || pagination.nextPage != null
+              ? pagination
+              : nested.pagination,
+        );
       }
       if (map['results'] != null) {
-        return _parseQueryProjectsResult(map['results']);
+        final nested = _parseQueryProjectsResult(map['results']);
+        return AiAssistantQueryProjectsResult(
+          items: nested.items,
+          pagination: pagination.hasMore || pagination.nextPage != null
+              ? pagination
+              : nested.pagination,
+        );
       }
 
       if (map['id'] != null || map['projects_id'] != null) {
         final item = _itemFromDynamic(map, columnOrder);
         return AiAssistantQueryProjectsResult(
           items: item != null ? [item] : [],
+          pagination: pagination,
         );
       }
     }
 
-    return AiAssistantQueryProjectsResult(items: []);
+    return AiAssistantQueryProjectsResult.empty();
+  }
+
+  static AiAssistantQueryPagination _paginationFromMeta(dynamic meta) {
+    if (meta is! Map) {
+      return AiAssistantQueryPagination.initial();
+    }
+    final m = meta is Map<String, dynamic>
+        ? meta
+        : Map<String, dynamic>.from(meta);
+    final p = m['pagination'];
+    if (p is! Map) {
+      return AiAssistantQueryPagination.initial();
+    }
+    final pm = p is Map<String, dynamic> ? p : Map<String, dynamic>.from(p);
+    return AiAssistantQueryPagination(
+      page: _parseInt(pm['page']) ?? 1,
+      pageSize: _parseInt(pm['page_size']) ?? 10,
+      hasMore: pm['has_more'] == true,
+      nextPage: _parseInt(pm['next_page']),
+    );
+  }
+
+  static int? _parseInt(dynamic v) {
+    if (v is int) return v;
+    if (v is num) return v.toInt();
+    if (v is String) return int.tryParse(v.trim());
+    return null;
   }
 
   static List<String>? _columnOrderFromMeta(dynamic meta) {
@@ -267,12 +375,7 @@ class AiAssistantRepoImpl implements AiAssistantRepo {
     );
   }
 
-  static int? _parseIntId(dynamic v) {
-    if (v is int) return v;
-    if (v is num) return v.toInt();
-    if (v is String) return int.tryParse(v.trim());
-    return null;
-  }
+  static int? _parseIntId(dynamic v) => _parseInt(v);
 
   static String _stringifyValue(dynamic v) {
     if (v is String) return v;

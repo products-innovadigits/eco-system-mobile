@@ -11,6 +11,7 @@ import 'package:file_picker/_internal/file_picker_web.dart';
 import 'package:firebase_analytics_web/firebase_analytics_web.dart';
 import 'package:firebase_core_web/firebase_core_web.dart';
 import 'package:firebase_messaging_web/firebase_messaging_web.dart';
+import 'package:flutter_gemma/web/flutter_gemma_web.dart';
 import 'package:flutter_image_compress_web/flutter_image_compress_web.dart';
 import 'package:flutter_secure_storage_web/flutter_secure_storage_web.dart';
 import 'package:fluttertoast/fluttertoast_web.dart';
@@ -30,6 +31,7 @@ void registerPlugins([final Registrar? pluginRegistrar]) {
   FirebaseAnalyticsWeb.registerWith(registrar);
   FirebaseCoreWeb.registerWith(registrar);
   FirebaseMessagingWeb.registerWith(registrar);
+  FlutterGemmaWeb.registerWith(registrar);
   FlutterImageCompressWeb.registerWith(registrar);
   FlutterSecureStorageWeb.registerWith(registrar);
   FluttertoastWebPlugin.registerWith(registrar);

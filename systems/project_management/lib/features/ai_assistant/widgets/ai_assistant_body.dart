@@ -4,15 +4,29 @@ import 'package:core_system/core/network/error/network_exception.dart';
 import 'package:project_management/core/di/project_management_locator.dart';
 import 'package:project_management/core/utility/project_management_exports.dart';
 import 'package:project_management/features/ai_assistant/exceptions/ai_assistant_query_exception.dart';
+import 'package:project_management/features/ai_assistant/local_slm/ai_inference_controller.dart';
 
 class AiAssistantBody extends StatefulWidget {
-  const AiAssistantBody({super.key});
+  const AiAssistantBody({
+    super.key,
+    this.useLocalSlm = false,
+    this.inferenceController,
+  });
+
+  /// When true, sends use [AiInferenceController] instead of the online
+  /// project-query repository. M6-A enables this from Model Selection only.
+  final bool useLocalSlm;
+
+  /// Test/development seam; production resolves the controller from DI.
+  final AiInferenceController? inferenceController;
 
   @override
   AiAssistantBodyState createState() => AiAssistantBodyState();
 }
 
 class AiAssistantBodyState extends State<AiAssistantBody> {
+  static const double _scrollLoadMoreThreshold = 120;
+
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _textController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
@@ -30,6 +44,7 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
   void initState() {
     super.initState();
     _conversationId = _newConversationId();
+    _scrollController.addListener(_onChatScroll);
   }
 
   /// Visible for [AiAssistantView] app bar actions.
@@ -76,6 +91,8 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
         }
         return allTranslations.text(LocaleKeys.ai_assistant_rate_limited);
       case AiAssistantQueryErrorCode.conversationContextRequired:
+        final backend = e.rawSafeMessage?.trim();
+        if (backend != null && backend.isNotEmpty) return backend;
         return allTranslations.text(LocaleKeys.ai_assistant_context_required);
       case AiAssistantQueryErrorCode.conversationContextConflict:
       case AiAssistantQueryErrorCode.projectAiPipelineError:
@@ -88,10 +105,74 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
 
   @override
   void dispose() {
+    _scrollController.removeListener(_onChatScroll);
     _scrollController.dispose();
     _textController.dispose();
     _focusNode.dispose();
     super.dispose();
+  }
+
+  void _onChatScroll() {
+    if (!_scrollController.hasClients) return;
+    final pos = _scrollController.position;
+    if (pos.pixels < pos.maxScrollExtent - _scrollLoadMoreThreshold) return;
+    _tryLoadMoreForLastResult();
+  }
+
+  int? _lastResultEntryIndex() {
+    for (var i = _entries.length - 1; i >= 0; i--) {
+      if (_entries[i].resultState != null) return i;
+    }
+    return null;
+  }
+
+  Future<void> _tryLoadMoreForLastResult() async {
+    final index = _lastResultEntryIndex();
+    if (index == null) return;
+    await _loadMoreForEntry(index);
+  }
+
+  Future<void> _loadMoreForEntry(int entryIndex) async {
+    final entry = _entries[entryIndex];
+    final state = entry.resultState;
+    if (state == null) return;
+    if (!state.hasMore || state.isLoadingMore) return;
+
+    final pageToLoad = state.nextPage ?? (state.currentPage + 1);
+    if (state.loadedPages.contains(pageToLoad)) return;
+
+    setState(() {
+      state.isLoadingMore = true;
+      state.loadMoreError = null;
+    });
+
+    try {
+      final result = await projectManagementSl<AiAssistantRepo>().queryProjects(
+        state.originalQuery,
+        conversationId: state.conversationId,
+        page: pageToLoad,
+        pageSize: state.pageSize,
+      );
+      if (!mounted) return;
+      setState(() {
+        state.items.addAll(result.items);
+        state.currentPage = result.pagination.page;
+        state.pageSize = result.pagination.pageSize;
+        state.hasMore = result.pagination.hasMore;
+        state.nextPage = result.pagination.nextPage;
+        state.loadedPages.add(pageToLoad);
+        state.isLoadingMore = false;
+        state.loadMoreError = null;
+      });
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        state.isLoadingMore = false;
+        state.loadMoreError = allTranslations.text(
+          LocaleKeys.ai_assistant_load_more_retry,
+        );
+      });
+    }
   }
 
   void _scrollToBottom() {
@@ -124,18 +205,33 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
 
     final resetOnce = _pendingResetContext;
 
+    if (widget.useLocalSlm) {
+      await _sendLocal(text, resetOnce: resetOnce);
+      return;
+    }
+
     try {
       final result = await projectManagementSl<AiAssistantRepo>().queryProjects(
         text,
         conversationId: _conversationId,
         resetContext: resetOnce,
+        page: 1,
+        pageSize: 10,
       );
       if (!mounted) return;
       setState(() {
         if (_entries.isNotEmpty && _entries.last.isThinking) {
           _entries.removeLast();
         }
-        _entries.add(_ChatEntry.projects(result.items));
+        _entries.add(
+          _ChatEntry.results(
+            _AssistantResultState(
+              originalQuery: text,
+              conversationId: _conversationId,
+              result: result,
+            ),
+          ),
+        );
         _isSending = false;
         if (resetOnce) _pendingResetContext = false;
       });
@@ -159,8 +255,6 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
         if (resetOnce) _pendingResetContext = false;
       });
 
-      /// Quick tunnels expire when `cloudflared` stops/restarts — Dio surfaces
-      /// that as connectionError / unknown, i.e. "No internet connection", which misleads users.
       final msg = (e.isNoConnection || e.isTimeout)
           ? allTranslations.text(LocaleKeys.ai_assistant_host_unreachable)
           : (e.message.trim().isNotEmpty
@@ -181,6 +275,58 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
       );
     }
     _scrollToBottom();
+  }
+
+  Future<void> _sendLocal(String text, {required bool resetOnce}) async {
+    try {
+      final result =
+          await (widget.inferenceController ??
+                  projectManagementSl<AiInferenceController>())
+              .generate(text);
+      if (!mounted) return;
+      setState(() {
+        if (_entries.isNotEmpty && _entries.last.isThinking) {
+          _entries.removeLast();
+        }
+        _entries.add(_ChatEntry.assistant(_localResultMessage(result)));
+        _isSending = false;
+        if (resetOnce) _pendingResetContext = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        if (_entries.isNotEmpty && _entries.last.isThinking) {
+          _entries.removeLast();
+        }
+        _entries.add(
+          _ChatEntry.assistant(
+            'Local AI is unavailable right now. Real offline inference remains pending until model/device setup is complete.',
+          ),
+        );
+        _isSending = false;
+        if (resetOnce) _pendingResetContext = false;
+      });
+    }
+    _scrollToBottom();
+  }
+
+  String _localResultMessage(AiInferenceResult result) {
+    return switch (result) {
+      FreeTextResponse(:final text) => text,
+      NoActiveModel() =>
+        'No active local model is selected. Choose an installed model before offline chat.',
+      ModelNotInstalled() =>
+        'This model must be downloaded before offline chat can start. Download is not available yet because the model distribution URL/checksum is pending.',
+      ModelCorrupt() =>
+        'The selected local model looks corrupt or version-mismatched. Repair/redownload will be available after model distribution is ready.',
+      ModelLoadFailed() =>
+        'Local AI is not available yet. Real offline inference remains pending until model/device setup is complete.',
+      GenerationFailed(:final message) =>
+        'Local generation failed safely: $message',
+      GenerationCancelled() => 'Local generation was cancelled.',
+      GenerationTimeout() =>
+        'Local generation timed out. Try a shorter question.',
+    };
   }
 
   @override
@@ -232,7 +378,7 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
                       ),
                       itemCount: _entries.length,
                       itemBuilder: (context, index) {
-                        return _buildEntry(context, _entries[index]);
+                        return _buildEntry(context, _entries[index], index);
                       },
                     ),
             ),
@@ -246,59 +392,77 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
             top: 8.h,
             bottom: 8.h + bottomInset,
           ),
-          child: Material(
-            elevation: 4,
-            shadowColor: Colors.black26,
-            borderRadius: BorderRadius.circular(16.r),
-            color: context.color.surface,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _textController,
-                      focusNode: _focusNode,
-                      minLines: 1,
-                      maxLines: 6,
-                      textInputAction: TextInputAction.send,
-                      enabled: !_isSending,
-                      onSubmitted: (_) => _onSend(),
-                      cursorColor: context.color.primary,
-                      style: context.textTheme.bodyMedium?.copyWith(
-                        color: context.color.onSurface,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: allTranslations.text(
-                          LocaleKeys.ai_assistant_input_hint,
-                        ),
-                        hintStyle: context.textTheme.bodyMedium?.copyWith(
-                          color: context.color.onSurfaceVariant,
-                        ),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 12.w,
-                          vertical: 10.h,
-                        ),
-                        isDense: true,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (widget.useLocalSlm)
+                Padding(
+                  padding: EdgeInsets.only(bottom: 6.h),
+                  child: Align(
+                    alignment: AlignmentDirectional.centerStart,
+                    child: Text(
+                      'Local phase-1 replies are generated text, not live database results.',
+                      style: context.textTheme.labelSmall?.copyWith(
+                        color: context.color.onPrimary.withValues(alpha: 0.78),
                       ),
                     ),
                   ),
-                  IconButton(
-                    onPressed: _isSending ? null : _onSend,
-                    icon: Icon(
-                      Icons.send_rounded,
-                      color: _isSending
-                          ? context.color.onSurfaceVariant.withValues(
-                              alpha: 0.5,
-                            )
-                          : context.color.primary,
-                    ),
+                ),
+              Material(
+                elevation: 4,
+                shadowColor: Colors.black26,
+                borderRadius: BorderRadius.circular(16.r),
+                color: context.color.surface,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _textController,
+                          focusNode: _focusNode,
+                          minLines: 1,
+                          maxLines: 6,
+                          textInputAction: TextInputAction.send,
+                          enabled: !_isSending,
+                          onSubmitted: (_) => _onSend(),
+                          cursorColor: context.color.primary,
+                          style: context.textTheme.bodyMedium?.copyWith(
+                            color: context.color.onSurface,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: allTranslations.text(
+                              LocaleKeys.ai_assistant_input_hint,
+                            ),
+                            hintStyle: context.textTheme.bodyMedium?.copyWith(
+                              color: context.color.onSurfaceVariant,
+                            ),
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 12.w,
+                              vertical: 10.h,
+                            ),
+                            isDense: true,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: _isSending ? null : _onSend,
+                        icon: Icon(
+                          Icons.send_rounded,
+                          color: _isSending
+                              ? context.color.onSurfaceVariant.withValues(
+                                  alpha: 0.5,
+                                )
+                              : context.color.primary,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ],
@@ -311,7 +475,7 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
     return t.replaceAll(RegExp(r'(\.\.\.|…|\.)\s*$'), '').trim();
   }
 
-  Widget _buildEntry(BuildContext context, _ChatEntry entry) {
+  Widget _buildEntry(BuildContext context, _ChatEntry entry, int entryIndex) {
     if (entry.userText != null) {
       return Padding(
         padding: EdgeInsets.only(bottom: 12.h),
@@ -377,9 +541,6 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Logo loading (rotating app icon) — disabled in favor of shimmer + dots.
-                  // _ThinkingRotatingAppIcon(size: 22.w),
-                  // SizedBox(width: 10.w),
                   _ThinkingShimmerLabel(
                     label: _thinkingLabelWithoutTrailingDots,
                   ),
@@ -395,7 +556,45 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
       );
     }
 
-    final projects = entry.projects ?? [];
+    final state = entry.resultState;
+    if (entry.assistantText != null) {
+      return Padding(
+        padding: EdgeInsets.only(bottom: 12.h),
+        child: Align(
+          alignment: AlignmentDirectional.centerStart,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: context.w * 0.86),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: context.color.surface,
+                borderRadius: BorderRadiusDirectional.only(
+                  topStart: Radius.circular(16.r),
+                  topEnd: Radius.circular(16.r),
+                  bottomEnd: Radius.circular(16.r),
+                  bottomStart: Radius.circular(4.r),
+                ),
+                border: Border.all(
+                  color: context.color.onPrimary.withValues(alpha: 0.22),
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
+                child: Text(
+                  entry.assistantText!,
+                  style: context.textTheme.bodyMedium?.copyWith(
+                    color: context.color.onSurface,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    if (state == null) return const SizedBox.shrink();
+
+    final projects = state.items;
     return Padding(
       padding: EdgeInsets.only(bottom: 12.h),
       child: Align(
@@ -426,6 +625,33 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
                 )
               else
                 ...projects.map((p) => AiAssistantProjectResultCard(item: p)),
+              if (state.isLoadingMore)
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8.h),
+                  child: Center(
+                    child: SizedBox(
+                      width: 24.w,
+                      height: 24.w,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: context.color.onPrimary.withValues(alpha: 0.9),
+                      ),
+                    ),
+                  ),
+                ),
+              if (state.loadMoreError != null)
+                Padding(
+                  padding: EdgeInsets.only(top: 4.h),
+                  child: TextButton(
+                    onPressed: () => _loadMoreForEntry(entryIndex),
+                    child: Text(
+                      state.loadMoreError!,
+                      style: context.textTheme.labelMedium?.copyWith(
+                        color: context.color.onPrimary.withValues(alpha: 0.92),
+                      ),
+                    ),
+                  ),
+                ),
             ],
           ),
         ),
@@ -434,19 +660,55 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
   }
 }
 
+/// Pagination + rows for one assistant result message (infinite scroll target).
+class _AssistantResultState {
+  _AssistantResultState({
+    required this.originalQuery,
+    required this.conversationId,
+    required AiAssistantQueryProjectsResult result,
+  }) {
+    items.addAll(result.items);
+    currentPage = result.pagination.page;
+    pageSize = result.pagination.pageSize;
+    hasMore = result.pagination.hasMore;
+    nextPage = result.pagination.nextPage;
+    loadedPages.add(currentPage);
+  }
+
+  final String originalQuery;
+  final String conversationId;
+  final List<AiAssistantQueryItem> items = [];
+  int currentPage = 1;
+  int pageSize = 10;
+  bool hasMore = false;
+  bool isLoadingMore = false;
+  int? nextPage;
+  final Set<int> loadedPages = {};
+  String? loadMoreError;
+}
+
 class _ChatEntry {
   final String? userText;
+  final String? assistantText;
   final bool isThinking;
-  final List<AiAssistantQueryItem>? projects;
+  final _AssistantResultState? resultState;
 
-  _ChatEntry._({this.userText, this.isThinking = false, this.projects});
+  _ChatEntry._({
+    this.userText,
+    this.assistantText,
+    this.isThinking = false,
+    this.resultState,
+  });
 
   factory _ChatEntry.user(String text) => _ChatEntry._(userText: text);
 
   factory _ChatEntry.thinking() => _ChatEntry._(isThinking: true);
 
-  factory _ChatEntry.projects(List<AiAssistantQueryItem> list) =>
-      _ChatEntry._(projects: list);
+  factory _ChatEntry.assistant(String text) =>
+      _ChatEntry._(assistantText: text);
+
+  factory _ChatEntry.results(_AssistantResultState state) =>
+      _ChatEntry._(resultState: state);
 }
 
 /// Shimmer “Thinking” / localized label (without trailing dots; dots are animated separately).
@@ -533,50 +795,3 @@ class _ThinkingDotsAnimatedState extends State<_ThinkingDotsAnimated>
     );
   }
 }
-
-// App logo spinning while the assistant request is in flight (optional; currently unused).
-// class _ThinkingRotatingAppIcon extends StatefulWidget {
-//   const _ThinkingRotatingAppIcon({required this.size});
-//
-//   final double size;
-//
-//   @override
-//   State<_ThinkingRotatingAppIcon> createState() =>
-//       _ThinkingRotatingAppIconState();
-// }
-//
-// class _ThinkingRotatingAppIconState extends State<_ThinkingRotatingAppIcon>
-//     with SingleTickerProviderStateMixin {
-//   late final AnimationController _rotation;
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     _rotation = AnimationController(
-//       vsync: this,
-//       duration: const Duration(milliseconds: 1800),
-//     )..repeat();
-//   }
-//
-//   @override
-//   void dispose() {
-//     _rotation.dispose();
-//     super.dispose();
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return SizedBox(
-//       width: widget.size,
-//       height: widget.size,
-//       child: RotationTransition(
-//         turns: _rotation,
-//         child: Assets.appIconPng.image(
-//           width: widget.size,
-//           height: widget.size,
-//           fit: BoxFit.contain,
-//         ),
-//       ),
-//     );
-//   }
-// }

@@ -11,7 +11,11 @@ class AiAssistantProjectResultCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final id = item.projectId;
     final visibleKeys = item.displayKeyOrder
-        .where((k) => !isAiAssistantQueryIdFieldKey(k))
+        .where(
+          (k) =>
+              !isAiAssistantQueryIdFieldKey(k) &&
+              !isAiAssistantQueryHiddenFieldKey(k),
+        )
         .toList(growable: false);
     final radius = BorderRadius.circular(12.r);
     final innerShadowColor = Color.lerp(
