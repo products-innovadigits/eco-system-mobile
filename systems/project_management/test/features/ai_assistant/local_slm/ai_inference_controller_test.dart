@@ -97,6 +97,9 @@ ModelCatalog _catalog({String version = 'int4-2026.06'}) => ModelCatalog(
 );
 
 void main() {
+  // Needed so rootBundle can load the M0 prompt template assets in the probe test.
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   late InMemoryModelStateStore backing;
   late ActiveModelStore store;
   late FakeDownloaderSpy downloader;
@@ -204,6 +207,57 @@ void main() {
       expect(downloader.downloadCalls, 0);
     },
   );
+
+  test('M0 probe OFF (default) → normal 001 prompt, no intent template', () async {
+    await installActive();
+    final slm = FakeLocalSlmService(reply: 'normal reply');
+    final c = build(catalog: _catalog(), slm: slm);
+
+    final r = await c.generate('What are delayed projects?');
+
+    expect(r, isA<FreeTextResponse>());
+    final prompt = slm.prompts.single;
+    expect(prompt, contains('SYSTEM: local free-text only.'));
+    expect(prompt, isNot(contains('Intent JSON')));
+    expect(prompt, isNot(contains('{{USER_QUESTION}}')));
+  });
+
+  test('M0 probe ON depth-2 → intent template assembled, question injected', () async {
+    await installActive();
+    final slm = FakeLocalSlmService(reply: '{"status":"ok"}');
+    final c = build(catalog: _catalog(), slm: slm);
+
+    final r = await c.generate(
+      'كم عدد المشاريع المتأخرة؟',
+      useIntentJsonProbe: true,
+      intentProbeDepth: 2,
+    );
+
+    expect(r, isA<FreeTextResponse>());
+    final prompt = slm.prompts.single;
+    expect(prompt, contains('compact depth-2 slice'));
+    expect(prompt, contains('Return ONLY the Intent JSON object.'));
+    expect(prompt, contains('كم عدد المشاريع المتأخرة؟'));
+    expect(prompt, isNot(contains('{{USER_QUESTION}}')));
+    expect(prompt, isNot(contains('SYSTEM: local free-text only.')));
+  });
+
+  test('M0 probe ON depth-1 → depth-1 fallback template used', () async {
+    await installActive();
+    final slm = FakeLocalSlmService(reply: '{"status":"ok"}');
+    final c = build(catalog: _catalog(), slm: slm);
+
+    final r = await c.generate(
+      'show delayed projects',
+      useIntentJsonProbe: true,
+      intentProbeDepth: 1,
+    );
+
+    expect(r, isA<FreeTextResponse>());
+    final prompt = slm.prompts.single;
+    expect(prompt, contains('compact depth-1 fallback slice'));
+    expect(prompt, contains('show delayed projects'));
+  });
 
   test(
     'installed valid → PromptBuilder runs before service receives final prompt',

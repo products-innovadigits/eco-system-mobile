@@ -13,7 +13,6 @@ import 'package:project_management/features/ai_assistant/local_slm/metadata_load
 import 'package:project_management/features/ai_assistant/local_slm/poc_demo_flags.dart';
 import 'package:project_management/features/ai_assistant/local_slm/poc_metrics.dart';
 import 'package:project_management/features/ai_assistant/local_slm/prompt_builder.dart';
-import 'package:project_management/features/ai_assistant/m0_probe/m0_probe_controller.dart';
 
 final GetIt projectManagementSl = GetIt.asNewInstance();
 
@@ -109,17 +108,6 @@ void setupProjectManagementLocator() {
   if (!projectManagementSl.isRegistered<PocMetrics>()) {
     projectManagementSl.registerLazySingleton<PocMetrics>(
       () => InMemoryPocMetrics(),
-    );
-  }
-  // Dev-only M0 measurement harness (T007/T008). Reuses LocalSlmService; only
-  // built when the M0 Probe screen is opened behind the kM0ProbeEnabled flag.
-  // NOT part of the Intent pipeline.
-  if (!projectManagementSl.isRegistered<M0ProbeController>()) {
-    projectManagementSl.registerLazySingleton<M0ProbeController>(
-      () => M0ProbeController(
-        localSlm: projectManagementSl<LocalSlmService>(),
-        activeModelStore: projectManagementSl<ActiveModelStore>(),
-      ),
     );
   }
   // M5/M6-A2: prompt assembly + mobile-safe metadata. Registered before

@@ -8,6 +8,8 @@ import 'package:project_management/features/ai_assistant/local_slm/model_install
 import 'package:project_management/features/ai_assistant/local_slm/model_manager.dart';
 import 'package:project_management/features/ai_assistant/local_slm/poc_metrics.dart';
 import 'package:project_management/features/ai_assistant/local_slm/prompt_builder.dart';
+import 'package:project_management/features/ai_assistant/m0_probe/m0_intent_prompt.dart';
+import 'package:project_management/features/ai_assistant/m0_probe/m0_probe_log.dart';
 
 /// Outcome of an [AiInferenceController.generate] call. Free-text only.
 sealed class AiInferenceResult {
@@ -107,10 +109,18 @@ class AiInferenceController {
   /// Generates a free-text response for [userText] using the active model.
   /// Returns a typed [AiInferenceResult]; never throws for expected states.
   /// Logs an organized start/response block (question + response/status).
+  ///
+  /// M0-only (dev): when [useIntentJsonProbe] is `true`, the active model is
+  /// prompted with the fixed Intent JSON template (depth [intentProbeDepth])
+  /// instead of the normal free-text prompt, and `[AI_INTENT_PROBE]` logs are
+  /// emitted. Defaults keep the exact feature-001 behavior. This does NOT parse,
+  /// validate, or repair the output and never marks G-M0 passed.
   Future<AiInferenceResult> generate(
     String userText, {
     int maxTokens = 256,
     Duration? timeout,
+    bool useIntentJsonProbe = false,
+    int intentProbeDepth = 2,
   }) async {
     final sw = Stopwatch()..start();
     aiLog('╔══════════════ AI CHAT ══════════════');
@@ -119,10 +129,15 @@ class AiInferenceController {
       '║ lang=${_detectLang(userText)} '
       'model=${activeModelStore.activeModelId}',
     );
+    if (useIntentJsonProbe) {
+      aiLog('║ MODE     : INTENT JSON PROBE (depth=$intentProbeDepth)');
+    }
     final result = await _runGenerate(
       userText,
       maxTokens: maxTokens,
       timeout: timeout,
+      useIntentJsonProbe: useIntentJsonProbe,
+      intentProbeDepth: intentProbeDepth,
     );
     sw.stop();
     switch (result) {
@@ -154,6 +169,8 @@ class AiInferenceController {
     String userText, {
     int maxTokens = 256,
     Duration? timeout,
+    bool useIntentJsonProbe = false,
+    int intentProbeDepth = 2,
   }) async {
     final modelId = activeModelStore.activeModelId;
     if (modelId == null) return const NoActiveModel();
@@ -173,7 +190,25 @@ class AiInferenceController {
 
     final record = activeModelStore.recordOf(modelId);
     final entry = modelManager.catalog.byId(modelId);
-    final prompt = await _buildPrompt(userText: userText, activeModel: entry);
+    final String? prompt;
+    if (useIntentJsonProbe) {
+      // M0 probe: assemble the fixed Intent JSON prompt from assets. No normal
+      // 001 prompt is built in this branch.
+      try {
+        prompt = await M0IntentPrompt.build(
+          question: userText,
+          depth: intentProbeDepth,
+        );
+      } catch (e) {
+        return GenerationFailed('M0 intent prompt assembly failed: $e');
+      }
+      intentProbeLog(
+        'variant=depth-$intentProbeDepth '
+        'question_len=${userText.trim().length} prompt_len=${prompt.length}',
+      );
+    } else {
+      prompt = await _buildPrompt(userText: userText, activeModel: entry);
+    }
     if (prompt == null) {
       return const GenerationFailed(
         'Prompt build failed safely before local generation.',
@@ -200,6 +235,10 @@ class AiInferenceController {
         timeout: timeout,
       );
       stopwatch.stop();
+      if (useIntentJsonProbe) {
+        intentProbeLog('latency=${stopwatch.elapsedMilliseconds}ms');
+        intentProbeLog('raw_output=$text');
+      }
       metrics.record(
         PocMetric(
           modelId: modelId,

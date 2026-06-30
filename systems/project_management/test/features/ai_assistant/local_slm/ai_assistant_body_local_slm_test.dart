@@ -233,6 +233,8 @@ class _SpyInferenceController extends AiInferenceController {
     String userText, {
     int maxTokens = 256,
     Duration? timeout,
+    bool useIntentJsonProbe = false,
+    int intentProbeDepth = 2,
   }) async {
     generateCalls++;
     prompts.add(userText);

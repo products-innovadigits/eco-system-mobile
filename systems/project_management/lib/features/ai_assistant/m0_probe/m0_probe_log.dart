@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
-import 'package:project_management/features/ai_assistant/m0_probe/m0_probe_flags.dart';
 
-/// Debug/POC-only logger for the M0 probe harness.
+/// Debug-only logger for the M0 Intent JSON probe.
 ///
-/// Prints with a consistent, greppable `[AI_M0_PROBE]` prefix. No-ops in release
-/// builds and when the M0 probe flag is off, so it never affects production.
-void m0Log(String message) {
-  if (kReleaseMode) return; // never log in release
-  if (!kM0ProbeEnabled) return; // only when the M0 probe build flag is on
-  debugPrint('[AI_M0_PROBE] $message');
+/// Greppable `[AI_INTENT_PROBE]` prefix. No-ops in release builds. It is only
+/// ever called from the probe branch of the chat send flow (when
+/// `AiAssistantDevConfig.useIntentJsonProbe == true`), so normal chat emits none
+/// of these logs.
+void intentProbeLog(String message) {
+  if (kReleaseMode) return; // diagnostics only — never in release
+  debugPrint('[AI_INTENT_PROBE] $message');
 }

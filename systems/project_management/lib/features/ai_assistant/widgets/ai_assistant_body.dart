@@ -5,6 +5,7 @@ import 'package:project_management/core/di/project_management_locator.dart';
 import 'package:project_management/core/utility/project_management_exports.dart';
 import 'package:project_management/features/ai_assistant/exceptions/ai_assistant_query_exception.dart';
 import 'package:project_management/features/ai_assistant/local_slm/ai_inference_controller.dart';
+import 'package:project_management/features/ai_assistant/m0_probe/ai_assistant_dev_config.dart';
 
 class AiAssistantBody extends StatefulWidget {
   const AiAssistantBody({
@@ -282,7 +283,14 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
       final result =
           await (widget.inferenceController ??
                   projectManagementSl<AiInferenceController>())
-              .generate(text);
+              .generate(
+                text,
+                // M0-only: code-level switch (no --dart-define). When
+                // useIntentJsonProbe is false (default) this is the normal 001
+                // free-text chat. Flip in AiAssistantDevConfig for M0 testing.
+                useIntentJsonProbe: AiAssistantDevConfig.useIntentJsonProbe,
+                intentProbeDepth: AiAssistantDevConfig.intentProbeDepth,
+              );
       if (!mounted) return;
       setState(() {
         if (_entries.isNotEmpty && _entries.last.isThinking) {

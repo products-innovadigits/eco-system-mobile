@@ -99,23 +99,6 @@ void main() {
     },
   );
 
-  testWidgets(
-    'M0 Probe launcher is absent and selection is unchanged when AI_M0_PROBE flag is off (default)',
-    (tester) async {
-      // kM0ProbeEnabled defaults to false (no --dart-define in tests), so the
-      // dev-only launcher must not render and normal selection is unaffected.
-      await tester.pumpWidget(harness());
-      await tester.pumpAndSettle();
-
-      expect(find.text('M0 Probe (dev)'), findsNothing);
-      // normal model-selection behavior intact
-      expect(find.text('Gemma 3 1B'), findsOneWidget);
-      expect(find.text('Qwen2.5 1.5B'), findsOneWidget);
-      expect(store.activeModelId, isNull);
-      expect(inferenceController.generateCalls, 0);
-    },
-  );
-
   testWidgets('installed test model can reach local chat flow safely', (
     tester,
   ) async {
@@ -158,6 +141,8 @@ class _SpyInferenceController extends AiInferenceController {
     String userText, {
     int maxTokens = 256,
     Duration? timeout,
+    bool useIntentJsonProbe = false,
+    int intentProbeDepth = 2,
   }) async {
     generateCalls++;
     if (_results.isEmpty) {
