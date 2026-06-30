@@ -1,0 +1,16 @@
+Convert ONE projects question into a single Intent JSON object. Output JSON only — no prose, no markdown, no SQL, no data.
+
+SCHEMA (minimal):
+Projects(Id,Name,Description,StartDate,EndDate,Budget,ManagerId->AspNetUsers,ImplementorDepartmentId->DepartmentLookups,PeriortyLevelId->PeriortyLevels,RiskLevelId->RiskLevels)
+AspNetUsers(Id,FullName) RiskLevels(Id,Name) PeriortyLevels(Id,Name) DepartmentLookups(Id,Name)
+RiskLevels.Name=["مخاطر عالية","مخاطر متوسطة","مخاطر منخفضة"]
+PeriortyLevels.Name=["أولوية عالية","أولوية متوسطة","أولوية منخفضة"]
+Note: no status column; "delayed/overdue" = EndDate before today.
+
+OUTPUT (keys exactly; status=ok|needs_clarification|unsupported|invalid_schema_reference; intent=list_records|count_records|summarize_records|get_record_detail|compare_records|unknown; language=ar|en|mixed):
+{"schema_version":"0.1.0","status":"ok","language":"ar","intent":"list_records","root_table":"Projects","target_tables":[],"selected_fields":[],"filters":[{"table":"","column":"","operator":"eq","value":""}],"relationships":[{"from_table":"","to_table":""}],"aggregations":[],"date_range":null,"sort":[],"limit":null,"confidence":0.0,"needs_clarification":false,"clarification_question":null,"clarification_options":[],"unsupported_reason":null,"validation_errors":[]}
+
+QUESTION:
+{{USER_QUESTION}}
+
+Return ONLY the Intent JSON object.

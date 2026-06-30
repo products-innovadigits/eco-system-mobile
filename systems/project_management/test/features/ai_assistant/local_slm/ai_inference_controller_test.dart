@@ -25,8 +25,24 @@ class FakeLocalSlmService implements LocalSlmService {
   bool ready = false;
   int loadCalls = 0;
   int generateCalls = 0;
+  int oneShotCalls = 0;
   bool cancelCalled = false;
   final List<String> prompts = [];
+
+  String _replyFor() {
+    switch (mode) {
+      case _FakeMode.ok:
+        return reply;
+      case _FakeMode.cancelled:
+        throw const LocalSlmCancelled();
+      case _FakeMode.timeout:
+        throw const LocalSlmTimeout();
+      case _FakeMode.error:
+        throw StateError('boom');
+      case _FakeMode.unavailable:
+        throw const LocalSlmUnavailable('engine down');
+    }
+  }
 
   @override
   bool get isReady => ready;
@@ -45,18 +61,18 @@ class FakeLocalSlmService implements LocalSlmService {
   }) async {
     generateCalls++;
     prompts.add(prompt);
-    switch (mode) {
-      case _FakeMode.ok:
-        return reply;
-      case _FakeMode.cancelled:
-        throw const LocalSlmCancelled();
-      case _FakeMode.timeout:
-        throw const LocalSlmTimeout();
-      case _FakeMode.error:
-        throw StateError('boom');
-      case _FakeMode.unavailable:
-        throw const LocalSlmUnavailable('engine down');
-    }
+    return _replyFor();
+  }
+
+  @override
+  Future<String> generateOneShotText(
+    String prompt, {
+    int maxTokens = 256,
+    Duration? timeout,
+  }) async {
+    oneShotCalls++;
+    prompts.add(prompt);
+    return _replyFor();
   }
 
   @override
@@ -208,7 +224,7 @@ void main() {
     },
   );
 
-  test('M0 probe OFF (default) → normal 001 prompt, no intent template', () async {
+  test('M0 probe OFF (default) → normal 001 prompt via generateText, no one-shot', () async {
     await installActive();
     final slm = FakeLocalSlmService(reply: 'normal reply');
     final c = build(catalog: _catalog(), slm: slm);
@@ -216,13 +232,15 @@ void main() {
     final r = await c.generate('What are delayed projects?');
 
     expect(r, isA<FreeTextResponse>());
+    expect(slm.generateCalls, 1);
+    expect(slm.oneShotCalls, 0);
     final prompt = slm.prompts.single;
     expect(prompt, contains('SYSTEM: local free-text only.'));
     expect(prompt, isNot(contains('Intent JSON')));
     expect(prompt, isNot(contains('{{USER_QUESTION}}')));
   });
 
-  test('M0 probe ON depth-2 → intent template assembled, question injected', () async {
+  test('M0 probe depth-2 → prompt_too_large guard, native NOT called', () async {
     await installActive();
     final slm = FakeLocalSlmService(reply: '{"status":"ok"}');
     final c = build(catalog: _catalog(), slm: slm);
@@ -233,16 +251,14 @@ void main() {
       intentProbeDepth: 2,
     );
 
-    expect(r, isA<FreeTextResponse>());
-    final prompt = slm.prompts.single;
-    expect(prompt, contains('compact depth-2 slice'));
-    expect(prompt, contains('Return ONLY the Intent JSON object.'));
-    expect(prompt, contains('كم عدد المشاريع المتأخرة؟'));
-    expect(prompt, isNot(contains('{{USER_QUESTION}}')));
-    expect(prompt, isNot(contains('SYSTEM: local free-text only.')));
+    expect(r, isA<GenerationFailed>());
+    expect((r as GenerationFailed).message, contains('prompt_too_large'));
+    // Native generation must never be invoked for an oversized prompt.
+    expect(slm.generateCalls, 0);
+    expect(slm.oneShotCalls, 0);
   });
 
-  test('M0 probe ON depth-1 → depth-1 fallback template used', () async {
+  test('M0 probe depth-1 → prompt_too_large guard (exceeds 1024 ctx)', () async {
     await installActive();
     final slm = FakeLocalSlmService(reply: '{"status":"ok"}');
     final c = build(catalog: _catalog(), slm: slm);
@@ -253,10 +269,30 @@ void main() {
       intentProbeDepth: 1,
     );
 
+    expect(r, isA<GenerationFailed>());
+    expect((r as GenerationFailed).message, contains('prompt_too_large'));
+    expect(slm.oneShotCalls, 0);
+  });
+
+  test('M0 probe depth-0 → fits guard, runs fresh one-shot (no generateText)', () async {
+    await installActive();
+    final slm = FakeLocalSlmService(reply: '{"status":"ok"}');
+    final c = build(catalog: _catalog(), slm: slm);
+
+    final r = await c.generate(
+      'show delayed projects',
+      useIntentJsonProbe: true,
+      intentProbeDepth: 0,
+    );
+
     expect(r, isA<FreeTextResponse>());
+    // Probe uses the fresh one-shot path, not the chat-session generateText.
+    expect(slm.oneShotCalls, 1);
+    expect(slm.generateCalls, 0);
     final prompt = slm.prompts.single;
-    expect(prompt, contains('compact depth-1 fallback slice'));
+    expect(prompt, contains('SCHEMA (minimal):'));
     expect(prompt, contains('show delayed projects'));
+    expect(prompt, isNot(contains('{{USER_QUESTION}}')));
   });
 
   test(

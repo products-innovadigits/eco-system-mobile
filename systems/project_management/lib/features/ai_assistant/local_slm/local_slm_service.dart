@@ -29,6 +29,16 @@ abstract class LocalSlmService {
     Duration? timeout,
   });
 
+  /// **M0 dev probe only.** Fresh, history-free single generation: the
+  /// implementation MUST NOT reuse any prior chat/session context (so a long
+  /// running chat session cannot overflow the model context window). Used by the
+  /// Intent JSON probe; not part of the normal chat path.
+  Future<String> generateOneShotText(
+    String prompt, {
+    int maxTokens = 256,
+    Duration? timeout,
+  });
+
   /// Cancels the in-flight generation (if any).
   Future<void> cancel();
 
@@ -80,6 +90,13 @@ class UnavailableLocalSlmService implements LocalSlmService {
 
   @override
   Future<String> generateText(
+    String prompt, {
+    int maxTokens = 256,
+    Duration? timeout,
+  }) async => throw const LocalSlmUnavailable(_reason);
+
+  @override
+  Future<String> generateOneShotText(
     String prompt, {
     int maxTokens = 256,
     Duration? timeout,

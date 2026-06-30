@@ -8,6 +8,7 @@ import 'package:project_management/features/ai_assistant/local_slm/model_install
 import 'package:project_management/features/ai_assistant/local_slm/model_manager.dart';
 import 'package:project_management/features/ai_assistant/local_slm/poc_metrics.dart';
 import 'package:project_management/features/ai_assistant/local_slm/prompt_builder.dart';
+import 'package:project_management/features/ai_assistant/m0_probe/ai_assistant_dev_config.dart';
 import 'package:project_management/features/ai_assistant/m0_probe/m0_intent_prompt.dart';
 import 'package:project_management/features/ai_assistant/m0_probe/m0_probe_log.dart';
 
@@ -117,7 +118,7 @@ class AiInferenceController {
   /// validate, or repair the output and never marks G-M0 passed.
   Future<AiInferenceResult> generate(
     String userText, {
-    int maxTokens = 256,
+    int maxTokens = 1024,
     Duration? timeout,
     bool useIntentJsonProbe = false,
     int intentProbeDepth = 2,
@@ -194,18 +195,47 @@ class AiInferenceController {
     if (useIntentJsonProbe) {
       // M0 probe: assemble the fixed Intent JSON prompt from assets. No normal
       // 001 prompt is built in this branch.
+      final String assembled;
       try {
-        prompt = await M0IntentPrompt.build(
+        assembled = await M0IntentPrompt.build(
           question: userText,
           depth: intentProbeDepth,
         );
       } catch (e) {
         return GenerationFailed('M0 intent prompt assembly failed: $e');
       }
+      // Preflight size guard — DO NOT trust the native engine to reject an
+      // oversized prompt; flutter_gemma can SIGSEGV after OUT_OF_RANGE. Estimate
+      // tokens and bail out with a controlled Flutter error if it won't fit.
+      final estTokens =
+          (assembled.length / AiAssistantDevConfig.intentProbeCharsPerToken)
+              .ceil();
+      final contextTokens = AiAssistantDevConfig.intentProbeContextTokens;
+      final reserveTokens = AiAssistantDevConfig.intentProbeOutputReserveTokens;
+      final budgetTokens = contextTokens - reserveTokens;
+      final estAvailableOutput = contextTokens - estTokens;
+      // All token figures are ESTIMATED (chars/${AiAssistantDevConfig.intentProbeCharsPerToken});
+      // flutter_gemma exposes exact session.sizeInTokens — see capacity report.
       intentProbeLog(
-        'variant=depth-$intentProbeDepth '
-        'question_len=${userText.trim().length} prompt_len=${prompt.length}',
+        'variant=depth-$intentProbeDepth mode=one_shot_fresh_session '
+        'question_len=${userText.trim().length} prompt_len=${assembled.length} '
+        'est_prompt_tokens=$estTokens(estimated) context_tokens=$contextTokens '
+        'reserved_output_tokens=$reserveTokens budget_tokens=$budgetTokens '
+        'est_available_output=$estAvailableOutput',
       );
+      if (estTokens > budgetTokens) {
+        intentProbeLog(
+          'prompt_too_large native_call=BLOCKED est_prompt_tokens=$estTokens '
+          'budget_tokens=$budgetTokens context=$contextTokens',
+        );
+        return GenerationFailed(
+          'prompt_too_large: depth-$intentProbeDepth ~$estTokens tokens exceeds '
+          'budget $budgetTokens (context '
+          '${AiAssistantDevConfig.intentProbeContextTokens}). Use a smaller depth '
+          '(e.g. depth-0).',
+        );
+      }
+      prompt = assembled;
     } else {
       prompt = await _buildPrompt(userText: userText, activeModel: entry);
     }
@@ -228,12 +258,20 @@ class AiInferenceController {
         }
       }
 
-      // Generate free-text from the final prompt, never from raw user text.
-      final text = await localSlm.generateText(
-        prompt,
-        maxTokens: maxTokens,
-        timeout: timeout,
-      );
+      // Generate from the final prompt, never from raw user text. The M0 probe
+      // uses a fresh, history-free one-shot so a long chat session can never
+      // overflow the model context window.
+      final text = useIntentJsonProbe
+          ? await localSlm.generateOneShotText(
+              prompt,
+              maxTokens: maxTokens,
+              timeout: timeout,
+            )
+          : await localSlm.generateText(
+              prompt,
+              maxTokens: maxTokens,
+              timeout: timeout,
+            );
       stopwatch.stop();
       if (useIntentJsonProbe) {
         intentProbeLog('latency=${stopwatch.elapsedMilliseconds}ms');

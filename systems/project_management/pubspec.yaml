@@ -38,3 +38,4 @@ flutter:
     - assets/ai/prompts/system_instruction.txt
     - assets/ai/prompts/m0_strict_json_depth_2.txt
     - assets/ai/prompts/m0_strict_json_depth_1.txt
+    - assets/ai/prompts/m0_strict_json_depth_0.txt

@@ -19,14 +19,26 @@ class M0IntentPrompt {
     'packages/project_management/assets/ai/prompts/m0_strict_json_depth_1.txt',
     'assets/ai/prompts/m0_strict_json_depth_1.txt',
   ];
+  static const List<String> _depth0Paths = [
+    'packages/project_management/assets/ai/prompts/m0_strict_json_depth_0.txt',
+    'assets/ai/prompts/m0_strict_json_depth_0.txt',
+  ];
 
-  /// Returns the assembled prompt for [depth] (1 → depth-1 fallback, else
-  /// depth-2) with [question] injected. Throws if no template asset is found.
+  /// Returns the assembled prompt for [depth] with [question] injected:
+  /// `0` → minimal slice (fits a ~1024-token context), `1` → depth-1 fallback,
+  /// otherwise depth-2. Throws if no template asset is found.
   static Future<String> build({
     required String question,
     required int depth,
   }) async {
-    final paths = depth == 1 ? _depth1Paths : _depth2Paths;
+    final List<String> paths;
+    if (depth <= 0) {
+      paths = _depth0Paths;
+    } else if (depth == 1) {
+      paths = _depth1Paths;
+    } else {
+      paths = _depth2Paths;
+    }
     String? template;
     for (final p in paths) {
       try {

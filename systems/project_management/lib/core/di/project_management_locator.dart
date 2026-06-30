@@ -13,6 +13,7 @@ import 'package:project_management/features/ai_assistant/local_slm/metadata_load
 import 'package:project_management/features/ai_assistant/local_slm/poc_demo_flags.dart';
 import 'package:project_management/features/ai_assistant/local_slm/poc_metrics.dart';
 import 'package:project_management/features/ai_assistant/local_slm/prompt_builder.dart';
+import 'package:project_management/features/ai_assistant/m0_probe/ai_assistant_dev_config.dart';
 
 final GetIt projectManagementSl = GetIt.asNewInstance();
 
@@ -101,7 +102,16 @@ void setupProjectManagementLocator() {
   if (!projectManagementSl.isRegistered<LocalSlmService>()) {
     projectManagementSl.registerLazySingleton<LocalSlmService>(
       () => kPocDemoRealChat
-          ? FlutterGemmaLocalSlmService(assumeAlreadyInstalled: true)
+          ? FlutterGemmaLocalSlmService(
+              assumeAlreadyInstalled: true,
+              // Context window (KV cache) requested from flutter_gemma at
+              // createModel(). One knob for the M0 capacity experiment. The
+              // active Qwen2.5 1.5B .task is built ekv1280, so 1280 is the
+              // model's real max; 1024 is the current conservative default.
+              config: const FlutterGemmaSpikeConfig(
+                contextTokens: AiAssistantDevConfig.intentProbeContextTokens,
+              ),
+            )
           : const UnavailableLocalSlmService(),
     );
   }

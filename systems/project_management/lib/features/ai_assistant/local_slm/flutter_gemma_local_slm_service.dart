@@ -32,6 +32,7 @@ class FlutterGemmaLocalSlmService implements LocalSlmService {
 
   FlutterGemmaSpikeSession? _session;
   String? _loadedModelId;
+  gemma.ModelFileType? _loadedFileType;
   bool _isReady = false;
 
   @override
@@ -82,6 +83,7 @@ class FlutterGemmaLocalSlmService implements LocalSlmService {
         systemInstruction: _config.systemInstruction,
       );
       _loadedModelId = modelId;
+      _loadedFileType = fileType;
       _isReady = true;
     } catch (e) {
       throw LocalSlmUnavailable('flutter_gemma spike load failed: $e');
@@ -135,6 +137,45 @@ class FlutterGemmaLocalSlmService implements LocalSlmService {
   }
 
   @override
+  Future<String> generateOneShotText(
+    String prompt, {
+    int maxTokens = 256,
+    Duration? timeout,
+  }) async {
+    // Fresh, history-free generation: rebuild a clean session so no prior chat
+    // context carries over. Closing first avoids holding two models in memory.
+    final modelId = _loadedModelId;
+    final fileType = _loadedFileType;
+    if (!_isReady || modelId == null || fileType == null) {
+      throw const LocalSlmUnavailable(
+        'flutter_gemma spike model is not loaded.',
+      );
+    }
+    await _session?.close();
+    _isReady = false;
+    try {
+      _session = await _backend.openChat(
+        maxTokens: _config.contextTokens,
+        modelType: _modelTypeFor(modelId),
+        fileType: fileType,
+        preferredBackend: _config.preferredBackend,
+        systemInstruction: _config.systemInstruction,
+      );
+      _isReady = true;
+      final session = _session!;
+      await session.addUserMessage(prompt);
+      final future = session.generateText();
+      return timeout == null ? await future : await future.timeout(timeout);
+    } on TimeoutException {
+      throw const LocalSlmTimeout();
+    } catch (e) {
+      if (_config.isCancelled(e)) throw const LocalSlmCancelled();
+      if (e is LocalSlmUnavailable) rethrow;
+      throw LocalSlmUnavailable('flutter_gemma one-shot failed: $e');
+    }
+  }
+
+  @override
   Future<void> cancel() async {
     await _session?.cancel();
   }
@@ -144,6 +185,7 @@ class FlutterGemmaLocalSlmService implements LocalSlmService {
     await _session?.close();
     _session = null;
     _loadedModelId = null;
+    _loadedFileType = null;
     _isReady = false;
   }
 
