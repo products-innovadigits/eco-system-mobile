@@ -5,6 +5,8 @@ import 'package:project_management/features/ai_assistant/local_slm/model_install
 import 'package:project_management/features/ai_assistant/local_slm/model_manager.dart';
 import 'package:project_management/features/ai_assistant/local_slm/model_selection_controller.dart';
 import 'package:project_management/features/ai_assistant/local_slm/model_selection_view.dart';
+import 'package:project_management/features/ai_assistant/m0_probe/m0_probe_flags.dart';
+import 'package:project_management/features/ai_assistant/m0_probe/m0_probe_view.dart';
 
 class AiAssistantView extends StatefulWidget {
   const AiAssistantView({
@@ -186,6 +188,23 @@ class _AiAssistantViewState extends State<AiAssistantView> {
       children: [
         if (_selectionNotice != null)
           _SelectionNotice(message: _selectionNotice!),
+        // Dev-only M0 measurement entry. Invisible unless the build was started
+        // with --dart-define=AI_M0_PROBE=true. Additive; does not affect the
+        // normal AI Assistant / chat behavior.
+        if (kM0ProbeEnabled)
+          Align(
+            alignment: Alignment.centerRight,
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: OutlinedButton.icon(
+                icon: const Icon(Icons.science_outlined),
+                label: const Text('M0 Probe (dev)'),
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const M0ProbeView()),
+                ),
+              ),
+            ),
+          ),
         Expanded(
           child: ModelSelectionView(
             controller: widget.modelSelectionController,
