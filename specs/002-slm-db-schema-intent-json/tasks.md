@@ -29,22 +29,22 @@
 
 **Milestone goal**: Prepare a realistic schema sample and complete the Samsung Galaxy S22 Ultra measurement gate before any M2+ pipeline implementation. M0 blocks M2, M3, M4, M5, M6, and M7 implementation.
 
-- [ ] T001 Create the manual export script scaffold in `tools/schema_export/export_projects_schema.sql`
+- [X] T001 Create the manual export script scaffold in `tools/schema_export/export_projects_schema.sql`
   - Metadata: Milestone=M0; Title=Create export SQL scaffold; Description=Add the read-only SQL Server script skeleton with editable root-table variable, FK-depth-2 traversal intent, lookup cap default `maxLookupRows = 50`, denylist placeholders, and `FOR JSON PATH` guidance, without adding automation; Files touched=`tools/schema_export/export_projects_schema.sql`; Dependencies=None; Acceptance check=script is reviewable, contains no credentials, and documents root-table/depth/cap/denylist variables; Execution=blocking, gated, manual-prep; CI=manual-only.
 
-- [ ] T002 Create the export operator runbook in `tools/schema_export/README.md`
+- [X] T002 Create the export operator runbook in `tools/schema_export/README.md`
   - Metadata: Milestone=M0; Title=Create manual export README; Description=Document SSMS/sqlcmd read-only execution, root-table selection, copy-out/manual assembly, denylist review, representative-sample fallback, and the rule that DB credentials stay outside the repo and Flutter; Files touched=`tools/schema_export/README.md`; Dependencies=T001; Acceptance check=README lets a developer produce or simulate the asset without Python CLI automation or Flutter DB access; Execution=blocking, gated, manual-prep; CI=manual-only.
 
-- [ ] T003 Prepare an initial contract-compliant schema sample in `systems/project_management/assets/ai/schema/projects_db_metadata_schema.json`
+- [X] T003 Prepare an initial contract-compliant schema sample in `systems/project_management/assets/ai/schema/projects_db_metadata_schema.json`
   - Metadata: Milestone=M0; Title=Prepare schema sample asset; Description=Run the manual SQL Server export read-only or hand-author a representative projects-domain sample that matches `contracts/schema_metadata_contract.md`, including schema metadata, capped lookups, provenance, and sample values off by default; Files touched=`systems/project_management/assets/ai/schema/projects_db_metadata_schema.json`; Dependencies=T001,T002; Acceptance check=JSON parses, declares `schema_version`, `generated_at`, `root_table`, `extraction_summary`, `schema_metadata`, `lookup_values`, and no uncapped lookup arrays; Execution=blocking, gated, manual or simulated; CI=manual-only until loader tests exist.
 
-- [ ] T004 Review the schema sample for sensitive fields and record the review result in `specs/002-slm-db-schema-intent-json/research.md`
+- [X] T004 Review the schema sample for sensitive fields and record the review result in `specs/002-slm-db-schema-intent-json/research.md`
   - Metadata: Milestone=M0; Title=Sensitive-field review; Description=Check the schema asset against the denylist in the schema contract and record reviewer/date/source plus zero-sensitive-fields or remediation notes in the M0 section; Files touched=`specs/002-slm-db-schema-intent-json/research.md`; Dependencies=T003; Acceptance check=research.md states whether the asset is real or representative and confirms no password/token/secret/PII-style fields are present; Execution=blocking, gated, manual; CI=manual-only.
 
-- [ ] T005 Register the schema asset path in `systems/project_management/pubspec.yaml`
+- [X] T005 Register the schema asset path in `systems/project_management/pubspec.yaml`
   - Metadata: Milestone=M0; Title=Register schema asset; Description=Add `assets/ai/schema/projects_db_metadata_schema.json` to Flutter assets only if not already covered, preserving existing 001 assets; Files touched=`systems/project_management/pubspec.yaml`; Dependencies=T003; Acceptance check=`flutter pub get` can resolve the asset declaration and existing assets remain listed; Execution=blocking, gated, automated-safe; CI=CI-safe.
 
-- [ ] T006 Run or simulate the manual SQL Server export and record provenance in `specs/002-slm-db-schema-intent-json/research.md`
+- [X] T006 Run or simulate the manual SQL Server export and record provenance in `specs/002-slm-db-schema-intent-json/research.md`
   - Metadata: Milestone=M0; Title=Export provenance record; Description=Record whether the sample came from SQL Server or representative authoring, chosen root table, FK depth, lookup cap, denylist applied, and any manual assembly steps; Files touched=`specs/002-slm-db-schema-intent-json/research.md`; Dependencies=T003,T004; Acceptance check=research.md contains enough provenance to reproduce or replace the sample; Execution=blocking, gated, manual; CI=manual-only.
 
 - [ ] T007 Run M0 context/token-budget measurement on Samsung Galaxy S22 Ultra and record results in `specs/002-slm-db-schema-intent-json/research.md`

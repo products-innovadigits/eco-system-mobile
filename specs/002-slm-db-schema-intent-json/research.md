@@ -68,3 +68,170 @@ This document records the M0 measurement design and the technical decisions that
 5. **G-M0 exit**: a fitting slice exists + a generation path clears the recorded parse-success threshold → proceed; record keep-current-model decision (larger-context build flagged only if depth-1+compact+reduced-caps still fails).
 
 **Open numeric placeholders to fill during M0**: context window `[M0]`, depth-2 token estimate `[M0]`, chosen ladder step `[M0]`, strict-JSON vs structured parse rates `[M0]`, median latency `[M0]`.
+
+---
+
+## M0 Execution Record - 2026-06-30
+
+### T001 - Manual SQL Server export script scaffold
+
+- **Status**: Complete for M0 scaffold.
+- **File**: `tools/schema_export/export_projects_schema.sql`
+- **Notes**: Added a read-only SQL Server catalog script scaffold with editable `@RootSchema`, `@RootTable`, `@FkDepth`, `@MaxLookupRows`, `@SamplesEnabled`, and denylist terms. The script uses `sys.tables`, `sys.schemas`, `sys.columns`, `sys.types`, `sys.foreign_keys`, `sys.foreign_key_columns`, primary-key catalog metadata, and `FOR JSON PATH` guidance. It contains no credentials and no DML/DDL.
+
+### T002 - Export runbook
+
+- **Status**: Complete for M0.
+- **File**: `tools/schema_export/README.md`
+- **Notes**: Added the manual SSMS/sqlcmd runbook, review checklist, denylist, replacement flow, and representative-sample fallback instructions. The runbook explicitly keeps DB credentials outside the repository and keeps Flutter disconnected from SQL Server.
+
+### T003 - Initial schema sample
+
+- **Status**: Complete for M0 with a representative sample.
+- **File**: `systems/project_management/assets/ai/schema/projects_db_metadata_schema.json`
+- **Source**: Representative manual sample because real SQL Server access and the final project root table are not available in this environment.
+- **Root table**: `Projects`
+- **FK depth represented**: 2
+- **Lookup cap represented**: 50
+- **Samples enabled**: `false`
+- **Sample values**: empty array
+- **Tables included**: `Projects`, `ProjectStatus`, `RiskLevels`, `ProjectPriorities`, `ProjectOwners`, `Departments`, `OrganizationUnits`, `ProjectMilestones`
+- **Lookup/reference values included**: project status, risk level, priority, department, and organization unit labels. These are representative safe labels, not real DB rows.
+
+### T004 - Sensitive-field review
+
+- **Status**: Complete for the representative M0 sample.
+- **Review result**: PASS for representative sample.
+- **Reviewed denylist**: `password`, `pass`, `pwd`, `token`, `secret`, `api_key`, `access_key`, `refresh_token`, `connection`, `connection_string`, `credential`, `private`, `ssn`, `national_id`, `passport`, `phone`, `mobile`, `email`, `address`, `salary`, `payment`, `card`, `tenant_secret`, `auth`, `otp`, `session`, `cookie`.
+- **Findings**: No table names, column names, lookup values, or provenance strings in the representative asset match the denylist. The asset contains no credentials, tokens, passwords, connection strings, private URLs, tenant secrets, salary/payment fields, or sensitive personal data. `sample_values` is empty.
+- **Required before real export commit**: Repeat this review after running the SQL Server scaffold against the actual database.
+
+### T005 - Flutter asset registration
+
+- **Status**: Complete for M0.
+- **File**: `systems/project_management/pubspec.yaml`
+- **Registered asset**: `assets/ai/schema/projects_db_metadata_schema.json`
+
+### T006 - Export provenance
+
+- **Status**: Complete for M0 representative sample.
+- **Provenance type**: Representative manual schema sample.
+- **Reason**: Real SQL Server access and final project root confirmation are unavailable in this environment.
+- **Chosen representative root**: `Projects`
+- **Extraction shape represented**: root plus FK-depth-2 project-domain neighbors.
+- **Lookup cap**: 50.
+- **Denylist applied**: Yes, manually reviewed against the contract denylist.
+- **Manual assembly**: The JSON was hand-authored to match `contracts/schema_metadata_contract.md`; it is intended to be replaced by a reviewed output from `tools/schema_export/export_projects_schema.sql`.
+
+### T007 - Context/token-budget measurement on Samsung Galaxy S22 Ultra
+
+- **Status**: Pending manual device run. Do not fake this result.
+- **Required device**: Samsung Galaxy S22 Ultra.
+- **Required model**: Current Qwen2.5 1.5B. Do not switch model at the start.
+- **Required input**: `systems/project_management/assets/ai/schema/projects_db_metadata_schema.json` or the later reviewed real export.
+- **Manual instructions**:
+  1. Confirm the current Qwen2.5 1.5B model is active using the existing 001 model flow.
+  2. Estimate or measure usable context window for the active build, including any `ekv`/context metadata exposed by the runtime.
+  3. Prepare a depth-2 schema slice from the M0 asset using compact formatting.
+  4. Estimate prompt size using the D2 heuristic starting point of about 3.5 chars/token for mixed Arabic/English, or replace with exact tokenizer counts if the runtime exposes them.
+  5. Record system instruction size, schema slice size, question size, max output budget, and total prompt estimate.
+  6. If depth 2 does not fit, apply the fallback ladder in order: compact formatting, reduced lookup caps, FK depth 1.
+  7. Record the first fitting ladder step and sample latency.
+- **Pending fields**:
+  - measured context window: `[M0 pending]`
+  - depth-2 token estimate: `[M0 pending]`
+  - depth-2 fits: `[M0 pending]`
+  - first fitting fallback step: `[M0 pending]`
+  - median latency: `[M0 pending]`
+
+### T008 - Strict JSON vs structured-output comparison
+
+- **Status**: Pending manual device run. Do not fake this result.
+- **Probe set**: Use 10-15 project-domain questions spanning Arabic, English, mixed language, list/count/summarize, ambiguous, and unsupported cases.
+- **Strict JSON path**: Prompt the model to return only the Intent JSON contract object with no prose, no SQL, and no real data answer.
+- **Structured-output path**: Run only if the current `flutter_gemma`/Qwen runtime exposes structured output or function-calling style constraints for this model. If unavailable, record `unavailable` rather than simulating it.
+- **Metrics to record**:
+  - parse-success count/rate
+  - schema-validity count/rate against the reviewed schema
+  - repair-needed count/rate
+  - unsupported/clarification behavior
+  - latency per probe and median latency
+- **Pending fields**:
+  - strict JSON parse rate: `[M0 pending]`
+  - strict JSON schema-validity rate: `[M0 pending]`
+  - structured-output availability: `[M0 pending]`
+  - structured-output parse rate: `[M0 pending or unavailable]`
+  - selected generation path: `[M0 pending]`
+
+### T009 - G-M0 decision
+
+- **Status**: Pending.
+- **G-M0 result**: Not passed yet.
+- **Reason**: The representative schema sample, sensitive-field review, asset registration, and provenance are complete, but the required Samsung Galaxy S22 Ultra context/token measurement and strict JSON vs structured-output comparison have not been run in this environment.
+- **Gate rule**: No M2+ on-device pipeline implementation may start, land, or merge until this section is updated with real device measurements and a passed G-M0 decision.
+- **Decision fields still required**:
+  1. schema sample exists: yes, representative M0 sample
+  2. context/token budget measured: pending
+  3. current Qwen2.5 1.5B tested with trimmed projects schema: pending
+  4. strict JSON vs structured output evaluated: pending
+  5. generation path selected: pending
+  6. keep-current-model or fallback-needed decision recorded: pending
+
+### M0 manual probe questions
+
+Use these questions for the pending T007/T008 device run:
+
+1. `كم عدد المشاريع المتأخرة؟`
+2. `اعرض المشاريع عالية المخاطر`
+3. `show delayed high priority projects`
+4. `which projects are due soon?`
+5. `مين مسؤول عن المشاريع المتأخرة؟`
+6. `summarize projects by department`
+7. `list completed projects in Engineering`
+8. `قارن المشاريع الحرجة بالمشاريع منخفضة المخاطر`
+9. `projects on hold`
+10. `show project milestones due this month`
+11. `tasks ولا projects؟`
+12. `what is the weather today?`
+
+## Real SQL Server export — 2026-06-30 (supersedes the representative M0 sample)
+
+The schema asset `systems/project_management/assets/ai/schema/projects_db_metadata_schema.json`
+is now a **real, reviewed SQL Server export** (no longer representative).
+
+- **Provenance**: live SQL Server export via `tools/schema_export/export_projects_schema.sql`
+  (temporary stored procedure, read-only). Connection used the existing local
+  developer configuration in `rag_first/.env` (`SQL_CONNECTION_STRING`, pyodbc +
+  ODBC Driver 18). **No credentials were printed, hardcoded, or committed.**
+- **Extraction time (UTC)**: `generated_at = 2026-06-30T09:34:04`.
+- **Root**: `dbo.Projects`. **FK depth**: 2. **Method**: `manual_sql_export`.
+- **Lookup cap**: 50 values/column; lookup-table size cap 500 rows.
+- **Counts**: 61 tables, 104 relationships, 15 lookup sets, 5 excluded tables.
+- **Sanitized `AspNetUsers` intentionally included** for manager/responsible
+  questions ("who is responsible?", "show projects by manager", "مين المسؤول؟").
+  Only safe allowlisted columns are present: `Id, FullName, IsActive, UserName,
+  NormalizedUserName` (other allowlist columns do not exist in this table). The
+  `Projects.ManagerId -> AspNetUsers.Id` FK (`FK_Projects_AspNetUsers_ManagerId`)
+  is preserved in `schema_metadata.relationships`.
+- **Sensitive-field review (real export)**: PASS. No forbidden identity/security
+  columns present (no `PasswordHash/SecurityStamp/ConcurrencyStamp/Email/Phone/
+  TwoFactor/Lockout/AccessFailed/*` etc.). `AppTokens` was dropped by the denylist
+  (`token`). Other identity tables excluded with reason `identity_security`:
+  `AspNetUserClaims, AspNetUserLogins, AspNetUserRoles, AspNetUserTokens`.
+  `sample_values.enabled = false`; manager lookup values OFF
+  (`@IncludeManagerLookup = 0`). No raw transactional/user rows exported.
+- **Validation**: `python3 -m json.tool` passed; all 8 acceptance checks
+  (root, AspNetUsers allowlist, ManagerId FK, forbidden columns, other identity
+  tables, sample_values, lookup caps, valid JSON) passed.
+
+### G-M0 current state
+
+**G-M0 is STILL pending, not passed.** The schema asset is now real, but the
+gate also requires the on-device measurements that have **not** been performed:
+- **T007** — context/token-budget measurement on a **Samsung Galaxy S22 Ultra**
+  with the current **Qwen2.5 1.5B** model: pending.
+- **T008** — strict-JSON vs structured-output comparison on the real model: pending.
+
+Do not implement `SchemaGraph`, `IntentParser`, `IntentValidator`,
+`IntentDebugView`, or any other M2+ pipeline code until T007/T008 are run on the
+device and the gate is explicitly changed to passed.

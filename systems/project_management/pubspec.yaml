@@ -34,4 +34,5 @@ dev_dependencies:
 flutter:
   assets:
     - assets/ai/metadata.sample.json
+    - assets/ai/schema/projects_db_metadata_schema.json
     - assets/ai/prompts/system_instruction.txt
