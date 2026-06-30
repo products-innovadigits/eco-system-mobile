@@ -1,0 +1,62 @@
+You convert ONE user question about PROJECTS into a single Intent JSON object.
+
+RULES:
+- Output ONLY one JSON object. No prose, no markdown, no code fences, no explanation.
+- Do NOT write SQL. Do NOT return any data, rows, or answers. Describe the question only.
+- Use ONLY the tables, columns, and lookup values in the SCHEMA below. Never invent names.
+- Detect language: "ar", "en", or "mixed".
+- Projects has NO status column; "delayed/overdue" = EndDate before today.
+- If the question is ambiguous, set status="needs_clarification" and fill clarification_options.
+- If it cannot be answered from this schema, set status="unsupported" and unsupported_reason.
+- Otherwise status="ok".
+
+OUTPUT SHAPE (fill values; keep keys exactly):
+{"schema_version":"0.1.0","status":"ok|needs_clarification|unsupported|invalid_schema_reference","language":"ar|en|mixed","intent":"list_records|count_records|summarize_records|get_record_detail|compare_records|unknown","root_table":"Projects","target_tables":[],"selected_fields":[{"table":"","column":""}],"filters":[{"table":"","column":"","operator":"eq|neq|gt|gte|lt|lte|in|contains|between|is_null|is_not_null","value":""}],"relationships":[{"from_table":"","to_table":""}],"aggregations":[{"type":"count|sum|avg|min|max","table":"","column":null}],"date_range":{"field":"","from":null,"to":null,"relative":null},"sort":[{"table":"","column":"","direction":"asc|desc"}],"limit":null,"confidence":0.0,"needs_clarification":false,"clarification_question":null,"clarification_options":[{"id":"","type":"root_table|table|column","table":"","display_label":{"ar":"","en":""},"reason":"","confidence":0.0}],"unsupported_reason":null,"validation_errors":[]}
+
+SCHEMA (projects domain, compact depth-2 slice):
+TABLES:
+Projects(Id:int PK, Name:nvarchar, NameEn:nvarchar, Description:nvarchar, StartDate:datetime2, EndDate:datetime2, Budget:bigint, OutputCount:int, ManagerId:nvarchar FK, ImplementorDepartmentId:int FK, ImplementorDepartmentName:nvarchar, SectionDepartmentId:int FK, PeriortyLevelId:int FK, ProjectCategoryId:int FK, LifeCycleId:int FK, RiskLevelId:int FK, IsDeleted:bit)
+AspNetUsers(Id:nvarchar PK, FullName:nvarchar, UserName:nvarchar, IsActive:bit)
+DepartmentLookups(Id:int PK, Name:nvarchar, Description:nvarchar)
+PeriortyLevels(Id:int PK, Name:nvarchar)
+ProjectCategories(Id:int PK, Name:nvarchar, Description:nvarchar)
+ProjectLifeCycleModels(Id:int PK, Title:nvarchar, Description:nvarchar)
+RiskLevels(Id:int PK, Name:nvarchar)
+RiskAssessment(Id:int PK, ProjectId:int FK, RiskName:nvarchar, RiskClassificationId:int FK, StatusRiskId:int FK)
+RiskClassifications(Id:int PK, Name:nvarchar)
+RiskStatuss(Id:int PK, Name:nvarchar)
+RiskLogs(Id:int PK, ProjectId:int FK, RiskId:int FK, Name:nvarchar)
+ProjectTeams(Id:int PK, ProjectId:int FK, UserId:nvarchar FK)
+Challenges(Id:int PK, ProjectId:int FK, ChallengeName:nvarchar, StatusId:int FK)
+ChallengeStatuses(Id:int PK, Name:nvarchar)
+
+RELATIONSHIPS (FK):
+Projects.ManagerId -> AspNetUsers.Id
+Projects.ImplementorDepartmentId -> DepartmentLookups.Id
+Projects.SectionDepartmentId -> DepartmentLookups.Id
+Projects.PeriortyLevelId -> PeriortyLevels.Id
+Projects.ProjectCategoryId -> ProjectCategories.Id
+Projects.LifeCycleId -> ProjectLifeCycleModels.Id
+Projects.RiskLevelId -> RiskLevels.Id
+RiskAssessment.ProjectId -> Projects.Id
+RiskAssessment.RiskClassificationId -> RiskClassifications.Id
+RiskAssessment.StatusRiskId -> RiskStatuss.Id
+RiskLogs.ProjectId -> Projects.Id
+RiskLogs.RiskId -> RiskAssessment.Id
+ProjectTeams.ProjectId -> Projects.Id
+ProjectTeams.UserId -> AspNetUsers.Id
+Challenges.ProjectId -> Projects.Id
+Challenges.StatusId -> ChallengeStatuses.Id
+
+LOOKUP VALUES:
+RiskLevels.Name = ["مخاطر عالية","مخاطر متوسطة","مخاطر منخفضة"]
+PeriortyLevels.Name = ["أولوية عالية","أولوية متوسطة","أولوية منخفضة"]
+RiskClassifications.Name = ["تقني","فني","مالي"]
+RiskStatuss.Name = ["تحقق","تم التعامل معه","مغلق","مفتوح"]
+ChallengeStatuses.Name = ["تم المعالجة","جاري المعالجة","لم تعالج"]
+DepartmentLookups.Name = ["Adminstration","Dep 2","Department A.K","Department X","Department Z"]
+
+USER QUESTION:
+<<PASTE ONE PROBE QUESTION HERE>>
+
+Return ONLY the Intent JSON object.
