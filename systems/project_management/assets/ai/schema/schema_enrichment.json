@@ -1,0 +1,240 @@
+{
+  "enrichment_version": "0.1.0",
+  "lookup_value_cap": 50,
+  "root_tables": ["Projects"],
+  "field_overrides": [
+    {
+      "table": "Projects",
+      "column": "Budget",
+      "roles": ["safe", "selectable", "filterable", "sortable", "aggregatable"],
+      "concept_tags": ["budget"],
+      "synonyms": {
+        "en": ["budget", "cost"],
+        "ar": ["ميزانية", "تكلفة"]
+      }
+    },
+    {
+      "table": "Projects",
+      "column": "Name",
+      "roles": ["safe", "selectable", "searchable", "entity", "filterable"],
+      "concept_tags": ["project_name"],
+      "synonyms": {
+        "en": ["project name", "project", "name"],
+        "ar": ["اسم المشروع", "المشروع", "اسم"]
+      }
+    },
+    {
+      "table": "Projects",
+      "column": "OutputCount",
+      "roles": ["safe", "selectable", "filterable", "sortable", "aggregatable"],
+      "concept_tags": ["outputs"],
+      "synonyms": {
+        "en": ["outputs", "deliverables", "output count"],
+        "ar": ["المخرجات", "مخرجات", "عدد المخرجات"]
+      }
+    },
+    {
+      "table": "PeriortyLevels",
+      "column": "Name",
+      "roles": ["safe", "selectable", "filterable", "sortable"],
+      "concept_tags": ["priority"],
+      "synonyms": {
+        "en": ["priority", "priorities", "importance", "low priority", "low priorities"],
+        "ar": ["أولوية", "الأولوية", "اولوية", "الاولوية"]
+      }
+    },
+    {
+      "table": "RiskLevels",
+      "column": "Name",
+      "roles": ["safe", "selectable", "filterable", "sortable"],
+      "concept_tags": ["risk"],
+      "synonyms": {
+        "en": ["risk", "risks", "high risk", "low risk"],
+        "ar": ["خطورة", "مخاطر", "المخاطر"]
+      }
+    },
+    {
+      "table": "AspNetUsers",
+      "column": "FullName",
+      "roles": ["safe", "selectable", "searchable", "entity", "filterable"],
+      "concept_tags": ["manager", "responsible"],
+      "synonyms": {
+        "en": ["manager", "responsible", "owner", "project manager"],
+        "ar": ["المسؤول", "مدير المشروع", "المالك"]
+      }
+    },
+    {
+      "table": "DepartmentLookups",
+      "column": "Name",
+      "roles": ["safe", "selectable", "searchable", "filterable", "sortable"],
+      "concept_tags": ["department"],
+      "synonyms": {
+        "en": ["department", "division", "unit"],
+        "ar": ["إدارة", "الادارة", "الإدارة", "قسم"]
+      }
+    },
+    {
+      "table": "ProjectCategories",
+      "column": "Name",
+      "roles": ["safe", "selectable", "filterable", "sortable"],
+      "concept_tags": ["category"],
+      "synonyms": {
+        "en": ["category", "project category"],
+        "ar": ["تصنيف", "فئة", "نوع المشروع"]
+      }
+    },
+    {
+      "table": "ProjectLifeCycleModels",
+      "column": "Title",
+      "roles": ["safe", "selectable", "filterable", "sortable"],
+      "concept_tags": ["lifecycle"],
+      "synonyms": {
+        "en": ["lifecycle", "life cycle", "stage"],
+        "ar": ["دورة الحياة", "مرحلة", "مراحل"]
+      }
+    }
+  ],
+  "concepts": [
+    {
+      "id": "concept_budget",
+      "labels": { "en": "Budget", "ar": "الميزانية" },
+      "synonyms": { "en": ["budget", "cost"], "ar": ["ميزانية", "تكلفة"] },
+      "targets": [
+        { "type": "column", "table": "Projects", "column": "Budget" }
+      ],
+      "capabilities": ["selectable", "filterable", "sortable", "aggregatable"]
+    },
+    {
+      "id": "concept_project_name",
+      "labels": { "en": "Project name", "ar": "اسم المشروع" },
+      "synonyms": { "en": ["project name", "project", "name"], "ar": ["اسم المشروع", "المشروع"] },
+      "targets": [
+        { "type": "column", "table": "Projects", "column": "Name" }
+      ],
+      "capabilities": ["searchable", "entity", "filterable"]
+    },
+    {
+      "id": "concept_priority",
+      "labels": { "en": "Priority", "ar": "الأولوية" },
+      "synonyms": {
+        "en": ["priority", "priorities", "importance", "low priority", "low priorities"],
+        "ar": ["أولوية", "الأولوية", "اولوية", "الاولوية"]
+      },
+      "targets": [
+        {
+          "type": "lookup_filter",
+          "lookup_table": "PeriortyLevels",
+          "lookup_column": "Name",
+          "relationship": {
+            "from_table": "Projects",
+            "from_column": "PeriortyLevelId",
+            "to_table": "PeriortyLevels",
+            "to_column": "Id"
+          }
+        }
+      ],
+      "conflicts_with": ["concept_risk"],
+      "capabilities": ["filterable", "sortable", "selectable"]
+    },
+    {
+      "id": "concept_risk",
+      "labels": { "en": "Risk", "ar": "المخاطر" },
+      "synonyms": {
+        "en": ["risk", "risks", "high risk", "low risk"],
+        "ar": ["خطورة", "مخاطر", "المخاطر"]
+      },
+      "targets": [
+        {
+          "type": "lookup_filter",
+          "lookup_table": "RiskLevels",
+          "lookup_column": "Name",
+          "relationship": {
+            "from_table": "Projects",
+            "from_column": "RiskLevelId",
+            "to_table": "RiskLevels",
+            "to_column": "Id"
+          }
+        }
+      ],
+      "conflicts_with": ["concept_priority"],
+      "capabilities": ["filterable", "sortable", "selectable"]
+    },
+    {
+      "id": "concept_manager",
+      "labels": { "en": "Manager / responsible", "ar": "المسؤول" },
+      "synonyms": {
+        "en": ["manager", "responsible", "owner", "project manager"],
+        "ar": ["المسؤول", "مدير المشروع", "المالك"]
+      },
+      "targets": [
+        {
+          "type": "column",
+          "table": "AspNetUsers",
+          "column": "FullName",
+          "relationship": {
+            "from_table": "Projects",
+            "from_column": "ManagerId",
+            "to_table": "AspNetUsers",
+            "to_column": "Id"
+          }
+        }
+      ],
+      "capabilities": ["selectable", "searchable", "filterable"]
+    },
+    {
+      "id": "concept_outputs",
+      "labels": { "en": "Outputs / deliverables", "ar": "المخرجات" },
+      "synonyms": {
+        "en": ["outputs", "deliverables", "output count"],
+        "ar": ["المخرجات", "مخرجات", "عدد المخرجات"]
+      },
+      "targets": [
+        { "type": "column", "table": "Projects", "column": "OutputCount" },
+        {
+          "type": "aggregation",
+          "function": "count",
+          "table": "ProjectOutPutModels",
+          "column": "Id",
+          "alias": "output_count",
+          "relationship": {
+            "from_table": "Projects",
+            "from_column": "Id",
+            "to_table": "ProjectOutPutModels",
+            "to_column": "ProjectId"
+          }
+        }
+      ],
+      "capabilities": ["selectable", "sortable", "aggregatable"]
+    }
+  ],
+  "exclusions": {
+    "tables": [
+      "AppTokens",
+      "AspNetUserClaims",
+      "AspNetUserLogins",
+      "AspNetUserRoles",
+      "AspNetUserTokens"
+    ],
+    "columns": [
+      "Projects.CreatedBy",
+      "Projects.UpdatedBy",
+      "Projects.ArchivedBy",
+      "Projects.IsDeleted",
+      "AspNetUsers.UserName",
+      "AspNetUsers.NormalizedUserName"
+    ],
+    "reasons": {
+      "AppTokens": "denylist",
+      "AspNetUserClaims": "identity_security",
+      "AspNetUserLogins": "identity_security",
+      "AspNetUserRoles": "identity_security",
+      "AspNetUserTokens": "identity_security",
+      "Projects.CreatedBy": "audit_identity",
+      "Projects.UpdatedBy": "audit_identity",
+      "Projects.ArchivedBy": "audit_identity",
+      "Projects.IsDeleted": "internal_state",
+      "AspNetUsers.UserName": "identity_security",
+      "AspNetUsers.NormalizedUserName": "identity_security"
+    }
+  }
+}

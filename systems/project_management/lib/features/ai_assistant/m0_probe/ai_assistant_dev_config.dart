@@ -24,10 +24,10 @@ class AiAssistantDevConfig {
   const AiAssistantDevConfig._();
 
   /// Default `false` → normal 001 chat behavior. Set `true` to run the probe.
-  static const bool useIntentJsonProbe = false;
+  static const bool useIntentJsonProbe = true;
 
   /// `0` = minimal (recommended for 1024-ctx), `1` = depth-1, `2` = depth-2.
-  static const int intentProbeDepth = 1;
+  static const int intentProbeDepth = 0;
 
   /// Known usable context window of the active model build (tokens).
   static const int intentProbeContextTokens = 1024;

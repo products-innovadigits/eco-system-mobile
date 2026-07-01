@@ -1,0 +1,114 @@
+I/flutter (32054): [AiAssistant] ╔══════════════ AI CHAT ══════════════
+I/flutter (32054): [AiAssistant] ║ Question : مشاريع عالية الخطورة
+I/flutter (32054): [AiAssistant] ║ lang=ar model=qwen_2_5_1_5b
+I/flutter (32054): [AiAssistant] ║ MODE     : INTENT JSON PROBE (depth=0)
+I/flutter (32054): [AI_INTENT_PROBE] variant=depth-0 mode=one_shot_fresh_session question_len=20 prompt_len=1359 est_prompt_tokens=389(estimated) context_tokens=1024 reserved_output_tokens=256 budget_tokens=768 est_available_output=635
+I/flutter (32054): [AI_INTENT_PROBE] latency=16182ms
+I/flutter (32054): [AI_INTENT_PROBE] raw_output=```json
+I/flutter (32054): {
+I/flutter (32054):   "schema_version": "0.1.0",
+I/flutter (32054):   "status": "ok",
+I/flutter (32054):   "language": "ar",
+I/flutter (32054):   "intent": "list_records",
+I/flutter (32054):   "root_table": "Projects",
+I/flutter (32054):   "target_tables": [],
+I/flutter (32054):   "selected_fields": [],
+I/flutter (32054):   "filters": [
+I/flutter (32054):     {
+I/flutter (32054):       "table": "",
+I/flutter (32054):       "column": "",
+I/flutter (32054):       "operator": "eq",
+I/flutter (32054):       "value": "مخاطر عالية"
+I/flutter (32054):     }
+I/flutter (32054):   ],
+I/flutter (32054):   "relationships": [],
+I/flutter (32054):   "aggregations": [],
+I/flutter (32054):   "date_range": null,
+I/flutter (32054):   "sort": [],
+I/flutter (32054):   "limit": null,
+I/flutter (32054):   "confidence": 0.0,
+I/flutter (32054):   "needs_clarification": false,
+I/flutter (32054):   "clarification_question": null,
+I/flutter (32054):   "clarification_options": [],
+I/flutter (32054):   "unsupported_reason": null,
+I/flutter (32054):   "validation_errors": []
+I/flutter (32054): }
+I/flutter (32054): ```
+I/flutter (32054): [AiAssistant] ║ Status   : ✅ SUCCESS (16198 ms)
+I/flutter (32054): [AiAssistant] ╚═════════════════════════════════════
+I/flutter (32054): [AiAssistant] ╔══════════════ AI CHAT ══════════════
+I/flutter (32054): [AiAssistant] ║ Question : show high risk projects
+I/flutter (32054): [AiAssistant] ║ lang=en model=qwen_2_5_1_5b
+I/flutter (32054): [AiAssistant] ║ MODE     : INTENT JSON PROBE (depth=0)
+I/flutter (32054): [AI_INTENT_PROBE] variant=depth-0 mode=one_shot_fresh_session question_len=23 prompt_len=1362 est_prompt_tokens=390(estimated) context_tokens=1024 reserved_output_tokens=256 budget_tokens=768 est_available_output=634
+I/flutter (32054): [AI_INTENT_PROBE] latency=14661ms
+I/flutter (32054): [AI_INTENT_PROBE] raw_output=```json
+I/flutter (32054): {
+I/flutter (32054):   "schema_version": "0.1.0",
+I/flutter (32054):   "status": "ok",
+I/flutter (32054):   "language": "ar",
+I/flutter (32054):   "intent": "list_records",
+I/flutter (32054):   "root_table": "Projects",
+I/flutter (32054):   "target_tables": [],
+I/flutter (32054):   "selected_fields": [],
+I/flutter (32054):   "filters": [
+I/flutter (32054):     {
+I/flutter (32054):       "table": "",
+I/flutter (32054):       "column": "",
+I/flutter (32054):       "operator": "eq",
+I/flutter (32054):       "value": "مخاطر عالية"
+I/flutter (32054):     }
+I/flutter (32054):   ],
+I/flutter (32054):   "relationships": [],
+I/flutter (32054):   "aggregations": [],
+I/flutter (32054):   "date_range": null,
+I/flutter (32054):   "sort": [],
+I/flutter (32054):   "limit": null,
+I/flutter (32054):   "confidence": 1.0,
+I/flutter (32054):   "needs_clarification": false,
+I/flutter (32054):   "clarification_question": null,
+I/flutter (32054):   "clarification_options": [],
+I/flutter (32054):   "unsupported_reason": null,
+I/flutter (32054):   "validation_errors": []
+I/flutter (32054): }
+I/flutter (32054): ```
+I/flutter (32054): [AiAssistant] ║ Status   : ✅ SUCCESS (14666 ms)
+I/flutter (32054): [AiAssistant] ╚═════════════════════════════════════
+I/flutter (32054): [AiAssistant] ╔══════════════ AI CHAT ══════════════
+I/flutter (32054): [AiAssistant] ║ Question : كم عدد المشاريع منخفضة المخاطر؟
+I/flutter (32054): [AiAssistant] ║ lang=ar model=qwen_2_5_1_5b
+I/flutter (32054): [AiAssistant] ║ MODE     : INTENT JSON PROBE (depth=0)
+I/flutter (32054): [AI_INTENT_PROBE] variant=depth-0 mode=one_shot_fresh_session question_len=31 prompt_len=1370 est_prompt_tokens=392(estimated) context_tokens=1024 reserved_output_tokens=256 budget_tokens=768 est_available_output=632
+I/flutter (32054): [AI_INTENT_PROBE] latency=15392ms
+I/flutter (32054): [AI_INTENT_PROBE] raw_output=```json
+I/flutter (32054): {
+I/flutter (32054):   "schema_version": "0.1.0",
+I/flutter (32054):   "status": "ok",
+I/flutter (32054):   "language": "ar",
+I/flutter (32054):   "intent": "count_records",
+I/flutter (32054):   "root_table": "Projects",
+I/flutter (32054):   "target_tables": [],
+I/flutter (32054):   "selected_fields": ["Id", "PeriortyLevelId"],
+I/flutter (32054):   "filters": [
+I/flutter (32054):     {
+I/flutter (32054):       "table": "",
+I/flutter (32054):       "column": "PeriortyLevelId",
+I/flutter (32054):       "operator": "eq",
+I/flutter (32054):       "value": "1"
+I/flutter (32054):     }
+I/flutter (32054):   ],
+I/flutter (32054):   "relationships": [],
+I/flutter (32054):   "aggregations": [],
+I/flutter (32054):   "date_range": null,
+I/flutter (32054):   "sort": [],
+I/flutter (32054):   "limit": null,
+I/flutter (32054):   "confidence": 1.0,
+I/flutter (32054):   "needs_clarification": false,
+I/flutter (32054):   "clarification_question": null,
+I/flutter (32054):   "clarification_options": [],
+I/flutter (32054):   "unsupported_reason": null,
+I/flutter (32054):   "validation_errors": []
+I/flutter (32054): }
+I/flutter (32054): ```
+I/flutter (32054): [AiAssistant] ║ Status   : ✅ SUCCESS (15398 ms)
+I/flutter (32054): [AiAssistant] ╚═════════════════════════════════════

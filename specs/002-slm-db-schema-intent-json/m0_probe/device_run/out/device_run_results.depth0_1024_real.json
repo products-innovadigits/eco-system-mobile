@@ -1,0 +1,167 @@
+{
+  "config_label": "depth0@1024_real",
+  "summary": {
+    "total_records": 3,
+    "guard_blocked": 0,
+    "scored_records": 3,
+    "valid_json_pct": 100.0,
+    "schema_grounded_pct": 0.0,
+    "invented_value_pct": 100.0,
+    "risk_priority_confusion_count": 1,
+    "relationship_correct_pct": 0.0,
+    "clarification_correct_pct": 100.0,
+    "latency_ms_p50": 15392,
+    "latency_ms_p90": 16182,
+    "note": "raw-SLM arm scored with the same schema graph + golden expectations as the deterministic spike"
+  },
+  "records": [
+    {
+      "question_id": "G01",
+      "question_text": "مشاريع عالية الخطورة",
+      "depth": 0,
+      "context_tokens": 1024,
+      "prompt_len": 1359,
+      "est_prompt_tokens": 389,
+      "budget_tokens": 768,
+      "latency_ms": 16182,
+      "raw_output": "```json\n{\n  \"schema_version\": \"0.1.0\",\n  \"status\": \"ok\",\n  \"language\": \"ar\",\n  \"intent\": \"list_records\",\n  \"root_table\": \"Projects\",\n  \"target_tables\": [],\n  \"selected_fields\": [],\n  \"filters\": [\n    {\n      \"table\": \"\",\n      \"column\": \"\",\n      \"operator\": \"eq\",\n      \"value\": \"مخاطر عالية\"\n    }\n  ],\n  \"relationships\": [],\n  \"aggregations\": [],\n  \"date_range\": null,\n  \"sort\": [],\n  \"limit\": null,\n  \"confidence\": 0.0,\n  \"needs_clarification\": false,\n  \"clarification_question\": null,\n  \"clarification_options\": [],\n  \"unsupported_reason\": null,\n  \"validation_errors\": []\n}\n```",
+      "guard_blocked": false,
+      "status": "✅ SUCCESS (16198 ms)",
+      "valid_json": true,
+      "schema_grounded": false,
+      "invented_value": true,
+      "relationship_correct": false,
+      "clarification_correct": true,
+      "risk_priority_confusion": false,
+      "parsed_output": {
+        "schema_version": "0.1.0",
+        "status": "ok",
+        "language": "ar",
+        "intent": "list_records",
+        "root_table": "Projects",
+        "target_tables": [],
+        "selected_fields": [],
+        "filters": [
+          {
+            "table": "",
+            "column": "",
+            "operator": "eq",
+            "value": "مخاطر عالية"
+          }
+        ],
+        "relationships": [],
+        "aggregations": [],
+        "date_range": null,
+        "sort": [],
+        "limit": null,
+        "confidence": 0.0,
+        "needs_clarification": false,
+        "clarification_question": null,
+        "clarification_options": [],
+        "unsupported_reason": null,
+        "validation_errors": []
+      },
+      "notes": []
+    },
+    {
+      "question_id": "G02",
+      "question_text": "show high risk projects",
+      "depth": 0,
+      "context_tokens": 1024,
+      "prompt_len": 1362,
+      "est_prompt_tokens": 390,
+      "budget_tokens": 768,
+      "latency_ms": 14661,
+      "raw_output": "```json\n{\n  \"schema_version\": \"0.1.0\",\n  \"status\": \"ok\",\n  \"language\": \"ar\",\n  \"intent\": \"list_records\",\n  \"root_table\": \"Projects\",\n  \"target_tables\": [],\n  \"selected_fields\": [],\n  \"filters\": [\n    {\n      \"table\": \"\",\n      \"column\": \"\",\n      \"operator\": \"eq\",\n      \"value\": \"مخاطر عالية\"\n    }\n  ],\n  \"relationships\": [],\n  \"aggregations\": [],\n  \"date_range\": null,\n  \"sort\": [],\n  \"limit\": null,\n  \"confidence\": 1.0,\n  \"needs_clarification\": false,\n  \"clarification_question\": null,\n  \"clarification_options\": [],\n  \"unsupported_reason\": null,\n  \"validation_errors\": []\n}\n```",
+      "guard_blocked": false,
+      "status": "✅ SUCCESS (14666 ms)",
+      "valid_json": true,
+      "schema_grounded": false,
+      "invented_value": true,
+      "relationship_correct": false,
+      "clarification_correct": true,
+      "risk_priority_confusion": false,
+      "parsed_output": {
+        "schema_version": "0.1.0",
+        "status": "ok",
+        "language": "ar",
+        "intent": "list_records",
+        "root_table": "Projects",
+        "target_tables": [],
+        "selected_fields": [],
+        "filters": [
+          {
+            "table": "",
+            "column": "",
+            "operator": "eq",
+            "value": "مخاطر عالية"
+          }
+        ],
+        "relationships": [],
+        "aggregations": [],
+        "date_range": null,
+        "sort": [],
+        "limit": null,
+        "confidence": 1.0,
+        "needs_clarification": false,
+        "clarification_question": null,
+        "clarification_options": [],
+        "unsupported_reason": null,
+        "validation_errors": []
+      },
+      "notes": []
+    },
+    {
+      "question_id": "G03",
+      "question_text": "كم عدد المشاريع منخفضة المخاطر؟",
+      "depth": 0,
+      "context_tokens": 1024,
+      "prompt_len": 1370,
+      "est_prompt_tokens": 392,
+      "budget_tokens": 768,
+      "latency_ms": 15392,
+      "raw_output": "```json\n{\n  \"schema_version\": \"0.1.0\",\n  \"status\": \"ok\",\n  \"language\": \"ar\",\n  \"intent\": \"count_records\",\n  \"root_table\": \"Projects\",\n  \"target_tables\": [],\n  \"selected_fields\": [\"Id\", \"PeriortyLevelId\"],\n  \"filters\": [\n    {\n      \"table\": \"\",\n      \"column\": \"PeriortyLevelId\",\n      \"operator\": \"eq\",\n      \"value\": \"1\"\n    }\n  ],\n  \"relationships\": [],\n  \"aggregations\": [],\n  \"date_range\": null,\n  \"sort\": [],\n  \"limit\": null,\n  \"confidence\": 1.0,\n  \"needs_clarification\": false,\n  \"clarification_question\": null,\n  \"clarification_options\": [],\n  \"unsupported_reason\": null,\n  \"validation_errors\": []\n}\n```",
+      "guard_blocked": false,
+      "status": "✅ SUCCESS (15398 ms)",
+      "valid_json": true,
+      "schema_grounded": false,
+      "invented_value": true,
+      "relationship_correct": false,
+      "clarification_correct": true,
+      "risk_priority_confusion": true,
+      "parsed_output": {
+        "schema_version": "0.1.0",
+        "status": "ok",
+        "language": "ar",
+        "intent": "count_records",
+        "root_table": "Projects",
+        "target_tables": [],
+        "selected_fields": [
+          "Id",
+          "PeriortyLevelId"
+        ],
+        "filters": [
+          {
+            "table": "",
+            "column": "PeriortyLevelId",
+            "operator": "eq",
+            "value": "1"
+          }
+        ],
+        "relationships": [],
+        "aggregations": [],
+        "date_range": null,
+        "sort": [],
+        "limit": null,
+        "confidence": 1.0,
+        "needs_clarification": false,
+        "clarification_question": null,
+        "clarification_options": [],
+        "unsupported_reason": null,
+        "validation_errors": []
+      },
+      "notes": []
+    }
+  ],
+  "raw_slm_outputs_snippet": "RAW_SLM_OUTPUTS = {\n    \"G01\": {\n        \"raw_text\": \"```json {   \\\"schema_version\\\": \\\"0.1.0\\\",   \\\"status\\\": \\\"ok\\\",   \\\"language\\\": \\\"ar\\\",   \\\"intent\\\": \\\"list_records\\\",   \\\"root_table\\\": \\\"Projects\\\",   \\\"target_tables\\\": [],   \\\"selected_fields\\\": [],   \\\"filters\\\": [     {       \\\"table\\\": \\\"\\\",       \\\"column\\\": \\\"\\\",       \\\"operator\\\": \\\"eq\\\",       \\\"value\\\": \\\"مخاطر عالية\\\"     }   ],   \\\"relationships\\\": [],   \\\"aggregations\\\": [],   \\\"date_range\\\": null,   \\\"sort\\\": [],   \\\"limit\\\": null,   \\\"confidence\\\": 0.0,   \\\"needs_clarification\\\": false,   \\\"clarification_question\\\": null,   \\\"clarification_options\\\": [],   \\\"unsupported_reason\\\": null,   \\\"validation_errors\\\": [] } ```\",\n        \"parsed\": {\"schema_version\": \"0.1.0\", \"status\": \"ok\", \"language\": \"ar\", \"intent\": \"list_records\", \"root_table\": \"Projects\", \"target_tables\": [], \"selected_fields\": [], \"filters\": [{\"table\": \"\", \"column\": \"\", \"operator\": \"eq\", \"value\": \"مخاطر عالية\"}], \"relationships\": [], \"aggregations\": [], \"date_range\": null, \"sort\": [], \"limit\": null, \"confidence\": 0.0, \"needs_clarification\": false, \"clarification_question\": null, \"clarification_options\": [], \"unsupported_reason\": null, \"validation_errors\": []},\n        \"source\": \"S22 Ultra M0 device run (parse_probe_logs.py)\",\n    },\n    \"G02\": {\n        \"raw_text\": \"```json {   \\\"schema_version\\\": \\\"0.1.0\\\",   \\\"status\\\": \\\"ok\\\",   \\\"language\\\": \\\"ar\\\",   \\\"intent\\\": \\\"list_records\\\",   \\\"root_table\\\": \\\"Projects\\\",   \\\"target_tables\\\": [],   \\\"selected_fields\\\": [],   \\\"filters\\\": [     {       \\\"table\\\": \\\"\\\",       \\\"column\\\": \\\"\\\",       \\\"operator\\\": \\\"eq\\\",       \\\"value\\\": \\\"مخاطر عالية\\\"     }   ],   \\\"relationships\\\": [],   \\\"aggregations\\\": [],   \\\"date_range\\\": null,   \\\"sort\\\": [],   \\\"limit\\\": null,   \\\"confidence\\\": 1.0,   \\\"needs_clarification\\\": false,   \\\"clarification_question\\\": null,   \\\"clarification_options\\\": [],   \\\"unsupported_reason\\\": null,   \\\"validation_errors\\\": [] } ```\",\n        \"parsed\": {\"schema_version\": \"0.1.0\", \"status\": \"ok\", \"language\": \"ar\", \"intent\": \"list_records\", \"root_table\": \"Projects\", \"target_tables\": [], \"selected_fields\": [], \"filters\": [{\"table\": \"\", \"column\": \"\", \"operator\": \"eq\", \"value\": \"مخاطر عالية\"}], \"relationships\": [], \"aggregations\": [], \"date_range\": null, \"sort\": [], \"limit\": null, \"confidence\": 1.0, \"needs_clarification\": false, \"clarification_question\": null, \"clarification_options\": [], \"unsupported_reason\": null, \"validation_errors\": []},\n        \"source\": \"S22 Ultra M0 device run (parse_probe_logs.py)\",\n    },\n    \"G03\": {\n        \"raw_text\": \"```json {   \\\"schema_version\\\": \\\"0.1.0\\\",   \\\"status\\\": \\\"ok\\\",   \\\"language\\\": \\\"ar\\\",   \\\"intent\\\": \\\"count_records\\\",   \\\"root_table\\\": \\\"Projects\\\",   \\\"target_tables\\\": [],   \\\"selected_fields\\\": [\\\"Id\\\", \\\"PeriortyLevelId\\\"],   \\\"filters\\\": [     {       \\\"table\\\": \\\"\\\",       \\\"column\\\": \\\"PeriortyLevelId\\\",       \\\"operator\\\": \\\"eq\\\",       \\\"value\\\": \\\"1\\\"     }   ],   \\\"relationships\\\": [],   \\\"aggregations\\\": [],   \\\"date_range\\\": null,   \\\"sort\\\": [],   \\\"limit\\\": null,   \\\"confidence\\\": 1.0,   \\\"needs_clarification\\\": false,   \\\"clarification_question\\\": null,   \\\"clarification_options\\\": [],   \\\"unsupported_reason\\\": null,   \\\"validation_errors\\\": [] } ```\",\n        \"parsed\": {\"schema_version\": \"0.1.0\", \"status\": \"ok\", \"language\": \"ar\", \"intent\": \"count_records\", \"root_table\": \"Projects\", \"target_tables\": [], \"selected_fields\": [\"Id\", \"PeriortyLevelId\"], \"filters\": [{\"table\": \"\", \"column\": \"PeriortyLevelId\", \"operator\": \"eq\", \"value\": \"1\"}], \"relationships\": [], \"aggregations\": [], \"date_range\": null, \"sort\": [], \"limit\": null, \"confidence\": 1.0, \"needs_clarification\": false, \"clarification_question\": null, \"clarification_options\": [], \"unsupported_reason\": null, \"validation_errors\": []},\n        \"source\": \"S22 Ultra M0 device run (parse_probe_logs.py)\",\n    },\n}"
+}

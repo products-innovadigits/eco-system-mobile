@@ -35,6 +35,8 @@ flutter:
   assets:
     - assets/ai/metadata.sample.json
     - assets/ai/schema/projects_db_metadata_schema.json
+    - assets/ai/schema/schema_enrichment.json
+    - assets/ai/schema/schema_catalog.json
     - assets/ai/prompts/system_instruction.txt
     - assets/ai/prompts/m0_strict_json_depth_2.txt
     - assets/ai/prompts/m0_strict_json_depth_1.txt
