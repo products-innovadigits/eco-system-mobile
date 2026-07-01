@@ -40,10 +40,22 @@ _AI = "[AiAssistant]"
 _PROBE = "[AI_INTENT_PROBE]"
 _BANNER = "AI CHAT"
 
-# Leading `adb logcat -v time` prefix: "MM-DD HH:MM:SS.mmm  PID  TID L TAG: "
-_LOGCAT_PREFIX_RE = re.compile(
-    r"^\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}\.\d+\s+\d+\s+\d+\s+\w\s+[^:]*:\s?"
+# Leading logcat prefixes on continuation lines, stripped so a multi-line
+# raw_output reconstructs to the model's text only. Two capture formats:
+#   -v time : "MM-DD HH:MM:SS.mmm  PID  TID L TAG: "
+#   brief   : "I/flutter ( 1234): "  (default `adb logcat`, tag-agnostic)
+_LOGCAT_PREFIX_RES = (
+    re.compile(r"^\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}\.\d+\s+\d+\s+\d+\s+\w\s+[^:]*:\s?"),
+    re.compile(r"^[VDIWEF]/[^(]*\(\s*\d+\):\s?"),
 )
+
+
+def _strip_logcat_prefix(line: str) -> str:
+    for rx in _LOGCAT_PREFIX_RES:
+        stripped = rx.sub("", line)
+        if stripped != line:
+            return stripped
+    return line
 
 _KV_RE = re.compile(r"(\w+)=([^\s]+)")
 _DEPTH_MODE_RE = re.compile(r"INTENT JSON PROBE \(depth=(\d+)\)")
@@ -170,7 +182,7 @@ def parse_logcat(text: str) -> list[ProbeRecord]:
         # leading logcat timestamp/pid/tag prefix so the captured output is the
         # model's text only.
         if capturing_raw and current is not None:
-            current.raw_output += "\n" + _LOGCAT_PREFIX_RE.sub("", line)
+            current.raw_output += "\n" + _strip_logcat_prefix(line)
 
     flush()
     return records

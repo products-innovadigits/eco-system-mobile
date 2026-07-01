@@ -64,6 +64,36 @@ class TestParsing(unittest.TestCase):
         self.assertEqual(r2.depth, 2)
 
 
+BRIEF_FORMAT = """
+I/flutter (32054): [AiAssistant] ╔══════════════ AI CHAT ══════════════
+I/flutter (32054): [AiAssistant] ║ Question : show high risk projects
+I/flutter (32054): [AiAssistant] ║ MODE     : INTENT JSON PROBE (depth=0)
+I/flutter (32054): [AI_INTENT_PROBE] variant=depth-0 mode=one_shot_fresh_session prompt_len=1362 est_prompt_tokens=390(estimated) context_tokens=1024 budget_tokens=768
+I/flutter (32054): [AI_INTENT_PROBE] latency=14661ms
+I/flutter (32054): [AI_INTENT_PROBE] raw_output=```json
+I/flutter (32054): {
+I/flutter (32054):   "status": "ok",
+I/flutter (32054):   "filters": [{"table":"RiskLevels","column":"Name","operator":"eq","value":"مخاطر عالية"}]
+I/flutter (32054): }
+I/flutter (32054): ```
+I/flutter (32054): [AiAssistant] ║ Status   : ✅ SUCCESS (14666 ms)
+"""
+
+
+class TestBriefFormat(unittest.TestCase):
+    """`adb logcat` default/brief format (I/flutter ( PID): ...) as emitted
+    on the real S22 Ultra — continuation lines carry a brief prefix that must
+    be stripped so multi-line JSON reconstructs and parses."""
+
+    def test_brief_format_multiline_json_parses(self):
+        records = parse_logcat(BRIEF_FORMAT)
+        self.assertEqual(len(records), 1)
+        obj = try_parse_json(records[0].raw_output)
+        self.assertIsNotNone(obj)
+        self.assertEqual(obj["status"], "ok")
+        self.assertEqual(obj["filters"][0]["table"], "RiskLevels")
+
+
 class TestGoldenMapping(unittest.TestCase):
     def test_maps_questions_to_ids(self):
         records = parse_logcat(SAMPLE)
