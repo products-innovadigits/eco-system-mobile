@@ -1,0 +1,2226 @@
+{
+  "summary": {
+    "total_questions": 50,
+    "deterministic": {
+      "schema_grounded_pct": 100.0,
+      "invented_value_pct": 0.0,
+      "risk_priority_confusion_count": 0,
+      "relationship_correct_pct": 96.3,
+      "clarification_correct_pct": 100.0,
+      "pass_rate_pct": 100.0
+    },
+    "raw_slm": {
+      "recorded_count": 1,
+      "schema_grounded_pct": 0.0,
+      "invented_value_pct": 100.0,
+      "risk_priority_confusion_count": 1,
+      "note": "only G01 has a recorded raw device output (T009b/T009c full golden-set run not yet performed)"
+    },
+    "avg_schema_slice_reduction_pct": 95.8
+  },
+  "per_question": [
+    {
+      "question_id": "G01",
+      "language": "AR",
+      "category": "risk",
+      "original_question": "مشاريع عالية الخطورة",
+      "normalized_question": "مشاريع عاليه الخطوره",
+      "matched_concepts": [
+        "risk"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "RiskLevels"
+      ],
+      "candidate_filters": [
+        "RiskLevels.Name eq 'مخاطر عالية'"
+      ],
+      "matched_lookup_values": [
+        "مخاطر عالية"
+      ],
+      "relationship_path": [
+        "Projects->RiskLevels"
+      ],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.9,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=list, root=Projects, targets=RiskLevels, filter=RiskLevels.Name eq \"مخاطر عالية\", rel=Projects→RiskLevels, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": {
+        "raw_text": "{\"filters\":[{\"table\":\"\",\"column\":\"PeriortyLevelId\",\"value\":\"الهامة\"}],\"relationships\":[],\"confidence\":1.0}",
+        "parsed": {
+          "filters": [
+            {
+              "table": "",
+              "column": "PeriortyLevelId",
+              "value": "الهامة"
+            }
+          ],
+          "relationships": [],
+          "confidence": 1.0
+        },
+        "source": "deterministic_grounding_spike_execution_plan.md §0 (3x identical greedy on-device runs)"
+      },
+      "hybrid_output": {
+        "raw_filters_rejected": [
+          {
+            "table": "",
+            "column": "PeriortyLevelId",
+            "value": "الهامة",
+            "reason": "unknown table/column in raw SLM output"
+          }
+        ],
+        "snapped_candidate_filters": [
+          "RiskLevels.Name eq 'مخاطر عالية'"
+        ],
+        "relationship_path": [
+          "Projects->RiskLevels"
+        ],
+        "needs_clarification": false,
+        "confidence": 0.9,
+        "note": "raw SLM filter table/column/value always replaced by deterministic snap; raw envelope (intent/language) would be kept in a full implementation"
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 7942,
+        "reduction_pct": 95.1
+      }
+    },
+    {
+      "question_id": "G02",
+      "language": "EN",
+      "category": "risk",
+      "original_question": "show high risk projects",
+      "normalized_question": "show high risk projects",
+      "matched_concepts": [
+        "risk"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "RiskLevels"
+      ],
+      "candidate_filters": [
+        "RiskLevels.Name eq 'مخاطر عالية'"
+      ],
+      "matched_lookup_values": [
+        "مخاطر عالية"
+      ],
+      "relationship_path": [
+        "Projects->RiskLevels"
+      ],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.9,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=list, root=Projects, targets=RiskLevels, filter=RiskLevels.Name eq \"مخاطر عالية\", rel=Projects→RiskLevels, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [
+          "RiskLevels.Name eq 'مخاطر عالية'"
+        ],
+        "relationship_path": [
+          "Projects->RiskLevels"
+        ],
+        "needs_clarification": false,
+        "confidence": 0.9
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 7942,
+        "reduction_pct": 95.1
+      }
+    },
+    {
+      "question_id": "G03",
+      "language": "AR",
+      "category": "risk",
+      "original_question": "كم عدد المشاريع منخفضة المخاطر؟",
+      "normalized_question": "كم عدد المشاريع منخفضه المخاطر؟",
+      "matched_concepts": [
+        "risk"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "RiskLevels"
+      ],
+      "candidate_filters": [
+        "RiskLevels.Name eq 'مخاطر منخفضة'"
+      ],
+      "matched_lookup_values": [
+        "مخاطر منخفضة"
+      ],
+      "relationship_path": [
+        "Projects->RiskLevels"
+      ],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.9,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=count, root=Projects, targets=RiskLevels, filter=RiskLevels.Name eq \"مخاطر منخفضة\", rel=Projects→RiskLevels, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [
+          "RiskLevels.Name eq 'مخاطر منخفضة'"
+        ],
+        "relationship_path": [
+          "Projects->RiskLevels"
+        ],
+        "needs_clarification": false,
+        "confidence": 0.9
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 7942,
+        "reduction_pct": 95.1
+      }
+    },
+    {
+      "question_id": "G04",
+      "language": "mixed",
+      "category": "risk",
+      "original_question": "list المشاريع متوسطة المخاطر",
+      "normalized_question": "list المشاريع متوسطه المخاطر",
+      "matched_concepts": [
+        "risk"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "RiskLevels"
+      ],
+      "candidate_filters": [
+        "RiskLevels.Name eq 'مخاطر متوسطة'"
+      ],
+      "matched_lookup_values": [
+        "مخاطر متوسطة"
+      ],
+      "relationship_path": [
+        "Projects->RiskLevels"
+      ],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.9,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=list, root=Projects, targets=RiskLevels, filter=RiskLevels.Name eq \"مخاطر متوسطة\", rel=Projects→RiskLevels, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [
+          "RiskLevels.Name eq 'مخاطر متوسطة'"
+        ],
+        "relationship_path": [
+          "Projects->RiskLevels"
+        ],
+        "needs_clarification": false,
+        "confidence": 0.9
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 7942,
+        "reduction_pct": 95.1
+      }
+    },
+    {
+      "question_id": "G05",
+      "language": "AR",
+      "category": "priority",
+      "original_question": "المشاريع ذات الأولوية العالية",
+      "normalized_question": "المشاريع ذات الاولويه العاليه",
+      "matched_concepts": [
+        "priority"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "PeriortyLevels"
+      ],
+      "candidate_filters": [
+        "PeriortyLevels.Name eq 'أولوية عالية'"
+      ],
+      "matched_lookup_values": [
+        "أولوية عالية"
+      ],
+      "relationship_path": [
+        "Projects->PeriortyLevels"
+      ],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.9,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=list, root=Projects, targets=PeriortyLevels, filter=PeriortyLevels.Name eq \"أولوية عالية\", rel=Projects→PeriortyLevels, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [
+          "PeriortyLevels.Name eq 'أولوية عالية'"
+        ],
+        "relationship_path": [
+          "Projects->PeriortyLevels"
+        ],
+        "needs_clarification": false,
+        "confidence": 0.9
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 7946,
+        "reduction_pct": 95.1
+      }
+    },
+    {
+      "question_id": "G06",
+      "language": "EN",
+      "category": "priority",
+      "original_question": "projects with low priority",
+      "normalized_question": "projects with low priority",
+      "matched_concepts": [
+        "priority"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "PeriortyLevels"
+      ],
+      "candidate_filters": [
+        "PeriortyLevels.Name eq 'أولوية منخفضة'"
+      ],
+      "matched_lookup_values": [
+        "أولوية منخفضة"
+      ],
+      "relationship_path": [
+        "Projects->PeriortyLevels"
+      ],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.9,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=list, root=Projects, targets=PeriortyLevels, filter=PeriortyLevels.Name eq \"أولوية منخفضة\", rel=Projects→PeriortyLevels, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [
+          "PeriortyLevels.Name eq 'أولوية منخفضة'"
+        ],
+        "relationship_path": [
+          "Projects->PeriortyLevels"
+        ],
+        "needs_clarification": false,
+        "confidence": 0.9
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 7946,
+        "reduction_pct": 95.1
+      }
+    },
+    {
+      "question_id": "G07",
+      "language": "AR",
+      "category": "risk-vs-priority",
+      "original_question": "قارن المشاريع عالية الخطورة بالمشاريع عالية الأولوية",
+      "normalized_question": "قارن المشاريع عاليه الخطوره بالمشاريع عاليه الاولويه",
+      "matched_concepts": [
+        "risk",
+        "priority"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "PeriortyLevels",
+        "RiskLevels"
+      ],
+      "candidate_filters": [
+        "RiskLevels.Name eq 'مخاطر عالية'",
+        "PeriortyLevels.Name eq 'أولوية عالية'"
+      ],
+      "matched_lookup_values": [
+        "مخاطر عالية",
+        "أولوية عالية"
+      ],
+      "relationship_path": [
+        "Projects->PeriortyLevels",
+        "Projects->RiskLevels"
+      ],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.9,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=compare, root=Projects, targets=RiskLevels, PeriortyLevels, filter=RiskLevels.Name eq \"مخاطر عالية\"; PeriortyLevels.Name eq \"أولوية عالية\", rel=Projects→RiskLevels; Projects→PeriortyLevels, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [
+          "RiskLevels.Name eq 'مخاطر عالية'",
+          "PeriortyLevels.Name eq 'أولوية عالية'"
+        ],
+        "relationship_path": [
+          "Projects->PeriortyLevels",
+          "Projects->RiskLevels"
+        ],
+        "needs_clarification": false,
+        "confidence": 0.9
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 9509,
+        "reduction_pct": 94.1
+      }
+    },
+    {
+      "question_id": "G08",
+      "language": "AR",
+      "category": "delayed",
+      "original_question": "المشاريع المتأخرة",
+      "normalized_question": "المشاريع المتاخره",
+      "matched_concepts": [
+        "delayed"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [],
+      "candidate_filters": [
+        "Projects.EndDate lt 'today'"
+      ],
+      "matched_lookup_values": [],
+      "relationship_path": [],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.9,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=list, root=Projects, targets=Projects, filter=Projects.EndDate lt today, rel=—, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [
+          "Projects.EndDate lt 'today'"
+        ],
+        "relationship_path": [],
+        "needs_clarification": false,
+        "confidence": 0.9
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 6379,
+        "reduction_pct": 96.0
+      }
+    },
+    {
+      "question_id": "G09",
+      "language": "EN",
+      "category": "delayed",
+      "original_question": "which projects are overdue?",
+      "normalized_question": "which projects are overdue?",
+      "matched_concepts": [
+        "delayed"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [],
+      "candidate_filters": [
+        "Projects.EndDate lt 'today'"
+      ],
+      "matched_lookup_values": [],
+      "relationship_path": [],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.9,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=list, root=Projects, targets=Projects, filter=Projects.EndDate lt today, rel=—, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [
+          "Projects.EndDate lt 'today'"
+        ],
+        "relationship_path": [],
+        "needs_clarification": false,
+        "confidence": 0.9
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 6379,
+        "reduction_pct": 96.0
+      }
+    },
+    {
+      "question_id": "G10",
+      "language": "AR",
+      "category": "delayed",
+      "original_question": "كم عدد المشاريع المتأخرة؟",
+      "normalized_question": "كم عدد المشاريع المتاخره؟",
+      "matched_concepts": [
+        "delayed"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [],
+      "candidate_filters": [
+        "Projects.EndDate lt 'today'"
+      ],
+      "matched_lookup_values": [],
+      "relationship_path": [],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.9,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=count, root=Projects, targets=Projects, filter=Projects.EndDate lt today, rel=—, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [
+          "Projects.EndDate lt 'today'"
+        ],
+        "relationship_path": [],
+        "needs_clarification": false,
+        "confidence": 0.9
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 6379,
+        "reduction_pct": 96.0
+      }
+    },
+    {
+      "question_id": "G11",
+      "language": "EN",
+      "category": "due-soon",
+      "original_question": "projects ending soon",
+      "normalized_question": "projects ending soon",
+      "matched_concepts": [
+        "dates"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [],
+      "candidate_filters": [
+        "Projects.EndDate date_range 'relative'"
+      ],
+      "matched_lookup_values": [],
+      "relationship_path": [],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.9,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=list, root=Projects, targets=Projects, filter=Projects.EndDate between [today, +N] (relative \"due_soon\"), rel=—, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [
+          "Projects.EndDate date_range 'relative'"
+        ],
+        "relationship_path": [],
+        "needs_clarification": false,
+        "confidence": 0.9
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 6379,
+        "reduction_pct": 96.0
+      }
+    },
+    {
+      "question_id": "G12",
+      "language": "AR",
+      "category": "dates",
+      "original_question": "المشاريع التي تنتهي هذا الشهر",
+      "normalized_question": "المشاريع التي تنتهي هذا الشهر",
+      "matched_concepts": [
+        "dates"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [],
+      "candidate_filters": [
+        "Projects.EndDate date_range 'relative'"
+      ],
+      "matched_lookup_values": [],
+      "relationship_path": [],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.9,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=list, root=Projects, targets=Projects, filter=Projects.EndDate in current month, rel=—, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [
+          "Projects.EndDate date_range 'relative'"
+        ],
+        "relationship_path": [],
+        "needs_clarification": false,
+        "confidence": 0.9
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 6379,
+        "reduction_pct": 96.0
+      }
+    },
+    {
+      "question_id": "G13",
+      "language": "AR",
+      "category": "manager",
+      "original_question": "من هو مدير هذا المشروع؟",
+      "normalized_question": "من هو مدير هذا المشروع؟",
+      "matched_concepts": [
+        "manager"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "AspNetUsers"
+      ],
+      "candidate_filters": [],
+      "matched_lookup_values": [],
+      "relationship_path": [
+        "Projects->AspNetUsers"
+      ],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.4,
+      "clarification_flag": true,
+      "clarification_reason": "manager/project reference is implied but not stated (e.g. 'this project', 'a certain manager')",
+      "status": "needs_clarification",
+      "expected_result_summary": "intent=get_detail, root=Projects, targets=AspNetUsers, filter=(needs a specific project), rel=Projects→AspNetUsers, clarify=Y",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [],
+        "relationship_path": [
+          "Projects->AspNetUsers"
+        ],
+        "needs_clarification": true,
+        "confidence": 0.4
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 7760,
+        "reduction_pct": 95.2
+      }
+    },
+    {
+      "question_id": "G14",
+      "language": "EN",
+      "category": "manager",
+      "original_question": "show projects by manager",
+      "normalized_question": "show projects by manager",
+      "matched_concepts": [
+        "manager"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "AspNetUsers"
+      ],
+      "candidate_filters": [],
+      "matched_lookup_values": [],
+      "relationship_path": [
+        "Projects->AspNetUsers"
+      ],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.6,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=summarize, root=Projects, targets=AspNetUsers, filter=group by manager, rel=Projects→AspNetUsers, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [],
+        "relationship_path": [
+          "Projects->AspNetUsers"
+        ],
+        "needs_clarification": false,
+        "confidence": 0.6
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 7760,
+        "reduction_pct": 95.2
+      }
+    },
+    {
+      "question_id": "G15",
+      "language": "AR",
+      "category": "manager",
+      "original_question": "اعرض المشاريع الخاصة بمدير معيّن",
+      "normalized_question": "اعرض المشاريع الخاصه بمدير معين",
+      "matched_concepts": [
+        "manager"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "AspNetUsers"
+      ],
+      "candidate_filters": [],
+      "matched_lookup_values": [],
+      "relationship_path": [
+        "Projects->AspNetUsers"
+      ],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.4,
+      "clarification_flag": true,
+      "clarification_reason": "manager/project reference is implied but not stated (e.g. 'this project', 'a certain manager')",
+      "status": "needs_clarification",
+      "expected_result_summary": "intent=list, root=Projects, targets=AspNetUsers, filter=AspNetUsers.FullName eq <?>, rel=Projects→AspNetUsers, clarify=Y",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [],
+        "relationship_path": [
+          "Projects->AspNetUsers"
+        ],
+        "needs_clarification": true,
+        "confidence": 0.4
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 7760,
+        "reduction_pct": 95.2
+      }
+    },
+    {
+      "question_id": "G16",
+      "language": "EN",
+      "category": "manager",
+      "original_question": "list projects managed by Ahmed",
+      "normalized_question": "list projects managed by ahmed",
+      "matched_concepts": [
+        "manager"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "AspNetUsers"
+      ],
+      "candidate_filters": [
+        "AspNetUsers.FullName eq 'Ahmed'"
+      ],
+      "matched_lookup_values": [],
+      "relationship_path": [
+        "Projects->AspNetUsers"
+      ],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.9,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=list, root=Projects, targets=AspNetUsers, filter=AspNetUsers.FullName eq \"Ahmed\", rel=Projects→AspNetUsers, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [
+          "AspNetUsers.FullName eq 'Ahmed'"
+        ],
+        "relationship_path": [
+          "Projects->AspNetUsers"
+        ],
+        "needs_clarification": false,
+        "confidence": 0.9
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 7760,
+        "reduction_pct": 95.2
+      }
+    },
+    {
+      "question_id": "G17",
+      "language": "AR",
+      "category": "department",
+      "original_question": "المشاريع حسب الإدارة",
+      "normalized_question": "المشاريع حسب الاداره",
+      "matched_concepts": [
+        "department"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "DepartmentLookups"
+      ],
+      "candidate_filters": [],
+      "matched_lookup_values": [],
+      "relationship_path": [
+        "Projects->DepartmentLookups"
+      ],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.6,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=summarize, root=Projects, targets=DepartmentLookups, filter=group by department, rel=Projects→DepartmentLookups, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [],
+        "relationship_path": [
+          "Projects->DepartmentLookups"
+        ],
+        "needs_clarification": false,
+        "confidence": 0.6
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 8571,
+        "reduction_pct": 94.7
+      }
+    },
+    {
+      "question_id": "G18",
+      "language": "EN",
+      "category": "department",
+      "original_question": "projects in the Engineering department",
+      "normalized_question": "projects in the engineering department",
+      "matched_concepts": [
+        "department"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "DepartmentLookups"
+      ],
+      "candidate_filters": [],
+      "matched_lookup_values": [],
+      "relationship_path": [
+        "Projects->DepartmentLookups"
+      ],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.4,
+      "clarification_flag": true,
+      "clarification_reason": "a specific DepartmentLookups value appears to be referenced but did not match any enumerated DepartmentLookups.Name value",
+      "status": "needs_clarification",
+      "expected_result_summary": "intent=list, root=Projects, targets=DepartmentLookups, filter=DepartmentLookups.Name eq \"Engineering\", rel=Projects→DepartmentLookups, clarify=Y",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [],
+        "relationship_path": [
+          "Projects->DepartmentLookups"
+        ],
+        "needs_clarification": true,
+        "confidence": 0.4
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 8571,
+        "reduction_pct": 94.7
+      }
+    },
+    {
+      "question_id": "G19",
+      "language": "AR",
+      "category": "department",
+      "original_question": "كم مشروع في إدارة العمليات؟",
+      "normalized_question": "كم مشروع في اداره العمليات؟",
+      "matched_concepts": [
+        "department"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "DepartmentLookups"
+      ],
+      "candidate_filters": [],
+      "matched_lookup_values": [],
+      "relationship_path": [
+        "Projects->DepartmentLookups"
+      ],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.4,
+      "clarification_flag": true,
+      "clarification_reason": "a specific DepartmentLookups value appears to be referenced but did not match any enumerated DepartmentLookups.Name value",
+      "status": "needs_clarification",
+      "expected_result_summary": "intent=count, root=Projects, targets=DepartmentLookups, filter=DepartmentLookups.Name eq <validate>, rel=Projects→DepartmentLookups, clarify=Y",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [],
+        "relationship_path": [
+          "Projects->DepartmentLookups"
+        ],
+        "needs_clarification": true,
+        "confidence": 0.4
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 8571,
+        "reduction_pct": 94.7
+      }
+    },
+    {
+      "question_id": "G20",
+      "language": "EN",
+      "category": "lifecycle",
+      "original_question": "projects by lifecycle stage",
+      "normalized_question": "projects by lifecycle stage",
+      "matched_concepts": [
+        "lifecycle"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "ProjectLifeCycleModels"
+      ],
+      "candidate_filters": [],
+      "matched_lookup_values": [],
+      "relationship_path": [
+        "Projects->ProjectLifeCycleModels"
+      ],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.6,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=summarize, root=Projects, targets=ProjectLifeCycleModels, filter=group by lifecycle, rel=Projects→ProjectLifeCycleModels, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [],
+        "relationship_path": [
+          "Projects->ProjectLifeCycleModels"
+        ],
+        "needs_clarification": false,
+        "confidence": 0.6
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 8163,
+        "reduction_pct": 94.9
+      }
+    },
+    {
+      "question_id": "G21",
+      "language": "AR",
+      "category": "lifecycle",
+      "original_question": "المشاريع في مرحلة دورة حياة معيّنة",
+      "normalized_question": "المشاريع في مرحله دوره حياه معينه",
+      "matched_concepts": [
+        "lifecycle"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "ProjectLifeCycleModels"
+      ],
+      "candidate_filters": [],
+      "matched_lookup_values": [],
+      "relationship_path": [
+        "Projects->ProjectLifeCycleModels"
+      ],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.4,
+      "clarification_flag": true,
+      "clarification_reason": "a specific ProjectLifeCycleModels value appears to be referenced but did not match any enumerated ProjectLifeCycleModels.Title value",
+      "status": "needs_clarification",
+      "expected_result_summary": "intent=list, root=Projects, targets=ProjectLifeCycleModels, filter=ProjectLifeCycleModels.Title eq <?>, rel=Projects→ProjectLifeCycleModels, clarify=Y",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [],
+        "relationship_path": [
+          "Projects->ProjectLifeCycleModels"
+        ],
+        "needs_clarification": true,
+        "confidence": 0.4
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 8163,
+        "reduction_pct": 94.9
+      }
+    },
+    {
+      "question_id": "G22",
+      "language": "EN",
+      "category": "category",
+      "original_question": "list projects by category",
+      "normalized_question": "list projects by category",
+      "matched_concepts": [
+        "category"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "ProjectCategories"
+      ],
+      "candidate_filters": [],
+      "matched_lookup_values": [],
+      "relationship_path": [
+        "Projects->ProjectCategories"
+      ],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.6,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=summarize, root=Projects, targets=ProjectCategories, filter=group by category, rel=Projects→ProjectCategories, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [],
+        "relationship_path": [
+          "Projects->ProjectCategories"
+        ],
+        "needs_clarification": false,
+        "confidence": 0.6
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 8157,
+        "reduction_pct": 94.9
+      }
+    },
+    {
+      "question_id": "G23",
+      "language": "AR",
+      "category": "budget",
+      "original_question": "المشاريع التي تزيد ميزانيتها عن مليون",
+      "normalized_question": "المشاريع التي تزيد ميزانيتها عن مليون",
+      "matched_concepts": [
+        "budget"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [],
+      "candidate_filters": [
+        "Projects.Budget agg 'sum_or_avg'"
+      ],
+      "matched_lookup_values": [],
+      "relationship_path": [],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.9,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=list, root=Projects, targets=Projects, filter=Projects.Budget gt 1000000, rel=—, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [
+          "Projects.Budget agg 'sum_or_avg'"
+        ],
+        "relationship_path": [],
+        "needs_clarification": false,
+        "confidence": 0.9
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 6379,
+        "reduction_pct": 96.0
+      }
+    },
+    {
+      "question_id": "G24",
+      "language": "EN",
+      "category": "budget",
+      "original_question": "top projects by budget",
+      "normalized_question": "top projects by budget",
+      "matched_concepts": [
+        "budget"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [],
+      "candidate_filters": [
+        "Projects.Budget sort_desc '-'"
+      ],
+      "matched_lookup_values": [],
+      "relationship_path": [],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.9,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=list, root=Projects, targets=Projects, filter=sort Projects.Budget desc, rel=—, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [
+          "Projects.Budget sort_desc '-'"
+        ],
+        "relationship_path": [],
+        "needs_clarification": false,
+        "confidence": 0.9
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 6379,
+        "reduction_pct": 96.0
+      }
+    },
+    {
+      "question_id": "G25",
+      "language": "AR",
+      "category": "budget",
+      "original_question": "إجمالي ميزانية المشاريع",
+      "normalized_question": "اجمالي ميزانيه المشاريع",
+      "matched_concepts": [
+        "budget"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [],
+      "candidate_filters": [
+        "Projects.Budget agg 'sum_or_avg'"
+      ],
+      "matched_lookup_values": [],
+      "relationship_path": [],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.9,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=summarize, root=Projects, targets=Projects, filter=agg sum(Projects.Budget), rel=—, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [
+          "Projects.Budget agg 'sum_or_avg'"
+        ],
+        "relationship_path": [],
+        "needs_clarification": false,
+        "confidence": 0.9
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 6379,
+        "reduction_pct": 96.0
+      }
+    },
+    {
+      "question_id": "G26",
+      "language": "EN",
+      "category": "budget",
+      "original_question": "average project budget by department",
+      "normalized_question": "average project budget by department",
+      "matched_concepts": [
+        "department",
+        "budget"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "DepartmentLookups"
+      ],
+      "candidate_filters": [
+        "Projects.Budget agg 'sum_or_avg'"
+      ],
+      "matched_lookup_values": [],
+      "relationship_path": [
+        "Projects->DepartmentLookups"
+      ],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.75,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=summarize, root=Projects, targets=Projects, DepartmentLookups, filter=agg avg(Projects.Budget) group by department, rel=Projects→DepartmentLookups, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [
+          "Projects.Budget agg 'sum_or_avg'"
+        ],
+        "relationship_path": [
+          "Projects->DepartmentLookups"
+        ],
+        "needs_clarification": false,
+        "confidence": 0.75
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 8571,
+        "reduction_pct": 94.7
+      }
+    },
+    {
+      "question_id": "G27",
+      "language": "AR",
+      "category": "count",
+      "original_question": "كم عدد المشاريع؟",
+      "normalized_question": "كم عدد المشاريع؟",
+      "matched_concepts": [],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [],
+      "candidate_filters": [],
+      "matched_lookup_values": [],
+      "relationship_path": [],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.5,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=count, root=Projects, targets=Projects, filter=—, rel=—, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [],
+        "relationship_path": [],
+        "needs_clarification": false,
+        "confidence": 0.5
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 6379,
+        "reduction_pct": 96.0
+      }
+    },
+    {
+      "question_id": "G28",
+      "language": "EN",
+      "category": "list",
+      "original_question": "list all projects",
+      "normalized_question": "list all projects",
+      "matched_concepts": [],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [],
+      "candidate_filters": [],
+      "matched_lookup_values": [],
+      "relationship_path": [],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.5,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=list, root=Projects, targets=Projects, filter=—, rel=—, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [],
+        "relationship_path": [],
+        "needs_clarification": false,
+        "confidence": 0.5
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 6379,
+        "reduction_pct": 96.0
+      }
+    },
+    {
+      "question_id": "G29",
+      "language": "EN",
+      "category": "compare",
+      "original_question": "compare delayed vs on-time projects",
+      "normalized_question": "compare delayed vs on-time projects",
+      "matched_concepts": [
+        "delayed"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [],
+      "candidate_filters": [
+        "Projects.EndDate lt 'today'"
+      ],
+      "matched_lookup_values": [],
+      "relationship_path": [],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.9,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=compare, root=Projects, targets=Projects, filter=Projects.EndDate lt today vs >= today, rel=—, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [
+          "Projects.EndDate lt 'today'"
+        ],
+        "relationship_path": [],
+        "needs_clarification": false,
+        "confidence": 0.9
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 6379,
+        "reduction_pct": 96.0
+      }
+    },
+    {
+      "question_id": "G30",
+      "language": "AR",
+      "category": "summary",
+      "original_question": "قارن المشاريع حسب مستوى المخاطر",
+      "normalized_question": "قارن المشاريع حسب مستوي المخاطر",
+      "matched_concepts": [
+        "risk"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "RiskLevels"
+      ],
+      "candidate_filters": [],
+      "matched_lookup_values": [],
+      "relationship_path": [
+        "Projects->RiskLevels"
+      ],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.6,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=summarize, root=Projects, targets=RiskLevels, filter=group by RiskLevels.Name, rel=Projects→RiskLevels, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [],
+        "relationship_path": [
+          "Projects->RiskLevels"
+        ],
+        "needs_clarification": false,
+        "confidence": 0.6
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 7942,
+        "reduction_pct": 95.1
+      }
+    },
+    {
+      "question_id": "G31",
+      "language": "EN",
+      "category": "summary",
+      "original_question": "summarize projects by risk level",
+      "normalized_question": "summarize projects by risk level",
+      "matched_concepts": [
+        "risk"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "RiskLevels"
+      ],
+      "candidate_filters": [],
+      "matched_lookup_values": [],
+      "relationship_path": [
+        "Projects->RiskLevels"
+      ],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.6,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=summarize, root=Projects, targets=RiskLevels, filter=group by RiskLevels.Name, rel=Projects→RiskLevels, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [],
+        "relationship_path": [
+          "Projects->RiskLevels"
+        ],
+        "needs_clarification": false,
+        "confidence": 0.6
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 7942,
+        "reduction_pct": 95.1
+      }
+    },
+    {
+      "question_id": "G32",
+      "language": "AR",
+      "category": "summary",
+      "original_question": "ملخص المشاريع حسب الأولوية",
+      "normalized_question": "ملخص المشاريع حسب الاولويه",
+      "matched_concepts": [
+        "priority"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "PeriortyLevels"
+      ],
+      "candidate_filters": [],
+      "matched_lookup_values": [],
+      "relationship_path": [
+        "Projects->PeriortyLevels"
+      ],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.6,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=summarize, root=Projects, targets=PeriortyLevels, filter=group by PeriortyLevels.Name, rel=Projects→PeriortyLevels, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [],
+        "relationship_path": [
+          "Projects->PeriortyLevels"
+        ],
+        "needs_clarification": false,
+        "confidence": 0.6
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 7946,
+        "reduction_pct": 95.1
+      }
+    },
+    {
+      "question_id": "G33",
+      "language": "AR",
+      "category": "ambiguous-status",
+      "original_question": "المشاريع المكتملة",
+      "normalized_question": "المشاريع المكتمله",
+      "matched_concepts": [],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [],
+      "candidate_filters": [],
+      "matched_lookup_values": [],
+      "relationship_path": [],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.2,
+      "clarification_flag": true,
+      "clarification_reason": "question implies a project status concept, but this schema has no status column on Projects",
+      "status": "needs_clarification",
+      "expected_result_summary": "intent=—, root=Projects, targets=Projects, filter=(no status column), rel=—, clarify=Y",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [],
+        "relationship_path": [],
+        "needs_clarification": true,
+        "confidence": 0.2
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 6379,
+        "reduction_pct": 96.0
+      }
+    },
+    {
+      "question_id": "G34",
+      "language": "EN",
+      "category": "ambiguous-status",
+      "original_question": "show active projects",
+      "normalized_question": "show active projects",
+      "matched_concepts": [],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [],
+      "candidate_filters": [],
+      "matched_lookup_values": [],
+      "relationship_path": [],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.2,
+      "clarification_flag": true,
+      "clarification_reason": "question implies a project status concept, but this schema has no status column on Projects",
+      "status": "needs_clarification",
+      "expected_result_summary": "intent=—, root=Projects, targets=Projects, filter=(no status column), rel=—, clarify=Y",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [],
+        "relationship_path": [],
+        "needs_clarification": true,
+        "confidence": 0.2
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 6379,
+        "reduction_pct": 96.0
+      }
+    },
+    {
+      "question_id": "G35",
+      "language": "AR",
+      "category": "ambiguous-status",
+      "original_question": "المشاريع المعلقة",
+      "normalized_question": "المشاريع المعلقه",
+      "matched_concepts": [],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [],
+      "candidate_filters": [],
+      "matched_lookup_values": [],
+      "relationship_path": [],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.2,
+      "clarification_flag": true,
+      "clarification_reason": "question implies a project status concept, but this schema has no status column on Projects",
+      "status": "needs_clarification",
+      "expected_result_summary": "intent=unknown, root=Projects, targets=—, filter=—, rel=—, clarify=Y",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [],
+        "relationship_path": [],
+        "needs_clarification": true,
+        "confidence": 0.2
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 6379,
+        "reduction_pct": 96.0
+      }
+    },
+    {
+      "question_id": "G36",
+      "language": "EN",
+      "category": "unsupported",
+      "original_question": "what's the weather today?",
+      "normalized_question": "what's the weather today?",
+      "matched_concepts": [],
+      "candidate_root_table": null,
+      "candidate_tables": [],
+      "candidate_filters": [],
+      "matched_lookup_values": [],
+      "relationship_path": [],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.0,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "unsupported",
+      "expected_result_summary": "intent=unknown, root=—, targets=—, filter=—, rel=—, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [],
+        "relationship_path": [],
+        "needs_clarification": false,
+        "confidence": 0.0
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 2,
+        "reduction_pct": 100.0
+      }
+    },
+    {
+      "question_id": "G37",
+      "language": "AR",
+      "category": "unsupported",
+      "original_question": "اكتب لي قصيدة عن المشاريع",
+      "normalized_question": "اكتب لي قصيده عن المشاريع",
+      "matched_concepts": [],
+      "candidate_root_table": null,
+      "candidate_tables": [],
+      "candidate_filters": [],
+      "matched_lookup_values": [],
+      "relationship_path": [],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.0,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "unsupported",
+      "expected_result_summary": "intent=unknown, root=—, targets=—, filter=—, rel=—, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [],
+        "relationship_path": [],
+        "needs_clarification": false,
+        "confidence": 0.0
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 2,
+        "reduction_pct": 100.0
+      }
+    },
+    {
+      "question_id": "G38",
+      "language": "EN",
+      "category": "unsupported",
+      "original_question": "delete all projects",
+      "normalized_question": "delete all projects",
+      "matched_concepts": [],
+      "candidate_root_table": null,
+      "candidate_tables": [],
+      "candidate_filters": [],
+      "matched_lookup_values": [],
+      "relationship_path": [],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.0,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "unsupported",
+      "expected_result_summary": "intent=unknown, root=—, targets=—, filter=—, rel=—, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [],
+        "relationship_path": [],
+        "needs_clarification": false,
+        "confidence": 0.0
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 2,
+        "reduction_pct": 100.0
+      }
+    },
+    {
+      "question_id": "G39",
+      "language": "AR",
+      "category": "unsupported",
+      "original_question": "ما هي أعمدة جدول المستخدمين؟",
+      "normalized_question": "ما هي اعمده جدول المستخدمين؟",
+      "matched_concepts": [],
+      "candidate_root_table": null,
+      "candidate_tables": [],
+      "candidate_filters": [],
+      "matched_lookup_values": [],
+      "relationship_path": [],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.0,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "unsupported",
+      "expected_result_summary": "intent=unknown, root=—, targets=—, filter=—, rel=—, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [],
+        "relationship_path": [],
+        "needs_clarification": false,
+        "confidence": 0.0
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 2,
+        "reduction_pct": 100.0
+      }
+    },
+    {
+      "question_id": "G40",
+      "language": "EN",
+      "category": "unsupported",
+      "original_question": "show employee salaries",
+      "normalized_question": "show employee salaries",
+      "matched_concepts": [],
+      "candidate_root_table": null,
+      "candidate_tables": [],
+      "candidate_filters": [],
+      "matched_lookup_values": [],
+      "relationship_path": [],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.0,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "unsupported",
+      "expected_result_summary": "intent=unknown, root=—, targets=—, filter=—, rel=—, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [],
+        "relationship_path": [],
+        "needs_clarification": false,
+        "confidence": 0.0
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 2,
+        "reduction_pct": 100.0
+      }
+    },
+    {
+      "question_id": "G41",
+      "language": "AR",
+      "category": "ambiguous",
+      "original_question": "اعرض المشاريع المهمة",
+      "normalized_question": "اعرض المشاريع المهمه",
+      "matched_concepts": [],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "PeriortyLevels",
+        "RiskLevels"
+      ],
+      "candidate_filters": [],
+      "matched_lookup_values": [],
+      "relationship_path": [],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.35,
+      "clarification_flag": true,
+      "clarification_reason": "ambiguous importance wording ('important'/'المهمة'/'الهامة'-class term) could mean priority or risk; refusing to guess",
+      "status": "needs_clarification",
+      "expected_result_summary": "intent=—, root=Projects, targets=PeriortyLevels? RiskLevels?, filter=—, rel=—, clarify=Y",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [],
+        "relationship_path": [],
+        "needs_clarification": true,
+        "confidence": 0.35
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 9509,
+        "reduction_pct": 94.1
+      }
+    },
+    {
+      "question_id": "G42",
+      "language": "EN",
+      "category": "ambiguous",
+      "original_question": "show critical projects",
+      "normalized_question": "show critical projects",
+      "matched_concepts": [],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "PeriortyLevels",
+        "RiskLevels"
+      ],
+      "candidate_filters": [],
+      "matched_lookup_values": [],
+      "relationship_path": [],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.35,
+      "clarification_flag": true,
+      "clarification_reason": "ambiguous importance wording ('important'/'المهمة'/'الهامة'-class term) could mean priority or risk; refusing to guess",
+      "status": "needs_clarification",
+      "expected_result_summary": "intent=—, root=Projects, targets=RiskLevels? PeriortyLevels?, filter=RiskLevels.Name eq \"مخاطر عالية\" (candidate), rel=Projects→RiskLevels, clarify=Y",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [],
+        "relationship_path": [],
+        "needs_clarification": true,
+        "confidence": 0.35
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 9509,
+        "reduction_pct": 94.1
+      }
+    },
+    {
+      "question_id": "G43",
+      "language": "AR",
+      "category": "ambiguous",
+      "original_question": "المشاريع الكبيرة",
+      "normalized_question": "المشاريع الكبيره",
+      "matched_concepts": [],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "Projects"
+      ],
+      "candidate_filters": [],
+      "matched_lookup_values": [],
+      "relationship_path": [],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.3,
+      "clarification_flag": true,
+      "clarification_reason": "vague size/scale wording ('big'/'large'/'كبيرة') has no single schema target; refusing to guess",
+      "status": "needs_clarification",
+      "expected_result_summary": "intent=—, root=Projects, targets=Projects, filter=Projects.Budget (candidate), rel=—, clarify=Y",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [],
+        "relationship_path": [],
+        "needs_clarification": true,
+        "confidence": 0.3
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 6379,
+        "reduction_pct": 96.0
+      }
+    },
+    {
+      "question_id": "G44",
+      "language": "mixed",
+      "category": "risk",
+      "original_question": "show المشاريع high risk",
+      "normalized_question": "show المشاريع high risk",
+      "matched_concepts": [
+        "risk"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "RiskLevels"
+      ],
+      "candidate_filters": [
+        "RiskLevels.Name eq 'مخاطر عالية'"
+      ],
+      "matched_lookup_values": [
+        "مخاطر عالية"
+      ],
+      "relationship_path": [
+        "Projects->RiskLevels"
+      ],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.9,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=list, root=Projects, targets=RiskLevels, filter=RiskLevels.Name eq \"مخاطر عالية\", rel=Projects→RiskLevels, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [
+          "RiskLevels.Name eq 'مخاطر عالية'"
+        ],
+        "relationship_path": [
+          "Projects->RiskLevels"
+        ],
+        "needs_clarification": false,
+        "confidence": 0.9
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 7942,
+        "reduction_pct": 95.1
+      }
+    },
+    {
+      "question_id": "G45",
+      "language": "mixed",
+      "category": "priority",
+      "original_question": "قائمة projects بأولوية عالية",
+      "normalized_question": "قائمه projects باولويه عاليه",
+      "matched_concepts": [
+        "priority"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "PeriortyLevels"
+      ],
+      "candidate_filters": [
+        "PeriortyLevels.Name eq 'أولوية عالية'"
+      ],
+      "matched_lookup_values": [
+        "أولوية عالية"
+      ],
+      "relationship_path": [
+        "Projects->PeriortyLevels"
+      ],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.9,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=list, root=Projects, targets=PeriortyLevels, filter=PeriortyLevels.Name eq \"أولوية عالية\", rel=Projects→PeriortyLevels, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [
+          "PeriortyLevels.Name eq 'أولوية عالية'"
+        ],
+        "relationship_path": [
+          "Projects->PeriortyLevels"
+        ],
+        "needs_clarification": false,
+        "confidence": 0.9
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 7946,
+        "reduction_pct": 95.1
+      }
+    },
+    {
+      "question_id": "G46",
+      "language": "mixed",
+      "category": "delayed",
+      "original_question": "count المشاريع overdue",
+      "normalized_question": "count المشاريع overdue",
+      "matched_concepts": [
+        "delayed"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [],
+      "candidate_filters": [
+        "Projects.EndDate lt 'today'"
+      ],
+      "matched_lookup_values": [],
+      "relationship_path": [],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.9,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=count, root=Projects, targets=Projects, filter=Projects.EndDate lt today, rel=—, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [
+          "Projects.EndDate lt 'today'"
+        ],
+        "relationship_path": [],
+        "needs_clarification": false,
+        "confidence": 0.9
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 6379,
+        "reduction_pct": 96.0
+      }
+    },
+    {
+      "question_id": "G47",
+      "language": "EN",
+      "category": "multi-filter",
+      "original_question": "high risk projects in Finance department",
+      "normalized_question": "high risk projects in finance department",
+      "matched_concepts": [
+        "risk",
+        "department"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "DepartmentLookups",
+        "RiskLevels"
+      ],
+      "candidate_filters": [
+        "RiskLevels.Name eq 'مخاطر عالية'"
+      ],
+      "matched_lookup_values": [
+        "مخاطر عالية"
+      ],
+      "relationship_path": [
+        "Projects->DepartmentLookups",
+        "Projects->RiskLevels"
+      ],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.4,
+      "clarification_flag": true,
+      "clarification_reason": "a specific DepartmentLookups value appears to be referenced but did not match any enumerated DepartmentLookups.Name value",
+      "status": "needs_clarification",
+      "expected_result_summary": "intent=list, root=Projects, targets=RiskLevels, DepartmentLookups, filter=RiskLevels.Name eq \"مخاطر عالية\"; DepartmentLookups.Name eq \"Finance\"(validate), rel=Projects→RiskLevels; Projects→DepartmentLookups, clarify=Y",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [
+          "RiskLevels.Name eq 'مخاطر عالية'"
+        ],
+        "relationship_path": [
+          "Projects->DepartmentLookups",
+          "Projects->RiskLevels"
+        ],
+        "needs_clarification": true,
+        "confidence": 0.4
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 10134,
+        "reduction_pct": 93.7
+      }
+    },
+    {
+      "question_id": "G48",
+      "language": "AR",
+      "category": "multi-filter",
+      "original_question": "المشاريع عالية المخاطر والمتأخرة",
+      "normalized_question": "المشاريع عاليه المخاطر والمتاخره",
+      "matched_concepts": [
+        "risk",
+        "delayed"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "RiskLevels"
+      ],
+      "candidate_filters": [
+        "RiskLevels.Name eq 'مخاطر عالية'",
+        "Projects.EndDate lt 'today'"
+      ],
+      "matched_lookup_values": [
+        "مخاطر عالية"
+      ],
+      "relationship_path": [
+        "Projects->RiskLevels"
+      ],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.9,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=list, root=Projects, targets=RiskLevels, Projects, filter=RiskLevels.Name eq \"مخاطر عالية\"; Projects.EndDate lt today, rel=Projects→RiskLevels, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [
+          "RiskLevels.Name eq 'مخاطر عالية'",
+          "Projects.EndDate lt 'today'"
+        ],
+        "relationship_path": [
+          "Projects->RiskLevels"
+        ],
+        "needs_clarification": false,
+        "confidence": 0.9
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 7942,
+        "reduction_pct": 95.1
+      }
+    },
+    {
+      "question_id": "G49",
+      "language": "EN",
+      "category": "dates",
+      "original_question": "projects starting next month",
+      "normalized_question": "projects starting next month",
+      "matched_concepts": [
+        "dates"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [],
+      "candidate_filters": [
+        "Projects.StartDate date_range 'relative'"
+      ],
+      "matched_lookup_values": [],
+      "relationship_path": [],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.9,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=list, root=Projects, targets=Projects, filter=Projects.StartDate in next month, rel=—, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [
+          "Projects.StartDate date_range 'relative'"
+        ],
+        "relationship_path": [],
+        "needs_clarification": false,
+        "confidence": 0.9
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 6379,
+        "reduction_pct": 96.0
+      }
+    },
+    {
+      "question_id": "G50",
+      "language": "AR",
+      "category": "manager+risk",
+      "original_question": "مين المسؤول عن المشاريع عالية المخاطر؟",
+      "normalized_question": "مين المسؤول عن المشاريع عاليه المخاطر؟",
+      "matched_concepts": [
+        "risk",
+        "manager"
+      ],
+      "candidate_root_table": "Projects",
+      "candidate_tables": [
+        "AspNetUsers",
+        "RiskLevels"
+      ],
+      "candidate_filters": [
+        "RiskLevels.Name eq 'مخاطر عالية'"
+      ],
+      "matched_lookup_values": [
+        "مخاطر عالية"
+      ],
+      "relationship_path": [
+        "Projects->AspNetUsers",
+        "Projects->RiskLevels"
+      ],
+      "validation_result": {
+        "valid": true,
+        "errors": []
+      },
+      "confidence": 0.75,
+      "clarification_flag": false,
+      "clarification_reason": null,
+      "status": "ok",
+      "expected_result_summary": "intent=list, root=Projects, targets=AspNetUsers, RiskLevels, filter=RiskLevels.Name eq \"مخاطر عالية\", rel=Projects→AspNetUsers; Projects→RiskLevels, clarify=N",
+      "pass_fail": "PASS",
+      "raw_slm_output": null,
+      "hybrid_output": {
+        "note": "no recorded SLM output for this question; hybrid falls back to deterministic-only",
+        "candidate_filters": [
+          "RiskLevels.Name eq 'مخاطر عالية'"
+        ],
+        "relationship_path": [
+          "Projects->AspNetUsers",
+          "Projects->RiskLevels"
+        ],
+        "needs_clarification": false,
+        "confidence": 0.75
+      },
+      "schema_slice_reduction": {
+        "full_chars": 160612,
+        "selected_chars": 9323,
+        "reduction_pct": 94.2
+      }
+    }
+  ]
+}
