@@ -32,7 +32,6 @@ class FlutterGemmaLocalSlmService implements LocalSlmService {
 
   FlutterGemmaSpikeSession? _session;
   String? _loadedModelId;
-  gemma.ModelFileType? _loadedFileType;
   bool _isReady = false;
 
   @override
@@ -83,7 +82,6 @@ class FlutterGemmaLocalSlmService implements LocalSlmService {
         systemInstruction: _config.systemInstruction,
       );
       _loadedModelId = modelId;
-      _loadedFileType = fileType;
       _isReady = true;
     } catch (e) {
       throw LocalSlmUnavailable('flutter_gemma spike load failed: $e');
@@ -142,30 +140,13 @@ class FlutterGemmaLocalSlmService implements LocalSlmService {
     int maxTokens = 256,
     Duration? timeout,
   }) async {
-    // Fresh, history-free generation: rebuild a clean session so no prior chat
-    // context carries over. Closing first avoids holding two models in memory.
-    final modelId = _loadedModelId;
-    final fileType = _loadedFileType;
-    if (!_isReady || modelId == null || fileType == null) {
-      throw const LocalSlmUnavailable(
-        'flutter_gemma spike model is not loaded.',
-      );
-    }
-    await _session?.close();
-    _isReady = false;
+    // Fresh, history-free generation that REUSES the already-loaded model. Only
+    // the chat session (KV cache) is reset — the model is NOT reloaded — so there
+    // is no per-call XNNPack rebuild / weight reload. This keeps probe latency to
+    // inference cost only after the first load.
+    final session = _requireSession();
     try {
-      _session = await _backend.openChat(
-        maxTokens: _config.contextTokens,
-        modelType: _modelTypeFor(modelId),
-        fileType: fileType,
-        preferredBackend: _config.preferredBackend,
-        systemInstruction: _config.systemInstruction,
-      );
-      _isReady = true;
-      final session = _session!;
-      await session.addUserMessage(prompt);
-      final future = session.generateText();
-      return timeout == null ? await future : await future.timeout(timeout);
+      return await session.generateTextOneShot(prompt, timeout: timeout);
     } on TimeoutException {
       throw const LocalSlmTimeout();
     } catch (e) {
@@ -185,7 +166,6 @@ class FlutterGemmaLocalSlmService implements LocalSlmService {
     await _session?.close();
     _session = null;
     _loadedModelId = null;
-    _loadedFileType = null;
     _isReady = false;
   }
 
@@ -259,6 +239,11 @@ abstract class FlutterGemmaSpikeSession {
   Future<void> addUserMessage(String text);
   Stream<String> generate();
   Future<String> generateText();
+
+  /// Resets only the chat session (clears history / KV cache, no model reload),
+  /// then runs a single generation for [prompt]. Used by the M0 one-shot probe.
+  Future<String> generateTextOneShot(String prompt, {Duration? timeout});
+
   Future<void> cancel();
   Future<void> close();
 }
@@ -324,6 +309,19 @@ class _FlutterGemmaPackageSession implements FlutterGemmaSpikeSession {
   @override
   Future<String> generateText() async {
     final response = await chat.generateChatResponse();
+    if (response is gemma.TextResponse) return response.token;
+    return '';
+  }
+
+  @override
+  Future<String> generateTextOneShot(String prompt, {Duration? timeout}) async {
+    // clearHistory() recreates only the inference session (KV cache) on the
+    // same loaded model — no createModel / XNNPack rebuild. Guarantees an empty
+    // context for this single generation.
+    await chat.clearHistory();
+    await chat.addQueryChunk(gemma.Message.text(text: prompt, isUser: true));
+    final future = chat.generateChatResponse();
+    final response = timeout == null ? await future : await future.timeout(timeout);
     if (response is gemma.TextResponse) return response.token;
     return '';
   }

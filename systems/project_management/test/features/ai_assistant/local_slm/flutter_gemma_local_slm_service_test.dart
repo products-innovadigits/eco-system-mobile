@@ -76,6 +76,24 @@ void main() {
       );
     });
 
+    test('one-shot reuses the loaded model (no reopen) and resets history', () async {
+      final backend = _FakeGemmaBackend(reply: '{"status":"ok"}');
+      final service = FlutterGemmaLocalSlmService(backend: backend);
+
+      await service.load('qwen_2_5_1_5b', modelFilePath: '/tmp/qwen.task');
+      expect(backend.openChatCalls, 1); // model/session created once on load
+
+      final out = await service.generateOneShotText('high risk projects');
+
+      expect(out, '{"status":"ok"}');
+      // The model is NOT reopened/reloaded for the one-shot...
+      expect(backend.openChatCalls, 1);
+      // ...only the chat session/history is reset, and the prompt is sent.
+      expect(backend.session.clearHistoryCalls, 1);
+      expect(backend.session.messages.single, 'high risk projects');
+      expect(service.isReady, isTrue);
+    });
+
     test('cancel delegates to the active spike session', () async {
       final backend = _FakeGemmaBackend();
       final service = FlutterGemmaLocalSlmService(backend: backend);
@@ -107,6 +125,7 @@ class _FakeGemmaBackend implements FlutterGemmaSpikeBackend {
   final Duration textDelay;
   final _FakeGemmaSession session;
   int initializeCalls = 0;
+  int openChatCalls = 0;
   final installPaths = <String>[];
   final modelTypes = <gemma.ModelType>[];
   final fileTypes = <gemma.ModelFileType>[];
@@ -135,6 +154,7 @@ class _FakeGemmaBackend implements FlutterGemmaSpikeBackend {
     gemma.PreferredBackend? preferredBackend,
     String? systemInstruction,
   }) async {
+    openChatCalls += 1;
     return session;
   }
 }
@@ -147,6 +167,7 @@ class _FakeGemmaSession implements FlutterGemmaSpikeSession {
   final messages = <String>[];
   int cancelCalls = 0;
   int closeCalls = 0;
+  int clearHistoryCalls = 0;
 
   @override
   Future<void> addUserMessage(String text) async {
@@ -162,6 +183,15 @@ class _FakeGemmaSession implements FlutterGemmaSpikeSession {
   Future<String> generateText() async {
     if (textDelay > Duration.zero) await Future<void>.delayed(textDelay);
     return reply;
+  }
+
+  @override
+  Future<String> generateTextOneShot(String prompt, {Duration? timeout}) async {
+    clearHistoryCalls += 1; // simulates session reset (no model reload)
+    messages.add(prompt);
+    if (textDelay > Duration.zero) await Future<void>.delayed(textDelay);
+    final f = Future<String>.value(reply);
+    return timeout == null ? await f : await f.timeout(timeout);
   }
 
   @override
