@@ -1,0 +1,29 @@
+07-01 12:00:00.100  9876  9876 I flutter : [AiAssistant] ╔══════════════ AI CHAT ══════════════
+07-01 12:00:00.101  9876  9876 I flutter : [AiAssistant] ║ Question : مشاريع عالية الخطورة
+07-01 12:00:00.102  9876  9876 I flutter : [AiAssistant] ║ lang=ar model=qwen2.5-1.5b
+07-01 12:00:00.103  9876  9876 I flutter : [AiAssistant] ║ MODE     : INTENT JSON PROBE (depth=0)
+07-01 12:00:00.150  9876  9876 I flutter : [AI_INTENT_PROBE] variant=depth-0 mode=one_shot_fresh_session question_len=20 prompt_len=1420 est_prompt_tokens=406(estimated) context_tokens=1024 reserved_output_tokens=256 budget_tokens=768 est_available_output=618
+07-01 12:00:08.500  9876  9876 I flutter : [AI_INTENT_PROBE] latency=8350ms
+07-01 12:00:08.501  9876  9876 I flutter : [AI_INTENT_PROBE] raw_output={"filters":[{"table":"","column":"PeriortyLevelId","value":"الهامة"}],"relationships":[],"confidence":1.0}
+07-01 12:00:08.520  9876  9876 I flutter : [AiAssistant] ║ Status   : ✅ SUCCESS (8380 ms)
+07-01 12:00:08.521  9876  9876 I flutter : [AiAssistant] ║ Response : {"filters":[{"table":"","column":"PeriortyLevelId","value":"الهامة"}],"relationships":[],"confidence":1.0}
+07-01 12:00:08.522  9876  9876 I flutter : [AiAssistant] ╚═════════════════════════════════════
+07-01 12:01:00.100  9876  9876 I flutter : [AiAssistant] ╔══════════════ AI CHAT ══════════════
+07-01 12:01:00.101  9876  9876 I flutter : [AiAssistant] ║ Question : show high risk projects
+07-01 12:01:00.102  9876  9876 I flutter : [AiAssistant] ║ lang=en model=qwen2.5-1.5b
+07-01 12:01:00.103  9876  9876 I flutter : [AiAssistant] ║ MODE     : INTENT JSON PROBE (depth=0)
+07-01 12:01:00.150  9876  9876 I flutter : [AI_INTENT_PROBE] variant=depth-0 mode=one_shot_fresh_session question_len=22 prompt_len=1402 est_prompt_tokens=401(estimated) context_tokens=1024 reserved_output_tokens=256 budget_tokens=768 est_available_output=623
+07-01 12:01:07.900  9876  9876 I flutter : [AI_INTENT_PROBE] latency=7700ms
+07-01 12:01:07.901  9876  9876 I flutter : [AI_INTENT_PROBE] raw_output=```json
+07-01 12:01:07.902  9876  9876 I flutter : {"status":"ok","root_table":"Projects","filters":[{"table":"RiskLevels","column":"Name","operator":"eq","value":"مخاطر عالية"}],"relationships":[{"from_table":"Projects","to_table":"RiskLevels"}],"needs_clarification":false}
+07-01 12:01:07.903  9876  9876 I flutter : ```
+07-01 12:01:07.920  9876  9876 I flutter : [AiAssistant] ║ Status   : ✅ SUCCESS (7730 ms)
+07-01 12:01:07.921  9876  9876 I flutter : [AiAssistant] ╚═════════════════════════════════════
+07-01 12:02:00.100  9876  9876 I flutter : [AiAssistant] ╔══════════════ AI CHAT ══════════════
+07-01 12:02:00.101  9876  9876 I flutter : [AiAssistant] ║ Question : المشاريع المتأخرة
+07-01 12:02:00.102  9876  9876 I flutter : [AiAssistant] ║ lang=ar model=qwen2.5-1.5b
+07-01 12:02:00.103  9876  9876 I flutter : [AiAssistant] ║ MODE     : INTENT JSON PROBE (depth=2)
+07-01 12:02:00.150  9876  9876 I flutter : [AI_INTENT_PROBE] variant=depth-2 mode=one_shot_fresh_session question_len=17 prompt_len=4291 est_prompt_tokens=1226(estimated) context_tokens=1024 reserved_output_tokens=256 budget_tokens=768 est_available_output=-202
+07-01 12:02:00.151  9876  9876 I flutter : [AI_INTENT_PROBE] prompt_too_large native_call=BLOCKED est_prompt_tokens=1226 budget_tokens=768 context=1024
+07-01 12:02:00.170  9876  9876 I flutter : [AiAssistant] ║ Status   : ❌ GENERATION FAILED
+07-01 12:02:00.171  9876  9876 I flutter : [AiAssistant] ╚═════════════════════════════════════

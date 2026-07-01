@@ -1,0 +1,113 @@
+{
+  "config_label": "sample_depth0@1024",
+  "summary": {
+    "total_records": 3,
+    "guard_blocked": 1,
+    "scored_records": 2,
+    "valid_json_pct": 100.0,
+    "schema_grounded_pct": 50.0,
+    "invented_value_pct": 50.0,
+    "risk_priority_confusion_count": 1,
+    "relationship_correct_pct": 50.0,
+    "clarification_correct_pct": 100.0,
+    "latency_ms_p50": 8350,
+    "latency_ms_p90": 8350,
+    "note": "raw-SLM arm scored with the same schema graph + golden expectations as the deterministic spike"
+  },
+  "records": [
+    {
+      "question_id": "G01",
+      "question_text": "مشاريع عالية الخطورة",
+      "depth": 0,
+      "context_tokens": 1024,
+      "prompt_len": 1420,
+      "est_prompt_tokens": 406,
+      "budget_tokens": 768,
+      "latency_ms": 8350,
+      "raw_output": "{\"filters\":[{\"table\":\"\",\"column\":\"PeriortyLevelId\",\"value\":\"الهامة\"}],\"relationships\":[],\"confidence\":1.0}",
+      "guard_blocked": false,
+      "status": "✅ SUCCESS (8380 ms)",
+      "valid_json": true,
+      "schema_grounded": false,
+      "invented_value": true,
+      "relationship_correct": false,
+      "clarification_correct": true,
+      "risk_priority_confusion": true,
+      "parsed_output": {
+        "filters": [
+          {
+            "table": "",
+            "column": "PeriortyLevelId",
+            "value": "الهامة"
+          }
+        ],
+        "relationships": [],
+        "confidence": 1.0
+      },
+      "notes": []
+    },
+    {
+      "question_id": "G02",
+      "question_text": "show high risk projects",
+      "depth": 0,
+      "context_tokens": 1024,
+      "prompt_len": 1402,
+      "est_prompt_tokens": 401,
+      "budget_tokens": 768,
+      "latency_ms": 7700,
+      "raw_output": "```json\n{\"status\":\"ok\",\"root_table\":\"Projects\",\"filters\":[{\"table\":\"RiskLevels\",\"column\":\"Name\",\"operator\":\"eq\",\"value\":\"مخاطر عالية\"}],\"relationships\":[{\"from_table\":\"Projects\",\"to_table\":\"RiskLevels\"}],\"needs_clarification\":false}\n```",
+      "guard_blocked": false,
+      "status": "✅ SUCCESS (7730 ms)",
+      "valid_json": true,
+      "schema_grounded": true,
+      "invented_value": false,
+      "relationship_correct": true,
+      "clarification_correct": true,
+      "risk_priority_confusion": false,
+      "parsed_output": {
+        "status": "ok",
+        "root_table": "Projects",
+        "filters": [
+          {
+            "table": "RiskLevels",
+            "column": "Name",
+            "operator": "eq",
+            "value": "مخاطر عالية"
+          }
+        ],
+        "relationships": [
+          {
+            "from_table": "Projects",
+            "to_table": "RiskLevels"
+          }
+        ],
+        "needs_clarification": false
+      },
+      "notes": []
+    },
+    {
+      "question_id": "G08",
+      "question_text": "المشاريع المتأخرة",
+      "depth": 2,
+      "context_tokens": 1024,
+      "prompt_len": 4291,
+      "est_prompt_tokens": 1226,
+      "budget_tokens": 768,
+      "latency_ms": null,
+      "raw_output": "",
+      "guard_blocked": true,
+      "status": "❌ GENERATION FAILED",
+      "valid_json": null,
+      "schema_grounded": null,
+      "invented_value": null,
+      "relationship_correct": null,
+      "clarification_correct": null,
+      "risk_priority_confusion": null,
+      "parsed_output": null,
+      "notes": [
+        "guard-blocked: prompt exceeded budget, native engine not called"
+      ]
+    }
+  ],
+  "raw_slm_outputs_snippet": "RAW_SLM_OUTPUTS = {\n    \"G01\": {\n        \"raw_text\": \"{\\\"filters\\\":[{\\\"table\\\":\\\"\\\",\\\"column\\\":\\\"PeriortyLevelId\\\",\\\"value\\\":\\\"الهامة\\\"}],\\\"relationships\\\":[],\\\"confidence\\\":1.0}\",\n        \"parsed\": {\"filters\": [{\"table\": \"\", \"column\": \"PeriortyLevelId\", \"value\": \"الهامة\"}], \"relationships\": [], \"confidence\": 1.0},\n        \"source\": \"S22 Ultra M0 device run (parse_probe_logs.py)\",\n    },\n    \"G02\": {\n        \"raw_text\": \"```json {\\\"status\\\":\\\"ok\\\",\\\"root_table\\\":\\\"Projects\\\",\\\"filters\\\":[{\\\"table\\\":\\\"RiskLevels\\\",\\\"column\\\":\\\"Name\\\",\\\"operator\\\":\\\"eq\\\",\\\"value\\\":\\\"مخاطر عالية\\\"}],\\\"relationships\\\":[{\\\"from_table\\\":\\\"Projects\\\",\\\"to_table\\\":\\\"RiskLevels\\\"}],\\\"needs_clarification\\\":false} ```\",\n        \"parsed\": {\"status\": \"ok\", \"root_table\": \"Projects\", \"filters\": [{\"table\": \"RiskLevels\", \"column\": \"Name\", \"operator\": \"eq\", \"value\": \"مخاطر عالية\"}], \"relationships\": [{\"from_table\": \"Projects\", \"to_table\": \"RiskLevels\"}], \"needs_clarification\": false},\n        \"source\": \"S22 Ultra M0 device run (parse_probe_logs.py)\",\n    },\n}"
+}
