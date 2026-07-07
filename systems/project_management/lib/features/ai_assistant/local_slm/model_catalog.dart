@@ -59,6 +59,7 @@ class ModelCatalogEntry {
     required this.accessNote,
     required this.supportStatus,
     this.minRamMb = 6144,
+    this.maxContextTokens = 1024,
     this.downloadUrl,
     this.sha256,
   });
@@ -98,6 +99,12 @@ class ModelCatalogEntry {
   /// Minimum device RAM (MB) to allow install/run. Phase-1 floor: 6 GB.
   final int minRamMb;
 
+  /// Runtime context window (max tokens) the loaded session should open with.
+  /// This is the model file's `ekv` ceiling — e.g. the `ekv1280` Qwen artifact
+  /// caps at 1280 while the `ekv4096` artifact allows 4096. The inference engine
+  /// reads this per active model instead of using a single global value.
+  final int maxContextTokens;
+
   /// Final resolved download URL. **Placeholder until FU-2** (esp. gated Gemma).
   final String? downloadUrl;
 
@@ -109,8 +116,7 @@ class ModelCatalogEntry {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is ModelCatalogEntry && other.id == id);
+      identical(this, other) || (other is ModelCatalogEntry && other.id == id);
 
   @override
   int get hashCode => id.hashCode;
@@ -155,6 +161,7 @@ class ModelCatalog {
           'Gemma Terms — gated on Hugging Face (litert-community/Gemma3-1B-IT). '
           'Distribution must be resolved before download (FU-2): self-host/mirror or token proxy.',
       supportStatus: ModelSupportStatus.deskVerified,
+      maxContextTokens: 1024,
       downloadUrl: null, // FU-2: set after resolving gated distribution.
       sha256: null, // FU-2: capture at catalog-build time.
     ),
@@ -175,12 +182,40 @@ class ModelCatalog {
           'Apache-2.0 — public/ungated (litert-community/Qwen2.5-1.5B-Instruct). '
           'POC demo model. Exceeds ~1.2 GB soft cap (FU-3 decision pending).',
       supportStatus: ModelSupportStatus.conditional,
+      maxContextTokens: 1280,
       // POC_DEMO_REAL_CHAT: real public, ungated resolve URL so the demo can
       // actually download + run. TODO(prod-hardening): finalize production
       // distribution + capture SHA256 (sha256 stays null → demo skips checksum).
       downloadUrl:
           'https://huggingface.co/litert-community/Qwen2.5-1.5B-Instruct/resolve/main/Qwen2.5-1.5B-Instruct_seq128_q8_ekv1280.task',
       sha256: null, // TODO(prod-hardening): capture + enforce for production.
+    ),
+    ModelCatalogEntry(
+      id: 'qwen_2_5_1_5b_ekv4096',
+      displayName: 'Qwen2.5 1.5B ekv4096',
+      role: ModelRole.arabicChallenger,
+      shortDescription:
+          'Arabic/English model with larger 4096-token context. Public Apache-2.0. Recommended for longer schema benchmark prompts.',
+      recommendationLabel: 'Long context',
+      format: ModelFormat.mediapipeTask,
+      expectedFileName: 'Qwen2.5-1.5B-Instruct_seq128_q8_ekv4096.task',
+      expectedSizeBytes: 1570 * 1024 * 1024,
+      estimatedSizeLabel: '~1.57 GB',
+      version: 'q8-seq128-ekv4096',
+      gated: false,
+      accessNote:
+          'Apache-2.0 — public/ungated (litert-community/Qwen2.5-1.5B-Instruct). '
+          'Long-context q8 ekv4096 variant for larger prompts.',
+      supportStatus: ModelSupportStatus.conditional,
+      minRamMb: 6144,
+      maxContextTokens: 4096,
+      // POC_DEMO_REAL_CHAT: public, ungated resolve URL so the demo can download
+      // + run at the longer 4096-token context.
+      downloadUrl:
+          'https://huggingface.co/litert-community/Qwen2.5-1.5B-Instruct/resolve/main/Qwen2.5-1.5B-Instruct_seq128_q8_ekv4096.task',
+      // TODO(prod-hardening): capture + enforce a verified SHA256. Null is
+      // acceptable only while allowUnverifiedInstall (demo) is enabled.
+      sha256: null,
     ),
   ];
 }

@@ -35,3 +35,4 @@ flutter:
   assets:
     - assets/ai/metadata.sample.json
     - assets/ai/prompts/system_instruction.txt
+    - assets/ai/schema/nawah_compact_schema_no_terms.slim.v1.txt

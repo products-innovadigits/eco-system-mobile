@@ -4,13 +4,19 @@ import 'package:core_system/core/network/error/network_exception.dart';
 import 'package:project_management/core/di/project_management_locator.dart';
 import 'package:project_management/core/utility/project_management_exports.dart';
 import 'package:project_management/features/ai_assistant/exceptions/ai_assistant_query_exception.dart';
+import 'package:project_management/features/ai_assistant/benchmark/benchmark_questions.dart';
+import 'package:project_management/features/ai_assistant/benchmark/raw_schema_benchmark_flags.dart';
+import 'package:project_management/features/ai_assistant/benchmark/raw_schema_benchmark_runner.dart';
 import 'package:project_management/features/ai_assistant/local_slm/ai_inference_controller.dart';
+import 'package:project_management/features/ai_assistant/local_slm/local_slm_service.dart';
 
 class AiAssistantBody extends StatefulWidget {
   const AiAssistantBody({
     super.key,
     this.useLocalSlm = false,
     this.inferenceController,
+    this.rawSchemaBenchmarkEnabled = kRawSchemaBenchmarkEnabled,
+    this.rawSchemaBenchmarkRunner,
   });
 
   /// When true, sends use [AiInferenceController] instead of the online
@@ -19,6 +25,14 @@ class AiAssistantBody extends StatefulWidget {
 
   /// Test/development seam; production resolves the controller from DI.
   final AiInferenceController? inferenceController;
+
+  /// DEV-only raw-schema benchmark gate. Defaults to
+  /// [kRawSchemaBenchmarkEnabled], which is false unless explicitly changed for
+  /// the experiment branch.
+  final bool rawSchemaBenchmarkEnabled;
+
+  /// Test/development seam; production resolves benchmark dependencies via DI.
+  final RawSchemaBenchmarkRunner? rawSchemaBenchmarkRunner;
 
   @override
   AiAssistantBodyState createState() => AiAssistantBodyState();
@@ -205,6 +219,11 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
 
     final resetOnce = _pendingResetContext;
 
+    if (widget.rawSchemaBenchmarkEnabled) {
+      await _sendRawSchemaBenchmark(text, resetOnce: resetOnce);
+      return;
+    }
+
     if (widget.useLocalSlm) {
       await _sendLocal(text, resetOnce: resetOnce);
       return;
@@ -276,6 +295,82 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
     }
     _scrollToBottom();
   }
+
+  Future<void> _sendRawSchemaBenchmark(
+    String text, {
+    required bool resetOnce,
+  }) async {
+    try {
+      final result =
+          await (widget.rawSchemaBenchmarkRunner ?? RawSchemaBenchmarkRunner())
+              .run(_benchmarkQuestionFor(text));
+      debugPrint(
+        '[RAW_SCHEMA_BENCHMARK] '
+        'questionText="${result.questionText}" '
+        'schemaCharCount=${result.schemaCharCount} '
+        'promptCharCount=${result.promptCharCount} '
+        'estimatedTokens=${result.estimatedTokens} '
+        'latencyMs=${result.latencyMs}',
+      );
+      if (!mounted) return;
+      setState(() {
+        if (_entries.isNotEmpty && _entries.last.isThinking) {
+          _entries.removeLast();
+        }
+        _entries.add(_ChatEntry.assistant(_displayRawOutput(result.rawOutput)));
+        _isSending = false;
+        if (resetOnce) _pendingResetContext = false;
+      });
+    } on LocalSlmTimeout {
+      // 1-minute cancellation cap hit: native generation was stopped; surface a
+      // clear cancelled result instead of a full answer.
+      debugPrint('[RAW_SCHEMA_BENCHMARK] cancelled: no answer within 1 minute');
+      if (!mounted) return;
+      setState(() {
+        if (_entries.isNotEmpty && _entries.last.isThinking) {
+          _entries.removeLast();
+        }
+        _entries.add(
+          _ChatEntry.assistant(
+            'Cancelled: the model did not return an answer within 1 minute.',
+          ),
+        );
+        _isSending = false;
+        if (resetOnce) _pendingResetContext = false;
+      });
+    } catch (e) {
+      debugPrint('[RAW_SCHEMA_BENCHMARK] failed: $e');
+      if (!mounted) return;
+      setState(() {
+        if (_entries.isNotEmpty && _entries.last.isThinking) {
+          _entries.removeLast();
+        }
+        _entries.add(
+          _ChatEntry.assistant(
+            'Local AI is unavailable right now. Real offline inference remains pending until model/device setup is complete.',
+          ),
+        );
+        _isSending = false;
+        if (resetOnce) _pendingResetContext = false;
+      });
+    }
+    _scrollToBottom();
+  }
+
+  BenchmarkQuestion _benchmarkQuestionFor(String text) {
+    for (final question in benchmarkQuestions) {
+      if (question.text == text) return question;
+    }
+    return BenchmarkQuestion(id: 0, text: text);
+  }
+
+  /// Display-only normalization: some small models emit the literal characters
+  /// `\n` / `\t` instead of real line breaks. Unescape them so the chat bubble
+  /// renders as multiple lines. The benchmark record keeps `rawOutput` verbatim.
+  String _displayRawOutput(String raw) => raw
+      .replaceAll(r'\r\n', '\n')
+      .replaceAll(r'\n', '\n')
+      .replaceAll(r'\t', '\t');
 
   Future<void> _sendLocal(String text, {required bool resetOnce}) async {
     try {

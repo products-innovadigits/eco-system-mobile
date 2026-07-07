@@ -1,0 +1,16 @@
+Nawah {
+  Projects { Id:int pk, Name:string, NameEn:string, Description:string, StartDate:datetime, EndDate:datetime, Budget:bigint, OutputCount:int, LifeCycleId:int -> ProjectLifeCycleModels.Id, ProjectCategoryId:int -> ProjectCategories.Id, ImplementorDepartmentId:int -> DepartmentLookups.Id, SectionDepartmentId:int -> DepartmentLookups.Id, ManagerId:string -> AspNetUsers.Id, PeriortyLevelId:int -> PeriortyLevels.Id, RiskLevelId:int -> RiskLevels.Id }
+  RiskLevels { Id:int pk, Name:string }
+  PeriortyLevels { Id:int pk, Name:string }
+  AspNetUsers { Id:string pk, FullName:string, UserName:string, DepartmentLookupId:int -> DepartmentLookups.Id }
+  DepartmentLookups { Id:int pk, Name:string, Description:string, ManagerId:string -> AspNetUsers.Id }
+  ProjectCategories { Id:int pk, Name:string, Description:string }
+  ProjectLifeCycleModels { Id:int pk, Title:string, Description:string }
+  ProjectOutPutModels { Id:int pk, Title:string, Description:string, ProjectId:int -> Projects.Id, IsDelivered:bit, DeliveredAt:datetime, IsHavepenalty:bit, penaltyValue:float }
+
+  Meetings { Id:int pk, Title:string, IsOnline:bit, MeetingLink:string, Location:string, StartDate:datetime, EndDate:datetime, StartTime:time, EndTime:time, Description:string, Summary:string, ProviderId:int -> MeetingProviderLookup.Id }
+  MeetingProviderLookup { Id:int pk, Name:string }
+  Agendas { Id:int pk, Title:string, MeetingId:int -> Meetings.Id, From:time, To:time, UserId:string -> AspNetUsers.Id, Purpose:string }
+  MeetingDecisions { Id:int pk, Title:string, MeetingId:int -> Meetings.Id, AgendaId:int -> Agendas.Id, OwnerId:string -> AspNetUsers.Id }
+  MeetingAttendees { Id:int pk, MeetingId:int -> Meetings.Id, AttendeeId:string -> AspNetUsers.Id, MainAttendeeId:string -> AspNetUsers.Id, ApprovalStatus:int, IsPresent:bit }
+}

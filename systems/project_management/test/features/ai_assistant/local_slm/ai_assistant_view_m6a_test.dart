@@ -55,7 +55,7 @@ void main() {
     );
   }
 
-  testWidgets('AI Assistant entry shows Model Selection with 2 model cards', (
+  testWidgets('AI Assistant entry shows Model Selection with 3 model cards', (
     tester,
   ) async {
     await tester.pumpWidget(harness());
@@ -63,7 +63,8 @@ void main() {
 
     expect(find.text('Gemma 3 1B'), findsOneWidget);
     expect(find.text('Qwen2.5 1.5B'), findsOneWidget);
-    expect(find.text('Download'), findsNWidgets(2));
+    expect(find.text('Qwen2.5 1.5B ekv4096'), findsOneWidget);
+    expect(find.text('Download'), findsNWidgets(3));
   });
 
   testWidgets('opening entry and rendering selection does not auto-download', (

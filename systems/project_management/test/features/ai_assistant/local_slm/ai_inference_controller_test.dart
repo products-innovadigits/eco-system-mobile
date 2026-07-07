@@ -38,6 +38,9 @@ class FakeLocalSlmService implements LocalSlmService {
   }
 
   @override
+  Future<void> resetSession() async {}
+
+  @override
   Future<String> generateText(
     String prompt, {
     int maxTokens = 256,

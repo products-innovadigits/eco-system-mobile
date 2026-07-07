@@ -5,11 +5,11 @@ import 'package:project_management/features/ai_assistant/local_slm/ai_inference_
 import 'package:project_management/features/ai_assistant/local_slm/flutter_gemma_local_slm_service.dart';
 import 'package:project_management/features/ai_assistant/local_slm/flutter_gemma_network_downloader.dart';
 import 'package:project_management/features/ai_assistant/local_slm/local_slm_service.dart';
+import 'package:project_management/features/ai_assistant/local_slm/metadata_loader.dart';
 import 'package:project_management/features/ai_assistant/local_slm/model_catalog.dart';
 import 'package:project_management/features/ai_assistant/local_slm/model_downloader.dart';
 import 'package:project_management/features/ai_assistant/local_slm/model_manager.dart';
 import 'package:project_management/features/ai_assistant/local_slm/model_selection_controller.dart';
-import 'package:project_management/features/ai_assistant/local_slm/metadata_loader.dart';
 import 'package:project_management/features/ai_assistant/local_slm/poc_demo_flags.dart';
 import 'package:project_management/features/ai_assistant/local_slm/poc_metrics.dart';
 import 'package:project_management/features/ai_assistant/local_slm/prompt_builder.dart';
@@ -101,7 +101,20 @@ void setupProjectManagementLocator() {
   if (!projectManagementSl.isRegistered<LocalSlmService>()) {
     projectManagementSl.registerLazySingleton<LocalSlmService>(
       () => kPocDemoRealChat
-          ? FlutterGemmaLocalSlmService(assumeAlreadyInstalled: true)
+          ? FlutterGemmaLocalSlmService(
+              assumeAlreadyInstalled: true,
+              // Context length is per active model, sourced from the catalog's
+              // `maxContextTokens` (e.g. ekv1280 → 1280, ekv4096 → 4096). The
+              // config value below is only a fallback for unknown model ids.
+              // Low temperature keeps the schema-mapping output stable and
+              // structured (fewer format wobbles) while topK 40 avoids the
+              // greedy repetition loop.
+              catalog: projectManagementSl<ModelCatalog>(),
+              config: const FlutterGemmaSpikeConfig(
+                contextTokens: 4096,
+                temperature: 0.2,
+              ),
+            )
           : const UnavailableLocalSlmService(),
     );
   }

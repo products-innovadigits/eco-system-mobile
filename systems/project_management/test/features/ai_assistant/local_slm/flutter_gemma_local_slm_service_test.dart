@@ -62,6 +62,76 @@ void main() {
       expect(backend.modelTypes, contains(gemma.ModelType.qwen));
     });
 
+    test('maps ekv4096 Qwen id to Qwen model type', () async {
+      final backend = _FakeGemmaBackend();
+      final service = FlutterGemmaLocalSlmService(backend: backend);
+
+      await service.load(
+        'qwen_2_5_1_5b_ekv4096',
+        modelFilePath: '/sdcard/Download/qwen_ekv4096.task',
+      );
+
+      expect(backend.modelTypes, contains(gemma.ModelType.qwen));
+    });
+
+    test('opens chat with the model catalog context ceiling', () async {
+      final backend = _FakeGemmaBackend();
+      final service = FlutterGemmaLocalSlmService(backend: backend);
+
+      await service.load(
+        'qwen_2_5_1_5b',
+        modelFilePath: '/sdcard/Download/qwen_ekv1280.task',
+      );
+
+      expect(backend.openChatMaxTokens.single, 1280);
+    });
+
+    test('ekv4096 model opens chat with 4096 max tokens', () async {
+      final backend = _FakeGemmaBackend();
+      final service = FlutterGemmaLocalSlmService(backend: backend);
+
+      await service.load(
+        'qwen_2_5_1_5b_ekv4096',
+        modelFilePath: '/sdcard/Download/qwen_ekv4096.task',
+      );
+
+      expect(backend.openChatMaxTokens.single, 4096);
+    });
+
+    test('resetSession reopens the ekv4096 model at 4096 max tokens', () async {
+      final backend = _FakeGemmaBackend();
+      final service = FlutterGemmaLocalSlmService(backend: backend);
+
+      await service.load(
+        'qwen_2_5_1_5b_ekv4096',
+        modelFilePath: '/sdcard/Download/qwen_ekv4096.task',
+      );
+      await service.resetSession();
+
+      expect(backend.openChatMaxTokens, [4096, 4096]);
+    });
+
+    test('opens chat with the configured decoding temperature', () async {
+      final backend = _FakeGemmaBackend();
+      final service = FlutterGemmaLocalSlmService(
+        backend: backend,
+        config: const FlutterGemmaSpikeConfig(temperature: 0.2),
+      );
+
+      await service.load('gemma_3_1b', modelFilePath: '/tmp/model.task');
+
+      expect(backend.openChatTemperatures.single, 0.2);
+    });
+
+    test('defaults to the configured decoding temperature', () async {
+      final backend = _FakeGemmaBackend();
+      final service = FlutterGemmaLocalSlmService(backend: backend);
+
+      await service.load('gemma_3_1b', modelFilePath: '/tmp/model.task');
+
+      expect(backend.openChatTemperatures.single, 0.2);
+    });
+
     test('maps generation timeout to LocalSlmTimeout', () async {
       final backend = _FakeGemmaBackend(
         textDelay: const Duration(milliseconds: 50),
@@ -74,6 +144,9 @@ void main() {
         service.generateText('slow', timeout: const Duration(milliseconds: 1)),
         throwsA(isA<LocalSlmTimeout>()),
       );
+      // Timeout must also stop the in-flight native generation, not just the
+      // await (the 1-minute benchmark cancellation cap).
+      expect(backend.session.cancelCalls, 1);
     });
 
     test('cancel delegates to the active spike session', () async {
@@ -84,6 +157,37 @@ void main() {
       await service.cancel();
 
       expect(backend.session.cancelCalls, 1);
+    });
+
+    test(
+      'resetSession reopens a fresh chat on the already-loaded model without reinstall',
+      () async {
+        final backend = _FakeGemmaBackend();
+        final service = FlutterGemmaLocalSlmService(backend: backend);
+
+        await service.load('gemma_3_1b', modelFilePath: '/tmp/model.task');
+        expect(backend.openChatCalls, 1);
+        expect(backend.installPaths.length, 1);
+
+        await service.resetSession();
+
+        // Old chat closed, a new chat opened; model NOT reinstalled.
+        expect(backend.session.closeCalls, 1);
+        expect(backend.openChatCalls, 2);
+        expect(backend.installPaths.length, 1);
+        expect(service.isReady, isTrue);
+      },
+    );
+
+    test('resetSession throws when no model is loaded', () async {
+      final backend = _FakeGemmaBackend();
+      final service = FlutterGemmaLocalSlmService(backend: backend);
+
+      await expectLater(
+        service.resetSession(),
+        throwsA(isA<LocalSlmUnavailable>()),
+      );
+      expect(backend.openChatCalls, 0);
     });
 
     test('dispose closes session and marks service not ready', () async {
@@ -107,9 +211,12 @@ class _FakeGemmaBackend implements FlutterGemmaSpikeBackend {
   final Duration textDelay;
   final _FakeGemmaSession session;
   int initializeCalls = 0;
+  int openChatCalls = 0;
   final installPaths = <String>[];
   final modelTypes = <gemma.ModelType>[];
   final fileTypes = <gemma.ModelFileType>[];
+  final openChatMaxTokens = <int>[];
+  final openChatTemperatures = <double>[];
 
   @override
   Future<void> initialize() async {
@@ -132,9 +239,15 @@ class _FakeGemmaBackend implements FlutterGemmaSpikeBackend {
     required int maxTokens,
     required gemma.ModelType modelType,
     required gemma.ModelFileType fileType,
+    double temperature = 0.1,
+    int topK = 40,
+    double topP = 0.95,
     gemma.PreferredBackend? preferredBackend,
     String? systemInstruction,
   }) async {
+    openChatCalls += 1;
+    openChatMaxTokens.add(maxTokens);
+    openChatTemperatures.add(temperature);
     return session;
   }
 }

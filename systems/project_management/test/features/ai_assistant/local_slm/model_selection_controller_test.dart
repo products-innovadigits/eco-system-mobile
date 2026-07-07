@@ -19,8 +19,17 @@ void main() {
   });
 
   group('buildCards', () {
-    test('renders one card per catalog entry (2)', () {
-      expect(controller.buildCards().length, 2);
+    test('renders one card per catalog entry (3)', () {
+      expect(controller.buildCards().length, 3);
+    });
+
+    test('includes the ekv4096 long-context model as a downloadable card', () {
+      final card = controller
+          .buildCards()
+          .firstWhere((c) => c.id == 'qwen_2_5_1_5b_ekv4096');
+      expect(card.installState, ModelInstallationState.notInstalled);
+      expect(card.cta, ModelCtaType.download);
+      expect(card.isInstalled, isFalse);
     });
 
     test('fresh state → all not-installed, Download CTA, none active', () {
@@ -76,6 +85,26 @@ void main() {
       // No side effects: not activated, no record created (no download in M2).
       expect(store.activeModelId, isNull);
       expect(store.recordOf('gemma_3_1b'), isNull);
+    });
+
+    test('ekv4096 not-installed → DownloadRequired, no active set', () async {
+      final action = await controller.onSelect('qwen_2_5_1_5b_ekv4096');
+      expect(action, isA<DownloadRequired>());
+      expect(action.modelId, 'qwen_2_5_1_5b_ekv4096');
+      expect(store.activeModelId, isNull);
+      expect(store.recordOf('qwen_2_5_1_5b_ekv4096'), isNull);
+    });
+
+    test('ekv4096 installed → sets active to qwen_2_5_1_5b_ekv4096', () async {
+      await store.markInstalled(
+        id: 'qwen_2_5_1_5b_ekv4096',
+        version: 'q8-seq128-ekv4096',
+        checksum: 'c',
+        localPath: '/p/qwen_2_5_1_5b_ekv4096',
+      );
+      final action = await controller.onSelect('qwen_2_5_1_5b_ekv4096');
+      expect(action, isA<OpenChatRequested>());
+      expect(store.activeModelId, 'qwen_2_5_1_5b_ekv4096');
     });
 
     test('installed → OpenChatRequested and sets active (in-memory)', () async {

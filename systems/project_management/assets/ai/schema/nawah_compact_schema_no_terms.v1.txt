@@ -1,0 +1,477 @@
+Nawah {
+  Agendas {
+    Id: int pk,
+    Title: string,
+    MeetingId: int -> Meetings.Id,
+    From: time,
+    To: time,
+    UserId: string -> AspNetUsers.Id,
+    Purpose: string,
+    FilePath: string,
+    ChainId: string,
+    AgendaChainId: string,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit
+  },
+
+  AspNetUsers {
+    Id: string pk,
+    FullName: string,
+    DepartmentLookupId: int -> DepartmentLookups.Id,
+    UserName: string
+  },
+
+  Challenges {
+    Id: int pk,
+    ChallengeName: string,
+    CategoryId: int,
+    ImpactId: int,
+    StatusId: int,
+    Description: string,
+    ActionTaken: string,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit,
+    ProjectId: int -> Projects.Id,
+    Note: string
+  },
+
+  DepartmentLookups {
+    Id: int pk,
+    Name: string,
+    Description: string,
+    ManagerId: string -> AspNetUsers.Id,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit
+  },
+
+  DocumentDataModels {
+    Id: int pk,
+    ProjectId: int -> Projects.Id,
+    ProcessId: int,
+    StepDocumentId: int,
+    Data: string,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit
+  },
+
+  InitiativeProjects {
+    Id: int pk,
+    Weight: float,
+    InitiativeId: int,
+    ProjectId: int -> Projects.Id,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit
+  },
+
+  KpiProjects {
+    Id: int pk,
+    Weight: float,
+    ProjectId: int -> Projects.Id,
+    KpiId: int,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit
+  },
+
+  MainActivityModels {
+    Id: int pk,
+    Name: string,
+    Description: string,
+    ProjectId: int -> Projects.Id,
+    StartDate: datetime,
+    EndDate: datetime,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit
+  },
+
+  MeetingAttendees {
+    Id: int pk,
+    MeetingId: int -> Meetings.Id,
+    AttendeeId: string -> AspNetUsers.Id,
+    MainAttendeeId: string -> AspNetUsers.Id,
+    ChainId: string,
+    ApprovalStatus: int,
+    DelegatationReason: string,
+    IsPresent: bit,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit
+  },
+
+  MeetingCommittes {
+    Id: int pk,
+    MeetingId: int -> Meetings.Id,
+    CommitteeId: int,
+    ChainId: string,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit
+  },
+
+  MeetingDecisions {
+    Id: int pk,
+    Title: string,
+    MeetingId: int -> Meetings.Id,
+    AgendaId: int -> Agendas.Id,
+    OwnerId: string -> AspNetUsers.Id,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit
+  },
+
+  MeetingProviderLookup {
+    Id: int pk,
+    Name: string,
+    Code: string,
+    IsActive: bit,
+    CreatedAt: datetime,
+    CreatedBy: string,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit
+  },
+
+  Meetings {
+    Id: int pk,
+    Title: string,
+    IsOnline: bit,
+    MeetingLink: string,
+    Location: string,
+    RecurrenceType: int,
+    Day: int,
+    StartDate: datetime,
+    EndDate: datetime,
+    StartTime: time,
+    EndTime: time,
+    Description: string,
+    FilePath: string,
+    AgendaPath: string,
+    Reminder: int,
+    Summary: string,
+    ReminderType: int,
+    ChainId: string,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit,
+    ProviderId: int -> MeetingProviderLookup.Id
+  },
+
+  PeriortyLevels {
+    Id: int pk,
+    Name: string,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit
+  },
+
+  ProcessStatuses {
+    Id: int pk,
+    ProcessId: int,
+    ProjectId: int -> Projects.Id,
+    IsRuningWorkflow: bit,
+    IsCompletedWorkflow: bit,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit
+  },
+
+  ProjectCategories {
+    Id: int pk,
+    Name: string,
+    Description: string,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit
+  },
+
+  ProjectComments {
+    Id: int pk,
+    ProjectId: int -> Projects.Id,
+    CommentText: string,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit
+  },
+
+  ProjectDocumentModels {
+    Id: int pk,
+    ProjectId: int -> Projects.Id,
+    StepDocumentId: int,
+    ProcessId: int,
+    Data: string,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit
+  },
+
+  ProjectLifeCycleModels {
+    Id: int pk,
+    Title: string,
+    Description: string,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit
+  },
+
+  ProjectLogs {
+    Id: int pk,
+    ProjectOutputId: int -> ProjectOutPutModels.Id,
+    ProjectId: int -> Projects.Id,
+    Text: string,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit
+  },
+
+  ProjectOutPutModels {
+    Id: int pk,
+    Title: string,
+    Description: string,
+    ProjectId: int -> Projects.Id,
+    WorkflowId: int,
+    FilePath: string,
+    IsDelivered: bit,
+    IsRuningWorkflow: bit,
+    IsCompletedWorkflow: bit,
+    IsHavepenalty: bit,
+    penaltyValue: float,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit,
+    DeliveredAt: datetime
+  },
+
+  ProjectProcessTimeLines {
+    Id: int pk,
+    ProjectId: int -> Projects.Id,
+    ProcessId: int,
+    StartDate: datetime,
+    EndDate: datetime,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit
+  },
+
+  ProjectStageTimeLines {
+    Id: int pk,
+    ProjectId: int -> Projects.Id,
+    StageId: int,
+    StartDate: datetime,
+    EndDate: datetime,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit
+  },
+
+  ProjectStepComments {
+    Id: int pk,
+    ProjectId: int -> Projects.Id,
+    ProjectStepId: int,
+    ProcessId: int,
+    Text: string,
+    FilePath: string,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit
+  },
+
+  ProjectTeams {
+    Id: int pk,
+    UserId: string -> AspNetUsers.Id,
+    ProjectId: int -> Projects.Id,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit
+  },
+
+  Projects {
+    Id: int pk,
+    Name: string,
+    Description: string,
+    StartDate: datetime,
+    EndDate: datetime,
+    LifeCycleId: int -> ProjectLifeCycleModels.Id,
+    ProjectCategoryId: int -> ProjectCategories.Id,
+    Budget: bigint,
+    ImplementorDepartmentId: int -> DepartmentLookups.Id,
+    ImplementorDepartmentName: string,
+    SectionDepartmentId: int -> DepartmentLookups.Id,
+    ManagerId: string -> AspNetUsers.Id,
+    PeriortyLevelId: int -> PeriortyLevels.Id,
+    RiskLevelId: int -> RiskLevels.Id,
+    OutputCount: int,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit,
+    ArchivedBy: string,
+    DateArchiving: datetime,
+    NameEn: string
+  },
+
+  RiskAssessment {
+    Id: int pk,
+    ProjectId: int -> Projects.Id,
+    RiskName: string,
+    ActionTaken: string,
+    Description: string,
+    RiskLevel: int,
+    Likelihood: int,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit,
+    Note: string,
+    RiskClassificationId: int,
+    StatusRiskId: int
+  },
+
+  RiskLevels {
+    Id: int pk,
+    Name: string,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit
+  },
+
+  RiskLogs {
+    Id: int pk,
+    RiskId: int -> RiskAssessment.Id,
+    ProjectId: int -> Projects.Id,
+    Name: string,
+    ActionsExecuted: string,
+    CurrentMitigationStatus: int,
+    Notes: string,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit
+  },
+
+  SliceDataModels {
+    Id: int pk,
+    Value: string,
+    SliceId: int,
+    ProcessId: int,
+    ProjectId: int -> Projects.Id,
+    ProjectStepId: int,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit
+  },
+
+  StepStatuses {
+    Id: int pk,
+    ProcessId: int,
+    ProjectId: int -> Projects.Id,
+    StepId: int,
+    Status: int,
+    CreatedBy: string,
+    CreatedAt: datetime,
+    UpdatedBy: string,
+    UpdatedAt: datetime,
+    IsDeleted: bit
+  },
+
+  Relations {
+    Agendas.MeetingId -> Meetings.Id,
+    Agendas.UserId -> AspNetUsers.Id,
+    AspNetUsers.DepartmentLookupId -> DepartmentLookups.Id,
+    Challenges.ProjectId -> Projects.Id,
+    DepartmentLookups.ManagerId -> AspNetUsers.Id,
+    DocumentDataModels.ProjectId -> Projects.Id,
+    InitiativeProjects.ProjectId -> Projects.Id,
+    KpiProjects.ProjectId -> Projects.Id,
+    MainActivityModels.ProjectId -> Projects.Id,
+    MeetingAttendees.AttendeeId -> AspNetUsers.Id,
+    MeetingAttendees.MainAttendeeId -> AspNetUsers.Id,
+    MeetingAttendees.MeetingId -> Meetings.Id,
+    MeetingCommittes.MeetingId -> Meetings.Id,
+    MeetingDecisions.AgendaId -> Agendas.Id,
+    MeetingDecisions.MeetingId -> Meetings.Id,
+    MeetingDecisions.OwnerId -> AspNetUsers.Id,
+    Meetings.ProviderId -> MeetingProviderLookup.Id,
+    ProcessStatuses.ProjectId -> Projects.Id,
+    ProjectComments.ProjectId -> Projects.Id,
+    ProjectDocumentModels.ProjectId -> Projects.Id,
+    ProjectLogs.ProjectId -> Projects.Id,
+    ProjectLogs.ProjectOutputId -> ProjectOutPutModels.Id,
+    ProjectOutPutModels.ProjectId -> Projects.Id,
+    ProjectProcessTimeLines.ProjectId -> Projects.Id,
+    ProjectStageTimeLines.ProjectId -> Projects.Id,
+    ProjectStepComments.ProjectId -> Projects.Id,
+    ProjectTeams.ProjectId -> Projects.Id,
+    ProjectTeams.UserId -> AspNetUsers.Id,
+    Projects.ImplementorDepartmentId -> DepartmentLookups.Id,
+    Projects.LifeCycleId -> ProjectLifeCycleModels.Id,
+    Projects.ManagerId -> AspNetUsers.Id,
+    Projects.PeriortyLevelId -> PeriortyLevels.Id,
+    Projects.ProjectCategoryId -> ProjectCategories.Id,
+    Projects.RiskLevelId -> RiskLevels.Id,
+    Projects.SectionDepartmentId -> DepartmentLookups.Id,
+    RiskAssessment.ProjectId -> Projects.Id,
+    RiskLogs.ProjectId -> Projects.Id,
+    RiskLogs.RiskId -> RiskAssessment.Id,
+    SliceDataModels.ProjectId -> Projects.Id,
+    StepStatuses.ProjectId -> Projects.Id
+  }
+}

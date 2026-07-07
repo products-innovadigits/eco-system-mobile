@@ -84,7 +84,9 @@ class FlutterGemmaNetworkDownloader implements ModelDownloader {
   }
 
   gemma.ModelType _modelTypeFor(String modelId) {
-    if (modelId == 'qwen_2_5_1_5b') return gemma.ModelType.qwen;
+    // Match the whole Qwen 2.5 family (e.g. qwen_2_5_1_5b, ..._ekv4096) by
+    // prefix so long-context variants are not misidentified as Gemma.
+    if (modelId.startsWith('qwen_2_5')) return gemma.ModelType.qwen;
     return gemma.ModelType.gemmaIt;
   }
 }

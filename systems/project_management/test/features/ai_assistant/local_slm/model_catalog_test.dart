@@ -5,8 +5,8 @@ void main() {
   group('ModelCatalog', () {
     final catalog = ModelCatalog();
 
-    test('exposes exactly 2 seed model entries', () {
-      expect(catalog.entries.length, 2);
+    test('exposes exactly 3 seed model entries', () {
+      expect(catalog.entries.length, 3);
     });
 
     test('contains Gemma 3 1B as the first integration (primary) model', () {
@@ -30,6 +30,25 @@ void main() {
       expect(qwen.gated, isFalse); // Apache-2.0
       expect(qwen.estimatedSizeLabel, '~1.57 GB');
       expect(qwen.supportStatus, ModelSupportStatus.conditional);
+    });
+
+    test('contains the ekv4096 long-context Qwen variant', () {
+      final qwen = catalog.byId('qwen_2_5_1_5b_ekv4096');
+      expect(qwen, isNotNull);
+      expect(qwen!.role, ModelRole.arabicChallenger);
+      expect(qwen.isPrimary, isFalse);
+      expect(qwen.gated, isFalse); // Apache-2.0
+      expect(qwen.version, 'q8-seq128-ekv4096');
+      expect(qwen.expectedFileName, endsWith('ekv4096.task'));
+      expect(qwen.downloadUrl, isNotNull);
+      expect(qwen.downloadUrl, endsWith('ekv4096.task'));
+      expect(qwen.maxContextTokens, 4096);
+    });
+
+    test('models carry their per-model context ceiling (maxContextTokens)', () {
+      expect(catalog.byId('gemma_3_1b')!.maxContextTokens, 1024);
+      expect(catalog.byId('qwen_2_5_1_5b')!.maxContextTokens, 1280);
+      expect(catalog.byId('qwen_2_5_1_5b_ekv4096')!.maxContextTokens, 4096);
     });
 
     test('every entry carries required display + download metadata fields', () {

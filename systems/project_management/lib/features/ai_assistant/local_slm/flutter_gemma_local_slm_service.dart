@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter_gemma/flutter_gemma.dart' as gemma;
+import 'package:project_management/features/ai_assistant/local_slm/ai_log.dart';
 import 'package:project_management/features/ai_assistant/local_slm/local_slm_service.dart';
+import 'package:project_management/features/ai_assistant/local_slm/model_catalog.dart';
 
 /// M6-B0 isolated spike adapter for validating real `flutter_gemma` on device.
 ///
@@ -17,12 +19,18 @@ class FlutterGemmaLocalSlmService implements LocalSlmService {
   FlutterGemmaLocalSlmService({
     FlutterGemmaSpikeBackend? backend,
     FlutterGemmaSpikeConfig config = const FlutterGemmaSpikeConfig(),
+    ModelCatalog? catalog,
     this.assumeAlreadyInstalled = false,
   }) : _backend = backend ?? const FlutterGemmaPackageBackend(),
-       _config = config;
+       _config = config,
+       _catalog = catalog ?? ModelCatalog();
 
   final FlutterGemmaSpikeBackend _backend;
   final FlutterGemmaSpikeConfig _config;
+
+  /// Source of truth for per-model runtime settings (e.g. context window). Falls
+  /// back to the seed [ModelCatalog] when not injected so lookups always work.
+  final ModelCatalog _catalog;
 
   /// POC_DEMO_REAL_CHAT: when true, the model is assumed to already be installed
   /// (e.g. by [FlutterGemmaNetworkDownloader] via network install), so [load]
@@ -32,6 +40,9 @@ class FlutterGemmaLocalSlmService implements LocalSlmService {
 
   FlutterGemmaSpikeSession? _session;
   String? _loadedModelId;
+  // Retained from load() so resetSession() can re-open a chat on the already
+  // installed model without recomputing it from a file path.
+  gemma.ModelFileType? _loadedFileType;
   bool _isReady = false;
 
   @override
@@ -65,6 +76,13 @@ class FlutterGemmaLocalSlmService implements LocalSlmService {
     _isReady = false;
     _loadedModelId = null;
 
+    final contextTokens = _contextTokensFor(modelId);
+    aiLog(
+      'local_slm.load id=$modelId contextTokens=$contextTokens '
+      'modelType=${_modelTypeFor(modelId)} fileType=$fileType '
+      'path=$modelFilePath',
+    );
+
     try {
       await _backend.initialize();
       if (!assumeAlreadyInstalled) {
@@ -74,17 +92,66 @@ class FlutterGemmaLocalSlmService implements LocalSlmService {
           fileType: fileType,
         );
       }
+      aiLog(
+        'local_slm.session_config temperature=${_config.temperature} '
+        'topK=${_config.topK} topP=${_config.topP} maxTokens=$contextTokens '
+        'modelType=${_modelTypeFor(modelId)}',
+      );
       _session = await _backend.openChat(
-        maxTokens: _config.contextTokens,
+        maxTokens: contextTokens,
         modelType: _modelTypeFor(modelId),
         fileType: fileType,
+        temperature: _config.temperature,
+        topK: _config.topK,
+        topP: _config.topP,
         preferredBackend: _config.preferredBackend,
         systemInstruction: _config.systemInstruction,
       );
       _loadedModelId = modelId;
+      _loadedFileType = fileType;
       _isReady = true;
     } catch (e) {
       throw LocalSlmUnavailable('flutter_gemma spike load failed: $e');
+    }
+  }
+
+  @override
+  Future<void> resetSession() async {
+    final modelId = _loadedModelId;
+    final fileType = _loadedFileType;
+    if (!_isReady || modelId == null || fileType == null) {
+      throw const LocalSlmUnavailable(
+        'flutter_gemma spike model is not loaded; cannot reset session.',
+      );
+    }
+
+    // Close the current chat and open a fresh one on the already-installed
+    // model. No installFromFile/download — only the chat/model session is
+    // re-created, which clears accumulated conversation history.
+    await _session?.close();
+    _session = null;
+    final contextTokens = _contextTokensFor(modelId);
+    aiLog(
+      'local_slm.session_config temperature=${_config.temperature} '
+      'topK=${_config.topK} topP=${_config.topP} maxTokens=$contextTokens '
+      'modelType=${_modelTypeFor(modelId)} (reset)',
+    );
+    try {
+      _session = await _backend.openChat(
+        // Reuse the loaded model's own context ceiling, not the global config,
+        // so a long-context model (e.g. ekv4096) is not reset back to 1280.
+        maxTokens: contextTokens,
+        modelType: _modelTypeFor(modelId),
+        fileType: fileType,
+        temperature: _config.temperature,
+        topK: _config.topK,
+        topP: _config.topP,
+        preferredBackend: _config.preferredBackend,
+        systemInstruction: _config.systemInstruction,
+      );
+    } catch (e) {
+      _isReady = false;
+      throw LocalSlmUnavailable('flutter_gemma reset session failed: $e');
     }
   }
 
@@ -108,6 +175,9 @@ class FlutterGemmaLocalSlmService implements LocalSlmService {
         }
       }
     } on TimeoutException {
+      // Stop the in-flight native generation so it does not keep decoding after
+      // we stopped waiting (e.g. the benchmark's 1-minute cancellation cap).
+      await cancel();
       throw const LocalSlmTimeout();
     } catch (e) {
       if (_config.isCancelled(e)) throw const LocalSlmCancelled();
@@ -127,6 +197,9 @@ class FlutterGemmaLocalSlmService implements LocalSlmService {
       final future = session.generateText();
       return timeout == null ? await future : await future.timeout(timeout);
     } on TimeoutException {
+      // Stop the in-flight native generation so it does not keep decoding after
+      // we stopped waiting (e.g. the benchmark's 1-minute cancellation cap).
+      await cancel();
       throw const LocalSlmTimeout();
     } catch (e) {
       if (_config.isCancelled(e)) throw const LocalSlmCancelled();
@@ -144,6 +217,7 @@ class FlutterGemmaLocalSlmService implements LocalSlmService {
     await _session?.close();
     _session = null;
     _loadedModelId = null;
+    _loadedFileType = null;
     _isReady = false;
   }
 
@@ -169,21 +243,47 @@ class FlutterGemmaLocalSlmService implements LocalSlmService {
   }
 
   gemma.ModelType _modelTypeFor(String modelId) {
-    if (modelId == 'qwen_2_5_1_5b') return gemma.ModelType.qwen;
+    // Match the whole Qwen 2.5 family (e.g. qwen_2_5_1_5b, ..._ekv4096) by
+    // prefix so long-context variants are not misidentified as Gemma.
+    if (modelId.startsWith('qwen_2_5')) return gemma.ModelType.qwen;
     return gemma.ModelType.gemmaIt;
+  }
+
+  /// Runtime context window for [modelId], sourced from the catalog so each
+  /// model opens at its own `ekv` ceiling. Falls back to the global config
+  /// value for unknown ids (e.g. ad-hoc developer file loads).
+  int _contextTokensFor(String modelId) {
+    final entry = _catalog.byId(modelId);
+    return entry?.maxContextTokens ?? _config.contextTokens;
   }
 }
 
 /// Spike-only knobs. Defaults are conservative for a 6GB Android device.
 class FlutterGemmaSpikeConfig {
   const FlutterGemmaSpikeConfig({
-    this.contextTokens = 1024,
+    this.contextTokens = 4096,
+    this.temperature = 0.2,
+    this.topK = 40,
+    this.topP = 0.95,
     this.preferredBackend,
     this.systemInstruction,
     this.isCancelled = _neverCancelled,
   });
 
   final int contextTokens;
+
+  /// Decoding temperature. Lower = more deterministic/structured output (better
+  /// for the schema-mapping benchmark's fixed line format); higher = more
+  /// varied. Kept above 0 with [topK] > 1 so small models don't fall into the
+  /// greedy (topK:1) repetition loop.
+  final double temperature;
+
+  /// Top-K sampling. Must stay > 1 to avoid greedy repetition loops.
+  final int topK;
+
+  /// Top-P (nucleus) sampling.
+  final double topP;
+
   final gemma.PreferredBackend? preferredBackend;
 
   /// Kept as a future compatibility note. flutter_gemma 0.12.x does not expose
@@ -208,6 +308,9 @@ abstract class FlutterGemmaSpikeBackend {
     required int maxTokens,
     required gemma.ModelType modelType,
     required gemma.ModelFileType fileType,
+    double temperature = 0.2,
+    int topK = 40,
+    double topP = 0.95,
     gemma.PreferredBackend? preferredBackend,
     String? systemInstruction,
   });
@@ -244,6 +347,9 @@ class FlutterGemmaPackageBackend implements FlutterGemmaSpikeBackend {
     required int maxTokens,
     required gemma.ModelType modelType,
     required gemma.ModelFileType fileType,
+    double temperature = 0.2,
+    int topK = 40,
+    double topP = 0.95,
     gemma.PreferredBackend? preferredBackend,
     String? systemInstruction,
   }) async {
@@ -253,9 +359,23 @@ class FlutterGemmaPackageBackend implements FlutterGemmaSpikeBackend {
       maxTokens: maxTokens,
       preferredBackend: preferredBackend,
     );
+    // TODO(benchmark): flutter_gemma 0.12.6 exposes no true generation
+    // output-token cap. createModel.maxTokens is the total context window and
+    // createChat.tokenBuffer only reserves space before history is trimmed —
+    // neither stops decoding after N output tokens. So a ~160 output-token cap
+    // to curb long loops / max-sequence aborts cannot be set here. Revisit if a
+    // later flutter_gemma version adds a per-response decode cap.
     final chat = await model.createChat(
       modelType: modelType,
       supportsFunctionCalls: false,
+      // flutter_gemma defaults to topK:1 (greedy), which sends small models into
+      // repetition loops. Keep topK > 1 so decoding doesn't lock onto a single
+      // self-reinforcing token, but keep temperature low for stable, structured
+      // benchmark output.
+      temperature: temperature,
+      topK: topK,
+      topP: topP,
+      randomSeed: 1,
     );
     return _FlutterGemmaPackageSession(model: model, chat: chat);
   }

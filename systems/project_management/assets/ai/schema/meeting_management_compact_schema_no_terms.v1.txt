@@ -1,0 +1,8 @@
+NawahMeetingManagement {
+  Meetings { Id:int pk, Title:string, IsOnline:bit, MeetingLink:string, Location:string, StartDate:datetime, EndDate:datetime, StartTime:time, EndTime:time, Description:string, Summary:string, ProviderId:int -> MeetingProviderLookup.Id }
+  MeetingProviderLookup { Id:int pk, Name:string }
+  Agendas { Id:int pk, Title:string, MeetingId:int -> Meetings.Id, From:time, To:time, UserId:string -> AspNetUsers.Id, Purpose:string }
+  MeetingDecisions { Id:int pk, Title:string, MeetingId:int -> Meetings.Id, AgendaId:int -> Agendas.Id, OwnerId:string -> AspNetUsers.Id }
+  MeetingAttendees { Id:int pk, MeetingId:int -> Meetings.Id, AttendeeId:string -> AspNetUsers.Id, MainAttendeeId:string -> AspNetUsers.Id, ApprovalStatus:int, IsPresent:bit }
+  AspNetUsers { Id:string pk, FullName:string, UserName:string }
+}

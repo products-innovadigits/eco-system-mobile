@@ -8,12 +8,17 @@ import 'package:project_management/features/ai_assistant/local_slm/model_catalog
 import 'package:project_management/features/ai_assistant/local_slm/model_downloader.dart';
 import 'package:project_management/features/ai_assistant/local_slm/model_manager.dart';
 import 'package:project_management/features/ai_assistant/local_slm/poc_metrics.dart';
+import 'package:project_management/features/ai_assistant/benchmark/raw_schema_benchmark_runner.dart';
 import 'package:project_management/features/ai_assistant/widgets/ai_assistant_body.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  Widget harness(_SpyInferenceController controller) {
+  Widget harness(
+    _SpyInferenceController controller, {
+    bool rawSchemaBenchmarkEnabled = false,
+    RawSchemaBenchmarkRunner? rawSchemaBenchmarkRunner,
+  }) {
     return ScreenUtilInit(
       designSize: const Size(390, 844),
       builder: (_, _) => MaterialApp(
@@ -21,6 +26,8 @@ void main() {
           body: AiAssistantBody(
             useLocalSlm: true,
             inferenceController: controller,
+            rawSchemaBenchmarkEnabled: rawSchemaBenchmarkEnabled,
+            rawSchemaBenchmarkRunner: rawSchemaBenchmarkRunner,
           ),
         ),
       ),
@@ -51,6 +58,37 @@ void main() {
     expect(controller.prompts, ['hello']);
     expect(find.text('mocked local answer'), findsOneWidget);
     expect(controller.repoLikeCalls, 0);
+  });
+
+  testWidgets('raw schema benchmark bypasses normal local generation', (
+    tester,
+  ) async {
+    final controller = _SpyInferenceController([
+      const FreeTextResponse(modelId: 'gemma_3_1b', text: 'normal answer'),
+    ]);
+    final localSlm = _FakeBenchmarkSlm(rawOutput: 'raw benchmark answer');
+    final runner = RawSchemaBenchmarkRunner(
+      localSlm: localSlm,
+      compactSchemaLoader: () async => 'raw compact schema',
+    );
+    await tester.pumpWidget(
+      harness(
+        controller,
+        rawSchemaBenchmarkEnabled: true,
+        rawSchemaBenchmarkRunner: runner,
+      ),
+    );
+
+    await send(tester, 'ما وصف اجتماع لجنة المتابعة');
+    await tester.pumpAndSettle();
+
+    expect(controller.generateCalls, 0);
+    expect(localSlm.resetSessionCalls, 1);
+    expect(localSlm.generateTextCallCount, 1);
+    expect(localSlm.lastPrompt, contains('raw compact schema'));
+    expect(localSlm.lastPrompt, contains('ما وصف اجتماع لجنة المتابعة'));
+    expect(find.text('raw benchmark answer'), findsOneWidget);
+    expect(find.text('normal answer'), findsNothing);
   });
 
   testWidgets('fallback bubble renders for no active model', (tester) async {
@@ -160,6 +198,10 @@ void main() {
               key: key,
               useLocalSlm: true,
               inferenceController: controller,
+              // Pin the flag so this test is deterministic regardless of the
+              // kRawSchemaBenchmarkEnabled const (which may be flipped on for
+              // on-device experiment runs).
+              rawSchemaBenchmarkEnabled: false,
             ),
           ),
         ),
@@ -244,6 +286,50 @@ class _SpyInferenceController extends AiInferenceController {
     }
     return _results.removeAt(0);
   }
+}
+
+class _FakeBenchmarkSlm implements LocalSlmService {
+  _FakeBenchmarkSlm({required this.rawOutput});
+
+  final String rawOutput;
+  int resetSessionCalls = 0;
+  int generateTextCallCount = 0;
+  String? lastPrompt;
+
+  @override
+  bool get isReady => true;
+
+  @override
+  Future<void> load(String modelId, {required String modelFilePath}) async {}
+
+  @override
+  Future<void> resetSession() async {
+    resetSessionCalls += 1;
+  }
+
+  @override
+  Stream<String> generate(
+    String prompt, {
+    int maxTokens = 256,
+    Duration? timeout,
+  }) async* {}
+
+  @override
+  Future<String> generateText(
+    String prompt, {
+    int maxTokens = 256,
+    Duration? timeout,
+  }) async {
+    generateTextCallCount += 1;
+    lastPrompt = prompt;
+    return rawOutput;
+  }
+
+  @override
+  Future<void> cancel() async {}
+
+  @override
+  Future<void> dispose() async {}
 }
 
 class _ControllerDeps {

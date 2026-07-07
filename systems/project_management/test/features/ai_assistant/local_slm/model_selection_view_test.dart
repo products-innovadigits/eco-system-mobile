@@ -40,9 +40,11 @@ void main() {
 
     expect(find.text('Gemma 3 1B'), findsOneWidget);
     expect(find.text('Qwen2.5 1.5B'), findsOneWidget);
+    expect(find.text('Qwen2.5 1.5B ekv4096'), findsOneWidget);
     expect(find.text('~529 MB'), findsOneWidget);
-    expect(find.text('~1.57 GB'), findsOneWidget);
-    expect(find.text('Download'), findsNWidgets(2));
+    // Both Qwen variants share the ~1.57 GB size label.
+    expect(find.text('~1.57 GB'), findsNWidgets(2));
+    expect(find.text('Download'), findsNWidgets(3));
     // Simply opening the screen must NOT trigger any download.
     expect(downloadCalls, 0);
   });

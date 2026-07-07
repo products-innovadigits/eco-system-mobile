@@ -15,6 +15,15 @@ abstract class LocalSlmService {
   /// Throws [LocalSlmUnavailable] when no real engine is wired.
   Future<void> load(String modelId, {required String modelFilePath});
 
+  /// Closes the current chat/session and opens a fresh chat on the
+  /// already-loaded model — **no model reinstall or download**.
+  ///
+  /// Used by the dev benchmark to guarantee a fresh one-shot context per
+  /// question so prior questions cannot bleed into later ones.
+  ///
+  /// Throws [LocalSlmUnavailable] if no model is currently loaded.
+  Future<void> resetSession();
+
   /// Streams free-text tokens for [prompt].
   Stream<String> generate(
     String prompt, {
@@ -68,6 +77,9 @@ class UnavailableLocalSlmService implements LocalSlmService {
   @override
   Future<void> load(String modelId, {required String modelFilePath}) async =>
       throw const LocalSlmUnavailable(_reason);
+
+  @override
+  Future<void> resetSession() async => throw const LocalSlmUnavailable(_reason);
 
   @override
   Stream<String> generate(
