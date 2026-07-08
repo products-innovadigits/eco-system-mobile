@@ -12,9 +12,9 @@ import 'package:project_management/features/ai_assistant/util/ai_assistant_query
 
 class AiAssistantRepoImpl implements AiAssistantRepo {
   /// Test / staging tunnel — change here when the host rotates (not read from `.env`).
-  /// Full POST URL: https://strange-wrapping-composition-sent.trycloudflare.com/projects/query
+  /// Full POST URL: https://peninsula-biodiversity-diploma-robots.trycloudflare.com/projects/query
   static const String _queryBaseUrl =
-      'https://consult-tract-separately-filed.trycloudflare.com/';
+      'https://peninsula-biodiversity-diploma-robots.trycloudflare.com/';
 
   static const String _queryPath = 'projects/query';
 
