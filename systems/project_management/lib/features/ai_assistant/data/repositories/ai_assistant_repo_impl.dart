@@ -29,6 +29,8 @@ class AiAssistantRepoImpl implements AiAssistantRepo {
     String query, {
     required String conversationId,
     bool resetContext = false,
+    int page = 1,
+    int pageSize = 10,
   }) async {
     try {
       final raw = await network.requestOrThrow(
@@ -39,6 +41,8 @@ class AiAssistantRepoImpl implements AiAssistantRepo {
           'query': query,
           'debug': _projectsQueryDebugBody,
           'reset_context': resetContext,
+          'page': page,
+          'page_size': pageSize,
         },
         method: ServerMethods.POST,
         model: null,
@@ -193,6 +197,7 @@ class AiAssistantRepoImpl implements AiAssistantRepo {
           : Map<String, dynamic>.from(data);
       final columnOrder = _columnOrderFromMeta(map['meta']);
       final resultType = _resultTypeFromMeta(map['meta']);
+      final pagination = _paginationFromMeta(map['meta']);
       final clarification = _asMap(map['clarification']);
 
       // Clarification / empty carry a message + clickable suggestion chips.
@@ -216,6 +221,10 @@ class AiAssistantRepoImpl implements AiAssistantRepo {
             resultType: resultType,
             message: message,
             suggestions: suggestions,
+            page: _positiveInt(pagination?['page']) ?? 1,
+            pageSize: _positiveInt(pagination?['page_size']) ?? 0,
+            hasMore: pagination?['has_more'] == true,
+            nextPage: _positiveInt(pagination?['next_page']),
           );
         }
       }
@@ -250,6 +259,19 @@ class AiAssistantRepoImpl implements AiAssistantRepo {
     final m = _asMap(meta);
     final rt = m?['result_type'];
     return rt is String && rt.isNotEmpty ? rt : null;
+  }
+
+  static Map<String, dynamic>? _paginationFromMeta(dynamic meta) {
+    return _asMap(_asMap(meta)?['pagination']);
+  }
+
+  static int? _positiveInt(dynamic value) {
+    final parsed = value is num
+        ? value.toInt()
+        : value is String
+        ? int.tryParse(value.trim())
+        : null;
+    return parsed != null && parsed > 0 ? parsed : null;
   }
 
   static String? _firstNonEmptyString(List<dynamic> candidates) {

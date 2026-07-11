@@ -48,6 +48,10 @@ class AiAssistantQueryProjectsResult {
     this.resultType,
     this.message,
     this.suggestions = const [],
+    this.page = 1,
+    this.pageSize = 0,
+    this.hasMore = false,
+    this.nextPage,
   });
 
   final List<AiAssistantQueryItem> items;
@@ -60,6 +64,12 @@ class AiAssistantQueryProjectsResult {
 
   /// Clickable suggestion chips (clarification, and gentle chips on empty).
   final List<AiAssistantSuggestion> suggestions;
+
+  /// Pagination metadata. Defaults keep legacy response shapes non-paginated.
+  final int page;
+  final int pageSize;
+  final bool hasMore;
+  final int? nextPage;
 
   bool get isClarification => resultType == 'clarification';
 }

@@ -141,6 +141,8 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
         text,
         conversationId: _conversationId,
         resetContext: resetOnce,
+        page: 1,
+        pageSize: _maxChatResults,
       );
       if (!mounted) return;
       setState(() {
@@ -157,7 +159,13 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
             ),
           );
         } else {
-          _entries.add(_ChatEntry.projects(result.items, query: text));
+          _entries.add(
+            _ChatEntry.projects(
+              result.items,
+              query: text,
+              hasMore: result.hasMore,
+            ),
+          );
         }
         _isSending = false;
         if (resetOnce) _pendingResetContext = false;
@@ -546,7 +554,7 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
                 ...projects
                     .take(_maxChatResults)
                     .map((p) => AiAssistantProjectResultCard(item: p)),
-                if (projects.length > _maxChatResults)
+                if (entry.hasMore || projects.length > _maxChatResults)
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0, bottom: 16),
                     child: Align(
@@ -559,7 +567,7 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
                               Routes.AI_ASSISTANT_ALL_RESULTS,
                               arguments: AiAssistantAllResultsArgs(
                                 items: projects,
-                                query: entry.query,
+                                query: entry.query!,
                               ),
                             ),
                             child: Row(
@@ -609,6 +617,9 @@ class _ChatEntry {
   /// screen (its title) when the user taps "View more".
   final String? query;
 
+  /// Whether the server reports another page for this result turn.
+  final bool hasMore;
+
   _ChatEntry._({
     this.userText,
     this.isThinking = false,
@@ -617,6 +628,7 @@ class _ChatEntry {
     this.clarificationMessage,
     this.suggestions,
     this.query,
+    this.hasMore = false,
   });
 
   factory _ChatEntry.user(String text) => _ChatEntry._(userText: text);
@@ -625,8 +637,9 @@ class _ChatEntry {
 
   factory _ChatEntry.projects(
     List<AiAssistantQueryItem> list, {
-    String? query,
-  }) => _ChatEntry._(projects: list, query: query);
+    required String query,
+    required bool hasMore,
+  }) => _ChatEntry._(projects: list, query: query, hasMore: hasMore);
 
   factory _ChatEntry.clarification({
     String? message,
