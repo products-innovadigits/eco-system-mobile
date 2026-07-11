@@ -20,9 +20,46 @@ class AiAssistantQueryItem {
   final List<String> displayKeyOrder;
 }
 
-/// Parsed `/projects/query` payload: list of dynamic rows.
+/// A clickable clarification/empty suggestion chip from the API.
+///
+/// [question] is the exact natural-language query re-sent to `/projects/query`
+/// when the user taps the card; [label] is the short Arabic text shown.
+class AiAssistantSuggestion {
+  AiAssistantSuggestion({
+    required this.id,
+    required this.label,
+    required this.question,
+  });
+
+  final String id;
+  final String label;
+  final String question;
+}
+
+/// Parsed `/projects/query` payload.
+///
+/// Besides the [items] rows, it carries the response's `meta.result_type`
+/// (`results` | `empty` | `clarification`) plus the clarification [message] and
+/// [suggestions] so the UI can render an interactive clarification instead of a
+/// bare failure. Empty and clarification are distinct states — never mixed.
 class AiAssistantQueryProjectsResult {
-  AiAssistantQueryProjectsResult({required this.items});
+  AiAssistantQueryProjectsResult({
+    required this.items,
+    this.resultType,
+    this.message,
+    this.suggestions = const [],
+  });
 
   final List<AiAssistantQueryItem> items;
+
+  /// `results` | `empty` | `clarification` | `error` (null on legacy shapes).
+  final String? resultType;
+
+  /// User-facing message (for clarification: the question asking to clarify).
+  final String? message;
+
+  /// Clickable suggestion chips (clarification, and gentle chips on empty).
+  final List<AiAssistantSuggestion> suggestions;
+
+  bool get isClarification => resultType == 'clarification';
 }

@@ -13,6 +13,10 @@ class AiAssistantBody extends StatefulWidget {
 }
 
 class AiAssistantBodyState extends State<AiAssistantBody> {
+  /// Max result cards shown inline in a chat bubble; more → a "View more" button
+  /// that opens the full list on [AiAssistantAllResultsView].
+  static const int _maxChatResults = 5;
+
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _textController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
@@ -108,11 +112,19 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
   Future<void> _onSend() async {
     final text = _textController.text.trim();
     if (text.isEmpty || _isSending) return;
+    _textController.clear();
+    await _submitText(text);
+  }
+
+  /// Sends [rawText] as a user turn. Reused by the input field and by tapping a
+  /// clarification suggestion chip (which re-sends its `question`).
+  Future<void> _submitText(String rawText) async {
+    final text = rawText.trim();
+    if (text.isEmpty || _isSending) return;
 
     setState(() {
       _entries.add(_ChatEntry.user(text));
       _isSending = true;
-      _textController.clear();
     });
     _focusNode.unfocus();
     _scrollToBottom();
@@ -135,7 +147,18 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
         if (_entries.isNotEmpty && _entries.last.isThinking) {
           _entries.removeLast();
         }
-        _entries.add(_ChatEntry.projects(result.items));
+        // Clarification is a distinct, interactive state — not results, not a
+        // failure. Empty results still fall through to the projects entry.
+        if (result.isClarification) {
+          _entries.add(
+            _ChatEntry.clarification(
+              message: result.message,
+              suggestions: result.suggestions,
+            ),
+          );
+        } else {
+          _entries.add(_ChatEntry.projects(result.items, query: text));
+        }
         _isSending = false;
         if (resetOnce) _pendingResetContext = false;
       });
@@ -159,7 +182,7 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
         if (resetOnce) _pendingResetContext = false;
       });
 
-      /// Quick tunnels expire when `cloudflared` stops/restarts — Dio surfaces
+      /// If the API server is unreachable (down/restarting/network), Dio surfaces
       /// that as connectionError / unknown, i.e. "No internet connection", which misleads users.
       final msg = (e.isNoConnection || e.isTimeout)
           ? allTranslations.text(LocaleKeys.ai_assistant_host_unreachable)
@@ -181,6 +204,97 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
       );
     }
     _scrollToBottom();
+  }
+
+  void _onSuggestionTap(AiAssistantSuggestion suggestion) {
+    if (_isSending) return;
+    _submitText(suggestion.question);
+  }
+
+  /// Assistant-aligned clarification bubble: a message + a 2-column grid of
+  /// clickable suggestion cards. Tapping a card re-sends its question.
+  Widget _buildClarificationEntry(BuildContext context, _ChatEntry entry) {
+    final suggestions = entry.suggestions ?? const <AiAssistantSuggestion>[];
+    final message = (entry.clarificationMessage?.trim().isNotEmpty ?? false)
+        ? entry.clarificationMessage!.trim()
+        : allTranslations.text(LocaleKeys.ai_assistant_empty_hint);
+
+    return Padding(
+      padding: EdgeInsets.only(bottom: 12.h),
+      child: Align(
+        alignment: AlignmentDirectional.centerStart,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: context.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  color: context.color.surface,
+                  borderRadius: BorderRadiusDirectional.only(
+                    topStart: Radius.circular(16.r),
+                    topEnd: Radius.circular(16.r),
+                    bottomEnd: Radius.circular(16.r),
+                    bottomStart: Radius.circular(4.r),
+                  ),
+                  border: Border.all(
+                    color: context.color.onPrimary.withValues(alpha: 0.22),
+                  ),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 14.w,
+                    vertical: 12.h,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(
+                        Icons.help_outline_rounded,
+                        size: 20.sp,
+                        color: context.color.primary,
+                      ),
+                      SizedBox(width: 8.w),
+                      Expanded(
+                        child: Text(
+                          message,
+                          style: context.textTheme.bodyMedium?.copyWith(
+                            color: context.color.onSurface,
+                            height: 1.35,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              if (suggestions.isNotEmpty) ...[
+                SizedBox(height: 10.h),
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.zero,
+                  itemCount: suggestions.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10.w,
+                    mainAxisSpacing: 10.h,
+                    mainAxisExtent: 64.h,
+                  ),
+                  itemBuilder: (context, index) {
+                    return AiAssistantSuggestionCard(
+                      suggestion: suggestions[index],
+                      enabled: !_isSending,
+                      onTap: _onSuggestionTap,
+                    );
+                  },
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -395,6 +509,10 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
       );
     }
 
+    if (entry.isClarification) {
+      return _buildClarificationEntry(context, entry);
+    }
+
     final projects = entry.projects ?? [];
     return Padding(
       padding: EdgeInsets.only(bottom: 12.h),
@@ -424,8 +542,50 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
                     ),
                   ),
                 )
-              else
-                ...projects.map((p) => AiAssistantProjectResultCard(item: p)),
+              else ...[
+                ...projects
+                    .take(_maxChatResults)
+                    .map((p) => AiAssistantProjectResultCard(item: p)),
+                if (projects.length > _maxChatResults)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0, bottom: 16),
+                    child: Align(
+                      alignment: AlignmentDirectional.centerEnd,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          InkWell(
+                            onTap: () => CustomNavigator.push(
+                              Routes.AI_ASSISTANT_ALL_RESULTS,
+                              arguments: AiAssistantAllResultsArgs(
+                                items: projects,
+                                query: entry.query,
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  allTranslations.text(
+                                    LocaleKeys.ai_assistant_view_more,
+                                  ),
+                                  style: context.textTheme.bodyMedium?.copyWith(
+                                    color: context.color.onPrimary,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.chevron_right_rounded,
+                                  size: 20.sp,
+                                  color: context.color.onPrimary,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+              ],
             ],
           ),
         ),
@@ -439,14 +599,43 @@ class _ChatEntry {
   final bool isThinking;
   final List<AiAssistantQueryItem>? projects;
 
-  _ChatEntry._({this.userText, this.isThinking = false, this.projects});
+  /// Clarification turn: a message asking the user to clarify, plus clickable
+  /// suggestion chips. Distinct from an empty-results or failure entry.
+  final bool isClarification;
+  final String? clarificationMessage;
+  final List<AiAssistantSuggestion>? suggestions;
+
+  /// Original question for this results entry — forwarded to the "All results"
+  /// screen (its title) when the user taps "View more".
+  final String? query;
+
+  _ChatEntry._({
+    this.userText,
+    this.isThinking = false,
+    this.projects,
+    this.isClarification = false,
+    this.clarificationMessage,
+    this.suggestions,
+    this.query,
+  });
 
   factory _ChatEntry.user(String text) => _ChatEntry._(userText: text);
 
   factory _ChatEntry.thinking() => _ChatEntry._(isThinking: true);
 
-  factory _ChatEntry.projects(List<AiAssistantQueryItem> list) =>
-      _ChatEntry._(projects: list);
+  factory _ChatEntry.projects(
+    List<AiAssistantQueryItem> list, {
+    String? query,
+  }) => _ChatEntry._(projects: list, query: query);
+
+  factory _ChatEntry.clarification({
+    String? message,
+    required List<AiAssistantSuggestion> suggestions,
+  }) => _ChatEntry._(
+    isClarification: true,
+    clarificationMessage: message,
+    suggestions: suggestions,
+  );
 }
 
 /// Shimmer “Thinking” / localized label (without trailing dots; dots are animated separately).

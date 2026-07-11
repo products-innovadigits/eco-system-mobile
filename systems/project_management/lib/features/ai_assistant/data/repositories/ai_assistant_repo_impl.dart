@@ -11,10 +11,9 @@ import 'package:project_management/features/ai_assistant/model/ai_assistant_mode
 import 'package:project_management/features/ai_assistant/util/ai_assistant_query_error_mapper.dart';
 
 class AiAssistantRepoImpl implements AiAssistantRepo {
-  /// Test / staging tunnel — change here when the host rotates (not read from `.env`).
-  /// Full POST URL: https://strange-wrapping-composition-sent.trycloudflare.com/projects/query
-  static const String _queryBaseUrl =
-      'https://consult-tract-separately-filed.trycloudflare.com/';
+  /// Production API — Project AI server (always-on, trusted HTTPS).
+  /// Full POST URL: https://188-166-44-162.sslip.io/projects/query
+  static const String _queryBaseUrl = 'https://188-166-44-162.sslip.io/';
 
   static const String _queryPath = 'projects/query';
 
@@ -193,6 +192,18 @@ class AiAssistantRepoImpl implements AiAssistantRepo {
           ? data
           : Map<String, dynamic>.from(data);
       final columnOrder = _columnOrderFromMeta(map['meta']);
+      final resultType = _resultTypeFromMeta(map['meta']);
+      final clarification = _asMap(map['clarification']);
+
+      // Clarification / empty carry a message + clickable suggestion chips.
+      // Prefer the clarification block's own message, else the top-level one.
+      final message = _firstNonEmptyString([
+        clarification?['message'],
+        map['message'],
+      ]);
+      final suggestions = _parseSuggestions(
+        clarification?['suggestions'] ?? map['suggestions'],
+      );
 
       if (map['data'] != null) {
         final inner = map['data'];
@@ -202,6 +213,9 @@ class AiAssistantRepoImpl implements AiAssistantRepo {
                 .map((e) => _itemFromDynamic(e, columnOrder))
                 .whereType<AiAssistantQueryItem>()
                 .toList(),
+            resultType: resultType,
+            message: message,
+            suggestions: suggestions,
           );
         }
       }
@@ -224,6 +238,49 @@ class AiAssistantRepoImpl implements AiAssistantRepo {
     }
 
     return AiAssistantQueryProjectsResult(items: []);
+  }
+
+  static Map<String, dynamic>? _asMap(dynamic v) {
+    if (v is Map<String, dynamic>) return v;
+    if (v is Map) return Map<String, dynamic>.from(v);
+    return null;
+  }
+
+  static String? _resultTypeFromMeta(dynamic meta) {
+    final m = _asMap(meta);
+    final rt = m?['result_type'];
+    return rt is String && rt.isNotEmpty ? rt : null;
+  }
+
+  static String? _firstNonEmptyString(List<dynamic> candidates) {
+    for (final c in candidates) {
+      if (c is String && c.trim().isNotEmpty) return c.trim();
+    }
+    return null;
+  }
+
+  /// Parses the `suggestions` array (objects with id/label/question). Drops any
+  /// entry missing a usable `question` — that is what a tap re-sends.
+  static List<AiAssistantSuggestion> _parseSuggestions(dynamic raw) {
+    if (raw is! List) return const [];
+    final out = <AiAssistantSuggestion>[];
+    for (final e in raw) {
+      final m = _asMap(e);
+      if (m == null) continue;
+      final question = m['question'];
+      if (question is! String || question.trim().isEmpty) continue;
+      final label = m['label'];
+      out.add(
+        AiAssistantSuggestion(
+          id: (m['id']?.toString() ?? '').trim(),
+          label: (label is String && label.trim().isNotEmpty)
+              ? label.trim()
+              : question.trim(),
+          question: question.trim(),
+        ),
+      );
+    }
+    return out;
   }
 
   static List<String>? _columnOrderFromMeta(dynamic meta) {

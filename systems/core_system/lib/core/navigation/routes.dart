@@ -30,6 +30,7 @@ class Routes {
   static const WORKFLOW_PROCESS_DETAILS = "WORKFLOW_PROCESS_DETAILS";
   static const LATEST_REQUEST = "LATEST_REQUEST";
   static const AI_ASSISTANT = "AI_ASSISTANT";
+  static const AI_ASSISTANT_ALL_RESULTS = "AI_ASSISTANT_ALL_RESULTS";
   static const PDF = "PDF";
   static const PMS_LAYOUT = "PMS_LAYOUT";
   static const CYCLES = "CYCLES";

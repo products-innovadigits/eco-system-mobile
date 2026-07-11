@@ -357,6 +357,12 @@ abstract class  LocaleKeys {
   static const ai_assistant_rate_limited_retry_after =
       'ai_assistant_rate_limited_retry_after';
   static const ai_assistant_context_required = 'ai_assistant_context_required';
+  static const ai_assistant_view_more = 'ai_assistant_view_more';
+  static const ai_assistant_all_results = 'ai_assistant_all_results';
+  static const ai_assistant_search_results_hint =
+      'ai_assistant_search_results_hint';
+  static const ai_assistant_no_matching_results =
+      'ai_assistant_no_matching_results';
   static const challenges_risks = 'challenges_risks';
   static const risk = 'risk';
   static const main_data = 'main_data';
