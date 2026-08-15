@@ -1,4 +1,3 @@
-import 'package:core_system/core/config/app_config.dart';
 import 'package:core_system/core/modules/home_section.dart';
 import 'package:core_system/core/modules/system_module.dart';
 import 'package:project_management/core/di/project_management_locator.dart';
@@ -17,7 +16,8 @@ class ProjectManagementModule implements SystemModule {
   String get id => 'project_management';
 
   @override
-  String get name => 'Project Management System';
+  String get name =>
+      allTranslations.text(LocaleKeys.project_management_system);
 
   @override
   ActiveSystemEnum get system => ActiveSystemEnum.projectManagement;
@@ -99,10 +99,10 @@ class ProjectManagementModule implements SystemModule {
       id: 'project_management',
       order: 20,
       builder: (context) {
-        if (AppConfig.activeSystem == ActiveSystemEnum.projectManagement) {
-          return const ProjectManagementSection();
+        if (!ActiveSystem.showsContentFor(system)) {
+          return const SizedBox.shrink();
         }
-        return const SizedBox.shrink();
+        return const ProjectManagementSection();
       },
     ),
   ];

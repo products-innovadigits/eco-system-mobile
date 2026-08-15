@@ -1,7 +1,6 @@
 import 'package:core_system/core/helpers/font_sizes.dart';
 import 'package:core_system/core/utility/export.dart';
 import 'package:core_system/core/widgets/nav_app.dart';
-import 'package:strategy_system/shared/components/strategy_system_switcher.dart';
 import 'package:strategy_system/strategy_home/view/strategy_home_view.dart';
 
 class StrategyLayout extends StatefulWidget {
@@ -54,7 +53,8 @@ class _StrategyLayoutState extends State<StrategyLayout>
             ),
           ),
           if (_showSwitcher)
-            StrategySystemSwitcher(
+            SystemsSwitcher(
+              systemEnum: ActiveSystemEnum.strategy,
               onComplete: () {
                 setState(() {
                   _showSwitcher = false;

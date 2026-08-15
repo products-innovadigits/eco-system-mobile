@@ -71,26 +71,12 @@ class ActiveSystemEnum extends Enum<String> {
     pms,
   ];
 
-  factory ActiveSystemEnum.fromString(String value) {
-    return values.firstWhere(
-      (e) => e.value == value,
-      orElse: () => values.first,
-    );
-  }
-
-  /// Maps module id (e.g. pms_system, ats_system) to ActiveSystemEnum.
-  static ActiveSystemEnum fromModuleId(String moduleId) {
-    switch (moduleId) {
-      case 'pms_system':
-        return pms;
-      case 'ats_system':
-        return ats;
-      case 'strategy_system':
-        return strategy;
-      case 'project_management':
-        return projectManagement;
-      default:
-        return ActiveSystemEnum.fromString(moduleId);
+  /// Parses [value], or returns null when it matches no system. Callers decide
+  /// what an unknown value means rather than silently getting [values].first.
+  static ActiveSystemEnum? tryFromString(String value) {
+    for (final system in values) {
+      if (system.value == value) return system;
     }
+    return null;
   }
 }

@@ -40,8 +40,9 @@ class AppRouter {
             settings.arguments as ActiveSystemEnum? ??
             ActiveSystemEnum.strategy;
 
-        // Set the current active system
-        UserBloc.currentActiveSystem = systemEnum;
+        // Record which system's screens are being browsed. The session stays
+        // authenticated against whatever it signed in to.
+        ActiveSystem.view(systemEnum);
 
         // Redirect to the selected system's layout via ModulesRegistry
         final layoutRoute = ModulesRegistry.getLayoutRoute(systemEnum);

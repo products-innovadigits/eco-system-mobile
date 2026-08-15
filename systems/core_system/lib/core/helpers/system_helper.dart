@@ -1,56 +1,46 @@
 import 'package:core_system/core/utility/export.dart';
 
+/// One entry in the system switcher. `system == null` is the combined
+/// "all systems" home.
+class SystemOption {
+  final ActiveSystemEnum? system;
+  final String name;
+
+  const SystemOption({required this.system, required this.name});
+}
+
+/// Navigation side of system switching. All state lives in [ActiveSystem].
 class SystemHelper {
-  // System display names
-  static const Map<ActiveSystemEnum, String> systemNames = {
-    ActiveSystemEnum.projectManagement: 'نظام إدارة المشاريع',
-    ActiveSystemEnum.strategy: 'نظام الأداء الاستراتيجي',
-    ActiveSystemEnum.ats: 'نظام إدارة الموظفين',
-    ActiveSystemEnum.pms: 'نظام PMS',
-  };
+  /// Display name for a system, or the "all systems" label for null.
+  static String getSystemName(ActiveSystemEnum? system) =>
+      ActiveSystem.nameOf(system);
 
-  static const String allSystemsName = 'كل الانظمة';
-
-  /// Get the display name for a system
-  static String getSystemName(ActiveSystemEnum? system) {
-    if (system == null) return allSystemsName;
-    return systemNames[system] ?? system.value;
-  }
-
-  /// Get available systems (excluding current system)
-  static List<Map<String, dynamic>> getAvailableSystems(
+  /// Switcher entries: the combined home first, then every enabled system
+  /// except the one already being viewed.
+  static List<SystemOption> getAvailableSystems([
     ActiveSystemEnum? currentSystem,
-  ) {
-    final options = <Map<String, dynamic>>[
-      // Always include "all systems" option
-      {'name': allSystemsName, 'enum': null},
+  ]) {
+    final current = currentSystem ?? ActiveSystem.viewing;
+    return [
+      SystemOption(system: null, name: ActiveSystem.nameOf(null)),
+      for (final system in ActiveSystem.available)
+        if (system != current)
+          SystemOption(system: system, name: ActiveSystem.nameOf(system)),
     ];
-
-    // Add active systems, excluding current system
-    for (final system in UserBloc.activeSystems) {
-      if (system != currentSystem) {
-        options.add({'name': getSystemName(system), 'enum': system});
-      }
-    }
-
-    return options;
   }
 
-  /// Check if we should show the system selection widget
-  static bool shouldShowSystemWidget() {
-    return UserBloc.currentActiveSystem != null;
-  }
+  /// The switcher is only meaningful once a system has been chosen and there
+  /// is more than one to choose between.
+  static bool shouldShowSystemWidget() => ActiveSystem.available.length > 1;
 
-  /// Handle system selection
-  static void handleSystemSelection(ActiveSystemEnum? systemEnum) {
-    UserBloc.currentActiveSystem = systemEnum;
-
-    if (systemEnum == null) {
-      // Navigate to main page when "all" is selected
+  /// The single entry point for moving between systems: records the choice,
+  /// then routes to that system's layout (or the combined home for null).
+  static void goToSystem(ActiveSystemEnum? system) {
+    ActiveSystem.view(system);
+    if (system == null) {
       CustomNavigator.push(Routes.MAIN_PAGE);
     } else {
-      // Navigate to specific system
-      CustomNavigator.push(Routes.SYSTEM_SWITCHER, arguments: systemEnum);
+      CustomNavigator.push(Routes.SYSTEM_SWITCHER, arguments: system);
     }
   }
 }

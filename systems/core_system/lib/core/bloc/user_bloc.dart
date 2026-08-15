@@ -13,11 +13,6 @@ class UserBloc extends Bloc<AppEvent, AppState> {
   static UserBloc get instance =>
       BlocProvider.of(CustomNavigator.navigatorState.currentContext!);
 
-  // static List<String> activeSystems = [];
-  static List<ActiveSystemEnum> activeSystems = [];
-  static ActiveSystemEnum? currentActiveSystem;
-  // static bool enableProxy = false;
-
   Future<void> onClick(AppEvent event, Emitter emit) async {
     emit(Loading());
     try {

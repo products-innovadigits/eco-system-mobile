@@ -16,10 +16,18 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
   /// Max result cards shown inline in a chat bubble; more → a "View more" button
   /// that opens the full list on [AiAssistantAllResultsView].
   static const int _maxChatResults = 5;
+  static const Duration _hintTypingInterval = Duration(milliseconds: 55);
+  static const Duration _hintQuestionDuration = Duration(seconds: 3);
 
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _textController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
+  final ValueNotifier<String> _animatedHint = ValueNotifier<String>('');
+
+  Timer? _hintTimer;
+  late DateTime _hintQuestionStartedAt;
+  int _hintQuestionIndex = 0;
+  int _hintCharacterCount = 0;
 
   final List<_ChatEntry> _entries = [];
   bool _isSending = false;
@@ -34,6 +42,51 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
   void initState() {
     super.initState();
     _conversationId = _newConversationId();
+    _startHintAnimation();
+  }
+
+  List<String> get _localizedHintQuestions => [
+    allTranslations.text(LocaleKeys.ai_assistant_input_hint_project_cost),
+    allTranslations.text(LocaleKeys.ai_assistant_input_hint_project_managers),
+    allTranslations.text(
+      LocaleKeys.ai_assistant_input_hint_meeting_descriptions,
+    ),
+    allTranslations.text(LocaleKeys.ai_assistant_input_hint_project_outputs),
+    allTranslations.text(LocaleKeys.ai_assistant_input_hint_project_risks),
+  ];
+
+  String get _animatedInputHint {
+    final prefix = allTranslations.text(
+      LocaleKeys.ai_assistant_input_hint_prefix,
+    );
+    final question = _localizedHintQuestions[_hintQuestionIndex];
+    final characterCount = math.min(_hintCharacterCount, question.length);
+    final typedQuestion = question.substring(0, characterCount);
+    return typedQuestion.isEmpty ? prefix : '$prefix $typedQuestion';
+  }
+
+  void _startHintAnimation() {
+    _hintQuestionStartedAt = DateTime.now();
+    _animatedHint.value = _animatedInputHint;
+    _hintTimer = Timer.periodic(_hintTypingInterval, (_) {
+      if (!mounted) return;
+
+      final elapsed = DateTime.now().difference(_hintQuestionStartedAt);
+      if (elapsed >= _hintQuestionDuration) {
+        _hintQuestionIndex =
+            (_hintQuestionIndex + 1) % _localizedHintQuestions.length;
+        _hintCharacterCount = 0;
+        _hintQuestionStartedAt = DateTime.now();
+        _animatedHint.value = _animatedInputHint;
+        return;
+      }
+
+      final question = _localizedHintQuestions[_hintQuestionIndex];
+      if (_hintCharacterCount < question.length) {
+        _hintCharacterCount++;
+        _animatedHint.value = _animatedInputHint;
+      }
+    });
   }
 
   /// Visible for [AiAssistantView] app bar actions.
@@ -92,6 +145,8 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
 
   @override
   void dispose() {
+    _hintTimer?.cancel();
+    _animatedHint.dispose();
     _scrollController.dispose();
     _textController.dispose();
     _focusNode.dispose();
@@ -379,32 +434,35 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Expanded(
-                    child: TextField(
-                      controller: _textController,
-                      focusNode: _focusNode,
-                      minLines: 1,
-                      maxLines: 6,
-                      textInputAction: TextInputAction.send,
-                      enabled: !_isSending,
-                      onSubmitted: (_) => _onSend(),
-                      cursorColor: context.color.primary,
-                      style: context.textTheme.bodyMedium?.copyWith(
-                        color: context.color.onSurface,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: allTranslations.text(
-                          LocaleKeys.ai_assistant_input_hint,
-                        ),
-                        hintStyle: context.textTheme.bodyMedium?.copyWith(
-                          color: context.color.onSurfaceVariant,
-                        ),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 12.w,
-                          vertical: 10.h,
-                        ),
-                        isDense: true,
-                      ),
+                    child: ValueListenableBuilder<String>(
+                      valueListenable: _animatedHint,
+                      builder: (context, animatedHint, _) {
+                        return TextField(
+                          controller: _textController,
+                          focusNode: _focusNode,
+                          minLines: 1,
+                          maxLines: 6,
+                          textInputAction: TextInputAction.send,
+                          enabled: !_isSending,
+                          onSubmitted: (_) => _onSend(),
+                          cursorColor: context.color.primary,
+                          style: context.textTheme.bodyMedium?.copyWith(
+                            color: context.color.onSurface,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: animatedHint,
+                            hintStyle: context.textTheme.bodyMedium?.copyWith(
+                              color: context.color.onSurfaceVariant,
+                            ),
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 12.w,
+                              vertical: 10.h,
+                            ),
+                            isDense: true,
+                          ),
+                        );
+                      },
                     ),
                   ),
                   IconButton(
@@ -543,7 +601,9 @@ class AiAssistantBodyState extends State<AiAssistantBody> {
                   child: Padding(
                     padding: EdgeInsets.all(16.w),
                     child: Text(
-                      allTranslations.text(LocaleKeys.no_projects_match),
+                      allTranslations.text(
+                        LocaleKeys.ai_assistant_no_matching_results,
+                      ),
                       style: context.textTheme.bodyMedium?.copyWith(
                         color: context.color.onSurfaceVariant,
                       ),

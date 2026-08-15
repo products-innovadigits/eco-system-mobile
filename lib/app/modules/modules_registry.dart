@@ -9,10 +9,21 @@ class ModulesRegistry {
   /// List of enabled system modules.
   /// This list is now provided by a generated file to ensure
   /// compile-time modularity and zero shell imports of feature systems.
-  static List<SystemModule> get enabledModules => gen.buildEnabledModules();
+  ///
+  /// Built once: modules construct their DI locators and hold identity, and
+  /// [appRoutes] is consulted on every navigation.
+  static final List<SystemModule> enabledModules = List.unmodifiable(
+    gen.buildEnabledModules(),
+  );
+
+  /// Hands the module list to the core layer, which owns system state but has
+  /// no way to see the concrete modules. Call once, before the first frame.
+  static void register() => ActiveSystem.registerModules(enabledModules);
 
   /// Aggregated routes from all enabled modules.
-  static Map<String, RouteFactory> get appRoutes {
+  static final Map<String, RouteFactory> appRoutes = _buildRoutes();
+
+  static Map<String, RouteFactory> _buildRoutes() {
     final Map<String, RouteFactory> routes = {};
     for (final module in enabledModules) {
       if (kDebugMode) {
@@ -20,11 +31,13 @@ class ModulesRegistry {
       }
       routes.addAll(module.routes);
     }
-    return routes;
+    return Map.unmodifiable(routes);
   }
 
   /// Aggregated and sorted home sections from all enabled modules.
-  static List<HomeSection> get appSections {
+  static final List<HomeSection> appSections = _buildSections();
+
+  static List<HomeSection> _buildSections() {
     final List<HomeSection> sections = enabledModules
         .expand((m) => m.homeSections)
         .toList();
@@ -33,7 +46,8 @@ class ModulesRegistry {
       _assertNoDuplicateSections(sections);
     }
 
-    return sections..sort((a, b) => a.order.compareTo(b.order));
+    sections.sort((a, b) => a.order.compareTo(b.order));
+    return List.unmodifiable(sections);
   }
 
   static void _assertNoDuplicateRoutes(
@@ -65,23 +79,22 @@ class ModulesRegistry {
   /// This performs a generic lookup from aggregated routes,
   /// ensuring the shell has zero knowledge of feature layout classes.
   static Route<dynamic>? getLayoutRoute(ActiveSystemEnum system) {
-    String? routeName;
-    if (system == ActiveSystemEnum.projectManagement) {
-      routeName = Routes.PROJECT_MANAGEMENT_LAYOUT;
-    } else if (system == ActiveSystemEnum.strategy) {
-      routeName = Routes.STRATEGY_LAYOUT;
-    } else if (system == ActiveSystemEnum.pms) {
-      routeName = Routes.PMS_LAYOUT;
-    }
+    final routeName = _layoutRoutes[system];
+    if (routeName == null) return null;
 
-    if (routeName != null) {
-      final factory = appRoutes[routeName];
-      // Lookup the factory and call it with name only;
-      // feature modules are expected to handle default arguments for their layouts.
-      return factory?.call(RouteSettings(name: routeName));
-    }
-    return null;
+    final factory = appRoutes[routeName];
+    // Lookup the factory and call it with name only;
+    // feature modules are expected to handle default arguments for their layouts.
+    return factory?.call(RouteSettings(name: routeName));
   }
+
+  /// Entries must stay in step with [enabledModules] — a system listed here but
+  /// not compiled in resolves to a route nobody registered.
+  static const Map<ActiveSystemEnum, String> _layoutRoutes = {
+    ActiveSystemEnum.projectManagement: Routes.PROJECT_MANAGEMENT_LAYOUT,
+    ActiveSystemEnum.strategy: Routes.STRATEGY_LAYOUT,
+    // ActiveSystemEnum.pms: Routes.PMS_LAYOUT,
+  };
 
   /// Composes all providers from core system and enabled feature modules.
   static List<BlocProvider> get appProviders {

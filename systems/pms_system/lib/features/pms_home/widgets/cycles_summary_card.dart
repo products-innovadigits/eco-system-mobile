@@ -16,17 +16,9 @@ class CyclesSummaryCard extends StatelessWidget {
       moreBtnTxt: isPMSHome
           ? allTranslations.text(LocaleKeys.view_all_cycles)
           : null,
-      onViewMoreTap: () {
-        if (!isPMSHome) {
-          UserBloc.currentActiveSystem = ActiveSystemEnum.pms;
-        }
-        isPMSHome
-            ? CustomNavigator.push(Routes.CYCLES)
-            : CustomNavigator.push(
-                Routes.SYSTEM_SWITCHER,
-                arguments: ActiveSystemEnum.pms,
-              );
-      },
+      onViewMoreTap: () => isPMSHome
+          ? CustomNavigator.push(Routes.CYCLES)
+          : SystemHelper.goToSystem(ActiveSystemEnum.pms),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

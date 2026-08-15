@@ -38,17 +38,9 @@ class _CardContent extends StatelessWidget {
           title: allTranslations.text(LocaleKeys.top_employees),
           moreBtnTxt:
               isPMSHome ? allTranslations.text(LocaleKeys.view_all) : null,
-          onViewMoreTap: () {
-            if (!isPMSHome) {
-              UserBloc.currentActiveSystem = ActiveSystemEnum.pms;
-            }
-            isPMSHome
-                ? CustomNavigator.push(Routes.EMPLOYEES_PERFORMANCE)
-                : CustomNavigator.push(
-                    Routes.SYSTEM_SWITCHER,
-                    arguments: ActiveSystemEnum.pms,
-                  );
-          },
+          onViewMoreTap: () => isPMSHome
+              ? CustomNavigator.push(Routes.EMPLOYEES_PERFORMANCE)
+              : SystemHelper.goToSystem(ActiveSystemEnum.pms),
           child: switch (state) {
             PerformanceLoading() => const _ShimmerContent(),
             PerformanceLoaded(:final top3) => _LoadedContent(top3: top3),

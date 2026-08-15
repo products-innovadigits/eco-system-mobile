@@ -6,7 +6,6 @@ import 'package:pms_system/features/employees_learning/bloc/employees_learning_b
 import 'package:pms_system/features/employees_learning/bloc/employees_learning_events.dart';
 import 'package:pms_system/features/employees_performance/bloc/employees_performance_bloc.dart';
 import 'package:pms_system/features/employees_performance/bloc/employees_performance_events.dart';
-import 'package:pms_system/shared/components/pms_system_switcher.dart';
 
 import 'features/pms_home/view/pms_home_view.dart';
 
@@ -81,7 +80,8 @@ class _PmsLayoutState extends State<PmsLayout> with WidgetsBindingObserver {
               ),
             ),
             if (_showSwitcher)
-              PmsSystemSwitcher(
+              SystemsSwitcher(
+                systemEnum: ActiveSystemEnum.pms,
                 onComplete: () {
                   setState(() {
                     _showSwitcher = false;

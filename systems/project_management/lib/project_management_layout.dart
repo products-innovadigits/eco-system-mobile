@@ -1,5 +1,4 @@
 import 'package:project_management/core/utility/project_management_exports.dart';
-import 'package:project_management/shared/components/project_management_system_switcher.dart';
 import 'package:project_management/shared/widgets/project_management_bottom_nav_bar.dart';
 
 class ProjectManagementLayout extends StatefulWidget {
@@ -68,7 +67,8 @@ class _ProjectManagementLayoutState extends State<ProjectManagementLayout>
             ),
           ),
           if (_showSwitcher)
-            ProjectManagementSystemSwitcher(
+            SystemsSwitcher(
+              systemEnum: ActiveSystemEnum.projectManagement,
               onComplete: () {
                 setState(() {
                   _showSwitcher = false;

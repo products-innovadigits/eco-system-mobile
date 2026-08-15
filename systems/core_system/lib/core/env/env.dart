@@ -32,7 +32,7 @@ abstract class Env {
   @EnviedField(
     varName: 'PROJECT_MANAGEMENT_BASE_URL_DEV',
     obfuscate: true,
-    defaultValue: 'https://194.163.168.5:447/api/',
+    defaultValue: 'https://api-src.nawahtech.com/api/',
   )
   static final String projectManagementBaseUrlDev =
       _Env.projectManagementBaseUrlDev;

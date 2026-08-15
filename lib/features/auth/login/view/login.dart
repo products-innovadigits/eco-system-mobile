@@ -3,7 +3,8 @@ import 'package:core_system/core/utility/export.dart';
 import 'package:eco_system/features/auth/login/bloc/login_bloc.dart';
 import 'package:eco_system/features/auth/login/widgets/welcome_widget.dart';
 
-import '../../../../app/modules/modules_registry.dart';
+// Needed by the commented-out system picker below.
+// import '../../../../app/modules/modules_registry.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
@@ -35,42 +36,47 @@ class LoginView extends StatelessWidget {
                           data: [
                             const WelcomeWidget(),
                             SizedBox(height: 32.h),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 6.0),
-                                  child: Text(
-                                    allTranslations.text("login_to"),
-                                    style: context.textTheme.labelSmall,
-                                  ),
-                                ),
-                                CustomDropList(
-                                  list: ModulesRegistry.enabledModules
-                                      .map(
-                                        (module) => DropListModel(
-                                          id:
-                                              ModulesRegistry.enabledModules
-                                                  .indexOf(module) +
-                                              1,
-                                          name: module.name,
-                                          key: module.id,
-                                        ),
-                                      )
-                                      .toList(),
-                                  hint: allTranslations.text("select_system"),
-                                  onChanged: (value) {
-                                    if (value.key != null) {
-                                      context
-                                          .read<LoginBloc>()
-                                          .setSelectedSystem(value.key!);
-                                    }
-                                  },
-                                  bgColor: LightColor.white,
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 16.h),
+
+                            /// Login-time system picker, hidden on the demo
+                            /// instance: the enabled systems share one backend,
+                            /// so a single sign-in covers all of them and the
+                            /// switcher in [MainHeader] moves between them
+                            /// afterwards. Restore this together with
+                            /// `LoginBloc.setSelectedSystem` if systems ever
+                            /// need separate credentials again.
+                            // Column(
+                            //   crossAxisAlignment: CrossAxisAlignment.start,
+                            //   children: [
+                            //     Padding(
+                            //       padding: const EdgeInsets.only(bottom: 6.0),
+                            //       child: Text(
+                            //         allTranslations.text("login_to"),
+                            //         style: context.textTheme.labelSmall,
+                            //       ),
+                            //     ),
+                            //     CustomDropList(
+                            //       list: ModulesRegistry.enabledModules.indexed
+                            //           .map(
+                            //             (entry) => DropListModel(
+                            //               id: entry.$1 + 1,
+                            //               name: entry.$2.name,
+                            //               key: entry.$2.id,
+                            //             ),
+                            //           )
+                            //           .toList(),
+                            //       hint: allTranslations.text("select_system"),
+                            //       onChanged: (value) {
+                            //         if (value.key != null) {
+                            //           context
+                            //               .read<LoginBloc>()
+                            //               .setSelectedSystem(value.key!);
+                            //         }
+                            //       },
+                            //       bgColor: LightColor.white,
+                            //     ),
+                            //   ],
+                            // ),
+                            // SizedBox(height: 16.h),
                             CustomTextField(
                               // hint: allTranslations.text("enter_username"),
                               hint: allTranslations.text("enter_email"),

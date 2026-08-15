@@ -191,7 +191,7 @@ class _AiAssistantAllResultsViewState extends State<AiAssistantAllResultsView> {
           widget.args.query.trim().isNotEmpty
               ? widget.args.query.trim()
               : allTranslations.text(LocaleKeys.ai_assistant_all_results),
-          maxLines: 1,
+          maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: context.textTheme.titleLarge?.copyWith(
             color: onPrimary,

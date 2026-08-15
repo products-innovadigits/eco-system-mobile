@@ -20,7 +20,8 @@ class AtsModule implements SystemModule {
   String get id => 'ats_system';
 
   @override
-  String get name => 'ATS System';
+  String get name =>
+      allTranslations.text(LocaleKeys.employees_management_system);
 
   @override
   ActiveSystemEnum get system => ActiveSystemEnum.ats;
@@ -65,33 +66,30 @@ class AtsModule implements SystemModule {
     },
   };
 
+  /// These sections pair ATS data with Project Management, so they only make
+  /// sense when both are compiled in — on top of the usual "is this system on
+  /// screen right now" check every module applies.
+  bool get _showsSections =>
+      ActiveSystem.showsContentFor(system) &&
+      ActiveSystem.available.contains(ActiveSystemEnum.projectManagement) &&
+      ActiveSystem.available.contains(ActiveSystemEnum.ats);
+
   @override
   List<HomeSection> get homeSections => [
     HomeSection(
       id: 'available_jobs',
       order: 30, // Positioned after Project Management sections
       builder: (context) {
-        // Only show if both Project Management and ATS are active, as per original logic
-        if (UserBloc.activeSystems.contains(
-              ActiveSystemEnum.projectManagement,
-            ) &&
-            UserBloc.activeSystems.contains(ActiveSystemEnum.ats)) {
-          return const AvailableJobsSection();
-        }
-        return const SizedBox.shrink();
+        if (!_showsSections) return const SizedBox.shrink();
+        return const AvailableJobsSection();
       },
     ),
     HomeSection(
       id: 'talent_pool',
       order: 31,
       builder: (context) {
-        if (UserBloc.activeSystems.contains(
-              ActiveSystemEnum.projectManagement,
-            ) &&
-            UserBloc.activeSystems.contains(ActiveSystemEnum.ats)) {
-          return const TalentPoolSection();
-        }
-        return const SizedBox.shrink();
+        if (!_showsSections) return const SizedBox.shrink();
+        return const TalentPoolSection();
       },
     ),
   ];

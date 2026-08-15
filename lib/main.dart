@@ -42,6 +42,11 @@ void main() async {
   await allTranslations.init();
   await mainAppBloc.getShared();
 
+  /// Hands the compiled-in modules to the core layer, which owns system state
+  /// but cannot see the concrete modules. Must run before the first frame —
+  /// base URLs, the switcher and system names all read from it.
+  ModulesRegistry.register();
+
   // Initialize connectivity service
   final connectivityService = ConnectivityService();
   connectivityService.initConnectivity();

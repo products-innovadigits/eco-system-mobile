@@ -1,15 +1,20 @@
 import 'package:core_system/core/modules/system_module.dart';
-import 'package:pms_system/core/module/pms_module.dart';
 import 'package:project_management/core/module/project_management_module.dart';
+import 'package:strategy_system/strategy_module.dart';
 
 /// GENERATED FILE - DO NOT EDIT MANUALLY
-/// This file is generated for comparison with all systems enabled.
+/// Demo instance: Project Management + Strategy only. Both are served by the
+/// same backend, so one login covers both and the in-app switcher moves between
+/// them without re-authenticating.
+///
+/// Order matters — the first entry is the system a fresh session signs in to
+/// (see `ActiveSystem.signedInTo`).
 
 List<SystemModule> buildEnabledModules() {
   return [
     // AtsModule(),
     ProjectManagementModule(),
-    PmsModule(),
-    // StrategyModule(),
+    StrategyModule(),
+    // PmsModule(),
   ];
 }

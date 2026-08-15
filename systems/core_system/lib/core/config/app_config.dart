@@ -1,9 +1,13 @@
 import 'package:core_system/core/core/enums.dart';
 import 'package:core_system/core/env/env.dart';
+import 'package:core_system/core/systems/active_system.dart';
 
+/// Environment configuration. Which system is *selected* lives in
+/// [ActiveSystem]; this class only knows where each system's API is.
 class AppConfig {
-  static const String _projectManagementBaseUrlFallback =
-      'https://194.163.168.5:447/api/';
+  /// Used when a system has no origin configured in `.env`; an empty base URL
+  /// would otherwise turn every request into a relative one.
+  static const String fallbackBaseUrl = 'https://api-src.nawahtech.com/api/';
 
   static final String strategyBaseUrl = Env.strategyBaseUrlDev;
   static final String atsBaseUrl = Env.atsBaseUrlDev;
@@ -11,27 +15,19 @@ class AppConfig {
   static final String projectManagementBaseUrl =
       Env.projectManagementBaseUrlDev.isNotEmpty
           ? Env.projectManagementBaseUrlDev
-          : _projectManagementBaseUrlFallback;
+          : fallbackBaseUrl;
 
-  /// The system the user selected at login. Defaults to strategy.
-  static ActiveSystemEnum activeSystem = ActiveSystemEnum.strategy;
-
-  /// Resolves the base URL for a given system.
-  /// Falls back to [activeSystem] when no explicit system is provided.
+  /// Resolves the base URL for a given system, defaulting to the system this
+  /// session is signed in to.
   static String getBaseUrl([ActiveSystemEnum? system]) {
-    final target = system ?? activeSystem;
-    switch (target.value) {
-      case 'strategy':
-        return strategyBaseUrl;
-      case 'ats':
-        return atsBaseUrl;
-      case 'pms':
-        return pmsBaseUrl;
-      case 'project_management':
-        return projectManagementBaseUrl;
-      default:
-        return strategyBaseUrl;
-    }
+    final target = system ?? ActiveSystem.signedInTo;
+    final resolved = switch (target.value) {
+      'ats' => atsBaseUrl,
+      'pms' => pmsBaseUrl,
+      'project_management' => projectManagementBaseUrl,
+      _ => strategyBaseUrl,
+    };
+    return resolved.isNotEmpty ? resolved : fallbackBaseUrl;
   }
 
   // Currently unused — uncomment when needed

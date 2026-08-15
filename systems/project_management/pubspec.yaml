@@ -18,6 +18,9 @@ dependencies:
   intl: ^0.20.2
   html: ^0.15.6
   get_it: ^8.0.3
+  # Used directly by lib code (Response/FormData in the AI assistant and
+  # workflow repos), not just by tests. Version tracks core_system.
+  dio: any
 
 
 dev_dependencies:
@@ -25,4 +28,3 @@ dev_dependencies:
     sdk: flutter
   mocktail: ^1.0.4
   bloc_test: ^10.0.0
-  dio: any

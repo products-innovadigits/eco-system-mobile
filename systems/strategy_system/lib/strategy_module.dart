@@ -18,7 +18,8 @@ class StrategyModule implements SystemModule {
   String get id => 'strategy_system';
 
   @override
-  String get name => 'Strategy System';
+  String get name =>
+      allTranslations.text(LocaleKeys.strategic_performance_system);
 
   @override
   ActiveSystemEnum get system => ActiveSystemEnum.strategy;
@@ -59,10 +60,10 @@ class StrategyModule implements SystemModule {
       id: 'objective_percentage',
       order: 10,
       builder: (context) {
-        if (UserBloc.activeSystems.contains(ActiveSystemEnum.strategy)) {
-          return const ObjectivePercentageSection();
+        if (!ActiveSystem.showsContentFor(system)) {
+          return const SizedBox.shrink();
         }
-        return const SizedBox.shrink();
+        return const ObjectivePercentageSection();
       },
     ),
   ];

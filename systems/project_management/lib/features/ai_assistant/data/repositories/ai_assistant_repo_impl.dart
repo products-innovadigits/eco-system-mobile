@@ -13,7 +13,10 @@ import 'package:project_management/features/ai_assistant/util/ai_assistant_query
 class AiAssistantRepoImpl implements AiAssistantRepo {
   /// Production API — Project AI server (always-on, trusted HTTPS).
   /// Full POST URL: https://188-166-44-162.sslip.io/projects/query
-  static const String _queryBaseUrl = 'https://188-166-44-162.sslip.io/';
+  // static const String _queryBaseUrl = 'https://188-166-44-162.sslip.io/';
+  static const String _queryBaseUrl = 'http://153.92.210.8:8000/';
+  // static const String _queryBaseUrl =
+  //     'https://prefers-duties-shots-civil.trycloudflare.com/';
 
   static const String _queryPath = 'projects/query';
 

@@ -75,17 +75,9 @@ class _CategoriesChart extends StatelessWidget {
       moreBtnTxt: isProjectManagementHome
           ? allTranslations.text(LocaleKeys.view_projects)
           : null,
-      onViewMoreTap: () {
-        if (!isProjectManagementHome) {
-          UserBloc.currentActiveSystem = ActiveSystemEnum.projectManagement;
-        }
-        isProjectManagementHome
-            ? CustomNavigator.push(Routes.PROJECTS)
-            : CustomNavigator.push(
-                Routes.SYSTEM_SWITCHER,
-                arguments: ActiveSystemEnum.projectManagement,
-              );
-      },
+      onViewMoreTap: () => isProjectManagementHome
+          ? CustomNavigator.push(Routes.PROJECTS)
+          : SystemHelper.goToSystem(ActiveSystemEnum.projectManagement),
       // child: SizedBox(
       //   height: isProjectManagementHome ? data.length * 18.h : 250.h,
       //   child: SingleChildScrollView(

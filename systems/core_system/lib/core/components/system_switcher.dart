@@ -48,6 +48,10 @@ class _SystemsSwitcherState extends State<SystemsSwitcher>
     super.dispose();
   }
 
+  String _withSystemName(String key) => allTranslations
+      .text(key)
+      .replaceAll('{system}', SystemHelper.getSystemName(widget.systemEnum));
+
   @override
   Widget build(BuildContext context) {
     const double size = 70;
@@ -94,12 +98,12 @@ class _SystemsSwitcherState extends State<SystemsSwitcher>
               ),
               const SizedBox(height: 24),
               Text(
-                'الانتقال الي ${SystemHelper.getSystemName(widget.systemEnum)}',
+                _withSystemName(LocaleKeys.switching_to_system),
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 8),
               Text(
-                'أنت الآن تنتقل  إلى ${SystemHelper.getSystemName(widget.systemEnum)}  — لتجربة أكثر تركيزًا وسلاسة في التخطيط والمتابعة وإنجاز المشاريع.',
+                _withSystemName(LocaleKeys.switching_to_system_hint),
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: context.color.outlineVariant,
                 ),

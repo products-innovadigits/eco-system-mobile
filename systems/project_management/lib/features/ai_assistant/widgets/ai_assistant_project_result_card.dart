@@ -122,27 +122,29 @@ class AiAssistantProjectResultCard extends StatelessWidget {
                           ),
                         ),
                     ],
-                    SizedBox(height: 12.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          allTranslations.text(LocaleKeys.project_details),
-                          style: context.textTheme.labelSmall?.copyWith(
-                            color: context.color.primary,
-                            fontWeight: FontWeight.w500,
+                    if (id != null) ...[
+                      SizedBox(height: 12.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            allTranslations.text(LocaleKeys.project_details),
+                            style: context.textTheme.labelSmall?.copyWith(
+                              color: context.color.primary,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
-                        ),
-                        Icon(
-                          Directionality.of(context) == TextDirection.ltr
-                              ? Icons.chevron_left_rounded
-                              : Icons.chevron_right_rounded,
-                          size: 20.sp,
-                          color: context.color.primary,
-                        ),
-                      ],
-                    ),
+                          Icon(
+                            Directionality.of(context) == TextDirection.ltr
+                                ? Icons.chevron_left_rounded
+                                : Icons.chevron_right_rounded,
+                            size: 20.sp,
+                            color: context.color.primary,
+                          ),
+                        ],
+                      ),
+                    ],
                   ],
                 ),
               ),

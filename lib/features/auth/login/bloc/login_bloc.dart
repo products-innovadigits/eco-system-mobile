@@ -1,4 +1,3 @@
-import 'package:core_system/core/config/app_config.dart';
 import 'package:core_system/core/utility/export.dart';
 import 'package:eco_system/features/auth/login/repo/login_repo.dart';
 
@@ -20,12 +19,26 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
   TextEditingController mailTEC = TextEditingController();
   TextEditingController passwordTEC = TextEditingController();
 
-  String? selectedSystemId;
+  /// Module id of the system being signed in to. The picker that used to set
+  /// this is hidden on the demo instance — every enabled system shares one
+  /// backend, so the first enabled module authenticates all of them and the
+  /// in-app switcher moves between them afterwards.
+  ///
+  /// Restore the `CustomDropList` in `login.dart` to let the user choose again.
+  String? selectedSystemId = ActiveSystem.modules.isNotEmpty
+      ? ActiveSystem.modules.first.id
+      : null;
 
-  void setSelectedSystem(String systemId) {
-    selectedSystemId = systemId;
-    AppConfig.activeSystem = ActiveSystemEnum.fromModuleId(systemId);
-  }
+  // Kept for when the login-time system picker comes back.
+  // void setSelectedSystem(String systemId) => selectedSystemId = systemId;
+
+  /// The system the credentials are checked against, resolved from
+  /// [selectedSystemId] rather than from global state — nothing is recorded
+  /// until the login actually succeeds.
+  ActiveSystemEnum? get _selectedSystem =>
+      selectedSystemId == null
+      ? null
+      : ActiveSystem.moduleById(selectedSystemId!)?.system;
 
   void clear() {
     mailTEC.clear();
@@ -33,13 +46,13 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
   }
 
   Future<void> onClick(AppEvent event, Emitter emit) async {
-    if (selectedSystemId == null) {
+    final system = _selectedSystem;
+    if (system == null) {
       AppCore.errorMessage(allTranslations.text('please_select_system'));
       return;
     }
     emit(Loading());
     try {
-      final system = AppConfig.activeSystem;
       final result = await LoginRepo.login(
         password: passwordTEC.text.trim(),
         username: mailTEC.text.trim(),
@@ -55,27 +68,35 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
         return;
       }
       final res = result;
-      if (res.statusCode == 200) {
-        UserModel model = UserModel.fromJson(res.data['data']);
+      final statusCode = res.statusCode ?? 0;
+      if (statusCode >= 200 && statusCode < 300) {
+        /// PMS wraps the payload in `data`, but not every endpoint does.
+        final payload = res.data is Map && res.data['data'] is Map
+            ? Map<String, dynamic>.from(res.data['data'])
+            : Map<String, dynamic>.from(res.data as Map);
+        UserModel model = UserModel.fromJson(payload);
+        final token = system == ActiveSystemEnum.pms
+            ? model.token
+            : model.accessToken;
+        if (token == null || token.isEmpty) {
+          AppCore.errorMessage(allTranslations.text('invalid_credentials'));
+          emit(Start());
+          return;
+        }
         await SecureStorageHelper.secureStorageHelper!
-            .saveUser(
-              model,
-              token: system == ActiveSystemEnum.pms
-                  ? model.token
-                  : model.accessToken,
-            )
+            .saveUser(model, token: token)
             .then((v) {
               UserBloc.instance.add(Click());
             });
         await SharedHelper.sharedHelper!.saveUser();
-        if (selectedSystemId != null) {
-          await SharedHelper.sharedHelper!.writeData(
-            CachingKey.chosenSystemModuleId,
-            selectedSystemId!,
-          );
-        }
-        // if (UserBloc.activeSystems.contains(ActiveSystemEnum.strategy)) {
-        //   log('Strategy system is active==================');
+
+        /// Records the system this session is authenticated against and makes
+        /// it the one being browsed. Persisted, so a cold start comes back to
+        /// the same place via `ActiveSystem.restore()`.
+        await ActiveSystem.signIn(system);
+        // Only needed when Strategy is on a separate backend from the system
+        // that issued the token. It shares one today, so the token carries over.
+        // if (ActiveSystem.available.contains(ActiveSystemEnum.strategy)) {
         //   await LoginRepo.strategyLogin(token: model.accessToken.toString());
         // }
         CustomNavigator.push(Routes.MAIN_PAGE, clean: true);

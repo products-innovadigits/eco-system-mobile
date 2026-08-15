@@ -16,7 +16,7 @@ class SystemSelectionWidget extends StatelessWidget {
     PopUpHelper.showBottomSheet(
       header: allTranslations.text(LocaleKeys.select_system),
       child: SystemSelectionBottomSheet(
-        onSystemSelected: SystemHelper.handleSystemSelection,
+        onSystemSelected: SystemHelper.goToSystem,
       ),
     );
   }
@@ -42,7 +42,7 @@ class SystemSelectionWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                SystemHelper.getSystemName(UserBloc.currentActiveSystem),
+                SystemHelper.getSystemName(ActiveSystem.viewing),
                 style: context.textTheme.bodySmall?.copyWith(
                   fontWeight: FontWeight.w500,
                   fontSize: fontSize ?? 10,
@@ -57,7 +57,7 @@ class SystemSelectionWidget extends StatelessWidget {
     }
 
     return Text(
-      SystemHelper.getSystemName(UserBloc.currentActiveSystem),
+      SystemHelper.getSystemName(ActiveSystem.viewing),
       style: context.textTheme.bodySmall?.copyWith(
         fontWeight: FontWeight.w500,
         fontSize: fontSize ?? 10,
@@ -73,9 +73,7 @@ class SystemSelectionBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final systemOptions = SystemHelper.getAvailableSystems(
-      UserBloc.currentActiveSystem,
-    );
+    final systemOptions = SystemHelper.getAvailableSystems();
 
     return ListView.separated(
       shrinkWrap: true,
@@ -86,7 +84,7 @@ class SystemSelectionBottomSheet extends StatelessWidget {
         return InkWell(
           onTap: () {
             CustomNavigator.pop();
-            onSystemSelected(system['enum'] as ActiveSystemEnum?);
+            onSystemSelected(system.system);
           },
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
@@ -98,7 +96,7 @@ class SystemSelectionBottomSheet extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    system['name'] as String,
+                    system.name,
                     style: context.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: context.color.secondary,

@@ -348,6 +348,18 @@ abstract class  LocaleKeys {
   static const ai_assistant = 'ai_assistant';
   static const ai_assistant_thinking = 'ai_assistant_thinking';
   static const ai_assistant_input_hint = 'ai_assistant_input_hint';
+  static const ai_assistant_input_hint_prefix =
+      'ai_assistant_input_hint_prefix';
+  static const ai_assistant_input_hint_project_cost =
+      'ai_assistant_input_hint_project_cost';
+  static const ai_assistant_input_hint_project_managers =
+      'ai_assistant_input_hint_project_managers';
+  static const ai_assistant_input_hint_meeting_descriptions =
+      'ai_assistant_input_hint_meeting_descriptions';
+  static const ai_assistant_input_hint_project_outputs =
+      'ai_assistant_input_hint_project_outputs';
+  static const ai_assistant_input_hint_project_risks =
+      'ai_assistant_input_hint_project_risks';
   static const ai_assistant_empty_hint = 'ai_assistant_empty_hint';
   static const ai_assistant_host_unreachable = 'ai_assistant_host_unreachable';
   static const ai_assistant_new_chat = 'ai_assistant_new_chat';
@@ -645,5 +657,11 @@ abstract class  LocaleKeys {
   static const total = 'total';
   static const login_to = 'login_to';
   static const please_select_system = 'please_select_system';
+  static const all_systems = 'all_systems';
+  static const project_management_system = 'project_management_system';
+  static const pms_system = 'pms_system';
+  static const employees_management_system = 'employees_management_system';
+  static const switching_to_system = 'switching_to_system';
+  static const switching_to_system_hint = 'switching_to_system_hint';
 
 }

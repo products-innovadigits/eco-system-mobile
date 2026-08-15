@@ -12,9 +12,15 @@ class CachingKey extends Enum<String> {
   static const CachingKey isLogin = CachingKey('isLogin');
   static const CachingKey skipBoarding = CachingKey('skipBoarding');
 
-  /// Module id from [SystemModule.id] chosen at login (e.g. `pms_system`).
-  /// Used to restore [AppConfig.activeSystem] after app restart.
-  static const CachingKey chosenSystemModuleId = CachingKey('chosenSystemModuleId');
+  /// [ActiveSystemEnum.value] of the system chosen at login (e.g. `pms`).
+  /// Read back by `ActiveSystem.restore()` after a cold start.
+  static const CachingKey chosenSystem = CachingKey('chosenSystem');
+
+  /// Pre-unification key, which held the module id instead of the enum value.
+  /// Only read, never written — see `ActiveSystem.restore()`.
+  static const CachingKey legacyChosenSystemModuleId = CachingKey(
+    'chosenSystemModuleId',
+  );
 }
 
 class SharedHelper {
@@ -67,6 +73,10 @@ class SharedHelper {
   Future<void> logout({String navigateTo = Routes.SPLASH}) async {
     String currentLang = await allTranslations.getPreferredLanguage();
     box!.clear();
+
+    /// The persisted choice went with the box; drop the in-memory copy too, or
+    /// the next sign-in starts out pointed at the previous user's system.
+    ActiveSystem.reset();
     CustomNavigator.push(navigateTo, clean: true);
 
     SharedHelper.sharedHelper!.writeData(CachingKey.skipBoarding, true);
