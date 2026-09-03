@@ -59,20 +59,21 @@ class _EmployeesPerformanceViewState extends State<EmployeesPerformanceView> {
                 onTabChanged: _onTabChanged,
                 isLoading: true,
               ),
-              PerformanceLoaded(:final top3, :final top10) =>
-                _PerformanceBody(
-                  top3: top3,
-                  top10: top10,
-                  selectedTab: _selectedTab,
-                  onTabChanged: _onTabChanged,
-                ),
+              PerformanceLoaded(:final top3, :final top10) => _PerformanceBody(
+                top3: top3,
+                top10: top10,
+                selectedTab: _selectedTab,
+                onTabChanged: _onTabChanged,
+              ),
               PerformanceFailure(:final message) => Column(
                 children: [
                   _TabBarSection(
                     selectedTab: _selectedTab,
                     onTabChanged: _onTabChanged,
                   ),
-                  Expanded(child: Center(child: EmptyContainer(txt: message))),
+                  Expanded(
+                    child: Center(child: EmptyContainer(txt: message)),
+                  ),
                 ],
               ),
               _ => const SizedBox.shrink(),
@@ -88,10 +89,7 @@ class _TabBarSection extends StatelessWidget {
   final int selectedTab;
   final ValueChanged<int> onTabChanged;
 
-  const _TabBarSection({
-    required this.selectedTab,
-    required this.onTabChanged,
-  });
+  const _TabBarSection({required this.selectedTab, required this.onTabChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +131,8 @@ class _PerformanceBody extends StatelessWidget {
             onTabChanged: onTabChanged,
           ),
           SizedBox(height: 16.h),
-          if (isLoading) const EmployeesPerformanceLoadingShimmer()
+          if (isLoading)
+            const EmployeesPerformanceLoadingShimmer()
           else ...[
             PerformancePodiumSection(topEmployees: top3),
             SizedBox(height: 24.h),

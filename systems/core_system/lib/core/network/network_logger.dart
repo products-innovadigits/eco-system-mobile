@@ -34,6 +34,25 @@ class NetworkLogger {
     return buf.toString();
   }
 
+  static void _logResponseData(dynamic data) {
+    if (kReleaseMode) {
+      cprint("| Response: <omitted in release build>");
+      return;
+    }
+    final encoder = const JsonEncoder.withIndent('        ');
+    try {
+      final prettyprint = encoder.convert(data);
+      const maxLen = 8000;
+      if (prettyprint.length > maxLen) {
+        cprint("| Response (truncated): ${prettyprint.substring(0, maxLen)}…");
+      } else {
+        cprint("| Response: $prettyprint");
+      }
+    } catch (_) {
+      cprint("| Response: $data");
+    }
+  }
+
   static final logger = InterceptorsWrapper(
     onRequest: (RequestOptions options, handler) {
       final headers = _headersForLog(options.headers);
@@ -113,24 +132,7 @@ class NetworkLogger {
       cprint(
         "├------------------------------------------------------------------------------",
       );
-      if (kReleaseMode) {
-        cprint("| Response: <omitted in release build>");
-      } else {
-        final encoder = const JsonEncoder.withIndent('        ');
-        try {
-          final prettyprint = encoder.convert(response.data);
-          const maxLen = 8000;
-          if (prettyprint.length > maxLen) {
-            cprint(
-              "| Response (truncated): ${prettyprint.substring(0, maxLen)}…",
-            );
-          } else {
-            cprint("| Response: $prettyprint");
-          }
-        } catch (_) {
-          cprint("| Response: ${response.data}");
-        }
-      }
+      _logResponseData(response.data);
       cprint(
         "└------------------------------------------------------------------------------",
       );
@@ -140,6 +142,21 @@ class NetworkLogger {
       handler.next(response);
     },
     onError: (DioException error, handler) async {
+      cprint("| Status code: ${error.response?.statusCode ?? error.type}");
+      cprint(
+        "├------------------------------------------------------------------------------",
+      );
+      if (error.response != null) {
+        _logResponseData(error.response!.data);
+      } else {
+        cprint("| Response: ${error.message}");
+      }
+      cprint(
+        "└------------------------------------------------------------------------------",
+      );
+      cprint(
+        "================================================================================",
+      );
       handler.next(error); //continue
     },
   );

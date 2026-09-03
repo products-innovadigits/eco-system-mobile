@@ -136,12 +136,15 @@ class LoginView extends StatelessWidget {
                         text: allTranslations.text("login"),
                         loading: state is Loading,
                         onPressed: () {
-                          if (context
-                              .read<LoginBloc>()
-                              .globalKey
-                              .currentState!
-                              .validate()) {
-                            context.read<LoginBloc>().add(Click());
+                          final bloc = context.read<LoginBloc>();
+                          if (bloc.selectedSystemId == null) {
+                            AppCore.errorMessage(
+                              allTranslations.text('please_select_system'),
+                            );
+                            return;
+                          }
+                          if (bloc.globalKey.currentState!.validate()) {
+                            bloc.add(Click());
                           }
                         },
                       ),

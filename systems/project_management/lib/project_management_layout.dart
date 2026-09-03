@@ -48,17 +48,17 @@ class _ProjectManagementLayoutState extends State<ProjectManagementLayout>
         children: [
           Scaffold(
             body: layout(_index),
-            floatingActionButton: FloatingActionButton(
-              tooltip: allTranslations.text(LocaleKeys.ai_assistant),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(50.r),
-              ),
-              heroTag: 'project_management_ai_assistant_fab',
-              onPressed: () {
-                CustomNavigator.push(Routes.AI_ASSISTANT);
-              },
-              child: const Icon(Icons.auto_awesome_outlined),
-            ),
+            // floatingActionButton: FloatingActionButton(
+            //   tooltip: allTranslations.text(LocaleKeys.ai_assistant),
+            //   shape: RoundedRectangleBorder(
+            //     borderRadius: BorderRadius.circular(50.r),
+            //   ),
+            //   heroTag: 'project_management_ai_assistant_fab',
+            //   onPressed: () {
+            //     CustomNavigator.push(Routes.AI_ASSISTANT);
+            //   },
+            //   child: const Icon(Icons.auto_awesome_outlined),
+            // ),
             bottomNavigationBar: ProjectManagementBottomNavBar(
               index: _index,
               onSelect: (p0) {

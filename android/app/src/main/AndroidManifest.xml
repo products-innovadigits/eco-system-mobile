@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.innova_product.eco_system">
+    package="com.nawah.ecoSystem">
 
     <!-- Connection Permission -->
     <uses-permission android:name="android.permission.INTERNET" />

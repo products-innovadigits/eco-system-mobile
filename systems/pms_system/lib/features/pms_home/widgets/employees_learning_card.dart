@@ -1,6 +1,7 @@
 import 'package:pms_system/features/employees_learning/bloc/employees_learning_bloc.dart';
 import 'package:pms_system/features/employees_learning/bloc/employees_learning_states.dart';
 import 'package:pms_system/features/employees_learning/model/employees_learning_model.dart';
+import 'package:pms_system/features/pms_home/widgets/home_card_state_message.dart';
 
 import '../../../core/utility/pms_exports.dart';
 
@@ -11,39 +12,61 @@ class EmployeesLearningCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<EmployeesLearningBloc, EmployeesLearningState>(
       builder: (context, state) {
-        return InkWell(
-          onTap: () => CustomNavigator.push(Routes.EMPLOYEES_LEARNING),
-          child: Container(
-            width: context.w,
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-            decoration: BoxDecoration(
-              color: context.color.surfaceContainer,
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: context.color.outline),
-            ),
-            child: Column(
-              children: [
-                SectionTitle(
-                  title: allTranslations.text(LocaleKeys.employees_leaning),
-                  icon: Assets.svgs.tripleUser.path,
-                  onViewTap: () =>
-                      CustomNavigator.push(Routes.EMPLOYEES_LEARNING),
+        final hasData = state is EmployeesLoaded && state.employees.isNotEmpty;
+        final onTap = !hasData
+            ? null
+            : () => CustomNavigator.push(Routes.EMPLOYEES_LEARNING);
+        return state is! EmployeesFailure
+            ? InkWell(
+                onTap: onTap,
+                child: Container(
+                  width: context.w,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 16.h,
+                  ),
+                  decoration: BoxDecoration(
+                    color: context.color.surfaceContainer,
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: context.color.outline),
+                  ),
+                  child: Column(
+                    children: [
+                      SectionTitle(
+                        title: allTranslations.text(
+                          LocaleKeys.employees_leaning,
+                        ),
+                        icon: Assets.svgs.tripleUser.path,
+                        withView: hasData,
+                        onViewTap: onTap,
+                      ),
+                      Divider(color: context.color.outline),
+                      SizedBox(height: 12.h),
+                      switch (state) {
+                        EmployeesLoading() => const _ShimmerContent(),
+                        EmployeesLoaded(:final employees, :final totalCount)
+                            when employees.isNotEmpty =>
+                          _LoadedContent(
+                            employees: employees,
+                            totalCount: totalCount,
+                          ),
+                        // EmployeesFailure(:final message) => HomeCardStateMessage(
+                        //   message: message,
+                        //   isError: true,
+                        // ),
+                        EmployeesLoaded() ||
+                        EmployeesEmpty() => HomeCardStateMessage(
+                          message: allTranslations.text(
+                            LocaleKeys.no_employees_found,
+                          ),
+                        ),
+                        _ => const SizedBox.shrink(),
+                      },
+                    ],
+                  ),
                 ),
-                Divider(color: context.color.outline),
-                SizedBox(height: 12.h),
-                switch (state) {
-                  EmployeesLoading() => const _ShimmerContent(),
-                  EmployeesLoaded(:final employees, :final totalCount) =>
-                    _LoadedContent(
-                      employees: employees,
-                      totalCount: totalCount,
-                    ),
-                  _ => const SizedBox.shrink(),
-                },
-              ],
-            ),
-          ),
-        );
+              )
+            : const SizedBox.shrink();
       },
     );
   }
@@ -83,10 +106,7 @@ class _LoadedContent extends StatelessWidget {
   final List<EmployeeItemModel> employees;
   final int totalCount;
 
-  const _LoadedContent({
-    required this.employees,
-    required this.totalCount,
-  });
+  const _LoadedContent({required this.employees, required this.totalCount});
 
   @override
   Widget build(BuildContext context) {
@@ -112,10 +132,7 @@ class _LoadedContent extends StatelessWidget {
           ],
         ),
         if (employees.isNotEmpty)
-          _EmployeesAvatarStack(
-            employees: employees,
-            totalCount: totalCount,
-          ),
+          _EmployeesAvatarStack(employees: employees, totalCount: totalCount),
       ],
     );
   }
@@ -134,8 +151,9 @@ class _EmployeesAvatarStack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final visibleCount =
-        employees.length > _maxVisible ? _maxVisible : employees.length;
+    final visibleCount = employees.length > _maxVisible
+        ? _maxVisible
+        : employees.length;
     final hasOverflow = totalCount > _maxVisible;
 
     return Stack(

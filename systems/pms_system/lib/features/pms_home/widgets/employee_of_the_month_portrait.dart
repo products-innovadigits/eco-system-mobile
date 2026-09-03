@@ -4,6 +4,7 @@ import 'package:pms_system/features/employees_performance/bloc/employees_perform
 import 'package:pms_system/features/employees_performance/bloc/employees_performance_events.dart';
 import 'package:pms_system/features/employees_performance/bloc/employees_performance_states.dart';
 import 'package:pms_system/features/employees_performance/model/employees_performance_model.dart';
+import 'package:pms_system/features/pms_home/widgets/home_card_state_message.dart';
 
 import '../../../core/utility/pms_exports.dart';
 
@@ -18,8 +19,9 @@ class EmployeeOfTheMonthPortraitCard extends StatelessWidget {
       return _CardContent(isPMSHome: isPMSHome);
     }
     return BlocProvider(
-      create: (_) => EmployeesPerformanceBloc(repo: pmsSl())
-        ..add(const LoadPerformanceData()),
+      create: (_) =>
+          EmployeesPerformanceBloc(repo: pmsSl())
+            ..add(const LoadPerformanceData()),
       child: _CardContent(isPMSHome: isPMSHome),
     );
   }
@@ -34,27 +36,38 @@ class _CardContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<EmployeesPerformanceBloc, EmployeesPerformanceState>(
       builder: (context, state) {
-        return MainCardWidget(
-          title: allTranslations.text(LocaleKeys.top_employees),
-          moreBtnTxt:
-              isPMSHome ? allTranslations.text(LocaleKeys.view_all) : null,
-          onViewMoreTap: () {
-            if (!isPMSHome) {
-              UserBloc.currentActiveSystem = ActiveSystemEnum.pms;
-            }
-            isPMSHome
-                ? CustomNavigator.push(Routes.EMPLOYEES_PERFORMANCE)
-                : CustomNavigator.push(
-                    Routes.SYSTEM_SWITCHER,
-                    arguments: ActiveSystemEnum.pms,
-                  );
-          },
-          child: switch (state) {
-            PerformanceLoading() => const _ShimmerContent(),
-            PerformanceLoaded(:final top3) => _LoadedContent(top3: top3),
-            _ => const SizedBox.shrink(),
-          },
-        );
+        final hasData = state is PerformanceLoaded && state.top3.isNotEmpty;
+        return state is! PerformanceFailure
+            ? MainCardWidget(
+                title: allTranslations.text(LocaleKeys.top_employees),
+                moreBtnTxt: isPMSHome && hasData
+                    ? allTranslations.text(LocaleKeys.view_all)
+                    : null,
+                onViewMoreTap: !hasData
+                    ? null
+                    : () {
+                        if (!isPMSHome) {
+                          UserBloc.currentActiveSystem = ActiveSystemEnum.pms;
+                        }
+                        isPMSHome
+                            ? CustomNavigator.push(Routes.EMPLOYEES_PERFORMANCE)
+                            : CustomNavigator.push(
+                                Routes.SYSTEM_SWITCHER,
+                                arguments: ActiveSystemEnum.pms,
+                              );
+                      },
+                child: switch (state) {
+                  PerformanceLoading() => const _ShimmerContent(),
+                  PerformanceLoaded(:final top3) when top3.isNotEmpty =>
+                    _LoadedContent(top3: top3),
+                  PerformanceLoaded() => HomeCardStateMessage(
+                    message: allTranslations.text(LocaleKeys.there_is_no_data),
+                  ),
+                  // PerformanceFailure(:final message) => SizedBox.shrink()
+                  _ => const SizedBox.shrink(),
+                },
+              )
+            : const SizedBox.shrink();
       },
     );
   }

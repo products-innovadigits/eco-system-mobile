@@ -16,7 +16,7 @@ class ProjectCategoriesProgressCubit
       if (res.statusCode == 200 && res.data != null) {
         List<ProjectCategoriesProgressModel> data =
             List<ProjectCategoriesProgressModel>.from(
-              res.data["data"].map(
+              (res.data["data"]["categories"] as List).map(
                 (e) => ProjectCategoriesProgressModel.fromJson(e),
               ),
             );

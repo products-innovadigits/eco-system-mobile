@@ -1,4 +1,4 @@
-package com.innova_product.eco_system
+package com.nawah.ecoSystem
 
 import io.flutter.embedding.android.FlutterActivity
 
