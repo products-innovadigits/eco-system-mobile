@@ -8,16 +8,17 @@ class MainBodyMobilePortraitView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        padding: EdgeInsets.fromLTRB(
+          16.w,
+          MainHeader.bodyTopOffset(context),
+          16.w,
+          16.h,
+        ),
         child: Column(
           spacing: 16.h,
-          children: [
-            const SizedBox(height: 50),
-            ...ModulesRegistry.appSections.map(
-              (section) => section.builder(context),
-            ),
-            SizedBox(height: 16.h),
-          ],
+          children: ModulesRegistry.appSections
+              .map((section) => section.builder(context))
+              .toList(),
         ),
       ),
     );

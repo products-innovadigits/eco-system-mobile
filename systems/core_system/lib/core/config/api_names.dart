@@ -1,6 +1,7 @@
 abstract class ApiNames {
   static const login = "Auth/Login";
   static const pmsLogin = "login";
+  static const atsLogin = "login";
   static const strategyLogin = "Auth/AuthenticateExternalUserAsync";
   static const colorScheme = "";
 

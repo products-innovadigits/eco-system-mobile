@@ -1,5 +1,6 @@
 import 'package:core_system/core/config/app_config.dart';
 import 'package:core_system/core/utility/export.dart';
+import 'package:eco_system/app/modules/modules_registry.dart';
 import 'package:eco_system/features/auth/login/repo/login_repo.dart';
 
 class LoginBloc extends Bloc<AppEvent, AppState> {
@@ -26,6 +27,13 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
     selectedSystemId = systemId;
     AppConfig.activeSystem = ActiveSystemEnum.fromModuleId(systemId);
   }
+
+  /// PMS and ATS return the session token in `data.token`; the other
+  /// systems return it in `data.tokken`.
+  String? _sessionToken(ActiveSystemEnum system, UserModel model) =>
+      system == ActiveSystemEnum.pms || system == ActiveSystemEnum.ats
+      ? model.token
+      : model.accessToken;
 
   void clear() {
     mailTEC.clear();
@@ -60,9 +68,7 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
         await SecureStorageHelper.secureStorageHelper!
             .saveUser(
               model,
-              token: system == ActiveSystemEnum.pms
-                  ? model.token
-                  : model.accessToken,
+              token: _sessionToken(system, model),
             )
             .then((v) {
               UserBloc.instance.add(Click());
@@ -74,6 +80,13 @@ class LoginBloc extends Bloc<AppEvent, AppState> {
             selectedSystemId!,
           );
         }
+
+        /// Session systems: the group unlocked by the chosen login system,
+        /// limited to the modules compiled into this build.
+        UserBloc.activeSystems = SystemHelper.resolveAccessibleSystems(
+          system,
+          ModulesRegistry.enabledModules.map((m) => m.system).toList(),
+        );
         // if (UserBloc.activeSystems.contains(ActiveSystemEnum.strategy)) {
         //   log('Strategy system is active==================');
         //   await LoginRepo.strategyLogin(token: model.accessToken.toString());

@@ -56,13 +56,16 @@ class JobCardWidget extends StatelessWidget {
               children: [
                 Images(image: Assets.svgs.multiUser.path),
                 SizedBox(width: 8.w),
-                Text(
-                  '$pipelineCandidatesCount ${allTranslations.text(LocaleKeys.candidate_in_pipeline)}',
-                  style: context.textTheme.bodySmall?.copyWith(
-                    color: context.color.secondary,
+                Expanded(
+                  child: Text(
+                    '$pipelineCandidatesCount ${allTranslations.text(LocaleKeys.candidate_in_pipeline)}',
+                    style: context.textTheme.bodySmall?.copyWith(
+                      color: context.color.secondary,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                const Spacer(),
+                SizedBox(width: 8.w),
                 AnimatedExpansionArrowWidget(isExpanded: isExpanded ?? false),
               ],
             ),

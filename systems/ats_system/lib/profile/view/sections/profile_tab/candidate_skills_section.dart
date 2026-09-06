@@ -10,82 +10,67 @@ class CandidateSkillsSection extends StatelessWidget {
       builder: (context, state) {
         final List<String> skills =
             context.read<ProfileBloc>().candidateModel?.profile?.skills ?? [];
-        if (state is Loading) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Shimmer.fromColors(
-                baseColor: Colors.grey[200]!,
-                highlightColor: Colors.grey[100]!,
-                child: Container(
-                  width: 100.w,
-                  height: 20.h,
-                  color: Colors.white,
-                ),
-              ),
-              SizedBox(height: 12.h),
-              Wrap(
-                spacing: 8.w,
-                runSpacing: 8.h,
-                children: List.generate(5, (index) => _buildShimmerSkill()),
-              ),
-            ],
-          );
-        }
-
-        return skills.isEmpty
+        return state is Loading
+            ? CustomShimmerContainer(height: 60, borderRadius: 8)
+            : skills.isEmpty
             ? const SizedBox.shrink()
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    allTranslations.text(LocaleKeys.skills),
-                    style: context.textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+            : Container(
+                width: context.w,
+                decoration: BoxDecoration(
+                  color: context.color.surfaceContainer,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: context.color.outline),
+                ),
+                child: ExpansionTile(
+                  tilePadding: EdgeInsets.symmetric(horizontal: 16.w),
+                  expansionAnimationStyle: AnimationStyle(
+                    duration: const Duration(milliseconds: 400),
+                    curve: Curves.easeInOut,
                   ),
-                  SizedBox(height: 8.h),
-                  Wrap(
-                    spacing: 8.w,
-                    runSpacing: 8.h,
-                    children: List.generate(
-                      skills.length,
-                      (index) => Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12.w,
-                          vertical: 6.h,
-                        ),
-                        decoration: BoxDecoration(
-                          color: context.color.secondary.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          skills[index],
-                          style: context.textTheme.bodySmall?.copyWith(
-                            fontSize: 10,
+                  title: Text(
+                    allTranslations.text(LocaleKeys.skills),
+                    style: context.textTheme.titleMedium,
+                  ),
+                  shape: const Border(),
+                  collapsedShape: const Border(),
+                  iconColor: context.color.secondary,
+                  collapsedIconColor: context.color.outlineVariant,
+                  collapsedTextColor: context.color.onSurface,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                      ).copyWith(bottom: 16.h),
+                      child: Wrap(
+                        spacing: 8.w,
+                        runSpacing: 8.h,
+                        children: List.generate(
+                          skills.length,
+                          (index) => Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 12.w,
+                              vertical: 6.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: context.color.secondary.withValues(
+                                alpha: 0.1,
+                              ),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              skills[index],
+                              style: context.textTheme.bodySmall?.copyWith(
+                                fontSize: 10,
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               );
       },
     );
   }
-}
-
-Widget _buildShimmerSkill() {
-  return Shimmer.fromColors(
-    baseColor: Colors.grey[200]!,
-    highlightColor: Colors.grey[100]!,
-    child: Container(
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Container(width: 40, height: 10, color: Colors.white),
-    ),
-  );
 }

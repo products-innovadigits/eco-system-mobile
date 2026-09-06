@@ -9,8 +9,9 @@ class CandidateInfoSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileBloc, AppState>(
       builder: (context, state) {
-        final CandidateModel? candidateModel =
-            context.read<ProfileBloc>().candidateModel;
+        final CandidateModel? candidateModel = context
+            .read<ProfileBloc>()
+            .candidateModel;
         return GridView(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -19,25 +20,29 @@ class CandidateInfoSection extends StatelessWidget {
             crossAxisCount: 2,
             mainAxisSpacing: 8.h,
             crossAxisSpacing: 8.w,
-            childAspectRatio: 2.5,
+            childAspectRatio: 2.2,
           ),
           children: state is Loading
               ? List.generate(4, (index) => _buildShimmerCard())
               : [
                   CandidateInfoCardWidget(
-                      title: allTranslations.text(LocaleKeys.location),
-                      value: candidateModel?.profile?.location ?? '-'),
+                    title: allTranslations.text(LocaleKeys.location),
+                    value: candidateModel?.profile?.location ?? '-',
+                  ),
                   CandidateInfoCardWidget(
-                      title: allTranslations.text(LocaleKeys.expected_salary),
-                      value: candidateModel?.profile?.expectedSalary ?? '-',
-                      isPrimaryColor: false),
+                    title: allTranslations.text(LocaleKeys.expected_salary),
+                    value: candidateModel?.profile?.expectedSalary ?? '-',
+                    isPrimaryColor: false,
+                  ),
                   CandidateInfoCardWidget(
-                      title: allTranslations.text(LocaleKeys.notice_period),
-                      value: candidateModel?.profile?.noticePeriod ?? '-',
-                      isPrimaryColor: false),
+                    title: allTranslations.text(LocaleKeys.notice_period),
+                    value: candidateModel?.profile?.noticePeriod ?? '-',
+                    isPrimaryColor: false,
+                  ),
                   CandidateInfoCardWidget(
-                      title: allTranslations.text(LocaleKeys.candidate_source),
-                      value: candidateModel?.source ?? '-'),
+                    title: allTranslations.text(LocaleKeys.candidate_source),
+                    value: candidateModel?.source ?? '-',
+                  ),
                 ],
         );
       },
@@ -57,17 +62,9 @@ Widget _buildShimmerCard() {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            width: 60,
-            height: 12,
-            color: Colors.white,
-          ),
+          Container(width: 60, height: 12, color: Colors.white),
           SizedBox(height: 8.h),
-          Container(
-            width: 40,
-            height: 12,
-            color: Colors.white,
-          ),
+          Container(width: 40, height: 12, color: Colors.white),
         ],
       ),
     ),

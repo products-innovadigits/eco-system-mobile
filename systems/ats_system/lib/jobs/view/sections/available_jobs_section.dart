@@ -18,7 +18,7 @@ class AvailableJobsSection extends StatelessWidget {
           Done() => _JobsCard(child: const JobsListSection(isHome: true)),
 
           // ── Empty ───────────────────────────
-          Empty() => const EmptyContainer(),
+          Empty() => const _JobsCard(child: CardEmptyState()),
 
           // ── Default (error / other states) ─
           _ => _JobsCard(

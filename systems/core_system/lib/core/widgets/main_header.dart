@@ -6,6 +6,38 @@ class MainHeader extends StatelessWidget {
 
   const MainHeader({super.key, this.withBackButton = true});
 
+  /// How far the first body card is pulled up over the header.
+  static const double cardOverlap = 24;
+
+  /// Header height for a given screen type / orientation.
+  /// Shared with the bodies that are stacked underneath it so both stay in
+  /// sync when the header grows.
+  static double resolveHeight(
+    DeviceScreenType deviceType,
+    Orientation orientation,
+  ) {
+    if (deviceType == DeviceScreenType.tablet) {
+      return orientation == Orientation.portrait ? 220 : 200;
+    }
+    if (deviceType == DeviceScreenType.mobile) {
+      return orientation == Orientation.portrait ? 170 : 160;
+    }
+    return 180;
+  }
+
+  /// Top spacing a stacked body must leave so its first card overlaps the
+  /// header by [cardOverlap]. The body's own `SafeArea` already consumes the
+  /// status-bar inset, so it is subtracted here.
+  static double bodyTopOffset(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final height = resolveHeight(
+      getDeviceType(mediaQuery.size),
+      mediaQuery.orientation,
+    );
+    final offset = height - mediaQuery.padding.top - cardOverlap;
+    return offset < 0 ? 0 : offset;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, AppState>(
@@ -31,12 +63,7 @@ class MainHeader extends StatelessWidget {
     DeviceScreenType deviceType,
     Orientation orientation,
   ) {
-    double height = 180;
-    if (deviceType == DeviceScreenType.tablet) {
-      height = orientation == Orientation.portrait ? 220 : 200;
-    } else if (deviceType == DeviceScreenType.mobile) {
-      height = orientation == Orientation.portrait ? 170 : 160;
-    }
+    final double height = resolveHeight(deviceType, orientation);
 
     return Container(
       width: context.w,
@@ -91,7 +118,8 @@ class MainHeader extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // const SystemSelectionWidget(),
+                    const SystemSelectionWidget(),
+                    SizedBox(width: 16.w),
                     InkWell(
                       onTap: () async {
                         await SharedHelper.sharedHelper?.logout(

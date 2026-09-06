@@ -43,6 +43,7 @@ class EducationSection extends StatelessWidget {
                           padding: EdgeInsets.symmetric(horizontal: 16.w)
                               .copyWith(bottom: 16.h),
                           child: ListAnimator(
+                            scroll: false,
                             separatorPadding: 24.h,
                             data: List.generate(
                               educationList.length,

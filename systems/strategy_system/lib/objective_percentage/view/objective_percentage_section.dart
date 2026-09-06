@@ -34,7 +34,10 @@ class ObjectivePercentageSection extends StatelessWidget {
             ),
 
             // ── Empty ─────────────────────────
-            Empty() => const EmptyContainer(),
+            Empty() => MainCardWidget(
+              title: allTranslations.text(LocaleKeys.objective_percentage_rate),
+              child: CardEmptyState(height: _cardContentHeight(context)),
+            ),
 
             // ── Default (error, etc.) ─────────
             _ => MainCardWidget(
@@ -52,10 +55,18 @@ class ObjectivePercentageSection extends StatelessWidget {
   }
 }
 
-Widget _buildShimmerLoading(BuildContext context) => CustomShimmerContainer(
-  height: context.h * 0.2,
-  width: context.w,
-  padding: EdgeInsets.symmetric(vertical: 12.h),
+/// Height of the card body, shared by the loading and empty states so the
+/// section keeps the same footprint across states.
+double _cardContentHeight(BuildContext context) => context.h * 0.2;
+
+/// Keeps the card chrome while loading so the section does not resize once
+/// the data lands.
+Widget _buildShimmerLoading(BuildContext context) => MainCardWidget(
+  title: allTranslations.text(LocaleKeys.objective_percentage_rate),
+  child: CustomShimmerContainer(
+    height: _cardContentHeight(context),
+    width: context.w,
+  ),
 );
 
 class _PercentageChartSection extends StatelessWidget {
@@ -84,15 +95,13 @@ class _PercentageChartSection extends StatelessWidget {
       },
       child: Column(
         children: [
-          const SizedBox(height: 12),
           CustomScreenTypeLayoutWidget(
             mobilePortrait: (ctx) =>
                 ObjectivePercentageChartMobilePortrait(objectives: objectives),
             mobileLandscape: (ctx) =>
                 ObjectivePercentageChartMobileLandscape(objectives: objectives),
           ),
-
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
           ChartCategoriesSection(objectives: objectives),
         ],
       ),

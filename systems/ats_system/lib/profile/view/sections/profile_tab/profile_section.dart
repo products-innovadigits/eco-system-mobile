@@ -22,7 +22,9 @@ class ProfileSection extends StatelessWidget {
         WorkExperienceSection(),
         EducationSection(),
         CertificatesSection(),
-        SizedBox(height: 16.h),
+
+        /// Keeps the last card clear of the Android system navigation bar.
+        SizedBox(height: 16.h + MediaQuery.viewPaddingOf(context).bottom),
       ],
     );
   }

@@ -70,29 +70,17 @@ class AtsModule implements SystemModule {
     HomeSection(
       id: 'available_jobs',
       order: 30, // Positioned after Project Management sections
-      builder: (context) {
-        // Only show if both Project Management and ATS are active, as per original logic
-        if (UserBloc.activeSystems.contains(
-              ActiveSystemEnum.projectManagement,
-            ) &&
-            UserBloc.activeSystems.contains(ActiveSystemEnum.ats)) {
-          return const AvailableJobsSection();
-        }
-        return const SizedBox.shrink();
-      },
+      isVisible: _atsActive,
+      builder: (context) => const AvailableJobsSection(),
     ),
     HomeSection(
       id: 'talent_pool',
       order: 31,
-      builder: (context) {
-        if (UserBloc.activeSystems.contains(
-              ActiveSystemEnum.projectManagement,
-            ) &&
-            UserBloc.activeSystems.contains(ActiveSystemEnum.ats)) {
-          return const TalentPoolSection();
-        }
-        return const SizedBox.shrink();
-      },
+      isVisible: _atsActive,
+      builder: (context) => const TalentPoolSection(),
     ),
   ];
+
+  static bool _atsActive() =>
+      UserBloc.activeSystems.contains(ActiveSystemEnum.ats);
 }

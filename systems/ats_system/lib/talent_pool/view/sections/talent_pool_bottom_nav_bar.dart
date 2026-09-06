@@ -7,7 +7,8 @@ class TalentPoolBottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h)
+          .copyWith(bottom: 16.h + MediaQuery.viewPaddingOf(context).bottom),
       decoration: BoxDecoration(
           border: Border.all(color: context.color.outline),
           borderRadius: BorderRadius.only(

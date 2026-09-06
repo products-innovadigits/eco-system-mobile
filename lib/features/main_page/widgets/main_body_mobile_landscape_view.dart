@@ -8,16 +8,17 @@ class MainBodyMobileLandscapeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
+        padding: EdgeInsets.fromLTRB(
+          24,
+          MainHeader.bodyTopOffset(context),
+          24,
+          16.h,
+        ),
         child: Column(
           spacing: 16.h,
-          children: [
-            const SizedBox(height: 70),
-            ...ModulesRegistry.appSections.map(
-              (section) => section.builder(context),
-            ),
-            SizedBox(height: 16.h),
-          ],
+          children: ModulesRegistry.appSections
+              .map((section) => section.builder(context))
+              .toList(),
         ),
       ),
     );

@@ -24,6 +24,8 @@ class ModulesRegistry {
   }
 
   /// Aggregated and sorted home sections from all enabled modules.
+  /// Sections hidden for the current session are filtered out here so they
+  /// never take part in the home column spacing.
   static List<HomeSection> get appSections {
     final List<HomeSection> sections = enabledModules
         .expand((m) => m.homeSections)
@@ -33,7 +35,8 @@ class ModulesRegistry {
       _assertNoDuplicateSections(sections);
     }
 
-    return sections..sort((a, b) => a.order.compareTo(b.order));
+    return sections.where((s) => s.visible).toList()
+      ..sort((a, b) => a.order.compareTo(b.order));
   }
 
   static void _assertNoDuplicateRoutes(

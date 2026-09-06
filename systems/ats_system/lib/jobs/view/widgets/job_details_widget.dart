@@ -24,10 +24,13 @@ class JobDetailsWidget extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              jobTitle,
-              style: context.textTheme.bodyMedium
-                  ?.copyWith(color: context.color.onSurface),
+            Expanded(
+              child: Text(
+                jobTitle,
+                style: context.textTheme.bodyMedium
+                    ?.copyWith(color: context.color.onSurface),
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
             // if (hasStatus ?? false)
             //   Container(

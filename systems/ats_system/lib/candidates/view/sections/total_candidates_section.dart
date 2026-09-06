@@ -16,23 +16,27 @@ class TotalCandidatesSection extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              allTranslations.text(LocaleKeys.total_candidates),
-              style: context.textTheme.bodySmall?.copyWith(
-                color: context.color.outline,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                allTranslations.text(LocaleKeys.total_candidates),
+                style: context.textTheme.bodySmall?.copyWith(
+                  color: context.color.outline,
+                ),
+                overflow: TextOverflow.ellipsis,
               ),
-            ),
-            SizedBox(height: 4.h),
-            Text(
-              candidatesCount.toString(),
-              style: context.textTheme.labelMedium?.copyWith(
-                fontWeight: FontWeight.w700,
+              SizedBox(height: 4.h),
+              Text(
+                candidatesCount.toString(),
+                style: context.textTheme.labelMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+                overflow: TextOverflow.ellipsis,
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         Stack(
           textDirection: TextDirection.ltr,

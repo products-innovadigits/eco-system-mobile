@@ -58,12 +58,9 @@ class StrategyModule implements SystemModule {
     HomeSection(
       id: 'objective_percentage',
       order: 10,
-      builder: (context) {
-        if (UserBloc.activeSystems.contains(ActiveSystemEnum.strategy)) {
-          return const ObjectivePercentageSection();
-        }
-        return const SizedBox.shrink();
-      },
+      isVisible: () =>
+          UserBloc.activeSystems.contains(ActiveSystemEnum.strategy),
+      builder: (context) => const ObjectivePercentageSection(),
     ),
   ];
 }

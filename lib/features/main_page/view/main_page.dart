@@ -13,6 +13,15 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   DateTime? _lastBackPressTime;
 
+  @override
+  void initState() {
+    super.initState();
+
+    /// The main page aggregates every system the session can reach, so the
+    /// switcher reads "all systems" here.
+    UserBloc.currentActiveSystem = null;
+  }
+
   Future<bool> _shouldExit() async {
     final now = DateTime.now();
     if (_lastBackPressTime == null ||

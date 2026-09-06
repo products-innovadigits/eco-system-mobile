@@ -32,14 +32,17 @@ class CandidateCompatibilitySection extends StatelessWidget {
               ),
             ),
             SizedBox(width: 12.w),
-            Text(
-              'ما مدي التوافق بين هشام وهذة الوظيفة؟',
-              style: AppTextStyles.w400.copyWith(
-                color: Styles.textColor,
-                fontSize: 10,
+            Expanded(
+              child: Text(
+                'ما مدي التوافق بين هشام وهذة الوظيفة؟',
+                style: AppTextStyles.w400.copyWith(
+                  color: Styles.textColor,
+                  fontSize: 10,
+                ),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
-            const Spacer(),
+            SizedBox(width: 8.w),
             Images(image: Assets.svgs.arrowLeft.path),
           ],
         ),

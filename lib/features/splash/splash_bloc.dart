@@ -9,11 +9,13 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
     on<Click>(onClick);
   }
 
-  void getActiveSystem() async {
-    /// Selected Systems derived from compile-time enabled modules (Single Source of Truth)
-    UserBloc.activeSystems = ModulesRegistry.enabledModules
-        .map((m) => m.system)
-        .toList();
+  /// Systems reachable in this session: the group unlocked by the system the
+  /// user logged in with, limited to the modules compiled into this build.
+  void getActiveSystem() {
+    UserBloc.activeSystems = SystemHelper.resolveAccessibleSystems(
+      AppConfig.activeSystem,
+      ModulesRegistry.enabledModules.map((m) => m.system).toList(),
+    );
   }
 
   Future<void> getColorScheme() async {
@@ -33,11 +35,11 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
       bool? isLogin = await helper.readBoolean(CachingKey.isLogin);
       bool? skip = await helper.readBoolean(CachingKey.skipBoarding);
 
-      ///Get Selected Active System
-      getActiveSystem();
-
       if (isLogin) {
         await _restoreChosenSystem(helper);
+
+        ///Get Selected Active System (depends on the restored login system)
+        getActiveSystem();
         UserBloc.instance.add(Click());
       }
 
@@ -57,12 +59,10 @@ class SplashBloc extends Bloc<AppEvent, AppState> {
     final moduleId = await helper.readString(CachingKey.chosenSystemModuleId);
     if (moduleId.isNotEmpty) {
       AppConfig.activeSystem = ActiveSystemEnum.fromModuleId(moduleId);
-      UserBloc.currentActiveSystem = AppConfig.activeSystem;
       return;
     }
     if (ModulesRegistry.enabledModules.isNotEmpty) {
       AppConfig.activeSystem = ModulesRegistry.enabledModules.first.system;
-      UserBloc.currentActiveSystem = AppConfig.activeSystem;
     }
   }
 }

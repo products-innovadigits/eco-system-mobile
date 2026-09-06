@@ -31,7 +31,7 @@ class TalentPoolSection extends StatelessWidget {
             ),
 
             // ── Empty ────────────────────────────────────────────────
-            Empty() => const EmptyContainer(),
+            Empty() => const _TalentPoolCard(child: CardEmptyState()),
 
             // ── Default (error/unknown) ─────────────────────────────
             _ => _TalentPoolCard(

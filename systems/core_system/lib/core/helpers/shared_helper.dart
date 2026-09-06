@@ -67,6 +67,10 @@ class SharedHelper {
   Future<void> logout({String navigateTo = Routes.SPLASH}) async {
     String currentLang = await allTranslations.getPreferredLanguage();
     box!.clear();
+
+    /// Drop the session systems so the next login starts from a clean slate.
+    UserBloc.activeSystems = [];
+    UserBloc.currentActiveSystem = null;
     CustomNavigator.push(navigateTo, clean: true);
 
     SharedHelper.sharedHelper!.writeData(CachingKey.skipBoarding, true);

@@ -50,13 +50,15 @@ class ExperienceCardWidget extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      Text(
-                        '${experience.startDate} - ${experience.endDate}',
-                        style: context.textTheme.bodySmall?.copyWith(
-                          color: context.color.outline,
-                          fontSize: 10,
+                      Flexible(
+                        child: Text(
+                          '${experience.startDate} - ${experience.endDate}',
+                          style: context.textTheme.bodySmall?.copyWith(
+                            color: context.color.outline,
+                            fontSize: 10,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),

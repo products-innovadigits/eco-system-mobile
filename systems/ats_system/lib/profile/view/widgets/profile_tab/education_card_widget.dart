@@ -27,38 +27,44 @@ class EducationCardWidget extends StatelessWidget {
               ),
             ),
             SizedBox(width: 8.w),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  educationModel.school ?? 'اينوفا ديجتس',
-                  style: context.textTheme.bodySmall,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                SizedBox(height: 4.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      educationModel.degree ?? 'قائد تصميم المنتجات .',
-                      style: context.textTheme.bodySmall?.copyWith(
-                        color: context.color.secondary,
-                        fontSize: 10,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    educationModel.school ?? 'اينوفا ديجتس',
+                    style: context.textTheme.bodySmall,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: 4.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          educationModel.degree ?? 'قائد تصميم المنتجات .',
+                          style: context.textTheme.bodySmall?.copyWith(
+                            color: context.color.secondary,
+                            fontSize: 10,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    SizedBox(width: 4.w),
-                    Text(
-                      '${educationModel.startDate} - ${educationModel.endDate}',
-                      style: context.textTheme.bodySmall?.copyWith(
-                        color: context.color.outline,
-                        fontSize: 10,
+                      SizedBox(width: 4.w),
+                      Flexible(
+                        child: Text(
+                          '${educationModel.startDate} - ${educationModel.endDate}',
+                          style: context.textTheme.bodySmall?.copyWith(
+                            color: context.color.outline,
+                            fontSize: 10,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),

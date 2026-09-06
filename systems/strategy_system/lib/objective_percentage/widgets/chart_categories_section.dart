@@ -9,8 +9,8 @@ class ChartCategoriesSection extends StatelessWidget {
     return Wrap(
       alignment: WrapAlignment.start,
       direction: Axis.horizontal,
-      runSpacing: 8.w,
-      spacing: 24.h,
+      runSpacing: 8.h,
+      spacing: 24.w,
       children: List.generate(
         objectives.length,
             (i) => Row(
