@@ -58,21 +58,28 @@ class ProcessDetailsBody extends StatelessWidget {
 
               // ── Error / fallback ────────────────
               // Only reached when nothing at all could be loaded.
-              GroupStepsFailure(:final message) => EmptyContainer(
-                txt:
-                    message ??
-                    allTranslations.text(LocaleKeys.something_went_wrong),
-                img: Assets.svgs.error.path,
-                onRetry: () => context.read<ProcessDetailsBloc>().add(
-                  LoadGroupSteps(processId: processId, projectId: projectId),
+              // Expanded like the body and the shimmer: EmptyContainer sizes
+              // itself off the screen height, so as a plain column child it
+              // overflows whatever is rendered above it.
+              GroupStepsFailure(:final message) => Expanded(
+                child: EmptyContainer(
+                  txt:
+                      message ??
+                      allTranslations.text(LocaleKeys.something_went_wrong),
+                  img: Assets.svgs.error.path,
+                  onRetry: () => context.read<ProcessDetailsBloc>().add(
+                    LoadGroupSteps(processId: processId, projectId: projectId),
+                  ),
                 ),
               ),
 
-              _ => EmptyContainer(
-                txt: allTranslations.text(LocaleKeys.something_went_wrong),
-                img: Assets.svgs.error.path,
-                onRetry: () => context.read<ProcessDetailsBloc>().add(
-                  LoadGroupSteps(processId: processId, projectId: projectId),
+              _ => Expanded(
+                child: EmptyContainer(
+                  txt: allTranslations.text(LocaleKeys.something_went_wrong),
+                  img: Assets.svgs.error.path,
+                  onRetry: () => context.read<ProcessDetailsBloc>().add(
+                    LoadGroupSteps(processId: processId, projectId: projectId),
+                  ),
                 ),
               ),
             };

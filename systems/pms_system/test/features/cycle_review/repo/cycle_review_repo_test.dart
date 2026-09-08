@@ -1,4 +1,3 @@
-import 'package:core_system/core/model/search_engine.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:pms_system/core/utility/pms_exports.dart';
@@ -24,37 +23,37 @@ void main() {
 
   group('CycleReviewRepoImpl', () {
     group('getCycleDetail', () {
-      test('calls network.requestOrThrow and returns CycleDetailModel',
-          () async {
-        final fixtureJson = readJsonFixture(
-          'cycle_review/cycle_review_response.json',
-        );
-        when(
-          () => mockNetwork.requestOrThrow(
-            any(),
-            method: any(named: 'method'),
-            systemTypeEnum: any(named: 'systemTypeEnum'),
-            model: any(named: 'model'),
-          ),
-        ).thenAnswer(
-          (_) async => CycleDetailModel.fromJson(fixtureJson),
-        );
+      test(
+        'calls network.requestOrThrow and returns CycleDetailModel',
+        () async {
+          final fixtureJson = readJsonFixture(
+            'cycle_review/cycle_review_response.json',
+          );
+          when(
+            () => mockNetwork.requestOrThrow(
+              any(),
+              method: any(named: 'method'),
+              systemTypeEnum: any(named: 'systemTypeEnum'),
+              model: any(named: 'model'),
+            ),
+          ).thenAnswer((_) async => CycleDetailModel.fromJson(fixtureJson));
 
-        final result = await repo.getCycleDetail(1);
+          final result = await repo.getCycleDetail(1);
 
-        expect(result, isA<CycleDetailModel>());
-        expect(result.succeeded, isTrue);
-        expect(result.data, isNotNull);
-        expect(result.data?.id, equals(1));
-        verify(
-          () => mockNetwork.requestOrThrow(
-            any(),
-            method: any(named: 'method'),
-            systemTypeEnum: any(named: 'systemTypeEnum'),
-            model: any(named: 'model'),
-          ),
-        ).called(1);
-      });
+          expect(result, isA<CycleDetailModel>());
+          expect(result.succeeded, isTrue);
+          expect(result.data, isNotNull);
+          expect(result.data?.id, equals(1));
+          verify(
+            () => mockNetwork.requestOrThrow(
+              any(),
+              method: any(named: 'method'),
+              systemTypeEnum: any(named: 'systemTypeEnum'),
+              model: any(named: 'model'),
+            ),
+          ).called(1);
+        },
+      );
     });
 
     group('getReviewCycleSummary', () {

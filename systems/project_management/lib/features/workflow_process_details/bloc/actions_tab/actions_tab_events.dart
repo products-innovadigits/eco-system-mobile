@@ -16,11 +16,13 @@ class SaveComment extends ActionsTabEvent {
   });
 }
 
-/// Compliance/move to next step action
+/// Compliance/move to next step action.
+/// A null [nextStepId] finishes the process: the current step is the last one,
+/// so there is no step to move to.
 class MoveToNextStep extends ActionsTabEvent {
   final int projectId;
   final int processId;
-  final int nextStepId;
+  final int? nextStepId;
 
   const MoveToNextStep({
     required this.projectId,
@@ -38,5 +40,3 @@ class PickFile extends ActionsTabEvent {
 class RemoveFile extends ActionsTabEvent {
   const RemoveFile();
 }
-
-

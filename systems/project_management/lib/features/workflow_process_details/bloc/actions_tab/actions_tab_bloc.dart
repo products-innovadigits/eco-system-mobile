@@ -7,12 +7,10 @@ class ActionsTabBloc extends Bloc<ActionsTabEvent, ActionsTabState> {
   final ProcessDetailsRepo repo;
   final bool _ownsController;
 
-  ActionsTabBloc({
-    required this.repo,
-    TextEditingController? commentController,
-  })  : _ownsController = commentController == null,
-        commentTEC = commentController ?? TextEditingController(),
-        super(const ActionsTabInitial()) {
+  ActionsTabBloc({required this.repo, TextEditingController? commentController})
+    : _ownsController = commentController == null,
+      commentTEC = commentController ?? TextEditingController(),
+      super(const ActionsTabInitial()) {
     on<SaveComment>(_onSaveComment);
     on<MoveToNextStep>(_onMoveToNextStep);
     on<PickFile>(_onPickFile);
@@ -86,21 +84,32 @@ class ActionsTabBloc extends Bloc<ActionsTabEvent, ActionsTabState> {
       );
 
       if (response.statusCode == 200) {
-        // Create/Fetch docs for the new step before signaling success
-        final docRes = await repo.getCurrentStepDocs(
-          projectId: event.projectId,
-          processId: event.processId,
-          projectStepId: event.nextStepId,
-        );
+        final int? nextStepId = event.nextStepId;
 
-        if (docRes.succeeded == true) {
-          AppCore.successMessage(
-            allTranslations.text(LocaleKeys.process_done_successfully),
-          );
-          emit(const MoveToNextStepSuccess());
-        } else {
-          emit(const ActionsTabFailure(message: 'Failed to create step docs'));
+        // Creates/fetches the documents of the step just moved to. Finishing
+        // the process has no next step, so there is nothing to create for it.
+        //
+        // Its outcome is deliberately ignored: a step that simply has no
+        // documents answers `succeeded: false` with "لا يوجد مستندات لهذه
+        // الخطوة", which is not a failure of the move. The process has already
+        // moved at this point, so nothing here may hold back the success the
+        // screen reloads on, otherwise the screen keeps showing the old step.
+        if (nextStepId != null) {
+          try {
+            await repo.getCurrentStepDocs(
+              projectId: event.projectId,
+              processId: event.processId,
+              projectStepId: nextStepId,
+            );
+          } catch (e) {
+            log('Failed to load the docs of step $nextStepId: $e');
+          }
         }
+
+        AppCore.successMessage(
+          allTranslations.text(LocaleKeys.process_done_successfully),
+        );
+        emit(const MoveToNextStepSuccess());
       } else {
         AppCore.errorMessage(
           allTranslations.text(LocaleKeys.something_went_wrong),

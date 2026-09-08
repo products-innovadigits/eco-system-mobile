@@ -160,7 +160,7 @@ class ProcessDetailsRepoImpl implements ProcessDetailsRepo {
   Future<dynamic> moveToNextStep({
     required int processId,
     required int projectId,
-    required int nextStepId,
+    required int? nextStepId,
   }) async {
     return await network.requestOrThrow(
       ApiNames.projectProcessNext,

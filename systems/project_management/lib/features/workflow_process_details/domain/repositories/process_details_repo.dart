@@ -57,10 +57,13 @@ abstract class ProcessDetailsRepo {
     required int projectId,
   });
 
+  /// Moves the process to [nextStepId], or finishes it when [nextStepId] is
+  /// null: the last step has no step to move to, so the API is called with a
+  /// null next step.
   Future<dynamic> moveToNextStep({
     required int processId,
     required int projectId,
-    required int nextStepId,
+    required int? nextStepId,
   });
 
   Future<CurrentStepDocumentModel> getCurrentStepDocs({

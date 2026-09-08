@@ -47,47 +47,53 @@ class _ActionsTabContent extends StatelessWidget {
         }
       },
       child: workflowInProgress
+          // Scrollable: the fields grow with their validation errors and the
+          // keyboard eats the rest, so a fixed column overflows the tab.
           ? Form(
               key: context.read<ActionsTabBloc>().formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  // Internal Comments Section
-                  BlocBuilder<ActionsTabBloc, ActionsTabState>(
-                    builder: (context, state) {
-                      final bloc = context.read<ActionsTabBloc>();
-                      return _InternalCommentsSection(
-                        controller: bloc.commentTEC,
-                        validation: NotEmptyValidator.notEmptyValidator,
-                      );
-                    },
-                  ),
+              child: SingleChildScrollView(
+                padding: EdgeInsets.only(bottom: 16.h),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    // Internal Comments Section
+                    BlocBuilder<ActionsTabBloc, ActionsTabState>(
+                      builder: (context, state) {
+                        final bloc = context.read<ActionsTabBloc>();
+                        return _InternalCommentsSection(
+                          controller: bloc.commentTEC,
+                          validation: NotEmptyValidator.notEmptyValidator,
+                        );
+                      },
+                    ),
 
-                  // File Upload Section
-                  BlocBuilder<ActionsTabBloc, ActionsTabState>(
-                    builder: (context, state) {
-                      final bloc = context.read<ActionsTabBloc>();
-                      return _FileUploadSection(
-                        selectedFile: bloc.selectedFile,
-                        fileName: bloc.fileName,
-                        fileSize: bloc.fileSize,
-                        onPickFile: () => bloc.add(const PickFile()),
-                        onRemoveFile: () => bloc.add(const RemoveFile()),
-                      );
-                    },
-                  ),
+                    // File Upload Section
+                    BlocBuilder<ActionsTabBloc, ActionsTabState>(
+                      builder: (context, state) {
+                        final bloc = context.read<ActionsTabBloc>();
+                        return _FileUploadSection(
+                          selectedFile: bloc.selectedFile,
+                          fileName: bloc.fileName,
+                          fileSize: bloc.fileSize,
+                          onPickFile: () => bloc.add(const PickFile()),
+                          onRemoveFile: () => bloc.add(const RemoveFile()),
+                        );
+                      },
+                    ),
 
-                  SizedBox(height: 16.h),
+                    SizedBox(height: 16.h),
 
-                  // Save Button Section
-                  _SaveButton(onSave: () => _onSave(context)),
+                    // Save Button Section
+                    _SaveButton(onSave: () => _onSave(context)),
 
-                  // Next Step / Finish Process Button Section
-                  _NextStepButton(
-                    onCompliance: () => _onCompliance(context),
-                    onFinishProcess: () => _onFinishProcess(context),
-                  ),
-                ],
+                    // Next Step / Finish Process Button Section
+                    _NextStepButton(
+                      onCompliance: () => _onCompliance(context),
+                      onFinishProcess: () => _onFinishProcess(context),
+                    ),
+                  ],
+                ),
               ),
             )
           : workflowCompleted
@@ -139,7 +145,15 @@ class _ActionsTabContent extends StatelessWidget {
   }
 
   void _onFinishProcess(BuildContext context) {
-    // TODO: wire the finish process action once the endpoint is ready.
+    // The last step has nothing to move to, so the same endpoint is called
+    // with a null next step to finish the process.
+    context.read<ActionsTabBloc>().add(
+      MoveToNextStep(
+        projectId: projectId,
+        processId: processId,
+        nextStepId: null,
+      ),
+    );
   }
 }
 
@@ -309,17 +323,19 @@ class _NextStepButton extends StatelessWidget {
           builder: (context, processDetailsState) {
             final workflowBloc = context.read<ProcessDetailsBloc>();
             final stageDocsData = workflowBloc.stageDocsData;
+            final currentStep = stageDocsData?.currentStep;
             final nextStep = stageDocsData?.nextStep;
             final nextStepText = (nextStep != null && nextStep.isNotEmpty)
                 ? (nextStep[0].text ?? '')
                 : '';
 
-            // No next step and no current step means the process reached its
-            // end, so the only remaining action is finishing it.
+            // The last step of the workflow has nothing to move to, so the
+            // only remaining action is finishing the process.
             final bool isFinishProcess =
-                nextStepText.isEmpty && stageDocsData?.currentStep == null;
+                currentStep?.category == 'Step' &&
+                currentStep?.isLastStep == true;
 
-            if (nextStepText.isEmpty && !isFinishProcess) {
+            if (!isFinishProcess && nextStepText.isEmpty) {
               return const SizedBox.shrink();
             }
 

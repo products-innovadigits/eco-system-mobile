@@ -158,7 +158,9 @@ class ProcessDetailsBloc
   }
 
   /// Loads the current/next steps, returns whether usable data is held.
-  /// Previously loaded data is kept when a refresh fails.
+  /// Previously loaded data is kept only when the call itself fails: an
+  /// answered call is taken as is, otherwise a refresh that legitimately comes
+  /// back without a current step would leave the screen on stale data.
   Future<bool> _loadStageDocs({
     required int processId,
     required int projectId,
@@ -168,7 +170,7 @@ class ProcessDetailsBloc
         projectId: projectId,
         processId: processId,
       );
-      if (stageRes.succeeded == true && stageRes.data != null) {
+      if (stageRes.succeeded == true) {
         _stageDocsData = stageRes.data;
       }
     } catch (_) {
