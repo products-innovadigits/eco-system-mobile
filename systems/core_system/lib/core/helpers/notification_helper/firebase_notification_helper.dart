@@ -2,6 +2,15 @@
 
 part of 'notification_helper.dart';
 
+/// Entry point of the background isolate FCM spawns for messages that arrive
+/// while the app is terminated.
+///
+/// The `vm:entry-point` pragma is required: in an AOT (profile/release) build
+/// the compiler otherwise drops this function, `PluginUtilities.getCallbackHandle`
+/// returns null for it, and the null assertion inside
+/// `registerBackgroundMessageHandler` throws while `main()` is still running —
+/// so `runApp()` is never reached and the app sits on the native splash.
+@pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call initializeApp before using other Firebase services.
@@ -11,7 +20,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   );
   log('on Message background notification ${message.data}');
   log('on Message background data ${message.notification?.body}');
-  log('Handling a background message: ${message.notification!.toMap()}');
+  // Data-only messages carry no notification payload.
+  log('Handling a background message: ${message.notification?.toMap()}');
 }
 
 FirebaseMessaging? _firebaseMessaging;

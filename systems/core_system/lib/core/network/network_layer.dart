@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/io.dart';
 
 import '../config/app_config.dart';
+import '../debug/debug_interceptor.dart';
 import '../utility/export.dart';
 import 'api_error_toast_interceptor.dart';
 import 'error/api_error_handler.dart';
@@ -29,6 +30,11 @@ class Network {
     if (_instance == null) {
       _dio.options.connectTimeout = const Duration(seconds: 40);
       _dio.interceptors.add(NetworkLogger.logger);
+      // Before the toast interceptor, so a failure is captured as it comes off
+      // the wire rather than after the error has been handled.
+      if (AppConfig.enableDebugOverlay) {
+        _dio.interceptors.add(DebugInterceptor());
+      }
       _dio.interceptors.add(ApiErrorToastInterceptor());
 
       // if (kDebugMode) {

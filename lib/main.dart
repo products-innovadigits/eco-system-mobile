@@ -1,6 +1,9 @@
 // Flutter core imports
 // Third-party imports
+import 'dart:developer' as developer;
+
 import 'package:core_system/core/bloc/theme_cubit.dart';
+import 'package:core_system/core/debug/debug_overlay.dart';
 import 'package:core_system/core/helpers/notification_helper/notification_helper.dart';
 import 'package:core_system/core/helpers/translation/translations.dart';
 import 'package:core_system/core/navigation/routes.dart';
@@ -32,11 +35,24 @@ void main() async {
   //   daysToExpire: 12098,
   // );
 
+  // Firebase is not required for the app to open, so a failure here must not
+  // stop startup: an uncaught error in main() means runApp() is never reached
+  // and the app sits on the native splash forever with nothing on screen to
+  // explain it. Push notifications degrade; everything else still works.
   if (!kDebugMode) {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-    await FirebaseNotifications.setUpFirebase();
+    try {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+      await FirebaseNotifications.setUpFirebase();
+    } catch (error, stackTrace) {
+      developer.log(
+        'Firebase startup failed — continuing without push notifications',
+        name: 'main',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
   }
   await SharedHelper.init();
   await allTranslations.init();
@@ -100,7 +116,9 @@ class _MyAppState extends State<MyApp> {
                                 textScaler: const TextScaler.linear(1),
                               ),
                               child: Unfocus(
-                                child: child ?? const SizedBox.shrink(),
+                                child: DebugOverlay(
+                                  child: child ?? const SizedBox.shrink(),
+                                ),
                               ),
                             );
                           },

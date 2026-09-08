@@ -1,7 +1,21 @@
 import 'package:core_system/core/core/enums.dart';
 import 'package:core_system/core/env/env.dart';
+import 'package:flutter/foundation.dart';
 
 class AppConfig {
+  /// Master switch for the on-screen debug overlay (floating bug button and
+  /// network log panel) and the request capturing that feeds it.
+  ///
+  /// On in debug builds, off otherwise. Override at build time with
+  /// `--dart-define=ENABLE_DEBUG_OVERLAY=true`.
+  ///
+  /// Kept a compile-time constant, not an [Env] field, so release builds
+  /// tree-shake the overlay out entirely.
+  static const bool enableDebugOverlay = bool.fromEnvironment(
+    'ENABLE_DEBUG_OVERLAY',
+    defaultValue: kDebugMode,
+  );
+
   static const String _projectManagementBaseUrlFallback =
       'https://194.163.168.5:447/api/';
 
