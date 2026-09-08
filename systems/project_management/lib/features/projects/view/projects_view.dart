@@ -2,7 +2,7 @@ import 'package:core_system/core/components/custom_screen_type_layout_widget.dar
 import 'package:project_management/core/di/project_management_locator.dart';
 import 'package:project_management/core/utility/project_management_exports.dart';
 import 'package:project_management/features/projects/bloc/filtration/projects_filter_provider.dart';
-import 'package:project_management/shared/widgets/project_management_bottom_nav_bar.dart';
+// import 'package:project_management/shared/widgets/project_management_bottom_nav_bar.dart';
 
 class ProjectsView extends StatefulWidget {
   const ProjectsView({super.key});
@@ -12,7 +12,7 @@ class ProjectsView extends StatefulWidget {
 }
 
 class _ProjectsViewState extends State<ProjectsView> {
-  int _selectedIndex = 0;
+  // int _selectedIndex = 0;
   late ProjectsSortingBloc _sortingBloc;
   ProjectsBloc? _projectsBloc;
   final ScrollController _scrollController = ScrollController();
@@ -100,17 +100,17 @@ class _ProjectsViewState extends State<ProjectsView> {
                 searchController: _searchController,
               ),
             ),
-            bottomNavigationBar: ProjectManagementBottomNavBar(
-              index: _selectedIndex,
-              isSubPage: true,
-              onSelect: (index) {
-                if (_selectedIndex != index) {
-                  setState(() {
-                    _selectedIndex = index;
-                  });
-                }
-              },
-            ),
+            // bottomNavigationBar: ProjectManagementBottomNavBar(
+            //   index: _selectedIndex,
+            //   isSubPage: true,
+            //   onSelect: (index) {
+            //     if (_selectedIndex != index) {
+            //       setState(() {
+            //         _selectedIndex = index;
+            //       });
+            //     }
+            //   },
+            // ),
           );
         },
       ),

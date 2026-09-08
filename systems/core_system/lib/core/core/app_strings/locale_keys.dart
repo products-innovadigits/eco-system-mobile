@@ -581,6 +581,7 @@ abstract class  LocaleKeys {
   static const specialized_initiative = 'specialized_initiative';
   static const start_process_first = 'start_process_first';
   static const process_done = 'process_done';
+  static const finish_process = 'finish_process';
   static const cycles_summary = 'cycles_summary';
   static const view_all_cycles = 'view_all_cycles';
   static const active_cycles = 'active_cycles';

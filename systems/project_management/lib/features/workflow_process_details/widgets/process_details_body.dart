@@ -39,8 +39,13 @@ class ProcessDetailsBody extends StatelessWidget {
               GroupStepsLoading() ||
               ProcessStarting() => const CustomDetailsShimmerLoading(),
 
-              // ── Loaded ────────────────────────────
-              GroupStepsLoaded() || ProcessStarted() => _buildProcessBody(
+              // ── Loaded / Empty ────────────────────
+              // An empty or failed group steps result is handled inside the
+              // follow process tab, the rest of the screen stays usable.
+              GroupStepsLoaded() ||
+              GroupStepsEmpty() ||
+              GroupStepsReloading() ||
+              ProcessStarted() => _buildProcessBody(
                 context: context,
                 model: (state is GroupStepsLoaded)
                     ? state.processDetails
@@ -51,13 +56,24 @@ class ProcessDetailsBody extends StatelessWidget {
                 projectId: projectId,
               ),
 
-              // ── Empty ───────────────────────────
-              GroupStepsEmpty() => const EmptyContainer(),
-
               // ── Error / fallback ────────────────
+              // Only reached when nothing at all could be loaded.
+              GroupStepsFailure(:final message) => EmptyContainer(
+                txt:
+                    message ??
+                    allTranslations.text(LocaleKeys.something_went_wrong),
+                img: Assets.svgs.error.path,
+                onRetry: () => context.read<ProcessDetailsBloc>().add(
+                  LoadGroupSteps(processId: processId, projectId: projectId),
+                ),
+              ),
+
               _ => EmptyContainer(
                 txt: allTranslations.text(LocaleKeys.something_went_wrong),
                 img: Assets.svgs.error.path,
+                onRetry: () => context.read<ProcessDetailsBloc>().add(
+                  LoadGroupSteps(processId: processId, projectId: projectId),
+                ),
               ),
             };
           },
@@ -104,6 +120,14 @@ class _ProcessBody extends StatelessWidget {
                 stepDocumentId: (stageDocsData?.stepDocumentId ?? 0).toInt(),
                 processName: stageDocsData?.processTitle ?? '',
                 documents: stageDocsData?.currentStep?.stepDocuments ?? [],
+                hasGroupStepsError: workflowProcessDetailsBloc.groupStepsFailed,
+                groupStepsErrorMessage:
+                    workflowProcessDetailsBloc.groupStepsErrorMessage,
+                isReloadingGroupSteps:
+                    workflowProcessDetailsBloc.isGroupStepsReloading,
+                onReloadGroupSteps: () => workflowProcessDetailsBloc.add(
+                  ReloadGroupSteps(processId: processId, projectId: projectId),
+                ),
               ),
             ),
           ),
@@ -141,9 +165,19 @@ Widget _getTabSection({
   required int stepDocumentId,
   required String processName,
   required List<StageDocument> documents,
+  required bool hasGroupStepsError,
+  required String? groupStepsErrorMessage,
+  required bool isReloadingGroupSteps,
+  required VoidCallback onReloadGroupSteps,
 }) {
   return switch (selectedTab) {
-    ProcessTabsEnum.followProcess => FollowProcessTab(processList: processList),
+    ProcessTabsEnum.followProcess => FollowProcessTab(
+      processList: processList,
+      hasError: hasGroupStepsError,
+      errorMessage: groupStepsErrorMessage,
+      isReloading: isReloadingGroupSteps,
+      onRetry: onReloadGroupSteps,
+    ),
     // ProcessTabsEnum.stageDocs => Container(),
     ProcessTabsEnum.stageDocs => StageDocsTab(
       projectId: projectId,

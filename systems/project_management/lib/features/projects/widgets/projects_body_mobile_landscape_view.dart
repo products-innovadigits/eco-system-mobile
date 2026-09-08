@@ -21,20 +21,24 @@ class ProjectsBodyMobileLandscapeView extends StatelessWidget {
             ProjectsLoading() => ShimmerCardsList(cardHeight: 200),
 
             // Handle loaded state with data models
-            ProjectsLoaded(:final projects, :final isLoadingMore) => Column(
-              children: [
-                Expanded(
-                  child: ListAnimator(
-                    customPadding: EdgeInsets.symmetric(horizontal: 24.w),
-                    controller: scrollController,
-                    data: projects
-                        .map((project) => ProjectCard(project: project))
-                        .toList(),
-                  ),
+            ProjectsLoaded(:final projects, :final isLoadingMore) =>
+              RefreshIndicator(
+                onRefresh: () => _refreshProjects(bloc),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: ListAnimator(
+                        customPadding: EdgeInsets.symmetric(horizontal: 24.w),
+                        controller: scrollController,
+                        data: projects
+                            .map((project) => ProjectCard(project: project))
+                            .toList(),
+                      ),
+                    ),
+                    CustomLoading(isTextLoading: true, loading: isLoadingMore),
+                  ],
                 ),
-                CustomLoading(isTextLoading: true, loading: isLoadingMore),
-              ],
-            ),
+              ),
 
             // Empty
             ProjectsEmpty(:final isInitial) => _HandleEmptyList(
@@ -65,14 +69,22 @@ class _HandleEmptyList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: context.h * 0.6,
-      child: EmptyContainer(
-        txt: initial == true
-            ? null
-            : searchController.text.isEmpty
-            ? allTranslations.text(LocaleKeys.no_projects_match_your_filters)
-            : '${allTranslations.text(LocaleKeys.no_projects_match)} \' ${searchController.text} \'',
+    return RefreshIndicator(
+      onRefresh: () => _refreshProjects(bloc),
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: SizedBox(
+          height: context.h * 0.6,
+          child: EmptyContainer(
+            txt: initial == true
+                ? null
+                : searchController.text.isEmpty
+                ? allTranslations.text(
+                    LocaleKeys.no_projects_match_your_filters,
+                  )
+                : '${allTranslations.text(LocaleKeys.no_projects_match)} \' ${searchController.text} \'',
+          ),
+        ),
       ),
     );
   }
@@ -86,13 +98,24 @@ class _HandleErrorState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () async {
-        bloc.add(const RefreshProjects());
-      },
+      onRefresh: () => _refreshProjects(bloc),
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         child: SizedBox(height: context.h * 0.6, child: const ErrorContainer()),
       ),
     );
   }
+}
+
+/// Triggers a refresh and completes only once the bloc settles on a terminal
+/// state, so the pull-to-refresh indicator stays visible for the whole request.
+Future<void> _refreshProjects(ProjectsBloc bloc) async {
+  final done = bloc.stream.firstWhere(
+    (state) =>
+        state is ProjectsLoaded ||
+        state is ProjectsEmpty ||
+        state is ProjectsFailure,
+  );
+  bloc.add(const RefreshProjects());
+  await done;
 }

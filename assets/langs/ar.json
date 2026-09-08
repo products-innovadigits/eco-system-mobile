@@ -645,6 +645,7 @@
   "specialized_initiative": "المبادرة المختصة",
   "start_process_first": "يجب بدأ العملية لاتخاذ الإجراءات!",
   "process_done": "لا يمكن إتخاذ الإجراءات بعد اتمام العملية",
+  "finish_process": "إنهاء العملية",
   "cycles_summary": "ملخص الدورات",
   "view_all_cycles": "عرض كل الدورات",
   "active_cycles": "الدورات النشطة",

@@ -5,6 +5,7 @@ import 'package:dio/io.dart';
 
 import '../config/app_config.dart';
 import '../utility/export.dart';
+import 'api_error_toast_interceptor.dart';
 import 'error/api_error_handler.dart';
 import 'error/network_exception.dart';
 import 'network_logger.dart';
@@ -28,6 +29,7 @@ class Network {
     if (_instance == null) {
       _dio.options.connectTimeout = const Duration(seconds: 40);
       _dio.interceptors.add(NetworkLogger.logger);
+      _dio.interceptors.add(ApiErrorToastInterceptor());
 
       // if (kDebugMode) {
       // 👇 Add this block to ignore SSL certificates
@@ -53,6 +55,7 @@ class Network {
     Map<String, dynamic>? query,
     Map<String, dynamic>? header,
     ServerMethods method = ServerMethods.GET,
+    bool showErrorToast = true,
   }) async {
     // final bool isConnected = await ConnectivityService().checkConnection();
     // if (!isConnected) {
@@ -79,7 +82,12 @@ class Network {
         (baseUrl ?? AppConfig.getBaseUrl(systemTypeEnum)) + endpoint,
         data: body,
         queryParameters: query,
-        options: Options(method: method.name),
+        options: Options(
+          method: method.name,
+          extra: ApiErrorToastInterceptor.optionsExtra(
+            showErrorToast: showErrorToast,
+          ),
+        ),
       );
       isActiveUser = true;
       if (model == null) {
@@ -111,6 +119,7 @@ class Network {
     Map<String, dynamic>? query,
     Map<String, dynamic>? header,
     ServerMethods method = ServerMethods.GET,
+    bool showErrorToast = true,
   }) async {
     String token = await SecureStorageHelper().getToken();
 
@@ -128,7 +137,12 @@ class Network {
         (baseUrl ?? AppConfig.getBaseUrl(systemTypeEnum)) + endpoint,
         data: body,
         queryParameters: query,
-        options: Options(method: method.name),
+        options: Options(
+          method: method.name,
+          extra: ApiErrorToastInterceptor.optionsExtra(
+            showErrorToast: showErrorToast,
+          ),
+        ),
       );
       isActiveUser = true;
       if (model == null) {

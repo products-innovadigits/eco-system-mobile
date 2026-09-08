@@ -46,6 +46,9 @@ class AiAssistantRepoImpl implements AiAssistantRepo {
         },
         method: ServerMethods.POST,
         model: null,
+        // The chat already turns this failure into its own toast, opted out of
+        // the global one so it is not shown twice.
+        showErrorToast: false,
       );
       final data = raw is Response ? raw.data : raw;
       _logQueryResponse(data);
@@ -73,6 +76,8 @@ class AiAssistantRepoImpl implements AiAssistantRepo {
         baseUrl: _queryBaseUrl,
         method: ServerMethods.GET,
         model: null,
+        // Background health probe, its failures are not the user's business.
+        showErrorToast: false,
       );
       final data = raw is Response ? raw.data : raw;
       return normalizeAiAssistantJsonMap(data);

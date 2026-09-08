@@ -21,6 +21,18 @@ class ApiErrorHandler {
     return getException(error).message;
   }
 
+  /// The message the API sent with a failed response, or null when the body
+  /// carried none.
+  ///
+  /// Unlike [getException] this applies no fallback, so callers can tell a
+  /// real backend message apart from a generic failure. Used by
+  /// [ApiErrorToastInterceptor] to stay silent on connection blips.
+  static String? getApiMessage(dynamic error) {
+    if (error is! DioException) return null;
+    final rawData = error.response?.data;
+    return _extractApiMessage(_normalizeResponseMap(rawData), rawData);
+  }
+
   static NetworkException _handleDioException(DioException error) {
     switch (error.type) {
       case DioExceptionType.cancel:
@@ -111,6 +123,25 @@ class ApiErrorHandler {
     dynamic rawData,
   ) {
     if (map != null) {
+      // ───────────────────────────────────────────────────────────────────
+      // validationErrors support.
+      // The API reports failures with a localized text in
+      // `validationErrors[].errorMessageEn`, while `errorMessage` only holds
+      // a code, so it is deliberately not used as a fallback here:
+      //   {"succeeded": false, "data": null, "warningErrors": null,
+      //    "validationErrors": [{"errorCode": "-1", "errorMessage": "-1",
+      //     "errorMessageEn": "هذه العملية غير مرتبطه بهذا المشروع"}]}
+      // Nothing below was removed, this block only runs before the old
+      // lookups and falls through to them when it finds nothing.
+      //
+      // TO REVERT: delete the 4 lines below and the
+      // `_extractValidationErrorMessage` method at the bottom of this class.
+      // ───────────────────────────────────────────────────────────────────
+      final validationMessage = _extractValidationErrorMessage(map);
+      if (validationMessage != null) {
+        return validationMessage;
+      }
+
       final message = map['message'];
       if (message is String && message.trim().isNotEmpty) {
         return message.trim();
@@ -135,6 +166,26 @@ class ApiErrorHandler {
     }
     if (rawData is String && rawData.trim().isNotEmpty) {
       return rawData.trim();
+    }
+    return null;
+  }
+
+  /// Returns the first non empty `errorMessageEn` out of `validationErrors`,
+  /// or null when the body carries none.
+  ///
+  /// Part of the validationErrors support described in [_extractApiMessage],
+  /// delete this method together with its call there to revert.
+  static String? _extractValidationErrorMessage(Map<String, dynamic> map) {
+    final validationErrors = map['validationErrors'];
+    if (validationErrors is! List) return null;
+
+    for (final error in validationErrors) {
+      if (error is Map) {
+        final errorMessage = error['errorMessageEn'];
+        if (errorMessage is String && errorMessage.trim().isNotEmpty) {
+          return errorMessage.trim();
+        }
+      }
     }
     return null;
   }

@@ -1,6 +1,6 @@
 import 'package:project_management/core/utility/project_management_exports.dart';
 import 'package:project_management/shared/components/project_management_system_switcher.dart';
-import 'package:project_management/shared/widgets/project_management_bottom_nav_bar.dart';
+// import 'package:project_management/shared/widgets/project_management_bottom_nav_bar.dart';
 
 class ProjectManagementLayout extends StatefulWidget {
   final int index;
@@ -59,13 +59,13 @@ class _ProjectManagementLayoutState extends State<ProjectManagementLayout>
             //   },
             //   child: const Icon(Icons.auto_awesome_outlined),
             // ),
-            bottomNavigationBar: ProjectManagementBottomNavBar(
-              index: _index,
-              onSelect: (p0) {
-                _index = p0;
-                setState(() {});
-              },
-            ),
+            // bottomNavigationBar: ProjectManagementBottomNavBar(
+            //   index: _index,
+            //   onSelect: (p0) {
+            //     _index = p0;
+            //     setState(() {});
+            //   },
+            // ),
           ),
           if (_showSwitcher)
             ProjectManagementSystemSwitcher(

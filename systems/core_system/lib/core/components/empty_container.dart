@@ -7,6 +7,7 @@ class EmptyContainer extends StatelessWidget {
   final String? desc;
   final double? remain;
   final TextStyle? subStyle;
+  final VoidCallback? onRetry;
 
   const EmptyContainer({
     super.key,
@@ -15,6 +16,7 @@ class EmptyContainer extends StatelessWidget {
     this.remain = 200.0,
     this.desc,
     this.subStyle,
+    this.onRetry,
   });
 
   @override
@@ -46,6 +48,31 @@ class EmptyContainer extends StatelessWidget {
                       color: context.color.outlineVariant,
                     ),
               ),
+              if (onRetry != null) ...[
+                const SizedBox(height: 12),
+                InkWell(
+                  onTap: onRetry,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        allTranslations.text(LocaleKeys.try_again),
+                        style: context.textTheme.bodySmall?.copyWith(
+                          color: context.color.outlineVariant,
+                          fontSize: FontSizes.f12,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Icon(
+                        Icons.refresh_outlined,
+                        color: context.color.outlineVariant,
+                        size: 18,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ],
           ),
         ),

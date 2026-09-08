@@ -15,6 +15,12 @@ class GroupStepsLoading extends ProcessDetailsState {
   const GroupStepsLoading();
 }
 
+/// Reloading the group steps from inside the follow process tab, the rest of
+/// the screen keeps whatever it already has
+class GroupStepsReloading extends ProcessDetailsState {
+  const GroupStepsReloading();
+}
+
 /// Workflow process details loaded successfully
 class GroupStepsLoaded extends ProcessDetailsState {
   final GroupStepsModel processDetails;
@@ -29,9 +35,10 @@ class GroupStepsEmpty extends ProcessDetailsState {
 
 /// Error loading workflow process details
 class GroupStepsFailure extends ProcessDetailsState {
-  final String message;
+  /// The message returned by the API, null when it carried none.
+  final String? message;
 
-  const GroupStepsFailure({required this.message});
+  const GroupStepsFailure({this.message});
 }
 
 class ProcessStarting extends ProcessDetailsState {

@@ -82,8 +82,11 @@ class _ActionsTabContent extends StatelessWidget {
                   // Save Button Section
                   _SaveButton(onSave: () => _onSave(context)),
 
-                  // Next Step Button Section
-                  _NextStepButton(onCompliance: () => _onCompliance(context)),
+                  // Next Step / Finish Process Button Section
+                  _NextStepButton(
+                    onCompliance: () => _onCompliance(context),
+                    onFinishProcess: () => _onFinishProcess(context),
+                  ),
                 ],
               ),
             )
@@ -133,6 +136,10 @@ class _ActionsTabContent extends StatelessWidget {
         nextStepId: nextStepId ?? 0,
       ),
     );
+  }
+
+  void _onFinishProcess(BuildContext context) {
+    // TODO: wire the finish process action once the endpoint is ready.
   }
 }
 
@@ -287,8 +294,12 @@ class _SaveButton extends StatelessWidget {
 
 class _NextStepButton extends StatelessWidget {
   final VoidCallback onCompliance;
+  final VoidCallback onFinishProcess;
 
-  const _NextStepButton({required this.onCompliance});
+  const _NextStepButton({
+    required this.onCompliance,
+    required this.onFinishProcess,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -297,12 +308,20 @@ class _NextStepButton extends StatelessWidget {
         return BlocBuilder<ProcessDetailsBloc, ProcessDetailsState>(
           builder: (context, processDetailsState) {
             final workflowBloc = context.read<ProcessDetailsBloc>();
-            final nextStep = workflowBloc.stageDocsData?.nextStep;
+            final stageDocsData = workflowBloc.stageDocsData;
+            final nextStep = stageDocsData?.nextStep;
             final nextStepText = (nextStep != null && nextStep.isNotEmpty)
                 ? (nextStep[0].text ?? '')
                 : '';
 
-            if (nextStepText.isEmpty) return const SizedBox.shrink();
+            // No next step and no current step means the process reached its
+            // end, so the only remaining action is finishing it.
+            final bool isFinishProcess =
+                nextStepText.isEmpty && stageDocsData?.currentStep == null;
+
+            if (nextStepText.isEmpty && !isFinishProcess) {
+              return const SizedBox.shrink();
+            }
 
             final isLoading =
                 actionsTabState is MoveToNextStepLoading ||
@@ -314,7 +333,9 @@ class _NextStepButton extends StatelessWidget {
               child: SizedBox(
                 width: double.infinity,
                 child: CustomBtn(
-                  text: nextStepText,
+                  text: isFinishProcess
+                      ? allTranslations.text(LocaleKeys.finish_process)
+                      : nextStepText,
                   color: context.color.primary,
                   textColor: context.color.onPrimary,
                   height: 34,
@@ -323,7 +344,7 @@ class _NextStepButton extends StatelessWidget {
                   loading: isLoading,
                   onPressed: (isLoading || isOtherLoading)
                       ? null
-                      : onCompliance,
+                      : (isFinishProcess ? onFinishProcess : onCompliance),
                 ),
               ),
             );

@@ -1,6 +1,6 @@
 import 'package:project_management/core/di/project_management_locator.dart';
 import 'package:project_management/core/utility/project_management_exports.dart';
-import 'package:project_management/shared/widgets/project_management_bottom_nav_bar.dart';
+// import 'package:project_management/shared/widgets/project_management_bottom_nav_bar.dart';
 
 class LatestRequestView extends StatefulWidget {
   const LatestRequestView({super.key});
@@ -10,7 +10,7 @@ class LatestRequestView extends StatefulWidget {
 }
 
 class _LatestRequestViewState extends State<LatestRequestView> {
-  int _selectedIndex = 0;
+  // int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -106,17 +106,17 @@ class _LatestRequestViewState extends State<LatestRequestView> {
                 },
               ),
             ),
-            bottomNavigationBar: ProjectManagementBottomNavBar(
-              index: _selectedIndex,
-              isSubPage: true,
-              onSelect: (index) {
-                if (_selectedIndex != index) {
-                  setState(() {
-                    _selectedIndex = index;
-                  });
-                }
-              },
-            ),
+            // bottomNavigationBar: ProjectManagementBottomNavBar(
+            //   index: _selectedIndex,
+            //   isSubPage: true,
+            //   onSelect: (index) {
+            //     if (_selectedIndex != index) {
+            //       setState(() {
+            //         _selectedIndex = index;
+            //       });
+            //     }
+            //   },
+            // ),
           );
         },
       ),

@@ -644,6 +644,7 @@
   "specialized_initiative": "Specialized Initiative",
   "start_process_first": "Must start the process first!",
   "process_done": "Can't take actions after process is done!",
+  "finish_process": "Finish Process",
   "cycles_summary": "Cycles Summary",
   "view_all_cycles": "View All Cycles",
   "active_cycles": "Active Cycles",

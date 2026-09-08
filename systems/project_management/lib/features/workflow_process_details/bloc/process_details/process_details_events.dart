@@ -13,6 +13,14 @@ class LoadGroupSteps extends ProcessDetailsEvent {
   const LoadGroupSteps({required this.processId, required this.projectId});
 }
 
+/// Reload only the group steps, keeping the rest of the screen as it is
+class ReloadGroupSteps extends ProcessDetailsEvent {
+  final int processId;
+  final int projectId;
+
+  const ReloadGroupSteps({required this.processId, required this.projectId});
+}
+
 /// Start workflow process
 class StartProcess extends ProcessDetailsEvent {
   final int processId;

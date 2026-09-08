@@ -188,8 +188,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
   ) async {
     final filterParams = filterProvider?.getFilterParams() ?? {};
     final sortingParams = _sortingBloc?.getSortingParams() ?? {};
-    // Reset everything
-    _searchKeyword = '';
+    // Reset pagination, keeping the current search keyword
     _engine = SearchEngine(
       query: {...filterParams, ...sortingParams},
       currentPage: 0,
@@ -198,7 +197,9 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     );
     _projects.clear();
 
-    add(LoadProjects(searchEngine: _engine));
+    // Await the load so the pull-to-refresh indicator stays visible
+    // until the request completes.
+    await _getProjects(LoadProjects(searchEngine: _engine), emit);
   }
 
   @override

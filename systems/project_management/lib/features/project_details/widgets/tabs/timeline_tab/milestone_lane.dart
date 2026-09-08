@@ -20,17 +20,37 @@ class MilestoneLane extends StatelessWidget {
     this.onSubactivityTap,
   });
 
+  // Geometry constants for vertical layout inside a single lane.
+  // NOTE: The parent timeline layout allocates lane height based on the
+  // number of subactivities using `rowBandForSubs` so that these values
+  // (bar height + chip height + spacing) fit without overlapping the lane
+  // below.
+  static const double milestoneBarHeight = 42.0;
+  static const double dotRadius = 4.0;
+  static const double subactivityChipHeight = 28.0;
+  static const double subactivitySpacing = 4.0;
+
+  // Inner insets of the bar / chip, used both to render them and to know how
+  // much width their label really has (see [TimelineLabelTooltip]).
+  static const double _barPaddingH = 12.0;
+  static const double _barBorderWidth = 1.5;
+  static const double _chipPaddingH = 8.0;
+  static const double _chipBorderWidth = 1.0;
+
   @override
   Widget build(BuildContext context) {
-    // Geometry constants for vertical layout inside a single lane.
-    // NOTE: The parent timeline layout allocates lane height based on the
-    // number of subactivities using `rowBandForSubs` so that these values
-    // (bar height + chip height + spacing) fit without overlapping the lane
-    // below.
-    const double milestoneBarHeight = 42.0;
-    const double dotRadius = 4.0;
-    const double subactivityChipHeight = 28.0;
-    const double subactivitySpacing = 4.0;
+    final TextStyle? milestoneLabelStyle = context.textTheme.labelMedium
+        ?.copyWith(
+          fontWeight: FontWeight.w600,
+          color: context.color.secondary,
+          fontSize: FontSizes.f10,
+        );
+    final TextStyle? subactivityLabelStyle = context.textTheme.labelSmall
+        ?.copyWith(
+          fontWeight: FontWeight.w700,
+          color: context.color.tertiaryContainer,
+          fontSize: FontSizes.f10,
+        );
 
     return LayoutBuilder(
       builder: (ctx, constraints) {
@@ -43,6 +63,10 @@ class MilestoneLane extends StatelessWidget {
               return a.startDate!.compareTo(b.startDate!);
             });
 
+        final String milestoneName = milestone.name ?? '';
+        final double milestoneLabelWidth =
+            constraints.maxWidth - (_barPaddingH + _barBorderWidth) * 2;
+
         return Stack(
           clipBehavior: Clip.none,
           children: [
@@ -52,15 +76,21 @@ class MilestoneLane extends StatelessWidget {
               left: 0,
               right: 0,
               height: milestoneBarHeight,
-              child: GestureDetector(
-                onTap: () => onMilestoneTap?.call(milestone),
+              child: TimelineLabelTooltip(
+                message: milestoneName,
+                availableWidth: milestoneLabelWidth,
+                labelStyle: milestoneLabelStyle,
+                maxLines: 2,
+                onTap: onMilestoneTap == null
+                    ? null
+                    : () => onMilestoneTap!.call(milestone),
                 child: Container(
                   decoration: BoxDecoration(
                     color: context.color.secondary.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(6),
                     border: Border.all(
                       color: context.color.secondary,
-                      width: 1.5,
+                      width: _barBorderWidth,
                     ),
                   ),
                   child: Stack(
@@ -94,16 +124,12 @@ class MilestoneLane extends StatelessWidget {
                       // Milestone name text
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
+                          horizontal: _barPaddingH,
                           vertical: 6,
                         ),
                         child: Text(
-                          milestone.name ?? '',
-                          style: context.textTheme.labelMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: context.color.secondary,
-                            fontSize: FontSizes.f10,
-                          ),
+                          milestoneName,
+                          style: milestoneLabelStyle,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.start,
@@ -158,6 +184,8 @@ class MilestoneLane extends StatelessWidget {
                 }
 
                 final double subWidth = subSpan.width * weekWidth;
+                final double subLabelWidth =
+                    subWidth - (_chipPaddingH + _chipBorderWidth) * 2;
 
                 // Vertical placement: one row per subactivity
                 final double top =
@@ -170,11 +198,16 @@ class MilestoneLane extends StatelessWidget {
                   left: subStartOffset,
                   width: subWidth,
                   height: subactivityChipHeight,
-                  child: GestureDetector(
-                    onTap: () => onSubactivityTap?.call(subactivity),
+                  child: TimelineLabelTooltip(
+                    message: subName,
+                    availableWidth: subLabelWidth,
+                    labelStyle: subactivityLabelStyle,
+                    onTap: onSubactivityTap == null
+                        ? null
+                        : () => onSubactivityTap!.call(subactivity),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
+                        horizontal: _chipPaddingH,
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
@@ -184,7 +217,7 @@ class MilestoneLane extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
                           color: context.color.tertiaryContainer,
-                          width: 1,
+                          width: _chipBorderWidth,
                         ),
                       ),
                       child: Text(
@@ -192,11 +225,7 @@ class MilestoneLane extends StatelessWidget {
                         textAlign: TextAlign.start,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: context.textTheme.labelSmall?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: context.color.tertiaryContainer,
-                          fontSize: FontSizes.f10,
-                        ),
+                        style: subactivityLabelStyle,
                       ),
                     ),
                   ),
