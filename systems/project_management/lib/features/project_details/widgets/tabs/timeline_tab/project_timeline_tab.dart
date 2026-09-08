@@ -31,7 +31,9 @@ class ProjectTimelineTab extends StatelessWidget {
 
           // ── Done ────────────────────────────
           ProjectTimelineLoaded(:final milestones) =>
-            milestones.isEmpty ? const EmptyContainer() : _timeline(milestones),
+            milestones.isEmpty
+                ? const EmptyContainer()
+                : _timeline(context, milestones),
 
           // ── ProjectDetailsLoaded state: check for cached milestones ──
           ProjectDetailsLoaded() => () {
@@ -41,7 +43,7 @@ class ProjectTimelineTab extends StatelessWidget {
             if (cachedMilestones == null || cachedMilestones.isEmpty) {
               return const EmptyContainer();
             }
-            return _timeline(cachedMilestones);
+            return _timeline(context, cachedMilestones);
           }(),
 
           // ── Error / fallback ────────────────
@@ -57,9 +59,30 @@ class ProjectTimelineTab extends StatelessWidget {
     );
   }
 
-  Widget _timeline(List<MilestoneModel> milestones) => ProjectTimeline(
-    milestonesList: milestones,
-    projectStart: projectStart,
-    projectEnd: projectEnd,
-  );
+  Widget _timeline(BuildContext context, List<MilestoneModel> milestones) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Align(
+          alignment: AlignmentDirectional.centerStart,
+          child: TimelineScaleButton(
+            icon: Icons.fullscreen,
+            label: allTranslations.text(LocaleKeys.full_screen),
+            onTap: () => ProjectTimelineFullscreenView.open(
+              context,
+              milestones: milestones,
+              projectStart: projectStart,
+              projectEnd: projectEnd,
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        ProjectTimeline(
+          milestonesList: milestones,
+          projectStart: projectStart,
+          projectEnd: projectEnd,
+        ),
+      ],
+    );
+  }
 }

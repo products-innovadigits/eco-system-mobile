@@ -709,5 +709,7 @@
   "competency_highlights_from_last_review": "أبرز الكفاءات من آخر مراجعة",
   "total": "الإجمالي",
   "login_to": "تسجيل الدخول إلى",
-  "please_select_system": "يرجى اختيار النظام الذي تريد تسجيل الدخول إليه"
+  "please_select_system": "يرجى اختيار النظام الذي تريد تسجيل الدخول إليه",
+  "full_screen": "ملء الشاشة",
+  "exit_full_screen": "تصغير الشاشة"
 }

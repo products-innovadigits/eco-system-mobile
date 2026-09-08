@@ -50,8 +50,11 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize {
-    final ctx = CustomNavigator.navigatorState.currentContext!;
-    final isLandscape = MediaQuery.of(ctx).orientation == Orientation.landscape;
+    // Read, do not depend: `MediaQuery.of` here would register the *navigator*
+    // as a dependent of a MediaQuery far above it. That dependency outlives
+    // every route and breaks the framework's descendant invariant when the
+    // tree is rebuilt on rotation.
+    final isLandscape = MediaQueryHelper.isLandscape;
     final height = (withSearch ?? false)
         ? (isLandscape ? 90.0 : 122.h)
         : (isLandscape ? 44.0 : 55.h);

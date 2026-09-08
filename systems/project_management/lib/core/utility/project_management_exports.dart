@@ -69,10 +69,12 @@ export 'package:project_management/features/project_details/widgets/risk_challen
 export 'package:project_management/features/project_details/widgets/tabs/project_details_tabs_section.dart';
 export 'package:project_management/features/project_details/widgets/tabs/project_main_info_tab.dart';
 export 'package:project_management/features/project_details/widgets/tabs/timeline_tab/milestone_lane.dart';
+export 'package:project_management/features/project_details/widgets/tabs/timeline_tab/project_timeline_fullscreen_view.dart';
 export 'package:project_management/features/project_details/widgets/tabs/timeline_tab/project_timeline_tab.dart';
 export 'package:project_management/features/project_details/widgets/tabs/timeline_tab/timeline_date_utils.dart';
 export 'package:project_management/features/project_details/widgets/tabs/timeline_tab/timeline_grid_body.dart';
 export 'package:project_management/features/project_details/widgets/tabs/timeline_tab/timeline_label_tooltip.dart';
+export 'package:project_management/features/project_details/widgets/tabs/timeline_tab/timeline_lane_metrics.dart';
 export 'package:project_management/features/project_details/widgets/tabs/timeline_tab/timeline_month_header.dart';
 export 'package:project_management/features/project_details/widgets/tabs/timeline_tab/timeline_project_lanes.dart';
 export 'package:project_management/features/project_details/widgets/tabs/timeline_tab/timeline_weeks_header.dart';

@@ -26,7 +26,7 @@ class TimelineMonthsHeader extends StatelessWidget {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: LightColor.timelineHeader.withValues(alpha: 0.5),
-              border: Border.all(color: LightColor.timelineBorder),
+              border: Border.all(color: LightColor.timelineGridLine),
             ),
             child: Text(
               months[m].displayName,

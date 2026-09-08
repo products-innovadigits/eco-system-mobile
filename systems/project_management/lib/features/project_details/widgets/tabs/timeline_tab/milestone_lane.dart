@@ -4,11 +4,13 @@ import 'package:project_management/core/utility/project_management_exports.dart'
 /// layout pass reserved for them.
 ///
 /// All date math is done once during layout ([PlacedMilestone]); this widget
-/// only turns column offsets into pixels.
+/// only turns column offsets into pixels, using the same [TimelineLaneMetrics]
+/// the layout reserved the band height from.
 class MilestoneLane extends StatelessWidget {
   final PlacedMilestone placed;
   final double weekWidth;
   final bool isRTL;
+  final TimelineLaneMetrics metrics;
   final void Function(MilestoneModel milestone)? onMilestoneTap;
   final void Function(SubActivityModel subactivity)? onSubactivityTap;
 
@@ -17,34 +19,10 @@ class MilestoneLane extends StatelessWidget {
     required this.placed,
     required this.weekWidth,
     required this.isRTL,
+    this.metrics = const TimelineLaneMetrics(),
     this.onMilestoneTap,
     this.onSubactivityTap,
   });
-
-  // Geometry of a lane. The layout pass reserves the band height from
-  // [contentHeightFor], so these are the single source of truth for both.
-  static const double milestoneBarHeight = 42.0;
-  static const double dotRadius = 4.0;
-  static const double subactivityChipHeight = 28.0;
-  static const double subactivitySpacing = 4.0;
-
-  /// Vertical breathing room kept above and below a lane inside its band.
-  static const double lanePadding = 6.0;
-
-  // Inner insets of the bar / chip, used both to render them and to know how
-  // much width their label really has (see [TimelineLabelTooltip]).
-  static const double _barPaddingH = 12.0;
-  static const double _barBorderWidth = 1.5;
-  static const double _chipPaddingH = 8.0;
-  static const double _chipBorderWidth = 1.0;
-
-  /// Height the lane needs for a milestone carrying [subActivityCount] chips.
-  static double contentHeightFor(int subActivityCount) {
-    if (subActivityCount <= 0) return milestoneBarHeight;
-    return milestoneBarHeight +
-        subactivitySpacing +
-        subActivityCount * (subactivityChipHeight + subactivitySpacing);
-  }
 
   /// Distance from the lane's leading edge, in pixels.
   double _leftOf(double startOffset, double endOffset) => isRTL
@@ -57,18 +35,19 @@ class MilestoneLane extends StatelessWidget {
         ?.copyWith(
           fontWeight: FontWeight.w600,
           color: context.color.secondary,
-          fontSize: FontSizes.f10,
+          fontSize: metrics.labelFontSize,
         );
     final TextStyle? subactivityLabelStyle = context.textTheme.labelSmall
         ?.copyWith(
           fontWeight: FontWeight.w700,
           color: context.color.tertiaryContainer,
-          fontSize: FontSizes.f10,
+          fontSize: metrics.labelFontSize,
         );
 
     final String milestoneName = placed.milestone.name ?? '';
     final double barWidth =
         (placed.barEndOffset - placed.barStartOffset) * weekWidth;
+    final double dotSize = metrics.dotRadius * 2;
 
     return Stack(
       clipBehavior: Clip.none,
@@ -78,14 +57,15 @@ class MilestoneLane extends StatelessWidget {
           top: 0,
           left: _leftOf(placed.barStartOffset, placed.barEndOffset),
           width: barWidth,
-          height: milestoneBarHeight,
+          height: metrics.barHeight,
           child: TimelineLabelTooltip(
             message: milestoneName,
             details: formatTimelineDateRange(
               placed.milestone.startDate,
               placed.milestone.endDate,
             ),
-            availableWidth: barWidth - (_barPaddingH + _barBorderWidth) * 2,
+            availableWidth:
+                barWidth - (metrics.barPaddingH + metrics.barBorderWidth) * 2,
             labelStyle: milestoneLabelStyle,
             maxLines: 2,
             onTap: onMilestoneTap == null
@@ -97,18 +77,18 @@ class MilestoneLane extends StatelessWidget {
                 borderRadius: BorderRadius.circular(6),
                 border: Border.all(
                   color: context.color.secondary,
-                  width: _barBorderWidth,
+                  width: metrics.barBorderWidth,
                 ),
               ),
               child: Stack(
                 children: [
                   // Start dot
                   Positioned(
-                    left: -dotRadius,
-                    top: milestoneBarHeight / 2 - dotRadius,
+                    left: -metrics.dotRadius,
+                    top: metrics.barHeight / 2 - metrics.dotRadius,
                     child: Container(
-                      width: dotRadius * 2,
-                      height: dotRadius * 2,
+                      width: dotSize,
+                      height: dotSize,
                       decoration: BoxDecoration(
                         color: context.color.secondary,
                         shape: BoxShape.circle,
@@ -117,11 +97,11 @@ class MilestoneLane extends StatelessWidget {
                   ),
                   // End dot
                   Positioned(
-                    right: -dotRadius,
-                    top: milestoneBarHeight / 2 - dotRadius,
+                    right: -metrics.dotRadius,
+                    top: metrics.barHeight / 2 - metrics.dotRadius,
                     child: Container(
-                      width: dotRadius * 2,
-                      height: dotRadius * 2,
+                      width: dotSize,
+                      height: dotSize,
                       decoration: BoxDecoration(
                         color: context.color.secondary,
                         shape: BoxShape.circle,
@@ -130,9 +110,9 @@ class MilestoneLane extends StatelessWidget {
                   ),
                   // Milestone name text
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: _barPaddingH,
-                      vertical: 6,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: metrics.barPaddingH,
+                      vertical: metrics.barPaddingV,
                     ),
                     child: Text(
                       milestoneName,
@@ -156,37 +136,39 @@ class MilestoneLane extends StatelessWidget {
 
           final double subWidth = (sub.endOffset - sub.startOffset) * weekWidth;
           final double top =
-              milestoneBarHeight +
-              subactivitySpacing +
-              index * (subactivityChipHeight + subactivitySpacing);
+              metrics.barHeight +
+              metrics.chipSpacing +
+              index * (metrics.chipHeight + metrics.chipSpacing);
 
           return Positioned(
             top: top,
             left: _leftOf(sub.startOffset, sub.endOffset),
             width: subWidth,
-            height: subactivityChipHeight,
+            height: metrics.chipHeight,
             child: TimelineLabelTooltip(
               message: subName,
               details: formatTimelineDateRange(
                 sub.subActivity.startDate,
                 sub.subActivity.endDate,
               ),
-              availableWidth: subWidth - (_chipPaddingH + _chipBorderWidth) * 2,
+              availableWidth:
+                  subWidth -
+                  (metrics.chipPaddingH + metrics.chipBorderWidth) * 2,
               labelStyle: subactivityLabelStyle,
               onTap: onSubactivityTap == null
                   ? null
                   : () => onSubactivityTap!.call(sub.subActivity),
               child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: _chipPaddingH,
-                  vertical: 4,
+                padding: EdgeInsets.symmetric(
+                  horizontal: metrics.chipPaddingH,
+                  vertical: metrics.chipPaddingV,
                 ),
                 decoration: BoxDecoration(
                   color: context.color.tertiaryContainer.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: context.color.tertiaryContainer,
-                    width: _chipBorderWidth,
+                    width: metrics.chipBorderWidth,
                   ),
                 ),
                 child: Text(

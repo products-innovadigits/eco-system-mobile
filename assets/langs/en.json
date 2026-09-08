@@ -708,5 +708,7 @@
   "competency_highlights_from_last_review": "Competency Highlights from Last Review",
   "total": "Total",
   "login_to": "Login to",
-  "please_select_system": "Please select a system"
+  "please_select_system": "Please select a system",
+  "full_screen": "Full Screen",
+  "exit_full_screen": "Exit Full Screen"
 }

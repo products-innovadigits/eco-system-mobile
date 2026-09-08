@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart' as intl;
 import 'package:project_management/core/utility/project_management_exports.dart';
 
 /// The date range the timeline is drawn for, and the axis that maps a date to a
@@ -143,15 +144,34 @@ String? formatTimelineDateRange(DateTime? start, DateTime? end) {
 
   void addLine(String labelKey, DateTime? date) {
     if (date == null) return;
-    final String value = date.format(kTimelineDateFormat);
-    if (value.isEmpty) return;
-    lines.add('${allTranslations.text(labelKey).trim()}: \u2066$value\u2069');
+    lines.add(
+      '${allTranslations.text(labelKey).trim()}: '
+      '\u2066${_formatTimelineDate(date)}\u2069',
+    );
   }
 
   addLine(LocaleKeys.start_date, start);
   addLine(LocaleKeys.end_date, end);
 
   return lines.isEmpty ? null : lines.join('\n');
+}
+
+/// Formats one date in the app's current language.
+///
+/// Deliberately not the shared `DateTime.format` extension: that one resolves
+/// its locale through the global navigator context and throws when there is
+/// none, which makes anything drawing a date untestable and fragile at startup.
+String _formatTimelineDate(DateTime date) {
+  try {
+    return intl.DateFormat(
+      kTimelineDateFormat,
+      allTranslations.currentLanguage,
+    ).format(date);
+  } catch (_) {
+    // Locale data unavailable — the pattern is numeric, so the default locale
+    // renders it identically.
+    return intl.DateFormat(kTimelineDateFormat).format(date);
+  }
 }
 
 /// A range on the timeline axis, in column units. [end] is exclusive.

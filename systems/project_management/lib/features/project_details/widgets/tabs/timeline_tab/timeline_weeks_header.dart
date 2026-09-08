@@ -21,10 +21,7 @@ class TimelineWeeksHeader extends StatelessWidget {
       height: height,
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(
-            color: LightColor.timelineBorder.withValues(alpha: 0.4),
-            width: 1,
-          ),
+          bottom: BorderSide(color: LightColor.timelineGridLine, width: 1),
         ),
       ),
       child: Row(
@@ -40,9 +37,7 @@ class TimelineWeeksHeader extends StatelessWidget {
                   child: Container(
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: LightColor.timelineBorder.withValues(alpha: 0.4),
-                      ),
+                      border: Border.all(color: LightColor.timelineGridLine),
                     ),
                     child: Text(
                       '${w + 1}',

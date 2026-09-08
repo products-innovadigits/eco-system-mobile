@@ -11,6 +11,7 @@ class TimelineProjectLanes extends StatelessWidget {
   final double monthsHeaderHeight;
   final double weeksHeaderHeight;
   final bool isRTL;
+  final TimelineLaneMetrics metrics;
   final void Function(MilestoneModel milestone)? onMilestoneTap;
   final void Function(SubActivityModel subactivity)? onSubactivityTap;
 
@@ -23,6 +24,7 @@ class TimelineProjectLanes extends StatelessWidget {
     required this.monthsHeaderHeight,
     required this.weeksHeaderHeight,
     required this.isRTL,
+    this.metrics = const TimelineLaneMetrics(),
     this.onMilestoneTap,
     this.onSubactivityTap,
   });
@@ -36,11 +38,8 @@ class TimelineProjectLanes extends StatelessWidget {
             monthsHeaderHeight + weeksHeaderHeight + placed.row * rowH;
         final double bandHeight = placed.rowSpanRows * rowH;
 
-        final double topPx = bandTop + MilestoneLane.lanePadding;
-        final double laneH = math.max(
-          1,
-          bandHeight - 2 * MilestoneLane.lanePadding,
-        );
+        final double topPx = bandTop + metrics.lanePadding;
+        final double laneH = math.max(1, bandHeight - 2 * metrics.lanePadding);
 
         // Horizontal placement (RTL aware): `Positioned.left` is physical, so
         // the RTL canvas is mirrored explicitly.
@@ -57,6 +56,7 @@ class TimelineProjectLanes extends StatelessWidget {
             placed: placed,
             weekWidth: weekWidth,
             isRTL: isRTL,
+            metrics: metrics,
             onMilestoneTap: onMilestoneTap,
             onSubactivityTap: onSubactivityTap,
           ),

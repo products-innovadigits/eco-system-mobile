@@ -87,8 +87,10 @@ class TimelineLabelTooltip extends StatelessWidget {
       preferBelow: false,
       enableFeedback: true,
       onTriggered: onTap,
-      margin: EdgeInsets.symmetric(horizontal: 16.w),
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+      // Logical pixels, not `.w`/`.h`: ScreenUtil is set up against a portrait
+      // design size, so those scale by ~2.2x once the screen is landscape.
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
         color: context.color.onSurface.withValues(alpha: 0.92),
         borderRadius: BorderRadius.circular(8),

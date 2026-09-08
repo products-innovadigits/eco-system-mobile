@@ -646,5 +646,7 @@ abstract class  LocaleKeys {
   static const total = 'total';
   static const login_to = 'login_to';
   static const please_select_system = 'please_select_system';
+  static const full_screen = 'full_screen';
+  static const exit_full_screen = 'exit_full_screen';
 
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
 
+import '../helpers/translation/all_translation.dart';
 import '../navigation/custom_navigation.dart';
 
 extension StringEx on String {
@@ -130,15 +131,38 @@ extension DateTimeExtension on DateTime {
 
   String get dayName => intl.DateFormat('EEEE').format(this);
 
+  /// Formats this date with [fromat], in [cutomlocale] or the app's current
+  /// language.
+  ///
+  /// Returns an empty string instead of throwing when the pattern or the
+  /// locale data cannot be used.
   String format(String fromat, {String? cutomlocale}) {
-    String locale = Localizations.localeOf(
-      CustomNavigator.navigatorState.currentContext!,
-    ).languageCode;
     try {
-      return intl.DateFormat(fromat, cutomlocale ?? locale).format(this);
+      return intl.DateFormat(
+        fromat,
+        cutomlocale ?? _appLocaleCode(),
+      ).format(this);
     } catch (e) {
       return "";
     }
   }
 }
 
+/// Language used for date formatting: the mounted navigator's locale, falling
+/// back to the selected app language when there is no navigator yet — during
+/// startup, in an isolate, or under test. Reading it through the global
+/// navigator context used to be an unguarded `!`, which threw in exactly those
+/// cases.
+String _appLocaleCode() {
+  try {
+    final BuildContext? context = CustomNavigator.navigatorState.currentContext;
+    if (context != null) {
+      final Locale? locale = Localizations.maybeLocaleOf(context);
+      if (locale != null) return locale.languageCode;
+    }
+  } catch (_) {
+    // Reading a GlobalKey's context throws outright when the widgets binding
+    // is not up yet, so this has to be guarded, not just null-checked.
+  }
+  return allTranslations.currentLanguage;
+}

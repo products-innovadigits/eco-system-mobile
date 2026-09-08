@@ -29,6 +29,11 @@ class LightColor {
   static const Color timelineHeader = Color(0xffE9E9E9);
   static const Color timelineBorder = Color(0xffF3F4F6);
 
+  /// Grid lines of the timeline canvas. Darker than [timelineBorder]: the grid
+  /// is drawn as single hairlines, so it needs more contrast than a cell border
+  /// that used to double up against its neighbour.
+  static const Color timelineGridLine = Color(0xffE6E9ED);
+
   // chart colors ====================
 
   static const Color chartPrimary = Color(0xff020F4C);

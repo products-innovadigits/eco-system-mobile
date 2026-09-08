@@ -6,6 +6,8 @@ import 'package:project_management/core/utility/project_management_exports.dart'
 /// - Dynamic months based on the resolved [TimelineWindow].
 /// - 4 week columns per month (W1: 1-7, W2: 8-14, W3: 15-21, W4: 22-end);
 ///   items snap to whole week cells.
+/// - Columns stretch to fill the available width and fall back to scrolling
+///   once the project no longer fits at [ProjectTimeline.minWeekWidth].
 /// - Auto-places milestones vertically using row bands.
 /// - RTL support + auto height grow.
 class ProjectTimeline extends StatefulWidget {
@@ -13,8 +15,12 @@ class ProjectTimeline extends StatefulWidget {
   final int baseRowCount; // Initial rows count before auto-grow.
   final double monthsHeaderHeight; // Height of months header.
   final double weeksHeaderHeight; // Height of weeks row.
-  final double weekWidth; // Width of a single week cell.
   final double rowHeightPx; // Explicit row height override (optional).
+
+  /// Narrowest a week column may get. Columns grow beyond it to fill the
+  /// viewport, so a short project spreads across the screen instead of
+  /// leaving it half empty.
+  final double minWeekWidth;
 
   /// Smallest width a bar / chip may take, so that a one-day item stays
   /// readable and tappable instead of collapsing to a few pixels.
@@ -27,6 +33,10 @@ class ProjectTimeline extends StatefulWidget {
   final DateTime? projectStart;
   final DateTime? projectEnd;
 
+  /// Lane geometry. Scale it up to make bars, chips and labels bigger — for
+  /// instance on the full-screen canvas.
+  final TimelineLaneMetrics laneMetrics;
+
   final TextDirection textDirection;
   final void Function(MilestoneModel milestone)? onMilestoneTap;
   final void Function(SubActivityModel subactivity)? onSubactivityTap;
@@ -36,12 +46,13 @@ class ProjectTimeline extends StatefulWidget {
     this.baseRowCount = 12,
     this.monthsHeaderHeight = 40,
     this.weeksHeaderHeight = 40,
-    this.weekWidth = 35,
     this.rowHeightPx = 25,
+    this.minWeekWidth = 35,
     this.minItemWidth = 32,
     this.milestonesList,
     this.projectStart,
     this.projectEnd,
+    this.laneMetrics = const TimelineLaneMetrics(),
     this.textDirection = TextDirection.rtl,
     this.onMilestoneTap,
     this.onSubactivityTap,
@@ -62,12 +73,12 @@ class _ProjectTimelineState extends State<ProjectTimeline> {
   late List<ProjectMonth> _months;
   late LayoutResult _layout;
 
-  double get _monthWidth => widget.weekWidth * TimelineWindow.columnsPerMonth;
-
-  double get _totalWidth => _monthWidth * _months.length;
+  /// Total number of week columns the grid spans.
+  int get _totalColumns =>
+      _months.length * TimelineWindow.columnsPerMonth.toInt();
 
   /// Right edge of the axis, in column units.
-  double get _axisEnd => _months.length * TimelineWindow.columnsPerMonth;
+  double get _axisEnd => _totalColumns.toDouble();
 
   @override
   void initState() {
@@ -83,9 +94,10 @@ class _ProjectTimelineState extends State<ProjectTimeline> {
     if (!identical(oldWidget.milestonesList, widget.milestonesList) ||
         oldWidget.projectStart != widget.projectStart ||
         oldWidget.projectEnd != widget.projectEnd ||
-        oldWidget.weekWidth != widget.weekWidth ||
+        oldWidget.minWeekWidth != widget.minWeekWidth ||
         oldWidget.rowHeightPx != widget.rowHeightPx ||
-        oldWidget.minItemWidth != widget.minItemWidth) {
+        oldWidget.minItemWidth != widget.minItemWidth ||
+        oldWidget.laneMetrics != widget.laneMetrics) {
       _resolveLayout();
     }
   }
@@ -117,65 +129,82 @@ class _ProjectTimelineState extends State<ProjectTimeline> {
 
     return Directionality(
       textDirection: widget.textDirection,
-      child: SizedBox(
-        height: effectiveHeight,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          physics: const BouncingScrollPhysics(),
-          clipBehavior: Clip.hardEdge,
-          child: SizedBox(
-            width: _totalWidth,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Stretch the columns to fill the viewport; once the project is too
+          // long to fit at `minWeekWidth`, the grid keeps that width and the
+          // canvas scrolls horizontally instead.
+          final double available = constraints.hasBoundedWidth
+              ? constraints.maxWidth
+              : 0;
+          final double weekWidth = math.max(
+            widget.minWeekWidth,
+            available / _totalColumns,
+          );
+          final double monthWidth = weekWidth * TimelineWindow.columnsPerMonth;
+          final double totalWidth = weekWidth * _totalColumns;
+
+          return SizedBox(
             height: effectiveHeight,
-            // critical for Positioned children (Stack)
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                // ===== Base table (header + weeks + grid body) =====
-                Column(
-                  mainAxisSize: MainAxisSize.min,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
+              clipBehavior: Clip.hardEdge,
+              child: SizedBox(
+                width: totalWidth,
+                height: effectiveHeight,
+                // critical for Positioned children (Stack)
+                child: Stack(
+                  clipBehavior: Clip.none,
                   children: [
-                    TimelineMonthsHeader(
-                      width: _totalWidth,
-                      monthWidth: _monthWidth,
-                      height: widget.monthsHeaderHeight,
-                      months: _months,
+                    // ===== Base table (header + weeks + grid body) =====
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TimelineMonthsHeader(
+                          width: totalWidth,
+                          monthWidth: monthWidth,
+                          height: widget.monthsHeaderHeight,
+                          months: _months,
+                        ),
+                        TimelineWeeksHeader(
+                          width: totalWidth,
+                          monthWidth: monthWidth,
+                          height: widget.weeksHeaderHeight,
+                          weekWidth: weekWidth,
+                          monthCount: _months.length,
+                        ),
+                        TimelineGridBody(
+                          rows: totalRows,
+                          width: totalWidth,
+                          weekWidth: weekWidth,
+                          rowHeight: rowH,
+                          monthCount: _months.length,
+                        ),
+                      ],
                     ),
-                    TimelineWeeksHeader(
-                      width: _totalWidth,
-                      monthWidth: _monthWidth,
-                      height: widget.weeksHeaderHeight,
-                      weekWidth: widget.weekWidth,
-                      monthCount: _months.length,
-                    ),
-                    TimelineGridBody(
-                      rows: totalRows,
-                      width: _totalWidth,
-                      monthWidth: _monthWidth,
-                      weekWidth: widget.weekWidth,
-                      rowHeight: rowH,
-                      monthCount: _months.length,
+
+                    // ===== Milestone lanes overlay =====
+                    Positioned.fill(
+                      child: TimelineProjectLanes(
+                        layout: _layout,
+                        rowH: rowH,
+                        weekWidth: weekWidth,
+                        totalWidth: totalWidth,
+                        monthsHeaderHeight: widget.monthsHeaderHeight,
+                        weeksHeaderHeight: widget.weeksHeaderHeight,
+                        isRTL: widget.textDirection == TextDirection.rtl,
+                        metrics: widget.laneMetrics,
+                        onMilestoneTap: widget.onMilestoneTap,
+                        onSubactivityTap: widget.onSubactivityTap,
+                      ),
                     ),
                   ],
                 ),
-
-                // ===== Milestone lanes overlay =====
-                Positioned.fill(
-                  child: TimelineProjectLanes(
-                    layout: _layout,
-                    rowH: rowH,
-                    weekWidth: widget.weekWidth,
-                    totalWidth: _totalWidth,
-                    monthsHeaderHeight: widget.monthsHeaderHeight,
-                    weeksHeaderHeight: widget.weeksHeaderHeight,
-                    isRTL: widget.textDirection == TextDirection.rtl,
-                    onMilestoneTap: widget.onMilestoneTap,
-                    onSubactivityTap: widget.onSubactivityTap,
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
@@ -287,7 +316,9 @@ class _ProjectTimelineState extends State<ProjectTimeline> {
   DateSpan? _renderSpan(DateSpan? span) {
     if (span == null) return null;
 
-    final double minCols = widget.minItemWidth / widget.weekWidth;
+    // Converted at the narrowest column width: if columns end up wider, the
+    // item only gets more room than the minimum, never less.
+    final double minCols = widget.minItemWidth / widget.minWeekWidth;
     if (span.width >= minCols) return span;
 
     double start = span.start;
@@ -302,12 +333,12 @@ class _ProjectTimelineState extends State<ProjectTimeline> {
   /// Band height in rows.
   ///
   /// The band has to hold everything [MilestoneLane] paints — its bar, its
-  /// chips and the spacing between them — which is why the geometry lives on
-  /// the lane and is read from here instead of being duplicated.
+  /// chips and the spacing between them — which is why both read the same
+  /// [TimelineLaneMetrics] instead of each carrying its own copy.
   int _rowBandFor(int subCount) {
     final double contentHeight =
-        MilestoneLane.contentHeightFor(subCount) +
-        MilestoneLane.lanePadding * 2;
+        widget.laneMetrics.contentHeightFor(subCount) +
+        widget.laneMetrics.lanePadding * 2;
 
     // Minimal separation between two stacked milestones.
     final double bottomSpacing = subCount <= 2
