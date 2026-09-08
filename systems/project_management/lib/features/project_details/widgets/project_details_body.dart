@@ -78,9 +78,9 @@ Widget _getTabSection(
       projectDetailsModel: model,
     ),
     _ => ProjectTimelineTab(
-      projectStart: model.startDate ?? DateTime.now(),
-      projectEnd:
-          model.endDate ?? DateTime.now().add(const Duration(days: 365)),
+      projectId: model.id ?? 0,
+      projectStart: model.startDate,
+      projectEnd: model.endDate,
     ),
   };
 }

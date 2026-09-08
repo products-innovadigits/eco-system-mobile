@@ -1,150 +1,175 @@
-/// Week bucket utility: converts a DateTime to a week cell index within the project timeline.
+import 'package:project_management/core/utility/project_management_exports.dart';
+
+/// The date range the timeline is drawn for, and the axis that maps a date to a
+/// horizontal position on it.
 ///
-/// Week buckets:
+/// The axis is measured in **column units**: every month is
+/// [columnsPerMonth] columns wide, one per week cell of the header, and a date
+/// is snapped to its week bucket:
 /// - W1: days 1-7
 /// - W2: days 8-14
 /// - W3: days 15-21
 /// - W4: days 22-end of month
 ///
-/// Returns (monthIndex, weekInMonth 1..4) relative to projectStart.
-/// monthIndex is 0-based from projectStart (0 = first month of project).
-class WeekCell {
-  final int monthIndex; // 0-based from projectStart
-  final int weekInMonth; // 1-4
+/// A column is therefore the smallest unit the timeline can express: two items
+/// that fall in the same week render at the same place and the same width,
+/// whatever their real duration.
+///
+/// Column 0 is the first day of the month [start] falls in, because the grid
+/// always draws whole months.
+class TimelineWindow {
+  /// Inclusive bounds, normalized to day precision.
+  final DateTime start;
+  final DateTime end;
 
-  WeekCell(this.monthIndex, this.weekInMonth);
+  /// First day of [start]'s month — the origin of the axis.
+  final DateTime origin;
 
-  /// Convert DateTime to week cell relative to projectStart.
-  static WeekCell? indexOf(DateTime? dt, DateTime projectStart) {
-    if (dt == null) return null;
+  static const double columnsPerMonth = 4;
 
-    // Normalize to start of day
-    final date = DateTime(dt.year, dt.month, dt.day);
-    final start = DateTime(
-      projectStart.year,
-      projectStart.month,
-      projectStart.day,
-    );
+  TimelineWindow._(this.start, this.end)
+    : origin = DateTime(start.year, start.month, 1);
 
-    if (date.isBefore(start)) return null;
+  /// Resolves the window from the project dates *and the data itself*.
+  ///
+  /// The project dates are only hints: they are often null, and milestones are
+  /// regularly maintained outside them. Anything left outside the window is
+  /// clamped away by [spanOf], so deriving the bounds from every date we are
+  /// about to draw is what keeps milestones from silently disappearing.
+  factory TimelineWindow.resolve({
+    DateTime? projectStart,
+    DateTime? projectEnd,
+    List<MilestoneModel> milestones = const [],
+  }) {
+    DateTime? min;
+    DateTime? max;
 
-    // Calculate months difference
-    int monthIndex = 0;
+    void consider(DateTime? date) {
+      if (date == null) return;
+      final DateTime day = DateUtils.dateOnly(date);
+      if (min == null || day.isBefore(min!)) min = day;
+      if (max == null || day.isAfter(max!)) max = day;
+    }
 
-    // If date is in the same month as projectStart, monthIndex is 0
-    if (date.year == start.year && date.month == start.month) {
-      monthIndex = 0;
-    } else {
-      // Calculate months from projectStart
-      DateTime current = DateTime(start.year, start.month, 1);
-
-      while (current.year < date.year ||
-          (current.year == date.year && current.month < date.month)) {
-        monthIndex++;
-        if (current.month == 12) {
-          current = DateTime(current.year + 1, 1, 1);
-        } else {
-          current = DateTime(current.year, current.month + 1, 1);
-        }
+    consider(projectStart);
+    consider(projectEnd);
+    for (final milestone in milestones) {
+      consider(milestone.startDate);
+      consider(milestone.endDate);
+      for (final sub in milestone.subActivities ?? const <SubActivityModel>[]) {
+        consider(sub.startDate);
+        consider(sub.endDate);
       }
     }
 
-    // Calculate week within the month
-    // W1: days 1-7, W2: days 8-14, W3: days 15-21, W4: days 22-end
-    final day = date.day;
-    int weekInMonth;
-    if (day >= 1 && day <= 7) {
-      weekInMonth = 1;
-    } else if (day >= 8 && day <= 14) {
-      weekInMonth = 2;
-    } else if (day >= 15 && day <= 21) {
-      weekInMonth = 3;
-    } else {
-      weekInMonth = 4;
-    }
+    final DateTime resolvedStart = min ?? DateUtils.dateOnly(DateTime.now());
+    final DateTime resolvedEnd =
+        max ?? DateTime(resolvedStart.year, resolvedStart.month + 3, 1);
 
-    return WeekCell(monthIndex, weekInMonth);
-  }
-
-  /// Convert week cell to zero-based column index (0 = first week of project).
-  int toColumnIndex() {
-    return monthIndex * 4 + (weekInMonth - 1);
-  }
-
-  /// Create WeekCell from column index.
-  static WeekCell fromColumnIndex(int colIndex) {
-    final monthIndex = colIndex ~/ 4;
-    final weekInMonth = (colIndex % 4) + 1;
-    return WeekCell(monthIndex, weekInMonth);
-  }
-}
-
-/// Get the span (startCol, endCol) for a date range, inclusive.
-/// Returns null if dates are invalid or outside project window.
-class DateSpan {
-  final int startCol;
-  final int endCol;
-
-  DateSpan(this.startCol, this.endCol);
-
-  int get width => endCol - startCol + 1;
-
-  static DateSpan? fromDates(
-    DateTime? startDate,
-    DateTime? endDate,
-    DateTime projectStart,
-    DateTime projectEnd,
-  ) {
-    if (startDate == null || endDate == null) return null;
-
-    // Normalize dates to start of day
-    final start = DateTime(startDate.year, startDate.month, startDate.day);
-    final end = DateTime(endDate.year, endDate.month, endDate.day);
-    final projStart = DateTime(
-      projectStart.year,
-      projectStart.month,
-      projectStart.day,
+    return TimelineWindow._(
+      resolvedStart,
+      resolvedEnd.isBefore(resolvedStart) ? resolvedStart : resolvedEnd,
     );
-    final projEnd = DateTime(projectEnd.year, projectEnd.month, projectEnd.day);
+  }
 
-    // Ensure start <= end (swap if reversed)
-    final actualStart = start.isBefore(end) || start.isAtSameMomentAs(end)
+  /// Week bucket of [date] inside its month, 1..4.
+  static int weekOfMonth(DateTime date) {
+    final int day = date.day;
+    if (day <= 7) return 1;
+    if (day <= 14) return 2;
+    if (day <= 21) return 3;
+    return 4;
+  }
+
+  /// Position of [date] on the axis, in column units.
+  ///
+  /// [endOfCell] places the date at the *end* of its week cell, so that an item
+  /// starting and ending in the same week is one column wide.
+  double offsetOf(DateTime date, {bool endOfCell = false}) {
+    final int monthIndex =
+        (date.year - origin.year) * 12 + (date.month - origin.month);
+    return monthIndex * columnsPerMonth +
+        (weekOfMonth(date) - 1) +
+        (endOfCell ? 1 : 0);
+  }
+
+  /// Maps a date range onto the axis, clamped to the window.
+  /// Returns null when the range is empty or falls entirely outside.
+  DateSpan? spanOf(DateTime? from, DateTime? to) {
+    if (from == null || to == null) return null;
+
+    final DateTime a = DateUtils.dateOnly(from);
+    final DateTime b = DateUtils.dateOnly(to);
+
+    // Tolerate reversed ranges coming from the API.
+    final DateTime rangeStart = a.isAfter(b) ? b : a;
+    final DateTime rangeEnd = a.isAfter(b) ? a : b;
+
+    final DateTime clampedStart = rangeStart.isBefore(start)
         ? start
-        : end;
-    final actualEnd = start.isBefore(end) || start.isAtSameMomentAs(end)
-        ? end
-        : start;
-
-    // Clamp to project window
-    final clampedStart = actualStart.isBefore(projStart)
-        ? projStart
-        : actualStart;
-    final clampedEnd = actualEnd.isAfter(projEnd) ? projEnd : actualEnd;
-
+        : rangeStart;
+    final DateTime clampedEnd = rangeEnd.isAfter(end) ? end : rangeEnd;
     if (clampedStart.isAfter(clampedEnd)) return null;
 
-    final startCell = WeekCell.indexOf(clampedStart, projStart);
-    final endCell = WeekCell.indexOf(clampedEnd, projStart);
-
-    if (startCell == null || endCell == null) return null;
-
-    final startCol = startCell.toColumnIndex();
-    final endCol = endCell.toColumnIndex();
-
-    // Ensure startCol <= endCol
     return DateSpan(
-      startCol < endCol ? startCol : endCol,
-      startCol < endCol ? endCol : startCol,
+      offsetOf(clampedStart),
+      offsetOf(clampedEnd, endOfCell: true),
     );
   }
 }
 
-/// Generate list of months from projectStart to projectEnd.
-/// Each entry includes the month name and year (with year suffix if month repeats).
+/// Date pattern used by the timeline tooltips, e.g. `05/12/2027`.
+const String kTimelineDateFormat = 'dd/MM/yyyy';
+
+/// Formats an item's dates for its tooltip, one labelled line each:
+///
+/// ```
+/// تاريخ البدء: 05/12/2027
+/// تاريخ الانتهاء: 10/01/2028
+/// ```
+///
+/// Week cells are the smallest unit the grid can express, so a bar's width only
+/// tells the user which weeks an item touches. The exact dates are what the
+/// snapping loses, which is why every tooltip carries them.
+///
+/// Each date is labelled rather than written as a `start : end` range: the two
+/// dates are number runs, and in an RTL paragraph the bidi algorithm reorders
+/// them, so a bare range can read end-first. Each value is also wrapped in a
+/// left-to-right isolate so it never breaks apart against its label.
+String? formatTimelineDateRange(DateTime? start, DateTime? end) {
+  if (start == null && end == null) return null;
+
+  final List<String> lines = [];
+
+  void addLine(String labelKey, DateTime? date) {
+    if (date == null) return;
+    final String value = date.format(kTimelineDateFormat);
+    if (value.isEmpty) return;
+    lines.add('${allTranslations.text(labelKey).trim()}: \u2066$value\u2069');
+  }
+
+  addLine(LocaleKeys.start_date, start);
+  addLine(LocaleKeys.end_date, end);
+
+  return lines.isEmpty ? null : lines.join('\n');
+}
+
+/// A range on the timeline axis, in column units. [end] is exclusive.
+class DateSpan {
+  final double start;
+  final double end;
+
+  const DateSpan(this.start, this.end);
+
+  double get width => end - start;
+}
+
+/// Generate list of months from the window start to the window end.
+/// Each entry includes the month name and year.
 class ProjectMonth {
   final int year;
   final int month; // 1-12
-  final String displayName; // e.g., "يناير" or "يناير (2025)"
+  final String displayName; // e.g., "يناير (2025)"
 
   ProjectMonth(this.year, this.month, this.displayName);
 
@@ -153,8 +178,6 @@ class ProjectMonth {
     DateTime projectEnd,
   ) {
     final List<ProjectMonth> months = [];
-    final Map<String, int> monthNameCount =
-        {}; // Track occurrences of each month name
 
     final start = DateTime(projectStart.year, projectStart.month, 1);
     final end = DateTime(projectEnd.year, projectEnd.month, 1);
@@ -178,15 +201,13 @@ class ProjectMonth {
     while (current.isBefore(end) ||
         (current.year == end.year && current.month == end.month)) {
       final monthName = kArabicMonths[current.month - 1];
-      final key = monthName;
-
-      monthNameCount[key] = (monthNameCount[key] ?? 0) + 1;
-
-      String displayName;
-      // Append year if this month name appears multiple times
-      displayName = '$monthName (${current.year})';
-
-      months.add(ProjectMonth(current.year, current.month, displayName));
+      months.add(
+        ProjectMonth(
+          current.year,
+          current.month,
+          '$monthName (${current.year})',
+        ),
+      );
 
       // Move to next month
       if (current.month == 12) {
@@ -212,8 +233,13 @@ class ProjectMonth {
         }
 
         final monthName = kArabicMonths[lastMonth.month - 1];
-        final displayName = '$monthName (${lastMonth.year})';
-        months.add(ProjectMonth(lastMonth.year, lastMonth.month, displayName));
+        months.add(
+          ProjectMonth(
+            lastMonth.year,
+            lastMonth.month,
+            '$monthName (${lastMonth.year})',
+          ),
+        );
       }
     }
 

@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:project_management/core/utility/project_management_exports.dart';
 
+/// Positions every [MilestoneLane] on the timeline canvas.
 class TimelineProjectLanes extends StatelessWidget {
   final LayoutResult layout;
   final double rowH;
@@ -10,8 +11,6 @@ class TimelineProjectLanes extends StatelessWidget {
   final double monthsHeaderHeight;
   final double weeksHeaderHeight;
   final bool isRTL;
-  final DateTime projectStart;
-  final DateTime projectEnd;
   final void Function(MilestoneModel milestone)? onMilestoneTap;
   final void Function(SubActivityModel subactivity)? onSubactivityTap;
 
@@ -24,8 +23,6 @@ class TimelineProjectLanes extends StatelessWidget {
     required this.monthsHeaderHeight,
     required this.weeksHeaderHeight,
     required this.isRTL,
-    required this.projectStart,
-    required this.projectEnd,
     this.onMilestoneTap,
     this.onSubactivityTap,
   });
@@ -34,72 +31,37 @@ class TimelineProjectLanes extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       clipBehavior: Clip.none,
-      children: [
-        // Render old ProjectItem lanes (for backward compatibility)
-        if (layout.placed != null)
-          ...layout.placed!.map((p) {
-            final double bandTop =
-                monthsHeaderHeight + weeksHeaderHeight + p.row * rowH;
-            final double bandHeight = p.rowSpanRows * rowH;
+      children: layout.placedMilestones.map((placed) {
+        final double bandTop =
+            monthsHeaderHeight + weeksHeaderHeight + placed.row * rowH;
+        final double bandHeight = placed.rowSpanRows * rowH;
 
-            final double perLanePadding = 6;
-            final double topPx = bandTop + perLanePadding;
-            final double laneH = math.max(1, bandHeight - 2 * perLanePadding);
+        final double topPx = bandTop + MilestoneLane.lanePadding;
+        final double laneH = math.max(
+          1,
+          bandHeight - 2 * MilestoneLane.lanePadding,
+        );
 
-            // Horizontal placement (RTL aware)
-            final double leftPx = isRTL
-                ? totalWidth - (p.maxCol + 1) * weekWidth
-                : p.minCol * weekWidth;
+        // Horizontal placement (RTL aware): `Positioned.left` is physical, so
+        // the RTL canvas is mirrored explicitly.
+        final double leftPx = isRTL
+            ? totalWidth - placed.laneEndOffset * weekWidth
+            : placed.laneStartOffset * weekWidth;
 
-            final double laneWidth = (p.maxCol - p.minCol + 1) * weekWidth;
-
-            return Positioned(
-              left: leftPx,
-              top: topPx,
-              width: laneWidth,
-              height: laneH,
-              child: ProjectLane(
-                name: p.item.name,
-                items: p.item.subProjects ?? [],
-              ),
-            );
-          }),
-
-        // Render milestone lanes
-        if (layout.placedMilestones != null)
-          ...layout.placedMilestones!.map((p) {
-            final double bandTop =
-                monthsHeaderHeight + weeksHeaderHeight + p.row * rowH;
-            final double bandHeight = p.rowSpanRows * rowH;
-
-            final double perLanePadding = 6;
-            final double topPx = bandTop + perLanePadding;
-            final double laneH = math.max(1, bandHeight - 2 * perLanePadding);
-
-            // Horizontal placement (RTL aware)
-            final double leftPx = isRTL
-                ? totalWidth - (p.maxCol + 1) * weekWidth
-                : p.minCol * weekWidth;
-
-            final double laneWidth = (p.maxCol - p.minCol + 1) * weekWidth;
-
-            return Positioned(
-              left: leftPx,
-              top: topPx,
-              width: laneWidth,
-              height: laneH,
-              child: MilestoneLane(
-                milestone: p.milestone,
-                weekWidth: weekWidth,
-                projectStart: projectStart,
-                projectEnd: projectEnd,
-                isRTL: isRTL,
-                onMilestoneTap: onMilestoneTap,
-                onSubactivityTap: onSubactivityTap,
-              ),
-            );
-          }),
-      ],
+        return Positioned(
+          left: leftPx,
+          top: topPx,
+          width: placed.laneWidth * weekWidth,
+          height: laneH,
+          child: MilestoneLane(
+            placed: placed,
+            weekWidth: weekWidth,
+            isRTL: isRTL,
+            onMilestoneTap: onMilestoneTap,
+            onSubactivityTap: onSubactivityTap,
+          ),
+        );
+      }).toList(),
     );
   }
 }

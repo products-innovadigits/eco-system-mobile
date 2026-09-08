@@ -69,7 +69,6 @@ export 'package:project_management/features/project_details/widgets/risk_challen
 export 'package:project_management/features/project_details/widgets/tabs/project_details_tabs_section.dart';
 export 'package:project_management/features/project_details/widgets/tabs/project_main_info_tab.dart';
 export 'package:project_management/features/project_details/widgets/tabs/timeline_tab/milestone_lane.dart';
-export 'package:project_management/features/project_details/widgets/tabs/timeline_tab/project_lane.dart';
 export 'package:project_management/features/project_details/widgets/tabs/timeline_tab/project_timeline_tab.dart';
 export 'package:project_management/features/project_details/widgets/tabs/timeline_tab/timeline_date_utils.dart';
 export 'package:project_management/features/project_details/widgets/tabs/timeline_tab/timeline_grid_body.dart';

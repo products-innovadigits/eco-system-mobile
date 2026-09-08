@@ -3,11 +3,11 @@ import 'dart:math' as math;
 import 'package:project_management/core/utility/project_management_exports.dart';
 
 /// Project timeline grid with months/weeks headers and auto-placed milestone lanes.
-/// - Dynamic months based on projectStart to projectEnd.
-/// - 4 weeks per month (W1: 1-7, W2: 8-14, W3: 15-21, W4: 22-end).
+/// - Dynamic months based on the resolved [TimelineWindow].
+/// - 4 week columns per month (W1: 1-7, W2: 8-14, W3: 15-21, W4: 22-end);
+///   items snap to whole week cells.
 /// - Auto-places milestones vertically using row bands.
 /// - RTL support + auto height grow.
-/// - Per-subactivity spacing: both band rows and vertical padding vary by sub-count.
 class ProjectTimeline extends StatefulWidget {
   // ---- Layout inputs ----
   final int baseRowCount; // Initial rows count before auto-grow.
@@ -16,10 +16,17 @@ class ProjectTimeline extends StatefulWidget {
   final double weekWidth; // Width of a single week cell.
   final double rowHeightPx; // Explicit row height override (optional).
 
+  /// Smallest width a bar / chip may take, so that a one-day item stays
+  /// readable and tappable instead of collapsing to a few pixels.
+  final double minItemWidth;
+
   // ---- Data ----
   final List<MilestoneModel>? milestonesList;
-  final DateTime projectStart;
-  final DateTime projectEnd;
+
+  /// Project bounds. Only hints: the real window is widened to fit the data.
+  final DateTime? projectStart;
+  final DateTime? projectEnd;
+
   final TextDirection textDirection;
   final void Function(MilestoneModel milestone)? onMilestoneTap;
   final void Function(SubActivityModel subactivity)? onSubactivityTap;
@@ -31,9 +38,10 @@ class ProjectTimeline extends StatefulWidget {
     this.weeksHeaderHeight = 40,
     this.weekWidth = 35,
     this.rowHeightPx = 25,
+    this.minItemWidth = 32,
     this.milestonesList,
-    required this.projectStart,
-    required this.projectEnd,
+    this.projectStart,
+    this.projectEnd,
     this.textDirection = TextDirection.rtl,
     this.onMilestoneTap,
     this.onSubactivityTap,
@@ -44,39 +52,68 @@ class ProjectTimeline extends StatefulWidget {
 }
 
 class _ProjectTimelineState extends State<ProjectTimeline> {
-  List<ProjectMonth> get _months =>
-      ProjectMonth.generateMonths(widget.projectStart, widget.projectEnd);
+  /// Horizontal breathing room kept between two lanes sharing the same rows,
+  /// in column units. Zero lets two lanes sit edge to edge in one band, which
+  /// is what week snapping needs to stay compact; raise it to force a visible
+  /// gap at the cost of extra rows.
+  static const double _laneGapCols = 0;
 
-  double get _monthWidth => widget.weekWidth * 4;
+  late TimelineWindow _window;
+  late List<ProjectMonth> _months;
+  late LayoutResult _layout;
+
+  double get _monthWidth => widget.weekWidth * TimelineWindow.columnsPerMonth;
 
   double get _totalWidth => _monthWidth * _months.length;
 
+  /// Right edge of the axis, in column units.
+  double get _axisEnd => _months.length * TimelineWindow.columnsPerMonth;
+
   @override
-  Widget build(BuildContext context) {
-    // Base row height (fixed unit used even when canvas grows)
-    final double rowH = widget.rowHeightPx;
+  void initState() {
+    super.initState();
+    _resolveLayout();
+  }
 
-    // Get milestones from model
-    final milestones = widget.milestonesList ?? [];
+  @override
+  void didUpdateWidget(covariant ProjectTimeline oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Placement is pure w.r.t. these inputs, so it only has to run when one of
+    // them actually changes - not on every rebuild.
+    if (!identical(oldWidget.milestonesList, widget.milestonesList) ||
+        oldWidget.projectStart != widget.projectStart ||
+        oldWidget.projectEnd != widget.projectEnd ||
+        oldWidget.weekWidth != widget.weekWidth ||
+        oldWidget.rowHeightPx != widget.rowHeightPx ||
+        oldWidget.minItemWidth != widget.minItemWidth) {
+      _resolveLayout();
+    }
+  }
 
-    // === Arrange milestones (auto vertical placement with row bands) ===
-    final LayoutResult layout = _autoLayoutMilestones(
-      milestones: milestones,
+  void _resolveLayout() {
+    final List<MilestoneModel> milestones = widget.milestonesList ?? const [];
+
+    _window = TimelineWindow.resolve(
       projectStart: widget.projectStart,
       projectEnd: widget.projectEnd,
+      milestones: milestones,
     );
+    _months = ProjectMonth.generateMonths(_window.start, _window.end);
+    _layout = _autoLayoutMilestones(milestones);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final double rowH = widget.rowHeightPx;
 
     // Compute rows required considering the deepest occupied row index
     final int totalRows = math.max(
       widget.baseRowCount,
-      (layout.maxRowIndex ?? -1) + 1,
+      (_layout.maxRowIndex ?? -1) + 1,
     );
 
-    // Effective canvas height (auto-grow or fixed)
     final double effectiveHeight =
-        (widget.monthsHeaderHeight +
-        widget.weeksHeaderHeight +
-        totalRows * rowH);
+        widget.monthsHeaderHeight + widget.weeksHeaderHeight + totalRows * rowH;
 
     return Directionality(
       textDirection: widget.textDirection,
@@ -86,63 +123,56 @@ class _ProjectTimelineState extends State<ProjectTimeline> {
           scrollDirection: Axis.horizontal,
           physics: const BouncingScrollPhysics(),
           clipBehavior: Clip.hardEdge,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            physics: const BouncingScrollPhysics(),
-            clipBehavior: Clip.hardEdge,
-            child: SizedBox(
-              width: _totalWidth,
-              height: effectiveHeight,
-              // critical for Positioned children (Stack)
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  // ===== Base table (header + weeks + grid body) =====
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TimelineMonthsHeader(
-                        width: _totalWidth,
-                        monthWidth: _monthWidth,
-                        height: widget.monthsHeaderHeight,
-                        months: _months,
-                      ),
-                      TimelineWeeksHeader(
-                        width: _totalWidth,
-                        monthWidth: _monthWidth,
-                        height: widget.weeksHeaderHeight,
-                        weekWidth: widget.weekWidth,
-                        monthCount: _months.length,
-                      ),
-                      TimelineGridBody(
-                        rows: totalRows,
-                        width: _totalWidth,
-                        monthWidth: _monthWidth,
-                        weekWidth: widget.weekWidth,
-                        rowHeight: rowH,
-                        monthCount: _months.length,
-                      ),
-                    ],
-                  ),
-
-                  // ===== Milestone lanes overlay =====
-                  Positioned.fill(
-                    child: TimelineProjectLanes(
-                      layout: layout,
-                      rowH: rowH,
-                      weekWidth: widget.weekWidth,
-                      totalWidth: _totalWidth,
-                      monthsHeaderHeight: widget.monthsHeaderHeight,
-                      weeksHeaderHeight: widget.weeksHeaderHeight,
-                      isRTL: widget.textDirection == TextDirection.rtl,
-                      projectStart: widget.projectStart,
-                      projectEnd: widget.projectEnd,
-                      onMilestoneTap: widget.onMilestoneTap,
-                      onSubactivityTap: widget.onSubactivityTap,
+          child: SizedBox(
+            width: _totalWidth,
+            height: effectiveHeight,
+            // critical for Positioned children (Stack)
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                // ===== Base table (header + weeks + grid body) =====
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TimelineMonthsHeader(
+                      width: _totalWidth,
+                      monthWidth: _monthWidth,
+                      height: widget.monthsHeaderHeight,
+                      months: _months,
                     ),
+                    TimelineWeeksHeader(
+                      width: _totalWidth,
+                      monthWidth: _monthWidth,
+                      height: widget.weeksHeaderHeight,
+                      weekWidth: widget.weekWidth,
+                      monthCount: _months.length,
+                    ),
+                    TimelineGridBody(
+                      rows: totalRows,
+                      width: _totalWidth,
+                      monthWidth: _monthWidth,
+                      weekWidth: widget.weekWidth,
+                      rowHeight: rowH,
+                      monthCount: _months.length,
+                    ),
+                  ],
+                ),
+
+                // ===== Milestone lanes overlay =====
+                Positioned.fill(
+                  child: TimelineProjectLanes(
+                    layout: _layout,
+                    rowH: rowH,
+                    weekWidth: widget.weekWidth,
+                    totalWidth: _totalWidth,
+                    monthsHeaderHeight: widget.monthsHeaderHeight,
+                    weeksHeaderHeight: widget.weeksHeaderHeight,
+                    isRTL: widget.textDirection == TextDirection.rtl,
+                    onMilestoneTap: widget.onMilestoneTap,
+                    onSubactivityTap: widget.onSubactivityTap,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -155,103 +185,73 @@ class _ProjectTimelineState extends State<ProjectTimeline> {
   //  - Each row keeps a sorted, MERGED list of spans [s..e] (non-overlapping).
   //  - Checking overlap becomes: binary search around insertion point.
   //  - Insertion uses merge to keep the row list compact.
-  // Complexity per placement ~ O(bandRows * log K), where K is spans per row.
   // ---------------------------------------------------------------------------
-  LayoutResult _autoLayoutMilestones({
-    required List<MilestoneModel> milestones,
-    required DateTime projectStart,
-    required DateTime projectEnd,
-  }) {
+  LayoutResult _autoLayoutMilestones(List<MilestoneModel> milestones) {
     final Map<int, List<Span>> occupiedByRow = {};
     final List<PlacedMilestone> placed = [];
     int? maxRow;
 
-    for (final milestone in milestones) {
-      if (milestone.startDate == null || milestone.endDate == null) continue;
+    // Place the earliest milestones first so the bands read top-to-bottom in
+    // chronological order and pack tightly.
+    final List<MilestoneModel> ordered = List.of(milestones)
+      ..sort((a, b) => _compareDates(a.startDate, b.startDate));
 
-      // Convert dates to column indices
-      final span = DateSpan.fromDates(
-        milestone.startDate,
-        milestone.endDate,
-        projectStart,
-        projectEnd,
+    for (final milestone in ordered) {
+      final DateSpan? barSpan = _renderSpan(
+        _window.spanOf(milestone.startDate, milestone.endDate),
       );
+      if (barSpan == null) continue;
 
-      if (span == null) continue;
+      // Sub-activities, sorted and resolved once per milestone.
+      final List<PlacedSubActivity> subActivities = [];
+      double laneStart = barSpan.start;
+      double laneEnd = barSpan.end;
 
-      final int startCol = span.startCol;
-      final int endCol = span.endCol;
+      final List<SubActivityModel> subs = List.of(
+        milestone.subActivities ?? const <SubActivityModel>[],
+      )..sort((a, b) => _compareDates(a.startDate, b.startDate));
 
-      // Get subactivities count
-      int subs = (milestone.subActivities?.length ?? 0);
-      if (subs < 0) subs = 0;
-      // We do not clamp here – the band height depends on the real count.
+      for (final sub in subs) {
+        final DateSpan? subSpan = _renderSpan(
+          _window.spanOf(sub.startDate, sub.endDate),
+        );
+        if (subSpan == null) continue;
 
-      /// Row separation heuristic (band height in rows).
-      /// We make the band height depend on the number of subactivities so that
-      /// the milestone bar + all subactivity chips + dashed connectors stay
-      /// inside the lane without overlapping the lane below.
-      ///
-      /// Calculation based on actual content height:
-      /// - Milestone bar: 32px
-      /// - Spacing after bar: 8px
-      /// - Each subactivity: 24px (chip) + 8px (spacing) = 32px
-      /// - Total content: 40 + 32n pixels
-      /// - Row height: 25px (default)
-      /// - Bottom spacing: 1-2 rows for separation between milestones
-      int rowBandForSubs(int n) {
-        if (n <= 0) {
-          // No subactivities: small band is enough for the milestone bar only.
-          // Content: 32px bar = ~1.3 rows, add 1.5 rows for spacing = ~3 rows
-          return 3;
-        }
-
-        // Constants from milestone_lane.dart
-        const double milestoneBarHeight = 32.0;
-        const double subactivitySpacing = 8.0;
-        const double subactivityChipHeight = 24.0;
-        final double rowHeight = widget.rowHeightPx;
-
-        // Calculate actual content height needed
-        final double contentHeight =
-            milestoneBarHeight +
-            subactivitySpacing +
-            (n * (subactivityChipHeight + subactivitySpacing));
-
-        // Convert to rows (content rows needed)
-        final double contentRows = contentHeight / rowHeight;
-
-        // Add minimal bottom spacing for separation between milestones
-        // Use adaptive spacing: smaller for fewer subactivities, slightly more for many
-        // This ensures consistent, minimal spacing regardless of subactivity count
-        final double bottomSpacing = n <= 2 ? 0.8 : (n <= 5 ? 1.0 : 1.2);
-
-        // Total rows needed: content + bottom spacing, rounded up
-        final int totalRows = (contentRows + bottomSpacing).ceil();
-
-        // Ensure minimum of 3 rows for visual consistency
-        return math.max(3, totalRows);
+        subActivities.add(
+          PlacedSubActivity(
+            subActivity: sub,
+            startOffset: subSpan.start,
+            endOffset: subSpan.end,
+          ),
+        );
+        // The lane must contain its children: anything painted outside the
+        // lane's box would not receive taps.
+        laneStart = math.min(laneStart, subSpan.start);
+        laneEnd = math.max(laneEnd, subSpan.end);
       }
 
-      final int rowStep = rowBandForSubs(subs);
-      final int rowSpanRows = rowStep; // reserved band height (in rows)
+      final int rowSpanRows = _rowBandFor(subActivities.length);
 
-      // Try to place starting from row 0
+      // Find the first row band that is free for this horizontal range.
       int r = 0;
-      while (_bandOverlapsFast(
+      while (_bandOverlaps(
         occupied: occupiedByRow,
         topRow: r,
         bandRows: rowSpanRows,
-        s: startCol,
-        e: endCol,
+        s: laneStart,
+        e: laneEnd,
       )) {
-        r += rowStep; // shift down by step until we find a free band
+        r++;
       }
 
-      // Mark rows in the band as occupied by [startCol..endCol] (merged insert)
+      // Mark the band as occupied, padded by the lane gap so neighbouring
+      // lanes never touch.
       for (int rr = r; rr < r + rowSpanRows; rr++) {
         final list = (occupiedByRow[rr] ??= <Span>[]);
-        _addMergedSpan(list, Span(startCol, endCol));
+        _addMergedSpan(
+          list,
+          Span(laneStart - _laneGapCols, laneEnd + _laneGapCols),
+        );
       }
 
       final int bottomRow = r + rowSpanRows - 1;
@@ -261,11 +261,13 @@ class _ProjectTimelineState extends State<ProjectTimeline> {
         PlacedMilestone(
           milestone: milestone,
           row: r,
-          minCol: startCol,
-          maxCol: endCol,
           rowSpanRows: rowSpanRows,
           bottomRow: bottomRow,
-          subCount: subs,
+          laneStartOffset: laneStart,
+          laneEndOffset: laneEnd,
+          barStartOffset: barSpan.start,
+          barEndOffset: barSpan.end,
+          subActivities: subActivities,
         ),
       );
     }
@@ -273,23 +275,67 @@ class _ProjectTimelineState extends State<ProjectTimeline> {
     return LayoutResult(placedMilestones: placed, maxRowIndex: maxRow);
   }
 
+  static int _compareDates(DateTime? a, DateTime? b) {
+    if (a == null && b == null) return 0;
+    if (a == null) return 1;
+    if (b == null) return -1;
+    return a.compareTo(b);
+  }
+
+  /// Widens a span that would render narrower than [ProjectTimeline.minItemWidth],
+  /// keeping it inside the axis.
+  DateSpan? _renderSpan(DateSpan? span) {
+    if (span == null) return null;
+
+    final double minCols = widget.minItemWidth / widget.weekWidth;
+    if (span.width >= minCols) return span;
+
+    double start = span.start;
+    double end = start + minCols;
+    if (end > _axisEnd) {
+      end = _axisEnd;
+      start = math.max(0, end - minCols);
+    }
+    return DateSpan(start, end);
+  }
+
+  /// Band height in rows.
+  ///
+  /// The band has to hold everything [MilestoneLane] paints — its bar, its
+  /// chips and the spacing between them — which is why the geometry lives on
+  /// the lane and is read from here instead of being duplicated.
+  int _rowBandFor(int subCount) {
+    final double contentHeight =
+        MilestoneLane.contentHeightFor(subCount) +
+        MilestoneLane.lanePadding * 2;
+
+    // Minimal separation between two stacked milestones.
+    final double bottomSpacing = subCount <= 2
+        ? 0.8
+        : (subCount <= 5 ? 1.0 : 1.2);
+    final int totalRows = (contentHeight / widget.rowHeightPx + bottomSpacing)
+        .ceil();
+
+    // Keep a floor for visual consistency.
+    return math.max(3, totalRows);
+  }
+
   /// Fast overlap check across a contiguous band of rows using merged, sorted spans.
-  bool _bandOverlapsFast({
+  bool _bandOverlaps({
     required Map<int, List<Span>> occupied,
     required int topRow,
     required int bandRows,
-    required int s,
-    required int e,
+    required double s,
+    required double e,
   }) {
     for (int rr = topRow; rr < topRow + bandRows; rr++) {
-      final spans = occupied[rr];
-      if (_overlapsMerged(spans, s, e)) return true;
+      if (_overlapsMerged(occupied[rr], s, e)) return true;
     }
     return false;
   }
 
   /// Check if [s..e] overlaps any span in a merged, sorted list.
-  bool _overlapsMerged(List<Span>? spans, int s, int e) {
+  bool _overlapsMerged(List<Span>? spans, double s, double e) {
     if (spans == null || spans.isEmpty) return false;
 
     // Find first index with start >= s using lowerBound
@@ -298,13 +344,13 @@ class _ProjectTimelineState extends State<ProjectTimeline> {
     // Candidate overlap could be the one just before idx (start < s)
     if (idx > 0) {
       final prev = spans[idx - 1];
-      if (!(e < prev.s || s > prev.e)) return true;
+      if (!(e <= prev.s || s >= prev.e)) return true;
     }
 
     // Also check the element at idx (start >= s)
     if (idx < spans.length) {
       final cur = spans[idx];
-      if (!(e < cur.s || s > cur.e)) return true;
+      if (!(e <= cur.s || s >= cur.e)) return true;
     }
 
     return false;
@@ -320,19 +366,19 @@ class _ProjectTimelineState extends State<ProjectTimeline> {
     // Position by start using lowerBound
     int i = _lowerBound(spans, span.s);
 
-    // Merge with previous if overlaps/touches
-    int start = span.s;
-    int end = span.e;
+    double start = span.s;
+    double end = span.e;
 
-    if (i > 0 && spans[i - 1].e >= start - 1) {
+    // Merge with previous if it overlaps
+    if (i > 0 && spans[i - 1].e >= start) {
       i -= 1;
       start = math.min(start, spans[i].s);
       end = math.max(end, spans[i].e);
       spans.removeAt(i);
     }
 
-    // Merge forward with any that overlap/touch
-    while (i < spans.length && spans[i].s <= end + 1) {
+    // Merge forward with any that overlap
+    while (i < spans.length && spans[i].s <= end) {
       start = math.min(start, spans[i].s);
       end = math.max(end, spans[i].e);
       spans.removeAt(i);
@@ -343,7 +389,7 @@ class _ProjectTimelineState extends State<ProjectTimeline> {
   }
 
   /// Binary search: first index whose start >= x
-  int _lowerBound(List<Span> spans, int x) {
+  int _lowerBound(List<Span> spans, double x) {
     int lo = 0, hi = spans.length;
     while (lo < hi) {
       final mid = (lo + hi) >> 1;
