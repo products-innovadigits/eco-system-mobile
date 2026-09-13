@@ -118,7 +118,7 @@ class ProcessDetailsRepoImpl implements ProcessDetailsRepo {
   }
 
   @override
-  Future<dynamic> addProjectStepComment({
+  Future<DefaultResponseModel> addProjectStepComment({
     required int projectId,
     required int projectStepId,
     required int processId,
@@ -137,36 +137,42 @@ class ProcessDetailsRepoImpl implements ProcessDetailsRepo {
         ),
     });
 
-    return await network.requestOrThrow(
+    final res = await network.requestOrThrow(
       ApiNames.projectStepComment,
       method: ServerMethods.POST,
       body: formData,
+      model: DefaultResponseModel(),
     );
+    return res as DefaultResponseModel;
   }
 
   @override
-  Future<dynamic> startProcess({
+  Future<DefaultResponseModel> startProcess({
     required int processId,
     required int projectId,
   }) async {
-    return await network.requestOrThrow(
+    final res = await network.requestOrThrow(
       ApiNames.projectProcessStart,
       method: ServerMethods.POST,
       body: {'projectId': projectId, 'processId': processId},
+      model: DefaultResponseModel(),
     );
+    return res as DefaultResponseModel;
   }
 
   @override
-  Future<dynamic> moveToNextStep({
+  Future<DefaultResponseModel> moveToNextStep({
     required int processId,
     required int projectId,
     required int? nextStepId,
   }) async {
-    return await network.requestOrThrow(
+    final res = await network.requestOrThrow(
       ApiNames.projectProcessNext,
       method: ServerMethods.POST,
       body: {'id': processId, 'projectId': projectId, 'nextStepId': nextStepId},
+      model: DefaultResponseModel(),
     );
+    return res as DefaultResponseModel;
   }
 
   @override

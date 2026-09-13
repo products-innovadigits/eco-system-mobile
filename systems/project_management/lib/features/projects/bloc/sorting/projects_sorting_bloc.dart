@@ -29,13 +29,21 @@ class ProjectsSortingBloc
 
   bool get hasSelectedOption => _selectedOption != null;
 
+  /// The current selection, mirrored onto every data-carrying state so the
+  /// sheet reads it from the state instead of from these fields.
+  SortingOptionsLoaded get _snapshot => SortingOptionsLoaded(
+    options: _sortingOptions,
+    selectedOption: _selectedOption,
+    appliedOption: _appliedOption,
+  );
+
   Future<void> _onLoadSortingOptions(
     LoadSortingOptions event,
     Emitter<ProjectsSortingState> emit,
   ) async {
     // Return cached data if already loaded
     if (_sortingOptions.isNotEmpty) {
-      emit(const SortingOptionsLoaded());
+      emit(_snapshot);
       return;
     }
 
@@ -56,7 +64,7 @@ class ProjectsSortingBloc
               )
               .toList();
 
-          emit(const SortingOptionsLoaded());
+          emit(_snapshot);
         } else {
           emit(const SortingError());
         }
@@ -74,7 +82,13 @@ class ProjectsSortingBloc
   ) {
     _selectedOption = event.arguments as DropListModel?;
 
-    emit(const SortingOptionSelected());
+    emit(
+      SortingOptionSelected(
+        options: _sortingOptions,
+        selectedOption: _selectedOption,
+        appliedOption: _appliedOption,
+      ),
+    );
   }
 
   void _onApplySorting(
@@ -83,7 +97,13 @@ class ProjectsSortingBloc
   ) {
     _appliedOption = _selectedOption;
 
-    emit(const SortingApplied());
+    emit(
+      SortingApplied(
+        options: _sortingOptions,
+        selectedOption: _selectedOption,
+        appliedOption: _appliedOption,
+      ),
+    );
   }
 
   void _onResetSorting(
@@ -93,7 +113,7 @@ class ProjectsSortingBloc
     _appliedOption = null;
     _selectedOption = null;
 
-    emit(const SortingReset());
+    emit(SortingReset(options: _sortingOptions));
   }
 
   void _onClearSortingSelection(
@@ -102,7 +122,7 @@ class ProjectsSortingBloc
   ) {
     _selectedOption = null;
 
-    emit(const SortingOptionsLoaded());
+    emit(_snapshot);
   }
 
   // Helper method to get current sorting parameters for API calls

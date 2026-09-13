@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:project_management/core/di/project_management_locator.dart';
 import 'package:project_management/core/utility/project_management_exports.dart';
@@ -70,12 +69,22 @@ class _ActionsTabContent extends StatelessWidget {
 
                     // File Upload Section
                     BlocBuilder<ActionsTabBloc, ActionsTabState>(
+                      // Only the attachment itself changes this section. A
+                      // successful save clears the attachment, so it repaints
+                      // on that too.
+                      buildWhen: (previous, current) =>
+                          current is ActionsTabFileSelected ||
+                          current is ActionsTabFileRemoved ||
+                          current is SaveCommentSuccess,
                       builder: (context, state) {
                         final bloc = context.read<ActionsTabBloc>();
+                        final picked = state is ActionsTabFileSelected
+                            ? state
+                            : null;
                         return _FileUploadSection(
-                          selectedFile: bloc.selectedFile,
-                          fileName: bloc.fileName,
-                          fileSize: bloc.fileSize,
+                          hasFile: picked != null,
+                          fileName: picked?.fileName,
+                          fileSize: picked?.fileSize,
                           onPickFile: () => bloc.add(const PickFile()),
                           onRemoveFile: () => bloc.add(const RemoveFile()),
                         );
@@ -183,14 +192,14 @@ class _InternalCommentsSection extends StatelessWidget {
 }
 
 class _FileUploadSection extends StatelessWidget {
-  final File? selectedFile;
+  final bool hasFile;
   final String? fileName;
   final String? fileSize;
   final VoidCallback onPickFile;
   final VoidCallback onRemoveFile;
 
   const _FileUploadSection({
-    required this.selectedFile,
+    required this.hasFile,
     required this.fileName,
     required this.fileSize,
     required this.onPickFile,
@@ -204,7 +213,7 @@ class _FileUploadSection extends StatelessWidget {
       children: [
         CustomTextField(
           label: allTranslations.text(LocaleKeys.upload_file),
-          hint: selectedFile != null
+          hint: hasFile
               ? fileName
               : allTranslations.text(LocaleKeys.upload_additional_file),
           hintStyle: context.textTheme.bodySmall,
@@ -217,7 +226,7 @@ class _FileUploadSection extends StatelessWidget {
         ),
 
         // Show selected file details
-        if (selectedFile != null) ...[
+        if (hasFile) ...[
           SizedBox(height: 8.h),
           Container(
             padding: EdgeInsets.all(12.w),

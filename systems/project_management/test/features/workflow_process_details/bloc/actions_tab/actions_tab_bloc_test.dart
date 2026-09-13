@@ -1,12 +1,12 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:core_system/core/network/error/network_exception.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:project_management/features/workflow_process_details/bloc/actions_tab/actions_tab_bloc.dart';
 import 'package:project_management/features/workflow_process_details/bloc/actions_tab/actions_tab_events.dart';
 import 'package:project_management/features/workflow_process_details/bloc/actions_tab/actions_tab_state.dart';
 import 'package:project_management/features/workflow_process_details/model/current_step_document_model.dart';
+import 'package:project_management/shared/model/default_response_model.dart';
 
 import '../../../../core/mocks/fallbacks.dart';
 import '../../../../core/mocks/mock_repos.dart';
@@ -39,10 +39,7 @@ void main() {
               nextStepId: any(named: 'nextStepId'),
             ),
           ).thenAnswer(
-            (_) async => Response(
-              requestOptions: RequestOptions(path: ''),
-              statusCode: 200,
-            ),
+            (_) async => DefaultResponseModel(succeeded: true),
           );
           when(
             () => mockRepo.getCurrentStepDocs(

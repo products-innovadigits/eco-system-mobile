@@ -44,7 +44,7 @@ abstract class ProcessDetailsRepo {
     required int projectId,
   });
 
-  Future<dynamic> addProjectStepComment({
+  Future<DefaultResponseModel> addProjectStepComment({
     required int projectId,
     required int projectStepId,
     required int processId,
@@ -52,7 +52,7 @@ abstract class ProcessDetailsRepo {
     File? file,
   });
 
-  Future<dynamic> startProcess({
+  Future<DefaultResponseModel> startProcess({
     required int processId,
     required int projectId,
   });
@@ -60,7 +60,7 @@ abstract class ProcessDetailsRepo {
   /// Moves the process to [nextStepId], or finishes it when [nextStepId] is
   /// null: the last step has no step to move to, so the API is called with a
   /// null next step.
-  Future<dynamic> moveToNextStep({
+  Future<DefaultResponseModel> moveToNextStep({
     required int processId,
     required int projectId,
     required int? nextStepId,

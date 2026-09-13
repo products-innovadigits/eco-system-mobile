@@ -37,11 +37,11 @@ void main() {
               chartType: any(named: 'chartType'),
             ),
           ).thenAnswer(
-            (_) async => Response(
-              requestOptions: RequestOptions(path: ''),
-              statusCode: 200,
-              data: {'progress': 50.0},
-            ),
+            (_) async => GeneralProgressChartModel.fromJson({
+              'totalProgress': 50.0,
+              'currentMonth': 3,
+              'currentYear': 2025,
+            }),
           );
           return bloc;
         },

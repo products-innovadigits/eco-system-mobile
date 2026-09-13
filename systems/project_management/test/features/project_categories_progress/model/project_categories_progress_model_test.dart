@@ -7,17 +7,21 @@ import '../../../helpers/json_fixtures.dart';
 
 void main() {
   group('ProjectCategoriesProgressModel', () {
-    test('Contract: fromJson accepts wrapper with "succeeded" and "data" keys (List)', () {
+    test('Contract: fromJson accepts wrapper with "succeeded" and "data" keys (Map)', () {
       final fixtureJson =
           readJsonFixture('project_categories_progress/project_categories_progress_response.json');
-      expectWrapperContract(fixtureJson, dataShape: DataShape.list);
+      expectWrapperContract(fixtureJson, dataShape: DataShape.map);
     });
 
     test('Contract: fixture data items contain required API keys', () {
       final fixtureJson =
           readJsonFixture('project_categories_progress/project_categories_progress_response.json');
-      expectWrapperContract(fixtureJson, dataShape: DataShape.list);
-      final dataList = fixtureJson['data'] as List;
+      expectWrapperContract(fixtureJson, dataShape: DataShape.map);
+      // The categories sit under data.categories, not directly under data.
+      final data = fixtureJson['data'] as Map<String, dynamic>;
+      expect(data.containsKey('categories'), isTrue,
+          reason: 'API contract: "data" must have "categories". Keys: ${data.keys.toList()}');
+      final dataList = data['categories'] as List;
       expect(dataList, isNotEmpty);
       final firstItem = dataList.first as Map<String, dynamic>;
       expect(firstItem.containsKey('id'), isTrue,

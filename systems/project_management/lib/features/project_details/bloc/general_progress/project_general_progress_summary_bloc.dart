@@ -30,25 +30,15 @@ class ProjectGeneralProgressSummaryBloc
 
       selectedChartType = event.chartType;
 
-      Response res = await repo.getProjectGeneralProgressSummary(
-        event.projectId,
-        chartType: event.chartType,
-      );
+      final GeneralProgressChartModel model = await repo
+          .getProjectGeneralProgressSummary(
+            event.projectId,
+            chartType: event.chartType,
+          );
 
-      if (res.statusCode == 200 && res.data != null) {
-        GeneralProgressChartModel model = GeneralProgressChartModel.fromJson(
-          res.data,
-        );
-        chartModel = model;
-        // latestProgressItem = model.latest;
-        emit(ProjectGeneralProgressSummaryLoaded(chartModel: model));
-      } else {
-        emit(
-          const ProjectGeneralProgressSummaryFailure(
-            message: 'Failed to load progress summary',
-          ),
-        );
-      }
+      chartModel = model;
+      // latestProgressItem = model.latest;
+      emit(ProjectGeneralProgressSummaryLoaded(chartModel: model));
     } catch (e) {
       emit(
         const ProjectGeneralProgressSummaryFailure(

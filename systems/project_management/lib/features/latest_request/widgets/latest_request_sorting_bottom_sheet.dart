@@ -8,6 +8,11 @@ class LatestRequestSortingBottomSheet extends StatelessWidget {
     return BlocBuilder<LatestRequestSortingCubit, LatestRequestSortingState>(
       builder: (context, state) {
         final sortingCubit = context.read<LatestRequestSortingCubit>();
+        // Options and the current tick come from the state, so a second tap
+        // repaints the sheet instead of being swallowed as an equal state.
+        final data = state is LatestRequestSortingDataState ? state : null;
+        final options = data?.options ?? const <DropListModel>[];
+        final selectedKey = data?.selectedOption?.key;
         return Stack(
           children: [
             state is LatestRequestSortingLoading
@@ -20,16 +25,12 @@ class LatestRequestSortingBottomSheet extends StatelessWidget {
                     separatorPadding: 16.h,
                     customPadding: EdgeInsets.only(bottom: context.h * 0.1),
                     data: List.generate(
-                      sortingCubit.sortingOptions.length,
+                      options.length,
                       (index) => CustomSortTileWidget(
-                        title: sortingCubit.sortingOptions[index].name ?? '',
-                        isSelected:
-                            sortingCubit.selectedOption?.key ==
-                            sortingCubit.sortingOptions[index].key,
+                        title: options[index].name ?? '',
+                        isSelected: selectedKey == options[index].key,
                         onSelect: () {
-                          sortingCubit.selectSortingOption(
-                            sortingCubit.sortingOptions[index],
-                          );
+                          sortingCubit.selectSortingOption(options[index]);
                         },
                       ),
                     ),
@@ -47,14 +48,14 @@ class LatestRequestSortingBottomSheet extends StatelessWidget {
                     Expanded(
                       child: CustomBtn(
                         text: allTranslations.text(LocaleKeys.show_all_results),
-                        active: sortingCubit.hasSelectedOption,
+                        active: data?.selectedOption != null,
                         onPressed: () {
                           sortingCubit.applySorting();
                           CustomNavigator.pop();
                         },
                       ),
                     ),
-                    if (sortingCubit.hasAppliedSorting) ...[
+                    if (data?.appliedOption != null) ...[
                       SizedBox(width: 8.w),
                       Expanded(
                         child: CustomBtn(

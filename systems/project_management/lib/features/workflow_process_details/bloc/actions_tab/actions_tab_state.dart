@@ -29,8 +29,16 @@ class MoveToNextStepSuccess extends ActionsTabState {
 }
 
 /// File selected
+///
+/// Carries the picked file's name and size. An empty state here would be
+/// dropped by `Bloc.emit` when a second file is picked without removing the
+/// first — identical `const` instances compare equal — leaving the previous
+/// file's name on screen.
 class ActionsTabFileSelected extends ActionsTabState {
-  const ActionsTabFileSelected();
+  final String? fileName;
+  final String? fileSize;
+
+  const ActionsTabFileSelected({this.fileName, this.fileSize});
 }
 
 /// File removed

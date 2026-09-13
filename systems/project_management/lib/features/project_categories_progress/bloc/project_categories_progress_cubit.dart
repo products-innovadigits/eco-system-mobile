@@ -5,33 +5,24 @@ class ProjectCategoriesProgressCubit
   final ProjectCategoriesProgressRepo repo;
 
   ProjectCategoriesProgressCubit({required this.repo})
-      : super(const ProjectCategoriesProgressInitial());
+    : super(const ProjectCategoriesProgressInitial());
 
   Future<void> loadCategoriesProgress() async {
     try {
       emit(const ProjectCategoriesProgressLoading());
 
-      Response res = await repo.getProjectCategoriesProgress();
+      final res = await repo.getProjectCategoriesProgress();
 
-      if (res.statusCode == 200 && res.data != null) {
-        List<ProjectCategoriesProgressModel> data =
-            List<ProjectCategoriesProgressModel>.from(
-              (res.data["data"]["categories"] as List).map(
-                (e) => ProjectCategoriesProgressModel.fromJson(e),
-              ),
-            );
-
-        if (data.isEmpty) {
-          emit(const ProjectCategoriesProgressEmpty());
-        } else {
-          emit(ProjectCategoriesProgressLoaded(categories: data));
-        }
-      } else {
+      if (res.succeeded != true) {
         emit(
           const ProjectCategoriesProgressFailure(
             message: 'Failed to load categories progress',
           ),
         );
+      } else if (res.categories.isEmpty) {
+        emit(const ProjectCategoriesProgressEmpty());
+      } else {
+        emit(ProjectCategoriesProgressLoaded(categories: res.categories));
       }
     } catch (e) {
       emit(

@@ -50,17 +50,12 @@ class ProjectDetailsBloc
     try {
       emit(const ProjectTimelineLoading());
 
-      Response res = await repo.projectTimeline(event.projectId);
+      final List<MilestoneModel> milestones = await repo.projectTimeline(
+        event.projectId,
+      );
 
-      if (res.statusCode == 200 && res.data != null) {
-        List<MilestoneModel> milestones = List<MilestoneModel>.from(
-          res.data.map((x) => MilestoneModel.fromJson(x)),
-        );
-        _cachedMilestonesList = milestones; // Cache the milestones
-        emit(ProjectTimelineLoaded(milestones: milestones));
-      } else {
-        emit(const ProjectTimelineFailure(message: 'Failed to load timeline'));
-      }
+      _cachedMilestonesList = milestones; // Cache the milestones
+      emit(ProjectTimelineLoaded(milestones: milestones));
     } catch (e) {
       emit(const ProjectTimelineFailure(message: 'Failed to load timeline'));
     }

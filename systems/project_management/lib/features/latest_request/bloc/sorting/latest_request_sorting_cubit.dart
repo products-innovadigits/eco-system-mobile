@@ -22,10 +22,19 @@ class LatestRequestSortingCubit extends Cubit<LatestRequestSortingState> {
 
   bool get hasSelectedOption => _selectedOption != null;
 
+  /// The current selection, mirrored onto every data-carrying state so the
+  /// sheet reads it from the state instead of from these fields.
+  LatestRequestSortingOptionsLoaded get _snapshot =>
+      LatestRequestSortingOptionsLoaded(
+        options: _sortingOptions,
+        selectedOption: _selectedOption,
+        appliedOption: _appliedOption,
+      );
+
   Future<void> loadSortingOptions() async {
     // Return cached data if already loaded
     if (_sortingOptions.isNotEmpty) {
-      emit(const LatestRequestSortingOptionsLoaded());
+      emit(_snapshot);
       return;
     }
 
@@ -46,7 +55,7 @@ class LatestRequestSortingCubit extends Cubit<LatestRequestSortingState> {
               )
               .toList();
 
-          emit(const LatestRequestSortingOptionsLoaded());
+          emit(_snapshot);
         } else {
           emit(const LatestRequestSortingError());
         }
@@ -60,23 +69,35 @@ class LatestRequestSortingCubit extends Cubit<LatestRequestSortingState> {
 
   void selectSortingOption(DropListModel? option) {
     _selectedOption = option;
-    emit(const LatestRequestSortingOptionSelected());
+    emit(
+      LatestRequestSortingOptionSelected(
+        options: _sortingOptions,
+        selectedOption: _selectedOption,
+        appliedOption: _appliedOption,
+      ),
+    );
   }
 
   void applySorting() {
     _appliedOption = _selectedOption;
-    emit(const LatestRequestSortingApplied());
+    emit(
+      LatestRequestSortingApplied(
+        options: _sortingOptions,
+        selectedOption: _selectedOption,
+        appliedOption: _appliedOption,
+      ),
+    );
   }
 
   void resetSorting() {
     _appliedOption = null;
     _selectedOption = null;
-    emit(const LatestRequestSortingReset());
+    emit(LatestRequestSortingReset(options: _sortingOptions));
   }
 
   void clearSortingSelection() {
     _selectedOption = null;
-    emit(const LatestRequestSortingOptionsLoaded());
+    emit(_snapshot);
   }
 
   // Helper method to get current sorting parameters for API calls

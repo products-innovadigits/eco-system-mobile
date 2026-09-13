@@ -1,9 +1,9 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:core_system/core/network/error/network_exception.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:project_management/features/project_report/bloc/project_report_cubit.dart';
+import 'package:project_management/features/project_report/model/project_report_model.dart';
 import 'package:project_management/features/project_report/bloc/project_report_state.dart';
 
 import '../../../core/mocks/fallbacks.dart';
@@ -31,11 +31,12 @@ void main() {
         'emits [Loading, Loaded] when repo returns success response',
         build: () {
           when(() => mockRepo.getProjectReport(any())).thenAnswer(
-            (_) async => Response(
-              requestOptions: RequestOptions(path: ''),
-              statusCode: 200,
-              data: {'id': 1, 'title': 'Test Report'},
-            ),
+            (_) async => ProjectReportModel.fromJson({
+              'succeeded': true,
+              'data': {
+                'details': {'projectName': 'Test Report'},
+              },
+            }),
           );
           return cubit;
         },

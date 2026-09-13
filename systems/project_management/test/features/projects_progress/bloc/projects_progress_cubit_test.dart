@@ -1,8 +1,8 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:core_system/core/network/error/network_exception.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:project_management/features/project_categories_progress/model/projects_progress_model.dart';
 import 'package:project_management/features/projects_progress/bloc/projects_progress_cubit.dart';
 import 'package:project_management/features/projects_progress/bloc/projects_progress_state.dart';
 
@@ -31,15 +31,12 @@ void main() {
         'emits [Loading, Loaded] when repo returns success response',
         build: () {
           when(() => mockRepo.getProjectProgress()).thenAnswer(
-            (_) async => Response(
-              requestOptions: RequestOptions(path: ''),
-              statusCode: 200,
-              data: {
-                'data': [
-                  {'name': 'Project 1', 'count': 10},
-                ],
-              },
-            ),
+            (_) async => ProjectsOverviewModel.fromJson({
+              'succeeded': true,
+              'data': [
+                {'name': 'Project 1', 'count': 10},
+              ],
+            }),
           );
           return cubit;
         },
@@ -57,11 +54,10 @@ void main() {
         'emits [Loading, Empty] when repo returns empty data',
         build: () {
           when(() => mockRepo.getProjectProgress()).thenAnswer(
-            (_) async => Response(
-              requestOptions: RequestOptions(path: ''),
-              statusCode: 200,
-              data: {'data': []},
-            ),
+            (_) async => ProjectsOverviewModel.fromJson({
+              'succeeded': true,
+              'data': <dynamic>[],
+            }),
           );
           return cubit;
         },

@@ -20,41 +20,44 @@ void main() {
   });
 
   group('ProjectReportRepoImpl', () {
+    const testId = 7;
+
     group('getProjectReport', () {
-      test(
-        'returns dynamic on success with correct endpoint and method',
-        () async {
-          final expectedData = {'id': 1, 'report': 'Test Report'};
-          const testId = 1;
+      test('returns ProjectReportModel on success with correct endpoint and method', () async {
+        final expectedModel = ProjectReportModel.fromJson({
+          'succeeded': true,
+          'data': {
+            'details': {'projectName': 'Annual Tech Review'},
+          },
+        });
 
-          when(
-            () => mockNetwork.requestOrThrow(
-              any(),
-              body: any(named: 'body'),
-              baseUrl: any(named: 'baseUrl'),
-              systemTypeEnum: any(named: 'systemTypeEnum'),
-              model: any(named: 'model'),
-              query: any(named: 'query'),
-              header: any(named: 'header'),
-              method: any(named: 'method'),
-            ),
-          ).thenAnswer((_) async => expectedData);
+        when(
+          () => mockNetwork.requestOrThrow(
+            any(),
+            body: any(named: 'body'),
+            baseUrl: any(named: 'baseUrl'),
+            systemTypeEnum: any(named: 'systemTypeEnum'),
+            model: any(named: 'model'),
+            query: any(named: 'query'),
+            header: any(named: 'header'),
+            method: any(named: 'method'),
+          ),
+        ).thenAnswer((_) async => expectedModel);
 
-          final result = await repo.getProjectReport(testId);
+        final result = await repo.getProjectReport(testId);
 
-          expect(result, expectedData);
-          verify(
-            () => mockNetwork.requestOrThrow(
-              ApiNames.projectReport(testId),
-              method: ServerMethods.GET,
-            ),
-          ).called(1);
-        },
-      );
+        expect(result, isA<ProjectReportModel>());
+        expect(result.succeeded, isTrue);
+        verify(
+          () => mockNetwork.requestOrThrow(
+            ApiNames.projectReport(testId),
+            method: ServerMethods.GET,
+            model: any(named: 'model'),
+          ),
+        ).called(1);
+      });
 
       test('throws NetworkException on error', () async {
-        const testId = 1;
-
         when(
           () => mockNetwork.requestOrThrow(
             any(),
@@ -76,6 +79,7 @@ void main() {
           () => mockNetwork.requestOrThrow(
             ApiNames.projectReport(testId),
             method: ServerMethods.GET,
+            model: any(named: 'model'),
           ),
         ).called(1);
       });

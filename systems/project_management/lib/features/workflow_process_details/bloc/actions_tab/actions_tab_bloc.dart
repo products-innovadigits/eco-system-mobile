@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:project_management/core/utility/project_management_exports.dart';
+import 'package:project_management/shared/model/default_response_model.dart';
 
 class ActionsTabBloc extends Bloc<ActionsTabEvent, ActionsTabState> {
   final ProcessDetailsRepo repo;
@@ -43,7 +44,7 @@ class ActionsTabBloc extends Bloc<ActionsTabEvent, ActionsTabState> {
       // Get text from controller
       final text = commentTEC.text.trim();
 
-      final Response response = await repo.addProjectStepComment(
+      final DefaultResponseModel response = await repo.addProjectStepComment(
         projectId: event.projectId,
         projectStepId: event.projectStepId,
         processId: event.processId,
@@ -51,7 +52,7 @@ class ActionsTabBloc extends Bloc<ActionsTabEvent, ActionsTabState> {
         file: selectedFile,
       );
 
-      if (response.statusCode == 200) {
+      if (response.succeeded == true) {
         AppCore.successToastMessage(
           allTranslations.text(LocaleKeys.comment_added_successfully),
         );
@@ -77,13 +78,13 @@ class ActionsTabBloc extends Bloc<ActionsTabEvent, ActionsTabState> {
     try {
       emit(const MoveToNextStepLoading());
 
-      final Response response = await repo.moveToNextStep(
+      final DefaultResponseModel response = await repo.moveToNextStep(
         processId: event.processId,
         projectId: event.projectId,
         nextStepId: event.nextStepId,
       );
 
-      if (response.statusCode == 200) {
+      if (response.succeeded == true) {
         final int? nextStepId = event.nextStepId;
 
         // Creates/fetches the documents of the step just moved to. Finishing
@@ -148,7 +149,7 @@ class ActionsTabBloc extends Bloc<ActionsTabEvent, ActionsTabState> {
         selectedFile = file;
         fileName = FilePickerHelper.getFileName(file.path);
         fileSize = FilePickerHelper.formatFileSize(fileLength);
-        emit(const ActionsTabFileSelected());
+        emit(ActionsTabFileSelected(fileName: fileName, fileSize: fileSize));
       }
     } catch (e) {
       log('Error picking file: $e');

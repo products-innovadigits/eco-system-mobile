@@ -8,6 +8,11 @@ class ProjectsSortingBottomSheet extends StatelessWidget {
     return BlocBuilder<ProjectsSortingBloc, ProjectsSortingState>(
       builder: (context, state) {
         final sortingBloc = context.read<ProjectsSortingBloc>();
+        // Options and the current tick come from the state, so a second tap
+        // repaints the sheet instead of being swallowed as an equal state.
+        final data = state is ProjectsSortingDataState ? state : null;
+        final options = data?.options ?? const <DropListModel>[];
+        final selectedKey = data?.selectedOption?.key;
         return Stack(
           children: [
             state is SortingLoading
@@ -16,17 +21,13 @@ class ProjectsSortingBottomSheet extends StatelessWidget {
                     separatorPadding: 16.h,
                     customPadding: EdgeInsets.only(bottom: context.h * 0.1),
                     data: List.generate(
-                      sortingBloc.sortingOptions.length,
+                      options.length,
                       (index) => CustomSortTileWidget(
-                        title: sortingBloc.sortingOptions[index].name ?? '',
-                        isSelected:
-                            sortingBloc.selectedOption?.key ==
-                            sortingBloc.sortingOptions[index].key,
+                        title: options[index].name ?? '',
+                        isSelected: selectedKey == options[index].key,
                         onSelect: () {
                           sortingBloc.add(
-                            SelectSortingOption(
-                              arguments: sortingBloc.sortingOptions[index],
-                            ),
+                            SelectSortingOption(arguments: options[index]),
                           );
                         },
                       ),
@@ -45,14 +46,14 @@ class ProjectsSortingBottomSheet extends StatelessWidget {
                     Expanded(
                       child: CustomBtn(
                         text: allTranslations.text(LocaleKeys.show_all_results),
-                        active: sortingBloc.hasSelectedOption,
+                        active: data?.selectedOption != null,
                         onPressed: () {
                           sortingBloc.add(ApplySortingOption());
                           CustomNavigator.pop();
                         },
                       ),
                     ),
-                    if (sortingBloc.hasAppliedSorting) ...[
+                    if (data?.appliedOption != null) ...[
                       SizedBox(width: 8.w),
                       Expanded(
                         child: CustomBtn(
