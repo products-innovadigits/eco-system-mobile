@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:core_system/core/utility/export.dart';
+import 'package:core_system/core/widgets/connectivity_widget.dart';
 
 class ConnectivityWrapper extends StatefulWidget {
   final Widget child;
@@ -35,7 +36,7 @@ class _ConnectivityWrapperState extends State<ConnectivityWrapper> {
                 children: [
                   widget.child,
                   // if (!ConnectivityWrapper._enableProxy && !isConnected)
-                  //   const ConnectivityWidget(),
+                  if (!isConnected) const ConnectivityWidget(),
                 ],
               );
             },

@@ -187,8 +187,6 @@ Widget _getTabSection({
     ),
     // ProcessTabsEnum.stageDocs => Container(),
     ProcessTabsEnum.stageDocs => StageDocsTab(
-      projectId: projectId,
-      processId: processId,
       processName: processName,
       documents: documents,
     ),

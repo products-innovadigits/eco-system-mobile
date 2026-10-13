@@ -44,11 +44,9 @@ class _LatestRequestViewState extends State<LatestRequestView> {
       child: Builder(
         builder: (context) {
           final cubit = context.read<LatestRequestCubit>();
-          final sortingCubit = context.read<LatestRequestSortingCubit>();
           return Scaffold(
-            appBar: LatestRequestAppBarWidget(
-              cubit: cubit,
-              sortingCubit: sortingCubit,
+            appBar: CustomAppBar(
+              title: allTranslations.text(LocaleKeys.requests),
             ),
             body: SafeArea(
               child: BlocBuilder<LatestRequestCubit, LatestRequestState>(

@@ -118,7 +118,7 @@ class WorkflowStep extends SingleMapper {
   String? category;
   String? loc;
   int? key;
-  int? status;
+  String? status;
   bool? isActiveStep;
   bool? isStartStep;
   bool? isLastStep;
@@ -210,7 +210,7 @@ class WorkflowStep extends SingleMapper {
     category = json['category']?.toString();
     loc = json['loc']?.toString();
     key = (json['key'] as num?)?.toInt();
-    status = (json['status'] as num?)?.toInt();
+    status = json['status']?.toString();
     isActiveStep = json['isActiveStep'] as bool?;
     isStartStep = json['isStartStep'] as bool?;
     isLastStep = json['isLastStep'] as bool?;

@@ -7,7 +7,7 @@ class RequestCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isCompleted = requestItem.isCompletedWorkflow ?? false;
+    // final bool isCompleted = requestItem.isCompletedWorkflow ?? false;
     return GestureDetector(
       onTap: () {
         CustomNavigator.push(
@@ -69,20 +69,20 @@ class RequestCardWidget extends StatelessWidget {
                     style: context.textTheme.labelSmall,
                   ),
                 ),
-                CustomInfoContainerWidget(
-                  color: isCompleted
-                      ? context.color.tertiary
-                      : context.color.secondary,
-                  title: isCompleted
-                      ? allTranslations.text(LocaleKeys.completed)
-                      : allTranslations.text(LocaleKeys.in_progress),
-                  radius: 25,
-                  fontSize: 10,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 12.w,
-                    vertical: 6.h,
-                  ),
-                ),
+                // CustomInfoContainerWidget(
+                //   color: isCompleted
+                //       ? context.color.tertiary
+                //       : context.color.secondary,
+                //   title: isCompleted
+                //       ? allTranslations.text(LocaleKeys.completed)
+                //       : allTranslations.text(LocaleKeys.in_progress),
+                //   radius: 25,
+                //   fontSize: 10,
+                //   padding: EdgeInsets.symmetric(
+                //     horizontal: 12.w,
+                //     vertical: 6.h,
+                //   ),
+                // ),
               ],
             ),
             SizedBox(height: 10.h),

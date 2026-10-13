@@ -1,10 +1,12 @@
 // ignore_for_file: constant_identifier_names
+import 'dart:developer' as developer;
 import 'dart:io';
 
 import 'package:dio/io.dart';
 
 import '../config/app_config.dart';
 import '../debug/debug_interceptor.dart';
+import '../debug/debug_log_store.dart';
 import '../utility/export.dart';
 import 'api_error_toast_interceptor.dart';
 import 'error/api_error_handler.dart';
@@ -99,7 +101,7 @@ class Network {
       if (model == null) {
         return response;
       } else {
-        return Mapper(model, response.data);
+        return mapResponse(model, response);
       }
     } on DioException catch (e) {
       return ApiErrorHandler.getMessage(e);
@@ -154,7 +156,7 @@ class Network {
       if (model == null) {
         return response;
       } else {
-        return Mapper(model, response.data);
+        return mapResponse(model, response);
       }
     } on DioException catch (e) {
       throw ApiErrorHandler.getException(e);
@@ -163,6 +165,43 @@ class Network {
     } on FormatException catch (_) {
       throw const FormatException("Unable to process the data");
     } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Maps [response] onto [model], reporting a failure before rethrowing it.
+  ///
+  /// Callers usually catch everything and show a generic error, so a field
+  /// whose JSON type no longer matches its model (a String where the model
+  /// declares `num?`) would otherwise leave no trace. The error names the
+  /// types involved and the top stack frame is the `fromJson` line that threw.
+  ///
+  /// Logged here because the `on FormatException` clauses in [request] and
+  /// [requestOrThrow] replace the original error with a generic one.
+  @visibleForTesting
+  static Mapper mapResponse(Mapper model, Response response) {
+    try {
+      return Mapper(model, response.data);
+    } catch (error, stackTrace) {
+      final options = response.requestOptions;
+      final summary =
+          'Failed to parse ${model.runtimeType} from '
+          '${options.method} ${options.uri}';
+      developer.log(
+        summary,
+        name: 'Network',
+        level: 1000,
+        error: error,
+        stackTrace: stackTrace,
+      );
+      final logId = DebugInterceptor.logIdOf(options);
+      if (logId != null) {
+        final frames = stackTrace.toString().split('\n').take(8).join('\n');
+        DebugLogStore.instance.logError(
+          id: logId,
+          error: '$summary\n\n$error\n\n$frames',
+        );
+      }
       rethrow;
     }
   }

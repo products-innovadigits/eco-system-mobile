@@ -32,49 +32,49 @@ class LatestRequestAppBarWidget extends StatelessWidget
 
             return CustomAppBar(
               title: allTranslations.text(LocaleKeys.requests),
-              withSearch: true,
-              withFilter: true,
+              withSearch: false,
+              withFilter: false,
               isFiltered: isFiltered,
               isSorted: sortingCubit.hasAppliedSorting,
-              withSorting: true,
-              withCancelBtn: true,
-              onSearching: (value) =>
-                  cubit.getLatestRequest(searchEngine: SearchEngine()),
-              onCanceling: () =>
-                  cubit.getLatestRequest(searchEngine: SearchEngine()),
-              searchController: cubit.searchTEC,
-              searchHintText: allTranslations.text(LocaleKeys.search_hint),
-              onFiltering: () {
-                // if (!isFiltered) {
-                //   latestRequestFiltrationCubit.resetFilters(
-                //     latestRequestCubit: cubit,
-                //   );
-                // }
-                // latestRequestFiltrationCubit.loadFilterOptions();
-                // PopUpHelper.showBottomSheet(
-                //   header: allTranslations.text(LocaleKeys.filtration),
-                //   child: MultiBlocProvider(
-                //     providers: [
-                //       BlocProvider.value(value: cubit),
-                //       BlocProvider.value(value: sortingCubit),
-                //     ],
-                //     child: const LatestRequestFilterBottomSheet(),
-                //   ),
-                // );
-              },
-              onSorting: () {
-                // if (!sortingCubit.hasAppliedSorting) {
-                //   sortingCubit.clearSortingSelection();
-                // }
-                // sortingCubit.loadSortingOptions();
-                // PopUpHelper.showBottomSheet(
-                //   header: allTranslations.text(LocaleKeys.sort),
-                //   child: BlocProvider.value(
-                //     value: sortingCubit,
-                //     child: const LatestRequestSortingBottomSheet(),
-                //   ),
-                // );
-              },
+              withSorting: false,
+              withCancelBtn: false,
+              // onSearching: (value) =>
+              //     cubit.getLatestRequest(searchEngine: SearchEngine()),
+              // onCanceling: () =>
+              //     cubit.getLatestRequest(searchEngine: SearchEngine()),
+              // searchController: cubit.searchTEC,
+              // searchHintText: allTranslations.text(LocaleKeys.search_hint),
+              // onFiltering: () {
+              //   // if (!isFiltered) {
+              //   //   latestRequestFiltrationCubit.resetFilters(
+              //   //     latestRequestCubit: cubit,
+              //   //   );
+              //   // }
+              //   // latestRequestFiltrationCubit.loadFilterOptions();
+              //   // PopUpHelper.showBottomSheet(
+              //   //   header: allTranslations.text(LocaleKeys.filtration),
+              //   //   child: MultiBlocProvider(
+              //   //     providers: [
+              //   //       BlocProvider.value(value: cubit),
+              //   //       BlocProvider.value(value: sortingCubit),
+              //   //     ],
+              //   //     child: const LatestRequestFilterBottomSheet(),
+              //   //   ),
+              //   // );
+              // },
+              // onSorting: () {
+              //   // if (!sortingCubit.hasAppliedSorting) {
+              //   //   sortingCubit.clearSortingSelection();
+              //   // }
+              //   // sortingCubit.loadSortingOptions();
+              //   // PopUpHelper.showBottomSheet(
+              //   //   header: allTranslations.text(LocaleKeys.sort),
+              //   //   child: BlocProvider.value(
+              //   //     value: sortingCubit,
+              //   //     child: const LatestRequestSortingBottomSheet(),
+              //   //   ),
+              //   // );
+              // },
             );
           },
         );

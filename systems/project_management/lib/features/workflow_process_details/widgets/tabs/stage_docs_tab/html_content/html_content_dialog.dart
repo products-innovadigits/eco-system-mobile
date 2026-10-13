@@ -1,70 +1,27 @@
+import 'package:project_management/core/utility/project_management_exports.dart';
 import 'package:project_management/features/workflow_process_details/widgets/tabs/stage_docs_tab/html_content/editable_html_renderer.dart';
 import 'package:project_management/features/workflow_process_details/widgets/tabs/stage_docs_tab/html_content/html_content_helper.dart';
 
-import '../../../../../../core/utility/project_management_exports.dart';
-
 /// Dialog that displays HTML content with read-only fields.
 /// Allows users to view document fields and download the PDF.
-class HtmlContentDialog extends StatefulWidget {
+class HtmlContentDialog extends StatelessWidget {
   /// The document containing HTML content and field definitions
   final StageDocument document;
 
   const HtmlContentDialog({super.key, required this.document});
 
   @override
-  State<HtmlContentDialog> createState() => _HtmlContentDialogState();
-}
-
-class _HtmlContentDialogState extends State<HtmlContentDialog> {
-  // -------------------------
-  // State
-  // -------------------------
-
-  /// Text editing controllers for each field, keyed by field ID
-  final Map<String, TextEditingController> _controllers = {};
-
-  @override
-  void initState() {
-    super.initState();
-    _initControllers();
-  }
-
-  /// Initializes text editing controllers for all fields in the document.
-  void _initControllers() {
-    final fields = widget.document.data?.fields;
-    if (fields == null) return;
-
-    fields.forEach((id, field) {
-      final value = HtmlContentHelper.readFieldValue(field);
-      _controllers[id] = TextEditingController(text: value);
-    });
-  }
-
-  @override
-  void dispose() {
-    // Dispose all text editing controllers to prevent memory leaks
-    for (final c in _controllers.values) {
-      c.dispose();
-    }
-    _controllers.clear();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final htmlContent = widget.document.data?.content ?? '';
-    if (htmlContent.isEmpty) {
-      return const EmptyContainer();
-    }
-
-    final fields = widget.document.data?.fields ?? {};
+    final htmlContent = document.data?.content ?? '';
 
     return Dialog(
       backgroundColor: Colors.transparent,
       insetPadding: HtmlContentHelper.dialogInsetPadding,
+      // Fill the space the dialog allows without depending on MediaQuery,
+      // which would rebuild the dialog on every screen-metrics change.
       child: Container(
-        width: context.w,
-        height: context.h,
+        width: double.infinity,
+        height: double.infinity,
         decoration: BoxDecoration(
           color: context.color.surface,
           borderRadius: BorderRadius.circular(
@@ -73,27 +30,45 @@ class _HtmlContentDialogState extends State<HtmlContentDialog> {
         ),
         child: Column(
           children: [
-            _buildHeader(context),
+            _DialogHeader(title: document.documentTitle),
             const Divider(height: 1),
-            _buildContent(htmlContent, fields),
-            _buildDownloadButton(),
+            Expanded(
+              child: htmlContent.isEmpty
+                  ? const EmptyContainer()
+                  : Padding(
+                      padding: const EdgeInsets.all(
+                        HtmlContentHelper.dialogPadding,
+                      ),
+                      child: SingleChildScrollView(
+                        child: EditableHtmlRenderer(
+                          htmlContent: htmlContent,
+                          fields: document.data?.fields ?? const {},
+                        ),
+                      ),
+                    ),
+            ),
+            _DownloadButton(exportUrl: document.exportUrl ?? ''),
           ],
         ),
       ),
     );
   }
+}
 
-  /// Builds the dialog header with title and close button.
-  Widget _buildHeader(BuildContext context) {
-    return Container(
+class _DialogHeader extends StatelessWidget {
+  final String? title;
+
+  const _DialogHeader({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
       padding: const EdgeInsets.all(HtmlContentHelper.dialogPadding),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
             child: Text(
-              widget.document.documentTitle ??
-                  allTranslations.text('document_content'),
+              title ?? allTranslations.text(LocaleKeys.document_content),
               style: context.textTheme.titleMedium,
             ),
           ),
@@ -105,40 +80,25 @@ class _HtmlContentDialogState extends State<HtmlContentDialog> {
       ),
     );
   }
+}
 
-  /// Builds the scrollable content area with read-only HTML renderer.
-  Widget _buildContent(String htmlContent, Map<String, dynamic> fields) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.all(HtmlContentHelper.dialogPadding),
-        child: SingleChildScrollView(
-          child: EditableHtmlRenderer(
-            htmlContent: htmlContent,
-            fields: fields,
-            controllers: _controllers,
-          ),
-        ),
-      ),
-    );
-  }
+class _DownloadButton extends StatelessWidget {
+  final String exportUrl;
 
-  /// Builds the download button section.
-  Widget _buildDownloadButton() {
-    return Container(
+  const _DownloadButton({required this.exportUrl});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
       padding: const EdgeInsets.all(HtmlContentHelper.dialogPadding),
-      child: Row(
-        children: [
-          Expanded(
-            child: CustomBtn(
-              text: allTranslations.text(LocaleKeys.download),
-              onPressed: () => LauncherHelper.downloadFiles(
-                filePath: '',
-                fullLink: widget.document.exportUrl ?? '',
-                context: context,
-              ),
-            ),
-          ),
-        ],
+      child: CustomBtn(
+        text: allTranslations.text(LocaleKeys.download),
+        active: exportUrl.isNotEmpty,
+        onPressed: () => LauncherHelper.downloadFiles(
+          filePath: '',
+          fullLink: exportUrl,
+          context: context,
+        ),
       ),
     );
   }

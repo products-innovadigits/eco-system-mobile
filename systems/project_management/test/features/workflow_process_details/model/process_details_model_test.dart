@@ -33,7 +33,7 @@ void main() {
         (key: 'data[].progress', actual: first.progress, expected: 50),
         (key: 'data[].steps[].id', actual: first.steps!.first.id, expected: 10),
         (key: 'data[].steps[].stepName', actual: first.steps!.first.stepName, expected: 'Gather Requirements'),
-        (key: 'data[].steps[].status', actual: first.steps!.first.status, expected: 1),
+        (key: 'data[].steps[].status', actual: first.steps!.first.status, expected: 'Approved'),
       ]);
     });
 

@@ -17,6 +17,11 @@ class DebugInterceptor extends Interceptor {
 
   final DebugLogStore _store = DebugLogStore.instance;
 
+  /// The [DebugLogStore] entry recorded for [options], or null when the
+  /// request never passed through this interceptor (overlay disabled).
+  static String? logIdOf(RequestOptions options) =>
+      options.extra[_logIdKey] as String?;
+
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     final id = _store.logRequest(

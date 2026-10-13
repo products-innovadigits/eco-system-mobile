@@ -67,5 +67,33 @@ void main() {
       ]);
       expect(model.description, isNotNull, reason: 'Key "description"');
     });
+
+    test('fromJson maps mobileDetails.workflow groups and string step statuses', () {
+      final fixture = readJsonFixture('project_details/project_details_response.json');
+      final data = fixture['data'] as Map<String, dynamic>;
+      final workflow = ProjectDetailsDataModel.fromJson(data).mobileDetails?.workflow;
+      expect(workflow, isNotNull, reason: 'Key "mobileDetails.workflow"');
+      final groups = workflow!.groups!;
+      expectModelFields([
+        (key: 'workflow.groupsCount', actual: workflow.groupsCount, expected: 2),
+        (key: 'workflow.groups.length', actual: groups.length, expected: 2),
+        (key: 'groups[0].groupName', actual: groups[0].groupName, expected: 'Onboarding'),
+        (key: 'groups[1].progress', actual: groups[1].progress, expected: 50.0),
+        (key: 'groups[0].steps[0].status', actual: groups[0].steps!.first.status, expected: 'None'),
+        (key: 'groups[1].steps[0].status', actual: groups[1].steps!.first.status, expected: 'Completed'),
+      ]);
+    });
+  });
+
+  group('MobileWorkflowStepModel', () {
+    test('fromJson keeps a numeric status as text instead of throwing', () {
+      final step = MobileWorkflowStepModel.fromJson({'id': 1, 'stepName': 'A', 'status': 2});
+      expect(step.status, '2');
+    });
+
+    test('fromJson leaves a missing status null', () {
+      final step = MobileWorkflowStepModel.fromJson({'id': 1, 'stepName': 'A'});
+      expect(step.status, isNull);
+    });
   });
 }

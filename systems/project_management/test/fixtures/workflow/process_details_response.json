@@ -9,7 +9,7 @@
                 {
                     "id": 10,
                     "stepName": "Gather Requirements",
-                    "status": 1
+                    "status": "Approved"
                 }
             ]
         }

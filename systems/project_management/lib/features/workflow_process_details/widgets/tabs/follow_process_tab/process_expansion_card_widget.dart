@@ -27,7 +27,7 @@ class ProcessExpansionCardWidget extends StatelessWidget {
           final process = processSteps?[idx];
           return _ProcessStepRowWidget(
             title: process?.stepName ?? '',
-            status: process?.status ?? 0,
+            status: process?.status ?? '',
           );
         }),
       ),
@@ -68,7 +68,7 @@ class _ProcessProgressWidget extends StatelessWidget {
 
 class _ProcessStepRowWidget extends StatelessWidget {
   final String title;
-  final int status;
+  final String status;
 
   const _ProcessStepRowWidget({required this.title, required this.status});
 
@@ -105,23 +105,29 @@ class _ProcessStepRowWidget extends StatelessWidget {
   }
 }
 
-String _statusName(int? status) {
+String _statusName(String? status) {
   switch (status) {
-    case 0:
+    case 'None':
       return allTranslations.text(LocaleKeys.not_completed);
-    case 1:
+    case 'Approved':
+    case 'Completed':
       return allTranslations.text(LocaleKeys.completed);
+    case 'Rejected':
+      return allTranslations.text(LocaleKeys.rejected);
     default:
       return allTranslations.text(LocaleKeys.in_progress);
   }
 }
 
-Color _statusColor(int? status, BuildContext context) {
+Color _statusColor(String? status, BuildContext context) {
   switch (status) {
-    case 0:
+    case 'None':
       return context.color.outlineVariant;
-    case 1:
+    case 'Approved':
+    case 'Completed':
       return context.color.tertiary;
+    case 'Rejected':
+      return context.color.error;
     default:
       return context.color.secondary;
   }

@@ -8,25 +8,10 @@ class StageDocsBloc extends Bloc<StageDocsEvent, StageDocsState> {
     on<AddDocumentComment>(_onAddDocumentComment);
   }
 
-  final Map<int, GlobalKey<FormState>> _formKeys = {};
   final Map<int, TextEditingController> _controllers = {};
-  int? _addingDocumentId;
 
-  int? get addingDocumentId => _addingDocumentId;
-
-  GlobalKey<FormState>? getFormKey(int id) {
-    if (!_formKeys.containsKey(id)) {
-      _formKeys[id] = GlobalKey<FormState>();
-    }
-    return _formKeys[id];
-  }
-
-  TextEditingController? getCommentController(int id) {
-    if (!_controllers.containsKey(id)) {
-      _controllers[id] = TextEditingController();
-    }
-    return _controllers[id];
-  }
+  TextEditingController getCommentController(int id) =>
+      _controllers.putIfAbsent(id, TextEditingController.new);
 
   Future<void> _onCreateCurrentStepDocs(
     CreateCurrentStepDocs event,
@@ -54,8 +39,7 @@ class StageDocsBloc extends Bloc<StageDocsEvent, StageDocsState> {
     AddDocumentComment event,
     Emitter<StageDocsState> emit,
   ) async {
-    _addingDocumentId = event.stepDocumentId;
-    emit(const StageDocsAdding());
+    emit(StageDocsAdding(stepDocumentId: event.stepDocumentId));
     try {
       final res = await repo.addDocComment(
         documentId: event.stepDocumentId,
@@ -64,9 +48,7 @@ class StageDocsBloc extends Bloc<StageDocsEvent, StageDocsState> {
 
       if (res.succeeded == true) {
         AppCore.successToastMessage(res.data?.message ?? 'Comment added');
-        if (_controllers.containsKey(event.stepDocumentId)) {
-          _controllers[event.stepDocumentId]?.clear();
-        }
+        _controllers[event.stepDocumentId]?.clear();
         emit(const StageDocsLoaded());
       } else {
         AppCore.errorToastMessage(res.data?.message ?? 'Failed to add comment');
@@ -74,8 +56,6 @@ class StageDocsBloc extends Bloc<StageDocsEvent, StageDocsState> {
       }
     } catch (e) {
       emit(const StageDocsFailure());
-    } finally {
-      _addingDocumentId = null;
     }
   }
 

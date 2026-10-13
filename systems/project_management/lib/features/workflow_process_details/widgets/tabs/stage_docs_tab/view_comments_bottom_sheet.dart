@@ -1,9 +1,7 @@
 import 'package:project_management/core/utility/project_management_exports.dart';
 
 class ViewCommentsBottomSheet extends StatefulWidget {
-  final int stepDocumentId;
-
-  const ViewCommentsBottomSheet({super.key, required this.stepDocumentId});
+  const ViewCommentsBottomSheet({super.key});
 
   @override
   State<ViewCommentsBottomSheet> createState() =>
@@ -27,64 +25,34 @@ class _ViewCommentsBottomSheetState extends State<ViewCommentsBottomSheet> {
   }
 
   void _onScroll() {
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent - 100) {
-      context.read<DocCommentsBloc>().add(const LoadMoreDocComments());
+    final bloc = context.read<DocCommentsBloc>();
+    final state = bloc.state;
+    // Avoid flooding the bloc with events on every scroll tick.
+    if (state is! DocCommentsLoaded || !state.hasMore || state.isLoadingMore) {
+      return;
+    }
+
+    final position = _scrollController.position;
+    if (position.pixels >= position.maxScrollExtent - 100) {
+      bloc.add(const LoadMoreDocComments());
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DocCommentsBloc, DocCommentsState>(
+      // Deleting/editing progress is handled inside each comment row.
       buildWhen: (previous, current) =>
           current is! DocCommentsDeleting && current is! DocCommentsEditing,
       builder: (context, state) {
-        final bloc = context.read<DocCommentsBloc>();
         return switch (state) {
           // ── Loading ─────────────────────────
-          DocCommentsLoading() => _buildingShimmerList(),
+          DocCommentsInitial() ||
+          DocCommentsLoading() => const _CommentsShimmer(),
 
-          // ── Loaded ────────────────────────────
-          DocCommentsLoaded(
-            :final commentsData,
-            :final isLoadingMore,
-          ) => ListView.separated(
-            controller: _scrollController,
-            shrinkWrap: true,
-            padding: EdgeInsets.zero,
-            itemBuilder: (context, index) {
-              if (index < (commentsData.items?.length ?? 0)) {
-                final documentComment = commentsData.items![index];
-
-                return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-                  decoration: BoxDecoration(
-                    color: context.color.surfaceContainer,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: context.color.outline),
-                  ),
-                  child: bloc.isCommentBeingEdited(documentComment.id ?? 0)
-                      ? EditCommentSection(
-                          documentComment: documentComment,
-                          stepDocumentId: widget.stepDocumentId,
-                        )
-                      : ViewCommentSection(
-                          documentComment: documentComment,
-                          stepDocumentId: widget.stepDocumentId,
-                        ),
-                );
-              } else {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: Center(
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
-                );
-              }
-            },
-            separatorBuilder: (context, index) => SizedBox(height: 12.h),
-            itemCount: (commentsData.items?.length ?? 0) + (isLoadingMore ? 1 : 0),
-          ),
+          // ── Loaded ──────────────────────────
+          DocCommentsLoaded(:final commentsData, :final isLoadingMore) =>
+            _buildCommentsList(commentsData.items ?? const [], isLoadingMore),
 
           // ── Empty ───────────────────────────
           DocCommentsEmpty() => EmptyContainer(
@@ -102,7 +70,61 @@ class _ViewCommentsBottomSheetState extends State<ViewCommentsBottomSheet> {
     );
   }
 
-  Widget _buildingShimmerList() {
+  Widget _buildCommentsList(
+    List<DocumentComment> comments,
+    bool isLoadingMore,
+  ) {
+    return ListView.separated(
+      controller: _scrollController,
+      shrinkWrap: true,
+      padding: EdgeInsets.zero,
+      itemCount: comments.length + (isLoadingMore ? 1 : 0),
+      separatorBuilder: (_, _) => SizedBox(height: 12.h),
+      itemBuilder: (context, index) {
+        if (index == comments.length) {
+          return const Padding(
+            padding: EdgeInsets.symmetric(vertical: 16),
+            child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+          );
+        }
+
+        final comment = comments[index];
+        return _CommentCard(key: ValueKey(comment.id), comment: comment);
+      },
+    );
+  }
+}
+
+class _CommentCard extends StatelessWidget {
+  final DocumentComment comment;
+
+  const _CommentCard({super.key, required this.comment});
+
+  @override
+  Widget build(BuildContext context) {
+    final isEditing = context.read<DocCommentsBloc>().isCommentBeingEdited(
+      comment.id ?? 0,
+    );
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+      decoration: BoxDecoration(
+        color: context.color.surfaceContainer,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: context.color.outline),
+      ),
+      child: isEditing
+          ? EditCommentSection(documentComment: comment)
+          : ViewCommentSection(documentComment: comment),
+    );
+  }
+}
+
+class _CommentsShimmer extends StatelessWidget {
+  const _CommentsShimmer();
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: List.generate(
         4,

@@ -105,14 +105,14 @@ class GroupStepsData extends SingleMapper {
 class WorkflowProcessStepModel extends SingleMapper {
   int? id;
   String? stepName;
-  int? status;
+  String? status;
 
   WorkflowProcessStepModel({this.id, this.stepName, this.status});
 
   WorkflowProcessStepModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     stepName = json['stepName'];
-    status = json['status'];
+    status = json['status']?.toString();
   }
 
   @override

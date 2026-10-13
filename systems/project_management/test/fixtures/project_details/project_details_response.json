@@ -83,6 +83,37 @@
                         "value": 75.0
                     }
                 ]
+            },
+            "workflow": {
+                "workflowId": 227,
+                "processId": null,
+                "groupsCount": 2,
+                "groups": [
+                    {
+                        "groupId": 26,
+                        "groupName": "Onboarding",
+                        "progress": 0.0,
+                        "steps": [
+                            {
+                                "id": 759,
+                                "stepName": "Review",
+                                "status": "None"
+                            }
+                        ]
+                    },
+                    {
+                        "groupId": 24,
+                        "groupName": "Approval",
+                        "progress": 50.0,
+                        "steps": [
+                            {
+                                "id": 758,
+                                "stepName": "Manager sign-off",
+                                "status": "Completed"
+                            }
+                        ]
+                    }
+                ]
             }
         }
     },

@@ -23,13 +23,14 @@ class StageDocsEmpty extends StageDocsState {
   const StageDocsEmpty();
 }
 
-/// Adding document comment
+/// Adding a comment to the document with [stepDocumentId]
 class StageDocsAdding extends StageDocsState {
-  const StageDocsAdding();
+  final int stepDocumentId;
+
+  const StageDocsAdding({required this.stepDocumentId});
 }
 
 /// Error loading/adding documents
 class StageDocsFailure extends StageDocsState {
   const StageDocsFailure();
 }
-

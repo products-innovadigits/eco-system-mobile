@@ -858,14 +858,16 @@ class MobileWorkflowGroupModel {
 class MobileWorkflowStepModel {
   num? id;
   String? stepName;
-  num? status;
+  String? status;
 
   MobileWorkflowStepModel({this.id, this.stepName, this.status});
 
   MobileWorkflowStepModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     stepName = json['stepName'];
-    status = json['status'];
+    // The API sends the step state by name ("None", ...); toString() keeps an
+    // older numeric value from failing the whole project details parse.
+    status = json['status']?.toString();
   }
 
   Map<String, dynamic> toJson() {

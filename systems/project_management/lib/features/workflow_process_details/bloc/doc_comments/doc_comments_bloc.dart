@@ -18,7 +18,6 @@ class DocCommentsBloc extends Bloc<DocCommentsEvent, DocCommentsState> {
     on<ToggleEditComment>(_onToggleEditDocumentComment);
   }
 
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController commentTEC;
   int? _editingCommentId; // Track which comment is being edited
   CommentsData? _commentsData;
@@ -184,7 +183,7 @@ class DocCommentsBloc extends Bloc<DocCommentsEvent, DocCommentsState> {
     EditDocComment event,
     Emitter<DocCommentsState> emit,
   ) async {
-    if (!formKey.currentState!.validate()) return;
+    if (event.comment.trim().isEmpty) return;
     emit(const DocCommentsEditing());
     try {
       DefaultResponseModel response = await repo.editDocComment(

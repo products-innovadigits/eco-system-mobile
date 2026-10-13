@@ -180,6 +180,7 @@ export 'package:project_management/features/workflow_process_details/widgets/tab
 export 'package:project_management/features/workflow_process_details/widgets/tabs/process_details_tabs_section.dart';
 export 'package:project_management/features/workflow_process_details/widgets/tabs/stage_docs_tab/edit_comment_section.dart';
 export 'package:project_management/features/workflow_process_details/widgets/tabs/stage_docs_tab/html_content/html_content_dialog.dart';
+export 'package:project_management/features/workflow_process_details/widgets/tabs/stage_docs_tab/send_comment_button.dart';
 export 'package:project_management/features/workflow_process_details/widgets/tabs/stage_docs_tab/stage_docs_tab.dart';
 export 'package:project_management/features/workflow_process_details/widgets/tabs/stage_docs_tab/view_comment_section.dart';
 export 'package:project_management/features/workflow_process_details/widgets/tabs/stage_docs_tab/view_comments_bottom_sheet.dart';
