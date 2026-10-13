@@ -58,6 +58,9 @@ class ProjectReportDataModel {
   String? statusAr;
   String? statusEn;
   String? statusEnum;
+
+  /// Status for the status chip, preferring the explicit enum field.
+  String? get statusKey => statusEnum ?? status ?? statusEn;
   int? risksCount;
   int? activitiesCount;
   int? outputsCount;

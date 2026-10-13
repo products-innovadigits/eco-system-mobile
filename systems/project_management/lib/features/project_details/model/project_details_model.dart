@@ -63,6 +63,9 @@ class ProjectDetailsDataModel {
   String? status;
   String? statusAr;
   String? statusEn;
+
+  /// Status for the status chip: `status` when sent, else the English label.
+  String? get statusKey => status ?? statusEn;
   String? managerName;
   String? periortyLevelName;
   String? priorityLevelName;
@@ -213,9 +216,7 @@ class ProjectDetailsDataModel {
       });
     }
 
-    risks = json['risks'] != null
-        ? List<dynamic>.from(json['risks'])
-        : null;
+    risks = json['risks'] != null ? List<dynamic>.from(json['risks']) : null;
 
     challenges = json['challenges'] != null
         ? List<dynamic>.from(json['challenges'])

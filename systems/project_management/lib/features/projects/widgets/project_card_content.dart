@@ -1,5 +1,5 @@
 import 'package:project_management/core/utility/project_management_exports.dart';
-import 'package:project_management/core/utility/project_management_utility.dart';
+import 'package:project_management/shared/widgets/project_status_chip.dart';
 
 class ProjectCardContent extends StatelessWidget {
   const ProjectCardContent({
@@ -88,14 +88,8 @@ class ProjectCardContent extends StatelessWidget {
                   ),
                 ),
               ),
-              if (project.statusAr != null && isDetails)
-                CustomInfoContainerWidget(
-                  color: LightColor.projectStatusColors(project.status ?? ''),
-                  title: ProjectManagementUtility.projectStatusText(
-                    project.status ?? '',
-                  ),
-                  radius: 16,
-                ),
+              if (isDetails)
+                ProjectStatusChip(status: project.statusKey),
             ],
           ),
 
