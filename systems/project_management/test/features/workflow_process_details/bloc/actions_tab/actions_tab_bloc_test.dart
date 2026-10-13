@@ -24,8 +24,7 @@ void main() {
     bloc = ActionsTabBloc(repo: mockRepo);
   });
 
-  tearDown(() {
-  });
+  tearDown(() {});
 
   group('ActionsTabBloc', () {
     group('MoveToNextStep', () {
@@ -38,9 +37,7 @@ void main() {
               projectId: any(named: 'projectId'),
               nextStepId: any(named: 'nextStepId'),
             ),
-          ).thenAnswer(
-            (_) async => DefaultResponseModel(succeeded: true),
-          );
+          ).thenAnswer((_) async => DefaultResponseModel(succeeded: true));
           when(
             () => mockRepo.getCurrentStepDocs(
               projectId: any(named: 'projectId'),
@@ -84,6 +81,96 @@ void main() {
           const MoveToNextStep(projectId: 1, processId: 1, nextStepId: 2),
         ),
         expect: () => [const MoveToNextStepLoading(), isA<ActionsTabFailure>()],
+      );
+
+      void stubMove() {
+        when(
+          () => mockRepo.moveToNextStep(
+            processId: any(named: 'processId'),
+            projectId: any(named: 'projectId'),
+            nextStepId: any(named: 'nextStepId'),
+          ),
+        ).thenAnswer((_) async => DefaultResponseModel(succeeded: true));
+        when(
+          () => mockRepo.getCurrentStepDocs(
+            projectId: any(named: 'projectId'),
+            processId: any(named: 'processId'),
+            projectStepId: any(named: 'projectStepId'),
+          ),
+        ).thenAnswer((_) async => CurrentStepDocumentModel(succeeded: true));
+      }
+
+      blocTest<ActionsTabBloc, ActionsTabState>(
+        'creates the next step docs before reporting success',
+        build: () {
+          stubMove();
+          return bloc;
+        },
+        act: (bloc) => bloc.add(
+          const MoveToNextStep(projectId: 1, processId: 1, nextStepId: 2),
+        ),
+        verify: (_) {
+          verifyInOrder([
+            () => mockRepo.moveToNextStep(
+              processId: 1,
+              projectId: 1,
+              nextStepId: 2,
+            ),
+            () => mockRepo.getCurrentStepDocs(
+              projectId: 1,
+              processId: 1,
+              projectStepId: 2,
+            ),
+          ]);
+        },
+      );
+
+      for (final nextStepId in [null, 0]) {
+        blocTest<ActionsTabBloc, ActionsTabState>(
+          'skips the docs call without a next step ($nextStepId)',
+          build: () {
+            stubMove();
+            return bloc;
+          },
+          act: (bloc) => bloc.add(
+            MoveToNextStep(projectId: 1, processId: 1, nextStepId: nextStepId),
+          ),
+          expect: () => [
+            const MoveToNextStepLoading(),
+            isA<MoveToNextStepSuccess>(),
+          ],
+          verify: (_) {
+            verifyNever(
+              () => mockRepo.getCurrentStepDocs(
+                projectId: any(named: 'projectId'),
+                processId: any(named: 'processId'),
+                projectStepId: any(named: 'projectStepId'),
+              ),
+            );
+          },
+        );
+      }
+
+      blocTest<ActionsTabBloc, ActionsTabState>(
+        'still succeeds when the next step has no documents',
+        build: () {
+          stubMove();
+          when(
+            () => mockRepo.getCurrentStepDocs(
+              projectId: any(named: 'projectId'),
+              processId: any(named: 'processId'),
+              projectStepId: any(named: 'projectStepId'),
+            ),
+          ).thenThrow(NetworkException('لا يوجد مستندات لهذه الخطوة'));
+          return bloc;
+        },
+        act: (bloc) => bloc.add(
+          const MoveToNextStep(projectId: 1, processId: 1, nextStepId: 2),
+        ),
+        expect: () => [
+          const MoveToNextStepLoading(),
+          isA<MoveToNextStepSuccess>(),
+        ],
       );
     });
   });

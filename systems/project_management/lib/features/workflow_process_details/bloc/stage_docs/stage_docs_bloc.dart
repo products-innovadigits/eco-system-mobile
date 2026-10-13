@@ -4,7 +4,6 @@ class StageDocsBloc extends Bloc<StageDocsEvent, StageDocsState> {
   final ProcessDetailsRepo repo;
 
   StageDocsBloc({required this.repo}) : super(const StageDocsInitial()) {
-    on<CreateCurrentStepDocs>(_onCreateCurrentStepDocs);
     on<AddDocumentComment>(_onAddDocumentComment);
   }
 
@@ -12,28 +11,6 @@ class StageDocsBloc extends Bloc<StageDocsEvent, StageDocsState> {
 
   TextEditingController getCommentController(int id) =>
       _controllers.putIfAbsent(id, TextEditingController.new);
-
-  Future<void> _onCreateCurrentStepDocs(
-    CreateCurrentStepDocs event,
-    Emitter<StageDocsState> emit,
-  ) async {
-    emit(const StageDocsLoading());
-    try {
-      final res = await repo.getCurrentStepDocs(
-        projectId: event.projectId,
-        processId: event.processId,
-        projectStepId: event.projectStepId,
-      );
-
-      if (res.succeeded == true) {
-        emit(const StageDocsLoaded());
-      } else {
-        emit(const StageDocsFailure());
-      }
-    } catch (e) {
-      emit(const StageDocsFailure());
-    }
-  }
 
   Future<void> _onAddDocumentComment(
     AddDocumentComment event,

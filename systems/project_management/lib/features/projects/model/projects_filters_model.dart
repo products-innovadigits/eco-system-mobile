@@ -238,15 +238,26 @@ class ProjectRiskModel {
 class ProjectStatusModel {
   String? item1; // Arabic name
   String? item2; // English name
-  int? item3; // Status ID
+
+  /// Status value: the API sends the status key (`"Delayed"`); older
+  /// responses sent a numeric id, so both are read as text.
+  String? item3;
 
   ProjectStatusModel({this.item1, this.item2, this.item3});
 
   ProjectStatusModel.fromJson(Map<String, dynamic> json) {
-    item1 = json['item1'];
-    item2 = json['item2'];
-    item3 = json['item3'];
+    item1 = json['item1']?.toString();
+    item2 = json['item2']?.toString();
+    item3 = json['item3']?.toString();
   }
+
+  /// Dropdown option for this status. The dropdown matches options by `key`;
+  /// `id` is only set when the API sends a numeric value.
+  DropListModel toDropListModel() => DropListModel(
+    id: int.tryParse(item3 ?? ''),
+    key: item3,
+    name: item1 ?? '',
+  );
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

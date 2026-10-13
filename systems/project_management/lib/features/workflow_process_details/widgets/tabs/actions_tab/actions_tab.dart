@@ -1,4 +1,3 @@
-
 import 'package:project_management/core/di/project_management_locator.dart';
 import 'package:project_management/core/utility/project_management_exports.dart';
 
@@ -56,15 +55,11 @@ class _ActionsTabContent extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    // Internal Comments Section
-                    BlocBuilder<ActionsTabBloc, ActionsTabState>(
-                      builder: (context, state) {
-                        final bloc = context.read<ActionsTabBloc>();
-                        return _InternalCommentsSection(
-                          controller: bloc.commentTEC,
-                          validation: NotEmptyValidator.notEmptyValidator,
-                        );
-                      },
+                    // Internal Comments Section. The controller holds the
+                    // text, so no bloc state needs to rebuild it.
+                    _InternalCommentsSection(
+                      controller: context.read<ActionsTabBloc>().commentTEC,
+                      validation: NotEmptyValidator.notEmptyValidator,
                     ),
 
                     // File Upload Section
@@ -136,7 +131,7 @@ class _ActionsTabContent extends StatelessWidget {
   }
 
   void _onCompliance(BuildContext context) {
-    // Read the nextStepId from StageDocsBloc to get the most current value
+    // The step to move to comes from the latest Current & Next.
     final workflowProcessDetailsBloc = context.read<ProcessDetailsBloc>();
     final nextStep = workflowProcessDetailsBloc.stageDocsData?.nextStep;
     final nextStepId = (nextStep != null && nextStep.isNotEmpty)
@@ -286,6 +281,10 @@ class _FileUploadSection extends StatelessWidget {
   }
 }
 
+/// Whether a save or a move is in flight; the buttons only change with it.
+bool _isBusy(ActionsTabState state) =>
+    state is SaveCommentLoading || state is MoveToNextStepLoading;
+
 class _SaveButton extends StatelessWidget {
   final VoidCallback onSave;
 
@@ -294,6 +293,7 @@ class _SaveButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ActionsTabBloc, ActionsTabState>(
+      buildWhen: (previous, current) => _isBusy(previous) != _isBusy(current),
       builder: (context, state) {
         final isLoading = state is SaveCommentLoading;
         final isOtherLoading = state is MoveToNextStepLoading;
@@ -327,8 +327,13 @@ class _NextStepButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ActionsTabBloc, ActionsTabState>(
+      buildWhen: (previous, current) => _isBusy(previous) != _isBusy(current),
       builder: (context, actionsTabState) {
         return BlocBuilder<ProcessDetailsBloc, ProcessDetailsState>(
+          // The next step only changes when a load finishes, which changes
+          // the state type; tab switches re-emit the same type.
+          buildWhen: (previous, current) =>
+              previous.runtimeType != current.runtimeType,
           builder: (context, processDetailsState) {
             final workflowBloc = context.read<ProcessDetailsBloc>();
             final stageDocsData = workflowBloc.stageDocsData;

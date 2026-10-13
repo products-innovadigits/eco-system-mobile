@@ -8,19 +8,9 @@ class StageDocsInitial extends StageDocsState {
   const StageDocsInitial();
 }
 
-/// Loading current step documents
-class StageDocsLoading extends StageDocsState {
-  const StageDocsLoading();
-}
-
-/// Current step documents loaded successfully
+/// Idle: no comment is being added
 class StageDocsLoaded extends StageDocsState {
   const StageDocsLoaded();
-}
-
-/// No documents found (empty result)
-class StageDocsEmpty extends StageDocsState {
-  const StageDocsEmpty();
 }
 
 /// Adding a comment to the document with [stepDocumentId]
@@ -30,7 +20,7 @@ class StageDocsAdding extends StageDocsState {
   const StageDocsAdding({required this.stepDocumentId});
 }
 
-/// Error loading/adding documents
+/// Adding a comment failed
 class StageDocsFailure extends StageDocsState {
   const StageDocsFailure();
 }

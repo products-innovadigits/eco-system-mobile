@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:core_system/core/network/error/network_exception.dart';
 import 'package:project_management/core/utility/project_management_exports.dart';
+import 'package:project_management/shared/model/default_response_model.dart';
 
 class ProcessDetailsBloc
     extends Bloc<ProcessDetailsEvent, ProcessDetailsState> {
@@ -43,35 +46,10 @@ class ProcessDetailsBloc
     Emitter<ProcessDetailsState> emit,
   ) async {
     emit(const GroupStepsLoading());
-
-    // Group Steps and Stage Docs are independent endpoints, so they run in
-    // parallel and each failure stays local: a failing Group Steps only breaks
-    // the follow process tab, it must not blank the whole screen.
-    final Future<bool> groupStepsFuture = _loadGroupSteps(
+    await _loadScreen(
+      emit,
       processId: event.processId,
       projectId: event.projectId,
-    );
-    final Future<bool> stageDocsFuture = _loadStageDocs(
-      processId: event.processId,
-      projectId: event.projectId,
-    );
-
-    _groupStepsFailed = await groupStepsFuture;
-    final bool hasStageDocs = await stageDocsFuture;
-
-    // Nothing at all could be loaded, the whole screen is an error.
-    if (_groupStepsFailed && !hasStageDocs) {
-      emit(GroupStepsFailure(message: _groupStepsErrorMessage));
-      return;
-    }
-
-    if (!_groupStepsFailed && (_groupStepsData?.data?.isEmpty ?? true)) {
-      emit(const GroupStepsEmpty());
-      return;
-    }
-
-    emit(
-      GroupStepsLoaded(processDetails: _groupStepsData ?? GroupStepsModel()),
     );
   }
 
@@ -90,12 +68,44 @@ class ProcessDetailsBloc
       projectId: event.projectId,
     );
     _isGroupStepsReloading = false;
+    _emitGroupSteps(emit);
+  }
 
+  /// Loads everything the screen shows and emits the outcome.
+  ///
+  /// Group Steps and Current & Next are independent endpoints, so they run in
+  /// parallel and each failure stays local: a failing Group Steps only breaks
+  /// the follow process tab, it must not blank the whole screen.
+  Future<void> _loadScreen(
+    Emitter<ProcessDetailsState> emit, {
+    required int processId,
+    required int projectId,
+  }) async {
+    final Future<bool> groupStepsFuture = _loadGroupSteps(
+      processId: processId,
+      projectId: projectId,
+    );
+    final Future<bool> stageDocsFuture = _loadStageDocs(
+      processId: processId,
+      projectId: projectId,
+    );
+
+    _groupStepsFailed = await groupStepsFuture;
+    final bool hasStageDocs = await stageDocsFuture;
+
+    // Nothing at all could be loaded, the whole screen is an error.
+    if (_groupStepsFailed && !hasStageDocs) {
+      emit(GroupStepsFailure(message: _groupStepsErrorMessage));
+      return;
+    }
+    _emitGroupSteps(emit);
+  }
+
+  void _emitGroupSteps(Emitter<ProcessDetailsState> emit) {
     if (!_groupStepsFailed && (_groupStepsData?.data?.isEmpty ?? true)) {
       emit(const GroupStepsEmpty());
       return;
     }
-
     emit(
       GroupStepsLoaded(processDetails: _groupStepsData ?? GroupStepsModel()),
     );
@@ -124,21 +134,25 @@ class ProcessDetailsBloc
       _groupStepsData = groupRes;
       return false;
     } on NetworkException catch (e) {
-      // The same body comes back on a 4xx, where Dio throws before the model
-      // is parsed. The parsed body is carried on the exception.
-      final dynamic body = e.responseData;
-      if (body is Map) {
-        final dynamic validationErrors = body['validationErrors'];
-        final dynamic message = body['message'];
-        _groupStepsErrorMessage = _failureMessage(
-          validationErrors is List ? validationErrors : null,
-          message is String ? message : null,
-        );
-      }
+      _groupStepsErrorMessage = _networkFailureMessage(e);
       return true;
     } catch (_) {
       return true;
     }
+  }
+
+  /// The message out of a failed response's body. The same body comes back
+  /// on a 4xx, where Dio throws before the model is parsed, so the parsed
+  /// body is carried on the exception.
+  String? _networkFailureMessage(NetworkException e) {
+    final dynamic body = e.responseData;
+    if (body is! Map) return null;
+    final dynamic validationErrors = body['validationErrors'];
+    final dynamic message = body['message'];
+    return _failureMessage(
+      validationErrors is List ? validationErrors : null,
+      message is String ? message : null,
+    );
   }
 
   /// Picks the message to show out of a failed response. `errorMessage` holds
@@ -179,28 +193,102 @@ class ProcessDetailsBloc
     return _stageDocsData != null;
   }
 
+  /// Starts the process, creates the documents of the step it lands on and
+  /// only then reloads the screen.
+  ///
+  /// Current & Next lists the documents of the current step, and those only
+  /// exist once Current Step Documents has created them. Reading Current &
+  /// Next before that shows the step without its documents.
   Future<void> _onStartProcess(
     StartProcess event,
     Emitter<ProcessDetailsState> emit,
   ) async {
     emit(const ProcessStarting());
+
+    final String? startError = await _startProcess(
+      processId: event.processId,
+      projectId: event.projectId,
+    );
+    if (startError != null) {
+      AppCore.errorMessage(startError);
+      // Back to the screen as it was before the attempt.
+      _emitGroupSteps(emit);
+      return;
+    }
+
+    // The process has started, so nothing past this point reports a failure:
+    // the screen reloads either way. The step cached before starting is the
+    // pre-start one, so the step the process landed on is fetched first.
+    final int? currentStepId = await _fetchCurrentStepId(
+      processId: event.processId,
+      projectId: event.projectId,
+    );
+    await _createStepDocs(
+      processId: event.processId,
+      projectId: event.projectId,
+      stepId: currentStepId,
+    );
+    await _loadScreen(
+      emit,
+      processId: event.processId,
+      projectId: event.projectId,
+    );
+  }
+
+  /// Starts the process, returns the message to show when it did not start.
+  Future<String?> _startProcess({
+    required int processId,
+    required int projectId,
+  }) async {
+    String? message;
     try {
-      await repo.startProcess(
-        projectId: event.projectId,
-        processId: event.processId,
+      final DefaultResponseModel res = await repo.startProcess(
+        projectId: projectId,
+        processId: processId,
       );
-      emit(const ProcessStarted());
-      // Create/Fetch docs for the new step before signaling success
+      if (res.succeeded == true) return null;
+      message = res.data?.message;
+    } on NetworkException catch (e) {
+      message = _networkFailureMessage(e);
+    } catch (_) {}
+    return (message != null && message.trim().isNotEmpty)
+        ? message.trim()
+        : allTranslations.text(LocaleKeys.something_went_wrong);
+  }
+
+  /// The id of the step the process is on now, null when it can't be read.
+  Future<int?> _fetchCurrentStepId({
+    required int processId,
+    required int projectId,
+  }) async {
+    try {
+      final StageDocResponseModel res = await repo.getCurrentNextSteps(
+        projectId: projectId,
+        processId: processId,
+      );
+      return res.succeeded == true ? res.data?.currentStep?.id : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  /// Creates the documents of [stepId]. A step without documents answers
+  /// `succeeded: false` ("لا يوجد مستندات لهذه الخطوة"), which is not a
+  /// failure of the start, so the outcome is only logged.
+  Future<void> _createStepDocs({
+    required int processId,
+    required int projectId,
+    required int? stepId,
+  }) async {
+    if (stepId == null || stepId == 0) return;
+    try {
       await repo.getCurrentStepDocs(
-        projectId: event.projectId,
-        processId: event.processId,
-        projectStepId: _stageDocsData?.currentStep?.id ?? 0,
-      );
-      add(
-        LoadGroupSteps(projectId: event.projectId, processId: event.processId),
+        projectId: projectId,
+        processId: processId,
+        projectStepId: stepId,
       );
     } catch (e) {
-      emit(const ProcessStartFailure());
+      log('Failed to create the docs of step $stepId: $e');
     }
   }
 

@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:core_system/core/network/error/network_exception.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:project_management/features/projects/bloc/filtration/projects_filter_provider.dart';
 import 'package:project_management/features/projects/bloc/filtration/projects_filtration_bloc.dart';
 import 'package:project_management/features/projects/bloc/filtration/projects_filtration_events.dart';
 import 'package:project_management/features/projects/bloc/filtration/projects_filtration_state.dart';
@@ -23,8 +24,7 @@ void main() {
     bloc = ProjectsFiltrationBloc(repo: mockRepo);
   });
 
-  tearDown(() {
-  });
+  tearDown(() {});
 
   group('ProjectsFiltrationBloc', () {
     group('LoadProjectsFilterOptions', () {
@@ -48,8 +48,8 @@ void main() {
         expect: () => [
           const ProjectsFiltrationLoading(),
           isA<ProjectsFiltrationLoaded>().having(
-            (s) => s.filterOptions, 
-            'filterOptions', 
+            (s) => s.filterOptions,
+            'filterOptions',
             isNotNull,
           ),
         ],
@@ -70,11 +70,38 @@ void main() {
         expect: () => [
           const ProjectsFiltrationLoading(),
           isA<ProjectsFiltrationFailure>().having(
-            (s) => s.message, 
-            'message', 
+            (s) => s.message,
+            'message',
             isNotNull,
           ),
         ],
+      );
+    });
+
+    group('status filter', () {
+      blocTest<ProjectsFiltrationBloc, ProjectsFiltrationState>(
+        'sends the selected status key, not its label',
+        build: () {
+          when(() => mockRepo.getProjectFilterOptions()).thenAnswer(
+            (_) async => ProjectsFiltersModel.fromJson({
+              'succeeded': true,
+              'data': {
+                'statuses': [
+                  {'item1': 'متأخر', 'item2': 'Delayed', 'item3': 'Delayed'},
+                ],
+              },
+            }),
+          );
+          return bloc;
+        },
+        act: (bloc) => bloc.add(const LoadProjectsFilterOptions()),
+        verify: (bloc) {
+          bloc.selectedStatus = bloc.statusList.single;
+          final params = ProjectsFiltrationBlocFilterProvider(
+            bloc,
+          ).getFilterParams();
+          expect(params['status'], 'Delayed');
+        },
       );
     });
   });

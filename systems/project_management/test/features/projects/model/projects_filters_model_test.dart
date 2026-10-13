@@ -154,4 +154,42 @@ void main() {
       );
     });
   });
+
+  group('ProjectStatusModel', () {
+    test('parses item3 sent as the status key (filter-options crash)', () {
+      final data = ProjectsFiltersData.fromJson({
+        'statuses': [
+          {'item1': 'متأخر', 'item2': 'Delayed', 'item3': 'Delayed'},
+        ],
+      });
+
+      final status = data.statuses!.single;
+      expect(status.item3, 'Delayed');
+
+      final option = status.toDropListModel();
+      expect(option.key, 'Delayed');
+      expect(option.name, 'متأخر');
+      expect(option.id, isNull);
+    });
+
+    test('still parses item3 sent as a numeric id', () {
+      final status = ProjectStatusModel.fromJson({
+        'item1': 'مكتمل',
+        'item2': 'Completed',
+        'item3': 4,
+      });
+
+      expect(status.item3, '4');
+      final option = status.toDropListModel();
+      expect(option.id, 4);
+      expect(option.key, '4');
+    });
+
+    test('handles missing values', () {
+      final option = ProjectStatusModel.fromJson({}).toDropListModel();
+      expect(option.id, isNull);
+      expect(option.key, isNull);
+      expect(option.name, '');
+    });
+  });
 }

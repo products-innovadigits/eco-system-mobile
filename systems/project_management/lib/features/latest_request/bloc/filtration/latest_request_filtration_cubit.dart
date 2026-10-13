@@ -84,10 +84,7 @@ class LatestRequestFiltrationCubit extends Cubit<LatestRequestFiltrationState> {
         // Update statuses list
         if (model.data!.statuses != null) {
           statusList = model.data!.statuses!
-              .map(
-                (status) =>
-                    DropListModel(id: status.item3, name: status.item1 ?? ''),
-              )
+              .map((status) => status.toDropListModel())
               .toList();
         }
 
@@ -130,7 +127,7 @@ class LatestRequestFiltrationCubit extends Cubit<LatestRequestFiltrationState> {
     latestRequestCubit.getLatestRequest(
       searchEngine: SearchEngine(
         query: {
-          'status': selectedStatus?.name ?? '',
+          'status': selectedStatus?.key ?? '',
           'projectCategoryId': selectedCategory?.id ?? '',
           'riskLevelId': selectedRisk?.id ?? '',
           'periortyLevelId': selectedPriority?.id ?? '',

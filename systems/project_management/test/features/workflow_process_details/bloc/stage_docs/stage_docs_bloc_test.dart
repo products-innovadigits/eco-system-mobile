@@ -1,11 +1,12 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:core_system/core/network/error/network_exception.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:project_management/features/workflow_process_details/bloc/stage_docs/stage_docs_bloc.dart';
 import 'package:project_management/features/workflow_process_details/bloc/stage_docs/stage_docs_events.dart';
 import 'package:project_management/features/workflow_process_details/bloc/stage_docs/stage_docs_state.dart';
-import 'package:project_management/features/workflow_process_details/model/current_step_document_model.dart';
+import 'package:project_management/shared/model/default_response_model.dart';
 
 import '../../../../core/mocks/fallbacks.dart';
 import '../../../../core/mocks/mock_repos.dart';
@@ -16,6 +17,13 @@ void main() {
 
   setUpAll(() {
     initMocktailFallbacks();
+    // The bloc shows a toast on success; the plugin has no platform here.
+    TestWidgetsFlutterBinding.ensureInitialized();
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+          const MethodChannel('PonnamKarthik/fluttertoast'),
+          (_) async => true,
+        );
   });
 
   setUp(() {
@@ -23,62 +31,60 @@ void main() {
     bloc = StageDocsBloc(repo: mockRepo);
   });
 
-  tearDown(() {
-  });
+  tearDown(() {});
 
   group('StageDocsBloc', () {
-    group('CreateCurrentStepDocs', () {
+    group('AddDocumentComment', () {
       blocTest<StageDocsBloc, StageDocsState>(
-        'emits [StageDocsLoading, StageDocsLoaded] when repo returns success',
+        'emits [StageDocsAdding, StageDocsLoaded] and clears the field on success',
         build: () {
           when(
-            () => mockRepo.getCurrentStepDocs(
-              projectId: any(named: 'projectId'),
-              projectStepId: any(named: 'projectStepId'),
-              processId: any(named: 'processId'),
+            () => mockRepo.addDocComment(
+              documentId: any(named: 'documentId'),
+              text: any(named: 'text'),
             ),
-          ).thenAnswer((_) async => CurrentStepDocumentModel(succeeded: true));
+          ).thenAnswer((_) async => DefaultResponseModel(succeeded: true));
+          bloc.getCommentController(7).text = 'Looks good';
           return bloc;
         },
         act: (bloc) => bloc.add(
-          const CreateCurrentStepDocs(
-            processId: 1,
-            projectId: 1,
-            projectStepId: 1,
-          ),
+          const AddDocumentComment(stepDocumentId: 7, text: 'Looks good'),
         ),
-        expect: () => [const StageDocsLoading(), isA<StageDocsLoaded>()],
-        verify: (_) {
+        expect: () => [
+          isA<StageDocsAdding>().having(
+            (s) => s.stepDocumentId,
+            'stepDocumentId',
+            7,
+          ),
+          isA<StageDocsLoaded>(),
+        ],
+        verify: (bloc) {
           verify(
-            () => mockRepo.getCurrentStepDocs(
-              projectId: 1,
-              projectStepId: 1,
-              processId: 1,
-            ),
+            () => mockRepo.addDocComment(documentId: 7, text: 'Looks good'),
           ).called(1);
+          expect(bloc.getCommentController(7).text, isEmpty);
         },
       );
 
       blocTest<StageDocsBloc, StageDocsState>(
-        'emits [StageDocsLoading, StageDocsFailure] when repo throws NetworkException',
+        'emits [StageDocsAdding, StageDocsFailure] and keeps the text when the call throws',
         build: () {
           when(
-            () => mockRepo.getCurrentStepDocs(
-              projectId: any(named: 'projectId'),
-              projectStepId: any(named: 'projectStepId'),
-              processId: any(named: 'processId'),
+            () => mockRepo.addDocComment(
+              documentId: any(named: 'documentId'),
+              text: any(named: 'text'),
             ),
           ).thenThrow(NetworkException('Network error'));
+          bloc.getCommentController(7).text = 'Looks good';
           return bloc;
         },
         act: (bloc) => bloc.add(
-          const CreateCurrentStepDocs(
-            processId: 1,
-            projectId: 1,
-            projectStepId: 1,
-          ),
+          const AddDocumentComment(stepDocumentId: 7, text: 'Looks good'),
         ),
-        expect: () => [const StageDocsLoading(), isA<StageDocsFailure>()],
+        expect: () => [isA<StageDocsAdding>(), isA<StageDocsFailure>()],
+        verify: (bloc) {
+          expect(bloc.getCommentController(7).text, 'Looks good');
+        },
       );
     });
   });

@@ -87,15 +87,17 @@ class ActionsTabBloc extends Bloc<ActionsTabEvent, ActionsTabState> {
       if (response.succeeded == true) {
         final int? nextStepId = event.nextStepId;
 
-        // Creates/fetches the documents of the step just moved to. Finishing
-        // the process has no next step, so there is nothing to create for it.
+        // Creates the documents of the step just moved to before the screen
+        // reloads Current & Next, which only lists documents that exist.
+        // Finishing the process has no next step, so there is nothing to
+        // create for it.
         //
         // Its outcome is deliberately ignored: a step that simply has no
         // documents answers `succeeded: false` with "لا يوجد مستندات لهذه
         // الخطوة", which is not a failure of the move. The process has already
         // moved at this point, so nothing here may hold back the success the
         // screen reloads on, otherwise the screen keeps showing the old step.
-        if (nextStepId != null) {
+        if (nextStepId != null && nextStepId != 0) {
           try {
             await repo.getCurrentStepDocs(
               projectId: event.projectId,

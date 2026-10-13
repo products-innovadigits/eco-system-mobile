@@ -3,10 +3,9 @@ import 'package:project_management/core/utility/project_management_exports.dart'
 class ProcessDetailsTabsSection extends StatelessWidget {
   const ProcessDetailsTabsSection({super.key});
 
-  static Map<ProcessTabsEnum, String> tabs = {
+  static const Map<ProcessTabsEnum, String> _tabs = {
     ProcessTabsEnum.followProcess: LocaleKeys.follow_process,
     ProcessTabsEnum.stageDocs: LocaleKeys.current_step_docs,
-    // ProcessTabsEnum.fields: LocaleKeys.fields,
     ProcessTabsEnum.history: LocaleKeys.history,
     ProcessTabsEnum.actions: LocaleKeys.actions,
   };
@@ -21,17 +20,16 @@ class ProcessDetailsTabsSection extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsetsDirectional.only(start: 16.0),
         child: Row(
-          children: tabs.keys.map((tab) {
-            return _TabWrapper(
-              title: tabs[tab] ?? '',
-              isSelected: selectedTab == tab,
-              onTap: () {
-                context.read<ProcessDetailsBloc>().add(
+          children: [
+            for (final MapEntry(key: tab, value: title) in _tabs.entries)
+              _TabWrapper(
+                title: title,
+                isSelected: selectedTab == tab,
+                onTap: () => context.read<ProcessDetailsBloc>().add(
                   SelectProcessTab(tab: tab),
-                );
-              },
-            );
-          }).toList(),
+                ),
+              ),
+          ],
         ),
       ),
     );

@@ -18,7 +18,7 @@ class ProjectsFiltrationBlocFilterProvider implements ProjectsFilterProvider {
     final params = <String, dynamic>{};
 
     if (bloc.selectedStatus != null) {
-      params['status'] = bloc.selectedStatus!.name;
+      params['status'] = bloc.selectedStatus!.key;
     }
     if (bloc.selectedCategory != null) {
       params['projectCategoryId'] = bloc.selectedCategory!.id;

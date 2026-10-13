@@ -41,14 +41,7 @@ class GroupStepsFailure extends ProcessDetailsState {
   const GroupStepsFailure({this.message});
 }
 
+/// Starting the process and loading the step it lands on
 class ProcessStarting extends ProcessDetailsState {
   const ProcessStarting();
-}
-
-class ProcessStarted extends ProcessDetailsState {
-  const ProcessStarted();
-}
-
-class ProcessStartFailure extends ProcessDetailsState {
-  const ProcessStartFailure();
 }
