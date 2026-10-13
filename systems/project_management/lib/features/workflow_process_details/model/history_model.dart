@@ -244,15 +244,25 @@ class StepCommentModel extends SingleMapper {
   int? id;
   String? text;
   String? filePath;
+  List<String>? filePaths;
   String? createdAt;
   String? createdBy;
   String? updatedAt;
   // CommenterModel? commenter;
 
+  /// Every file attached to the comment. `filePaths` holds all of them;
+  /// `filePath` is the single-file field older responses send.
+  List<String> get attachmentUrls {
+    final urls = filePaths?.where((url) => url.isNotEmpty).toList() ?? [];
+    if (urls.isNotEmpty) return urls;
+    return (filePath?.isNotEmpty ?? false) ? [filePath!] : const [];
+  }
+
   StepCommentModel({
     this.id,
     this.text,
     this.filePath,
+    this.filePaths,
     this.createdAt,
     this.createdBy,
     this.updatedAt,
@@ -263,6 +273,12 @@ class StepCommentModel extends SingleMapper {
     id = json['id'];
     text = json['text'];
     filePath = json['filePath'];
+    if (json['filePaths'] is List) {
+      filePaths = [
+        for (final path in json['filePaths'] as List)
+          if (path != null) path.toString(),
+      ];
+    }
     createdAt = json['createdAt'];
     createdBy = json['createdBy'];
     updatedAt = json['updatedAt'];
@@ -277,6 +293,7 @@ class StepCommentModel extends SingleMapper {
     data['id'] = id;
     data['text'] = text;
     data['filePath'] = filePath;
+    data['filePaths'] = filePaths;
     data['createdAt'] = createdAt;
     data['createdBy'] = createdBy;
     data['updatedAt'] = updatedAt;

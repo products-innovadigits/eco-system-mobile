@@ -87,9 +87,16 @@ class _CommentItem extends StatelessWidget {
               fontSize: FontSizes.f10,
             ),
           ),
-          if (comment.filePath != null) ...[
+          if (comment.attachmentUrls.isNotEmpty) ...[
             SizedBox(height: 12.h),
-            _AttachmentItem(attachmentFilePath: comment.filePath!),
+            Wrap(
+              spacing: 8.w,
+              runSpacing: 8.h,
+              children: [
+                for (final url in comment.attachmentUrls)
+                  _AttachmentItem(url: url),
+              ],
+            ),
           ],
         ],
       ),
@@ -136,20 +143,40 @@ class _CommentItem extends StatelessWidget {
 }
 
 class _AttachmentItem extends StatelessWidget {
-  final String attachmentFilePath;
+  final String url;
 
-  const _AttachmentItem({required this.attachmentFilePath});
+  const _AttachmentItem({required this.url});
+
+  /// The file name out of the URL, without the upload timestamp the server
+  /// prefixes it with (`1791890025 - report.pdf` -> `report.pdf`).
+  static String fileName(String url) {
+    final segments = Uri.tryParse(url)?.pathSegments ?? const <String>[];
+    final name = segments.isNotEmpty ? segments.last : url;
+    return name.replaceFirst(RegExp(r'^\d+ - '), '');
+  }
+
+  static IconData _icon(String name) {
+    final dot = name.lastIndexOf('.');
+    final extension = dot == -1 ? '' : name.substring(dot + 1).toLowerCase();
+    return switch (extension) {
+      'pdf' => Icons.picture_as_pdf,
+      'doc' || 'docx' || 'txt' => Icons.description,
+      'jpg' || 'jpeg' || 'png' || 'gif' => Icons.image,
+      'xls' || 'xlsx' => Icons.table_chart,
+      'ppt' || 'pptx' => Icons.slideshow,
+      _ => Icons.attach_file,
+    };
+  }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        LauncherHelper.downloadFiles(
-          filePath: attachmentFilePath,
-          // fullLink: attachmentFilePath,
-          context: context,
-        );
-      },
+    final name = fileName(url);
+    final color = context.color.secondary;
+
+    return InkWell(
+      onTap: () =>
+          LauncherHelper.downloadFiles(filePath: url, context: context),
+      borderRadius: BorderRadius.circular(4),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
         decoration: BoxDecoration(
@@ -160,14 +187,19 @@ class _AttachmentItem extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Images(image: Assets.svgs.download.path),
+            Icon(_icon(name), size: 16, color: color),
             SizedBox(width: 6.w),
-            Text(
-              allTranslations.text(LocaleKeys.attachments_count),
-              style: context.textTheme.bodySmall?.copyWith(
-                color: context.color.secondary,
+            Flexible(
+              child: Text(
+                name,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                textDirection: TextDirection.ltr,
+                style: context.textTheme.bodySmall?.copyWith(color: color),
               ),
             ),
+            SizedBox(width: 6.w),
+            Images(image: Assets.svgs.download.path),
           ],
         ),
       ),

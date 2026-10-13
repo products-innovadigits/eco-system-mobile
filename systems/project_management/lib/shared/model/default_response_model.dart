@@ -17,11 +17,13 @@ class DefaultResponseModel extends SingleMapper {
   Mapper fromJson(Map<String, dynamic> json) {
     return DefaultResponseModel(
       succeeded: json['succeeded'] as bool?,
-      data: json['data'] != null
-          ? DefaultResponseData.fromJson(json['data'] as Map<String, dynamic>)
+      data: DefaultResponseData.parse(json['data']),
+      warningErrors: json['warningErrors'] is List
+          ? json['warningErrors'] as List<dynamic>
           : null,
-      warningErrors: json['warningErrors'] as List<dynamic>?,
-      validationErrors: json['validationErrors'] as List<dynamic>?,
+      validationErrors: json['validationErrors'] is List
+          ? json['validationErrors'] as List<dynamic>
+          : null,
     );
   }
 
@@ -46,8 +48,16 @@ class DefaultResponseData {
 
   factory DefaultResponseData.fromJson(Map<String, dynamic> json) {
     return DefaultResponseData(
-      message: json['message'] as String?,
-      messageEn: json['messageEn'] as String?,
+      message: json['message']?.toString(),
+      messageEn: json['messageEn']?.toString(),
     );
   }
+
+  /// Endpoints send `data` either as `{message, messageEn}` or as the message
+  /// itself (`"data": "تمت العملية بنجاح"`); anything else carries no message.
+  static DefaultResponseData? parse(dynamic data) => switch (data) {
+    Map() => DefaultResponseData.fromJson(data.cast<String, dynamic>()),
+    String() => DefaultResponseData(message: data),
+    _ => null,
+  };
 }

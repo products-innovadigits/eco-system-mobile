@@ -223,4 +223,38 @@ void main() {
       expect(() => m.toJson(), returnsNormally);
     });
   });
+
+  group('StepCommentModel attachments', () {
+    const url =
+        'https://194.163.168.5:448/FileServer/Project/ProjectStepComment/1791890765 - test.xlsx';
+
+    test('reads every file from filePaths', () {
+      final comment = StepCommentModel.fromJson({
+        'filePath': url,
+        'filePaths': [url, '$url.2'],
+      });
+      expect(comment.attachmentUrls, [url, '$url.2']);
+    });
+
+    test('falls back to filePath when filePaths is missing or empty', () {
+      expect(StepCommentModel.fromJson({'filePath': url}).attachmentUrls, [
+        url,
+      ]);
+      expect(
+        StepCommentModel.fromJson({
+          'filePath': url,
+          'filePaths': [],
+        }).attachmentUrls,
+        [url],
+      );
+    });
+
+    test('has no attachments without any path', () {
+      expect(StepCommentModel.fromJson({}).attachmentUrls, isEmpty);
+      expect(
+        StepCommentModel.fromJson({'filePath': ''}).attachmentUrls,
+        isEmpty,
+      );
+    });
+  });
 }

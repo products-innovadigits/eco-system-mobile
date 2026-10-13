@@ -90,29 +90,39 @@ abstract class LauncherHelper {
           AppCore.errorToastMessage(allTranslations.text('download_failed'));
         }
       } else {
-        // Android: Use Chrome-specific URL scheme for better download handling
-        final String chromeUrlString = originalUrl
-            .replaceFirst('https://', 'googlechromes://')
-            .replaceFirst('http://', 'googlechrome://');
+        // Android: Use Chrome-specific URL scheme for better download handling.
+        // Built from the resolved link so a passed [fullLink] is honoured.
+        final String resolvedUrl = originalUri.toString();
+        final Uri chromeUri = Uri.parse(
+          resolvedUrl
+              .replaceFirst('https://', 'googlechromes://')
+              .replaceFirst('http://', 'googlechrome://'),
+        );
 
-        final Uri chromeUri = Uri.parse(chromeUrlString);
-
-        // Check if we can open Chrome
+        final bool opened;
         if (await canLaunchUrl(chromeUri)) {
-          await launchUrl(chromeUri, mode: LaunchMode.externalApplication);
+          opened = await launchUrl(
+            chromeUri,
+            mode: LaunchMode.externalApplication,
+          );
         } else {
           // Fallback: Chrome is not installed, open default browser
           log('Chrome not found, falling back to default browser');
-          if (await canLaunchUrl(originalUri)) {
-            await launchUrl(originalUri, mode: LaunchMode.externalApplication);
-          } else {
-            AppCore.errorToastMessage(allTranslations.text('download_failed'));
-          }
+          opened =
+              await canLaunchUrl(originalUri) &&
+              await launchUrl(
+                originalUri,
+                mode: LaunchMode.externalApplication,
+              );
         }
 
-        AppCore.successToastMessage(
-          allTranslations.text(LocaleKeys.file_downloaded_successfully),
-        );
+        if (opened) {
+          AppCore.successToastMessage(
+            allTranslations.text(LocaleKeys.file_downloaded_successfully),
+          );
+        } else {
+          AppCore.errorToastMessage(allTranslations.text('download_failed'));
+        }
       }
     } catch (e) {
       log('Error launching URL: $e');
