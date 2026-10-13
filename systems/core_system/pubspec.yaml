@@ -64,6 +64,7 @@ dependencies:
   # Responsive
   responsive_builder: ^0.7.1
   flutter_screenutil: ^5.9.3
+  open_filex: ^4.7.0
 
 
 dev_dependencies:
@@ -73,3 +74,5 @@ dev_dependencies:
   mocktail: ^1.0.4
   build_runner:
   envied_generator: ^1.3.1
+  path_provider_platform_interface: ^2.1.3
+  plugin_platform_interface: ^2.1.8

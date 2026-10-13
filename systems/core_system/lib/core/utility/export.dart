@@ -34,6 +34,7 @@ export 'package:core_system/core/helpers/date_picker_helper.dart';
 export 'package:core_system/core/helpers/file_picker_helper.dart';
 export 'package:core_system/core/helpers/formatters_helper.dart';
 export 'package:core_system/core/helpers/image_picker_helper.dart';
+export 'package:core_system/core/helpers/file_opener_helper.dart';
 export 'package:core_system/core/helpers/launcher_helper.dart';
 export 'package:core_system/core/helpers/media_query_helper.dart';
 export 'package:core_system/core/helpers/popup_helper.dart';

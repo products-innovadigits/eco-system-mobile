@@ -621,6 +621,7 @@
   "file_downloaded_successfully": "تم تحميل الملف بنجاح",
   "file_saved_to": "تم حفظ الملف في",
   "download_failed": "فشل في التحميل",
+  "no_app_to_open_file": "لا يوجد تطبيق على الجهاز يمكنه فتح هذا الملف",
   "internal_comments": "تعليقات داخلية",
   "enter_internal_comments": "ادخل تعليقات داخلية...",
   "upload_additional_file": "رفع ملف اضافي",

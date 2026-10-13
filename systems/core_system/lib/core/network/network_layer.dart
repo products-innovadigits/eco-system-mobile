@@ -22,6 +22,16 @@ class Network {
 
   Network._private();
 
+  /// The HTTP client every request to the API server goes through. The
+  /// server's SSL certificate isn't trusted by devices, so certificate errors
+  /// are ignored; anything downloading from that server must use this too.
+  static HttpClient createHttpClient() {
+    final client = HttpClient();
+    client.badCertificateCallback =
+        (X509Certificate cert, String host, int port) => true;
+    return client;
+  }
+
   /// Adds an interceptor to the Dio instance.
   /// Use this to add app-layer interceptors like AuthInterceptor.
   static void addInterceptor(Interceptor interceptor) {
@@ -40,13 +50,8 @@ class Network {
       _dio.interceptors.add(ApiErrorToastInterceptor());
 
       // if (kDebugMode) {
-      // 👇 Add this block to ignore SSL certificates
-      (_dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
-        final client = HttpClient();
-        client.badCertificateCallback =
-            (X509Certificate cert, String host, int port) => true;
-        return client;
-      };
+      (_dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient =
+          createHttpClient;
       _instance = Network._private();
       // }
     }

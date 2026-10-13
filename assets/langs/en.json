@@ -620,6 +620,7 @@
   "file_downloaded_successfully": "File downloaded successfully",
   "file_saved_to": "File saved to",
   "download_failed": "Download failed",
+  "no_app_to_open_file": "No app on this device can open this file",
   "internal_comments": "Internal Comments",
   "enter_internal_comments": "Enter internal comments...",
   "upload_additional_file": "Upload additional file",

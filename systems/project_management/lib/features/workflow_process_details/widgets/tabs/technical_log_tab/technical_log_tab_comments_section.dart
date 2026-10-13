@@ -174,8 +174,7 @@ class _AttachmentItem extends StatelessWidget {
     final color = context.color.secondary;
 
     return InkWell(
-      onTap: () =>
-          LauncherHelper.downloadFiles(filePath: url, context: context),
+      onTap: () => FileOpenerHelper.downloadAndOpen(context: context, url: url),
       borderRadius: BorderRadius.circular(4),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),

@@ -557,6 +557,7 @@ abstract class  LocaleKeys {
   static const file_downloaded_successfully = 'file_downloaded_successfully';
   static const file_saved_to = 'file_saved_to';
   static const download_failed = 'download_failed';
+  static const no_app_to_open_file = 'no_app_to_open_file';
   static const internal_comments = 'internal_comments';
   static const enter_internal_comments = 'enter_internal_comments';
   static const upload_additional_file = 'upload_additional_file';
