@@ -1,9 +1,23 @@
-import '../../../../../core/utility/project_management_exports.dart';
+import 'package:project_management/core/utility/project_management_exports.dart';
 
 class TechnicalLogTabCommentsSection extends StatelessWidget {
   final List<StepCommentModel> comments;
 
   const TechnicalLogTabCommentsSection({super.key, required this.comments});
+
+  /// `dd/MM/yyyy - h:mm AM` in local time, or empty when the API sent no
+  /// readable time.
+  @visibleForTesting
+  static String formatCommentTime(String? createdAt) {
+    final time = DateTime.tryParse(createdAt ?? '')?.toLocal();
+    if (time == null) return '';
+
+    String twoDigits(int value) => value.toString().padLeft(2, '0');
+    final hour = time.hour % 12 == 0 ? 12 : time.hour % 12;
+    final period = time.hour >= 12 ? 'PM' : 'AM';
+    return '${twoDigits(time.day)}/${twoDigits(time.month)}/${time.year}'
+        ' - $hour:${twoDigits(time.minute)} $period';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +45,11 @@ class TechnicalLogTabCommentsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ...comments.map(
-          (comment) => Padding(
+        for (final comment in comments)
+          Padding(
             padding: EdgeInsets.only(bottom: 8.h),
             child: _CommentItem(comment: comment),
           ),
-        ),
       ],
     );
   }
@@ -71,7 +84,9 @@ class _CommentItem extends StatelessWidget {
               ),
               Spacer(),
               Text(
-                _formatCommentTime(comment.createdAt),
+                TechnicalLogTabCommentsSection.formatCommentTime(
+                  comment.createdAt,
+                ),
                 textDirection: TextDirection.ltr,
                 style: context.textTheme.bodySmall?.copyWith(
                   color: context.color.secondary,
@@ -101,44 +116,6 @@ class _CommentItem extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String _formatCommentTime(String? createdAt) {
-    if (createdAt == null) return "0000-00-00 10:00 AM";
-    try {
-      // Normalize potential high‑precision fractional seconds to max 6 digits
-      String normalized = createdAt;
-      final tzMatchIndex = normalized.indexOf(
-        RegExp(r'Z|[+-]\d{2}:\d{2}'),
-      ); // timezone start
-      if (tzMatchIndex != -1) {
-        final main = normalized.substring(0, tzMatchIndex);
-        final tz = normalized.substring(tzMatchIndex);
-        final dotIndex = main.indexOf('.');
-        if (dotIndex != -1) {
-          var frac = main.substring(dotIndex + 1);
-          if (frac.length > 6) {
-            frac = frac.substring(0, 6);
-          }
-          normalized = '${main.substring(0, dotIndex + 1)}$frac$tz';
-        }
-      }
-
-      final utcDateTime = DateTime.parse(normalized);
-      final localDateTime = utcDateTime.toLocal();
-
-      final year = localDateTime.year.toString().padLeft(4, '0');
-      final month = localDateTime.month.toString().padLeft(2, '0');
-      final day = localDateTime.day.toString().padLeft(2, '0');
-
-      final hour = localDateTime.hour;
-      final minute = localDateTime.minute.toString().padLeft(2, '0');
-      final period = hour >= 12 ? 'PM' : 'AM';
-      final displayHour = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
-      return "$day/$month/$year - $displayHour:$minute $period";
-    } catch (e) {
-      return "0000-00-00 - 10:00 AM";
-    }
   }
 }
 
@@ -174,7 +151,12 @@ class _AttachmentItem extends StatelessWidget {
     final color = context.color.secondary;
 
     return InkWell(
-      onTap: () => FileOpenerHelper.downloadAndOpen(context: context, url: url),
+      // Uploads never change, so an earlier download is reopened.
+      onTap: () => FileOpenerHelper.downloadAndOpen(
+        context: context,
+        url: url,
+        reuseDownloaded: true,
+      ),
       borderRadius: BorderRadius.circular(4),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),

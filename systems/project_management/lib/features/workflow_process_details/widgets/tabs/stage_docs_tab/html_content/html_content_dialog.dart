@@ -94,11 +94,8 @@ class _DownloadButton extends StatelessWidget {
       child: CustomBtn(
         text: allTranslations.text(LocaleKeys.download),
         active: exportUrl.isNotEmpty,
-        onPressed: () => LauncherHelper.downloadFiles(
-          filePath: '',
-          fullLink: exportUrl,
-          context: context,
-        ),
+        onPressed: () =>
+            FileOpenerHelper.downloadAndOpen(context: context, url: exportUrl),
       ),
     );
   }

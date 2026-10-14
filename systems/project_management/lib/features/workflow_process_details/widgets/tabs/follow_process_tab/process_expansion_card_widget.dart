@@ -1,35 +1,40 @@
+import 'package:project_management/core/utility/project_management_exports.dart';
 
-import '../../../../../core/utility/project_management_exports.dart';
-
+/// A step group of the process: its progress and the status of each step.
 class ProcessExpansionCardWidget extends StatelessWidget {
-  final List<GroupStepsData> processList;
-  final int index;
+  final GroupStepsData group;
+  final bool initiallyExpanded;
 
   const ProcessExpansionCardWidget({
     super.key,
-    required this.processList,
-    required this.index,
+    required this.group,
+    this.initiallyExpanded = false,
   });
+
+  /// `40%`, or `33.3%` for a fraction: the label sits inside a small circle,
+  /// so long decimals such as `33.333333333333336` can't be shown.
+  static String progressLabel(double progress) {
+    final rounded = (progress * 10).round() / 10;
+    return rounded % 1 == 0
+        ? '${rounded.toInt()}%'
+        : '${rounded.toStringAsFixed(1)}%';
+  }
 
   @override
   Widget build(BuildContext context) {
-    final processSteps = processList[index].steps;
     return CustomExpansionCard(
-      title: processList[index].groupName ?? '',
-      initialExpanded: index == 0,
-      leadingWidget: _ProcessProgressWidget(
-        progress: processList[index].progress ?? 0,
-        // progress: 100,
-      ),
+      title: group.groupName ?? '',
+      initialExpanded: initiallyExpanded,
+      leadingWidget: _ProcessProgressWidget(progress: group.progress ?? 0),
       withMargin: false,
       child: Column(
-        children: List.generate((processSteps ?? []).length, (idx) {
-          final process = processSteps?[idx];
-          return _ProcessStepRowWidget(
-            title: process?.stepName ?? '',
-            status: process?.status ?? '',
-          );
-        }),
+        children: [
+          for (final step in group.steps ?? const <WorkflowProcessStepModel>[])
+            _ProcessStepRowWidget(
+              title: step.stepName ?? '',
+              status: step.status ?? '',
+            ),
+        ],
       ),
     );
   }
@@ -42,23 +47,23 @@ class _ProcessProgressWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = context.color.tertiary;
+
     return Stack(
       alignment: Alignment.center,
       children: [
         CircularProgressIndicator(
-          value: progress / 100,
+          value: (progress / 100).clamp(0.0, 1.0),
           strokeWidth: 3,
-          backgroundColor: context.color.tertiary.withValues(alpha: 0.2),
-          valueColor: AlwaysStoppedAnimation<Color>(context.color.tertiary),
+          backgroundColor: color.withValues(alpha: 0.2),
+          valueColor: AlwaysStoppedAnimation<Color>(color),
         ),
         Text(
-          (progress % 1 == 0)
-              ? '${progress.toInt()}%'
-              : '${progress.toString()}%',
+          ProcessExpansionCardWidget.progressLabel(progress),
           style: context.textTheme.labelSmall?.copyWith(
             fontSize: 8,
             fontWeight: FontWeight.w800,
-            color: context.color.tertiary,
+            color: color,
           ),
         ),
       ],
@@ -74,6 +79,8 @@ class _ProcessStepRowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final (:name, :color) = _StepStatus.of(status, context);
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
@@ -86,15 +93,15 @@ class _ProcessStepRowWidget extends StatelessWidget {
           SizedBox(width: 6.w),
           Expanded(child: Text(title, style: context.textTheme.bodySmall)),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: _statusColor(status, context).withValues(alpha: 0.1),
+              color: color.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(25),
             ),
             child: Text(
-              _statusName(status),
+              name,
               style: context.textTheme.bodySmall?.copyWith(
-                color: _statusColor(status, context),
+                color: color,
                 fontSize: FontSizes.f10,
               ),
             ),
@@ -105,30 +112,27 @@ class _ProcessStepRowWidget extends StatelessWidget {
   }
 }
 
-String _statusName(String? status) {
-  switch (status) {
-    case 'None':
-      return allTranslations.text(LocaleKeys.not_completed);
-    case 'Approved':
-    case 'Completed':
-      return allTranslations.text(LocaleKeys.completed);
-    case 'Rejected':
-      return allTranslations.text(LocaleKeys.rejected);
-    default:
-      return allTranslations.text(LocaleKeys.in_progress);
-  }
-}
-
-Color _statusColor(String? status, BuildContext context) {
-  switch (status) {
-    case 'None':
-      return context.color.outlineVariant;
-    case 'Approved':
-    case 'Completed':
-      return context.color.tertiary;
-    case 'Rejected':
-      return context.color.error;
-    default:
-      return context.color.secondary;
+abstract final class _StepStatus {
+  /// The label and color of a workflow step status. A step the API reports
+  /// with any other status is still running.
+  static ({String name, Color color}) of(String status, BuildContext context) {
+    return switch (status) {
+      'None' => (
+        name: allTranslations.text(LocaleKeys.not_completed),
+        color: context.color.outlineVariant,
+      ),
+      'Approved' || 'Completed' => (
+        name: allTranslations.text(LocaleKeys.completed),
+        color: context.color.tertiary,
+      ),
+      'Rejected' => (
+        name: allTranslations.text(LocaleKeys.rejected),
+        color: context.color.error,
+      ),
+      _ => (
+        name: allTranslations.text(LocaleKeys.in_progress),
+        color: context.color.secondary,
+      ),
+    };
   }
 }

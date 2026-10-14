@@ -1,41 +1,31 @@
+import 'package:project_management/core/utility/project_management_exports.dart';
 import 'package:project_management/features/workflow_process_details/widgets/tabs/technical_log_tab/technical_log_tab_comments_section.dart';
 
-import '../../../../../core/utility/project_management_exports.dart';
-
 class TechnicalLogTimelineCard extends StatelessWidget {
-  final String processGroup;
-  final String stageName;
-  final String employee;
-  final String time;
-  final String commenter;
-  final List<StepCommentModel> comments;
-  final List<AttachmentModel> attachments;
-  final String date;
-  final String month;
+  final HistoryItemModel item;
 
-  const TechnicalLogTimelineCard({
-    super.key,
-    required this.processGroup,
-    required this.stageName,
-    required this.employee,
-    required this.time,
-    required this.commenter,
-    required this.comments,
-    required this.attachments,
-    required this.date,
-    required this.month,
-  });
+  const TechnicalLogTimelineCard({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
+    // FormattersHelper fills in made-up values for a missing date, so a step
+    // without a change time shows an empty badge instead.
+    final changeTime = item.lastChangeTime;
+    final day = changeTime == null
+        ? ''
+        : FormattersHelper.formatDate(changeTime, isDate: true);
+    final month = changeTime == null
+        ? ''
+        : FormattersHelper.formatDate(changeTime, isMonth: true);
+
+    // IntrinsicHeight stretches the timeline line down to the card's bottom.
+    // The list builds items lazily, so only visible cards pay for it.
     return IntrinsicHeight(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Timeline indicator
-          _TimelineIndicator(date: date, month: month),
+          _TimelineIndicator(day: day, month: month),
           SizedBox(width: 8.w),
-          // Main content card
           Expanded(
             child: Container(
               padding: EdgeInsets.all(12.w),
@@ -47,13 +37,12 @@ class TechnicalLogTimelineCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  /// Process group and stage info
                   Row(
                     children: [
                       Expanded(
                         child: _InfoSection(
                           label: allTranslations.text(LocaleKeys.step_name),
-                          value: stageName,
+                          value: item.name ?? '',
                         ),
                       ),
                       SizedBox(width: 8.w),
@@ -62,26 +51,22 @@ class TechnicalLogTimelineCard extends StatelessWidget {
                           label: allTranslations.text(
                             LocaleKeys.process_group_label,
                           ),
-                          value: processGroup,
+                          value: item.stepGroup?.groupName ?? '',
                         ),
                       ),
                     ],
                   ),
                   SizedBox(height: 12.h),
-
-                  /// Employee info
                   _InfoSection(
                     label: allTranslations.text(LocaleKeys.employee_label),
-                    value: employee,
+                    value: item.responsibleUser?.fullName ?? '',
                   ),
                   SizedBox(height: 8.h),
-
-                  /// Divider
                   Container(height: 1, color: context.color.outline),
                   SizedBox(height: 12.h),
-
-                  /// Comments section
-                  TechnicalLogTabCommentsSection(comments: comments),
+                  TechnicalLogTabCommentsSection(
+                    comments: item.stepComments ?? const [],
+                  ),
                 ],
               ),
             ),
@@ -128,7 +113,6 @@ class _InfoSection extends StatelessWidget {
                   fontSize: FontSizes.f10,
                   fontWeight: FontWeight.w600,
                 ),
-                textAlign: TextAlign.right,
               ),
             ],
           ),
@@ -139,16 +123,15 @@ class _InfoSection extends StatelessWidget {
 }
 
 class _TimelineIndicator extends StatelessWidget {
-  final String date;
+  final String day;
   final String month;
 
-  const _TimelineIndicator({required this.date, required this.month});
+  const _TimelineIndicator({required this.day, required this.month});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Month label
         Text(
           month,
           style: context.textTheme.labelSmall?.copyWith(
@@ -158,7 +141,6 @@ class _TimelineIndicator extends StatelessWidget {
           ),
         ),
         SizedBox(height: 4.h),
-        // Date badge
         Container(
           width: 32.w,
           height: 32.h,
@@ -168,7 +150,7 @@ class _TimelineIndicator extends StatelessWidget {
           ),
           child: Center(
             child: Text(
-              date,
+              day,
               style: context.textTheme.labelSmall?.copyWith(
                 color: Colors.white,
                 fontSize: 12,
@@ -177,7 +159,7 @@ class _TimelineIndicator extends StatelessWidget {
             ),
           ),
         ),
-        // Timeline line
+        // Runs down to the bottom of the card next to it.
         Expanded(
           child: Container(
             width: 4.w,

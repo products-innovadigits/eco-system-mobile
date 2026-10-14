@@ -14,42 +14,19 @@ class TechnicalLogTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
+      create: (_) =>
           HistoryTabBloc(repo: projectManagementSl())
             ..add(LoadHistoryData(processId: processId, projectId: projectId)),
       child: BlocBuilder<HistoryTabBloc, HistoryTabState>(
         builder: (context, state) {
           return switch (state) {
             // ── Loading ─────────────────────────
-            HistoryTabLoading() || HistoryTabInitial() => ShimmerCardsList(
-              itemCount: 3,
-              cardHeight: 200,
-            ),
+            HistoryTabLoading() || HistoryTabInitial() =>
+              const ShimmerCardsList(itemCount: 3, cardHeight: 200),
 
-            // ── Loaded ────────────────────────────
-            HistoryTabLoaded(:final historyData) => ListView.separated(
-              itemCount: historyData.data!.length,
-              itemBuilder: (context, index) {
-                final historyItem = historyData.data![index];
-                return TechnicalLogTimelineCard(
-                  processGroup: historyItem.stepGroup?.groupName ?? "",
-                  stageName: historyItem.name ?? "",
-                  employee: historyItem.responsibleUser?.fullName ?? "",
-                  time: FormattersHelper.formatTime(historyItem.lastChangeTime),
-                  commenter: historyItem.responsibleUser?.fullName ?? "",
-                  comments: historyItem.stepComments ?? [],
-                  attachments: historyItem.slicesData ?? [],
-                  date: FormattersHelper.formatDate(
-                    historyItem.lastChangeTime,
-                    isDate: true,
-                  ),
-                  month: FormattersHelper.formatDate(
-                    historyItem.lastChangeTime,
-                    isMonth: true,
-                  ),
-                );
-              },
-              separatorBuilder: (context, index) => _TimelineDivider(),
+            // ── Loaded ──────────────────────────
+            HistoryTabLoaded(:final historyData) => _HistoryList(
+              items: historyData.data ?? const [],
             ),
 
             // ── Empty ───────────────────────────
@@ -59,6 +36,9 @@ class TechnicalLogTab extends StatelessWidget {
             _ => EmptyContainer(
               txt: allTranslations.text(LocaleKeys.something_went_wrong),
               img: Assets.svgs.error.path,
+              onRetry: () => context.read<HistoryTabBloc>().add(
+                LoadHistoryData(processId: processId, projectId: projectId),
+              ),
             ),
           };
         },
@@ -67,7 +47,24 @@ class TechnicalLogTab extends StatelessWidget {
   }
 }
 
+class _HistoryList extends StatelessWidget {
+  final List<HistoryItemModel> items;
+
+  const _HistoryList({required this.items});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      itemCount: items.length,
+      itemBuilder: (_, index) => TechnicalLogTimelineCard(item: items[index]),
+      separatorBuilder: (_, _) => const _TimelineDivider(),
+    );
+  }
+}
+
 class _TimelineDivider extends StatelessWidget {
+  const _TimelineDivider();
+
   @override
   Widget build(BuildContext context) {
     return Container(

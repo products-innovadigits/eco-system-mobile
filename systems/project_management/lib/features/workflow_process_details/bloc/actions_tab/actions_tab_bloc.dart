@@ -18,9 +18,6 @@ class ActionsTabBloc extends Bloc<ActionsTabEvent, ActionsTabState> {
     on<RemoveFile>(_onRemoveFile);
   }
 
-  // Form key for validation
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
   // Text editing controller for comment field
   final TextEditingController commentTEC;
 
@@ -33,10 +30,9 @@ class ActionsTabBloc extends Bloc<ActionsTabEvent, ActionsTabState> {
     SaveComment event,
     Emitter<ActionsTabState> emit,
   ) async {
-    // Validate form first
-    if (!formKey.currentState!.validate()) {
-      return;
-    }
+    // The form validates the text before sending; an empty comment is
+    // ignored here as well rather than posted.
+    if (commentTEC.text.trim().isEmpty) return;
 
     try {
       emit(const SaveCommentLoading());

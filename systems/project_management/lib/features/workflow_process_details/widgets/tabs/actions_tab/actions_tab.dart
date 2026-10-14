@@ -28,91 +28,55 @@ class _ActionsTabContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool workflowInProgress =
-        context.read<ProcessDetailsBloc>().stageDocsData?.workFlowStatus ==
-        'InProgress';
-    final bool workflowCompleted =
-        context.read<ProcessDetailsBloc>().stageDocsData?.workFlowStatus ==
-        'Completed';
+    final status = context
+        .read<ProcessDetailsBloc>()
+        .stageDocsData
+        ?.workFlowStatus;
+
     return BlocListener<ActionsTabBloc, ActionsTabState>(
-      listener: (context, state) {
-        // When move to next step is successful, refresh the ProcessDetailsBloc to update nextStep
-        if (state is MoveToNextStepSuccess) {
-          final processDetailsBloc = context.read<ProcessDetailsBloc>();
-          processDetailsBloc.add(
-            LoadGroupSteps(projectId: projectId, processId: processId),
-          );
-        }
+      // Moving to the next step changes the current and next steps, so the
+      // screen reloads them.
+      listenWhen: (_, current) => current is MoveToNextStepSuccess,
+      listener: (context, _) => context.read<ProcessDetailsBloc>().add(
+        LoadGroupSteps(projectId: projectId, processId: processId),
+      ),
+      child: switch (status) {
+        'InProgress' => _ActionsForm(
+          processId: processId,
+          projectId: projectId,
+        ),
+        'Completed' => EmptyContainer(
+          txt: allTranslations.text(LocaleKeys.process_done),
+        ),
+        _ => EmptyContainer(
+          txt: allTranslations.text(LocaleKeys.start_process_first),
+        ),
       },
-      child: workflowInProgress
-          // Scrollable: the fields grow with their validation errors and the
-          // keyboard eats the rest, so a fixed column overflows the tab.
-          ? Form(
-              key: context.read<ActionsTabBloc>().formKey,
-              child: SingleChildScrollView(
-                padding: EdgeInsets.only(bottom: 16.h),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    // Internal Comments Section. The controller holds the
-                    // text, so no bloc state needs to rebuild it.
-                    _InternalCommentsSection(
-                      controller: context.read<ActionsTabBloc>().commentTEC,
-                      validation: NotEmptyValidator.notEmptyValidator,
-                    ),
-
-                    // File Upload Section
-                    BlocBuilder<ActionsTabBloc, ActionsTabState>(
-                      // Only the attachment itself changes this section. A
-                      // successful save clears the attachment, so it repaints
-                      // on that too.
-                      buildWhen: (previous, current) =>
-                          current is ActionsTabFileSelected ||
-                          current is ActionsTabFileRemoved ||
-                          current is SaveCommentSuccess,
-                      builder: (context, state) {
-                        final bloc = context.read<ActionsTabBloc>();
-                        final picked = state is ActionsTabFileSelected
-                            ? state
-                            : null;
-                        return _FileUploadSection(
-                          hasFile: picked != null,
-                          fileName: picked?.fileName,
-                          fileSize: picked?.fileSize,
-                          onPickFile: () => bloc.add(const PickFile()),
-                          onRemoveFile: () => bloc.add(const RemoveFile()),
-                        );
-                      },
-                    ),
-
-                    SizedBox(height: 16.h),
-
-                    // Save Button Section
-                    _SaveButton(onSave: () => _onSave(context)),
-
-                    // Next Step / Finish Process Button Section
-                    _NextStepButton(
-                      onCompliance: () => _onCompliance(context),
-                      onFinishProcess: () => _onFinishProcess(context),
-                    ),
-                  ],
-                ),
-              ),
-            )
-          : workflowCompleted
-          ? EmptyContainer(txt: allTranslations.text(LocaleKeys.process_done))
-          : EmptyContainer(
-              txt: allTranslations.text(LocaleKeys.start_process_first),
-            ),
     );
   }
+}
 
-  void _onSave(BuildContext context) {
-    final workflowBloc = context.read<ProcessDetailsBloc>();
-    final projectStepId = workflowBloc.stageDocsData?.currentStep?.id;
+class _ActionsForm extends StatefulWidget {
+  final int processId;
+  final int projectId;
 
-    // Validate that projectStepId is not null
+  const _ActionsForm({required this.processId, required this.projectId});
+
+  @override
+  State<_ActionsForm> createState() => _ActionsFormState();
+}
+
+class _ActionsFormState extends State<_ActionsForm> {
+  final _formKey = GlobalKey<FormState>();
+
+  void _onSave() {
+    if (!(_formKey.currentState?.validate() ?? false)) return;
+
+    final projectStepId = context
+        .read<ProcessDetailsBloc>()
+        .stageDocsData
+        ?.currentStep
+        ?.id;
     if (projectStepId == null) {
       AppCore.errorMessage(
         allTranslations.text(LocaleKeys.something_went_wrong),
@@ -120,42 +84,83 @@ class _ActionsTabContent extends StatelessWidget {
       return;
     }
 
-    final bloc = context.read<ActionsTabBloc>();
-    bloc.add(
+    context.read<ActionsTabBloc>().add(
       SaveComment(
-        projectId: projectId,
+        projectId: widget.projectId,
         projectStepId: projectStepId,
-        processId: processId,
+        processId: widget.processId,
       ),
     );
   }
 
-  void _onCompliance(BuildContext context) {
-    // The step to move to comes from the latest Current & Next.
-    final workflowProcessDetailsBloc = context.read<ProcessDetailsBloc>();
-    final nextStep = workflowProcessDetailsBloc.stageDocsData?.nextStep;
-    final nextStepId = (nextStep != null && nextStep.isNotEmpty)
-        ? nextStep[0].id
-        : 0;
+  /// Moves to the next step, or finishes the process when [isLastStep]: the
+  /// same endpoint is called with no next step then.
+  void _onMove({required bool isLastStep}) {
+    final nextStepId = isLastStep
+        ? null
+        : context
+                  .read<ProcessDetailsBloc>()
+                  .stageDocsData
+                  ?.nextStep
+                  ?.firstOrNull
+                  ?.id ??
+              0;
 
-    final bloc = context.read<ActionsTabBloc>();
-    bloc.add(
-      MoveToNextStep(
-        projectId: projectId,
-        processId: processId,
-        nextStepId: nextStepId ?? 0,
-      ),
-    );
-  }
-
-  void _onFinishProcess(BuildContext context) {
-    // The last step has nothing to move to, so the same endpoint is called
-    // with a null next step to finish the process.
     context.read<ActionsTabBloc>().add(
       MoveToNextStep(
-        projectId: projectId,
-        processId: processId,
-        nextStepId: null,
+        projectId: widget.projectId,
+        processId: widget.processId,
+        nextStepId: nextStepId,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final bloc = context.read<ActionsTabBloc>();
+
+    // Scrollable: the fields grow with their validation errors and the
+    // keyboard eats the rest, so a fixed column overflows the tab.
+    return Form(
+      key: _formKey,
+      child: SingleChildScrollView(
+        padding: EdgeInsets.only(bottom: 16.h),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            // The controller holds the text, so no bloc state rebuilds it.
+            _InternalCommentsSection(
+              controller: bloc.commentTEC,
+              validation: NotEmptyValidator.notEmptyValidator,
+            ),
+            BlocBuilder<ActionsTabBloc, ActionsTabState>(
+              // Only the attachment itself changes this section. A
+              // successful save clears the attachment, so it repaints on
+              // that too.
+              buildWhen: (previous, current) =>
+                  current is ActionsTabFileSelected ||
+                  current is ActionsTabFileRemoved ||
+                  current is SaveCommentSuccess,
+              builder: (context, state) {
+                final picked = state is ActionsTabFileSelected ? state : null;
+                return _FileUploadSection(
+                  hasFile: picked != null,
+                  fileName: picked?.fileName,
+                  fileSize: picked?.fileSize,
+                  onPickFile: () => bloc.add(const PickFile()),
+                  onRemoveFile: () => bloc.add(const RemoveFile()),
+                );
+              },
+            ),
+            SizedBox(height: 16.h),
+            _SaveButton(onSave: _onSave),
+            _NextStepButton(
+              onCompliance: () => _onMove(isLastStep: false),
+              onFinishProcess: () => _onMove(isLastStep: true),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -169,19 +174,14 @@ class _InternalCommentsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        CustomTextField(
-          controller: controller,
-          label: allTranslations.text(LocaleKeys.internal_comments),
-          hint: allTranslations.text(LocaleKeys.enter_internal_comments),
-          hintStyle: context.textTheme.bodySmall,
-          maxLines: 3,
-          minLines: 1,
-          validation: validation,
-        ),
-      ],
+    return CustomTextField(
+      controller: controller,
+      label: allTranslations.text(LocaleKeys.internal_comments),
+      hint: allTranslations.text(LocaleKeys.enter_internal_comments),
+      hintStyle: context.textTheme.bodySmall,
+      maxLines: 3,
+      minLines: 1,
+      validation: validation,
     );
   }
 }

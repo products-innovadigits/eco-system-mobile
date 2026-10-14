@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:core_system/core/helpers/file_opener_helper.dart';
+import 'package:core_system/core/helpers/launcher_helper.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
@@ -43,6 +44,15 @@ void main() {
     });
   });
 
+  test('resolves server-relative paths like LauncherHelper did', () {
+    expect(
+      LauncherHelper.resolveFileUrl('/Reports/1.pdf'),
+      'https://194.163.168.5:448/Reports/1.pdf',
+    );
+    const absolute = 'https://194.163.168.5:448/FileServer/a.pdf';
+    expect(LauncherHelper.resolveFileUrl(absolute), absolute);
+  });
+
   group('download', () {
     late Directory temp;
     late HttpServer server;
@@ -61,7 +71,8 @@ void main() {
         if (failNext) {
           request.response.statusCode = 500;
         } else {
-          request.response.add([1, 2, 3, 4]);
+          // The content changes with every request, like a regenerated report.
+          request.response.add([1, 2, 3, requests]);
         }
         request.response.close();
       });
@@ -75,16 +86,29 @@ void main() {
     String fileUrl(String name) =>
         'http://${server.address.host}:${server.port}/files/$name';
 
-    test('saves the file under its own name and reuses it', () async {
+    test('reuses an earlier download when asked to', () async {
       final url = fileUrl('1791890025%20-%20photo.jpg');
 
-      final first = await FileOpenerHelper.download(url);
+      final first = await FileOpenerHelper.download(url, reuseDownloaded: true);
       expect(first.path, endsWith('/1791890025 - photo.jpg'));
-      expect(await first.readAsBytes(), [1, 2, 3, 4]);
+      expect(await first.readAsBytes(), [1, 2, 3, 1]);
 
-      final second = await FileOpenerHelper.download(url);
+      final second = await FileOpenerHelper.download(
+        url,
+        reuseDownloaded: true,
+      );
       expect(second.path, first.path);
       expect(requests, 1, reason: 'the cached copy is reused');
+    });
+
+    test('fetches fresh content by default', () async {
+      final url = fileUrl('report.pdf');
+
+      await FileOpenerHelper.download(url);
+      final second = await FileOpenerHelper.download(url);
+
+      expect(requests, 2);
+      expect(await second.readAsBytes(), [1, 2, 3, 2]);
     });
 
     test('keeps same-named files from different URLs apart', () async {
@@ -108,7 +132,7 @@ void main() {
       // A later attempt downloads again instead of reusing a broken file.
       failNext = false;
       final file = await FileOpenerHelper.download(url);
-      expect(await file.readAsBytes(), [1, 2, 3, 4]);
+      expect(await file.readAsBytes(), hasLength(4));
     });
   });
 }

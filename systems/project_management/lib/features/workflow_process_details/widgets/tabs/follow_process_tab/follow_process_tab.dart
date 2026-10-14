@@ -46,9 +46,16 @@ class FollowProcessTab extends StatelessWidget {
 
     return ListView.separated(
       itemCount: processList.length,
-      itemBuilder: (context, index) =>
-          ProcessExpansionCardWidget(processList: processList, index: index),
-      separatorBuilder: (context, index) => SizedBox(height: 12.0.h),
+      itemBuilder: (_, index) {
+        final group = processList[index];
+        return ProcessExpansionCardWidget(
+          // Keeps each card's expanded state with its group across reloads.
+          key: ValueKey(group.groupId ?? index),
+          group: group,
+          initiallyExpanded: index == 0,
+        );
+      },
+      separatorBuilder: (_, _) => SizedBox(height: 12.h),
     );
   }
 }

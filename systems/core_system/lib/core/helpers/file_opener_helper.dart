@@ -24,10 +24,24 @@ abstract class FileOpenerHelper {
           createHttpClient: Network.createHttpClient,
         );
 
+  /// Downloads [url] and opens it. A server-relative path is resolved like
+  /// [LauncherHelper.resolveFileUrl] does.
+  ///
+  /// [reuseDownloaded] opens an earlier download of the same URL instead of
+  /// fetching it again. Only pass it for files that never change, such as
+  /// uploads; generated documents (reports, exports) must be fetched fresh.
   static Future<void> downloadAndOpen({
     required BuildContext context,
     required String url,
+    bool reuseDownloaded = false,
   }) async {
+    if (url.trim().isEmpty) {
+      AppCore.errorToastMessage(
+        allTranslations.text(LocaleKeys.download_failed),
+      );
+      return;
+    }
+
     final navigator = Navigator.of(context, rootNavigator: true);
     showDialog(
       context: context,
@@ -40,7 +54,10 @@ abstract class FileOpenerHelper {
 
     String? error;
     try {
-      final file = await download(url);
+      final file = await download(
+        LauncherHelper.resolveFileUrl(url.trim()),
+        reuseDownloaded: reuseDownloaded,
+      );
       final result = await OpenFilex.open(file.path);
       if (result.type == ResultType.noAppToOpen) {
         error = allTranslations.text(LocaleKeys.no_app_to_open_file);
@@ -58,15 +75,20 @@ abstract class FileOpenerHelper {
     if (error != null) AppCore.errorToastMessage(error);
   }
 
-  /// Downloads [url] into the app's cache, reusing an earlier download of the
-  /// same URL. Each URL gets its own folder, so the file keeps its own name
-  /// for the viewer while two URLs ending in the same name never collide.
-  static Future<File> download(String url) async {
+  /// Downloads [url] into the app's cache. Each URL gets its own folder, so
+  /// the file keeps its own name for the viewer while two URLs ending in the
+  /// same name never collide.
+  static Future<File> download(
+    String url, {
+    bool reuseDownloaded = false,
+  }) async {
     final cacheDir = await getTemporaryDirectory();
     final file = File(
       '${cacheDir.path}/attachments/${urlHash(url)}/${cacheFileName(url)}',
     );
-    if (await file.exists() && await file.length() > 0) return file;
+    if (reuseDownloaded && await file.exists() && await file.length() > 0) {
+      return file;
+    }
 
     await file.parent.create(recursive: true);
     // Written aside first, so an interrupted download is never reused.

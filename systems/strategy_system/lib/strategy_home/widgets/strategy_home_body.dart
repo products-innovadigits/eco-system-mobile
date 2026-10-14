@@ -26,7 +26,12 @@ class StrategyHomeBody extends StatelessWidget {
         ObjectivePercentageSection(isStrategyHome: true),
         BscCardSection(),
         OkrCardSection(),
-        KpiInitiativesProgressSection(),
+        // Hidden: renders hardcoded mock objectives/KPI/initiative values, so
+        // it shows progress even for objectives with no linked initiatives or
+        // indicators. Restore once the backend exposes a dashboard endpoint
+        // (per objective: name, kpisValue, initiativesValue, objectiveValue,
+        // and initiative/KPI counts so unlinked objectives can be shown empty).
+        // KpiInitiativesProgressSection(),
         StrategicAxisCardSection(),
         SizedBox(height: 16),
       ],

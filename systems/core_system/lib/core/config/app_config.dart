@@ -17,7 +17,7 @@ class AppConfig {
   );
 
   static const String _projectManagementBaseUrlFallback =
-      'https://194.163.168.5:447/api/';
+      'https://194.163.168.5:448/api/';
 
   static final String strategyBaseUrl = Env.strategyBaseUrlDev;
   static final String atsBaseUrl = Env.atsBaseUrlDev;

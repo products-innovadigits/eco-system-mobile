@@ -16,85 +16,83 @@ class ObjectivePercentageChartMobilePortrait extends StatefulWidget {
 class _ObjectivePercentageChartMobilePortraitState
     extends State<ObjectivePercentageChartMobilePortrait> {
   int touchedIndex = -1;
-  bool isEmpty = true;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ObjectivePercentageBloc, AppState>(
-      builder: (context, state) {
-        if (state is Done) {
-          isEmpty =
-              double.parse((state.data as String).replaceAll('%', '')) <= 0;
-        }
-        return AspectRatio(
-          aspectRatio: 1.4,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              PieChart(
-                PieChartData(
-                  pieTouchData: PieTouchData(
-                    touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                      setState(() {
-                        if (!event.isInterestedForInteractions ||
-                            pieTouchResponse == null ||
-                            pieTouchResponse.touchedSection == null) {
-                          touchedIndex = -1;
-                          return;
-                        }
-                        touchedIndex = pieTouchResponse
-                            .touchedSection!
-                            .touchedSectionIndex;
-                      });
-                    },
-                  ),
-                  borderData: FlBorderData(
-                    show: false,
-                    border: Border.all(color: context.color.outline),
-                  ),
-                  sectionsSpace: 5.w,
-                  centerSpaceRadius: 50.w,
-                  sections: isEmpty || showingSections().isEmpty
-                      ? emptyState()
-                      : showingSections(),
-                ),
-              ),
-              BlocBuilder<ObjectivePercentageBloc, AppState>(
-                builder: (context, state) {
-                  if (state is Done) {
-                    return SizedBox(
-                      width: 80.w,
-                      child: FittedBox(
-                        child: RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            text: allTranslations.text("objective_percentage"),
-                            style: context.textTheme.labelSmall,
-                            children: [
-                              // TextSpan(
-                              //   text: "\n${state.data ?? 0}",
-                              //   style: context.textTheme.titleLarge?.copyWith(
-                              //       color: isEmpty
-                              //           ? context.color.outline
-                              //           : context.color.primary),
-                              // )
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  }
-                  if (state is Loading) {
-                    return CustomShimmerContainer(width: 80.w, height: 16.h);
-                  } else {
-                    return SizedBox();
-                  }
+    // Empty is derived from the categorized list itself rather than from the
+    // separate totalPercentage call, so the pie never disagrees with its data.
+    final bool isEmpty = widget.objectives.every((e) => (e.value ?? 0) <= 0);
+    final sections = isEmpty ? emptyState() : showingSections();
+    return AspectRatio(
+      aspectRatio: 1.4,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          PieChart(
+            // fl_chart lerps between the old and new section lists, but
+            // lays out badges from the target list. Switching between the
+            // 1-section empty state and the real sections made the
+            // animated data shorter than the badges -> RangeError in
+            // badgeWidgetPaint. A new key per section count avoids the lerp.
+            key: ValueKey(sections.length),
+            PieChartData(
+              pieTouchData: PieTouchData(
+                touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                  setState(() {
+                    if (!event.isInterestedForInteractions ||
+                        pieTouchResponse == null ||
+                        pieTouchResponse.touchedSection == null) {
+                      touchedIndex = -1;
+                      return;
+                    }
+                    touchedIndex =
+                        pieTouchResponse.touchedSection!.touchedSectionIndex;
+                  });
                 },
               ),
-            ],
+              borderData: FlBorderData(
+                show: false,
+                border: Border.all(color: context.color.outline),
+              ),
+              sectionsSpace: 5.w,
+              centerSpaceRadius: 50.w,
+              sections: sections,
+            ),
           ),
-        );
-      },
+          BlocBuilder<ObjectivePercentageBloc, AppState>(
+            builder: (context, state) {
+              if (state is Done) {
+                return SizedBox(
+                  width: 80.w,
+                  child: FittedBox(
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        text: allTranslations.text("objective_percentage"),
+                        style: context.textTheme.labelSmall,
+                        children: [
+                          // TextSpan(
+                          //   text: "\n${state.data ?? 0}",
+                          //   style: context.textTheme.titleLarge?.copyWith(
+                          //       color: isEmpty
+                          //           ? context.color.outline
+                          //           : context.color.primary),
+                          // )
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }
+              if (state is Loading) {
+                return CustomShimmerContainer(width: 80.w, height: 16.h);
+              } else {
+                return SizedBox();
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 
@@ -117,7 +115,7 @@ class _ObjectivePercentageChartMobilePortraitState
             shape: BoxShape.circle,
           ),
           child: Text(
-            '${widget.objectives[i].value?.toStringAsFixed(0)}%',
+            _formatPercent(widget.objectives[i].value ?? 0),
             style: AppTextStyles.w600.copyWith(
               fontSize: 12,
               color: Styles.header,
@@ -128,6 +126,11 @@ class _ObjectivePercentageChartMobilePortraitState
       );
     });
   }
+
+  /// A non-zero slice that rounds to 0 (e.g. 0.45) is shown as "<1%" so the
+  /// badge doesn't say "0%" next to a visible slice.
+  String _formatPercent(double value) =>
+      value > 0 && value < 1 ? '<1%' : '${value.toStringAsFixed(0)}%';
 
   List<PieChartSectionData> emptyState() {
     return [

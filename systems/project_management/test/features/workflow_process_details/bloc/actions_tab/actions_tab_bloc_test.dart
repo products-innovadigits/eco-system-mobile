@@ -1,5 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:core_system/core/network/error/network_exception.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:project_management/features/workflow_process_details/bloc/actions_tab/actions_tab_bloc.dart';
@@ -17,6 +18,13 @@ void main() {
 
   setUpAll(() {
     initMocktailFallbacks();
+    // Saving shows a toast; the plugin has no platform here.
+    TestWidgetsFlutterBinding.ensureInitialized();
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+          const MethodChannel('PonnamKarthik/fluttertoast'),
+          (_) async => true,
+        );
   });
 
   setUp(() {
@@ -171,6 +179,86 @@ void main() {
           const MoveToNextStepLoading(),
           isA<MoveToNextStepSuccess>(),
         ],
+      );
+    });
+
+    group('SaveComment', () {
+      const event = SaveComment(projectId: 1, projectStepId: 2, processId: 3);
+
+      void stubSave(DefaultResponseModel response) {
+        when(
+          () => mockRepo.addProjectStepComment(
+            projectId: any(named: 'projectId'),
+            projectStepId: any(named: 'projectStepId'),
+            processId: any(named: 'processId'),
+            text: any(named: 'text'),
+            file: any(named: 'file'),
+          ),
+        ).thenAnswer((_) async => response);
+      }
+
+      blocTest<ActionsTabBloc, ActionsTabState>(
+        'ignores an empty comment',
+        build: () {
+          stubSave(DefaultResponseModel(succeeded: true));
+          bloc.commentTEC.text = '   ';
+          return bloc;
+        },
+        act: (bloc) => bloc.add(event),
+        expect: () => <ActionsTabState>[],
+        verify: (_) {
+          verifyNever(
+            () => mockRepo.addProjectStepComment(
+              projectId: any(named: 'projectId'),
+              projectStepId: any(named: 'projectStepId'),
+              processId: any(named: 'processId'),
+              text: any(named: 'text'),
+              file: any(named: 'file'),
+            ),
+          );
+        },
+      );
+
+      blocTest<ActionsTabBloc, ActionsTabState>(
+        'sends the trimmed text and clears the form on success',
+        build: () {
+          // The response this endpoint really sends: data is the message.
+          stubSave(
+            DefaultResponseModel().fromJson({
+                  'succeeded': true,
+                  'data': 'تمت العملية بنجاح',
+                })
+                as DefaultResponseModel,
+          );
+          bloc.commentTEC.text = '  تست  ';
+          return bloc;
+        },
+        act: (bloc) => bloc.add(event),
+        expect: () => [const SaveCommentLoading(), isA<SaveCommentSuccess>()],
+        verify: (bloc) {
+          verify(
+            () => mockRepo.addProjectStepComment(
+              projectId: 1,
+              projectStepId: 2,
+              processId: 3,
+              text: 'تست',
+              file: null,
+            ),
+          ).called(1);
+          expect(bloc.commentTEC.text, isEmpty);
+        },
+      );
+
+      blocTest<ActionsTabBloc, ActionsTabState>(
+        'keeps the text when the server rejects it',
+        build: () {
+          stubSave(DefaultResponseModel(succeeded: false));
+          bloc.commentTEC.text = 'تست';
+          return bloc;
+        },
+        act: (bloc) => bloc.add(event),
+        expect: () => [const SaveCommentLoading(), isA<ActionsTabFailure>()],
+        verify: (bloc) => expect(bloc.commentTEC.text, 'تست'),
       );
     });
   });

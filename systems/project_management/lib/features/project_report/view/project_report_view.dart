@@ -41,9 +41,9 @@ class ProjectReportView extends StatelessWidget {
               return state is ProjectReportLoaded
                   ? _ExportButton(
                       onTap: () {
-                        LauncherHelper.downloadFiles(
-                          filePath: state.report.data?.pdfFileUrl ?? '',
+                        FileOpenerHelper.downloadAndOpen(
                           context: context,
+                          url: state.report.data?.pdfFileUrl ?? '',
                         );
                       },
                     )

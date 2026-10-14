@@ -39,4 +39,26 @@ void main() {
     expect(find.byIcon(Icons.image), findsOneWidget);
     expect(find.byIcon(Icons.table_chart), findsOneWidget);
   });
+
+  group('formatCommentTime', () {
+    test('formats the API time (7 fraction digits) in local time', () {
+      const createdAt = '2026-10-13T11:13:45.7898649+00:00';
+      final local = DateTime.parse(createdAt).toLocal();
+      final hour = local.hour % 12 == 0 ? 12 : local.hour % 12;
+      final period = local.hour >= 12 ? 'PM' : 'AM';
+      final minute = local.minute.toString().padLeft(2, '0');
+
+      expect(
+        TechnicalLogTabCommentsSection.formatCommentTime(createdAt),
+        '${local.day.toString().padLeft(2, '0')}/'
+        '${local.month.toString().padLeft(2, '0')}/${local.year}'
+        ' - $hour:$minute $period',
+      );
+    });
+
+    test('is empty instead of a made-up time when unreadable', () {
+      expect(TechnicalLogTabCommentsSection.formatCommentTime(null), '');
+      expect(TechnicalLogTabCommentsSection.formatCommentTime('oops'), '');
+    });
+  });
 }

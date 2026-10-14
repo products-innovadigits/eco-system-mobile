@@ -13,7 +13,7 @@ class ChartCategoriesSection extends StatelessWidget {
       spacing: 24.w,
       children: List.generate(
         objectives.length,
-            (i) => Row(
+        (i) => Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(

@@ -46,10 +46,13 @@ class LightColor {
         : LightColor.chartPrimary;
     switch (value) {
       case "مكتمل":
+      case "Completed":
         return LightColor.tertiary;
       case "متقدم":
+      case "In Progress":
         return primaryChart;
       case "متأخر":
+      case "Delayed":
         return LightColor.chartSecondary;
       default:
         return primaryChart;

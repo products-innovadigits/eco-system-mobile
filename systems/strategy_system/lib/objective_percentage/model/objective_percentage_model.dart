@@ -11,7 +11,11 @@ class ObjectivePercentageModel extends SingleMapper {
 
   ObjectivePercentageModel.fromJson(Map<String, dynamic> json) {
     categoryName = json['categoryName'];
-    value = json['value'];
+    // `value` arrives as int when it is a whole number (0, 100); a direct
+    // assignment to double? throws and the whole card falls into Error.
+    value = (json['value'] as num?)?.toDouble();
+    // TODO(backend): `count` is not returned by ObjectActive/Categorized yet,
+    // so the legend shows "(0)" for every category.
     count = json['count'] ?? 0;
   }
 
