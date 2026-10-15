@@ -1,15 +1,16 @@
 import 'package:core_system/core/components/custom_screen_type_layout_widget.dart';
 import 'package:project_management/core/di/project_management_locator.dart';
-import 'package:project_management/features/projects_progress/widgets/project_progress_mobile_landscape.dart';
-import 'package:project_management/features/projects_progress/widgets/project_progress_mobile_portrait.dart';
+import 'package:project_management/features/projects_progress/widgets/project_progress_card.dart';
 
 import '../../../core/utility/project_management_exports.dart';
 
 class ProjectProgressSection extends StatelessWidget {
   final bool isProjectManagementHome;
 
-  const ProjectProgressSection(
-      {super.key, required this.isProjectManagementHome});
+  const ProjectProgressSection({
+    super.key,
+    required this.isProjectManagementHome,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -55,17 +56,23 @@ class _ProjectProgressSection extends StatelessWidget {
   final bool isProjectManagementHome;
   final List<ProjectsOverviewData> data;
 
-  const _ProjectProgressSection(
-      {required this.isProjectManagementHome, required this.data});
+  const _ProjectProgressSection({
+    required this.isProjectManagementHome,
+    required this.data,
+  });
 
   @override
   Widget build(BuildContext context) {
     return CustomScreenTypeLayoutWidget(
-      mobilePortrait: (ctx) =>
-          ProjectProgressMobilePortrait(
-          isProjectManagementHome: isProjectManagementHome, data: data),
-      mobileLandscape: (ctx) => ProjectProgressMobileLandscape(
-          isProjectManagementHome: isProjectManagementHome, data: data),
+      mobilePortrait: (ctx) => ProjectProgressCard(
+        isProjectManagementHome: isProjectManagementHome,
+        data: data,
+      ),
+      mobileLandscape: (ctx) => ProjectProgressCard(
+        isProjectManagementHome: isProjectManagementHome,
+        data: data,
+        isLandscape: true,
+      ),
     );
   }
 }

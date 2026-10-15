@@ -42,7 +42,7 @@ class ObjectiveDetailsModel extends SingleMapper {
     title = json['title'];
     description = json['description'];
     weightScaleLookUpId = json['weightScaleLookUpId'];
-    weight = json['weight'];
+    weight = double.tryParse(json['weight']?.toString() ?? '');
     subObjectActives = json['subObjectActives'] != null
         ? List<String>.from(json['subObjectActives'])
         : null;

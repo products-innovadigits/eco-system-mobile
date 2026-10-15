@@ -44,5 +44,3 @@ class KpisInitiativesProgressModel extends SingleMapper {
     return KpisInitiativesProgressModel.fromJson(json);
   }
 }
-
-enum ChartTime { year, month }

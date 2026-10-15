@@ -1,7 +1,6 @@
 import 'package:core_system/core/components/custom_screen_type_layout_widget.dart';
 import 'package:core_system/core/widgets/main_card_widget.dart';
 import 'package:strategy_system/objective_percentage/widgets/chart_categories_section.dart';
-import 'package:strategy_system/objective_percentage/widgets/objective_percentage_chart_mobile_landscape.dart';
 
 import '../../shared/strategy_exports.dart';
 
@@ -97,9 +96,11 @@ class _PercentageChartSection extends StatelessWidget {
         children: [
           CustomScreenTypeLayoutWidget(
             mobilePortrait: (ctx) =>
-                ObjectivePercentageChartMobilePortrait(objectives: objectives),
-            mobileLandscape: (ctx) =>
-                ObjectivePercentageChartMobileLandscape(objectives: objectives),
+                ObjectivePercentageChart(objectives: objectives),
+            mobileLandscape: (ctx) => ObjectivePercentageChart(
+              objectives: objectives,
+              isLandscape: true,
+            ),
           ),
           const SizedBox(height: 16),
           ChartCategoriesSection(objectives: objectives),

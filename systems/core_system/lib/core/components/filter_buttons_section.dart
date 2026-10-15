@@ -1,15 +1,22 @@
 import 'package:core_system/core/utility/export.dart';
 
-class ObjectivesFilterButtonsSection extends StatelessWidget {
+/// The bottom row of a filter sheet: apply the filters, and reset them once
+/// any are applied. Positioned at the bottom of the sheet's [Stack].
+///
+/// [canApply] disables the apply button, e.g. until a filter is chosen.
+class FilterButtonsSection extends StatelessWidget {
   final VoidCallback onApplyFilters;
   final VoidCallback onResetFilters;
   final bool isFiltered;
+  final bool canApply;
 
-  const ObjectivesFilterButtonsSection(
-      {super.key,
-        required this.onApplyFilters,
-        required this.onResetFilters,
-        required this.isFiltered});
+  const FilterButtonsSection({
+    super.key,
+    required this.onApplyFilters,
+    required this.onResetFilters,
+    required this.isFiltered,
+    this.canApply = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +29,7 @@ class ObjectivesFilterButtonsSection extends StatelessWidget {
           Expanded(
             child: CustomBtn(
               text: allTranslations.text(LocaleKeys.show_all_results),
+              active: canApply,
               onPressed: onApplyFilters,
             ),
           ),
@@ -36,7 +44,7 @@ class ObjectivesFilterButtonsSection extends StatelessWidget {
                 onPressed: onResetFilters,
               ),
             ),
-          ]
+          ],
         ],
       ),
     );

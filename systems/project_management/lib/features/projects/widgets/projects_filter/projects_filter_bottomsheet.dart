@@ -19,9 +19,11 @@ class ProjectsFilterBottomSheet extends StatelessWidget {
                     cardHeight: 50,
                     listPadding: 0,
                   )
-                : const ProjectsFilterBottomSheetBody(),
+                : ProjectFiltersForm(
+                    filters: context.read<ProjectsFiltrationBloc>(),
+                  ),
             if (state is ProjectsFiltrationLoaded)
-              ProjectsFilterButtonsSection(
+              FilterButtonsSection(
                 onApplyFilters: () =>
                     filterBloc.applyFilters(projectsBloc: projectsBloc),
                 onResetFilters: () =>

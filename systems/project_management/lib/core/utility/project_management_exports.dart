@@ -26,10 +26,7 @@ export 'package:project_management/features/latest_request/data/repositories/lat
 export 'package:project_management/features/latest_request/domain/repositories/latest_request_repo.dart';
 export 'package:project_management/features/latest_request/model/latest_request_models.dart';
 export 'package:project_management/features/latest_request/view/latest_request_view.dart';
-export 'package:project_management/features/latest_request/widgets/latest_request_app_bar_widget.dart';
 export 'package:project_management/features/latest_request/widgets/latest_request_filter/latest_request_filter_bottom_sheet.dart';
-export 'package:project_management/features/latest_request/widgets/latest_request_filter/latest_request_filter_bottom_sheet_body.dart';
-export 'package:project_management/features/latest_request/widgets/latest_request_filter/latest_request_filter_buttons_section.dart';
 export 'package:project_management/features/latest_request/widgets/latest_request_sorting_bottom_sheet.dart';
 // project_categories_progress exports
 export 'package:project_management/features/project_categories_progress/bloc/project_categories_progress_cubit.dart';
@@ -101,7 +98,6 @@ export 'package:project_management/features/project_report/view/project_report_v
 export 'package:project_management/features/project_report/widgets/custom_info_container_widget.dart';
 export 'package:project_management/features/project_report/widgets/project_report_activities_chart.dart';
 export 'package:project_management/features/project_report/widgets/project_report_body.dart';
-export 'package:project_management/features/project_report/widgets/project_report_budget_chart.dart';
 export 'package:project_management/features/project_report/widgets/project_report_challenges.dart';
 export 'package:project_management/features/project_report/widgets/project_report_description.dart';
 export 'package:project_management/features/project_report/widgets/project_report_funding_chart.dart';
@@ -111,9 +107,7 @@ export 'package:project_management/features/project_report/widgets/project_repor
 export 'package:project_management/features/project_report/widgets/project_report_risks.dart';
 export 'package:project_management/features/project_report/widgets/project_report_summary.dart';
 export 'package:project_management/features/project_report/widgets/report_chart_categories_section.dart';
-export 'package:project_management/features/project_report/widgets/report_objective_percentage_chart_mobile_landscape.dart';
 export 'package:project_management/features/project_report/widgets/report_objective_percentage_chart_mobile_portrait.dart';
-export 'package:project_management/features/project_report/widgets/report_objective_percentage_circular_chart.dart';
 // projects exports
 export 'package:project_management/features/projects/bloc/filtration/projects_filtration_bloc.dart';
 export 'package:project_management/features/projects/bloc/filtration/projects_filtration_events.dart';
@@ -133,11 +127,8 @@ export 'package:project_management/features/projects/view/projects_view.dart';
 export 'package:project_management/features/projects/widgets/project_card.dart';
 export 'package:project_management/features/projects/widgets/project_card_content.dart';
 export 'package:project_management/features/projects/widgets/projects_app_bar_widget.dart';
-export 'package:project_management/features/projects/widgets/projects_body_mobile_landscape_view.dart';
-export 'package:project_management/features/projects/widgets/projects_body_mobile_portrait_view.dart';
-export 'package:project_management/features/projects/widgets/projects_filter/projects_filter_bottom_sheet_body.dart';
+export 'package:project_management/features/projects/widgets/projects_body_view.dart';
 export 'package:project_management/features/projects/widgets/projects_filter/projects_filter_bottomsheet.dart';
-export 'package:project_management/features/projects/widgets/projects_filter/projects_filter_buttons_section.dart';
 export 'package:project_management/features/projects/widgets/projects_sorting/custom_sort_tile_widget.dart';
 export 'package:project_management/features/projects/widgets/projects_sorting_bottom_sheet.dart';
 // projects_progress exports
@@ -186,4 +177,7 @@ export 'package:project_management/features/workflow_process_details/widgets/tab
 export 'package:project_management/features/workflow_process_details/widgets/tabs/stage_docs_tab/view_comments_bottom_sheet.dart';
 export 'package:project_management/features/workflow_process_details/widgets/tabs/technical_log_tab/technical_log_tab.dart';
 export 'package:project_management/features/workflow_process_details/widgets/tabs/technical_log_tab/technical_log_timeline_card.dart';
+export 'package:project_management/shared/filters/project_filters_form.dart';
+export 'package:project_management/shared/filters/project_filters_selection.dart';
 export 'package:project_management/shared/widgets/custom_bar_chart.dart';
+export 'package:project_management/shared/widgets/sorting_sheet_content.dart';

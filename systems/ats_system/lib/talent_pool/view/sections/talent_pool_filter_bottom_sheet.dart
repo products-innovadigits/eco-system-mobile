@@ -24,7 +24,7 @@ class TalentPoolFilterBottomSheet extends StatelessWidget {
                     ],
                   ),
                   FilterButtonsSection(
-                    filterModel: filterModel,
+                    canApply: filterModel.hasActiveFilters,
                     onApplyFilters: () =>
                         filterBloc.applyFilters(talentBloc: talentBloc),
                     onResetFilters: () =>

@@ -9,7 +9,7 @@ class ObjectiveKPIModel extends SingleMapper {
 
   ObjectiveKPIModel.fromJson(Map<String, dynamic> json) {
     kpiTitle = json['indicatorTitle'];
-    value = json['kpiValue'];
+    value = double.tryParse(json['kpiValue']?.toString() ?? '');
     color = json['color'];
   }
 

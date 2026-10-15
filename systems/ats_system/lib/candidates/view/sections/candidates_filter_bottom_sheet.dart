@@ -23,7 +23,7 @@ class CandidatesFilterBottomSheet extends StatelessWidget {
                     ],
                   ),
                   FilterButtonsSection(
-                    filterModel: filterModel,
+                    canApply: filterModel.hasActiveFilters,
                     onApplyFilters: () =>
                         filterBloc.applyFilters(candidatesBloc: candidateBloc),
                     onResetFilters: () =>

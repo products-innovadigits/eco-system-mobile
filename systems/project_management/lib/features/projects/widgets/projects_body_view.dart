@@ -1,13 +1,17 @@
 import 'package:project_management/core/utility/project_management_exports.dart';
 
-class ProjectsBodyMobileLandscapeView extends StatelessWidget {
+/// The projects list with its loading, empty and error states. Landscape
+/// gets taller loading cards and wider side padding.
+class ProjectsBodyView extends StatelessWidget {
   final ScrollController scrollController;
   final TextEditingController searchController;
+  final bool isLandscape;
 
-  const ProjectsBodyMobileLandscapeView({
+  const ProjectsBodyView({
     super.key,
     required this.scrollController,
     required this.searchController,
+    this.isLandscape = false,
   });
 
   @override
@@ -18,7 +22,10 @@ class ProjectsBodyMobileLandscapeView extends StatelessWidget {
         builder: (context, state) {
           return switch (state) {
             // Loading first page
-            ProjectsLoading() => ShimmerCardsList(cardHeight: 200),
+            ProjectsLoading() =>
+              isLandscape
+                  ? const ShimmerCardsList(cardHeight: 200)
+                  : const ShimmerCardsList(),
 
             // Handle loaded state with data models
             ProjectsLoaded(:final projects, :final isLoadingMore) =>
@@ -28,7 +35,9 @@ class ProjectsBodyMobileLandscapeView extends StatelessWidget {
                   children: [
                     Expanded(
                       child: ListAnimator(
-                        customPadding: EdgeInsets.symmetric(horizontal: 24.w),
+                        customPadding: EdgeInsets.symmetric(
+                          horizontal: (isLandscape ? 24 : 16).w,
+                        ),
                         controller: scrollController,
                         data: projects
                             .map((project) => ProjectCard(project: project))

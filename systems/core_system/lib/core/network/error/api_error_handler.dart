@@ -54,6 +54,15 @@ class ApiErrorHandler {
         );
       case DioExceptionType.badResponse:
         return _handleBadResponse(error);
+      // Newer dio versions add types (dio 5.10 added transformTimeout). The
+      // packages here resolve different dio versions, so this branch keeps
+      // the switch compiling for all of them.
+      // ignore: unreachable_switch_default
+      default:
+        return const NetworkException(
+          'Request failed',
+          type: NetworkExceptionType.unknown,
+        );
     }
   }
 

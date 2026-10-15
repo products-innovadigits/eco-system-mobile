@@ -35,7 +35,6 @@ export '../talent_pool/bloc/talent_pool_bloc.dart';
 export '../talent_pool/model/candidate_filter_model.dart';
 export '../talent_pool/model/candidate_model.dart';
 export '../talent_pool/view/sections/filter_bottom_sheet_body.dart';
-export '../talent_pool/view/sections/filter_buttons_section.dart';
 export '../talent_pool/view/sections/sorting_bottom_sheet.dart';
 export '../talent_pool/view/sections/talent_pool_bottom_nav_bar.dart';
 export '../talent_pool/view/sections/talent_pool_filter_bottom_sheet.dart';

@@ -12,7 +12,7 @@ class ObjectivesFilterBottomSheet extends StatelessWidget {
         return Stack(
           children: [
             ObjectivesFilterBottomSheetBody(),
-            ObjectivesFilterButtonsSection(
+            FilterButtonsSection(
               onApplyFilters: () =>
                   filterBloc.applyFilters(objectivesBloc: objectivesBloc),
               onResetFilters: () =>

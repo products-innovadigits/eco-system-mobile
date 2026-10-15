@@ -10,7 +10,7 @@ class ProjectProgressModel extends SingleMapper {
 
   ProjectProgressModel.fromJson(Map<String, dynamic> json) {
     categoryName = json['categoryName'];
-    value = json['value'];
+    value = double.tryParse(json['value']?.toString() ?? '');
     count = json['count'];
     color = json['color'];
   }

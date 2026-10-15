@@ -22,9 +22,11 @@ class LatestRequestFilterBottomSheet extends StatelessWidget {
                     cardHeight: 50,
                     listPadding: 0,
                   )
-                : const LatestRequestFilterBottomSheetBody(),
+                : ProjectFiltersForm(
+                    filters: context.read<LatestRequestFiltrationCubit>(),
+                  ),
             if (state is LatestRequestFiltrationLoaded)
-              LatestRequestFilterButtonsSection(
+              FilterButtonsSection(
                 onApplyFilters: () => filterCubit.applyFilters(
                   latestRequestCubit: latestRequestCubit,
                 ),

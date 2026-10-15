@@ -91,13 +91,14 @@ class _ProjectsViewState extends State<ProjectsView> {
               isPortrait: isPortrait,
             ),
             body: CustomScreenTypeLayoutWidget(
-              mobilePortrait: (ctx) => ProjectsBodyMobilePortraitView(
+              mobilePortrait: (ctx) => ProjectsBodyView(
                 scrollController: _scrollController,
                 searchController: _searchController,
               ),
-              mobileLandscape: (ctx) => ProjectsBodyMobileLandscapeView(
+              mobileLandscape: (ctx) => ProjectsBodyView(
                 scrollController: _scrollController,
                 searchController: _searchController,
+                isLandscape: true,
               ),
             ),
             // bottomNavigationBar: ProjectManagementBottomNavBar(
